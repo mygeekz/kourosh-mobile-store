@@ -1,0 +1,120 @@
+/* Phase 43: global premium button unification */
+:root {
+  --ux-btn-h-xs: 36px;
+  --ux-btn-h-sm: 38px;
+  --ux-btn-h-md: 42px;
+  --ux-btn-h-lg: 46px;
+  --ux-btn-radius-unified: 18px;
+  --ux-btn-shadow-unified: 0 14px 28px -24px rgba(15, 23, 42, 0.20);
+  --ux-btn-shadow-unified-hover: 0 18px 34px -24px rgba(15, 23, 42, 0.24);
+}
+
+.ux-btn,
+.ux-btn--native,
+button.rounded-lg.border:not(.ux-btn),
+button.rounded-xl.border:not(.ux-btn),
+button.rounded-2xl.border:not(.ux-btn),
+button[class*="rounded"][class*="bg-"],
+button[class*="rounded"][class*="border"],
+button[class*="bg-"][class*="px-"],
+button[class*="border"][class*="px-"] {
+  min-height: var(--ux-btn-h-md);
+  border-radius: var(--ux-btn-radius-unified) !important;
+  box-shadow: var(--ux-btn-shadow-unified) !important;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ux-btn:hover:not(:disabled):not([aria-disabled='true']),
+.ux-btn--native:hover:not(:disabled):not([aria-disabled='true']),
+button.rounded-lg.border:not(.ux-btn):hover,
+button.rounded-xl.border:not(.ux-btn):hover,
+button.rounded-2xl.border:not(.ux-btn):hover,
+button[class*="rounded"][class*="bg-"]:hover,
+button[class*="rounded"][class*="border"]:hover,
+button[class*="bg-"][class*="px-"]:hover,
+button[class*="border"][class*="px-"]:hover {
+  box-shadow: var(--ux-btn-shadow-unified-hover) !important;
+}
+
+.ux-btn-xs,
+.ux-btn--native.ux-btn-xs {
+  min-height: var(--ux-btn-h-xs) !important;
+  padding-inline: 0.75rem !important;
+  padding-block: 0.45rem !important;
+  font-size: 12px !important;
+}
+
+.ux-btn-sm,
+.ux-btn--native.ux-btn-sm {
+  min-height: var(--ux-btn-h-sm) !important;
+  padding-inline: 0.85rem !important;
+  padding-block: 0.5rem !important;
+  font-size: 13px !important;
+}
+
+.ux-btn-md,
+.ux-btn--native.ux-btn-md {
+  min-height: var(--ux-btn-h-md) !important;
+  padding-inline: 1rem !important;
+  padding-block: 0.58rem !important;
+  font-size: 14px !important;
+}
+
+.ux-btn-lg,
+.ux-btn--native.ux-btn-lg {
+  min-height: var(--ux-btn-h-lg) !important;
+  padding-inline: 1.1rem !important;
+  padding-block: 0.68rem !important;
+  font-size: 14px !important;
+}
+
+.ux-btn__content {
+  gap: 0.5rem !important;
+}
+
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before {
+  width: 1.7rem;
+  height: 1.7rem;
+  min-width: 1.7rem;
+  border-radius: 0.8rem;
+}
+
+.ux-btn__label-main {
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.sales-toolbar-btn,
+.sales-page-btn,
+.sales-payment-chip,
+.sales-submit-btn {
+  border-radius: var(--ux-btn-radius-unified) !important;
+}
+
+.sales-toolbar-btn.ux-btn,
+.sales-page-btn.ux-btn,
+.sales-payment-chip.ux-btn,
+.sales-submit-btn.ux-btn {
+  min-height: var(--ux-btn-h-sm) !important;
+}
+
+.sales-submit-btn.ux-btn {
+  min-height: var(--ux-btn-h-lg) !important;
+}
+
+.dark .ux-btn,
+.dark .ux-btn--native,
+.dark button.rounded-lg.border:not(.ux-btn),
+.dark button.rounded-xl.border:not(.ux-btn),
+.dark button.rounded-2xl.border:not(.ux-btn),
+.dark button[class*="rounded"][class*="bg-"],
+.dark button[class*="rounded"][class*="border"],
+.dark button[class*="bg-"][class*="px-"],
+.dark button[class*="border"][class*="px-"] {
+  box-shadow: 0 18px 34px -26px rgba(2, 6, 23, 0.72) !important;
+}
+
+

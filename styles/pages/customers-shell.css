@@ -1,0 +1,22 @@
+/* Phase 10: extracted customers hero shell */
+@layer components {
+  .customers-hero-panel {
+    @apply gap-5 rounded-[30px] border bg-[linear-gradient(135deg,rgba(248,250,252,0.98),rgba(255,255,255,0.99))] px-5 py-5 shadow-[0_34px_72px_-52px_rgba(15,23,42,0.28)] ring-1 ring-white/70;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .customers-hero-panel {
+    background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+    box-shadow: 0 36px 76px -52px rgba(2,6,23,0.88);
+  }
+  .customers-hero-title-row { @apply gap-3; }
+  .customers-hero-title { @apply text-[1.7rem] leading-tight; }
+  .customers-hero-subtitle { @apply max-w-3xl leading-7; }
+  .customers-hero-quickstats { @apply gap-3.5; }
+  .customers-hero-mini {
+    @apply rounded-[22px] border border-slate-200/80 px-4 py-3.5 shadow-[0_20px_38px_-30px_rgba(15,23,42,0.22)];
+    border-color: rgb(226 232 240 / 0.80);
+  }
+  .dark .customers-hero-mini {
+    border-color: rgb(51 65 85 / 0.85);
+  }
+}

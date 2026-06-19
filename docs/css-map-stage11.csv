@@ -1,0 +1,110 @@
+order,file,folder,size_kb,lines,rule_blocks,selectors,unique_selectors,duplicate_selectors_inside_file,important_count,media_rule_blocks,property_declarations_approx,domain,duplicate_selector_occurrences_in_project,cross_file_selector_count,candidate_action
+1,index.css,.,2.5,83,3,14,14,0,2,0,5,forms/modals,8,8,keep
+2,styles/themes.css,styles,2.3,75,6,6,6,0,0,0,46,shared/base,1,1,keep
+3,styles/core/tokens.css,styles/core,0.1,1,0,0,0,0,0,0,0,shared/base,0,0,keep
+4,styles/core/base.css,styles/core,0.1,1,0,0,0,0,0,0,0,shared/base,0,0,keep
+5,styles/core/typography.css,styles/core,0.1,1,0,0,0,0,0,0,0,shared/base,0,0,keep
+6,styles/core/animations.css,styles/core,4.6,177,45,51,33,18,1,1,80,layout/sidebar/header,32,27,keep
+7,styles/core/utilities.css,styles/core,1.7,70,11,11,9,2,0,0,32,shared/base,9,9,keep
+8,styles/layout/app-shell.css,styles/layout,0.1,1,0,0,0,0,0,0,0,layout/sidebar/header,0,0,keep
+9,styles/layout/sidebar.css,styles/layout,0.5,28,4,4,4,0,0,0,13,layout/sidebar/header,1,1,keep
+10,styles/layout/page-shell.css,styles/layout,0.1,1,0,0,0,0,0,0,0,layout/sidebar/header,0,0,keep
+11,styles/layout/responsive.css,styles/layout,0.3,17,2,5,5,0,1,2,6,forms/modals,5,5,keep
+12,styles/layout/print.css,styles/layout,3.0,144,21,22,22,0,3,21,76,tables,2,2,keep
+13,styles/components/buttons.css,styles/components,0.1,1,0,0,0,0,0,0,0,forms/modals,0,0,stable component layer
+14,styles/components/tables.css,styles/components,7.7,190,28,86,86,0,0,0,49,tables,17,17,keep
+15,styles/components/cards.css,styles/components,13.6,402,84,109,102,7,2,0,182,forms/modals,37,34,keep
+16,styles/components/toolbars.css,styles/components,6.5,233,39,93,78,15,0,7,38,tables,36,32,keep
+17,styles/components/filters.css,styles/components,7.2,366,62,85,55,30,1,28,138,reports,24,7,keep
+18,styles/pages/reports.css,styles/pages,59.0,2376,366,508,425,83,355,31,1175,reports,100,52,reduce !important after page QA
+19,styles/pages/dashboard.css,styles/pages,1.8,83,17,18,15,3,0,1,32,dashboard,4,1,keep
+20,styles/pages/telegram.css,styles/pages,60.9,1628,320,536,448,88,263,19,970,telegram,102,37,reduce !important after page QA
+21,styles/pages/settings.css,styles/pages,6.2,189,33,77,77,0,0,0,29,settings,4,4,keep
+22,styles/pages/inventory.css,styles/pages,0.4,9,2,2,2,0,0,0,2,mobile phones,0,0,keep
+23,styles/pages/customers.css,styles/pages,0.8,42,7,9,8,1,0,7,15,people,8,8,keep
+24,styles/pages/partners.css,styles/pages,12.5,556,107,111,94,17,32,11,300,people,50,47,reduce !important after page QA
+25,styles/pages/mobile-phones.css,styles/pages,0.2,2,0,0,0,0,0,0,0,mobile phones,0,0,keep
+26,styles/pages/repairs.css,styles/pages,1.8,37,9,9,9,0,0,0,24,tables,1,1,keep
+27,styles/pages/purchases.css,styles/pages,0.2,2,0,0,0,0,0,0,0,shared/base,0,0,keep
+28,styles/vendors/overrides.css,styles/vendors,0.1,1,0,0,0,0,0,0,0,shared/base,0,0,keep
+29,styles/legacy-monolith.css,styles,146.7,5777,1114,1985,1556,429,170,49,2215,forms/modals,505,329,migrate gradually into domain files
+30,styles/components/forms.css,styles/components,11.5,413,74,103,95,8,4,4,156,forms/modals,38,32,keep
+31,styles/components/modals.css,styles/components,7.2,294,43,111,66,45,43,9,104,layout/sidebar/header,41,39,reduce !important after page QA
+32,styles/components/badges.css,styles/components,7.4,213,47,94,63,31,0,4,146,reports,32,23,keep
+33,styles/components/detail.css,styles/components,2.6,68,14,35,35,0,0,0,13,people,22,22,keep
+34,styles/components/button-normalization.css,styles/components,4.2,96,13,39,35,4,0,0,55,forms/modals,8,4,keep
+35,styles/components/toasts.css,styles/components,2.2,110,17,20,14,6,0,5,53,notifications,11,10,keep
+36,styles/components/empty-states.css,styles/components,1.6,86,13,13,9,4,0,4,45,notifications,7,7,keep
+37,styles/layout/sidebar-chrome.css,styles/layout,2.1,39,11,17,17,0,0,0,19,layout/sidebar/header,13,13,keep
+38,styles/pages/customers-shell.css,styles/pages,1.0,22,8,8,8,0,0,0,5,people,8,8,keep
+39,styles/pages/settings-overrides.css,styles/pages,0.4,6,1,1,1,0,0,0,3,settings,1,1,keep
+40,styles/components/detail-hero.css,styles/components,0.8,15,4,4,4,0,0,0,8,shared/base,4,4,stable component layer
+41,styles/layout/print-shells.css,styles/layout,1.3,55,7,11,6,5,7,3,25,layout/sidebar/header,5,0,keep
+42,styles/components/unified-buttons.css,styles/components,8.4,299,26,131,105,26,94,2,114,people,100,100,reduce !important after page QA
+43,styles/runtime-overrides/01a1-people-table-action-baseline.css,styles/runtime-overrides,1.6,68,9,22,20,2,12,1,20,people,9,9,keep order; cleanup only with visual QA
+44,styles/runtime-overrides/01a2-people-page-hero-lists.css,styles/runtime-overrides,8.5,339,42,84,74,10,123,3,162,people,69,67,audit before edit: runtime override hotspot
+45,styles/runtime-overrides/01a3-settings-adaptive-sidebar-cleanup.css,styles/runtime-overrides,6.4,259,47,67,63,4,34,0,109,settings,11,10,audit before edit: runtime override hotspot
+46,styles/runtime-overrides/01a4-people-detail-repair-header-filters.css,styles/runtime-overrides,9.4,373,52,73,61,12,181,8,190,people,32,30,audit before edit: runtime override hotspot
+47,styles/runtime-overrides/01a5-partner-command-detail-refinement.css,styles/runtime-overrides,14.1,321,87,108,89,19,265,14,265,people,25,13,audit before edit: runtime override hotspot
+48,styles/runtime-overrides/01a6-detail-kpi-filter-icon-system.css,styles/runtime-overrides,4.0,145,19,38,30,8,83,3,83,people,24,19,audit before edit: runtime override hotspot
+49,styles/runtime-overrides/01a7-shared-primitives-button-system.css,styles/runtime-overrides,10.2,315,29,142,129,13,144,0,144,people,93,90,audit before edit: runtime override hotspot
+50,styles/components/unified-fields.css,styles/components,15.6,523,51,171,132,39,127,5,168,forms/modals,67,62,reduce !important after page QA
+51,styles/runtime-overrides/01b-people-foundation-after-fields.css,styles/runtime-overrides,16.3,508,100,156,127,29,123,9,234,settings,52,50,audit before edit: runtime override hotspot
+52,styles/runtime-overrides/02a-reports-apple-minimal.css,styles/runtime-overrides,8.4,267,44,54,49,5,32,2,112,reports,5,0,audit before edit: runtime override hotspot
+53,styles/runtime-overrides/02b-settings-telegram-compact.css,styles/runtime-overrides,8.6,237,32,67,63,4,90,2,90,telegram,5,4,audit before edit: runtime override hotspot
+54,styles/runtime-overrides/02c-repairs-apple-commercial.css,styles/runtime-overrides,14.6,547,78,137,130,7,151,8,243,layout/sidebar/header,19,12,audit before edit: runtime override hotspot
+55,styles/runtime-overrides/02d-services-inventory-polish.css,styles/runtime-overrides,9.6,406,57,111,105,6,96,3,183,mobile phones,7,2,audit before edit: runtime override hotspot
+56,styles/runtime-overrides/02e-people-commercial-redesign.css,styles/runtime-overrides,14.8,535,59,205,186,19,187,5,188,people,88,88,audit before edit: runtime override hotspot
+57,styles/runtime-overrides/02f-notifications-commercial-redesign.css,styles/runtime-overrides,8.0,329,52,70,62,8,57,4,159,notifications,7,0,audit before edit: runtime override hotspot
+58,styles/runtime-overrides/02g-telegram-real-compact-patch.css,styles/runtime-overrides,6.4,270,39,66,62,4,78,2,120,telegram,4,0,audit before edit: runtime override hotspot
+59,styles/runtime-overrides/03a-global-commercial-qa.css,styles/runtime-overrides,8.5,275,28,30,30,0,50,2,66,telegram,2,2,audit before edit: runtime override hotspot
+60,styles/runtime-overrides/03b-reports-mobile-settings-smoke.css,styles/runtime-overrides,4.0,126,19,41,41,0,40,0,40,layout/sidebar/header,12,12,audit before edit: runtime override hotspot
+61,styles/runtime-overrides/03c-notifications-sidebar-smartbrain.css,styles/runtime-overrides,7.1,234,36,56,54,2,76,2,97,forms/modals,2,0,audit before edit: runtime override hotspot
+62,styles/runtime-overrides/03d-legacy-telegram-monitor-patches.css,styles/runtime-overrides,24.9,991,147,179,158,21,439,11,508,telegram,23,5,audit before edit: runtime override hotspot
+63,styles/runtime-overrides/03e-sidebar-settings-dashboard-root-fixes.css,styles/runtime-overrides,16.5,428,64,87,68,19,170,0,189,layout/sidebar/header,27,17,audit before edit: runtime override hotspot
+64,styles/runtime-overrides/03f-stable-panels-dashboard-clock.css,styles/runtime-overrides,12.4,350,50,124,110,14,99,0,127,dashboard,12,3,audit before edit: runtime override hotspot
+65,styles/runtime-overrides/04a-people-empty-states.css,styles/runtime-overrides,8.0,372,52,66,48,18,2,7,186,people,15,0,keep order; cleanup only with visual QA
+66,styles/runtime-overrides/04b-people-list-unification.css,styles/runtime-overrides,13.1,468,55,132,119,13,151,11,174,people,56,56,audit before edit: runtime override hotspot
+67,styles/runtime-overrides/04c-people-detail-pages.css,styles/runtime-overrides,14.3,422,67,90,76,14,175,12,200,people,12,0,audit before edit: runtime override hotspot
+68,styles/runtime-overrides/04d-people-add-edit-modals.css,styles/runtime-overrides,8.0,289,45,48,41,7,105,8,153,forms/modals,7,0,audit before edit: runtime override hotspot
+69,styles/runtime-overrides/04e-people-finance-transaction-modals.css,styles/runtime-overrides,9.3,388,51,77,67,10,24,5,204,people,9,6,keep order; cleanup only with visual QA
+70,styles/runtime-overrides/04f-partner-phone-product-settlement.css,styles/runtime-overrides,2.6,117,18,22,18,4,0,3,57,people,4,0,keep order; cleanup only with visual QA
+71,styles/runtime-overrides/04g-partner-settlement-timeline-ledger.css,styles/runtime-overrides,12.4,521,74,96,92,4,4,3,308,people,4,0,keep order; cleanup only with visual QA
+72,styles/runtime-overrides/05-mobile-phones.css,styles/runtime-overrides,19.6,782,135,173,136,37,112,37,328,mobile phones,34,11,audit before edit: runtime override hotspot
+73,styles/runtime-overrides/06a-enterprise-actions-fields-validation.css,styles/runtime-overrides,16.8,408,83,158,142,16,86,5,165,forms/modals,43,36,audit before edit: runtime override hotspot
+74,styles/runtime-overrides/06b-horizontal-forms-modals-header.css,styles/runtime-overrides,4.5,202,32,39,38,1,6,1,92,forms/modals,1,0,keep order; cleanup only with visual QA
+75,styles/runtime-overrides/06c-reports-consolidation-filters.css,styles/runtime-overrides,13.0,561,83,94,82,12,18,14,275,reports,18,11,keep order; cleanup only with visual QA
+76,styles/runtime-overrides/06d-kpi-navigation-density-mobile.css,styles/runtime-overrides,12.5,543,76,98,64,34,94,41,240,reports,28,13,audit before edit: runtime override hotspot
+77,styles/runtime-overrides/06e-accessibility-rtl-targeted-fixes.css,styles/runtime-overrides,12.3,388,74,80,71,9,56,12,197,forms/modals,11,8,audit before edit: runtime override hotspot
+78,styles/runtime-overrides/07a-products-modal-precision-cleanup.css,styles/runtime-overrides,11.0,367,55,68,63,5,105,9,187,forms/modals,28,26,audit before edit: runtime override hotspot
+79,styles/runtime-overrides/07b-products-modal-responsive-polish.css,styles/runtime-overrides,12.9,555,113,129,68,61,114,48,208,forms/modals,43,23,audit before edit: runtime override hotspot
+80,styles/runtime-overrides/07c-product-modal-apple-redesign.css,styles/runtime-overrides,12.6,558,89,96,74,22,20,12,273,forms/modals,19,0,keep order; cleanup only with visual QA
+81,styles/runtime-overrides/07d-product-category-supplier-management.css,styles/runtime-overrides,9.5,434,72,73,64,9,21,6,235,products,13,5,keep order; cleanup only with visual QA
+82,styles/runtime-overrides/07e-product-list-table-density.css,styles/runtime-overrides,4.8,188,31,61,33,28,26,10,58,products,26,4,audit before edit: runtime override hotspot
+83,styles/runtime-overrides/07f-cross-module-density-pass.css,styles/runtime-overrides,2.9,131,24,45,43,2,23,0,36,people,18,17,keep order; cleanup only with visual QA
+84,styles/runtime-overrides/08a-unified-table-actions.css,styles/runtime-overrides,7.7,242,21,36,30,6,52,5,62,tables,7,6,audit before edit: runtime override hotspot
+85,styles/runtime-overrides/08b-message-composer-controls.css,styles/runtime-overrides,21.6,768,112,155,126,29,79,3,395,telegram,29,3,audit before edit: runtime override hotspot
+86,styles/runtime-overrides/08c-customers-partners-headers.css,styles/runtime-overrides,22.0,706,103,118,87,31,343,13,365,people,26,7,audit before edit: runtime override hotspot
+87,styles/runtime-overrides/08d-people-table-detail-contracts.css,styles/runtime-overrides,16.5,558,92,127,94,33,240,15,311,people,38,27,audit before edit: runtime override hotspot
+88,styles/runtime-overrides/08e-finance-modal-polish.css,styles/runtime-overrides,2.4,130,19,20,19,1,14,1,68,people,9,8,keep order; cleanup only with visual QA
+89,styles/runtime-overrides/09a-telegram-settings-foundation.css,styles/runtime-overrides,22.3,751,131,222,198,24,82,7,402,telegram,67,53,audit before edit: runtime override hotspot
+90,styles/runtime-overrides/09b-telegram-control-center-monitoring.css,styles/runtime-overrides,37.4,1229,176,275,198,77,536,12,578,telegram,75,45,audit before edit: runtime override hotspot
+91,styles/runtime-overrides/09c-telegram-template-center-cards.css,styles/runtime-overrides,35.3,1108,163,225,146,79,540,18,552,telegram,57,39,audit before edit: runtime override hotspot
+92,styles/runtime-overrides/09d1-telegram-studio-filter-controls.css,styles/runtime-overrides,8.6,286,45,51,45,6,139,5,139,telegram,31,31,audit before edit: runtime override hotspot
+93,styles/runtime-overrides/09d2-telegram-studio-search-empty-states.css,styles/runtime-overrides,7.0,191,31,41,35,6,108,3,108,telegram,9,9,audit before edit: runtime override hotspot
+94,styles/runtime-overrides/09d3-telegram-monitor-title-value-layout.css,styles/runtime-overrides,2.4,82,10,13,10,3,45,2,45,telegram,9,9,audit before edit: runtime override hotspot
+95,styles/runtime-overrides/09d4-telegram-studio-cleanup-mini-cards.css,styles/runtime-overrides,2.9,90,14,15,15,0,55,0,55,telegram,14,14,audit before edit: runtime override hotspot
+96,styles/runtime-overrides/09d5-telegram-lower-stat-cards.css,styles/runtime-overrides,3.1,107,12,12,12,0,69,0,69,telegram,12,12,audit before edit: runtime override hotspot
+97,styles/runtime-overrides/09d6-telegram-lower-mini-cards-search.css,styles/runtime-overrides,3.1,109,11,11,11,0,76,0,76,telegram,8,8,audit before edit: runtime override hotspot
+98,styles/runtime-overrides/09d7-telegram-monitor-card-standard.css,styles/runtime-overrides,3.5,116,14,15,13,2,73,2,73,telegram,13,13,audit before edit: runtime override hotspot
+99,styles/runtime-overrides/09d8-telegram-monitor-size-placement-contract.css,styles/runtime-overrides,7.4,250,24,27,12,15,165,4,165,telegram,12,12,audit before edit: runtime override hotspot
+100,styles/runtime-overrides/09d9-telegram-monitor-anchoring-hotfixes.css,styles/runtime-overrides,10.9,336,35,83,38,45,169,7,169,telegram,25,25,audit before edit: runtime override hotspot
+101,styles/runtime-overrides/09e-telegram-accordion-logs-modals.css,styles/runtime-overrides,31.1,1167,240,314,212,102,50,44,677,telegram,66,0,audit before edit: runtime override hotspot
+102,styles/runtime-overrides/10a-installments-phone-edit-overrides.css,styles/runtime-overrides,2.9,74,11,24,20,4,18,2,19,mobile phones,20,20,keep order; cleanup only with visual QA
+103,styles/runtime-overrides/10b-finance-tables-density-system.css,styles/runtime-overrides,16.8,426,62,110,94,16,179,8,187,tables,17,3,audit before edit: runtime override hotspot
+104,styles/runtime-overrides/10c-people-filters-mobile-cards.css,styles/runtime-overrides,6.9,279,35,51,39,12,38,6,150,people,11,1,audit before edit: runtime override hotspot
+105,styles/runtime-overrides/10d-financial-status-badges.css,styles/runtime-overrides,0.4,23,4,6,6,0,0,0,7,reports,0,0,keep order; cleanup only with visual QA
+106,styles/runtime-overrides/10e-header-final-polish.css,styles/runtime-overrides,2.0,78,12,15,13,2,34,0,36,layout/sidebar/header,10,10,audit before edit: runtime override hotspot
+107,styles/runtime-overrides/10f-sidebar-final-polish.css,styles/runtime-overrides,4.3,151,24,26,26,0,49,1,72,layout/sidebar/header,14,14,audit before edit: runtime override hotspot
+108,styles/runtime-overrides/10g-layout-shell-final-qa.css,styles/runtime-overrides,2.2,103,16,24,18,6,20,7,39,layout/sidebar/header,7,4,keep order; cleanup only with visual QA
+109,styles/global.css,styles,2.9,90,13,23,21,2,11,0,36,forms/modals,3,2,keep

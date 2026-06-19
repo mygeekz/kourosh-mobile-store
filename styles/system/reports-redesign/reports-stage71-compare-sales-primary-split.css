@@ -1,0 +1,44 @@
+/* Stage 71 — Compare sales split primary filter row
+   Keep preset chips on the right, move date/baseline/calc group to the left. */
+
+.compare-sales-executive-page .compare-sales-filter-row--primary {
+  width: 100% !important;
+  margin-left: 0 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  gap: 14px !important;
+}
+
+.compare-sales-executive-page .compare-sales-primary-group {
+  display: inline-flex !important;
+  align-items: flex-end !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.compare-sales-executive-page .compare-sales-primary-group--presets {
+  justify-content: flex-start !important;
+  margin-left: auto !important;
+}
+
+.compare-sales-executive-page .compare-sales-primary-group--fields {
+  justify-content: flex-start !important;
+  margin-right: auto !important;
+}
+
+.compare-sales-executive-page .compare-sales-primary-group--fields .compare-sales-refresh-button {
+  margin: 0 !important;
+}
+
+@media (max-width: 980px) {
+  .compare-sales-executive-page .compare-sales-filter-row--primary {
+    justify-content: flex-start !important;
+  }
+
+  .compare-sales-executive-page .compare-sales-primary-group--presets,
+  .compare-sales-executive-page .compare-sales-primary-group--fields {
+    margin: 0 !important;
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,223 @@
+/* Stage 26 — consistent report shell, simple calendar filters, text-width actions
+   Rules:
+   1) ReportsLayout is the only title layer.
+   2) Calendar/date controls are plain single-surface controls.
+   3) Follow-up/action buttons size to their text, never full-width by default. */
+
+/* Keep the top ReportsLayout header compact and neutral across every report. */
+.reports-layout-executive .reports-executive-header[data-ui-report-header="outer"] {
+  border: 1px solid rgba(148, 163, 184, 0.24) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: 0 14px 36px -32px rgba(15, 23, 42, 0.32) !important;
+  padding: 0.8rem 0.9rem !important;
+}
+
+.dark .reports-layout-executive .reports-executive-header[data-ui-report-header="outer"] {
+  border-color: rgba(51, 65, 85, 0.9) !important;
+  background: rgba(2, 6, 23, 0.82) !important;
+}
+
+.reports-layout-executive .reports-executive-header[data-ui-report-header="outer"]::before,
+.reports-layout-executive .reports-executive-header[data-ui-report-header="outer"]::after {
+  display: none !important;
+}
+
+.reports-layout-executive [data-ui-report-title-cluster] h1 {
+  font-size: 1rem !important;
+  line-height: 1.75rem !important;
+}
+
+.reports-layout-executive [data-ui-report-title-cluster] p {
+  margin-top: 0.15rem !important;
+  max-width: 48rem !important;
+  font-size: 0.74rem !important;
+  line-height: 1.65rem !important;
+  white-space: normal !important;
+}
+
+.reports-header-kicker,
+.reports-header-back-link,
+.reports-workspace-trigger,
+.reports-command-trigger,
+.reports-favorite-pin {
+  min-height: 2.15rem !important;
+  border-radius: 0.85rem !important;
+}
+
+.reports-view-mode-toggle,
+.reports-favorites-bar,
+.reports-recent-bar {
+  display: none !important;
+}
+
+/* PageKit reports render their filter/action toolbar only; title/description lives in ReportsLayout. */
+.reports-single-title-body .report-merged-toolbar {
+  border-radius: 1rem !important;
+  box-shadow: none !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+}
+
+/* Remove remaining in-body duplicate report titles while keeping filters, controls and data. */
+.report-page .report-header-main h1,
+.report-page .report-header-main .report-header-title,
+.report-page .report-header-main .page-title,
+.report-page .report-header-main .page-subtitle,
+.report-page .report-header-main [data-ui-report-title-cluster],
+.report-page .collection-center-hero__head > .flex > div:first-child,
+.report-page .smart-brain-hero > .flex > .min-w-0:first-child,
+.report-page .debtors-report-title-block,
+.report-page .creditors-report-title-block {
+  display: none !important;
+}
+
+.report-page .report-header-main,
+.report-page .collection-center-hero__head > .flex,
+.report-page .smart-brain-hero > .flex,
+.report-page .debtors-report-hero > .flex,
+.report-page .creditors-report-hero__head > .flex {
+  justify-content: flex-end !important;
+}
+
+/* Plain one-box calendar/date filter surface. */
+.reports-calendar-filter-card,
+.report-date-exception-strip,
+.report-date-presets,
+[data-ui-report-calendar-filter="true"] {
+  border: 1px solid rgba(148, 163, 184, 0.24) !important;
+  border-radius: 1rem !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none !important;
+}
+
+.dark .reports-calendar-filter-card,
+.dark .report-date-exception-strip,
+.dark .report-date-presets,
+.dark [data-ui-report-calendar-filter="true"] {
+  border-color: rgba(51, 65, 85, 0.9) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+}
+
+.reports-calendar-filter-card {
+  padding: 0.85rem !important;
+}
+
+.reports-calendar-filter-card__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: flex-start;
+  gap: 0.65rem;
+}
+
+.reports-calendar-filter-card__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+  color: rgb(100, 116, 139);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.5rem;
+}
+
+.reports-calendar-filter-card__summary span {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.9);
+  padding: 0.12rem 0.55rem;
+}
+
+.dark .reports-calendar-filter-card__summary span {
+  background: rgba(30, 41, 59, 0.72);
+  color: rgb(203, 213, 225);
+}
+
+.reports-calendar-filter-card .report-filter-field {
+  min-width: 11.5rem;
+}
+
+.reports-calendar-input,
+.reports-calendar-refresh,
+.report-date-preset-chip,
+.report-date-presets__chips {
+  box-shadow: none !important;
+}
+
+.reports-calendar-refresh,
+.report-date-preset-chip {
+  display: inline-flex;
+  width: max-content;
+  min-height: 2.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-radius: 0.8rem !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  padding: 0.38rem 0.7rem !important;
+  color: rgb(30, 41, 59) !important;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.report-date-preset-chip.is-active,
+.reports-calendar-refresh:hover,
+.report-date-preset-chip:hover {
+  border-color: rgba(37, 99, 235, 0.32) !important;
+  background: rgba(239, 246, 255, 0.96) !important;
+  color: rgb(29, 78, 216) !important;
+}
+
+/* Follow-up/direct action buttons must hug their text. */
+.report-row-actions,
+.collection-center-list-card .report-row-actions {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  align-self: auto !important;
+}
+
+.report-row-action,
+.collection-action-link,
+.report-direct-action,
+.collection-center-list-card .collection-action-link {
+  width: max-content !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 768px) {
+  .reports-layout-executive .reports-executive-header[data-ui-report-header="outer"] {
+    padding: 0.75rem !important;
+  }
+
+  .reports-calendar-filter-card__main {
+    align-items: stretch;
+  }
+
+  .reports-calendar-filter-card .report-filter-field {
+    min-width: min(100%, 12rem);
+  }
+
+  .report-row-actions,
+  .collection-center-list-card .report-row-actions {
+    width: auto !important;
+  }
+
+  .report-row-action,
+  .collection-action-link,
+  .report-direct-action,
+  .collection-center-list-card .collection-action-link {
+    min-height: 2.35rem !important;
+    flex: 0 0 auto !important;
+  }
+}

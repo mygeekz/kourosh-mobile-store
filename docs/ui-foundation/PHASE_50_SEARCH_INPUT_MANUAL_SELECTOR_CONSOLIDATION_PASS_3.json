@@ -1,0 +1,31 @@
+{
+  "phase": 50,
+  "title": "Search Input Manual Selector Consolidation — Pass 3",
+  "changed_files": [
+    "styles/system/search-input-foundation.css"
+  ],
+  "scope": "fallback .app-sidebar .ux-sidebar-search input/icon blocks only",
+  "removed_blocks": 6,
+  "removed_declarations": 31,
+  "removed_lines": 52,
+  "reduced_bytes": 1680,
+  "important_reduction": 31,
+  "untouched": [
+    "header search",
+    "reports search",
+    "kourosh-sidebar-search-grid/final classes",
+    "dark mode",
+    "media queries",
+    "placeholder typography",
+    "generic app-search-field contracts"
+  ],
+  "qa": {
+    "css_files": 151,
+    "index_css_imports": 58,
+    "missing_imports": [],
+    "runtime_imports": [],
+    "backslash_n_files": [],
+    "brace_issues": [],
+    "parse_errors": []
+  }
+}

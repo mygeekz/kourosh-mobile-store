@@ -1,0 +1,522 @@
+/* Phase 106 — Global form/search field system
+   Purpose: make every input, select, textarea and search box share the same spacing,
+   icon alignment and dark-mode behavior across the app. Keep this file imported last
+   so legacy page-level styles cannot re-break icon/text overlap. */
+:root {
+  --ux-control-height: 46px;
+  --ux-control-height-sm: 42px;
+  --ux-control-height-lg: 52px;
+  --ux-control-radius: 18px;
+  --ux-control-padding-x: 1rem;
+  --ux-control-icon-size: 34px;
+  --ux-control-icon-offset: 0.55rem;
+  --ux-control-icon-gap: 0.7rem;
+  --ux-control-border: rgba(203, 213, 225, 0.9);
+  --ux-control-bg: rgba(255, 255, 255, 0.94);
+  --ux-control-fg: rgb(15, 23, 42);
+  --ux-control-muted: rgb(100, 116, 139);
+  --ux-control-shadow: 0 16px 34px -28px rgba(15, 23, 42, 0.42), inset 0 1px 0 rgba(255,255,255,0.72);
+  --ux-control-focus: rgba(14, 165, 233, 0.20);
+}
+
+.dark {
+  --ux-control-border: rgba(71, 85, 105, 0.78);
+  --ux-control-bg: rgba(15, 23, 42, 0.82);
+  --ux-control-fg: rgb(241, 245, 249);
+  --ux-control-muted: rgb(148, 163, 184);
+  --ux-control-shadow: 0 18px 40px -30px rgba(2, 6, 23, 0.88), inset 0 1px 0 rgba(255,255,255,0.05);
+  --ux-control-focus: rgba(56, 189, 248, 0.16);
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+select,
+textarea,
+.app-input,
+.app-select,
+.app-textarea,
+.ux-input,
+.ux-select,
+.ux-textarea,
+.inventory-premium-input,
+.inventory-premium-select,
+.modal-control-premium,
+.header-search-input {
+  box-sizing: border-box !important;
+  min-height: var(--ux-control-height) !important;
+  border-radius: var(--ux-control-radius) !important;
+  border: 1px solid var(--ux-control-border) !important;
+  background-color: var(--ux-control-bg) !important;
+  color: var(--ux-control-fg) !important;
+  box-shadow: var(--ux-control-shadow) !important;
+  padding-block: 0.65rem !important;
+  padding-inline: var(--ux-control-padding-x) !important;
+  line-height: 1.65 !important;
+  font-size: 13px !important;
+  font-weight: 650;
+  outline: none !important;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease, transform .18s ease;
+}
+
+textarea,
+.app-textarea,
+.ux-textarea {
+  min-height: 96px !important;
+  padding-block: 0.9rem !important;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder,
+.header-search-input::placeholder {
+  color: var(--ux-control-muted) !important;
+  font-weight: 600;
+  opacity: .82;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):focus,
+select:focus,
+textarea:focus,
+.app-input:focus,
+.app-select:focus,
+.app-textarea:focus,
+.ux-input:focus,
+.ux-select:focus,
+.ux-textarea:focus,
+.inventory-premium-input:focus,
+.inventory-premium-select:focus,
+.modal-control-premium:focus,
+.header-search-input:focus {
+  border-color: rgba(14, 165, 233, 0.62) !important;
+  box-shadow: 0 0 0 4px var(--ux-control-focus), var(--ux-control-shadow) !important;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled,
+.app-input:disabled,
+.app-select:disabled,
+.app-textarea:disabled {
+  cursor: not-allowed !important;
+  opacity: .66 !important;
+}
+
+/* Shared wrappers */
+.ux-field-control-wrap,
+.premium-input-wrap,
+.header-search-shell,
+.filter-search-shell,
+.search-input-shell,
+.input-with-icon,
+.field-with-icon {
+  position: relative !important;
+}
+
+/* Shared leading icon chip — RTL default: icon on the right. */
+.ux-field-leading-icon,
+.premium-input-leading-icon,
+.ux-input-affix-icon,
+.input-leading-icon,
+.search-leading-icon,
+.filter-leading-icon,
+.field-leading-icon {
+  position: absolute !important;
+  inset-inline-end: var(--ux-control-icon-offset) !important;
+  inset-inline-start: auto !important;
+  top: 50% !important;
+  width: var(--ux-control-icon-size) !important;
+  height: var(--ux-control-icon-size) !important;
+  transform: translateY(-50%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(226, 232, 240, 0.88) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.78)) !important;
+  color: rgb(100, 116, 139) !important;
+  box-shadow: 0 10px 22px -18px rgba(15, 23, 42, .38) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+}
+
+.dark .ux-field-leading-icon,
+.dark .premium-input-leading-icon,
+.dark .ux-input-affix-icon,
+.dark .input-leading-icon,
+.dark .search-leading-icon,
+.dark .filter-leading-icon,
+.dark .field-leading-icon {
+  border-color: rgba(51, 65, 85, 0.82) !important;
+  background: linear-gradient(180deg, rgba(30,41,59,.92), rgba(15,23,42,.82)) !important;
+  color: rgb(203, 213, 225) !important;
+  box-shadow: 0 12px 24px -18px rgba(2, 6, 23, .8) !important;
+}
+
+/* Any control that has a leading icon must reserve real space for it. */
+.has-leading-icon,
+.premium-has-leading-icon,
+.ux-input-affix-target--right,
+.ux-input-affix-target--wide,
+.modal-control-premium.premium-has-leading-icon,
+.app-input.premium-has-leading-icon,
+.app-select.premium-has-leading-icon,
+.app-textarea.premium-has-leading-icon,
+.inventory-premium-input.has-leading-icon,
+.inventory-premium-select.has-leading-icon,
+.ux-field-control-wrap:has(.ux-field-leading-icon) > input,
+.ux-field-control-wrap:has(.ux-field-leading-icon) > select,
+.ux-field-control-wrap:has(.ux-field-leading-icon) > textarea,
+.premium-input-wrap:has(.premium-input-leading-icon) > input,
+.premium-input-wrap:has(.premium-input-leading-icon) > select,
+.premium-input-wrap:has(.premium-input-leading-icon) > textarea {
+  padding-inline-end: calc(var(--ux-control-icon-size) + var(--ux-control-icon-offset) + var(--ux-control-icon-gap)) !important;
+}
+
+textarea.has-leading-icon,
+textarea.premium-has-leading-icon,
+.premium-input-wrap:has(.premium-input-leading-icon) > textarea,
+.ux-field-control-wrap:has(.ux-field-leading-icon) > textarea {
+  padding-top: 0.95rem !important;
+}
+
+.premium-input-wrap:has(textarea) .premium-input-leading-icon,
+.ux-field-control-wrap:has(textarea) .ux-field-leading-icon {
+  top: 1rem !important;
+  transform: none !important;
+}
+
+/* Selects: fixed arrow room on the visual left, icon room on the right. */
+select,
+.app-select,
+.ux-select,
+.inventory-premium-select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  padding-inline-start: 2.5rem !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%) !important;
+  background-position:
+    left 1.12rem center,
+    left .82rem center !important;
+  background-size: .38rem .38rem, .38rem .38rem !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Header and command search boxes */
+.header-search-shell {
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  overflow: visible !important;
+}
+
+.header-search-input {
+  min-height: 48px !important;
+  padding-inline-start: 3.3rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.header-search-submit,
+.header-search-quick {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.header-search-submit i,
+.header-search-quick i {
+  width: 1em !important;
+  height: 1em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+/* Filter toolbars and chip-like filters: icon + label must never overlap. */
+.filter-chip,
+.status-filter-chip,
+.people-filter-chip,
+.ux-filter-chip,
+button[class*='filter'],
+button[class*='Filter'] {
+  min-height: 40px;
+  align-items: center;
+  gap: .5rem;
+}
+
+.filter-chip i,
+.status-filter-chip i,
+.people-filter-chip i,
+.ux-filter-chip i,
+button[class*='filter'] i,
+button[class*='Filter'] i {
+  flex: 0 0 auto !important;
+  width: 1.15em !important;
+  min-width: 1.15em !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+/* Small screens: keep controls dense but still readable. */
+@media (max-width: 640px) {
+  :root {
+    --ux-control-height: 44px;
+    --ux-control-icon-size: 32px;
+    --ux-control-icon-offset: .5rem;
+  }
+
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+  select,
+  textarea,
+  .app-input,
+  .app-select,
+  .app-textarea,
+  .ux-input,
+  .ux-select,
+  .ux-textarea,
+  .inventory-premium-input,
+  .inventory-premium-select,
+  .modal-control-premium {
+    font-size: 12.5px !important;
+  }
+}
+
+
+/* Phase 107 — Unified field system v2
+   Extends the shared field language to custom date triggers, autocomplete/search inputs,
+   readonly states and invalid/focus states without relying on page-local one-off fixes. */
+:root {
+  --ux-control-radius-xl: 20px;
+  --ux-control-focus-border: rgba(14, 165, 233, 0.64);
+  --ux-control-invalid-border: rgba(244, 63, 94, 0.78);
+  --ux-control-invalid-ring: rgba(244, 63, 94, 0.12);
+  --ux-control-readonly-bg: rgba(248, 250, 252, 0.96);
+}
+
+.dark {
+  --ux-control-readonly-bg: rgba(15, 23, 42, 0.92);
+}
+
+:where(
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+  select,
+  textarea,
+  .app-input,
+  .app-select,
+  .app-textarea,
+  .header-search-input,
+  .search-input,
+  .phone-list-apple-head__search-input,
+  .price-input__field,
+  .phone-addable-autocomplete input,
+  .addable-autocomplete input
+) {
+  border-radius: var(--ux-control-radius) !important;
+  caret-color: currentColor;
+}
+
+:where(
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):hover,
+  select:hover,
+  textarea:hover,
+  .app-input:hover,
+  .app-select:hover,
+  .app-textarea:hover,
+  .header-search-input:hover,
+  .search-input:hover,
+  .phone-list-apple-head__search-input:hover,
+  .price-input__field:hover,
+  .phone-addable-autocomplete input:hover,
+  .addable-autocomplete input:hover
+) {
+  border-color: rgba(148, 163, 184, 0.82) !important;
+}
+
+:where(
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):focus,
+  select:focus,
+  textarea:focus,
+  .app-input:focus,
+  .app-select:focus,
+  .app-textarea:focus,
+  .header-search-input:focus,
+  .search-input:focus,
+  .phone-list-apple-head__search-input:focus,
+  .price-input__field:focus,
+  .phone-addable-autocomplete input:focus,
+  .addable-autocomplete input:focus
+) {
+  border-color: var(--ux-control-focus-border) !important;
+  box-shadow: 0 0 0 4px var(--ux-control-focus), var(--ux-control-shadow) !important;
+}
+
+:where(
+  input[readonly]:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+  textarea[readonly],
+  .app-input[readonly],
+  .app-textarea[readonly],
+  .price-input__field[readonly]
+) {
+  background-color: var(--ux-control-readonly-bg) !important;
+}
+
+:where(
+  input[aria-invalid='true'],
+  select[aria-invalid='true'],
+  textarea[aria-invalid='true'],
+  .modal-control-error,
+  .border-red-500,
+  .border-rose-500
+) {
+  border-color: var(--ux-control-invalid-border) !important;
+  box-shadow: 0 0 0 4px var(--ux-control-invalid-ring), var(--ux-control-shadow) !important;
+}
+
+.unified-field-chip {
+  box-shadow: 0 10px 22px -18px rgba(15,23,42,.18) !important;
+}
+
+.unified-date-field {
+  min-width: 0;
+}
+
+.unified-date-trigger {
+  border-radius: var(--ux-control-radius-xl) !important;
+  border-color: var(--ux-control-border) !important;
+  background: var(--ux-control-bg) !important;
+  box-shadow: var(--ux-control-shadow) !important;
+}
+
+.unified-date-trigger:hover {
+  border-color: rgba(148, 163, 184, .82) !important;
+}
+
+.unified-date-trigger__icon,
+.unified-date-trigger__clear,
+.unified-date-trigger__caret {
+  box-shadow: 0 10px 22px -18px rgba(15,23,42,.18);
+}
+
+.unified-date-trigger__input {
+  min-height: auto !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.phone-addable-autocomplete input,
+.addable-autocomplete input {
+  padding-inline-end: calc(var(--ux-control-icon-size) + var(--ux-control-icon-gap) + 0.7rem) !important;
+  padding-inline-start: .95rem !important;
+}
+
+.search-input,
+.phone-list-apple-head__search-input {
+  padding-inline-start: 3rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.header-search-shell,
+.phone-list-apple-head__search,
+.search-input-shell {
+  min-height: var(--ux-control-height) !important;
+}
+
+@media (max-width: 640px) {
+  .header-search-input,
+  .search-input,
+  .phone-list-apple-head__search-input,
+  .phone-addable-autocomplete input,
+  .addable-autocomplete input {
+    font-size: 12.5px !important;
+  }
+}
+
+/* Installment sale page: remove the misleading native-select chevron/background icon from compact comboboxes. */
+.installment-form-page .installment-clean-select,
+.installment-form-page select.installment-clean-select {
+  background-image: none !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+
+/* ===== Installment sale combobox cleanup and phone edit vertical hard lock ===== */
+.installment-form-page .installment-clean-select,
+.installment-form-page select.installment-clean-select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: none !important;
+  background-position: initial !important;
+  background-size: auto !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid,
+.phone-finance-block--edit .phone-finance-block__grid,
+.phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-vertical-form {
+  max-width: 100%;
+}
+
+
+/* ===== Phone edit horizontal modal override ===== */
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--model,
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--imei,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--supplier,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--status {
+  grid-column: span 2 / span 2 !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__field--notes {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 767px) {
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > * {
+    grid-column: 1 / -1 !important;
+  }
+}

@@ -1,0 +1,241 @@
+/* Stage 64 — Compare sales details modal cleanup
+   Scope: /reports/periodic-comparison details modal only. */
+
+.compare-sales-details-modal-backdrop {
+  z-index: 100000 !important;
+  padding: 22px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.compare-sales-details-modal-backdrop .modal-surface {
+  width: min(1040px, calc(100vw - 44px)) !important;
+  max-width: min(1040px, calc(100vw - 44px)) !important;
+  max-height: min(86vh, 820px) !important;
+  height: auto !important;
+  margin: auto !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, .18) !important;
+}
+
+.compare-sales-details-modal-backdrop .modal-premium-header {
+  min-height: 64px !important;
+  padding: 14px 18px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .9) !important;
+  background: #fff !important;
+}
+
+.compare-sales-details-modal-backdrop .modal-premium-kicker {
+  display: none !important;
+}
+
+.compare-sales-details-modal-backdrop .modal-premium-title {
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+
+.compare-sales-details-modal-backdrop .modal-body-premium {
+  padding: 0 !important;
+  background: #f8fafc !important;
+  overflow: auto !important;
+}
+
+.compare-sales-details-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  color: #0f172a;
+}
+
+.compare-sales-details-state {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  color: #64748b;
+  font-size: .9rem;
+  font-weight: 850;
+}
+
+.compare-sales-details-state i {
+  font-size: 1.4rem;
+  color: #2563eb;
+}
+
+.compare-sales-details-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.compare-sales-details-summary-card {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-areas:
+    "icon label"
+    "icon value";
+  align-items: center;
+  column-gap: 10px;
+  padding: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  background: #fff;
+  box-shadow: none;
+}
+
+.compare-sales-details-summary-card__icon {
+  grid-area: icon;
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid rgba(59, 130, 246, .16);
+}
+
+.compare-sales-details-summary-card__label {
+  grid-area: label;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.compare-sales-details-summary-card strong {
+  grid-area: value;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.35;
+  color: #0f172a;
+}
+
+.compare-sales-details-table-shell {
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+}
+
+.compare-sales-details-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .82rem;
+}
+
+.compare-sales-details-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 42px;
+  padding: 0 14px;
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 900;
+  text-align: right;
+  border-bottom: 1px solid rgba(226, 232, 240, .95);
+  white-space: nowrap;
+}
+
+.compare-sales-details-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, .82);
+  color: #0f172a;
+  font-weight: 800;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.compare-sales-details-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.compare-sales-details-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+.compare-sales-details-table td strong {
+  display: block;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.compare-sales-details-table td small {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: .7rem;
+  font-weight: 750;
+}
+
+.compare-sales-details-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: max-content;
+  min-width: max-content;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  background: #fff;
+  color: #0f172a;
+  text-decoration: none;
+  font-size: .76rem;
+  font-weight: 900;
+  box-shadow: none;
+}
+
+.compare-sales-details-action:hover {
+  border-color: rgba(59, 130, 246, .32);
+  background: #f8fafc;
+  color: #1d4ed8;
+}
+
+.dark .compare-sales-details-modal-backdrop .modal-surface,
+.dark .compare-sales-details-modal-backdrop .modal-premium-header,
+.dark .compare-sales-details-summary-card,
+.dark .compare-sales-details-table-shell,
+.dark .compare-sales-details-table tbody td,
+.dark .compare-sales-details-action {
+  background: #0f172a !important;
+  border-color: rgba(148, 163, 184, .24) !important;
+  color: #e5e7eb !important;
+}
+
+.dark .compare-sales-details-modal-backdrop .modal-body-premium,
+.dark .compare-sales-details-table thead th,
+.dark .compare-sales-details-table tbody tr:hover td {
+  background: #111827 !important;
+}
+
+.dark .compare-sales-details-modal-backdrop .modal-premium-title,
+.dark .compare-sales-details-summary-card strong,
+.dark .compare-sales-details-table td strong {
+  color: #f8fafc !important;
+}
+
+@media (max-width: 760px) {
+  .compare-sales-details-modal-backdrop {
+    padding: 10px !important;
+  }
+  .compare-sales-details-modal-backdrop .modal-surface {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 20px !important;
+  }
+  .compare-sales-details-modal {
+    padding: 12px;
+  }
+}

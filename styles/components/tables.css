@@ -1,0 +1,190 @@
+/* --- Premium table headers & row actions polish --- */
+@layer components {
+  table:not(.unstyled-table) thead th {
+    @apply relative whitespace-nowrap border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.92))] px-4 py-3 text-right text-[11px] font-black tracking-[0.08em] text-slate-500 shadow-[inset_0_-1px_0_rgba(255,255,255,0.65)];
+  }
+
+  table:not(.unstyled-table) thead th::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 1rem;
+    inset-inline-end: 1rem;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(148,163,184,0), rgba(148,163,184,0.28), rgba(148,163,184,0));
+    pointer-events: none;
+  }
+
+  table:not(.unstyled-table) thead th + th::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(203,213,225,0), rgba(203,213,225,0.7), rgba(203,213,225,0));
+    pointer-events: none;
+  }
+
+  table:not(.unstyled-table) tbody td {
+    @apply align-middle;
+  }
+
+  .ux-table-row-actions,
+  .inventory-table-row-actions,
+  .installment-table-actions,
+  .installment-card-actions {
+    display: flex;
+    @apply flex-wrap items-center justify-end gap-2;
+  }
+
+  .ux-table-row-actions > button,
+  .ux-table-row-actions > a,
+  td .ux-table-row-actions > button,
+  td .ux-table-row-actions > a,
+  .inventory-table-row-actions > button,
+  .inventory-table-row-actions > a,
+  .installment-table-actions > button,
+  .installment-table-actions > a,
+  .installment-card-actions > button,
+  .installment-card-actions > a {
+    display: inline-flex;
+    @apply relative min-h-[36px] items-center justify-center gap-1.5 rounded-[14px] border bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))] px-3 py-1.5 text-[11px] font-black text-slate-700 shadow-[0_16px_28px_-22px_rgba(15,23,42,0.24)] ring-1 ring-white/70 transition-all duration-200;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+
+  .ux-table-row-actions > button:hover,
+  .ux-table-row-actions > a:hover,
+  td .ux-table-row-actions > button:hover,
+  td .ux-table-row-actions > a:hover,
+  .inventory-table-row-actions > button:hover,
+  .inventory-table-row-actions > a:hover,
+  .installment-table-actions > button:hover,
+  .installment-table-actions > a:hover,
+  .installment-card-actions > button:hover,
+  .installment-card-actions > a:hover {
+    @apply -translate-y-0.5 border-slate-300/90 bg-slate-50 text-slate-900 shadow-[0_18px_30px_-20px_rgba(15,23,42,0.22)];
+  }
+
+  .ux-table-row-actions > button:focus-visible,
+  .ux-table-row-actions > a:focus-visible,
+  td .ux-table-row-actions > button:focus-visible,
+  td .ux-table-row-actions > a:focus-visible,
+  .inventory-table-row-actions > button:focus-visible,
+  .inventory-table-row-actions > a:focus-visible,
+  .installment-table-actions > button:focus-visible,
+  .installment-table-actions > a:focus-visible,
+  .installment-card-actions > button:focus-visible,
+  .installment-card-actions > a:focus-visible {
+    @apply outline-none ring-4 ring-slate-200/70;
+  }
+
+  .dark table:not(.unstyled-table) thead th {
+    @apply border-slate-800/80 bg-[linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.96))] text-slate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)];
+  }
+
+  .dark table:not(.unstyled-table) thead th + th::before {
+    background: linear-gradient(180deg, rgba(51,65,85,0), rgba(71,85,105,0.68), rgba(51,65,85,0));
+  }
+
+  .dark table:not(.unstyled-table) thead th::after {
+    background: linear-gradient(90deg, rgba(51,65,85,0), rgba(71,85,105,0.32), rgba(51,65,85,0));
+  }
+
+  .dark .ux-table-row-actions > button,
+  .dark .ux-table-row-actions > a,
+  .dark td .ux-table-row-actions > button,
+  .dark td .ux-table-row-actions > a,
+  .dark .inventory-table-row-actions > button,
+  .dark .inventory-table-row-actions > a,
+  .dark .installment-table-actions > button,
+  .dark .installment-table-actions > a,
+  .dark .installment-card-actions > button,
+  .dark .installment-card-actions > a {
+    @apply border-slate-700/80 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.94))] text-slate-100 ring-white/5 shadow-[0_18px_34px_-24px_rgba(2,6,23,0.55)];
+  }
+
+  .dark .ux-table-row-actions > button:hover,
+  .dark .ux-table-row-actions > a:hover,
+  .dark td .ux-table-row-actions > button:hover,
+  .dark td .ux-table-row-actions > a:hover,
+  .dark .inventory-table-row-actions > button:hover,
+  .dark .inventory-table-row-actions > a:hover,
+  .dark .installment-table-actions > button:hover,
+  .dark .installment-table-actions > a:hover,
+  .dark .installment-card-actions > button:hover,
+  .dark .installment-card-actions > a:hover {
+    @apply border-slate-600/90 bg-slate-900 text-white shadow-[0_20px_36px_-24px_rgba(2,6,23,0.68)];
+  }
+}
+
+
+/* Premium table row state accents */
+.table-row-state--overdue {
+  background-image: linear-gradient(90deg, rgba(244, 63, 94, 0.08), rgba(244, 63, 94, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(244, 63, 94, 0.72);
+}
+.table-row-state--due-today {
+  background-image: linear-gradient(90deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.72);
+}
+.table-row-state--due-soon {
+  background-image: linear-gradient(90deg, rgba(14, 165, 233, 0.08), rgba(14, 165, 233, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(14, 165, 233, 0.68);
+}
+.table-row-state--ready {
+  background-image: linear-gradient(90deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(16, 185, 129, 0.68);
+}
+.table-row-state--settled {
+  background-image: linear-gradient(90deg, rgba(100, 116, 139, 0.08), rgba(100, 116, 139, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(100, 116, 139, 0.58);
+}
+.table-row-state--critical {
+  background-image: linear-gradient(90deg, rgba(168, 85, 247, 0.08), rgba(168, 85, 247, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(168, 85, 247, 0.64);
+}
+.table-row-state--overdue:hover,
+.table-row-state--due-today:hover,
+.table-row-state--due-soon:hover,
+.table-row-state--ready:hover,
+.table-row-state--settled:hover,
+.table-row-state--critical:hover {
+  filter: saturate(1.04);
+}
+.dark .table-row-state--overdue {
+  background-image: linear-gradient(90deg, rgba(244, 63, 94, 0.18), rgba(244, 63, 94, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(251, 113, 133, 0.85);
+}
+.dark .table-row-state--due-today {
+  background-image: linear-gradient(90deg, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(251, 191, 36, 0.82);
+}
+.dark .table-row-state--due-soon {
+  background-image: linear-gradient(90deg, rgba(14, 165, 233, 0.16), rgba(14, 165, 233, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(56, 189, 248, 0.78);
+}
+.dark .table-row-state--ready {
+  background-image: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(52, 211, 153, 0.82);
+}
+.dark .table-row-state--settled {
+  background-image: linear-gradient(90deg, rgba(100, 116, 139, 0.16), rgba(100, 116, 139, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(148, 163, 184, 0.74);
+}
+.dark .table-row-state--critical {
+  background-image: linear-gradient(90deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(196, 181, 253, 0.78);
+}
+.people-table-row.table-row-state--overdue,
+.people-table-row.table-row-state--due-today,
+.people-table-row.table-row-state--due-soon,
+.people-table-row.table-row-state--settled {
+  position: relative;
+}
+.repair-mobile-card.table-row-state--ready,
+.repair-mobile-card.table-row-state--settled,
+.repair-mobile-card.table-row-state--critical {
+  position: relative;
+  overflow: hidden;
+}

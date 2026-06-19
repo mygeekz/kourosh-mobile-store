@@ -1,0 +1,244 @@
+/* Phase 88 — Settings Users / Account / Business Redesign Pass 1
+   Scoped to the already redesigned Settings shell. No logic or data flow is changed. */
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+  --settings-inner-surface: rgba(255, 255, 255, .96);
+  --settings-inner-muted: rgba(248, 250, 252, .88);
+  --settings-inner-border: rgba(148, 163, 184, .24);
+  --settings-inner-border-strong: rgba(99, 102, 241, .24);
+  --settings-inner-text: rgb(15, 23, 42);
+  --settings-inner-muted-text: rgb(100, 116, 139);
+  --settings-inner-radius-xl: 30px;
+  --settings-inner-radius-lg: 22px;
+  --settings-inner-shadow: 0 24px 68px -54px rgba(15, 23, 42, .40);
+  --settings-inner-shadow-soft: 0 18px 44px -38px rgba(15, 23, 42, .30);
+  color: var(--settings-inner-text);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+  --settings-inner-surface: rgba(15, 23, 42, .92);
+  --settings-inner-muted: rgba(2, 6, 23, .52);
+  --settings-inner-border: rgba(51, 65, 85, .78);
+  --settings-inner-border-strong: rgba(129, 140, 248, .30);
+  --settings-inner-text: rgb(248, 250, 252);
+  --settings-inner-muted-text: rgb(148, 163, 184);
+  --settings-inner-shadow: 0 26px 72px -58px rgba(0, 0, 0, .88);
+  --settings-inner-shadow-soft: 0 18px 48px -42px rgba(0, 0, 0, .72);
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > :is(section, form, div):not(.hidden) {
+  min-width: 0;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > section,
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > form,
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > div.rounded-\[26px\],
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 > section {
+  border-color: var(--settings-inner-border) !important;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(99, 102, 241, .08), transparent 30%),
+    linear-gradient(180deg, var(--settings-inner-surface), var(--settings-inner-muted)) !important;
+  box-shadow: var(--settings-inner-shadow-soft) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 > section:first-child,
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 > section:first-of-type,
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 > section:first-child {
+  border-radius: var(--settings-inner-radius-xl) !important;
+  box-shadow: var(--settings-inner-shadow) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 > section:first-child::before,
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 > section:first-of-type::before,
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 > section:first-child::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(99, 102, 241, .68), rgba(14, 165, 233, .48), rgba(16, 185, 129, .34));
+  pointer-events: none;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.rounded-\[28px\], .rounded-\[26px\], .rounded-\[24px\], .rounded-\[22px\]) {
+  border-color: var(--settings-inner-border) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.bg-slate-50\/60, .bg-slate-50\/70, .bg-slate-50\/80) {
+  background: rgba(248, 250, 252, .72) !important;
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.bg-slate-50\/60, .bg-slate-50\/70, .bg-slate-50\/80, .dark\:bg-slate-900\/35, .dark\:bg-slate-900\/40, .dark\:bg-slate-900\/45) {
+  background: rgba(15, 23, 42, .44) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.h-24.w-24, .h-11.w-11, .h-10.w-10, .h-9.w-9) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72), 0 14px 34px -30px rgba(15, 23, 42, .36);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.h-24.w-24, .h-11.w-11, .h-10.w-10, .h-9.w-9) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 14px 38px -32px rgba(0, 0, 0, .72);
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(h2, h3, .text-2xl, .text-\[26px\]) {
+  letter-spacing: -.025em;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea) {
+  min-height: 44px;
+  border-color: rgba(148, 163, 184, .28) !important;
+  background: rgba(255, 255, 255, .92) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .70);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea) {
+  border-color: rgba(51, 65, 85, .82) !important;
+  background: rgba(2, 6, 23, .42) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea):focus {
+  border-color: rgba(59, 130, 246, .42) !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, .12), inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea):focus {
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, .14), inset 0 1px 0 rgba(255, 255, 255, .08) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid rgba(59, 130, 246, .18) !important;
+  outline-offset: 3px !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 input[name="store_email"],
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 input[name="public_url"],
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 input[name="store_phone"],
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 input[dir="ltr"],
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is([dir="ltr"], .font-mono) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--settings-inner-border);
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr {
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr:hover {
+  background: rgba(59, 130, 246, .045);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr:hover {
+  background: rgba(96, 165, 250, .08);
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td,
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean th {
+  padding-inline: 14px;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is(.rounded-full.border, button.rounded-full) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .56);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is(.rounded-full.border, button.rounded-full) {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 .rounded-\[22px\],
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 .rounded-\[22px\],
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .rounded-\[24px\] {
+  box-shadow: 0 16px 36px -34px rgba(15, 23, 42, .32);
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.line-clamp-1, .truncate) {
+  min-width: 0;
+}
+
+@media (max-width: 1366px) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+    gap: 14px;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > section {
+    border-radius: 26px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .settings-shell.settings-redesign-v1 .settings-account-redesign-v1 > section:first-child,
+  .settings-shell.settings-redesign-v1 .settings-business-redesign-v1 > section:first-of-type,
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 > section:first-child {
+    border-radius: 26px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean {
+    min-width: 680px;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > section,
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > div.rounded-\[26px\] {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.p-5, .md\:p-6) {
+    padding: 14px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.text-\[26px\], .text-2xl) {
+    font-size: 20px !important;
+    line-height: 1.45 !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(.h-24.w-24) {
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 22px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td,
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean th {
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 520px) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+    gap: 12px;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > section,
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 > div.rounded-\[26px\] {
+    padding: 12px !important;
+    border-radius: 18px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(button, a) {
+    min-height: 38px;
+  }
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean {
+    min-width: 620px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 * {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr:hover {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "phase": 91,
+  "name": "Screen-by-Screen Visual QA Starter",
+  "changes": "docs/audit only; no runtime UI/logic changes",
+  "stats": {
+    "css_files": 180,
+    "css_imports_index": 89,
+    "missing_internal_css_imports": [],
+    "css_total_bytes": 2308639,
+    "css_total_lines": 76156,
+    "important_count": 14902,
+    "runtime_override_imports": 0
+  },
+  "css_issues": [],
+  "top_css_risk_files": [
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14444,
+      "important": 978
+    },
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 168517,
+      "lines": 5438,
+      "important": 1808
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 122328,
+      "lines": 3577,
+      "important": 1473
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "bytes": 66206,
+      "lines": 1980,
+      "important": 854
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1627,
+      "important": 263
+    },
+    {
+      "file": "styles/pages/reports.css",
+      "bytes": 60790,
+      "lines": 2375,
+      "important": 355
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "bytes": 39054,
+      "lines": 1248,
+      "important": 579
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes": 37827,
+      "lines": 1483,
+      "important": 239
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "bytes": 36571,
+      "lines": 1261,
+      "important": 328
+    },
+    {
+      "file": "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+      "bytes": 35491,
+      "lines": 1168,
+      "important": 110
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "bytes": 34752,
+      "lines": 947,
+      "important": 291
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "bytes": 30543,
+      "lines": 1187,
+      "important": 531
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "bytes": 28624,
+      "lines": 841,
+      "important": 529
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 956,
+      "important": 150
+    },
+    {
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "bytes": 25673,
+      "lines": 992,
+      "important": 439
+    },
+    {
+      "file": "styles/system/mobile-phones-foundation.css",
+      "bytes": 25255,
+      "lines": 984,
+      "important": 112
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "bytes": 24179,
+      "lines": 693,
+      "important": 289
+    },
+    {
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "bytes": 23813,
+      "lines": 567,
+      "important": 206
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "bytes": 23496,
+      "lines": 787,
+      "important": 297
+    },
+    {
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "bytes": 22305,
+      "lines": 769,
+      "important": 79
+    }
+  ],
+  "preview_files_count": 43,
+  "preview_files_sample": [
+    "components/CartSummary.tsx",
+    "components/CartTable.tsx",
+    "components/PhoneModelAutocomplete.tsx",
+    "components/PriceInput.tsx",
+    "components/SearchBox.tsx",
+    "components/SearchComponent.tsx",
+    "components/TelegramTopicPanel.tsx",
+    "pages/AddInstallmentSalePage.tsx",
+    "pages/AddRepair.tsx",
+    "pages/CustomerDetail.tsx",
+    "pages/Expenses.tsx",
+    "pages/InstallmentSaleDetailPage.tsx",
+    "pages/InvoiceDetail.tsx",
+    "pages/Login.tsx",
+    "pages/MobilePhones.tsx",
+    "pages/PartnerDetail.tsx",
+    "pages/Products.tsx",
+    "pages/ProfilePage.tsx",
+    "pages/Purchases.tsx",
+    "pages/RepairDetail.tsx",
+    "pages/Services.tsx",
+    "pages/inventory/InventoryHub.tsx",
+    "pages/inventory/ProductsManager.tsx",
+    "pages/inventoryPro/InventoryProPage.tsx",
+    "pages/reports/AnalyticsDashboard.tsx",
+    "pages/reports/CollectionFollowupCenter.tsx",
+    "pages/reports/FinancialOverview.tsx",
+    "pages/reports/FollowupsReport.tsx",
+    "pages/reports/InventoryAnalysisReport.tsx",
+    "pages/reports/InventoryFifo.tsx",
+    "pages/reports/ProductMargins.tsx",
+    "pages/reports/ProductProfitReal.tsx",
+    "pages/reports/ProductSalesReport.tsx",
+    "pages/reports/ProfitabilityReport.tsx",
+    "pages/reports/PurchaseSuggestionReport.tsx",
+    "pages/reports/SalesProfit.tsx",
+    "pages/reports/SmartInsightCenter.tsx",
+    "pages/reports/TopCustomersReport.tsx",
+    "pages/reports/TopSuppliersReport.tsx",
+    "pages/settings/SettingsDataPanel.tsx",
+    "pages/settings/SettingsLocalPanel.tsx",
+    "pages/settings/SettingsTelegramPanel.tsx",
+    "pages/dashboard/widgets/ProductSalesKPIWidget.tsx"
+  ],
+  "native_preview_suspects": [
+    "components/PriceInput.tsx",
+    "components/SearchComponent.tsx",
+    "pages/AddInstallmentSalePage.tsx",
+    "pages/AddRepair.tsx",
+    "pages/Products.tsx",
+    "pages/settings/SettingsLocalPanel.tsx"
+  ],
+  "persian_identifier_suspects": [
+    {
+      "file": "constants.tsx",
+      "kind": "type",
+      "name": "فعلی"
+    },
+    {
+      "file": "pages/Settings.tsx",
+      "kind": "const",
+      "name": "telegramسراسریSummary"
+    },
+    {
+      "file": "pages/Settings.tsx",
+      "kind": "const",
+      "name": "telegramسراسریCompletionPercent"
+    }
+  ],
+  "screen_qa_order": [
+    {
+      "screen": "Settings > Telegram",
+      "check": "hero, monitor cards, template center, logs, mobile density, LTR values"
+    },
+    {
+      "screen": "Dashboard",
+      "check": "hero/clock, widget grid, edit mode, add widget modal, drag/resize visuals"
+    },
+    {
+      "screen": "Reports Hub",
+      "check": "category cards, report cards, search, quick access, KPI cards"
+    },
+    {
+      "screen": "Financial Reports",
+      "check": "FinancialOverview, Cashflow, Debtors, Creditors, filters/tables/charts"
+    },
+    {
+      "screen": "Mobile Phones",
+      "check": "form, autocomplete, IMEI, inventory table/cards, actions, submit bar"
+    },
+    {
+      "screen": "Partner Detail",
+      "check": "account hero, ledger, expanded rows, phone capital, payment modal regression"
+    },
+    {
+      "screen": "Customer Detail",
+      "check": "account hero, ledger, CRM tags, payment modal regression"
+    },
+    {
+      "screen": "Products",
+      "check": "product table/cards, supplier/category panels, modals"
+    },
+    {
+      "screen": "Services",
+      "check": "service table, forms, action buttons"
+    },
+    {
+      "screen": "Repairs",
+      "check": "list/board, repair cards, status pills, form/detail pages"
+    },
+    {
+      "screen": "Settings General",
+      "check": "settings shell, modules, smart brain, account/business/users"
+    }
+  ]
+}

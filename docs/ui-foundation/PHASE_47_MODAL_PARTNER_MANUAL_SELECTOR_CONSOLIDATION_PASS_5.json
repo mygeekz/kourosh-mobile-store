@@ -1,0 +1,116 @@
+{
+  "phase": "PHASE_47_MODAL_PARTNER_MANUAL_SELECTOR_CONSOLIDATION_PASS_5",
+  "scope": [
+    "styles/system/modal-partner-foundation.css"
+  ],
+  "changed_files": [
+    "styles/system/modal-partner-foundation.css"
+  ],
+  "logic_changed": false,
+  "method": "property-level consolidation for exact top-level single selectors only; media/dark/grouped/state selectors untouched",
+  "target_families": [
+    ".partner-system-id-block--right",
+    ".partner-system-id-block--right .partner-system-id-value",
+    ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card"
+  ],
+  "removed_declarations": 19,
+  "removed_empty_blocks": 6,
+  "bytes_before": 123452,
+  "bytes_after": 122328,
+  "lines_before": 3613,
+  "lines_after": 3577,
+  "important_before": 1492,
+  "important_after": 1473,
+  "qa": {
+    "css_parser_errors": 0,
+    "literal_backslash_n_css": 0,
+    "brace_balance_errors": 0,
+    "missing_css_imports": 0,
+    "runtime_overrides_imports_in_index": 0
+  },
+  "removed_details": [
+    {
+      "line_before": 483,
+      "selector": ".partner-system-id-block--right",
+      "removed_props": [
+        "align-items"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 487,
+      "selector": ".partner-system-id-block--right .partner-system-id-value",
+      "removed_props": [
+        "direction",
+        "unicode-bidi",
+        "text-align"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 862,
+      "selector": ".partner-system-id-block--right",
+      "removed_props": [
+        "margin-inline-start",
+        "justify-self"
+      ],
+      "kept_props": [
+        "max-width"
+      ],
+      "removed_block": false
+    },
+    {
+      "line_before": 1054,
+      "selector": ".partner-system-id-block--right",
+      "removed_props": [
+        "align-items",
+        "text-align",
+        "justify-self"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 1061,
+      "selector": ".partner-system-id-block--right .partner-system-id-value",
+      "removed_props": [
+        "text-align",
+        "direction",
+        "unicode-bidi"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 2073,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card",
+      "removed_props": [
+        "grid-area"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 2108,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card",
+      "removed_props": [
+        "display",
+        "grid-template-columns",
+        "gap",
+        "align-content"
+      ],
+      "removed_block": true
+    },
+    {
+      "line_before": 2337,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card",
+      "removed_props": [
+        "gap",
+        "align-content"
+      ],
+      "kept_props": [
+        "display",
+        "grid-template-columns",
+        "grid-template-areas"
+      ],
+      "removed_block": false
+    }
+  ]
+}

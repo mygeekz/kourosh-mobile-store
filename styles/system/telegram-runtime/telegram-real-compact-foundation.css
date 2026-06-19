@@ -1,0 +1,271 @@
+/* ===== Quarantined from styles/runtime-overrides/02g-telegram-real-compact-patch.css in Phase 19.
+   Order-sensitive Telegram UI compatibility layer. Do not delete until replaced by component-level contracts. ===== */
+/* ===== TELEGRAM SETTINGS REAL APPLE COMPACT PATCH ===== */
+.tg-apple-setup-row,
+.tg-apple-check-row,
+.tg-apple-control-card,
+.tg-apple-queue-btn {
+  min-height: 38px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 8px 10px !important;
+  transform: none !important;
+  color: rgb(51 65 85) !important;
+}
+
+.dark .tg-apple-setup-row,
+.dark .tg-apple-check-row,
+.dark .tg-apple-control-card,
+.dark .tg-apple-queue-btn {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.tg-apple-setup-row:hover,
+.tg-apple-check-row:hover,
+.tg-apple-control-card:hover,
+.tg-apple-queue-btn:hover {
+  background: rgb(248 250 252) !important;
+  transform: none !important;
+}
+
+.dark .tg-apple-setup-row:hover,
+.dark .tg-apple-check-row:hover,
+.dark .tg-apple-control-card:hover,
+.dark .tg-apple-queue-btn:hover {
+  background: rgb(15 23 42) !important;
+}
+
+.tg-apple-setup-row__inner {
+  width: 100%;
+}
+
+.tg-apple-setup-row__icon,
+.tg-apple-check-row__icon {
+  display: inline-flex;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  align-items: center;
+  justify-content: center;
+  border-color: rgb(226 232 240) !important;
+  border-radius: 10px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+}
+
+.dark .tg-apple-setup-row__icon,
+.dark .tg-apple-check-row__icon {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.tg-apple-setup-row__icon.is-done {
+  color: rgb(4 120 87) !important;
+}
+
+.tg-apple-setup-row__icon i,
+.tg-apple-check-row__icon i,
+.tg-apple-mini-status i,
+.tg-apple-queue-panel i,
+.tg-apple-control-card i,
+.tg-apple-row-cta i {
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+}
+
+.tg-apple-setup-row .font-black,
+.tg-apple-check-row .text-sm.font-black {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  font-weight: 950 !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .tg-apple-setup-row .font-black,
+.dark .tg-apple-check-row .text-sm.font-black {
+  color: rgb(241 245 249) !important;
+}
+
+.tg-apple-setup-row .text-xs,
+.tg-apple-check-row .text-xs {
+  font-size: 10px !important;
+  line-height: 1.55 !important;
+  color: rgb(100 116 139) !important;
+}
+
+.dark .tg-apple-setup-row .text-xs,
+.dark .tg-apple-check-row .text-xs {
+  color: rgb(148 163 184) !important;
+}
+
+.tg-apple-mini-status {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 999px;
+  background: rgb(248 250 252);
+  padding: 0 8px;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgb(71 85 105);
+  white-space: nowrap;
+}
+
+.tg-apple-mini-status.is-done {
+  color: rgb(4 120 87);
+}
+
+.dark .tg-apple-mini-status {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+  color: rgb(203 213 225);
+}
+
+.tg-apple-queue-panel {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: 12px !important;
+}
+
+.dark .tg-apple-queue-panel {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.tg-apple-queue-panel > div:first-child {
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.tg-apple-queue-panel .text-sm.font-black {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+
+.tg-apple-queue-panel .mt-1.text-xs {
+  margin-top: 2px !important;
+  font-size: 11px !important;
+}
+
+.tg-apple-queue-toolbar {
+  margin-top: 10px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.tg-apple-queue-btn {
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 32px !important;
+  border-radius: 999px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.tg-apple-check-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px;
+}
+
+.tg-apple-check-row {
+  min-height: 78px !important;
+}
+
+.tg-apple-check-row > div:first-child {
+  align-items: center !important;
+}
+
+.tg-apple-progress {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(241 245 249);
+}
+
+.dark .tg-apple-progress {
+  background: rgb(15 23 42);
+}
+
+.tg-apple-progress > div {
+  height: 100%;
+  border-radius: 999px;
+  background: rgb(100 116 139);
+}
+
+.dark .tg-apple-progress > div {
+  background: rgb(203 213 225);
+}
+
+.tg-apple-row-cta {
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 950;
+  color: rgb(71 85 105);
+}
+
+.dark .tg-apple-row-cta {
+  color: rgb(203 213 225);
+}
+
+.tg-apple-control-card {
+  min-height: 58px !important;
+}
+
+.tg-apple-control-card > div:first-child {
+  border-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.tg-apple-control-card .mt-2 {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+}
+
+/* neutralize the original Telegram colorful row tokens only inside the compact classes */
+.tg-apple-setup-row :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]),
+.tg-apple-check-row :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]),
+.tg-apple-control-card :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]) {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .tg-apple-setup-row :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]),
+.dark .tg-apple-check-row :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]),
+.dark .tg-apple-control-card :where([class*="bg-emerald"], [class*="bg-amber"], [class*="bg-rose"], [class*="bg-sky"], [class*="bg-indigo"]) {
+  background: rgb(15 23 42) !important;
+}
+
+@media (max-width: 768px) {
+  .tg-apple-check-list {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-apple-queue-toolbar .tg-apple-queue-btn {
+    flex: 1 1 auto;
+  }
+}
+
+

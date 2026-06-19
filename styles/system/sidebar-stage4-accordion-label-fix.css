@@ -1,0 +1,52 @@
+/* Stage 4 — Sidebar accordion + readable labels
+   هدف: متن آیتم‌های منو کامل دیده شود و فقط آیتم فعال حالت boxed داشته باشد. */
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  grid-template-columns: minmax(30px, 34px) minmax(0, 1fr) 18px !important;
+  white-space: normal !important;
+  overflow: hidden !important;
+  align-items: center !important;
+  row-gap: 0 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+  min-width: 0 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  line-height: 1.45 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span > span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) > span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  line-height: 1.45 !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* باز بودن زیرمنو نباید شبیه active/selected دیده شود؛ فقط route فعال باکس می‌گیرد. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-angle-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-left,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-right {
+  inline-size: 18px !important;
+  min-inline-size: 18px !important;
+  justify-self: end !important;
+}
+
+[data-ui-navigation="sidebar"][data-sidebar-collapsed="true"] .sidebar-nav-row {
+  white-space: nowrap !important;
+}

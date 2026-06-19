@@ -1,0 +1,678 @@
+{
+  "ok": true,
+  "generatedAt": "2026-05-25T12:56:15.605Z",
+  "scope": [
+    "pages/Settings.tsx",
+    "pages/settings/**/*.{ts,tsx}"
+  ],
+  "counts": {
+    "scannedFiles": 20,
+    "localImports": 90,
+    "settingsBarrelValueExports": 13,
+    "settingsBarrelTypeExports": 84,
+    "settingsImportsFromBarrel": 26,
+    "failures": 0,
+    "warnings": 0
+  },
+  "failures": [],
+  "warnings": [],
+  "localImports": [
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../contexts/ConfirmContext",
+      "resolved": "contexts/ConfirmContext.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../types",
+      "resolved": "types.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/Notification",
+      "resolved": "components/Notification.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/Modal",
+      "resolved": "components/Modal.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/asyncGuards",
+      "resolved": "utils/asyncGuards.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/ToggleSwitch",
+      "resolved": "components/ToggleSwitch.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/FormSection",
+      "resolved": "components/FormSection.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/SmsPatternTestModal",
+      "resolved": "components/SmsPatternTestModal.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/SmsPatternPreviewModal",
+      "resolved": "components/SmsPatternPreviewModal.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/TelegramTemplateTestModal",
+      "resolved": "components/TelegramTemplateTestModal.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/SmsBulkTestModal",
+      "resolved": "components/SmsBulkTestModal.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../contexts/AuthContext",
+      "resolved": "contexts/AuthContext.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/apiFetch",
+      "resolved": "utils/apiFetch.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/feedback",
+      "resolved": "utils/feedback.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../contexts/StyleContext",
+      "resolved": "contexts/StyleContext.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/branding",
+      "resolved": "utils/branding.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/currency",
+      "resolved": "utils/currency.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/loadAuthedAssetUrl",
+      "resolved": "utils/loadAuthedAssetUrl.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../components/ui/PageShell",
+      "resolved": "components/ui/PageShell.tsx"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "./settings/index",
+      "resolved": "pages/settings/index.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/backupSchedule",
+      "resolved": "utils/backupSchedule.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/exporters",
+      "resolved": "utils/exporters.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/dateUtils",
+      "resolved": "utils/dateUtils.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/iranDateTime",
+      "resolved": "utils/iranDateTime.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../utils/featureFlags",
+      "resolved": "utils/featureFlags.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "../shared/messages",
+      "resolved": "shared/messages.ts"
+    },
+    {
+      "source": "pages/Settings.tsx",
+      "specifier": "./settings/settingsHelpers",
+      "resolved": "pages/settings/settingsHelpers.ts"
+    },
+    {
+      "source": "pages/settings/Backups.tsx",
+      "specifier": "../../components/Notification",
+      "resolved": "components/Notification.tsx"
+    },
+    {
+      "source": "pages/settings/Backups.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/Backups.tsx",
+      "specifier": "../../contexts/AuthContext",
+      "resolved": "contexts/AuthContext.tsx"
+    },
+    {
+      "source": "pages/settings/Backups.tsx",
+      "specifier": "../../types",
+      "resolved": "types.ts"
+    },
+    {
+      "source": "pages/settings/SettingsAccountPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsAccountPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsBusinessPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsBusinessPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsBusinessPanel.tsx",
+      "specifier": "../../utils/currency",
+      "resolved": "utils/currency.ts"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../utils/backupSchedule",
+      "resolved": "utils/backupSchedule.ts"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../components/ToggleSwitch",
+      "resolved": "components/ToggleSwitch.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../components/ui/TextField",
+      "resolved": "components/ui/TextField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../components/ui/SelectField",
+      "resolved": "components/ui/SelectField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../utils/backupSchedule",
+      "resolved": "utils/backupSchedule.ts"
+    },
+    {
+      "source": "pages/settings/SettingsDataPanel.tsx",
+      "specifier": "../../utils/iranDateTime",
+      "resolved": "utils/iranDateTime.ts"
+    },
+    {
+      "source": "pages/settings/SettingsLocalPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsLocalPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsModulesPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsModulesPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsModulesPanel.tsx",
+      "specifier": "../../components/ToggleSwitch",
+      "resolved": "components/ToggleSwitch.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsModulesPanel.tsx",
+      "specifier": "../../utils/featureFlags",
+      "resolved": "utils/featureFlags.ts"
+    },
+    {
+      "source": "pages/settings/SettingsPricingPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsPricingPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsRemindersPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsRemindersPanel.tsx",
+      "specifier": "../../components/ReminderRulesBuilder",
+      "resolved": "components/ReminderRulesBuilder.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsSmartPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsSmartPanel.tsx",
+      "specifier": "../../components/AiFeatureControlPanel",
+      "resolved": "components/AiFeatureControlPanel.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsSmsPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsSmsPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsSmsPanel.tsx",
+      "specifier": "../../components/FormSection",
+      "resolved": "components/FormSection.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsSmsPanel.tsx",
+      "specifier": "../../components/SmsLogsPanel",
+      "resolved": "components/SmsLogsPanel.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsSmsPanel.tsx",
+      "specifier": "../../components/SmsHealthCheckPanel",
+      "resolved": "components/SmsHealthCheckPanel.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsStylePanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsStylePanel.tsx",
+      "specifier": "./StyleSettings",
+      "resolved": "pages/settings/StyleSettings.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/FormSection",
+      "resolved": "components/FormSection.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/ModalField",
+      "resolved": "components/ModalField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/ui/SelectField",
+      "resolved": "components/ui/SelectField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/TelegramLogsPanel",
+      "resolved": "components/TelegramLogsPanel.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/ui/TextField",
+      "resolved": "components/ui/TextField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsTelegramPanel.tsx",
+      "specifier": "../../components/ToggleSwitch",
+      "resolved": "components/ToggleSwitch.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/Modal",
+      "resolved": "components/Modal.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/ModalActions",
+      "resolved": "components/ModalActions.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/ModalField",
+      "resolved": "components/ModalField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/ui/TextField",
+      "resolved": "components/ui/TextField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersModals.tsx",
+      "specifier": "../../components/ui/SelectField",
+      "resolved": "components/ui/SelectField.tsx"
+    },
+    {
+      "source": "pages/settings/SettingsUsersPanel.tsx",
+      "specifier": "./settingsPanelTypes",
+      "resolved": "pages/settings/settingsPanelTypes.ts"
+    },
+    {
+      "source": "pages/settings/SettingsUsersPanel.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/StoreOwnershipPage.tsx",
+      "specifier": "../../utils/apiFetch",
+      "resolved": "utils/apiFetch.ts"
+    },
+    {
+      "source": "pages/settings/StoreOwnershipPage.tsx",
+      "specifier": "../../utils/feedback",
+      "resolved": "utils/feedback.ts"
+    },
+    {
+      "source": "pages/settings/StyleSettings.tsx",
+      "specifier": "../../hooks/useStyle",
+      "resolved": "hooks/useStyle.ts"
+    },
+    {
+      "source": "pages/settings/StyleSettings.tsx",
+      "specifier": "../../components/Button",
+      "resolved": "components/Button.tsx"
+    },
+    {
+      "source": "pages/settings/StyleSettings.tsx",
+      "specifier": "../../components/ToggleSwitch",
+      "resolved": "components/ToggleSwitch.tsx"
+    },
+    {
+      "source": "pages/settings/settingsPanelTypes.ts",
+      "specifier": "../../types",
+      "resolved": "types.ts"
+    },
+    {
+      "source": "pages/settings/settingsPanelTypes.ts",
+      "specifier": "../../components/SmsBulkTestModal",
+      "resolved": "components/SmsBulkTestModal.tsx"
+    },
+    {
+      "source": "pages/settings/settingsPanelTypes.ts",
+      "specifier": "../../utils/backupSchedule",
+      "resolved": "utils/backupSchedule.ts"
+    },
+    {
+      "source": "pages/settings/settingsPanelTypes.ts",
+      "specifier": "../../utils/featureFlags",
+      "resolved": "utils/featureFlags.ts"
+    }
+  ],
+  "settingsNamedImports": [
+    {
+      "name": "SettingsAccountPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsBusinessPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsDataPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsLocalPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsModulesPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsPricingPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsRemindersPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsSmartPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsSmsPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsStylePanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsTelegramPanel",
+      "isType": false
+    },
+    {
+      "name": "SettingsUsersModals",
+      "isType": false
+    },
+    {
+      "name": "SettingsUsersPanel",
+      "isType": false
+    },
+    {
+      "name": "BackupItem",
+      "isType": true
+    },
+    {
+      "name": "PricingDecisionLogItem",
+      "isType": true
+    },
+    {
+      "name": "PricingLearningItem",
+      "isType": true
+    },
+    {
+      "name": "PricingToneMeta",
+      "isType": true
+    },
+    {
+      "name": "SmsBusinessInfo",
+      "isType": true
+    },
+    {
+      "name": "TelegramBusinessInfo",
+      "isType": true
+    },
+    {
+      "name": "TelegramControlCenterState",
+      "isType": true
+    },
+    {
+      "name": "TelegramDiagnosticsState",
+      "isType": true
+    },
+    {
+      "name": "TelegramHealthState",
+      "isType": true
+    },
+    {
+      "name": "TelegramMessageFormat",
+      "isType": true
+    },
+    {
+      "name": "TelegramRecentChat",
+      "isType": true
+    },
+    {
+      "name": "TelegramTemplateDef",
+      "isType": true
+    },
+    {
+      "name": "TelegramTemplateVariable",
+      "isType": true
+    }
+  ],
+  "valueExports": [
+    "SettingsAccountPanel",
+    "SettingsBusinessPanel",
+    "SettingsDataPanel",
+    "SettingsLocalPanel",
+    "SettingsModulesPanel",
+    "SettingsPricingPanel",
+    "SettingsRemindersPanel",
+    "SettingsSmartPanel",
+    "SettingsSmsPanel",
+    "SettingsStylePanel",
+    "SettingsTelegramPanel",
+    "SettingsUsersModals",
+    "SettingsUsersPanel"
+  ],
+  "typeExports": [
+    "AccountMetaItem",
+    "AccountPasswordVisual",
+    "AccountProfileLike",
+    "AccountSecurityItem",
+    "BackupItem",
+    "BackupScheduleTimezone",
+    "BusinessCurrencyUnit",
+    "BusinessSummaryItem",
+    "CommercialPlanUiCopy",
+    "FeatureLike",
+    "ModuleRuntimeSummaryItem",
+    "PartnerShareStatusLite",
+    "PricingAdvisorCard",
+    "PricingDecisionActionFilter",
+    "PricingDecisionDeltaFilter",
+    "PricingDecisionLogItem",
+    "PricingIntelligenceSettingsLite",
+    "PricingLearningAction",
+    "PricingLearningItem",
+    "PricingLearningStats",
+    "PricingStrategyAdvisor",
+    "PricingStrategyLabel",
+    "PricingStrategyLabels",
+    "PricingStrategyMode",
+    "PricingToneMeta",
+    "ResetPasswordData",
+    "RuntimeBadge",
+    "SettingsAccountPanelProps",
+    "SettingsBusinessInfo",
+    "SettingsBusinessPanelProps",
+    "SettingsDataPanelProps",
+    "SettingsLocalBusinessInfo",
+    "SettingsLocalPanelProps",
+    "SettingsModulesPanelProps",
+    "SettingsPricingPanelProps",
+    "SettingsRemindersPanelProps",
+    "SettingsSmartPanelProps",
+    "SettingsSmsPanelProps",
+    "SettingsStylePanelProps",
+    "SettingsTelegramPanelProps",
+    "SettingsUsersModalsProps",
+    "SettingsUsersPanelProps",
+    "SmsAutomationMode",
+    "SmsBusinessInfo",
+    "SmsBusinessInfoValue",
+    "SmsPatternAccent",
+    "SmsPatternKey",
+    "SmsProviderKey",
+    "SmsProviderMeta",
+    "TelegramAudience",
+    "TelegramAudienceMeta",
+    "TelegramAudienceStatus",
+    "TelegramAudienceTemplateEntry",
+    "TelegramBusinessInfo",
+    "TelegramBusinessInfoValue",
+    "TelegramCategoryMeta",
+    "TelegramCategoryStatus",
+    "TelegramCheckItem",
+    "TelegramConnectionMode",
+    "TelegramControlCenterState",
+    "TelegramDiagnosticsState",
+    "TelegramFieldInsight",
+    "TelegramFieldInsights",
+    "TelegramGlobalSummary",
+    "TelegramGroupedTemplateDefs",
+    "TelegramHealthState",
+    "TelegramItemStatus",
+    "TelegramMessageFormat",
+    "TelegramPriorityMeta",
+    "TelegramProgressTone",
+    "TelegramRecentChat",
+    "TelegramSmartAction",
+    "TelegramStatusMeta",
+    "TelegramStudioMode",
+    "TelegramTemplateDef",
+    "TelegramTemplateFilter",
+    "TelegramTemplatePolicy",
+    "TelegramTemplateVariable",
+    "TelegramTodoEntry",
+    "TelegramTodoSummary",
+    "TelegramToggleValue",
+    "TelegramTone",
+    "UserRoleSummary",
+    "UserStatsCard"
+  ]
+}

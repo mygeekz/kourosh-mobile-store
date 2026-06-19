@@ -1,0 +1,956 @@
+/* Auto-generated UI Foundation: KPI density, navigation and targeted accessibility/RTL fixes.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/06d-kpi-navigation-density-mobile.css ===== */
+
+/* ===== KPI surface anti-duplication: Header + Dashboard + Reports ===== */
+.dashboard-kpi-surface-pill,
+.reports-kpi-surface-note {
+  transition: border-color .16s ease, background-color .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+
+.dashboard-kpi-surface-pill {
+  display: inline-flex;
+  min-height: 1.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240);
+  background: rgba(255, 255, 255, .86);
+  padding: .35rem .65rem;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .18);
+}
+
+.dashboard-kpi-surface-pill:hover,
+.reports-kpi-surface-note:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, .78);
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, .22);
+}
+
+html.dark .dashboard-kpi-surface-pill {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, .68);
+  box-shadow: 0 12px 24px -22px rgba(2, 6, 23, .68);
+}
+
+html.dark .reports-kpi-surface-note:hover {
+  border-color: rgb(71 85 105);
+  box-shadow: 0 18px 30px -24px rgba(2, 6, 23, .72);
+}
+
+
+/* ===== Quick Actions anti-duplication roles — Header / Dashboard / Sidebar / Mobile ===== */
+.header-quick-role-pill,
+.dashboard-quick-action-link [class*="text-[10px]"] {
+  letter-spacing: -.01em;
+}
+
+.header-quick-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  padding: .25rem .55rem;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgb(100 116 139);
+  white-space: nowrap;
+}
+
+.header-quick-role-pill::before {
+  content: "\f06e";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 9px;
+}
+
+[data-quick-role="live-preview"] {
+  isolation: isolate;
+}
+
+.dashboard-quick-action-link {
+  position: relative;
+}
+
+.dashboard-quick-action-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: .75rem;
+  bottom: .35rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(148, 163, 184, .38), transparent);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+.dashboard-quick-action-link:hover::after {
+  opacity: 1;
+}
+
+html.dark .header-quick-role-pill {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, .9);
+  color: rgb(148 163 184);
+}
+
+
+/* ===== Navigation anti-duplication polish — Sidebar / Mobile / Header Search ===== */
+.nav-surface-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  max-width: 7.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240);
+  background: rgba(248, 250, 252, .86);
+  padding: .125rem .45rem;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.35;
+  color: rgb(100 116 139);
+  white-space: nowrap;
+}
+
+.nav-surface-role-pill::before {
+  content: '';
+  width: .35rem;
+  height: .35rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: .45;
+}
+
+.header-search-scope-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.header-search-scope-note i {
+  color: rgb(71 85 105);
+}
+
+html.dark .nav-surface-role-pill {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, .78);
+  color: rgb(203 213 225);
+}
+
+html.dark .header-search-scope-note i {
+  color: rgb(203 213 225);
+}
+
+/* ===== Visual Density QA v27 — compact notes, badges and KPI helpers ===== */
+.report-kpi-definition-note--compact {
+  padding: 0 !important;
+}
+
+.report-kpi-definition-note__summary {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 3.4rem;
+  padding: .75rem .9rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.report-kpi-definition-note__summary::-webkit-details-marker {
+  display: none;
+}
+
+.report-kpi-definition-note__summary-body {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.report-kpi-definition-note--compact .report-kpi-definition-note__icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: .85rem;
+  box-shadow: none;
+}
+
+.report-kpi-definition-note--compact .report-kpi-definition-note__desc {
+  display: block;
+  max-width: 64rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: .15rem;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.report-kpi-definition-note__count {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, .9);
+  background: rgba(248, 250, 252, .88);
+  padding: .2rem .55rem;
+  color: rgb(100 116 139);
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.report-kpi-definition-note__chevron {
+  flex: 0 0 auto;
+  color: rgb(100 116 139);
+  font-size: 10px;
+  transition: transform .16s ease;
+}
+
+.report-kpi-definition-note[open] .report-kpi-definition-note__chevron {
+  transform: rotate(180deg);
+}
+
+.report-kpi-definition-note--compact .report-kpi-definition-note__grid {
+  margin: 0;
+  padding: 0 .9rem .9rem;
+}
+
+.dashboard-kpi-surface-note {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgba(226, 232, 240, .86);
+  border-radius: 999px;
+  background: rgba(248, 250, 252, .72);
+  padding: .45rem .7rem;
+  line-height: 1.6;
+}
+
+.dashboard-kpi-surface-note i {
+  color: rgb(100 116 139);
+}
+
+.header-quick-role-pill,
+.nav-surface-role-pill,
+.report-local-filter-pill,
+.reports-local-export-note,
+.backup-file-card__badge {
+  min-height: 1.35rem !important;
+  padding-block: .12rem !important;
+  padding-inline: .45rem !important;
+  font-size: 9px !important;
+  line-height: 1.35 !important;
+  box-shadow: none !important;
+}
+
+.reports-local-export-note {
+  min-height: 2rem !important;
+  border-radius: 999px !important;
+}
+
+.report-local-filter-pill {
+  border-radius: 999px;
+  opacity: .86;
+}
+
+@media (max-width: 767px) {
+  .report-kpi-definition-note--compact .report-kpi-definition-note__desc,
+  .dashboard-kpi-surface-note {
+    white-space: normal;
+  }
+
+  .report-kpi-definition-note__count {
+    display: none;
+  }
+}
+
+html.dark .report-kpi-definition-note__count,
+html.dark .dashboard-kpi-surface-note {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, .68);
+  color: rgb(148 163 184);
+}
+
+/* ===== Mobile Density QA v28 — prevent helper badges from inflating cards ===== */
+@media (max-width: 640px) {
+  .report-kpi-definition-note__summary {
+    min-height: 2.75rem !important;
+    gap: .5rem !important;
+    padding: .55rem .65rem !important;
+  }
+
+  .report-kpi-definition-note--compact .report-kpi-definition-note__icon {
+    width: 1.65rem !important;
+    height: 1.65rem !important;
+    border-radius: .7rem !important;
+  }
+
+  .report-kpi-definition-note__title {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  .report-kpi-definition-note--compact .report-kpi-definition-note__desc,
+  .report-kpi-definition-note__count {
+    display: none !important;
+  }
+
+  .report-kpi-definition-note--compact .report-kpi-definition-note__grid {
+    padding: 0 .55rem .6rem !important;
+    gap: .5rem !important;
+  }
+
+  .report-kpi-definition-note__item {
+    padding: .62rem .68rem !important;
+    border-radius: .85rem !important;
+  }
+
+  .report-kpi-definition-note__item-title {
+    gap: .4rem !important;
+    font-size: 11px !important;
+  }
+
+  .report-kpi-definition-note__item-title em {
+    padding: .08rem .38rem !important;
+    font-size: 8px !important;
+  }
+
+  .report-kpi-definition-note__item p {
+    margin-top: .35rem !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 10.5px !important;
+    line-height: 1.65 !important;
+  }
+
+  .dashboard-kpi-surface-note {
+    align-items: flex-start !important;
+    border-radius: .95rem !important;
+    padding: .48rem .6rem !important;
+    font-size: 10.5px !important;
+    line-height: 1.65 !important;
+  }
+
+  .dashboard-kpi-surface-note i {
+    margin-top: .25rem;
+  }
+
+  .header-quick-role-pill,
+  .nav-surface-role-pill,
+  .backup-file-card__badge {
+    min-height: 1.15rem !important;
+    max-width: 4.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-inline: .38rem !important;
+    font-size: 8.5px !important;
+  }
+
+  .reports-local-export-note {
+    min-height: 1.55rem !important;
+    padding-inline: .5rem !important;
+    font-size: 9px !important;
+    white-space: nowrap;
+  }
+
+  .settings-data-panel .backup-file-card {
+    padding: .75rem !important;
+    border-radius: 1rem !important;
+  }
+
+  .settings-data-panel .backup-file-card__icon {
+    width: 2.35rem !important;
+    height: 2.35rem !important;
+    border-radius: .85rem !important;
+  }
+
+  .settings-data-panel .backup-file-card__meta-pill {
+    min-height: 1.35rem !important;
+    padding: .12rem .45rem !important;
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+  }
+
+  .settings-data-panel .backup-file-card__actions {
+    gap: .35rem !important;
+  }
+
+  .settings-data-panel .backup-file-action {
+    min-height: 1.85rem !important;
+    padding-inline: .62rem !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-local-filter-pill,
+  .header-quick-role-pill {
+    display: none !important;
+  }
+
+  .reports-local-export-note {
+    width: 1.7rem !important;
+    min-width: 1.7rem !important;
+    max-width: 1.7rem !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding-inline: 0 !important;
+    color: transparent !important;
+  }
+
+  .reports-local-export-note i {
+    color: rgb(100 116 139) !important;
+    margin: 0 !important;
+  }
+
+  html.dark .reports-local-export-note i {
+    color: rgb(148 163 184) !important;
+  }
+
+  .backup-file-card__badge {
+    display: none !important;
+  }
+
+  .dashboard-kpi-surface-note {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ===== Mobile Touch Target QA v29 =====
+   Preserve the compact mobile density work, but restore real tap comfort.
+   Scope is intentionally limited to interactive controls already present in the app. */
+@media (pointer: coarse), (max-width: 767px) {
+  :where(
+    .ux-btn,
+    .ux-btn--native,
+    .unified-action-button,
+    .unified-action-trigger,
+    .backup-file-action,
+    .reports-action-btn,
+    .report-action-btn,
+    .people-detail-action-btn,
+    .people-list-action-btn,
+    .ledger-action-btn,
+    .inventory-table-action-btn,
+    .dashboard-quick-action-link,
+    .header-search-quick,
+    .header-quick-action-button,
+    .mobile-bottom-nav-action,
+    .phone-inventory-table-v2 button,
+    .settings-data-panel button,
+    .reports-local-export-note,
+    .report-local-filter-pill
+  ) {
+    min-height: 44px !important;
+  }
+
+  :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea,
+    .unified-field,
+    .search-input,
+    .premium-search-input,
+    .shamsi-date-trigger,
+    .date-picker-trigger,
+    .combo-trigger,
+    .autocomplete-trigger
+  ) {
+    min-height: 44px !important;
+  }
+
+  :where(input[type="checkbox"], input[type="radio"]) {
+    min-width: 22px !important;
+    min-height: 22px !important;
+  }
+
+  .unified-action-menu__item,
+  .phone-table-actions-menu button,
+  .command-palette-quick-action,
+  .header-quick-menu button,
+  .settings-data-panel .backup-file-action {
+    min-height: 44px !important;
+    padding-block: .55rem !important;
+  }
+
+  .phone-inventory-table-v2 .phone-table-actions-wrap,
+  .phone-inventory-table-v2 .phone-table-actions-cell {
+    min-height: 5.75rem !important;
+  }
+
+  .phone-inventory-table-v2 .unified-action-trigger {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .settings-data-panel .backup-file-card__actions {
+    gap: .5rem !important;
+  }
+
+  .settings-data-panel .backup-file-action {
+    min-height: 44px !important;
+    padding-inline: .78rem !important;
+    font-size: 10.5px !important;
+  }
+
+  .reports-local-export-note {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .report-local-filter-pill {
+    min-height: 36px !important;
+  }
+
+  .mobile-bottom-nav-action,
+  .mobile-bottom-nav-link,
+  .md\:hidden [aria-label*="موبایل"],
+  .md\:hidden [aria-label*="ناوبری"],
+  .md\:hidden [aria-label*="گزارش"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-data-panel .backup-file-action {
+    flex: 1 1 calc(50% - .5rem) !important;
+    justify-content: center !important;
+  }
+
+  .reports-local-export-note {
+    width: 44px !important;
+    max-width: 44px !important;
+    min-width: 44px !important;
+    color: transparent !important;
+  }
+
+  .reports-local-export-note i {
+    color: rgb(100 116 139) !important;
+  }
+
+  html.dark .reports-local-export-note i {
+    color: rgb(148 163 184) !important;
+  }
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/06e-accessibility-rtl-targeted-fixes.css ===== */
+
+/* ===== Accessibility QA v30 — focus, keyboard, contrast, reduced motion ===== */
+:root {
+  --access-focus-ring: rgba(37, 99, 235, .42);
+  --access-focus-ring-strong: rgba(37, 99, 235, .66);
+  --access-danger-ring: rgba(225, 29, 72, .45);
+}
+
+html.dark {
+  --access-focus-ring: rgba(125, 211, 252, .42);
+  --access-focus-ring-strong: rgba(125, 211, 252, .68);
+  --access-danger-ring: rgba(251, 113, 133, .48);
+}
+
+:where(
+  button,
+  a[href],
+  input,
+  select,
+  textarea,
+  [role="button"],
+  [role="menuitem"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 2px solid var(--access-focus-ring-strong) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 5px var(--access-focus-ring) !important;
+}
+
+:where(.ux-btn, .unified-action-button, .unified-action-trigger, .backup-file-action, .reports-action-btn):focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--access-focus-ring-strong) !important;
+}
+
+:where(input, select, textarea, .report-local-search-input, .unified-field-control):focus-visible {
+  border-color: var(--access-focus-ring-strong) !important;
+  background-color: rgba(255, 255, 255, .98) !important;
+}
+
+html.dark :where(input, select, textarea, .report-local-search-input, .unified-field-control):focus-visible {
+  background-color: rgba(2, 6, 23, .98) !important;
+}
+
+:where([aria-invalid="true"]):focus-visible {
+  outline-color: var(--access-danger-ring) !important;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--access-danger-ring) 34%, transparent) !important;
+}
+
+.unified-action-menu__item:focus-visible {
+  background-color: rgba(239, 246, 255, .98) !important;
+  transform: translateX(-1px);
+}
+
+html.dark .unified-action-menu__item:focus-visible {
+  background-color: rgba(12, 74, 110, .32) !important;
+}
+
+:where(button, .ux-btn, .unified-action-button, .unified-action-trigger)[aria-disabled="true"],
+:where(button, .ux-btn, .unified-action-button, .unified-action-trigger):disabled {
+  cursor: not-allowed !important;
+}
+
+:where(.ux-btn__icon, .unified-action-trigger i, .unified-action-button i, .backup-file-action i) {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+  }
+
+  :where(.ux-btn, .unified-action-button, .unified-action-trigger, .backup-file-card, .phone-inventory-table-v2 tbody tr):hover,
+  :where(.ux-btn, .unified-action-button, .unified-action-trigger, .backup-file-card, .phone-inventory-table-v2 tbody tr):focus-visible {
+    transform: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(button, a[href], input, select, textarea, [role="button"], [role="menuitem"], [role="tab"]):focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 3px !important;
+    box-shadow: none !important;
+  }
+
+  :where(.ux-btn, .unified-action-button, .unified-action-trigger, .backup-file-action) {
+    border: 1px solid ButtonText !important;
+  }
+}
+
+/* ===== RTL Alignment QA v31 — icon/text/number direction polish ===== */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] :where(input, select, textarea, .app-input, .app-select, .app-textarea) {
+  text-align: right;
+  direction: rtl;
+}
+
+[dir="rtl"] :where(input[type="number"], input[type="tel"], input[type="email"], input[type="url"], input[inputmode="numeric"], input[inputmode="decimal"], [data-number-field="true"], .price-input__field, .money-field, .amount-field) {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+[dir="rtl"] :where([dir="ltr"], .font-mono, .imei-value, .serial-value, .tracking-code, .phone-number-value) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: left;
+}
+
+[dir="rtl"] :where(.ux-btn__content, .unified-action-button, .unified-action-trigger, .backup-file-action, .reports-action-btn, .phone-table-actions-menu button, .unified-action-menu__item) {
+  direction: rtl;
+}
+
+[dir="rtl"] :where(.ux-btn__content, .unified-action-button, .backup-file-action, .reports-action-btn, .unified-action-menu__item) :where(i, svg) {
+  flex: 0 0 auto;
+}
+
+[dir="rtl"] :where(.ux-btn__label, .ux-btn__label-main, .unified-action-menu__item span) {
+  min-width: 0;
+  text-align: right;
+}
+
+[dir="rtl"] :where(.header-search-input, .search-input, .phone-list-apple-head__search-input, input[type="search"]) {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: plaintext;
+}
+
+[dir="rtl"] :where(.header-search-input, .search-input, .phone-list-apple-head__search-input, input[type="search"])::placeholder {
+  text-align: right;
+}
+
+[dir="rtl"] :where(table) :where(th, td) {
+  text-align: right;
+}
+
+[dir="rtl"] :where(table) :where(th[dir="ltr"], td[dir="ltr"], .text-left, .font-mono) {
+  text-align: left;
+}
+
+/* Partner ledger system ids must stay centered under their label even inside RTL tables. */
+.people-detail-apple :where(.partner-system-id-value) {
+  text-align: center !important;
+}
+
+[dir="rtl"] :where(.phone-inventory-table-v2 .phone-table-finance-stack, .phone-inventory-table-v2 .phone-table-finance-row, .report-money-cell, .money-cell, .amount-cell) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+}
+
+[dir="rtl"] :where(.phone-inventory-table-v2 .phone-table-finance-row span) {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] :where(.modal-field, .form-control-shell, .field-shell, .people-form-field) :where(label, .field-label, .modal-field__label) {
+  text-align: right;
+}
+
+[dir="rtl"] :where(.modal-field__hint, .modal-field__error, .form-error-summary, .form-error-summary li, .field-error, .field-help) {
+  text-align: right;
+}
+
+[dir="rtl"] :where(.report-local-filter-pill, .backup-file-card__badge, .dashboard-surface-note, .report-export-note, .kpi-definition-note) {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] :where(.phone-table-actions-menu, .unified-action-menu) {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] :where(.phone-table-actions-menu i, .unified-action-menu__item i) {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+}
+
+[dir="rtl"] :where(.ltr-inline, .ltr-number, .latin-value) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: left;
+}
+
+@media (max-width: 640px) {
+  [dir="rtl"] :where(.ux-btn__content, .unified-action-button, .backup-file-action, .reports-action-btn) {
+    gap: .45rem;
+  }
+
+  [dir="rtl"] :where(.phone-inventory-table-v2 .phone-table-finance-row) {
+    gap: .45rem;
+  }
+}
+
+/* ===== Targeted fixes: safe text-free icons + phone table inline actions ===== */
+.ux-btn__icon > i[class*="fa-"] {
+  flex: 0 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.phone-table-inline-actions {
+  min-width: 0;
+  overflow: visible;
+}
+
+.phone-table-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  min-height: 2.05rem;
+  min-width: 2.45rem;
+  padding: .42rem .58rem;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240 / .92);
+  background: rgb(255 255 255 / .96);
+  color: rgb(51 65 85);
+  font-size: 10.5px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .24);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+
+.phone-table-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px -22px rgba(15, 23, 42, .3);
+  border-color: rgb(203 213 225);
+}
+
+.phone-table-action-btn i {
+  font-size: 10.5px;
+  line-height: 1;
+}
+
+.phone-table-action-btn--success { color: rgb(4 120 87); border-color: rgb(167 243 208 / .9); background: rgb(236 253 245 / .92); }
+.phone-table-action-btn--warning { color: rgb(180 83 9); border-color: rgb(253 230 138 / .95); background: rgb(255 251 235 / .94); }
+.phone-table-action-btn--info { color: rgb(2 132 199); border-color: rgb(186 230 253 / .95); background: rgb(240 249 255 / .94); }
+.phone-table-action-btn--danger { color: rgb(190 18 60); border-color: rgb(254 205 211 / .95); background: rgb(255 241 242 / .94); }
+
+html.dark .phone-table-action-btn {
+  border-color: rgb(51 65 85 / .9);
+  background: rgb(15 23 42 / .82);
+  color: rgb(226 232 240);
+  box-shadow: 0 12px 24px -22px rgba(2, 6, 23, .72);
+}
+
+html.dark .phone-table-action-btn:hover { border-color: rgb(71 85 105); }
+html.dark .phone-table-action-btn--success { color: rgb(110 231 183); border-color: rgb(6 95 70 / .65); background: rgb(6 78 59 / .24); }
+html.dark .phone-table-action-btn--warning { color: rgb(252 211 77); border-color: rgb(146 64 14 / .65); background: rgb(120 53 15 / .24); }
+html.dark .phone-table-action-btn--info { color: rgb(125 211 252); border-color: rgb(3 105 161 / .65); background: rgb(12 74 110 / .24); }
+html.dark .phone-table-action-btn--danger { color: rgb(251 113 133); border-color: rgb(159 18 57 / .65); background: rgb(127 29 29 / .24); }
+
+
+@media (max-width: 900px) {
+  .phone-table-action-btn span { display: none; }
+  .phone-table-action-btn { min-width: 2.25rem; padding-inline: .5rem; }
+}
+
+
+/* ===== v34 phone table selection + IMEI duplicate cleanup ===== */
+.phone-inventory-table-v2 col:nth-child(1) { width: 2.45rem !important; }
+.phone-inventory-table-v2 th:nth-child(1),
+.phone-inventory-table-v2 td:nth-child(1) { width: 2.45rem !important; padding-inline: .35rem !important; }
+.phone-table-select-btn {
+  display: inline-flex;
+  width: 1.45rem;
+  height: 1.45rem;
+  min-width: 1.45rem;
+  min-height: 1.45rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgb(203 213 225 / .86);
+  background: rgb(255 255 255 / .96);
+  color: rgb(148 163 184);
+  box-shadow: 0 8px 18px -16px rgba(15, 23, 42, .25);
+  transition: transform .15s ease, border-color .15s ease, background-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+.phone-table-select-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgb(148 163 184);
+  color: rgb(71 85 105);
+  box-shadow: 0 12px 22px -18px rgba(15, 23, 42, .28);
+}
+.phone-table-select-btn.is-selected {
+  border-color: color-mix(in srgb, var(--brand) 38%, transparent);
+  background: color-mix(in srgb, var(--brand) 10%, white);
+  color: var(--brand);
+}
+.phone-table-select-btn i { font-size: 9px !important; line-height: 1; }
+
+html.dark .phone-table-select-btn {
+  border-color: rgb(51 65 85 / .9);
+  background: rgb(15 23 42 / .88);
+  color: rgb(100 116 139);
+}
+html.dark .phone-table-select-btn:hover {
+  border-color: rgb(71 85 105);
+  color: rgb(203 213 225);
+}
+html.dark .phone-table-select-btn.is-selected {
+  border-color: color-mix(in srgb, var(--brand) 44%, transparent);
+  background: color-mix(in srgb, var(--brand) 18%, rgb(15 23 42));
+  color: var(--brand);
+}
+
+
+@media (max-width: 900px) {
+  .phone-inventory-table-v2 col:nth-child(1) { width: 2.35rem !important; }
+  .phone-table-select-btn { width: 1.35rem; height: 1.35rem; min-width: 1.35rem; min-height: 1.35rem; }
+}
+
+
+/* v35: keep severity badges as badges, not fixed icon slots */
+.detail-severity-badge {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 2rem !important;
+  flex: 0 1 auto !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+
+.detail-severity-badge > i,
+.detail-severity-badge > svg {
+  flex: 0 0 auto !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  min-height: 1rem !important;
+}
+
+@media (max-width: 640px) {
+  .detail-severity-badge {
+    max-width: 100% !important;
+    font-size: 10.5px !important;
+    padding-inline: .55rem !important;
+  }
+}
+
+/* ===== v36 phone card purchase date + compact table actions ===== */
+.phone-card-specs-row > span {
+  min-height: 1.45rem;
+  white-space: nowrap;
+}
+
+.phone-table-inline-actions {
+  gap: .35rem !important;
+  align-content: center;
+}
+
+.phone-table-action-btn {
+  min-height: 1.78rem !important;
+  min-width: 2.05rem !important;
+  padding: .28rem .44rem !important;
+  gap: .25rem !important;
+  border-radius: .8rem !important;
+  font-size: 9.25px !important;
+  box-shadow: 0 8px 18px -18px rgba(15, 23, 42, .22) !important;
+}
+
+.phone-table-action-btn i {
+  font-size: 9.25px !important;
+}
+
+.phone-table-action-btn:hover {
+  transform: translateY(-.5px) !important;
+  box-shadow: 0 10px 20px -18px rgba(15, 23, 42, .26) !important;
+}
+
+
+@media (max-width: 900px) {
+  .phone-table-action-btn { min-width: 1.9rem !important; min-height: 1.9rem !important; padding-inline: .38rem !important; }
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+[dir="rtl"] .truncate,
+.rtl .truncate {
+  unicode-bidi: plaintext;
+}
+
+.kpi-card,
+.stat-card,
+.metric-card {
+  min-width: 0;
+}
+
+.kpi-card *,
+.stat-card *,
+.metric-card * {
+  min-width: 0;
+}

@@ -1,0 +1,246 @@
+{
+  "phase": "PHASE_34_MODAL_FOUNDATION_DUPLICATE_SELECTOR_REDUCTION",
+  "scope": [
+    "styles/system/modal-people-foundation.css",
+    "styles/system/modal-products-foundation.css",
+    "styles/system/modal-partner-foundation.css",
+    "styles/system/finance-modal-field-polish-foundation.css"
+  ],
+  "method": "exact-only with extra safety: removed only duplicate rules whose selector and declaration body were identical and had no intervening rule with the same normalized selector",
+  "before": [
+    {
+      "file": "styles/system/modal-people-foundation.css",
+      "bytes_before": 17987,
+      "lines_before": 681,
+      "important_before": 129,
+      "rules_before": 83,
+      "exact_duplicates_before": 0
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes_before": 37827,
+      "lines_before": 1484,
+      "important_before": 239,
+      "rules_before": 188,
+      "exact_duplicates_before": 0
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes_before": 130894,
+      "lines_before": 3828,
+      "important_before": 1627,
+      "rules_before": 518,
+      "exact_duplicates_before": 13
+    },
+    {
+      "file": "styles/system/finance-modal-field-polish-foundation.css",
+      "bytes_before": 2670,
+      "lines_before": 133,
+      "important_before": 14,
+      "rules_before": 18,
+      "exact_duplicates_before": 0
+    }
+  ],
+  "after": [
+    {
+      "file": "styles/system/modal-people-foundation.css",
+      "bytes_after": 17987,
+      "lines_after": 681,
+      "important_after": 129,
+      "rules_after": 83,
+      "exact_duplicates_after": 0
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes_after": 37827,
+      "lines_after": 1484,
+      "important_after": 239,
+      "rules_after": 188,
+      "exact_duplicates_after": 0
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes_after": 129397,
+      "lines_after": 3792,
+      "important_after": 1611,
+      "rules_after": 511,
+      "exact_duplicates_after": 6
+    },
+    {
+      "file": "styles/system/finance-modal-field-polish-foundation.css",
+      "bytes_after": 2670,
+      "lines_after": 133,
+      "important_after": 14,
+      "rules_after": 18,
+      "exact_duplicates_after": 0
+    }
+  ],
+  "removed_count": 7,
+  "removed": [
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 514,
+      "prev": 478,
+      "start": 129249,
+      "end": 129449,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy small",
+      "same_selector_between_count": 0,
+      "body_preview": "display: none !important;",
+      "important_count": 1,
+      "bytes_removed": 200
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 509,
+      "prev": 490,
+      "start": 127284,
+      "end": 127548,
+      "selector": "html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow",
+      "same_selector_between_count": 0,
+      "body_preview": "background: rgb(15 23 42) !important; border-color: rgb(30 41 59) !important; color: rgb(203 213 225) !important;",
+      "important_count": 3,
+      "bytes_removed": 264
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 468,
+      "prev": 316,
+      "start": 114370,
+      "end": 114614,
+      "selector": "html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong, html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong",
+      "same_selector_between_count": 0,
+      "body_preview": "color: rgb(248 250 252) !important;",
+      "important_count": 1,
+      "bytes_removed": 244
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 455,
+      "prev": 419,
+      "start": 111611,
+      "end": 111793,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head .people-finance-modal__eyebrow",
+      "same_selector_between_count": 0,
+      "body_preview": "font-size: .48rem !important; line-height: 1 !important;",
+      "important_count": 2,
+      "bytes_removed": 182
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 453,
+      "prev": 416,
+      "start": 111238,
+      "end": 111451,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span",
+      "same_selector_between_count": 0,
+      "body_preview": "width: 24px !important; height: 24px !important; min-width: 24px !important; border-radius: 8px !important;",
+      "important_count": 4,
+      "bytes_removed": 213
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 446,
+      "prev": 346,
+      "start": 109714,
+      "end": 109954,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance",
+      "same_selector_between_count": 0,
+      "body_preview": "background: rgb(239 246 255) !important; border-color: rgb(191 219 254) !important;",
+      "important_count": 2,
+      "bytes_removed": 240
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 141,
+      "prev": 63,
+      "start": 29405,
+      "end": 29559,
+      "selector": ".partner-system-id-block--right .partner-system-id-value",
+      "same_selector_between_count": 0,
+      "body_preview": "direction: ltr !important; unicode-bidi: plaintext !important; text-align: right !important;",
+      "important_count": 3,
+      "bytes_removed": 154
+    }
+  ],
+  "deferred_count": 6,
+  "deferred": [
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 319,
+      "prev": 278,
+      "start": 78528,
+      "end": 78678,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card",
+      "same_selector_between_count": 1,
+      "body_preview": "grid-area: account !important;",
+      "important_count": 1
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 320,
+      "prev": 279,
+      "start": 78678,
+      "end": 78826,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel",
+      "same_selector_between_count": 1,
+      "body_preview": "grid-area: type !important;",
+      "important_count": 1
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 321,
+      "prev": 280,
+      "start": 78826,
+      "end": 78975,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right",
+      "same_selector_between_count": 1,
+      "body_preview": "grid-area: fields !important;",
+      "important_count": 1
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 322,
+      "prev": 281,
+      "start": 78975,
+      "end": 79130,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left",
+      "same_selector_between_count": 1,
+      "body_preview": "grid-area: desc !important;",
+      "important_count": 1
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 331,
+      "prev": 306,
+      "start": 81281,
+      "end": 81571,
+      "selector": ".partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right",
+      "same_selector_between_count": 1,
+      "body_preview": "display: grid !important; grid-template-columns: 1fr !important; gap: .55rem !important; align-content: start !important;",
+      "important_count": 4
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "idx": 491,
+      "prev": 316,
+      "start": 121571,
+      "end": 121815,
+      "selector": "html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong, html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong",
+      "same_selector_between_count": 1,
+      "body_preview": "color: rgb(248 250 252) !important;",
+      "important_count": 1
+    }
+  ],
+  "qa": {
+    "css_parser_error_count": 0,
+    "css_parser_errors": [],
+    "textual_newline_count": 0,
+    "textual_newline_files": [],
+    "brace_error_count": 0,
+    "brace_error_files": [],
+    "index_css_import_count": 58,
+    "missing_css_imports": [],
+    "runtime_override_import_count": 0,
+    "runtime_override_imports": []
+  }
+}

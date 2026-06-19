@@ -1,0 +1,77 @@
+
+/* v124 — hard physical grid for partner Telegram header */
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124 {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-areas: "actions title" !important;
+  align-items: start !important;
+  gap: 16px !important;
+  direction: ltr !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__title {
+  grid-area: title !important;
+  justify-self: end !important;
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  min-width: 0 !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__copy {
+  direction: rtl !important;
+  text-align: right !important;
+  min-width: 0 !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__copy h2,
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__copy p {
+  text-align: right !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__icon {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb) !important;
+  color: #fff !important;
+  box-shadow: 0 18px 40px -20px rgba(37, 99, 235, .85) !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-header-v124__actions {
+  grid-area: actions !important;
+  justify-self: start !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  direction: rtl !important;
+}
+
+@media (max-width: 980px) {
+  .partner-telegram-customer-copy-v119 .partner-telegram-header-v124 {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "title"
+      "actions" !important;
+    gap: 12px !important;
+    direction: rtl !important;
+  }
+
+  .partner-telegram-customer-copy-v119 .partner-telegram-header-v124__title {
+    justify-self: end !important;
+  }
+
+  .partner-telegram-customer-copy-v119 .partner-telegram-header-v124__actions {
+    justify-self: start !important;
+  }
+}

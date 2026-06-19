@@ -1,0 +1,139 @@
+
+/* v119 — Partner Telegram exact customer-panel parity */
+.partner-telegram-customer-copy-v119 {
+  direction: rtl !important;
+  overflow: hidden !important;
+}
+
+.partner-telegram-customer-copy-v119 *,
+.partner-telegram-customer-copy-v119 *::before,
+.partner-telegram-customer-copy-v119 *::after {
+  box-sizing: border-box !important;
+}
+
+.partner-telegram-customer-copy-v119 input,
+.partner-telegram-customer-copy-v119 textarea,
+.partner-telegram-customer-copy-v119 select {
+  box-shadow: none !important;
+}
+
+.partner-telegram-customer-copy-v119 input:focus,
+.partner-telegram-customer-copy-v119 textarea:focus,
+.partner-telegram-customer-copy-v119 select:focus {
+  outline: none !important;
+}
+
+@media (max-width: 1280px) {
+  .partner-telegram-customer-copy-v119 {
+    padding: 16px !important;
+    border-radius: 26px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-telegram-customer-copy-v119 {
+    padding: 12px !important;
+    border-radius: 22px !important;
+  }
+}
+
+
+/* v120 — RTL header and hard search reset */
+.partner-telegram-customer-copy-v119 {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-telegram-customer-copy-v119 .partner-telegram-search-row-v120 {
+  width: 100% !important;
+}
+
+.partner-telegram-searchbox-v120,
+.partner-telegram-searchbox-v120:hover,
+.partner-telegram-searchbox-v120:focus,
+.partner-telegram-searchbox-v120:focus-within,
+.partner-telegram-searchbox-v120:focus-visible {
+  width: min(100%, 520px) !important;
+  height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  direction: rtl !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  padding: 0 12px !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+}
+
+.partner-telegram-searchbox-v120__input,
+.partner-telegram-searchbox-v120__input:hover,
+.partner-telegram-searchbox-v120__input:focus,
+.partner-telegram-searchbox-v120__input:focus-visible,
+.partner-telegram-searchbox-v120__input:active {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  display: block !important;
+  border: 0 !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 40px !important;
+  text-align: right !important;
+  direction: rtl !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  caret-color: #0f172a !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.partner-telegram-searchbox-v120__input:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8 !important;
+  font-weight: 800 !important;
+}
+
+.partner-telegram-searchbox-v120 > i {
+  flex: 0 0 18px !important;
+  width: 18px !important;
+  text-align: center !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  order: 2 !important;
+}
+
+.partner-telegram-searchbox-v120__input {
+  order: 1 !important;
+}
+
+/* Keep title block anchored right and icon visually before Persian title */
+.partner-telegram-customer-copy-v119 [aria-label="مرکز گفتگوی تلگرام همکار"] {
+  direction: rtl !important;
+}
+
+.dark .partner-telegram-searchbox-v120,
+.dark .partner-telegram-searchbox-v120:hover,
+.dark .partner-telegram-searchbox-v120:focus-within {
+  border-color: rgba(51, 65, 85, .95) !important;
+  background: rgb(15, 23, 42) !important;
+  color: #f8fafc !important;
+}
+
+.dark .partner-telegram-searchbox-v120__input,
+.dark .partner-telegram-searchbox-v120__input:focus {
+  color: #e2e8f0 !important;
+}
+
+@media (max-width: 760px) {
+  .partner-telegram-searchbox-v120 {
+    width: 100% !important;
+  }
+}

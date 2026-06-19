@@ -1,0 +1,532 @@
+
+/* v60 FINAL — loaded last: customer edit modal native input hard reset
+   This file must stay after all global form/input CSS imports. */
+
+.customer-edit-v2-overlay .customer-edit-v2,
+.customer-edit-v2-overlay .customer-edit-v2 * {
+  box-sizing: border-box;
+}
+
+/* Single visual box: wrapper only */
+.customer-edit-v2-overlay .customer-edit-v2-native-field {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  direction: rtl !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-native-field:hover,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus-visible,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:has(input:focus),
+.customer-edit-v2-overlay .customer-edit-v2-native-field:has(input:focus-visible) {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-native-field.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+/* The actual input must never render as a box. */
+.customer-edit-v2-overlay input.customer-edit-v2-native-input,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:active,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus-visible,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus-within {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-native-input--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-native-input--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-native-input::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+}
+
+/* Divider and icon are the only right-side UI elements. */
+.customer-edit-v2-overlay .customer-edit-v2-native-divider {
+  all: unset !important;
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  border-radius: 999px !important;
+  background: rgba(203, 213, 225, .96) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-native-icon {
+  all: unset !important;
+  grid-column: 3 !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-native-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+/* Chrome autofill must not recreate a visual input layer. */
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill:focus-visible {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+/* Textareas: keep consistent no-blue-focus behavior. */
+.customer-edit-v2-overlay .customer-edit-v2-field__control--textarea .customer-edit-v2-textarea,
+.customer-edit-v2-overlay .customer-edit-v2-field__control--textarea .customer-edit-v2-textarea:hover,
+.customer-edit-v2-overlay .customer-edit-v2-field__control--textarea .customer-edit-v2-textarea:focus,
+.customer-edit-v2-overlay .customer-edit-v2-field__control--textarea .customer-edit-v2-textarea:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+/* Dark mode */
+.dark .customer-edit-v2-overlay .customer-edit-v2-native-field,
+.dark .customer-edit-v2-overlay .customer-edit-v2-native-field:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-native-field:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay input.customer-edit-v2-native-input {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill,
+.dark .customer-edit-v2-overlay input.customer-edit-v2-native-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgb(248, 250, 252) !important;
+  caret-color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-native-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-native-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}
+
+
+/* v61 — dedicated customer-edit controls: no double box, no blue focus */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:active,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203, 213, 225, .96) !important;
+  border-radius: 999px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-input {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}
+
+
+/* v62 — crash fix cleanup: no React focus state dependency */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  box-shadow: none !important;
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+
+/* v64 — force the inner input layer to be visually invisible; wrapper is the only box */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.customer-edit-v2-overlay .customer-edit-v2-native-field {
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:hover,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-control-input,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus-visible,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus-visible {
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+
+/* v65 — final: no real input for customer name/phone, so global input focus CSS cannot apply */
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: #fff !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus-visible,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:active {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+  pointer-events: none !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  border-radius: 999px !important;
+  background: rgba(203, 213, 225, .96) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}

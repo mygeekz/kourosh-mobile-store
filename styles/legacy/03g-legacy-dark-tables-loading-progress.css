@@ -1,0 +1,253 @@
+@layer components {
+  .dark .ux-btn-success {
+    box-shadow: 0 16px 30px -22px rgba(16,185,129,0.65);
+  }
+
+  .dark .page-shell-actions > .ux-btn,
+  .dark .page-shell-actions > a.ux-btn,
+  .dark .page-shell-actions > button.ux-btn {
+    border-color: rgba(56,189,248,0.14);
+  }
+
+  .dark .installment-table-actions .ux-btn,
+  .dark .installment-card-actions .ux-btn {
+    min-height: 34px;
+  }
+}
+
+@layer components {
+  .dark .ux-table-shell { background-color: rgb(2 6 23 / 0.82); }
+  .dark .ux-table-shell__header { background-image: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(2,6,23,0.95)); }
+  .dark .ux-table-shell__kicker { }
+}
+
+.inventory-pastel-card-compact { min-height: 120px; padding: 1rem; }
+  .dark .inventory-pastel-card { background-image: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.92)); border-color: rgba(51,65,85,0.84); }
+  .dark .inventory-pastel-card .text-slate-950 { color: rgb(248 250 252); }
+
+@layer components {
+  .installments-page .page-shell-kicker {
+  }
+
+  .installments-page .page-shell-status-chip {
+  }
+
+  .installments-page .ux-toolbar-search__input,
+  .products-page .ux-toolbar-search__input {
+    min-height: 3rem;
+    background-color: rgb(255 255 255 / 0.96);
+  }
+
+  .dark .installments-page .ux-toolbar-search__input,
+  .dark .products-page .ux-toolbar-search__input {
+    min-height: 3rem;
+    background-color: rgb(2 6 23 / 0.92);
+  }
+
+  .installments-page .ux-toolbar-search__icon,
+  .products-page .ux-toolbar-search__icon {
+  }
+
+  .installment-form-page .app-input,
+  .installment-form-page .app-select,
+  .installment-form-page .app-textarea,
+  .installment-form-page input:not([type='checkbox']):not([type='radio']),
+  .installment-form-page select,
+  .installment-form-page textarea {
+  }
+
+  .installment-form-page .app-select,
+  .installment-form-page select {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+  }
+}
+
+  .app-toast-loading {
+    border-color: rgba(14,165,233,0.22);
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(239,246,255,0.98));
+    box-shadow: 0 22px 44px -34px rgba(14,165,233,0.24);
+  }
+
+  .dark .app-toast-loading {
+    border-color: rgba(14,165,233,0.28);
+    background-image: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(12,25,43,0.98));
+    box-shadow: 0 24px 48px -34px rgba(2,132,199,0.3);
+  }
+
+.button-loading-stage-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  padding: 0.2rem;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dark .button-loading-stage-icon {
+  background: rgba(15, 23, 42, 0.42);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.button-loading-progress {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  margin-top: 0.18rem;
+  width: 100%;
+  max-width: 8rem;
+}
+
+.button-loading-progress__bar {
+  height: 0.18rem;
+  flex: 1 1 0;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.22);
+  overflow: hidden;
+  position: relative;
+  transition: background-color 180ms ease, transform 180ms ease, opacity 180ms ease;
+}
+
+.button-loading-progress__bar.is-done {
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.button-loading-progress__bar.is-current {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.button-loading-progress__bar.is-current::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(255,255,255,0.15), rgba(255,255,255,0.72), rgba(255,255,255,0.15));
+  animation: button-loading-progress-shimmer 1.2s linear infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes button-loading-progress-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.dark .button-loading-progress__bar {
+  background: rgba(51, 65, 85, 0.55);
+}
+
+.dark .button-loading-progress__bar.is-done {
+  background: rgba(226, 232, 240, 0.34);
+}
+
+.dark .button-loading-progress__bar.is-current {
+  background: rgba(226, 232, 240, 0.2);
+}
+
+.ux-btn__progress-strip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  width: 100%;
+  direction: ltr;
+}
+.ux-btn__progress-segment {
+  flex: 1 1 0%;
+  height: 0.2rem;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.22);
+  overflow: hidden;
+  position: relative;
+}
+.ux-btn__progress-segment[data-state="done"] {
+  background: rgba(255,255,255,0.34);
+}
+.ux-btn__progress-segment[data-state="active"] {
+  background: rgba(255,255,255,0.22);
+}
+.ux-btn__progress-segment[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.62), rgba(255,255,255,0.12));
+  animation: ux-btn-progress-shimmer 1.2s linear infinite;
+  transform: translateX(-100%);
+}
+@keyframes ux-btn-progress-shimmer {
+  100% { transform: translateX(100%); }
+}
+.dark .ux-btn__progress-segment {
+  background: rgba(51, 65, 85, 0.5);
+}
+.dark .ux-btn__progress-segment[data-state="done"] {
+  background: rgba(226, 232, 240, 0.3);
+}
+.dark .ux-btn__progress-segment[data-state="active"] {
+  background: rgba(148, 163, 184, 0.24);
+}
+
+.ux-btn[data-success-pulse='true'] {
+  box-shadow: 0 20px 40px -26px rgba(16, 185, 129, 0.38);
+}
+
+.ux-btn[data-success-pulse='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.06) 28%, rgba(255,255,255,0.16) 48%, transparent 72%);
+  transform: translateX(100%);
+  animation: ux-btn-loading-sheen 1.2s ease-out 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ux-btn__spinner--success {
+  border-color: rgba(16, 185, 129, 0.24);
+  background: rgba(16, 185, 129, 0.14);
+  color: rgb(209 250 229);
+  animation: none;
+}
+
+.button-loading-stage-icon--success {
+  background: rgba(16, 185, 129, 0.18);
+  color: rgb(209 250 229);
+}
+
+.ux-btn__hint--success {
+  color: rgba(220, 252, 231, 0.92);
+}
+
+.ux-btn__progress-strip--success .ux-btn__progress-segment {
+  background: rgba(16, 185, 129, 0.26);
+}
+
+.ux-btn__progress-strip--success .ux-btn__progress-segment[data-state="done"] {
+  background: rgba(220, 252, 231, 0.6);
+}
+
+.dark .ux-btn__spinner--success {
+  border-color: rgba(16, 185, 129, 0.34);
+  background: rgba(6, 78, 59, 0.42);
+  color: rgb(167 243 208);
+}
+
+.dark .button-loading-stage-icon--success {
+  background: rgba(6, 95, 70, 0.42);
+  color: rgb(167 243 208);
+}
+
+.dark .ux-btn__hint--success {
+  color: rgba(167, 243, 208, 0.9);
+}
+
+.dark .ux-btn__progress-strip--success .ux-btn__progress-segment {
+  background: rgba(6, 95, 70, 0.36);
+}
+
+.dark .ux-btn__progress-strip--success .ux-btn__progress-segment[data-state="done"] {
+  background: rgba(167, 243, 208, 0.5);
+}
+

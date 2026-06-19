@@ -1,0 +1,213 @@
+/* Phase 8: shared badges / KPI / detail severity extracted from legacy monolith */
+/* Detail severity language */
+.detail-severity-card{position:relative;overflow:hidden;border-radius:1rem;border:1px solid rgb(226 232 240 / 0.9);background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,252,.92));box-shadow:0 18px 34px -28px rgba(15,23,42,.24)}
+.dark .detail-severity-card{border-color:rgb(51 65 85 / 0.9);background:linear-gradient(180deg,rgba(15,23,42,.92),rgba(2,6,23,.88));box-shadow:0 22px 40px -32px rgba(2,6,23,.7)}
+.detail-severity-card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:rgba(148,163,184,.5)}
+.detail-severity-card--danger::before{background:linear-gradient(180deg,rgba(244,63,94,.95),rgba(251,113,133,.55))}
+.detail-severity-card--warning::before{background:linear-gradient(180deg,rgba(245,158,11,.95),rgba(251,191,36,.55))}
+.detail-severity-card--info::before{background:linear-gradient(180deg,rgba(14,165,233,.95),rgba(56,189,248,.55))}
+.detail-severity-card--success::before{background:linear-gradient(180deg,rgba(16,185,129,.95),rgba(52,211,153,.55))}
+.detail-severity-card--violet::before{background:linear-gradient(180deg,rgba(139,92,246,.95),rgba(167,139,250,.55))}
+.detail-severity-card--neutral::before{background:linear-gradient(180deg,rgba(148,163,184,.9),rgba(203,213,225,.55))}
+.detail-severity-badge{display:inline-flex;align-items:center;gap:.35rem;border-radius:9999px;border:1px solid rgb(226 232 240 / .9);padding:.3rem .65rem;font-size:11px;font-weight:700;line-height:1;background:rgba(248,250,252,.95);color:rgb(51 65 85)}
+.dark .detail-severity-badge{border-color:rgb(51 65 85 / .95);background:rgba(15,23,42,.9);color:rgb(226 232 240)}
+.detail-severity-badge--danger{border-color:rgb(251 113 133 / .35);background:rgba(255,241,242,.95);color:rgb(190 24 93)}
+.dark .detail-severity-badge--danger{border-color:rgb(190 24 93 / .38);background:rgba(76,5,25,.55);color:rgb(254 205 211)}
+.detail-severity-badge--warning{border-color:rgb(251 191 36 / .38);background:rgba(255,251,235,.95);color:rgb(180 83 9)}
+.dark .detail-severity-badge--warning{border-color:rgb(217 119 6 / .42);background:rgba(69,26,3,.55);color:rgb(253 230 138)}
+.detail-severity-badge--info{border-color:rgb(56 189 248 / .38);background:rgba(240,249,255,.96);color:rgb(3 105 161)}
+.dark .detail-severity-badge--info{border-color:rgb(14 116 144 / .42);background:rgba(8,47,73,.55);color:rgb(186 230 253)}
+.detail-severity-badge--success{border-color:rgb(52 211 153 / .38);background:rgba(236,253,245,.96);color:rgb(4 120 87)}
+.dark .detail-severity-badge--success{border-color:rgb(5 150 105 / .42);background:rgba(2,44,34,.55);color:rgb(167 243 208)}
+.detail-severity-badge--violet{border-color:rgb(167 139 250 / .4);background:rgba(245,243,255,.96);color:rgb(109 40 217)}
+.dark .detail-severity-badge--violet{border-color:rgb(109 40 217 / .42);background:rgba(46,16,101,.55);color:rgb(221 214 254)}
+.detail-severity-badge--neutral{border-color:rgb(203 213 225 / .9);background:rgba(248,250,252,.95);color:rgb(71 85 105)}
+.dark .detail-severity-badge--neutral{border-color:rgb(71 85 105 / .95);background:rgba(15,23,42,.9);color:rgb(203 213 225)}
+.detail-severity-panel{border-radius:1rem;border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.82);padding:.85rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.55)}
+.dark .detail-severity-panel{border-color:rgba(30,41,59,.95);background:rgba(2,6,23,.5);box-shadow:inset 0 1px 0 rgba(30,41,59,.45)}
+
+/* Unified badge, status pill, and KPI hierarchy sweep */
+@layer components {
+  .premium-kpi-strip,
+  .detail-kpi-grid,
+  .kpi-grid {
+    gap: 1rem;
+  }
+
+  .premium-kpi-card,
+  .kpi-card,
+  .detail-severity-card,
+  .detail-severity-panel {
+    border-radius: 1.15rem;
+  }
+
+  .premium-kpi-card,
+  .kpi-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgb(226 232 240 / 0.88);
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+    box-shadow: 0 20px 38px -30px rgba(15,23,42,0.18);
+  }
+
+  .dark .premium-kpi-card,
+  .dark .kpi-card {
+    border-color: rgb(51 65 85 / 0.88);
+    background: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.9));
+    box-shadow: 0 24px 40px -30px rgba(2,6,23,0.55);
+  }
+
+  .premium-kpi-card::after,
+  .kpi-card::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.12));
+    pointer-events: none;
+  }
+
+  .premium-kpi-label,
+  .kpi-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: rgb(100 116 139);
+  }
+
+  .dark .premium-kpi-label,
+  .dark .kpi-label {
+    color: rgb(148 163 184);
+  }
+
+  .premium-kpi-value,
+  .kpi-value {
+    margin-top: 0.6rem;
+    font-size: clamp(1.35rem, 1.1rem + 0.65vw, 2rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: rgb(15 23 42);
+  }
+
+  .dark .premium-kpi-value,
+  .dark .kpi-value {
+    color: rgb(248 250 252);
+  }
+
+  .kpi-hint,
+  .kpi-sub {
+    margin-top: 0.45rem;
+    font-size: 0.76rem;
+    line-height: 1.55;
+    color: rgb(100 116 139);
+  }
+
+  .dark .kpi-hint,
+  .dark .kpi-sub {
+    color: rgb(148 163 184);
+  }
+
+  .detail-severity-badge,
+  .premium-modal-badge,
+  .modal-premium-badge,
+  .customers-hero-badge,
+  .people-metric-pill,
+  .repair-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    min-height: 2rem;
+    border-radius: 9999px;
+    padding-inline: 0.78rem;
+    padding-block: 0.38rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+    box-shadow: 0 12px 26px -24px rgba(15,23,42,0.28);
+  }
+
+  .detail-severity-badge svg,
+  .premium-modal-badge svg,
+  .modal-premium-badge svg,
+  .customers-hero-badge svg,
+  .people-metric-pill svg,
+  .repair-status-pill svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .repair-status-pill {
+    min-width: 132px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .repair-status-pill .label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .detail-severity-badge,
+  .premium-modal-badge,
+  .modal-premium-badge,
+  .customers-hero-badge,
+  .people-metric-pill {
+    border-color: rgb(226 232 240 / 0.95);
+    background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(248,250,252,0.95));
+    color: rgb(51 65 85);
+  }
+
+  .dark .detail-severity-badge,
+  .dark .premium-modal-badge,
+  .dark .modal-premium-badge,
+  .dark .customers-hero-badge,
+  .dark .people-metric-pill,
+  .dark .repair-status-pill {
+    box-shadow: 0 14px 28px -24px rgba(2,6,23,0.52);
+  }
+
+  .detail-severity-badge--danger,
+  .detail-severity-badge--warning,
+  .detail-severity-badge--info,
+  .detail-severity-badge--success,
+  .detail-severity-badge--violet,
+  .detail-severity-badge--neutral {
+    backdrop-filter: blur(8px);
+  }
+
+  @media (max-width: 768px) {
+    .premium-kpi-strip,
+    .detail-kpi-grid,
+    .kpi-grid {
+      gap: 0.75rem;
+    }
+
+    .premium-kpi-card,
+    .kpi-card {
+      border-radius: 1rem;
+    }
+
+    .premium-kpi-value,
+    .kpi-value {
+      font-size: 1.35rem;
+    }
+
+    .detail-severity-badge,
+    .premium-modal-badge,
+    .modal-premium-badge,
+    .customers-hero-badge,
+    .people-metric-pill,
+    .repair-status-pill {
+      min-height: 1.85rem;
+      padding-inline: 0.7rem;
+      font-size: 0.69rem;
+    }
+  }
+}

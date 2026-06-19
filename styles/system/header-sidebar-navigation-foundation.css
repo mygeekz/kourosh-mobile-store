@@ -1,0 +1,2173 @@
+/* ===== Foundation source: styles/runtime-overrides/10e-header-final-polish.css ===== */
+/* ===== V49 Header final polish ===== */
+.header-premium-shell {
+  min-height: calc(var(--app-header-h) - 4px) !important;
+  box-shadow: 0 1px 0 rgba(15,23,42,.035), 0 12px 34px -32px rgba(15,23,42,.22);
+}
+
+.header-search-bar {
+  gap: .45rem !important;
+}
+
+.header-search-shell {
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 16px !important;
+  border-color: rgb(203 213 225 / .82) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  box-shadow: 0 12px 26px -24px rgba(15,23,42,.22) !important;
+  overflow: visible !important;
+  min-width: 0 !important;
+}
+
+.header-search-input {
+  min-height: 38px !important;
+  height: 38px !important;
+  font-size: .82rem !important;
+  padding-inline-start: 2.7rem !important;
+  padding-inline-end: .9rem !important;
+  min-width: 0 !important;
+  text-overflow: ellipsis !important;
+}
+
+.header-search-submit,
+.header-search-quick {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 13px !important;
+}
+
+.header-search-quick {
+  flex-basis: 32px !important;
+  border-color: rgb(203 213 225 / .82) !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow: 0 10px 22px -18px rgba(15,23,42,.22) !important;
+}
+
+.header-search-submit {
+  left: .25rem !important;
+}
+
+.header-search-submit i,
+.header-search-quick i,
+.header-action-icon i {
+  font-size: 12px !important;
+}
+
+.header-action-icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+}
+
+html.dark .header-premium-shell {
+  box-shadow: 0 1px 0 rgba(255,255,255,.035), 0 14px 34px -30px rgba(2,6,23,.65);
+}
+
+html.dark .header-search-shell {
+  border-color: rgb(51 65 85 / .92) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.9)) !important;
+  box-shadow: 0 16px 34px -28px rgba(2,6,23,.72) !important;
+}
+
+html.dark .header-search-quick {
+  border-color: rgb(51 65 85 / .92) !important;
+  background: rgba(15,23,42,.86) !important;
+}
+
+/* ===== Foundation source: styles/runtime-overrides/10f-sidebar-final-polish.css ===== */
+/* ===== V50 — Sidebar final premium polish ===== */
+.app-sidebar {
+  --sidebar-row-h: 38px;
+  box-shadow: -18px 0 44px -38px rgba(15, 23, 42, .28) !important;
+}
+
+html.dark .app-sidebar {
+  box-shadow: -18px 0 46px -36px rgba(2, 6, 23, .82) !important;
+}
+
+.app-sidebar .ux-sidebar-list {
+  gap: .25rem !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  min-height: var(--sidebar-row-h) !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:hover {
+  background: rgba(248, 250, 252, .88) !important;
+  border-color: rgba(226, 232, 240, .94) !important;
+  box-shadow: 0 14px 30px -26px rgba(15, 23, 42, .22) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row:hover {
+  background: rgba(15, 23, 42, .78) !important;
+  border-color: rgba(51, 65, 85, .78) !important;
+  box-shadow: 0 16px 32px -28px rgba(2, 6, 23, .75) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+  border-color: rgba(203,213,225,.92) !important;
+  box-shadow: 0 16px 34px -30px rgba(15,23,42,.24) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.92)) !important;
+  border-color: rgba(71,85,105,.78) !important;
+  box-shadow: 0 18px 36px -30px rgba(2,6,23,.82) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+  border-radius: 13px !important;
+  background: transparent !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:hover .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(255,255,255,.94) !important;
+  border-color: rgba(226,232,240,.94) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: 0 10px 20px -18px rgba(15,23,42,.22) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row:hover .icon-bubble,
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(15,23,42,.94) !important;
+  border-color: rgba(71,85,105,.82) !important;
+  color: rgb(226 232 240) !important;
+  box-shadow: 0 10px 20px -18px rgba(2,6,23,.85) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+  font-weight: 850 !important;
+  letter-spacing: -.01em !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] > span:last-child {
+  height: 18px !important;
+  right: 7px !important;
+}
+
+.app-sidebar .sidebar-support-shell {
+  padding: .55rem !important;
+  flex-shrink: 0;
+}
+
+.app-sidebar .sidebar-support-card {
+  border-radius: 18px !important;
+  padding: .45rem !important;
+  background: rgba(255,255,255,.96) !important;
+}
+
+html.dark .app-sidebar .sidebar-support-card {
+  background: rgba(2,6,23,.92) !important;
+}
+
+.app-sidebar .sidebar-support-link {
+  min-height: 42px !important;
+  display: grid !important;
+  grid-template-columns: 28px minmax(0, 1fr) !important;
+  grid-template-areas: "icon label" "icon phone" !important;
+  column-gap: .5rem !important;
+  row-gap: .05rem !important;
+  justify-content: stretch !important;
+  justify-items: start !important;
+  text-align: right !important;
+  padding: .45rem .6rem !important;
+  color: var(--app-nav-text) !important;
+  text-decoration: none !important;
+}
+
+.app-sidebar .sidebar-support-link i {
+  grid-area: icon;
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(241,245,249,.98);
+  color: rgb(51 65 85);
+}
+
+.app-sidebar .sidebar-support-link span {
+  grid-area: label;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgb(51 65 85);
+  line-height: 1.2;
+}
+
+.app-sidebar .sidebar-support-link b {
+  grid-area: phone;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgb(100 116 139);
+  line-height: 1.2;
+}
+
+html.dark .app-sidebar .sidebar-support-link i {
+  background: rgba(15,23,42,.96);
+  color: rgb(226 232 240);
+}
+
+html.dark .app-sidebar .sidebar-support-link span {
+  color: rgb(226 232 240);
+}
+
+html.dark .app-sidebar .sidebar-support-link b {
+  color: rgb(148 163 184);
+}
+
+@media (min-width: 768px) {
+  .app-sidebar[style*="72px"] .sidebar-support-shell {
+    display: none !important;
+  }
+}
+
+/* ===== Foundation source: styles/runtime-overrides/10g-layout-shell-final-qa.css ===== */
+/* ===== V51 — Layout shell final QA polish ===== */
+.app-layout-shell {
+  isolation: isolate;
+  contain: layout style;
+  background: rgb(248 250 252);
+}
+
+html.dark .app-layout-shell {
+  background: rgb(2 6 23);
+}
+
+.app-content-shell {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+  background: rgb(248 250 252);
+}
+
+html.dark .app-content-shell {
+  background: rgb(2 6 23);
+}
+
+.app-main-scroll {
+  position: relative;
+  z-index: 0;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
+  scroll-behavior: smooth;
+  padding-block: var(--app-page-gap) !important;
+  padding-inline: var(--app-page-gap) !important;
+}
+
+.header-premium-shell {
+  flex-shrink: 0;
+  position: sticky !important;
+  top: 0;
+  z-index: 140 !important;
+}
+
+.app-sidebar {
+  z-index: 70 !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+}
+
+.app-sidebar .ux-nav-compact {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+/* Keep collapsed sidebar perfectly compact regardless of exact inline width (78px in MainLayout). */
+@media (min-width: 768px) {
+  .app-sidebar[style*="78px"] .sidebar-support-shell,
+  .app-sidebar[style*="76px"] .sidebar-support-shell,
+  .app-sidebar[style*="72px"] .sidebar-support-shell {
+    display: none !important;
+  }
+
+  .app-sidebar[style*="78px"] .ux-sidebar-list,
+  .app-sidebar[style*="76px"] .ux-sidebar-list,
+  .app-sidebar[style*="72px"] .ux-sidebar-list {
+    padding-inline: .45rem !important;
+  }
+
+  .app-sidebar[style*="78px"] .sidebar-nav-row,
+  .app-sidebar[style*="76px"] .sidebar-nav-row,
+  .app-sidebar[style*="72px"] .sidebar-nav-row {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-content-shell {
+    margin-right: 0 !important;
+  }
+
+  .app-main-scroll {
+    padding-inline: .75rem !important;
+    padding-block: .75rem !important;
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  .header-premium-shell {
+    min-height: 48px !important;
+  }
+}
+
+@media print {
+  .app-layout-shell,
+  .app-content-shell,
+  .app-main-scroll {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+}
+
+/* ===== Foundation source: styles/runtime-overrides/10h-icon-text-layout-contract.css ===== */
+/* ===== Stage 60 — Root icon/text/badge layout contract =====
+   Purpose: prevent icons, badges and text from overlapping in RTL controls.
+   This file is intentionally imported last in the runtime override chain.
+*/
+
+:root {
+  --ux-icon-slot-sm: 1.75rem;
+  --ux-icon-slot-md: 2.25rem;
+  --ux-icon-slot-lg: 2.75rem;
+  --ux-control-icon-gap: .55rem;
+  --ux-control-safe-pad: 3.25rem;
+  --ux-control-safe-pad-lg: 3.85rem;
+  --ux-count-dot-size: 1.5rem;
+
+  /* Navigation shell tokens consolidated from later :root block. */
+--app-nav-radius: 16px;
+  --app-nav-border: rgba(203, 213, 225, 0.82);
+  --app-nav-surface: rgba(255, 255, 255, 0.94);
+  --app-nav-surface-muted: rgba(248, 250, 252, 0.88);
+  --app-nav-text: rgb(51 65 85);
+  --app-nav-muted: rgb(100 116 139);
+  --app-nav-shadow-soft: 0 14px 30px -26px rgba(15, 23, 42, 0.24);
+  --app-nav-focus-ring: 0 0 0 3px rgba(14, 165, 233, 0.16);
+}
+
+/* Base invariant: icon/count slots never shrink and always center their glyph/value. */
+:where(
+  .icon-bubble,
+  .ux-btn__icon,
+  .ux-filter-chip__icon,
+  .ux-filter-chip__count,
+  .page-shell-status-chip i,
+  .dashboard-kpi-surface-pill i,
+  .header-quick-role-pill i,
+  .premium-input-leading-icon,
+  .field-icon-chip,
+  .app-inline-alert__icon,
+  .ux-inline-feedback__icon,
+  .financial-status-badge__icon,
+  .telegram-status-chip i,
+  .tg-chip i,
+  .people-chip i,
+  .reports-premium-chip i,
+  .report-date-preset-chip i
+) {
+  flex: 0 0 auto !important;
+  inline-size: auto;
+  min-inline-size: 0;
+}
+
+:where(.ux-btn__icon, .ux-filter-chip__icon, .premium-input-leading-icon, .field-icon-chip, .app-inline-alert__icon, .ux-inline-feedback__icon) {
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+:where(.ux-btn__label, .ux-btn__label-main, .page-shell-status-chip span, .dashboard-kpi-surface-pill span, .header-quick-role-pill span) {
+  min-inline-size: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sidebar rows: use an explicit RTL grid contract instead of relying on flexible margins. */
+.app-sidebar .sidebar-nav-row {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  column-gap: var(--ux-control-icon-gap) !important;
+  overflow: hidden !important;
+  padding-inline-end: .68rem !important;
+  padding-inline-start: .55rem !important;
+  touch-action: manipulation;
+  color: var(--app-nav-text) !important;
+}
+
+.app-sidebar .sidebar-nav-row > .icon-bubble {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  margin: 0 !important;
+  z-index: 1 !important;
+}
+
+.app-sidebar .sidebar-nav-row > .icon-bubble + span {
+  grid-column: 2 !important;
+  min-inline-size: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.app-sidebar .sidebar-nav-row > .icon-bubble + span > span {
+  display: block !important;
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.app-sidebar .sidebar-nav-row > i.fa-chevron-down,
+.app-sidebar .sidebar-nav-row > i.fa-angle-down,
+.app-sidebar .sidebar-nav-row > i.fa-chevron-left,
+.app-sidebar .sidebar-nav-row > i.fa-chevron-right {
+  grid-column: 3 !important;
+  justify-self: end !important;
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+.app-sidebar .sidebar-nav-row > .pointer-events-none.absolute {
+  grid-column: auto !important;
+}
+
+.app-sidebar .icon-bubble > span.absolute,
+.app-sidebar .icon-bubble [class*="absolute"] {
+  min-inline-size: 1.15rem !important;
+  block-size: 1.15rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  padding: 0 .25rem !important;
+  white-space: nowrap !important;
+}
+
+.app-sidebar .sidebar-nav-row .icon-bubble i {
+  display: block !important;
+  line-height: 1 !important;
+}
+
+/* Sidebar search: stable affix contract with explicit classes. */
+.app-sidebar .ux-sidebar-search {
+  position: relative !important;
+  min-inline-size: 0 !important;
+}
+
+.app-sidebar .ux-sidebar-search__input,
+.app-sidebar input[aria-label="جستجو در منو"] {
+  padding-inline-end: 4rem !important;
+  padding-inline-start: 3.5rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.app-sidebar .ux-sidebar-search__icon,
+.app-sidebar input[aria-label="جستجو در منو"] + i,
+.app-sidebar .fa-magnifying-glass.absolute.right-4 {
+  position: absolute !important;
+  inset-inline-end: .75rem !important;
+  inset-inline-start: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  inline-size: 2rem !important;
+  block-size: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  z-index: 2 !important;
+}
+
+.app-sidebar .ux-sidebar-search__clear,
+.app-sidebar input[aria-label="جستجو در منو"] ~ button[aria-label="پاک کردن جستجو"] {
+  position: absolute !important;
+  inset-inline-start: .5rem !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  inline-size: 2rem !important;
+  block-size: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  z-index: 2 !important;
+}
+
+/* Generic RTL input wrappers with absolute icons. Prevent placeholder/value text from sliding under icons. */
+[dir="rtl"] .relative > :where(i, span, button).absolute[class*="right-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select),
+[dir="rtl"] .relative > :where(i, span, button).absolute[class*="inset-y-0"][class*="right-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select),
+.relative[dir="rtl"] > :where(i, span, button).absolute[class*="right-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select) {
+  padding-inline-end: var(--ux-control-safe-pad-lg) !important;
+}
+
+[dir="rtl"] .relative > :where(i, span, button).absolute[class*="left-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select),
+[dir="rtl"] .relative > :where(i, span, button).absolute[class*="inset-y-0"][class*="left-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select),
+.relative[dir="rtl"] > :where(i, span, button).absolute[class*="left-"] ~ :where(input:not([type='checkbox']):not([type='radio']), textarea, select) {
+  padding-inline-start: var(--ux-control-safe-pad) !important;
+}
+
+/* PageKit / report search fields. */
+.ux-toolbar-search {
+  position: relative !important;
+  min-inline-size: 0 !important;
+}
+
+.ux-toolbar-search .ux-toolbar-search__icon {
+  position: absolute !important;
+  inset-inline-end: .85rem !important;
+  inset-inline-start: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  inline-size: 2rem !important;
+  block-size: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.ux-toolbar-search .ux-toolbar-search__input,
+.ux-toolbar-search input[type="search"] {
+  padding-inline-end: var(--ux-control-safe-pad-lg) !important;
+  padding-inline-start: 1.25rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* Filter chips: stable columns for icon, label and numeric badge. */
+.ux-filter-chip {
+  display: inline-grid !important;
+  grid-template-columns: auto minmax(0, max-content) auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  column-gap: .45rem !important;
+  min-inline-size: max-content !important;
+  max-inline-size: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.ux-filter-chip__icon {
+  inline-size: var(--ux-icon-slot-sm) !important;
+  block-size: var(--ux-icon-slot-sm) !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+}
+
+.ux-filter-chip > span:not(.ux-filter-chip__icon):not(.ux-filter-chip__count) {
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  line-height: 1.45 !important;
+}
+
+.ux-filter-chip__count {
+  display: inline-grid !important;
+  place-items: center !important;
+  min-inline-size: var(--ux-count-dot-size) !important;
+  block-size: var(--ux-count-dot-size) !important;
+  padding-inline: .35rem !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+  font-variant-numeric: tabular-nums !important;
+  white-space: nowrap !important;
+}
+
+/* Generic compact pills/badges that mix icons and text. */
+:where(.page-shell-status-chip, .dashboard-kpi-surface-pill, .header-quick-role-pill, .financial-status-badge, .telegram-status-chip, .reports-premium-chip, .report-date-preset-chip, .people-chip, .tg-chip) {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  min-inline-size: 0 !important;
+  white-space: nowrap !important;
+}
+
+:where(.page-shell-status-chip, .financial-status-badge, .telegram-status-chip, .reports-premium-chip, .people-chip, .tg-chip) > :where(span, b, strong) {
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* React Select sales item selector: reserve a right icon/action lane and keep placeholder readable. */
+.sales-select-shell .sellable-select__control {
+  min-height: 54px !important;
+  direction: rtl !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.sales-select-shell .sellable-select__value-container {
+  flex: 1 1 auto !important;
+  min-inline-size: 0 !important;
+  padding-inline: .9rem !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.sales-select-shell .sellable-select__placeholder,
+.sales-select-shell .sellable-select__single-value,
+.sales-select-shell .sellable-select__input-container {
+  text-align: right !important;
+  direction: rtl !important;
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.sales-select-shell .sellable-select__indicators {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  min-inline-size: auto !important;
+  padding-inline: .45rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  align-self: stretch !important;
+  gap: .25rem !important;
+  flex: 0 0 auto !important;
+  z-index: 1 !important;
+}
+
+.sales-select-shell .sellable-select__dropdown-indicator,
+.sales-select-shell .sellable-select__clear-indicator,
+.sales-select-shell .sellable-select__loading-indicator {
+  inline-size: 2rem !important;
+  block-size: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+}
+
+.sales-select-shell .sellable-select__loading-indicator {
+  color: rgb(100 116 139) !important;
+}
+
+.sales-select-shell .sellable-select__indicator-separator {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ux-control-safe-pad: 3rem;
+    --ux-control-safe-pad-lg: 3.5rem;
+  }
+
+  .ux-filter-chip {
+    max-inline-size: min(13rem, 72vw) !important;
+  }
+
+  .app-sidebar .sidebar-nav-row {
+    column-gap: .45rem !important;
+  }
+}
+
+/* ===== Phase 12 — Header / Sidebar / Navigation contract hardening =====
+   Scope is intentionally limited to existing semantic classes used by Header, Sidebar and MainLayout.
+   No global button/input reset is added here.
+*/
+
+
+html.dark {
+  --app-nav-border: rgba(51, 65, 85, 0.82);
+  --app-nav-surface: rgba(15, 23, 42, 0.88);
+  --app-nav-surface-muted: rgba(2, 6, 23, 0.72);
+  --app-nav-text: rgb(226 232 240);
+  --app-nav-muted: rgb(148 163 184);
+  --app-nav-shadow-soft: 0 16px 32px -28px rgba(2, 6, 23, 0.78);
+  --app-nav-focus-ring: 0 0 0 3px rgba(56, 189, 248, 0.14);
+}
+
+.header-premium-shell,
+.app-sidebar {
+  color: var(--app-nav-text);
+}
+
+.header-action-icon,
+.header-flat-icon-btn,
+.header-search-quick,
+.header-search-submit {
+  display: inline-grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  line-height: 1 !important;
+}
+
+.header-action-icon:focus-visible,
+.header-flat-icon-btn:focus-visible,
+.header-search-quick:focus-visible,
+.header-search-submit:focus-visible,
+.app-sidebar .sidebar-nav-row:focus-visible,
+.app-sidebar .sidebar-support-link:focus-visible {
+  outline: none !important;
+  box-shadow: var(--app-nav-focus-ring), var(--app-nav-shadow-soft) !important;
+}
+
+.header-search-scope-note,
+.header-quick-role-pill {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.app-sidebar .ux-nav-compact,
+.app-sidebar .ux-sidebar-list {
+  min-width: 0 !important;
+}
+
+.app-sidebar .sidebar-nav-row > span:nth-child(2),
+.app-sidebar .sidebar-nav-row > .icon-bubble + span {
+  min-width: 0 !important;
+}
+
+.app-sidebar .sidebar-nav-row > span:nth-child(2) small,
+.app-sidebar .sidebar-nav-row > span:nth-child(2) span,
+.app-sidebar .sidebar-nav-row > .icon-bubble + span small,
+.app-sidebar .sidebar-nav-row > .icon-bubble + span span {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.app-sidebar .sidebar-nav-row:hover,
+.app-sidebar .sidebar-nav-row[data-sidebar-active="true"] {
+  color: var(--app-nav-text) !important;
+}
+
+.app-sidebar .sidebar-nav-row[aria-disabled="true"],
+.app-sidebar .sidebar-nav-row[data-disabled="true"] {
+  cursor: not-allowed !important;
+  opacity: .58 !important;
+  transform: none !important;
+}
+
+.app-sidebar .sidebar-support-link:hover {
+  border-color: var(--app-nav-border) !important;
+  background: var(--app-nav-surface-muted) !important;
+}
+
+.app-content-shell,
+.app-main-scroll {
+  min-width: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .header-premium-shell {
+    padding-inline: .75rem !important;
+  }
+
+  .header-search-bar {
+    max-width: 100% !important;
+  }
+
+  .header-action-icon,
+  .header-flat-icon-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: 14px !important;
+  }
+}
+
+/* Stage 435 - Safe header rollback polish: no inner white icon bubble, single-layer search */
+.header-premium-shell {
+  min-height: 58px !important;
+  gap: .6rem !important;
+  padding-block: .42rem !important;
+}
+
+.header-search-bar {
+  display: flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  width: 100% !important;
+  max-width: 40rem !important;
+}
+
+.header-search-shell {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.header-search-shell::before,
+.header-search-shell::after {
+  display: none !important;
+  content: none !important;
+}
+
+.header-search-shell:focus-within {
+  border-color: rgba(148, 163, 184, .98) !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, .08) !important;
+}
+
+.header-search-input {
+  width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 1rem 0 2.85rem !important;
+  font-size: .82rem !important;
+  font-weight: 750 !important;
+  color: rgb(51 65 85) !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.header-search-input:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.header-search-input::placeholder {
+  color: rgb(148 163 184) !important;
+  font-weight: 650 !important;
+}
+
+.header-search-submit {
+  position: absolute !important;
+  left: .22rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border-radius: 14px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+  z-index: 2 !important;
+}
+
+.header-search-submit:hover {
+  background: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.header-search-quick,
+.header-action-icon {
+  box-shadow: none !important;
+}
+
+.header-search-quick {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 16px !important;
+}
+
+/* Remove the white patch/bubble behind quick-action icons. */
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button {
+  min-height: 40px !important;
+  max-height: 40px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="bg-white"],
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="dark:bg-slate"],
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="shadow"] {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="h-7"][class*="w-7"] {
+  width: 1.55rem !important;
+  height: 1.55rem !important;
+  min-width: 1.55rem !important;
+  border-radius: .75rem !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  ring-width: 0 !important;
+}
+
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="h-7"][class*="w-7"]::before,
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button span[class*="h-7"][class*="w-7"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button i {
+  line-height: 1 !important;
+}
+
+[data-ui-navigation="header"] [data-ui-header-quick-action] > button .fa-angle-down {
+  opacity: .7 !important;
+  margin-inline-start: .1rem !important;
+}
+
+.header-action-icon {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 16px !important;
+}
+
+html.dark .header-search-shell {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .86) !important;
+  box-shadow: none !important;
+}
+
+html.dark .header-search-input {
+  color: rgb(226 232 240) !important;
+}
+
+html.dark .header-search-submit {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .header-search-submit:hover {
+  background: rgb(15 23 42) !important;
+  color: rgb(248 250 252) !important;
+}
+
+@media (max-width: 1280px) {
+  .header-search-bar {
+    max-width: 34rem !important;
+  }
+
+  [data-ui-navigation="header"] [data-ui-header-quick-action] > button {
+    min-width: 106px !important;
+  }
+}
+
+/* Stage 436 - Isolated header search namespace, bypass legacy/form-field CSS */
+.header-search-v436 {
+  direction: ltr !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  width: 100% !important;
+}
+
+.header-search-v436__shell {
+  direction: rtl !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+}
+
+.header-search-v436__shell::before,
+.header-search-v436__shell::after {
+  display: none !important;
+  content: none !important;
+}
+
+.header-search-v436__shell:focus-within {
+  border-color: rgba(148, 163, 184, .98) !important;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, .08) !important;
+}
+
+.header-search-v436__input {
+  direction: rtl !important;
+  text-align: right !important;
+  width: 100% !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 1rem 0 2.85rem !important;
+  font-size: .82rem !important;
+  font-weight: 750 !important;
+  color: rgb(51 65 85) !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.header-search-v436__input:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.header-search-v436__input::placeholder {
+  color: rgb(148 163 184) !important;
+  font-weight: 650 !important;
+}
+
+.header-search-v436__submit {
+  position: absolute !important;
+  left: .22rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+  z-index: 2 !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.header-search-v436__submit:hover {
+  background: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.header-search-v436__quick {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .9) !important;
+  background: rgba(255, 255, 255, .92) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.header-search-v436__quick:hover {
+  background: rgb(248 250 252) !important;
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .header-search-v436__shell {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .86) !important;
+}
+
+html.dark .header-search-v436__input {
+  color: rgb(226 232 240) !important;
+}
+
+html.dark .header-search-v436__submit {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .header-search-v436__submit:hover {
+  background: rgb(15 23 42) !important;
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .header-search-v436__quick {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .82) !important;
+  color: rgb(203 213 225) !important;
+}
+
+@media (max-width: 1280px) {
+  .header-search-v436 {
+    max-width: 34rem !important;
+  }
+}
+
+/* Stage 437 - Smart premium viewport-aware header popovers */
+.header-smart-popover {
+  isolation: isolate !important;
+  border-color: rgba(226, 232, 240, .92) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.90)),
+    radial-gradient(circle at var(--header-quick-panel-origin-x, 50%) -16px, rgba(56,189,248,.18), transparent 34%) !important;
+  backdrop-filter: blur(18px) saturate(1.22) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(1.22) !important;
+  transform-origin: var(--header-quick-panel-origin-x, 50%) var(--header-quick-panel-origin-y, 0px) !important;
+  animation: headerSmartPopoverIn .18s cubic-bezier(.2,.8,.2,1) both;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, .42) transparent;
+}
+
+.header-smart-popover::-webkit-scrollbar {
+  width: 8px;
+}
+
+.header-smart-popover::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, .38);
+  border-radius: 999px;
+}
+
+.header-smart-popover__aura {
+  pointer-events: none;
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  background:
+    radial-gradient(circle at var(--header-quick-panel-origin-x, 50%) 0%, rgba(14,165,233,.16), transparent 32%),
+    linear-gradient(135deg, rgba(99,102,241,.06), transparent 42%, rgba(16,185,129,.06));
+  opacity: .95;
+}
+
+.header-smart-popover__arrow {
+  pointer-events: none;
+  position: absolute;
+  top: -6px;
+  left: calc(var(--header-quick-panel-origin-x, 50%) - 7px);
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  border-top: 1px solid rgba(226, 232, 240, .92);
+  border-left: 1px solid rgba(226, 232, 240, .92);
+  background: rgba(255, 255, 255, .94);
+  transform: rotate(45deg);
+  box-shadow: -4px -4px 12px rgba(15,23,42,.035);
+}
+
+.header-smart-popover[style*="100%"] .header-smart-popover__arrow {
+  top: auto;
+  bottom: -6px;
+  transform: rotate(225deg);
+}
+
+.header-quick-role-pill {
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.78) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78) !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile,
+[data-ui-header-quick-panel] .header-finance-pulse-mini {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile::before,
+[data-ui-header-quick-panel] .header-finance-pulse-mini::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,.34), transparent) !important;
+  transform: translateX(120%) !important;
+  animation: headerPremiumSheen 4.8s ease-in-out infinite !important;
+  pointer-events: none !important;
+}
+
+html.dark .header-smart-popover {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background:
+    linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.92)),
+    radial-gradient(circle at var(--header-quick-panel-origin-x, 50%) -16px, rgba(56,189,248,.16), transparent 34%) !important;
+}
+
+html.dark .header-smart-popover__arrow {
+  border-color: rgba(51, 65, 85, .86);
+  background: rgba(15,23,42,.96);
+}
+
+html.dark .header-smart-popover__aura {
+  background:
+    radial-gradient(circle at var(--header-quick-panel-origin-x, 50%) 0%, rgba(56,189,248,.14), transparent 32%),
+    linear-gradient(135deg, rgba(99,102,241,.10), transparent 42%, rgba(16,185,129,.08));
+}
+
+@keyframes headerSmartPopoverIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(.985);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes headerPremiumSheen {
+  0%, 62% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  72% {
+    opacity: .65;
+  }
+  100% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-smart-popover,
+  [data-ui-header-quick-panel] .header-finance-pulse-tile::before,
+  [data-ui-header-quick-panel] .header-finance-pulse-mini::before {
+    animation: none !important;
+  }
+}
+
+/* Stage 438 - Fix smart popover closed-state, native tooltip regression, and premium-only-open animation */
+.header-smart-popover {
+  animation: none !important;
+}
+
+.header-smart-popover[data-state="closed"],
+.header-smart-popover--closed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-4px) scale(.985) !important;
+}
+
+.header-smart-popover[data-state="open"],
+.header-smart-popover--open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  animation: headerSmartPopoverIn .18s cubic-bezier(.2,.8,.2,1) both !important;
+}
+
+/* Native browser title tooltips are removed in Header.tsx; this class is the premium visual layer only. */
+.header-smart-popover__arrow {
+  transition: left .16s ease, top .16s ease, bottom .16s ease, transform .16s ease !important;
+}
+
+/* If panel opens upward, TS sets transform-origin y to 100%; put the arrow visually at the bottom. */
+.header-smart-popover[style*="100%"] .header-smart-popover__arrow {
+  top: auto !important;
+  bottom: -6px !important;
+  transform: rotate(225deg) !important;
+}
+
+/* Force closed panels to stay visually gone even if older utility classes/animations collide. */
+[data-ui-header-quick-panel][data-state="closed"] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+[data-ui-header-quick-panel][data-state="open"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-smart-popover[data-state="open"],
+  .header-smart-popover--open {
+    animation: none !important;
+  }
+}
+
+/* Stage 439 - SmartTooltipLayer viewport-aware premium tooltip */
+.smart-tooltip-layer {
+  z-index: 1200 !important;
+  transform: none !important;
+  transition: opacity 120ms ease, transform 150ms cubic-bezier(.2,.8,.2,1) !important;
+  will-change: opacity, transform, left, top !important;
+}
+
+.smart-tooltip-layer--hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.smart-tooltip-layer--visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.smart-tooltip-layer--bottom.smart-tooltip-layer--visible {
+  transform: translateY(2px) scale(1) !important;
+}
+
+.smart-tooltip-layer--top.smart-tooltip-layer--visible {
+  transform: translateY(-2px) scale(1) !important;
+}
+
+.smart-tooltip-bubble {
+  position: relative !important;
+  max-width: min(340px, calc(100vw - 28px)) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .74) !important;
+  background:
+    radial-gradient(circle at var(--smart-tooltip-arrow-x, 50%) 0%, rgba(56, 189, 248, .18), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 20px 52px -30px rgba(15, 23, 42, .34), 0 10px 24px -22px rgba(15,23,42,.18) !important;
+  padding: 10px 13px !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.75 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  backdrop-filter: blur(14px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.18) !important;
+  white-space: normal !important;
+}
+
+.smart-tooltip-bubble::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 12px !important;
+  height: 12px !important;
+  border: 1px solid rgba(203, 213, 225, .74) !important;
+  background: rgba(255, 255, 255, .94) !important;
+  transform: rotate(45deg) !important;
+  border-radius: 3px !important;
+}
+
+.smart-tooltip-layer--bottom .smart-tooltip-bubble::after {
+  top: -7px !important;
+  left: calc(var(--smart-tooltip-arrow-x, 50%) - 6px) !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.smart-tooltip-layer--top .smart-tooltip-bubble::after {
+  bottom: -7px !important;
+  left: calc(var(--smart-tooltip-arrow-x, 50%) - 6px) !important;
+  border-left: 0 !important;
+  border-top: 0 !important;
+}
+
+.smart-tooltip-layer--left .smart-tooltip-bubble::after {
+  right: -7px !important;
+  top: calc(var(--smart-tooltip-arrow-y, 50%) - 6px) !important;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.smart-tooltip-layer--right .smart-tooltip-bubble::after {
+  left: -7px !important;
+  top: calc(var(--smart-tooltip-arrow-y, 50%) - 6px) !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+}
+
+html.dark .smart-tooltip-bubble {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background:
+    radial-gradient(circle at var(--smart-tooltip-arrow-x, 50%) 0%, rgba(56, 189, 248, .16), transparent 34%),
+    linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.94)) !important;
+  color: rgb(248 250 252) !important;
+  box-shadow: 0 24px 60px -32px rgba(2, 6, 23, .78), 0 10px 24px -22px rgba(2,6,23,.58) !important;
+}
+
+html.dark .smart-tooltip-bubble::after {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background: rgba(15, 23, 42, .96) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smart-tooltip-layer {
+    transition: none !important;
+  }
+}
+
+/* Stage 440 - Tooltip top layer + Apple-base header popovers */
+.smart-tooltip-layer {
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+}
+
+.smart-tooltip-bubble {
+  z-index: 2147483647 !important;
+}
+
+/* Apple-base: remove gradient/aura visual noise from header quick popovers. */
+.header-smart-popover {
+  z-index: 9000 !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  background: rgba(255, 255, 255, .98) !important;
+  background-image: none !important;
+  backdrop-filter: blur(16px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.04) !important;
+  box-shadow: 0 22px 60px -34px rgba(15, 23, 42, .24), 0 8px 20px -18px rgba(15, 23, 42, .14) !important;
+}
+
+.header-smart-popover__aura {
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+.header-smart-popover__arrow {
+  background: rgba(255, 255, 255, .98) !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  box-shadow: none !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile::before,
+[data-ui-header-quick-panel] .header-finance-pulse-mini::before {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile,
+[data-ui-header-quick-panel] .header-finance-pulse-mini {
+  background-image: none !important;
+}
+
+.header-smart-popover .header-quick-role-pill {
+  background: rgba(248, 250, 252, .96) !important;
+  box-shadow: none !important;
+}
+
+/* Keep the tooltip visually above open menus and avoid it being visually muted by menu layers. */
+.smart-tooltip-layer--visible {
+  z-index: 2147483647 !important;
+  filter: none !important;
+}
+
+html.dark .header-smart-popover {
+  border-color: rgba(51, 65, 85, .88) !important;
+  background: rgba(15, 23, 42, .98) !important;
+  background-image: none !important;
+  box-shadow: 0 24px 64px -36px rgba(2, 6, 23, .78), 0 8px 20px -18px rgba(2, 6, 23, .54) !important;
+}
+
+html.dark .header-smart-popover__arrow {
+  border-color: rgba(51, 65, 85, .88) !important;
+  background: rgba(15, 23, 42, .98) !important;
+}
+
+html.dark .header-smart-popover .header-quick-role-pill {
+  background: rgba(30, 41, 59, .96) !important;
+}
+
+/* Stage 441 - Body portal tooltip top-layer enforcement */
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  contain: layout style paint !important;
+  pointer-events: none !important;
+}
+
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] .smart-tooltip-bubble {
+  position: relative !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  transform: translateZ(0) !important;
+}
+
+/* Ensure header popovers/dropdowns can never overtake the body-portal tooltip. */
+.header-smart-popover,
+[data-ui-header-quick-panel],
+[data-ui-header-menu],
+[data-ui-dropdown],
+[role="menu"] {
+  z-index: 9000 !important;
+}
+
+/* App shell/header/sidebar layers must stay under tooltip top layer. */
+.header-premium-shell,
+[data-ui-navigation="header"],
+[data-ui-sidebar],
+[data-ui-navigation="sidebar"] {
+  z-index: 1000 !important;
+}
+
+/* Stage 442 - Solid restore modal + compact Alert Management related items */
+.restore-backup-modal-v22,
+.restore-backup-modal-v22 * {
+  box-sizing: border-box !important;
+}
+
+.restore-backup-modal-v22 {
+  isolation: isolate !important;
+}
+
+.restore-backup-modal-v22 .app-modal,
+.restore-backup-modal-v22 [data-ui-modal],
+.restore-backup-modal-v22 [role="dialog"],
+.restore-backup-modal-v22 > div {
+  background: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  box-shadow: 0 34px 92px -42px rgba(15, 23, 42, .34), 0 18px 36px -28px rgba(15,23,42,.18) !important;
+}
+
+.restore-backup-modal-v22::before,
+.restore-backup-modal-v22::after,
+.restore-backup-modal-v22 .app-modal::before,
+.restore-backup-modal-v22 .app-modal::after,
+.restore-backup-modal-v22 [role="dialog"]::before,
+.restore-backup-modal-v22 [role="dialog"]::after {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card {
+  position: relative !important;
+  isolation: isolate !important;
+  background: #fff7f7 !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  border: 1.5px solid rgba(251, 113, 133, .52) !important;
+  box-shadow: none !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card--danger {
+  background: #fff7f7 !important;
+  color: #0f172a !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__title,
+.restore-backup-modal-v22 .app-modal-confirm-card__text,
+.restore-backup-modal-v22 .app-modal-confirm-card__hint {
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__file {
+  color: #be123c !important;
+  font-weight: 950 !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__icon {
+  background: #ffe4e6 !important;
+  color: #be123c !important;
+  box-shadow: none !important;
+}
+
+html.dark .restore-backup-modal-v22 .app-modal,
+.dark .restore-backup-modal-v22 .app-modal,
+html.dark .restore-backup-modal-v22 [data-ui-modal],
+.dark .restore-backup-modal-v22 [data-ui-modal],
+html.dark .restore-backup-modal-v22 [role="dialog"],
+.dark .restore-backup-modal-v22 [role="dialog"],
+html.dark .restore-backup-modal-v22 > div,
+.dark .restore-backup-modal-v22 > div {
+  background: #0f172a !important;
+  background-image: none !important;
+  border-color: rgba(51, 65, 85, .88) !important;
+}
+
+html.dark .restore-backup-modal-v22 .app-modal-confirm-card,
+.dark .restore-backup-modal-v22 .app-modal-confirm-card {
+  background: rgba(69, 10, 10, .96) !important;
+  border-color: rgba(248, 113, 113, .42) !important;
+  color: #f8fafc !important;
+}
+
+/* Alert Management: only 3 items are rendered; make the section compact and fixed-height friendly. */
+.sib211-related {
+  padding: 10px !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, .98) !important;
+  background-image: none !important;
+  border: 1px solid rgba(226, 232, 240, .92) !important;
+}
+
+.sib211-related__title {
+  margin-bottom: 8px !important;
+}
+
+.sib211-related__title h3 {
+  font-size: .82rem !important;
+  line-height: 1.45 !important;
+}
+
+.sib211-related__grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.sib211-related__grid button {
+  min-height: 56px !important;
+  padding: 8px 9px !important;
+  border-radius: 14px !important;
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  grid-template-areas:
+    "icon title"
+    "icon meta" !important;
+  align-items: center !important;
+  gap: 2px 8px !important;
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+}
+
+.sib211-related__icon {
+  grid-area: icon !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+}
+
+.sib211-related strong {
+  grid-area: title !important;
+  font-size: .68rem !important;
+  line-height: 1.45 !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib211-related small {
+  grid-area: meta !important;
+  font-size: .56rem !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib211-related em {
+  display: none !important;
+}
+
+html.dark .sib211-related,
+.dark .sib211-related {
+  background: rgba(15, 23, 42, .96) !important;
+  border-color: rgba(51, 65, 85, .82) !important;
+}
+
+html.dark .sib211-related__grid button,
+.dark .sib211-related__grid button {
+  background: rgba(15, 23, 42, .86) !important;
+  border-color: rgba(51, 65, 85, .82) !important;
+}
+
+@media (max-width: 980px) {
+  .sib211-related__grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Stage 443 - Alert detail card alignment + full restore backup modal redesign */
+/* Alert Management: fix text/value falling under icons in detail and backend metric cards. */
+.sib211-detail-grid > div,
+.sib211-metrics__grid > article,
+.sib211-kpi {
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  grid-template-areas:
+    "label icon"
+    "value icon" !important;
+  align-items: center !important;
+  min-height: 78px !important;
+  padding: 10px 12px !important;
+  overflow: hidden !important;
+}
+
+.sib211-detail-grid > div > .sib217-detail-icon,
+.sib211-metrics__grid > article > span,
+.sib211-kpi > .sib211-kpi__icon {
+  grid-area: icon !important;
+  align-self: center !important;
+  justify-self: end !important;
+  margin: 0 !important;
+}
+
+.sib211-detail-grid > div > small,
+.sib211-metrics__grid > article > small,
+.sib211-kpi small {
+  grid-area: label !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
+  align-self: end !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: .72rem !important;
+  line-height: 1.35 !important;
+  color: #64748b !important;
+}
+
+.sib211-detail-grid > div > strong,
+.sib211-metrics__grid > article > strong,
+.sib211-kpi strong {
+  grid-area: value !important;
+  min-width: 0 !important;
+  justify-self: stretch !important;
+  align-self: start !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  font-size: .92rem !important;
+  line-height: 1.45 !important;
+  color: #0f172a !important;
+}
+
+.sib211-metrics__grid > article strong {
+  font-size: .86rem !important;
+}
+
+.sib211-impact {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+}
+
+.sib211-impact > div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-height: 42px !important;
+}
+
+.sib211-impact > div span,
+.sib211-impact > div strong {
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Restore backup modal: complete Apple-base redesign, solid surface, no glass bleed, no X button. */
+.restore-backup-modal-v22.app-modal-backdrop,
+.restore-backup-modal-v22.ux-overlay-backdrop {
+  background: rgba(15, 23, 42, .46) !important;
+  backdrop-filter: blur(10px) saturate(1.02) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.02) !important;
+  z-index: 11000 !important;
+}
+
+.restore-backup-modal-v22 .modal-surface,
+.restore-backup-modal-v22 .modal-shell-premium,
+.restore-backup-modal-v22 .premium-drawer-panel,
+.restore-backup-modal-v22 .detail-severity-card,
+.restore-backup-modal-v22 .app-modal {
+  width: min(560px, calc(100vw - 32px)) !important;
+  max-width: 560px !important;
+  height: auto !important;
+  max-height: calc(100dvh - 48px) !important;
+  overflow: hidden !important;
+  border-radius: 30px !important;
+  border: 1px solid rgba(226, 232, 240, .98) !important;
+  background: #fff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  box-shadow: 0 36px 100px -46px rgba(15, 23, 42, .42), 0 20px 42px -32px rgba(15, 23, 42, .24) !important;
+  isolation: isolate !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.restore-backup-modal-v22 .modal-surface::before,
+.restore-backup-modal-v22 .modal-surface::after,
+.restore-backup-modal-v22 .modal-shell-premium::before,
+.restore-backup-modal-v22 .modal-shell-premium::after,
+.restore-backup-modal-v22 .premium-drawer-panel::before,
+.restore-backup-modal-v22 .premium-drawer-panel::after,
+.restore-backup-modal-v22 .detail-severity-card::before,
+.restore-backup-modal-v22 .detail-severity-card::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+.restore-backup-modal-v22 .modal-premium-header,
+.restore-backup-modal-v22 .premium-drawer-panel__header {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 4px !important;
+  padding: 22px 24px 16px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+  background: #fff !important;
+  background-image: none !important;
+  text-align: right !important;
+}
+
+.restore-backup-modal-v22 .app-modal-title-row {
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.restore-backup-modal-v22 .modal-premium-kicker {
+  margin: 0 0 2px !important;
+  color: #64748b !important;
+  font-size: .75rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.restore-backup-modal-v22 .modal-premium-title {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+}
+
+.restore-backup-modal-v22 .modal-close-btn {
+  display: none !important;
+}
+
+.restore-backup-modal-v22 .modal-body-premium,
+.restore-backup-modal-v22 .premium-drawer-panel__body,
+.restore-backup-modal-v22 .detail-severity-panel {
+  padding: 20px 24px 22px !important;
+  background: #fff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  overflow-y: auto !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card {
+  display: grid !important;
+  grid-template-columns: 54px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: start !important;
+  padding: 18px !important;
+  border-radius: 24px !important;
+  background: #fff7f7 !important;
+  background-image: none !important;
+  border: 1.5px solid rgba(251, 113, 133, .56) !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__icon {
+  width: 54px !important;
+  height: 54px !important;
+  border-radius: 18px !important;
+  background: #ffe4e6 !important;
+  color: #be123c !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.2rem !important;
+  box-shadow: none !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__title {
+  margin: 0 0 8px !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  line-height: 1.85 !important;
+  font-weight: 950 !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__text,
+.restore-backup-modal-v22 .app-modal-confirm-card__hint {
+  margin: 0 !important;
+  color: #475569 !important;
+  font-size: .9rem !important;
+  line-height: 1.9 !important;
+  font-weight: 750 !important;
+}
+
+.restore-backup-modal-v22 .app-modal-confirm-card__file {
+  display: inline-block !important;
+  max-width: 100% !important;
+  vertical-align: middle !important;
+  color: #be123c !important;
+  font-weight: 950 !important;
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.restore-backup-modal-v22 .modal-actions,
+.restore-backup-modal-v22 [class*="ModalActions"],
+.restore-backup-modal-v22 .app-modal-actions {
+  margin-top: 18px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid rgba(226, 232, 240, .92) !important;
+}
+
+.restore-backup-modal-v22 button {
+  min-height: 46px !important;
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+}
+
+html.dark .sib211-detail-grid > div > strong,
+.dark .sib211-detail-grid > div > strong,
+html.dark .sib211-metrics__grid > article > strong,
+.dark .sib211-metrics__grid > article > strong,
+html.dark .sib211-kpi strong,
+.dark .sib211-kpi strong {
+  color: #f8fafc !important;
+}
+
+html.dark .restore-backup-modal-v22 .modal-surface,
+.dark .restore-backup-modal-v22 .modal-surface,
+html.dark .restore-backup-modal-v22 .modal-shell-premium,
+.dark .restore-backup-modal-v22 .modal-shell-premium,
+html.dark .restore-backup-modal-v22 .premium-drawer-panel,
+.dark .restore-backup-modal-v22 .premium-drawer-panel,
+html.dark .restore-backup-modal-v22 .detail-severity-card,
+.dark .restore-backup-modal-v22 .detail-severity-card,
+html.dark .restore-backup-modal-v22 .app-modal,
+.dark .restore-backup-modal-v22 .app-modal,
+html.dark .restore-backup-modal-v22 .modal-premium-header,
+.dark .restore-backup-modal-v22 .modal-premium-header,
+html.dark .restore-backup-modal-v22 .modal-body-premium,
+.dark .restore-backup-modal-v22 .modal-body-premium {
+  background: #0f172a !important;
+  background-image: none !important;
+  border-color: rgba(51, 65, 85, .88) !important;
+}
+
+html.dark .restore-backup-modal-v22 .modal-premium-title,
+.dark .restore-backup-modal-v22 .modal-premium-title,
+html.dark .restore-backup-modal-v22 .app-modal-confirm-card__title,
+.dark .restore-backup-modal-v22 .app-modal-confirm-card__title {
+  color: #f8fafc !important;
+}
+
+html.dark .restore-backup-modal-v22 .app-modal-confirm-card,
+.dark .restore-backup-modal-v22 .app-modal-confirm-card {
+  background: rgba(69, 10, 10, .96) !important;
+  border-color: rgba(248, 113, 113, .44) !important;
+}
+
+html.dark .restore-backup-modal-v22 .app-modal-confirm-card__text,
+.dark .restore-backup-modal-v22 .app-modal-confirm-card__text,
+html.dark .restore-backup-modal-v22 .app-modal-confirm-card__hint,
+.dark .restore-backup-modal-v22 .app-modal-confirm-card__hint {
+  color: #cbd5e1 !important;
+}
+
+@media (max-width: 640px) {
+  .restore-backup-modal-v22 .app-modal-confirm-card {
+    grid-template-columns: 1fr !important;
+  }
+
+  .restore-backup-modal-v22 .app-modal-confirm-card__icon {
+    justify-self: start !important;
+  }
+}
+
+/* Stage 444 - Search page icon alignment + solid payment modal + tooltip top-layer reinforcement */
+
+/* Search Results: icon always left, RTL input text, stat boxes with related icons */
+.search-results-search-shell {
+  direction: ltr !important;
+  position: relative !important;
+}
+
+.search-results-search-shell__icon {
+  left: 1rem !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  color: rgb(71 85 105) !important;
+}
+
+.search-results-search-shell__input {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-left: 3.15rem !important;
+  padding-right: 1rem !important;
+  height: 3.5rem !important;
+  min-height: 3.5rem !important;
+  line-height: 1.5 !important;
+}
+
+.search-results-stat-card {
+  display: grid !important;
+  grid-template-columns: 2.35rem minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .7rem !important;
+  text-align: right !important;
+  min-height: 5.35rem !important;
+}
+
+.search-results-stat-card__icon {
+  display: inline-grid !important;
+  width: 2.35rem !important;
+  height: 2.35rem !important;
+  place-items: center !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  background: #fff !important;
+  color: rgb(71 85 105) !important;
+}
+
+.search-results-stat-card__body {
+  min-width: 0 !important;
+}
+
+html.dark .search-results-stat-card__icon,
+.dark .search-results-stat-card__icon {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background: rgba(15, 23, 42, .92) !important;
+  color: rgb(203 213 225) !important;
+}
+
+/* Payment modal: enforce solid Apple-base surfaces; remove transparent/gradient/glass bleed. */
+.installment-payment-modal-shell-v444 {
+  background-color: rgba(15, 23, 42, .42) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+.installment-payment-modal-shell-v444 .modal-surface,
+.installment-payment-modal-shell-v444 .app-modal,
+.installment-payment-modal-shell-v444 [role="dialog"],
+.installment-payment-modal-shell-v444 .modal-shell-premium,
+.installment-payment-modal-shell-v444 .premium-drawer-panel {
+  background: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  box-shadow: 0 38px 96px -46px rgba(15, 23, 42, .38), 0 18px 36px -28px rgba(15, 23, 42, .20) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate !important;
+}
+
+.installment-payment-modal-shell-v444 .modal-surface::before,
+.installment-payment-modal-shell-v444 .modal-surface::after,
+.installment-payment-modal-shell-v444 .app-modal::before,
+.installment-payment-modal-shell-v444 .app-modal::after,
+.installment-payment-modal-shell-v444 .modal-shell-premium::before,
+.installment-payment-modal-shell-v444 .modal-shell-premium::after,
+.installment-payment-modal-shell-v444 .premium-drawer-panel::before,
+.installment-payment-modal-shell-v444 .premium-drawer-panel::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal {
+  position: relative !important;
+  z-index: 1 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  border-radius: 28px !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.installment-payment-modal-shell-v444 .installment-payment-modal__main,
+.installment-payment-modal-shell-v444 .installment-payment-modal__history,
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric,
+.installment-payment-modal-shell-v444 .installment-payment-modal__field input,
+.installment-payment-modal-shell-v444 .installment-payment-modal__empty,
+.installment-payment-modal-shell-v444 .installment-payment-modal__after-chip,
+.installment-payment-modal-shell-v444 .installment-payment-modal__status-chip {
+  background-image: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.installment-payment-modal-shell-v444 .installment-payment-modal__main {
+  background: #ffffff !important;
+  border: 1px solid rgb(226 232 240) !important;
+  box-shadow: none !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric--success {
+  background: #f0fdf4 !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric--warning {
+  background: #fffbeb !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__actions {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark .installment-payment-modal-shell-v444,
+.dark .installment-payment-modal-shell-v444 {
+  background-color: rgba(2, 6, 23, .76) !important;
+}
+
+html.dark .installment-payment-modal-shell-v444 .modal-surface,
+.dark .installment-payment-modal-shell-v444 .modal-surface,
+html.dark .installment-payment-modal-shell-v444 .app-modal,
+.dark .installment-payment-modal-shell-v444 .app-modal,
+html.dark .installment-payment-modal-shell-v444 [role="dialog"],
+.dark .installment-payment-modal-shell-v444 [role="dialog"],
+html.dark .installment-payment-modal-shell-v444 .modal-shell-premium,
+.dark .installment-payment-modal-shell-v444 .modal-shell-premium,
+html.dark .installment-payment-modal-shell-v444 .premium-drawer-panel,
+.dark .installment-payment-modal-shell-v444 .premium-drawer-panel,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal__main,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal__main {
+  background: #0f172a !important;
+  background-image: none !important;
+  border-color: rgba(51, 65, 85, .86) !important;
+}
+
+/* Tooltip top-layer reinforcement: body portal must stay above every menu/popover/modal. */
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"],
+.smart-tooltip-layer,
+.smart-tooltip-bubble {
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  pointer-events: none !important;
+}
+
+.header-smart-popover,
+[data-ui-header-quick-panel],
+[data-ui-header-menu],
+[data-ui-dropdown],
+[role="menu"],
+.modal-surface,
+.app-modal,
+.app-modal-backdrop {
+  z-index: 9000 !important;
+}
+
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] {
+  position: fixed !important;
+}

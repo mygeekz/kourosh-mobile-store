@@ -1,0 +1,157 @@
+
+/* v38 — based on v35. Only merges the two auto-message boxes:
+   "لحن پیام‌های خودکار" + "متن پیام‌ها توسط سیستم تولید می‌شود".
+   Does not touch Chat ID / customer connection sections. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 {
+  margin-top: 1.15rem;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 36px -30px rgba(15, 23, 42, 0.22);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(51, 65, 85, 0.95);
+  box-shadow: 0 16px 36px -28px rgba(2, 6, 23, 0.72);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header {
+  border-bottom-color: rgba(51, 65, 85, 0.95);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(191, 219, 254, 0.95);
+  background: rgba(239, 246, 255, 0.95);
+  color: rgb(37, 99, 235);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__icon {
+  border-color: rgba(59, 130, 246, 0.28);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgb(125, 211, 252);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 900;
+  color: rgb(15, 23, 42);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header strong {
+  color: rgb(248, 250, 252);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header p {
+  margin: 0.05rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.9;
+  color: rgb(71, 85, 105);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__header p {
+  color: rgb(148, 163, 184);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+/* Remove only duplicated inner card skin, while keeping each section controls. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel > div:first-child strong {
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel > div:first-child p {
+  margin-top: 0.25rem;
+  font-size: 0.79rem;
+  line-height: 1.9;
+}
+
+/* Tone buttons: max two lines, no explosion. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle {
+  width: 100%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button {
+  min-width: 0;
+  min-height: 4.35rem;
+  padding: 0.65rem 0.7rem;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button strong {
+  -webkit-line-clamp: 1;
+  line-height: 1.55;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button small {
+  -webkit-line-clamp: 2;
+  line-height: 1.45;
+  margin-top: 0.18rem;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel .flex.flex-wrap.gap-2 {
+  gap: 0.55rem !important;
+}
+
+@media (max-width: 980px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__body {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 {
+    padding: 1rem;
+    border-radius: 24px;
+  }
+}

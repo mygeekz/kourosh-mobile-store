@@ -1,0 +1,73 @@
+
+/* v44 — based on v43.
+   Force مرکز عملیات تلگرام to use the same content width as upper Telegram cards
+   and remove hidden max-width/centering from legacy wrappers. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  overflow: visible !important;
+}
+
+/* The actual operations card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > .rounded-\[28px\] {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode * {
+  box-sizing: border-box;
+}
+
+/* Keep inner layout readable while outer card fills the row. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child > .flex {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-sm {
+  max-width: 22rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-2xl {
+  max-width: 52rem !important;
+}
+
+/* Match upper cards' horizontal rhythm. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+  padding: 1.15rem 1.2rem !important;
+  border-radius: 28px !important;
+}
+
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child > .flex {
+    flex-direction: column !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-sm,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-2xl {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}

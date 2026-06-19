@@ -1,0 +1,144 @@
+
+/* v63 — Telegram log detail modal breathing-space pass
+   Goal: remove edge-to-edge feeling and give all cards safe internal margins. */
+
+/* Modal shell/content safe area */
+.tg-logs-detail-modal-overlay .modal-surface {
+  border-radius: 24px !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-premium-header {
+  padding: 0.82rem 1rem !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-body-premium {
+  padding: 1rem !important;
+  max-height: calc(100vh - 6.6rem) !important;
+}
+
+/* Main modal stack gets more breathing room */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+  gap: 0.9rem !important;
+}
+
+/* Top meta cards */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+  gap: 0.8rem !important;
+  margin-bottom: 0.15rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+  padding: 0.72rem 0.78rem !important;
+  min-height: 4.15rem !important;
+  border-radius: 18px !important;
+}
+
+/* 4 middle cards wrapper */
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorGrid {
+  gap: 0.8rem !important;
+  margin-top: 0.1rem !important;
+  margin-bottom: 0.15rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorHero,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  padding: 0.82rem 0.88rem !important;
+  min-height: 4.9rem !important;
+  border-radius: 18px !important;
+}
+
+/* Make the fix coach/action card less cramped */
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  gap: 0.7rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalQuickFix {
+  margin-top: 0.25rem !important;
+}
+
+/* Technical pre should not touch edges */
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+  margin-top: 0.65rem !important;
+  padding: 0.62rem !important;
+  border-radius: 12px !important;
+}
+
+/* Bottom debug/code area */
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+  gap: 0.8rem !important;
+  margin-top: 0.15rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  padding: 0.78rem !important;
+  border-radius: 18px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox strong {
+  margin-bottom: 0.48rem !important;
+  display: inline-block !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre {
+  margin-top: 0.3rem !important;
+  padding: 0.62rem !important;
+  border-radius: 12px !important;
+}
+
+/* Give each major band a little inset from modal edges */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modal > * {
+  margin-inline: 0.1rem !important;
+}
+
+/* Compact monitors */
+@media (max-width: 1100px) {
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    padding: 0.85rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+    gap: 0.75rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__errorGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    gap: 0.7rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__errorHero,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+    padding: 0.72rem !important;
+  }
+}
+
+/* Mobile / narrow windows */
+@media (max-width: 720px) {
+  .tg-logs-detail-modal-overlay .modal-premium-header {
+    padding: 0.72rem 0.82rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    padding: 0.72rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+    gap: 0.65rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__errorHero,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+    padding: 0.66rem !important;
+    border-radius: 16px !important;
+  }
+}

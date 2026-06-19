@@ -1,0 +1,144 @@
+/* Auto-generated UI Foundation: cross-module density pass.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/07f-cross-module-density-pass.css ===== */
+
+/* ===== v49 unified density pass: customers / partners / reports ===== */
+#customers-print-area table,
+.partners-table-shell table {
+  table-layout: fixed;
+}
+
+#customers-print-area th,
+#customers-print-area td,
+.partners-table-shell th,
+.partners-table-shell td {
+  padding-inline: 1rem !important;
+}
+
+#customers-print-area th:nth-child(1),
+#customers-print-area td:nth-child(1) {
+  width: 29% !important;
+}
+
+#customers-print-area th:nth-child(2),
+#customers-print-area td:nth-child(2) {
+  width: 16% !important;
+}
+
+#customers-print-area th:nth-child(3),
+#customers-print-area td:nth-child(3) {
+  width: 17% !important;
+}
+
+#customers-print-area th:nth-child(4),
+#customers-print-area td:nth-child(4) {
+  width: 14% !important;
+}
+
+#customers-print-area th:nth-child(5),
+#customers-print-area td:nth-child(5) {
+  width: 24% !important;
+}
+
+.partners-table-shell th:nth-child(1),
+.partners-table-shell td:nth-child(1) {
+  width: 24% !important;
+}
+
+.partners-table-shell th:nth-child(2),
+.partners-table-shell td:nth-child(2) {
+  width: 20% !important;
+}
+
+.partners-table-shell th:nth-child(3),
+.partners-table-shell td:nth-child(3) {
+  width: 16% !important;
+}
+
+.partners-table-shell th:nth-child(4),
+.partners-table-shell td:nth-child(4) {
+  width: 14% !important;
+}
+
+.partners-table-shell th:nth-child(5),
+.partners-table-shell td:nth-child(5) {
+  width: 26% !important;
+}
+
+#customers-print-area td:last-child > .flex,
+.partners-table-shell .partners-actions {
+  flex-wrap: nowrap !important;
+  gap: .35rem !important;
+}
+
+#customers-print-area td:last-child .people-action-btn,
+.partners-table-shell td:last-child .partners-action-btn {
+  min-height: 2.05rem !important;
+  border-radius: .9rem !important;
+  padding-inline: .72rem !important;
+  font-size: 11px !important;
+  gap: .38rem !important;
+}
+
+#customers-print-area td:last-child .people-detail-eye-btn__icon {
+  width: 1.2rem;
+  min-width: 1.2rem;
+  height: 1.2rem;
+}
+
+#customers-print-area td:nth-child(1) .truncate,
+.partners-table-shell td:nth-child(1) .truncate,
+.partners-table-shell td:nth-child(2) .font-medium,
+#customers-print-area td:nth-child(2) .font-medium {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-page :where(.overflow-auto, .overflow-x-auto, .overflow-hidden) > table,
+.report-page :where(.overflow-auto, .overflow-x-auto, .overflow-hidden) table.min-w-full {
+  table-layout: fixed;
+}
+
+.report-page table thead th,
+.report-page table tbody td {
+  padding: .68rem .75rem !important;
+}
+
+.report-page table thead th {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.01em;
+}
+
+.report-page table tbody td {
+  font-size: 12px !important;
+  line-height: 1.7;
+}
+
+.report-page table tbody td :where(.font-black, .font-bold) {
+  letter-spacing: -.01em;
+}
+
+.report-page table tbody td :where(.text-xs) {
+  font-size: 10px !important;
+}
+
+.report-page table tbody td :where(.rounded-full) {
+  white-space: nowrap;
+}
+
+.report-page table {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.compact-density-scope,
+.page-density-scope,
+.data-density-scope {
+  min-width: 0;
+}

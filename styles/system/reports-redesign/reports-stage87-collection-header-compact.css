@@ -1,0 +1,190 @@
+/* Stage 87 — Collection center header/layout compact polish
+   Scope: /reports/collection-center and /reports/collection-followup only.
+   Requested: only adjust header/control layout and reduce search height. */
+
+.collection-center-page .collection-center-hero {
+  background: #fff !important;
+}
+
+.collection-center-page .collection-center-hero__head {
+  padding: 14px 16px !important;
+}
+
+.collection-center-page .collection-center-hero__head > .flex {
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+.collection-center-page .collection-center-hero__head .grid {
+  gap: 10px !important;
+}
+
+.collection-center-page .collection-center-kpi {
+  min-height: 86px !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+/* Header controls area: tighter, cleaner and visually balanced. */
+.collection-center-page .collection-center-filter-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+  padding: 12px 14px !important;
+  align-items: stretch !important;
+  background: #fff !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:first-child {
+  order: 2 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) {
+  order: 1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(260px, 1fr) 190px 190px !important;
+  align-items: end !important;
+  gap: 10px !important;
+  direction: rtl !important;
+}
+
+/* Put search at the visual left while dates stay grouped. */
+.collection-center-page .collection-center-search {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(1) {
+  grid-column: 3 !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(2) {
+  grid-column: 2 !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(1),
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(2) {
+  height: 62px !important;
+  min-height: 62px !important;
+  padding: 7px !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(1) > div,
+.collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(2) > div {
+  margin-bottom: 5px !important;
+  padding-inline: 6px !important;
+  font-size: 11px !important;
+  line-height: 1.1 !important;
+}
+
+.collection-center-page .collection-center-filter-grid .app-date-field,
+.collection-center-page .collection-center-filter-grid .app-date-field__control {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.collection-center-page .collection-center-filter-grid input[data-app-date-input='true'],
+.collection-center-page .collection-center-filter-grid .app-date-field__input {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+  line-height: 38px !important;
+  text-align: center !important;
+  box-shadow: none !important;
+}
+
+.collection-center-page .collection-center-search i.fa-search,
+.collection-center-page .collection-center-search i.fa-magnifying-glass {
+  left: 14px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 13px !important;
+}
+
+.collection-center-page .collection-center-search input,
+.collection-center-page .collection-center-search .report-local-search-input {
+  height: 44px !important;
+  min-height: 44px !important;
+  line-height: 44px !important;
+  border-radius: 16px !important;
+  padding: 0 16px 0 42px !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* The pill under the local search made the search box visually too tall. */
+.collection-center-page .collection-center-search .report-local-filter-pill {
+  display: none !important;
+}
+
+.collection-center-page .collection-center-filter-grid button,
+.collection-center-page .collection-center-filter-grid .inline-flex.min-h-\[48px\] {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+}
+
+.collection-center-page .collection-center-filter-grid + .flex {
+  padding: 12px 14px !important;
+  gap: 8px !important;
+}
+
+.collection-center-page .collection-center-filter-grid + .flex button {
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 1024px) {
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .collection-center-page .collection-center-search {
+    grid-column: 1 / -1 !important;
+  }
+
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(1) {
+    grid-column: 2 !important;
+  }
+
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(2) {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .collection-center-page .collection-center-search,
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(1),
+  .collection-center-page .collection-center-filter-grid > div:nth-child(2) > div:nth-child(2) {
+    grid-column: 1 !important;
+  }
+}

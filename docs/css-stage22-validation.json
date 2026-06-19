@@ -1,0 +1,219 @@
+{
+  "stage": "22-css-governance-docs",
+  "css_files_scanned": 159,
+  "total_css_bytes": 1136112,
+  "total_css_kb": 1109.48,
+  "total_selector_entries": 6358,
+  "total_important_count": 7961,
+  "hotspot_selectors_3_or_more": 201,
+  "exact_duplicate_rule_groups": 77,
+  "missing_imports": [],
+  "brace_errors": [],
+  "parse_errors": [],
+  "unimported_local_css_count": 1,
+  "unimported_local_css_sample": [
+    "styles/global.css"
+  ],
+  "top_risk_files": [
+    {
+      "file": "styles/runtime-overrides/09b-telegram-control-center-monitoring.css",
+      "risk_level": "critical",
+      "risk_score": 14,
+      "kb": 37.37,
+      "selectors": 176,
+      "important_count": 536,
+      "domain": "Telegram",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/09c-telegram-template-center-cards.css",
+      "risk_level": "critical",
+      "risk_score": 14,
+      "kb": 35.34,
+      "selectors": 163,
+      "important_count": 540,
+      "domain": "Telegram",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/09e-telegram-accordion-logs-modals.css",
+      "risk_level": "critical",
+      "risk_score": 13,
+      "kb": 31.12,
+      "selectors": 240,
+      "important_count": 50,
+      "domain": "Telegram, Modals",
+      "risk_reasons": "runtime override imported after index.css; high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/03d-legacy-telegram-monitor-patches.css",
+      "risk_level": "critical",
+      "risk_score": 13,
+      "kb": 24.85,
+      "selectors": 147,
+      "important_count": 439,
+      "domain": "Telegram",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/08c-customers-partners-headers.css",
+      "risk_level": "critical",
+      "risk_score": 12,
+      "kb": 22.03,
+      "selectors": 103,
+      "important_count": 343,
+      "domain": "Partners, Customers, Header",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/05-mobile-phones.css",
+      "risk_level": "critical",
+      "risk_score": 12,
+      "kb": 19.57,
+      "selectors": 135,
+      "important_count": 112,
+      "domain": "Mobile Phones",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/03e-sidebar-settings-dashboard-root-fixes.css",
+      "risk_level": "critical",
+      "risk_score": 12,
+      "kb": 16.49,
+      "selectors": 64,
+      "important_count": 170,
+      "domain": "Sidebar, Dashboard, Settings",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/07b-products-modal-responsive-polish.css",
+      "risk_level": "critical",
+      "risk_score": 12,
+      "kb": 12.91,
+      "selectors": 113,
+      "important_count": 114,
+      "domain": "Modals, Products",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "risk_level": "critical",
+      "risk_score": 11,
+      "kb": 60.89,
+      "selectors": 320,
+      "important_count": 263,
+      "domain": "Telegram",
+      "risk_reasons": "very high !important count; large selector surface; sensitive UI/business domain; large file >50KB; active imported CSS"
+    },
+    {
+      "file": "styles/pages/reports.css",
+      "risk_level": "critical",
+      "risk_score": 11,
+      "kb": 58.98,
+      "selectors": 366,
+      "important_count": 355,
+      "domain": "Reports",
+      "risk_reasons": "very high !important count; large selector surface; sensitive UI/business domain; large file >50KB; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/09a-telegram-settings-foundation.css",
+      "risk_level": "critical",
+      "risk_score": 11,
+      "kb": 22.31,
+      "selectors": 131,
+      "important_count": 82,
+      "domain": "Telegram, Settings",
+      "risk_reasons": "runtime override imported after index.css; high !important count; medium selector surface; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/10b-finance-tables-density-system.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 16.77,
+      "selectors": 62,
+      "important_count": 179,
+      "domain": "Tables",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/08d-people-table-detail-contracts.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 16.49,
+      "selectors": 92,
+      "important_count": 240,
+      "domain": "People, Tables",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/01b-people-foundation-after-fields.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 16.25,
+      "selectors": 100,
+      "important_count": 123,
+      "domain": "People, Forms/Inputs",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/02c-repairs-apple-commercial.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 14.62,
+      "selectors": 78,
+      "important_count": 151,
+      "domain": "Repairs",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/04c-people-detail-pages.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 14.31,
+      "selectors": 67,
+      "important_count": 175,
+      "domain": "People",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/01a5-partner-command-detail-refinement.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 14.07,
+      "selectors": 87,
+      "important_count": 265,
+      "domain": "Partners",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/07a-products-modal-precision-cleanup.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 10.98,
+      "selectors": 55,
+      "important_count": 105,
+      "domain": "Modals, Products",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/09d9-telegram-monitor-anchoring-hotfixes.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 10.94,
+      "selectors": 35,
+      "important_count": 169,
+      "domain": "Telegram",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS"
+    },
+    {
+      "file": "styles/runtime-overrides/01a4-people-detail-repair-header-filters.css",
+      "risk_level": "high",
+      "risk_score": 10,
+      "kb": 9.43,
+      "selectors": 52,
+      "important_count": 181,
+      "domain": "People, Header, Repairs, Filters",
+      "risk_reasons": "runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+/* Stage155 — Executive board compact redesign */
+.smart-next-actions-list-v155 {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.smart-next-actions-item-v155 {
+  min-height: 132px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.88) !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 12px 28px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 760px) {
+  .smart-next-actions-list-v155 {
+    grid-template-columns: 1fr !important;
+  }
+  .smart-next-actions-item-v155 {
+    min-height: auto !important;
+  }
+}

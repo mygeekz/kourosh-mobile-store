@@ -1,0 +1,196 @@
+/* Phase 29 — Telegram global Apple surface and breathing room
+   Scope: only Settings > Telegram. Keeps existing DOM order; fixes cramped edges by expanding the shell padding.
+*/
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 {
+  --tg-surface: rgba(255, 255, 255, 0.96);
+  --tg-surface-soft: rgba(248, 250, 252, 0.96);
+  --tg-surface-muted: rgba(241, 245, 249, 0.86);
+  --tg-border: rgba(203, 213, 225, 0.88);
+  --tg-border-soft: rgba(226, 232, 240, 0.94);
+  --tg-text: #0f172a;
+  --tg-muted: #64748b;
+  --tg-icon-bg: rgba(248, 250, 252, 0.94);
+  width: 100% !important;
+  max-width: 1180px !important;
+  margin-inline: auto !important;
+  padding: 28px !important;
+  border: 1px solid var(--tg-border-soft) !important;
+  border-radius: 32px !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96)) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.07) !important;
+  overflow: visible !important;
+  color: var(--tg-text) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 {
+  --tg-surface: rgba(15, 23, 42, 0.96);
+  --tg-surface-soft: rgba(15, 23, 42, 0.92);
+  --tg-surface-muted: rgba(30, 41, 59, 0.7);
+  --tg-border: rgba(71, 85, 105, 0.72);
+  --tg-border-soft: rgba(51, 65, 85, 0.84);
+  --tg-text: #f8fafc;
+  --tg-muted: #cbd5e1;
+  --tg-icon-bg: rgba(30, 41, 59, 0.82);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94)) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Give the whole Telegram page more breathing room without moving individual objects manually. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 > * {
+  max-width: 100% !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 > .flex.items-start.justify-between,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-connect,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-chatid-guide,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-section-v2,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-center--compact,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-compact-body,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-studio-panel,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-route-status-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .tg-apple-setup-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-neutral-panel {
+  border: 1px solid var(--tg-border-soft) !important;
+  border-radius: 28px !important;
+  background: var(--tg-surface) !important;
+  background-image: none !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.055) !important;
+  overflow: visible !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 > .flex.items-start.justify-between {
+  padding: 22px 24px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-section-v2 {
+  padding: 26px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-form,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .grid.grid-cols-1.gap-4.md\:grid-cols-2,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-chatid-guide,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-connect,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card {
+  padding: 22px !important;
+}
+
+/* Neutralize colorful/glass decorative layers across Telegram, not just the monitor. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell::before,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell::after,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-section-v2::before,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-section-v2::after,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-command-card::before,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-compact-hero::before,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-compact-hero::after {
+  display: none !important;
+  opacity: 0 !important;
+  content: none !important;
+}
+
+/* Inner cards: keep Apple-neutral surfaces and consistent inset spacing. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-control-precision-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-v2-action,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-command-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-summary-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-route-status-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .modal-field,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .app-field,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-field--wide,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-chatid-results button,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 details {
+  border-color: var(--tg-border-soft) !important;
+  background: var(--tg-surface-soft) !important;
+  background-image: none !important;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 input,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 textarea,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 select,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-chatid-guide__steps li,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-merged-summary,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-operational-status,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-control-status-box {
+  border-color: var(--tg-border-soft) !important;
+  background: var(--tg-surface-muted) !important;
+  background-image: none !important;
+}
+
+/* Remove blue/cyan visual language from the whole Telegram form while keeping subtle status pills readable. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .bg-sky-50,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .bg-cyan-50,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .bg-blue-50,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .from-sky-50,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .from-cyan-50,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .from-blue-50 {
+  background: var(--tg-surface-soft) !important;
+  background-image: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .border-sky-200,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .border-cyan-200,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .border-blue-200 {
+  border-color: var(--tg-border-soft) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-sky-600,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-sky-700,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-cyan-600,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-blue-600 {
+  color: #334155 !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-sky-600,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-sky-700,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-cyan-600,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .text-blue-600 {
+  color: #dbeafe !important;
+}
+
+/* Top title icon also follows the neutral Apple surface. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 > .flex.items-start.justify-between .text-2xl > span,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card__icon,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-control-precision-card__icon,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-card-head > span {
+  border-color: var(--tg-border-soft) !important;
+  background: var(--tg-icon-bg) !important;
+  color: #334155 !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 > .flex.items-start.justify-between .text-2xl > span,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card__icon,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-control-precision-card__icon,
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-card-head > span {
+  color: #e2e8f0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-grid,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-control-precision-grid,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-template-command-strip,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-v2-actions {
+  gap: 16px !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 {
+    padding: 18px !important;
+    border-radius: 26px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-monitor-section-v2,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-form,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .grid.grid-cols-1.gap-4.md\:grid-cols-2,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-chatid-guide,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-connect,
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+}

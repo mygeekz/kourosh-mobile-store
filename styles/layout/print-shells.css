@@ -1,0 +1,55 @@
+/* Phase 10: extracted print shell polish */
+/* =========================
+   Print shells / invoice / receipt polish
+   ========================= */
+.report-print-shell,
+.print-sheet-premium,
+.receipt-shell-premium {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 22px;
+  box-shadow: 0 26px 56px -42px rgba(15,23,42,0.24);
+}
+
+.print-header-premium {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px dashed rgba(15,23,42,0.12);
+}
+
+.print-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.print-meta-card {
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.98));
+  padding: 10px 12px;
+}
+
+@media print {
+  .report-print-shell,
+  .print-sheet-premium,
+  .receipt-shell-premium {
+    border-radius: 18px !important;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+
+  .print-header-premium {
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .print-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

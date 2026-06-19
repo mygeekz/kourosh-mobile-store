@@ -1,0 +1,62 @@
+/* Stage 61 — Product sales table toolbar placement
+   Scope: /reports/product-sales table toolbar only.
+   Keeps the search and page-size control on one clean row and anchors the toolbar to the physical left side. */
+
+.product-sales-executive-page .product-sales-table-tools {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .65rem !important;
+  width: auto !important;
+  max-width: min(100%, 35rem) !important;
+  min-width: 0 !important;
+  direction: ltr !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  align-self: flex-start !important;
+  flex-wrap: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-table-search {
+  order: 1 !important;
+  width: 22.5rem !important;
+  min-width: 18rem !important;
+  max-width: 22.5rem !important;
+  flex: 0 1 22.5rem !important;
+}
+
+.product-sales-executive-page .product-sales-page-size-control {
+  order: 2 !important;
+  width: 10.4rem !important;
+  min-width: 10.4rem !important;
+  max-width: 10.4rem !important;
+  flex: 0 0 10.4rem !important;
+}
+
+.product-sales-executive-page .product-sales-table-search__editable {
+  min-width: 0 !important;
+}
+
+@media (max-width: 900px) {
+  .product-sales-executive-page .product-sales-table-tools {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-wrap: wrap !important;
+    margin-right: 0 !important;
+    align-self: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-table-search {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+  }
+
+  .product-sales-executive-page .product-sales-page-size-control {
+    width: 10.4rem !important;
+    max-width: 10.4rem !important;
+    flex: 0 0 10.4rem !important;
+  }
+}

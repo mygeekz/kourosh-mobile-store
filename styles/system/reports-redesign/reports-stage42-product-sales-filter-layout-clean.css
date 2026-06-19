@@ -1,0 +1,224 @@
+/* Stage 42 — Product sales filter layout cleanup
+   Scope: /reports/product-sales filter panel only.
+   Fixes: nested-looking controls, unused left space, RTL rhythm. */
+
+.product-sales-executive-page .product-sales-control-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: .5rem !important;
+  width: 100% !important;
+  padding: .62rem .72rem !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row,
+.product-sales-executive-page .product-sales-control-panel__row--dates,
+.product-sales-executive-page .product-sales-control-panel__row--modes {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .45rem !important;
+  margin: 0 !important;
+  align-self: stretch !important;
+  direction: rtl !important;
+  box-sizing: border-box !important;
+}
+
+/* Use the empty left side intentionally: update/profit segment sit on the far left. */
+.product-sales-executive-page .product-sales-control-panel__row--dates .product-sales-refresh-button {
+  margin-right: auto !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row--modes .product-sales-segment--profit {
+  margin-right: auto !important;
+}
+
+/* Remove container-inside-container look from date preset chips. */
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+.product-sales-executive-page .report-date-presets,
+.product-sales-executive-page .report-date-presets__chips {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .35rem !important;
+}
+
+.product-sales-executive-page .report-date-preset-chip,
+.product-sales-executive-page .product-sales-refresh-button,
+.product-sales-executive-page .product-sales-segment button {
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 .78rem !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  transform: none !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .report-date-preset-chip.is-active,
+.product-sales-executive-page .product-sales-segment button.is-active {
+  background: #f8fafc !important;
+  border-color: rgba(37, 99, 235, .28) !important;
+  color: #0f172a !important;
+}
+
+/* Make date fields a single clean box: label + one input surface, no nested borders. */
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 0 10.6rem !important;
+  width: 10.6rem !important;
+  min-width: 10.6rem !important;
+  max-width: 10.6rem !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  height: 16px !important;
+  min-height: 16px !important;
+  margin: 0 0 .12rem !important;
+  padding: 0 .18rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .25rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__icon,
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head i,
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head::before,
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head::after {
+  display: none !important;
+  content: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__label {
+  font-size: .66rem !important;
+  font-weight: 850 !important;
+  color: #64748b !important;
+  line-height: 1.2 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__body,
+.product-sales-executive-page .product-sales-date-field [data-ui-report-filter-body],
+.product-sales-executive-page .product-sales-date-field .app-date-field {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .app-date-field__control.report-simple-date-input,
+.product-sales-executive-page .product-sales-date-field .report-simple-date-input {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 .7rem !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .app-date-field__input,
+.product-sales-executive-page .product-sales-date-field input[data-app-date-input] {
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .app-date-field__icon {
+  display: none !important;
+}
+
+/* Segment groups should read as control groups, not cards nested in the panel. */
+.product-sales-executive-page .product-sales-segment {
+  min-height: 36px !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .35rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-segment__label {
+  padding: 0 .15rem !important;
+  color: #64748b !important;
+  font-size: .67rem !important;
+  font-weight: 850 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-segment button small {
+  margin-inline-start: .15rem !important;
+  color: #64748b !important;
+  font-weight: 900 !important;
+}
+
+@media (max-width: 980px) {
+  .product-sales-executive-page .product-sales-control-panel__row--dates .product-sales-refresh-button,
+  .product-sales-executive-page .product-sales-control-panel__row--modes .product-sales-segment--profit {
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-field {
+    flex: 1 1 10rem !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .product-sales-executive-page .product-sales-control-panel__row,
+  .product-sales-executive-page .product-sales-control-panel__row--dates,
+  .product-sales-executive-page .product-sales-control-panel__row--modes {
+    justify-content: flex-start !important;
+  }
+}

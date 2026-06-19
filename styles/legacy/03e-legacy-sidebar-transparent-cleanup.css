@@ -1,0 +1,66 @@
+  /* === Sidebar: transparent premium groups === */
+  .ux-nav-compact {
+    background: transparent;
+  }
+
+  .ux-nav-compact li > button,
+  .ux-nav-compact li > a {
+    background: transparent;
+  }
+
+/* Sidebar/Header cleanup */
+.ux-nav-compact li > button > div,
+.ux-nav-compact li > a > div {
+  background: transparent !important;
+  border-color: transparent !important;
+  border-radius: 16px !important;
+}
+
+.ux-nav-compact li > button:hover > div,
+.ux-nav-compact li > a:hover > div {
+  background: rgba(248,250,252,0.96) !important;
+  border-color: rgba(226,232,240,0.95) !important;
+}
+
+.ux-nav-compact .icon-bubble {
+  background: rgba(255,255,255,0.88) !important;
+  border: 1px solid rgba(226,232,240,0.92) !important;
+  color: rgb(71 85 105) !important;
+}
+
+html.dark .ux-nav-compact li > button > div,
+html.dark .ux-nav-compact li > a > div {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+html.dark .ux-nav-compact li > button:hover > div,
+html.dark .ux-nav-compact li > a:hover > div {
+  background: rgba(15,23,42,0.78) !important;
+  border-color: rgba(51,65,85,0.92) !important;
+}
+
+html.dark .ux-nav-compact .icon-bubble {
+  background: rgba(15,23,42,0.9) !important;
+  border: 1px solid rgba(51,65,85,0.95) !important;
+  color: rgb(226 232 240) !important;
+}
+
+/* v13 fixes */
+.ux-nav-compact li > button:hover > div,
+.ux-nav-compact li > a:hover > div,
+html.dark .ux-nav-compact li > button:hover > div,
+html.dark .ux-nav-compact li > a:hover > div {
+  background: transparent !important;
+  border-color: transparent !important;
+}
+
+.ux-nav-compact li > button:hover .icon-bubble,
+.ux-nav-compact li > a:hover .icon-bubble,
+html.dark .ux-nav-compact li > button:hover .icon-bubble,
+html.dark .ux-nav-compact li > a:hover .icon-bubble {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: inherit !important;
+}
+

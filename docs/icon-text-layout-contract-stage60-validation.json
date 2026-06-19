@@ -1,0 +1,15 @@
+{
+  "stage": "60",
+  "changes": [
+    "Added root-level icon/text/badge CSS contract",
+    "Imported the contract after final runtime overrides",
+    "Added react-select classNamePrefix and safe value/indicator spacing for SellableItemSelect"
+  ],
+  "checks": {
+    "css_brace_errors": [],
+    "missing_css_imports": [],
+    "contract_imported_last_runtime_block": true,
+    "sellable_select_prefix": true,
+    "uses_node_options": true
+  }
+}

@@ -1,0 +1,1483 @@
+/* UI Foundation Phase 02: consolidated modal cascade.
+   Source order is intentionally preserved.
+   Do not reorder chunks without visual regression testing. */
+
+/* ===== Source: styles/runtime-overrides/07a-products-modal-precision-cleanup.css ===== */
+/* Product modal, product management and responsive density refinements.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== v37 precision cleanup: phone specs, product modal alignment, centered table icons ===== */
+.phone-card-spec-pill,
+.phone-table-spec-pill {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.phone-card-spec-pill--numeric,
+.phone-table-spec-pill--numeric {
+  justify-content: center;
+  direction: ltr;
+}
+
+.phone-card-spec-pill__value,
+.phone-table-spec-pill__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.phone-card-spec-pill__value--text {
+  direction: rtl;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-card-specs-row > span {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.phone-card-specs-row .phone-card-spec-pill--numeric {
+  padding-inline: .5rem !important;
+}
+
+.phone-inventory-table-v2 .phone-table-device-stack {
+  min-width: 0;
+}
+
+.phone-inventory-table-v2 .phone-table-device-stack .phone-table-spec-pill {
+  max-width: 100%;
+}
+
+.phone-table-inline-actions {
+  gap: .32rem !important;
+}
+
+.phone-table-action-btn {
+  min-height: 1.7rem !important;
+  min-width: 1.9rem !important;
+  padding: .24rem .4rem !important;
+  gap: .22rem !important;
+  border-radius: .75rem !important;
+  font-size: 9px !important;
+}
+
+.phone-table-action-btn i {
+  font-size: 9px !important;
+}
+
+
+@media (max-width: 900px) {
+  .phone-inventory-table-v2 col:nth-child(2) { width: 29% !important; }
+  .phone-inventory-table-v2 col:nth-child(3) { width: 9.6rem !important; }
+  .phone-inventory-table-v2 col:nth-child(4) { width: 14rem !important; }
+  .phone-inventory-table-v2 th:nth-child(4),
+  .phone-inventory-table-v2 td:nth-child(4) { width: 14rem !important; }
+  .phone-table-action-btn {
+    min-width: 1.82rem !important;
+    min-height: 1.82rem !important;
+    padding-inline: .34rem !important;
+  }
+}
+
+.premium-modal-shell .premium-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.premium-modal-shell .premium-form-section {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.premium-modal-shell .modal-field-premium {
+  min-width: 0;
+}
+
+.premium-modal-shell .premium-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.premium-modal-shell .premium-input-leading-icon {
+  position: absolute;
+  inset-inline-start: .78rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  border-radius: 999px;
+  color: rgb(100 116 139);
+  background: transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.premium-modal-shell :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium) {
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+  padding-inline-start: 3rem !important;
+  padding-inline-end: .95rem !important;
+  line-height: 1.5;
+}
+
+.premium-modal-shell .app-field-feedback {
+  margin-top: .5rem;
+  min-height: 1.45rem;
+}
+
+.premium-modal-shell .app-field-feedback :where(.app-error, .app-help) {
+  align-items: flex-start;
+}
+
+.premium-modal-shell .app-field-feedback :where(.app-error, .app-help) span {
+  display: block;
+  min-width: 0;
+}
+
+.premium-modal-shell .premium-modal-note {
+  margin-top: .25rem;
+}
+
+.premium-modal-shell .premium-helper-inline {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  border-radius: 18px;
+  border: 1px dashed rgb(203 213 225 / .9);
+  background: rgb(248 250 252 / .82);
+  padding: .8rem .95rem;
+  line-height: 1.9;
+}
+
+.premium-modal-shell .premium-helper-inline i {
+  margin-top: .2rem;
+  flex: 0 0 auto;
+}
+
+.product-row-action-btn.ux-btn,
+button.product-row-action-btn.ux-btn,
+.product-row-action-btn.ux-icon-btn {
+  width: 2.2rem !important;
+  min-width: 2.2rem !important;
+  height: 2rem !important;
+  min-height: 2rem !important;
+  padding-inline: 0 !important;
+  border-radius: .82rem !important;
+}
+
+.product-row-action-btn .ux-btn__content {
+  width: 100% !important;
+  min-width: 0 !important;
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.product-row-action-btn .ux-btn__icon,
+.product-row-action-btn .ux-btn__spinner {
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+  min-width: 1.1rem !important;
+  min-height: 1.1rem !important;
+  flex-basis: 1.1rem !important;
+}
+
+.product-row-action-btn .ux-btn__icon > i,
+.product-row-action-btn .ux-btn__icon > svg {
+  width: 1rem !important;
+  height: 1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 1024px) {
+  .premium-modal-shell .premium-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== v38 global precision pass: action buttons + form fields =====
+   Scope: align existing controls only. No new feature or route. */
+:root {
+  --ui-action-icon-xs: 1.1rem;
+  --ui-action-icon-sm: 1.25rem;
+  --ui-field-icon-size: 1.75rem;
+  --ui-field-leading-offset: .78rem;
+  --ui-field-pad-start: 3rem;
+}
+
+:where(.ux-btn, .people-action-btn, .ledger-action-btn, .inventory-table-action-btn, .reports-action-btn, .backup-file-action, .unified-action-button) {
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+}
+
+:where(.ux-btn, .people-action-btn, .ledger-action-btn, .inventory-table-action-btn, .reports-action-btn, .backup-file-action, .unified-action-button) :where(.ux-btn__content, .btn__content) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  line-height: 1 !important;
+}
+
+:where(.ux-btn__icon, .inventory-table-action-btn > i, .ledger-action-btn > i, .people-action-btn > i, .reports-action-btn > i, .backup-file-action i, .unified-action-button i) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  flex: 0 0 auto !important;
+}
+
+:where(.ux-btn-xs, .inventory-table-action-btn, .ledger-action-btn, .reports-action-btn, .backup-file-action).ux-btn :where(.ux-btn__icon, .ux-btn__spinner),
+:where(.inventory-table-action-btn, .ledger-action-btn, .reports-action-btn, .backup-file-action) :where(.ux-btn__icon, .ux-btn__spinner) {
+  width: var(--ui-action-icon-xs) !important;
+  height: var(--ui-action-icon-xs) !important;
+  min-width: var(--ui-action-icon-xs) !important;
+  min-height: var(--ui-action-icon-xs) !important;
+  flex-basis: var(--ui-action-icon-xs) !important;
+}
+
+:where(.ux-btn-sm, .people-action-btn-tight, .unified-action-button) :where(.ux-btn__icon, .ux-btn__spinner) {
+  width: var(--ui-action-icon-sm) !important;
+  height: var(--ui-action-icon-sm) !important;
+  min-width: var(--ui-action-icon-sm) !important;
+  min-height: var(--ui-action-icon-sm) !important;
+  flex-basis: var(--ui-action-icon-sm) !important;
+}
+
+:where(.ux-btn__icon, .ux-btn__spinner) > :where(i, svg),
+:where(.inventory-table-action-btn, .ledger-action-btn, .people-action-btn, .reports-action-btn, .backup-file-action, .unified-action-button) :where(i, svg) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+
+:where(.ux-icon-btn, .inventory-table-action-btn.ux-icon-btn, .ledger-action-btn.ux-icon-btn, .reports-action-btn.ux-icon-btn) {
+  padding-inline: 0 !important;
+}
+
+:where(.customer-detail-actions, .ledger-actions-row, .installment-table-actions, .installment-card-actions, .backup-file-card__actions, .reports-actions-bar, .phone-table-inline-actions) {
+  align-items: center !important;
+}
+
+:where(.premium-input-wrap, .form-input-wrap, .modal-field-premium .premium-input-wrap, .price-input, .phone-addable-autocomplete, .addable-autocomplete) {
+  position: relative;
+  min-width: 0;
+}
+
+:where(.premium-input-leading-icon, .premium-input-leading-chip, .modal-field-premium .premium-input-leading-icon) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+:where(.premium-input-wrap) > :where(.premium-input-leading-icon, .premium-input-leading-chip) {
+  position: absolute;
+  inset-inline-start: var(--ui-field-leading-offset) !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: var(--ui-field-icon-size) !important;
+  height: var(--ui-field-icon-size) !important;
+  min-width: var(--ui-field-icon-size) !important;
+  min-height: var(--ui-field-icon-size) !important;
+  pointer-events: none;
+  z-index: 2;
+}
+
+:where(.premium-input-wrap) > :where(.premium-input-leading-icon, .premium-input-leading-chip) :where(i, svg) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+:where(.premium-input-wrap) > :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select, .app-textarea, input, select, textarea).has-leading-icon,
+:where(.premium-input-wrap) > :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium).premium-has-leading-icon {
+  padding-inline-start: var(--ui-field-pad-start) !important;
+  padding-inline-end: .95rem !important;
+}
+
+:where(.modal-field-premium, .form-field, .premium-form-section, .settings-data-card) :where(label, .modal-field-label) {
+  align-items: center;
+}
+
+:where(.app-field-feedback, .premium-helper-inline, .form-field-help, .field-hint) {
+  text-align: start !important;
+}
+
+:where(.app-field-feedback) :where(.app-error, .app-help),
+:where(.premium-helper-inline) {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: .5rem !important;
+}
+
+:where(.app-field-feedback, .premium-helper-inline) :where(i, svg) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1rem !important;
+  min-width: 1rem !important;
+  height: 1rem !important;
+  margin-top: .22rem !important;
+  line-height: 1 !important;
+}
+
+:where(.app-field-feedback, .premium-helper-inline) :where(span, p) {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ui-field-icon-size: 1.62rem;
+    --ui-field-leading-offset: .66rem;
+    --ui-field-pad-start: 2.7rem;
+  }
+
+  :where(.ux-btn-xs, .inventory-table-action-btn, .ledger-action-btn, .reports-action-btn, .backup-file-action) {
+    min-height: 2.35rem !important;
+  }
+
+  :where(.premium-input-wrap) > :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select, .app-textarea, input, select, textarea).has-leading-icon,
+  :where(.premium-input-wrap) > :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium).premium-has-leading-icon {
+    padding-inline-start: var(--ui-field-pad-start) !important;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/07b-products-modal-responsive-polish.css ===== */
+/* ===== v39 refinement: wider phone spec pills + Apple-clean product modal ===== */
+.phone-card-specs-row {
+  grid-template-columns: repeat(3, minmax(5.35rem, 1fr));
+  gap: .42rem !important;
+}
+
+.phone-card-spec-pill {
+  min-height: 1.9rem;
+  padding-inline: .5rem !important;
+  border-radius: 999px !important;
+}
+
+.phone-card-spec-pill--numeric,
+.phone-table-spec-pill--numeric {
+  gap: .3rem !important;
+}
+
+.phone-card-spec-pill__value,
+.phone-table-spec-pill__value {
+  overflow: visible;
+  text-overflow: clip;
+  font-variant-numeric: tabular-nums;
+}
+
+.phone-card-spec-pill__value--text {
+  width: 100%;
+  max-width: none;
+}
+
+.phone-table-device-stack .phone-table-spec-pill {
+  min-height: 1.8rem;
+  min-width: 4.8rem;
+  padding-inline: .46rem !important;
+}
+
+.phone-table-device-stack .phone-table-spec-pill:last-child {
+  min-width: 5.7rem;
+}
+
+.premium-modal-shell .premium-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.premium-modal-shell .premium-form-section {
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+}
+
+.dark .premium-modal-shell .premium-form-section {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: linear-gradient(180deg, rgba(15,23,42,0.94), rgba(2,6,23,0.9));
+}
+
+.premium-modal-shell .premium-section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: .25rem;
+}
+
+.premium-modal-shell .premium-section-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  min-width: 2.6rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: rgba(248, 250, 252, 0.96);
+  color: rgb(51 65 85);
+}
+
+.dark .premium-modal-shell .premium-section-title-icon {
+  border-color: rgba(51,65,85,0.9);
+  background: rgba(15,23,42,0.88);
+  color: rgb(226 232 240);
+}
+
+.premium-modal-shell .premium-form-section .modal-field-premium + .modal-field-premium,
+.premium-modal-shell .premium-form-section .modal-field-premium + .grid,
+.premium-modal-shell .premium-form-section .grid + .modal-field-premium,
+.premium-modal-shell .premium-form-section .grid + .premium-modal-note {
+  margin-top: .85rem;
+}
+
+.premium-modal-shell .premium-input-leading-icon {
+  width: 1.7rem;
+  height: 1.7rem;
+  min-width: 1.7rem;
+  min-height: 1.7rem;
+  color: rgb(100 116 139);
+}
+
+.premium-modal-shell :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium) {
+  background: rgba(255,255,255,0.98);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 8px 20px -18px rgba(15,23,42,0.12);
+}
+
+.dark .premium-modal-shell :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium) {
+  background: rgba(15,23,42,0.88);
+}
+
+.premium-modal-shell .premium-price-field {
+  min-width: 0;
+}
+
+.premium-modal-shell .premium-price-field .price-input {
+  width: 100%;
+}
+
+.premium-modal-shell .premium-price-field .price-input__field {
+  min-height: 3.15rem;
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 12px 26px -22px rgba(15,23,42,0.16);
+}
+
+.premium-modal-shell .premium-price-field .price-input > .mb-2 {
+  margin-bottom: .55rem;
+}
+
+.premium-modal-shell .premium-price-field .unified-field-chip {
+  border-radius: 999px;
+  padding: .26rem .6rem;
+}
+
+.premium-modal-shell .app-field-feedback {
+  min-height: 1.4rem;
+}
+
+.premium-modal-shell .app-help,
+.premium-modal-shell .app-error {
+  line-height: 1.8;
+}
+
+.premium-modal-shell .premium-modal-note {
+  margin-top: .8rem;
+}
+
+.premium-modal-shell .premium-helper-inline {
+  border-style: solid;
+  border-radius: 18px;
+  padding: .75rem .95rem;
+  background: rgba(248,250,252,0.9);
+}
+
+.dark .premium-modal-shell .premium-helper-inline {
+  background: rgba(15,23,42,0.6);
+}
+
+@media (max-width: 768px) {
+  .phone-card-specs-row {
+    grid-template-columns: repeat(3, minmax(4.85rem, 1fr));
+  }
+}
+
+/* ===== v40 micro-alignment pass: phone cards + Apple-clean product modal ===== */
+.phone-card-surface {
+  border-radius: 24px !important;
+  overflow: hidden;
+}
+
+.phone-card-surface > .p-3\.5 {
+  padding: .95rem !important;
+}
+
+.phone-card-select-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.45rem;
+  min-width: 1.45rem;
+  height: 1.45rem;
+  min-height: 1.45rem;
+  margin-top: .18rem !important;
+}
+
+.phone-card-surface h4 {
+  letter-spacing: -0.01em;
+}
+
+.phone-card-specs-row {
+  grid-template-columns: repeat(3, minmax(6rem, 1fr)) !important;
+  gap: .5rem !important;
+  align-items: stretch;
+}
+
+.phone-card-spec-pill {
+  min-height: 2rem !important;
+  padding-inline: .6rem !important;
+  font-size: 10px !important;
+  justify-content: center;
+}
+
+.phone-card-spec-pill i,
+.phone-table-spec-pill i {
+  flex: 0 0 auto;
+}
+
+.phone-card-spec-pill__value,
+.phone-table-spec-pill__value {
+  max-width: none;
+}
+
+.phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-3 {
+  gap: .55rem !important;
+}
+
+.phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-3 > div {
+  border-radius: 16px !important;
+  padding: .72rem .75rem !important;
+}
+
+.phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-2 {
+  gap: .55rem !important;
+}
+
+.phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-2 > div {
+  min-height: 4.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.phone-card-footer {
+  padding: .82rem .95rem .9rem !important;
+  row-gap: .75rem !important;
+}
+
+.phone-card-supplier {
+  min-height: 2.2rem;
+}
+
+.phone-card-supplier > span:first-child {
+  width: 1.8rem !important;
+  min-width: 1.8rem !important;
+  height: 1.8rem !important;
+  border-radius: .85rem !important;
+}
+
+.phone-card-actions {
+  gap: .45rem !important;
+}
+
+.phone-card-actions .ux-btn {
+  min-height: 2.15rem !important;
+  border-radius: 1rem !important;
+  box-shadow: none !important;
+}
+
+.phone-card-actions .ux-btn:not(.w-9) {
+  padding-inline: .8rem !important;
+}
+
+.phone-card-actions .ux-btn.w-9,
+.phone-card-actions .ux-btn.h-9.w-9 {
+  width: 2.15rem !important;
+  min-width: 2.15rem !important;
+  height: 2.15rem !important;
+}
+
+.phone-card-actions .ux-btn i {
+  margin: 0 !important;
+}
+
+.premium-modal-shell .premium-form-grid {
+  gap: 1.25rem !important;
+}
+
+.premium-modal-shell .premium-form-section {
+  padding: 1.15rem 1.1rem !important;
+  border-radius: 24px !important;
+  box-shadow: 0 14px 34px -28px rgba(15,23,42,0.14) !important;
+}
+
+.premium-modal-shell .premium-section-title {
+  margin-bottom: .2rem !important;
+}
+
+.premium-modal-shell .premium-section-title > div > div:first-child {
+  font-weight: 850;
+  color: rgb(15 23 42);
+}
+
+.dark .premium-modal-shell .premium-section-title > div > div:first-child {
+  color: rgb(248 250 252);
+}
+
+.premium-modal-shell .modal-field-premium {
+  display: block;
+}
+
+.premium-modal-shell .modal-field-premium .modal-field-label {
+  margin-bottom: .4rem !important;
+  font-size: .86rem !important;
+  font-weight: 800 !important;
+}
+
+.premium-modal-shell .modal-field-premium .modal-field-label i {
+  width: 1rem;
+  text-align: center;
+}
+
+.premium-modal-shell .premium-input-wrap,
+.premium-modal-shell .premium-price-field {
+  width: 100%;
+}
+
+.premium-modal-shell :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium) {
+  min-height: 3rem !important;
+  border-radius: 17px !important;
+  padding-inline-end: 1rem !important;
+}
+
+.premium-modal-shell .premium-input-wrap > .premium-input-leading-icon {
+  inset-inline-start: .82rem !important;
+}
+
+.premium-modal-shell .premium-price-field .price-input > .mb-2 {
+  margin-bottom: .45rem !important;
+}
+
+.premium-modal-shell .premium-price-field .price-input__field {
+  min-height: 3rem !important;
+  border-radius: 17px !important;
+}
+
+.premium-modal-shell .premium-price-field .unified-field-chip {
+  font-size: 10px !important;
+  font-weight: 800 !important;
+}
+
+.premium-modal-shell .premium-form-section .grid.grid-cols-1.gap-4.md\:grid-cols-2 {
+  gap: .85rem !important;
+}
+
+.premium-modal-shell .premium-helper-inline {
+  line-height: 1.85 !important;
+  color: rgb(71 85 105);
+}
+
+.dark .premium-modal-shell .premium-helper-inline {
+  color: rgb(203 213 225);
+}
+
+.premium-modal-shell .app-field-feedback {
+  margin-top: .35rem !important;
+}
+
+@media (max-width: 768px) {
+  .phone-card-specs-row {
+    grid-template-columns: repeat(3, minmax(5.4rem, 1fr)) !important;
+  }
+
+  .phone-card-footer {
+    align-items: stretch !important;
+  }
+
+  .phone-card-supplier,
+  .phone-card-actions {
+    width: 100%;
+  }
+
+  .phone-card-actions {
+    justify-content: flex-start !important;
+  }
+}
+
+/* ===== v41 responsive ultra-polish: desktop / tablet / mobile ===== */
+@media (min-width: 1280px) {
+  .phone-card-surface {
+    border-radius: 26px !important;
+  }
+
+  .phone-card-surface > .p-3\.5 {
+    padding: 1.05rem !important;
+  }
+
+  .phone-card-specs-row {
+    grid-template-columns: repeat(3, minmax(6.3rem, 1fr)) !important;
+    gap: .58rem !important;
+  }
+
+  .phone-card-spec-pill {
+    min-height: 2.05rem !important;
+    padding-inline: .68rem !important;
+  }
+
+  .phone-card-footer {
+    padding: .9rem 1rem .96rem !important;
+  }
+
+  .phone-card-actions {
+    gap: .5rem !important;
+  }
+
+  .phone-card-actions .ux-btn:not(.w-9) {
+    padding-inline: .9rem !important;
+  }
+
+  .phone-inventory-table-v2 col:nth-child(2) { width: 31% !important; }
+  .phone-inventory-table-v2 col:nth-child(3) { width: 10.25rem !important; }
+  .phone-inventory-table-v2 col:nth-child(4) { width: 21.25rem !important; }
+  .phone-inventory-table-v2 th:nth-child(4),
+  .phone-inventory-table-v2 td:nth-child(4) { width: 21.25rem !important; }
+
+  .phone-table-inline-actions {
+    gap: .36rem !important;
+  }
+
+  .phone-table-action-btn {
+    min-height: 1.76rem !important;
+    min-width: 1.95rem !important;
+    padding-inline: .42rem !important;
+  }
+
+  .premium-modal-shell .premium-form-grid {
+    gap: 1.4rem !important;
+  }
+
+  .premium-modal-shell .premium-form-section {
+    padding: 1.2rem 1.15rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .phone-card-surface {
+    border-radius: 24px !important;
+  }
+
+  .phone-card-specs-row {
+    grid-template-columns: repeat(3, minmax(5.65rem, 1fr)) !important;
+    gap: .46rem !important;
+  }
+
+  .phone-card-spec-pill {
+    min-height: 1.95rem !important;
+    padding-inline: .55rem !important;
+  }
+
+  .phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-2 > div {
+    min-height: 4rem;
+  }
+
+  .phone-card-footer {
+    align-items: center !important;
+  }
+
+  .phone-inventory-table-v2 col:nth-child(2) { width: 30% !important; }
+  .phone-inventory-table-v2 col:nth-child(3) { width: 9.85rem !important; }
+  .phone-inventory-table-v2 col:nth-child(4) { width: 15rem !important; }
+  .phone-inventory-table-v2 th:nth-child(4),
+  .phone-inventory-table-v2 td:nth-child(4) { width: 15rem !important; }
+
+  .phone-table-action-btn {
+    min-width: 1.88rem !important;
+    min-height: 1.88rem !important;
+    padding-inline: .36rem !important;
+  }
+
+  .phone-table-action-btn span {
+    display: none;
+  }
+
+  .premium-modal-shell .premium-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.05rem !important;
+  }
+
+  .premium-modal-shell .premium-form-section {
+    padding: 1rem .95rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .phone-card-surface {
+    border-radius: 22px !important;
+  }
+
+  .phone-card-surface > .p-3\.5 {
+    padding: .88rem !important;
+  }
+
+  .phone-card-specs-row {
+    grid-template-columns: repeat(3, minmax(5.1rem, 1fr)) !important;
+    gap: .38rem !important;
+  }
+
+  .phone-card-spec-pill {
+    min-height: 1.86rem !important;
+    padding-inline: .46rem !important;
+    font-size: 9.5px !important;
+  }
+
+  .phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-3 {
+    gap: .45rem !important;
+  }
+
+  .phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-3 > div,
+  .phone-card-surface > .p-3\.5 > .mt-3.grid.grid-cols-2 > div {
+    border-radius: 15px !important;
+    padding: .65rem .62rem !important;
+  }
+
+  .phone-card-footer {
+    padding: .76rem .84rem .84rem !important;
+    align-items: stretch !important;
+  }
+
+  .phone-card-actions {
+    width: 100%;
+    justify-content: flex-start !important;
+    gap: .38rem !important;
+  }
+
+  .phone-card-actions .ux-btn:not(.w-9) {
+    padding-inline: .72rem !important;
+  }
+
+  .phone-card-actions .ux-btn.w-9,
+  .phone-card-actions .ux-btn.h-9.w-9 {
+    width: 2.05rem !important;
+    min-width: 2.05rem !important;
+    height: 2.05rem !important;
+  }
+
+  .premium-modal-shell .premium-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: .9rem !important;
+  }
+
+  .premium-modal-shell .premium-form-section {
+    padding: .92rem .88rem !important;
+    border-radius: 22px !important;
+  }
+
+  .premium-modal-shell .premium-section-title-icon {
+    width: 2.4rem;
+    min-width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .premium-modal-shell .modal-field-premium .modal-field-label {
+    margin-bottom: .34rem !important;
+  }
+
+  .premium-modal-shell :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium),
+  .premium-modal-shell .premium-price-field .price-input__field {
+    min-height: 2.92rem !important;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/07c-product-modal-apple-redesign.css ===== */
+/* ===== v42 product modal Apple redesign ===== */
+.product-modal-apple {
+  direction: rtl;
+}
+
+.product-modal-apple-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.product-modal-apple-hero {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+  padding: 1.2rem 1.25rem;
+  box-shadow: 0 24px 60px -46px rgba(15, 23, 42, 0.18);
+}
+
+.dark .product-modal-apple-hero {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.92));
+}
+
+.product-modal-apple-hero__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.product-modal-apple-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  background: rgba(248, 250, 252, 0.9);
+  color: rgb(71 85 105);
+  padding: .38rem .7rem;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.dark .product-modal-apple-badge {
+  border-color: rgba(51,65,85,0.9);
+  background: rgba(15,23,42,0.82);
+  color: rgb(203 213 225);
+}
+
+.product-modal-apple-title {
+  margin-top: .78rem;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .product-modal-apple-title {
+  color: rgb(248 250 252);
+}
+
+.product-modal-apple-subtitle {
+  margin-top: .45rem;
+  max-width: 40rem;
+  font-size: .92rem;
+  line-height: 1.9;
+  color: rgb(100 116 139);
+}
+
+.dark .product-modal-apple-subtitle {
+  color: rgb(148 163 184);
+}
+
+.product-modal-apple-summary {
+  display: inline-flex;
+  align-items: stretch;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.product-modal-apple-summary__item {
+  min-width: 8.8rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255,255,255,0.92);
+  padding: .9rem 1rem;
+  text-align: center;
+  box-shadow: 0 12px 30px -24px rgba(15, 23, 42, 0.18);
+}
+
+.dark .product-modal-apple-summary__item {
+  border-color: rgba(51,65,85,0.9);
+  background: rgba(15,23,42,0.78);
+  box-shadow: 0 18px 34px -26px rgba(2, 6, 23, 0.48);
+}
+
+.product-modal-apple-summary__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.94));
+  color: rgb(71 85 105);
+}
+
+.dark .product-modal-apple-summary__icon {
+  border-color: rgba(71,85,105,0.9);
+  background: linear-gradient(180deg, rgba(30,41,59,0.92), rgba(15,23,42,0.96));
+  color: rgb(226 232 240);
+}
+
+.product-modal-apple-summary__icon i {
+  font-size: .9rem;
+}
+
+.product-modal-apple-summary__item strong {
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .product-modal-apple-summary__item strong {
+  color: rgb(248 250 252);
+}
+
+.product-modal-apple-summary__item span {
+  font-size: .76rem;
+  font-weight: 750;
+  color: rgb(100 116 139);
+}
+
+.dark .product-modal-apple-summary__item span {
+  color: rgb(148 163 184);
+}
+
+.product-modal-apple-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.product-modal-apple-section {
+  min-width: 0;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+  padding: 1.1rem;
+  box-shadow: 0 20px 46px -40px rgba(15, 23, 42, 0.14);
+}
+
+.dark .product-modal-apple-section {
+  border-color: rgba(51,65,85,0.92);
+  background: linear-gradient(180deg, rgba(15,23,42,0.95), rgba(2,6,23,0.9));
+}
+
+.product-modal-apple-section__head {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+
+.product-modal-apple-section__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.55rem;
+  min-width: 2.55rem;
+  height: 2.55rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(248,250,252,0.94);
+  color: rgb(51 65 85);
+}
+
+.dark .product-modal-apple-section__icon {
+  border-color: rgba(51,65,85,0.92);
+  background: rgba(15,23,42,0.84);
+  color: rgb(226 232 240);
+}
+
+.product-modal-apple-section__head h4 {
+  font-size: 1.03rem;
+  font-weight: 900;
+  letter-spacing: -.015em;
+  color: rgb(15 23 42);
+}
+
+.dark .product-modal-apple-section__head h4 {
+  color: rgb(248 250 252);
+}
+
+.product-modal-apple-section__head p {
+  margin-top: .22rem;
+  font-size: .8rem;
+  line-height: 1.8;
+  color: rgb(100 116 139);
+}
+
+.dark .product-modal-apple-section__head p {
+  color: rgb(148 163 184);
+}
+
+.product-modal-apple-fields {
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+
+.product-modal-apple-inline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.product-modal-apple .modal-field-premium {
+  display: block;
+}
+
+.product-modal-apple .modal-field-label {
+  margin-bottom: .42rem !important;
+  font-size: .86rem !important;
+  font-weight: 850 !important;
+  color: rgb(51 65 85);
+}
+
+.dark .product-modal-apple .modal-field-label {
+  color: rgb(226 232 240);
+}
+
+.product-modal-apple .premium-input-wrap,
+.product-modal-apple .product-modal-apple-price-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.product-modal-apple .premium-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.product-modal-apple .premium-input-leading-icon {
+  position: absolute;
+  inset-inline-start: .82rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  color: rgb(100 116 139);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.product-modal-apple :where(.inventory-premium-input, .inventory-premium-select) {
+  width: 100%;
+  min-height: 3.1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  background: rgba(255,255,255,0.98);
+  padding-inline-start: 3rem !important;
+  padding-inline-end: 1rem !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), 0 14px 30px -28px rgba(15,23,42,0.12);
+}
+
+.dark .product-modal-apple :where(.inventory-premium-input, .inventory-premium-select) {
+  border-color: rgba(51,65,85,0.95);
+  background: rgba(15,23,42,0.88);
+}
+
+.product-modal-apple .inventory-premium-select {
+  appearance: none;
+}
+
+.product-modal-apple-readonly {
+  color: rgb(71 85 105);
+  font-weight: 800;
+}
+
+.dark .product-modal-apple-readonly {
+  color: rgb(203 213 225);
+}
+
+.product-modal-apple .product-modal-apple-price-field .price-input {
+  width: 100%;
+}
+
+.product-modal-apple .product-modal-apple-price-field .price-input__field {
+  min-height: 3.1rem !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.88), 0 14px 30px -28px rgba(15,23,42,0.12);
+  background: rgba(255,255,255,0.98);
+}
+
+.dark .product-modal-apple .product-modal-apple-price-field .price-input__field {
+  border-color: rgba(51,65,85,0.95);
+  background: rgba(15,23,42,0.88);
+}
+
+.product-modal-apple .product-modal-apple-price-field .price-input > .mb-2 {
+  display: none;
+}
+
+.product-modal-apple .product-modal-apple-price-field .price-input > .text-xs {
+  min-height: 1.15rem;
+  margin-top: .42rem;
+}
+
+.product-modal-apple-price-caption {
+  margin-top: .45rem;
+  font-size: .75rem;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.dark .product-modal-apple-price-caption {
+  color: rgb(148 163 184);
+}
+
+.product-modal-apple-note {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(248,250,252,0.86);
+  padding: .8rem .9rem;
+  font-size: .8rem;
+  line-height: 1.9;
+  color: rgb(71 85 105);
+}
+
+.dark .product-modal-apple-note {
+  border-color: rgba(51,65,85,0.92);
+  background: rgba(15,23,42,0.72);
+  color: rgb(203 213 225);
+}
+
+.product-modal-apple-note i {
+  margin-top: .15rem;
+  flex: 0 0 auto;
+}
+
+.product-modal-apple .app-field-feedback {
+  margin-top: .36rem !important;
+  min-height: 1.25rem;
+}
+
+.product-modal-apple .app-help,
+.product-modal-apple .app-error {
+  line-height: 1.75;
+}
+
+@media (max-width: 1024px) {
+  .product-modal-apple-hero__top {
+    flex-direction: column;
+  }
+
+  .product-modal-apple-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .product-modal-apple-hero {
+    padding: 1rem;
+    border-radius: 24px;
+  }
+
+  .product-modal-apple-title {
+    font-size: 1.35rem;
+  }
+
+  .product-modal-apple-summary {
+    width: 100%;
+  }
+
+  .product-modal-apple-summary__item {
+    flex: 1 1 calc(50% - .375rem);
+    min-width: 0;
+  }
+
+  .product-modal-apple-section {
+    padding: .95rem;
+    border-radius: 22px;
+  }
+
+  .product-modal-apple-inline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-modal-apple :where(.inventory-premium-input, .inventory-premium-select),
+  .product-modal-apple .product-modal-apple-price-field .inventory-premium-input {
+    min-height: 2.95rem !important;
+  }
+}
+
+/* ===== v43 product modal cleanup: remove nested-wrap tension + sharper business tone ===== */
+.product-modal-apple .modal-field-premium {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-modal-apple .modal-field-label {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  margin-bottom: .58rem !important;
+  line-height: 1.45;
+}
+
+.product-modal-apple .modal-field-premium > .premium-input-wrap {
+  margin-top: 0 !important;
+}
+
+.product-modal-apple .product-modal-apple-fields > .modal-field-premium,
+.product-modal-apple .product-modal-apple-inline-grid > .modal-field-premium {
+  min-width: 0;
+}
+
+.product-modal-apple .product-modal-apple-inline-grid > .modal-field-premium {
+  align-self: start;
+}
+
+.product-modal-apple .modal-field-premium .app-field-feedback {
+  padding-inline: .1rem;
+}
+
+.product-modal-apple .product-modal-apple-price-field {
+  width: 100%;
+}
+
+
+.product-modal-apple .inventory-premium-select,
+.product-modal-apple select.inventory-premium-select {
+  line-height: 1.4;
+}
+.product-modal-apple :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select) {
+  background: #fff !important;
+  border-color: rgba(226, 232, 240, 0.98) !important;
+  box-shadow: none !important;
+}
+
+.product-modal-apple .premium-input-wrap {
+  background: transparent;
+}
+
+
+.product-modal-apple .product-modal-apple-subtitle {
+  max-width: 44rem;
+}
+
+/* ===== v44 product modal footer polish ===== */
+.product-modal-apple-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  margin-top: .2rem;
+  padding-top: .55rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.92) 18%, rgba(255,255,255,0.98));
+  backdrop-filter: saturate(140%) blur(8px);
+}
+
+.dark .product-modal-apple-actions {
+  border-top-color: rgba(51, 65, 85, 0.9);
+  background: linear-gradient(180deg, rgba(2,6,23,0), rgba(2,6,23,0.9) 18%, rgba(2,6,23,0.96));
+}
+
+.product-modal-apple-actions.premium-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .95rem;
+}
+
+.product-modal-apple-actions .premium-helper-inline--card {
+  flex: 1 1 auto;
+  min-height: 3.1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(248,250,252,0.88);
+  padding: .82rem .95rem;
+  box-shadow: 0 14px 32px -30px rgba(15, 23, 42, 0.12);
+}
+
+.dark .product-modal-apple-actions .premium-helper-inline--card {
+  border-color: rgba(51,65,85,0.92);
+  background: rgba(15,23,42,0.78);
+}
+
+.product-modal-apple-actions .premium-helper-inline__icon {
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: .85rem;
+}
+
+.product-modal-apple-actions > div:last-child {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem !important;
+}
+
+.product-modal-apple-actions .premium-cancel-btn,
+.product-modal-apple-actions .premium-submit-btn {
+  min-height: 2.65rem !important;
+  border-radius: 999px !important;
+  padding-inline: 1rem !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+}
+
+.product-modal-apple-actions .premium-cancel-btn {
+  min-width: 7rem;
+}
+
+.product-modal-apple-actions .premium-submit-btn {
+  min-width: 8.5rem;
+}
+
+@media (max-width: 768px) {
+  .product-modal-apple-actions.premium-modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .product-modal-apple-actions > div:last-child {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-modal-apple-actions .premium-cancel-btn,
+  .product-modal-apple-actions .premium-submit-btn {
+    width: 100%;
+    min-width: 0;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,112 @@
+
+/* v85 — PartnerDetail top actions reflow.
+   Root fix: remove actions from old partner-detail-actions flow and render them as a safe
+   normal-flow grid inside the hero card. This prevents the persistent left clipping. */
+
+.partner-detail-safe-actions-v85 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 18px 0 0 !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226, 232, 240, .95) !important;
+  border-radius: 20px !important;
+  background: rgba(248, 250, 252, .72) !important;
+  overflow: hidden !important;
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+}
+
+.partner-detail-safe-actions-v85 :where(button, .ux-btn, .partner-detail-safe-action-btn-v85) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding-inline: 10px !important;
+  border-radius: 13px !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.partner-detail-safe-actions-v85 :where(button, .ux-btn, .partner-detail-safe-action-btn-v85):focus,
+.partner-detail-safe-actions-v85 :where(button, .ux-btn, .partner-detail-safe-action-btn-v85):focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+}
+
+/* Since old action block is no longer used, neutralize any empty legacy action containers
+   that may be injected by stale CSS or conditional markup. */
+.partner-detail-hero-clean .partner-detail-actions:empty,
+.partner-detail-hero-clean .partner-detail-actions--customer-parity:empty {
+  display: none !important;
+}
+
+/* Hero top should now only contain the identity block, so no desktop action column needed. */
+.partner-detail-hero-clean .partner-detail-hero__top,
+.partner-detail-hero-clean .partner-detail-hero__top--v82,
+.partner-detail-apple .partner-detail-hero__top,
+.partner-detail-apple .partner-detail-hero__top--v82,
+.partner-detail-responsive-root .partner-detail-hero__top,
+.partner-detail-responsive-root .partner-detail-hero__top--v82 {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-hero-main-v82 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-hero-main-v82 > .space-y-2 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-hero-main-v82 .mt-3 {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Prevent top chips from forcing horizontal overflow. */
+.partner-detail-hero-main-v82 :where(.people-chip, .partner-telegram-status-chip, [class*="rounded-full"]) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Keep the physical left edge safe in RTL. */
+.partner-detail-safe-gutter-v84 {
+  padding-left: 24px !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-detail-safe-actions-v85 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .partner-detail-safe-actions-v85 {
+    grid-template-columns: 1fr !important;
+    padding: 10px !important;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "stage": 39,
+  "checks": {
+    "settings_size_bytes": 245574,
+    "smart_panel_size_bytes": 829,
+    "style_panel_size_bytes": 306,
+    "local_imports_missing": 0,
+    "brace_balance_errors": 0,
+    "vite_launcher_changed": false,
+    "postcss_filter_changed": false
+  },
+  "files_added": [
+    "pages/settings/SettingsSmartPanel.tsx",
+    "pages/settings/SettingsStylePanel.tsx"
+  ],
+  "files_modified": [
+    "pages/Settings.tsx"
+  ],
+  "notes": [
+    "No CSS/className/layout changes. Smart and Style tabs are now wrapped by dedicated panel components."
+  ]
+}

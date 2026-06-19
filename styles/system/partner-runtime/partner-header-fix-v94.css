@@ -1,0 +1,130 @@
+
+/* v94 — swap header sides correctly + prevent balance overflow */
+
+.partner-header-mockup-v89__hero {
+  direction: ltr !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  grid-template-areas: "actions identity" !important;
+  align-items: start !important;
+}
+
+.partner-header-mockup-v89__actions {
+  grid-area: actions !important;
+  justify-self: start !important;
+  align-self: start !important;
+}
+
+.partner-header-mockup-v89__identity {
+  grid-area: identity !important;
+  justify-self: stretch !important;
+  align-self: start !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.partner-header-mockup-v89__identity-copy {
+  width: 100% !important;
+  text-align: right !important;
+  justify-items: end !important;
+}
+
+.partner-header-mockup-v89__identity h2,
+.partner-header-mockup-v89__identity p,
+.partner-header-mockup-v89__badge {
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__chips {
+  direction: rtl !important;
+  justify-content: flex-start !important;
+}
+
+/* Keep status account number safely inside card */
+.partner-header-mockup-v89__card--account {
+  min-width: 0 !important;
+}
+
+.partner-header-mockup-v89__account-amount {
+  display: block !important;
+  max-width: 100% !important;
+  font-size: clamp(18px, 1.65vw, 21px) !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.partner-header-mockup-v89__alert span,
+.partner-header-mockup-v89__account-text,
+.partner-header-mockup-v89__metric strong {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+@media (max-width: 900px) {
+  .partner-header-mockup-v89__hero {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "identity" "actions" !important;
+    direction: rtl !important;
+  }
+  .partner-header-mockup-v89__actions {
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+
+/* v95 — fix partner identity block placement exactly like customer */
+.partner-header-mockup-v89__identity {
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+}
+
+.partner-header-mockup-v89__avatar {
+  flex: 0 0 auto !important;
+  order: 0 !important;
+}
+
+.partner-header-mockup-v89__identity-copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+}
+
+.partner-header-mockup-v89__badge {
+  align-self: flex-start !important;
+  margin: 0 0 6px 0 !important;
+}
+
+
+/* v96 — keep partner balance badge inside metric card */
+.partner-header-mockup-v89__metric strong {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+.partner-header-mockup-v89__metric .adaptive-badge {
+  max-width: 100% !important;
+  width: auto !important;
+  min-height: 24px !important;
+  padding: 0.32rem 0.55rem !important;
+  font-size: 10px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  justify-content: center !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}

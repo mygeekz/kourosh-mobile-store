@@ -1,0 +1,206 @@
+
+/* Stage 196 — Accounting modal compact header
+   Removes visual need for close button, reduces header height/title size, and pulls content upward.
+   Close behavior remains available by clicking outside the modal.
+*/
+
+.acm193-close {
+  display: none !important;
+}
+
+.acm193-dialog {
+  max-height: min(88vh, 760px) !important;
+}
+
+.acm193-header {
+  min-height: 108px !important;
+  padding: 20px 30px 18px 30px !important;
+}
+
+.acm193-badge {
+  min-height: 28px !important;
+  padding: 0 12px !important;
+  font-size: 11px !important;
+}
+
+.acm193-header h2 {
+  margin-top: 12px !important;
+  font-size: clamp(22px, 1.75vw, 30px) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.acm193-header p {
+  margin-top: 6px !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+
+.acm193-body {
+  max-height: calc(min(88vh, 760px) - 190px) !important;
+  padding: 0 28px 18px !important;
+}
+
+.acm193-top-grid {
+  gap: 14px !important;
+}
+
+.acm193-kpi {
+  min-height: 94px !important;
+  padding: 16px 18px !important;
+  border-radius: 19px !important;
+}
+
+.acm193-kpi__icon {
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 17px !important;
+}
+
+.acm193-kpi small {
+  font-size: 13px !important;
+}
+
+.acm193-kpi strong {
+  margin-top: 8px !important;
+  font-size: clamp(21px, 1.45vw, 28px) !important;
+}
+
+.acm193-content-grid {
+  margin-top: 16px !important;
+  gap: 16px !important;
+}
+
+.acm193-panel {
+  padding: 18px !important;
+  border-radius: 22px !important;
+}
+
+.acm193-panel h3 {
+  font-size: 16px !important;
+}
+
+.acm193-reasons {
+  min-height: 292px !important;
+}
+
+.acm193-reason-list {
+  margin-top: 14px !important;
+  gap: 10px !important;
+}
+
+.acm193-reason {
+  min-height: 49px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+}
+
+.acm193-reason span {
+  font-size: 13px !important;
+  line-height: 1.65 !important;
+}
+
+.acm193-right-stack {
+  gap: 14px !important;
+}
+
+.acm193-indicator-grid {
+  margin-top: 14px !important;
+  gap: 10px !important;
+}
+
+.acm193-indicator {
+  min-height: 106px !important;
+  gap: 7px !important;
+  padding: 12px 8px !important;
+  border-radius: 16px !important;
+}
+
+.acm193-indicator__icon {
+  width: 34px !important;
+  height: 34px !important;
+  font-size: 14px !important;
+}
+
+.acm193-indicator small {
+  font-size: 12px !important;
+}
+
+.acm193-indicator strong {
+  font-size: 23px !important;
+}
+
+.acm193-memory-grid {
+  margin-top: 12px !important;
+  gap: 10px !important;
+}
+
+.acm193-memory-card {
+  min-height: 52px !important;
+  padding: 8px 48px 8px 14px !important;
+  border-radius: 14px !important;
+}
+
+.acm193-memory-card small {
+  font-size: 11px !important;
+}
+
+.acm193-memory-card strong {
+  font-size: 15px !important;
+}
+
+.acm193-memory-icon {
+  right: 12px !important;
+  width: 29px !important;
+  height: 29px !important;
+}
+
+.acm193-memory p {
+  margin-top: 10px !important;
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+}
+
+/* No CTA footer for the accounting modal. Keep hidden even if previous markup exists. */
+.acm193-footer {
+  display: none !important;
+}
+
+@media (max-width: 1500px) {
+  .acm193-header {
+    min-height: 102px !important;
+    padding: 18px 26px 16px !important;
+  }
+
+  .acm193-header h2 {
+    font-size: clamp(21px, 1.55vw, 27px) !important;
+  }
+
+  .acm193-body {
+    max-height: calc(min(88vh, 740px) - 174px) !important;
+    padding-inline: 24px !important;
+  }
+
+  .acm193-kpi {
+    min-height: 86px !important;
+  }
+
+  .acm193-reasons {
+    min-height: 270px !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .acm193-header {
+    padding: 16px 16px 14px !important;
+  }
+
+  .acm193-header h2 {
+    font-size: 20px !important;
+  }
+
+  .acm193-body {
+    max-height: calc(100vh - 150px) !important;
+    padding: 0 12px 14px !important;
+  }
+}

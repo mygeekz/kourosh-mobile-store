@@ -1,0 +1,160 @@
+/* Split from 02-legacy-reports-premium-components.css: ux button core + loading states */
+@layer components {
+  .ux-btn,
+  button[class*="rounded"][class*="bg-"],
+  button[class*="rounded"][class*="border"],
+  button[class*="bg-"][class*="px-"],
+  button[class*="border"][class*="px-"] {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-btn__content {
+    display: inline-flex;
+  }
+
+  .ux-btn__icon {
+    display: inline-flex;
+    font-size: 0.95em;
+  }
+
+  .ux-btn__label {
+    display: inline-flex;
+  }
+
+  .ux-btn__label-main {
+    display: inline-flex;
+  }
+
+  .ux-btn__label--stacked {
+    flex-direction: column;
+  }
+
+  .ux-btn__hint {
+  }
+
+  .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-start;
+  }
+
+  html[data-button-icon-side='end'] .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-end;
+  }
+
+  .ux-btn__spinner {
+    display: inline-flex;
+    animation: ux-btn-spin 0.9s linear infinite;
+    flex: 0 0 auto;
+  }
+
+  .ux-btn[data-loading='true'] {
+    transform: none !important;
+    cursor: wait;
+    filter: saturate(0.96);
+  }
+
+  .ux-btn[data-loading='true']::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0.18) 48%, transparent 72%);
+    transform: translateX(100%);
+    animation: ux-btn-loading-sheen 1.35s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ux-btn[data-loading='true'] .ux-btn__content {
+    gap: 0.55rem;
+  }
+
+  .ux-btn[data-loading-tone='neutral'][data-loading='true'] {
+    box-shadow: 0 16px 34px -24px rgba(15,23,42,0.26);
+  }
+
+  .ux-btn[data-loading-tone='success'][data-loading='true'] {
+    box-shadow: 0 20px 38px -24px rgba(16,185,129,0.36);
+  }
+
+  .ux-btn[data-loading-tone='info'][data-loading='true'] {
+    box-shadow: 0 20px 38px -24px rgba(14,165,233,0.34);
+  }
+
+  .ux-btn[data-loading-tone='warning'][data-loading='true'] {
+    box-shadow: 0 20px 38px -24px rgba(245,158,11,0.34);
+  }
+
+  .ux-btn[data-loading-tone='danger'][data-loading='true'] {
+    box-shadow: 0 20px 38px -24px rgba(225,29,72,0.34);
+  }
+
+  .dark .ux-btn__spinner {
+    border-color: rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  @keyframes ux-btn-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes ux-btn-loading-sheen {
+    0% { transform: translateX(100%); opacity: 0; }
+    18% { opacity: 1; }
+    100% { transform: translateX(-120%); opacity: 0; }
+  }
+
+  .ux-icon-btn .ux-btn__content {
+    gap: 0;
+  }
+
+  .ux-btn--native .ux-btn__content {
+    pointer-events: none;
+  }
+
+  .ux-btn--native[data-ux-enhanced='true'] {
+    white-space: nowrap;
+  }
+
+  .ux-btn--native[data-ux-icon-glyph]::before {
+    content: attr(data-ux-icon-glyph);
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Pro', 'FontAwesome';
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.95rem;
+    height: 1.95rem;
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.24);
+    color: currentColor;
+    font-size: 0.82rem;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22);
+    flex: 0 0 auto;
+  }
+
+  html.dark .ux-btn--native[data-ux-icon-glyph]::before {
+    background: rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  html[data-ui-density='compact'] .ux-btn--native[data-ux-icon-glyph]::before {
+    width: 1.78rem;
+    height: 1.78rem;
+    font-size: 0.76rem;
+  }
+
+  .ux-btn-xs.ux-btn--native[data-ux-icon-glyph]::before,
+  .ux-btn.ux-icon-btn .ux-btn__icon {
+    width: 1.72rem;
+    height: 1.72rem;
+    font-size: 0.72rem;
+  }
+
+  .ux-icon-btn {
+    min-width: 2.55rem;
+    padding-inline: 0.55rem;
+  }
+}

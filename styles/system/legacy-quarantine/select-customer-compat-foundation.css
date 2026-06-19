@@ -1,0 +1,86 @@
+/* ===== Select field compatibility / customer list spacing quarantine ===== */
+/* This file preserves the original cascade order of legacy runtime overrides. */
+
+/* ===== Source: styles/runtime-overrides/10za-app-select-field-layout-compat.css ===== */
+/* Stage 104 — AppSelectField layout compatibility + customer vertical spacing */
+
+.people-customers-shell .app-select-field.people-sort-select,
+.partners-page-shell .app-select-field.people-sort-select {
+  flex: 0 1 210px !important;
+  min-width: 190px !important;
+}
+
+@media (max-width: 760px) {
+  .people-customers-shell .app-select-field.people-sort-select,
+  .partners-page-shell .app-select-field.people-sort-select {
+    width: 100% !important;
+    flex-basis: 100% !important;
+  }
+}
+
+/* Customers page: increase vertical breathing room between stacked cards/sections. */
+.people-customers-shell .customers-overview-grid,
+.people-customers-shell .customers-kpi-grid,
+.people-customers-shell .customers-toolbar,
+.people-customers-shell .people-customers-list,
+.people-customers-shell .customers-list,
+.people-customers-shell [class*="grid"] + [class*="grid"],
+.people-customers-shell [class*="rounded"] + [class*="rounded"] {
+  margin-top: .85rem !important;
+}
+
+.people-customers-shell .customers-toolbar {
+  margin-top: 1rem !important;
+}
+
+.people-customers-shell .customers-toolbar__inline-strip {
+  row-gap: .85rem !important;
+}
+
+/* ===== Source: styles/runtime-overrides/10zb-customers-list-name-space.css ===== */
+/* Stage 105 — Customers list: remove tags column and give name more room */
+
+.customers-table-col--name {
+  width: 34% !important;
+}
+
+.customers-table-col--phone {
+  width: 22% !important;
+}
+
+.customers-table-col--balance {
+  width: 20% !important;
+}
+
+.customers-table-col--actions {
+  width: 24% !important;
+}
+
+.customer-name-full {
+  max-width: none !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.65 !important;
+}
+
+.people-customers-shell .people-table-row td:first-child {
+  min-width: 0 !important;
+}
+
+.people-customers-shell .people-table-row td:first-child .min-w-0 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Small screens use cards; tag chips were removed there too for cleaner names. */
+@media (max-width: 900px) {
+  .customers-table-col--name {
+    width: 40% !important;
+  }
+
+  .customers-table-col--actions {
+    width: 22% !important;
+  }
+}

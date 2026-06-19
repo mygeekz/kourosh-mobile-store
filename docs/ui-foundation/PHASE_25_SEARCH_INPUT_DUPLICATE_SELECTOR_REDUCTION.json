@@ -1,0 +1,57 @@
+{
+  "phase": "25",
+  "title": "Search Input Duplicate Selector Reduction",
+  "scope": [
+    "styles/system/search-input-foundation.css"
+  ],
+  "changes": [
+    {
+      "type": "removed_exact_duplicate_rule",
+      "selector": ".app-sidebar .ux-sidebar-search__clear, .app-sidebar button[aria-label=\"پاک کردن جستجو\"]",
+      "reason": "Exact duplicate of earlier rule; later occurrence carried identical declaration and added no cascade value."
+    },
+    {
+      "type": "removed_exact_duplicate_rule_pair",
+      "selector": ".sellable-select__menu-portal / .sellable-select__menu",
+      "reason": "Exact duplicate portal/menu z-index rules; earlier occurrence preserved."
+    }
+  ],
+  "before": {
+    "bytes": 69300,
+    "lines": 2086,
+    "important_count": 914,
+    "rules": 179,
+    "exact_duplicate_rule_groups": 3,
+    "exact_duplicate_extra_occurrences": 3,
+    "examples": [
+      {
+        "occurrences": 2,
+        "rule": ".app-sidebar .ux-sidebar-search__clear, .app-sidebar button[aria-label=\"پاک کردن جستجو\"] { display: none !important; }"
+      },
+      {
+        "occurrences": 2,
+        "rule": ".sellable-select__menu-portal, div[class*=\"sellable-select__menu-portal\"] { z-index: 2147483647 !important; pointer-events: auto !important; }"
+      },
+      {
+        "occurrences": 2,
+        "rule": ".sellable-select__menu, div[class*=\"sellable-select__menu\"] { z-index: 2147483647 !important; }"
+      }
+    ]
+  },
+  "after": {
+    "bytes": 68919,
+    "lines": 2070,
+    "important_count": 910,
+    "rules": 176,
+    "exact_duplicate_rule_groups": 0,
+    "exact_duplicate_extra_occurrences": 0,
+    "examples": []
+  },
+  "checks": {
+    "missing_css_imports": [],
+    "literal_backslash_n_css_files": [],
+    "css_parse_errors": 0,
+    "brace_balance_errors": 0,
+    "css_parse_error_details": []
+  }
+}

@@ -1,0 +1,214 @@
+/* Phase 64 — Settings > Telegram Redesign Pass 3
+   Scope: template item cards, audience panels, template textarea editing surface.
+   This file is intentionally scoped to Telegram settings only. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: 24px !important;
+  border-color: rgba(203, 213, 225, 0.82) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92)) !important;
+  box-shadow: 0 18px 48px -40px rgba(15, 23, 42, 0.5) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, rgba(14,165,233,0.78), rgba(99,102,241,0.62));
+  opacity: 0.72;
+  z-index: 0;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger {
+  min-height: 84px;
+  align-items: flex-start !important;
+  background: transparent !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger:hover {
+  background: rgba(248, 250, 252, 0.92) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__body {
+  background: linear-gradient(180deg, rgba(248,250,252,0.72), rgba(255,255,255,0.92)) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-audience-brief {
+  align-items: center !important;
+  border-radius: 22px !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  background: rgba(255,255,255,0.72) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel {
+  border-radius: 22px !important;
+  background: rgba(255,255,255,0.78) !important;
+  border-color: rgba(203, 213, 225, 0.78) !important;
+  box-shadow: 0 14px 34px -32px rgba(15, 23, 42, 0.42) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger {
+  min-height: 70px;
+  background: rgba(255,255,255,0.58) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger:hover {
+  background: rgba(248,250,252,0.95) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__body {
+  background: rgba(248,250,252,0.56) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions {
+  border-radius: 20px !important;
+  background: rgba(255,255,255,0.86) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions .app-select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions select {
+  min-height: 36px !important;
+  border-radius: 14px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell {
+  position: relative;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,0.86) !important;
+  border-color: rgba(203,213,225,0.84) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.75) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell::before {
+  content: "متن قالب";
+  position: absolute;
+  top: -11px;
+  inset-inline-start: 18px;
+  z-index: 2;
+  border: 1px solid rgba(203, 213, 225, 0.82);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.96);
+  color: rgb(100,116,139);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 5px 10px;
+  box-shadow: 0 8px 18px -16px rgba(15, 23, 42, 0.42);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea {
+  min-height: 148px !important;
+  resize: vertical;
+  border-radius: 18px !important;
+  border-color: rgba(203, 213, 225, 0.86) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.9)) !important;
+  color: rgb(15,23,42) !important;
+  font-size: 13px !important;
+  line-height: 1.95 !important;
+  padding: 18px 16px 14px !important;
+  white-space: pre-wrap;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea::placeholder {
+  color: rgba(100, 116, 139, 0.78) !important;
+  opacity: 1 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea:focus {
+  border-color: rgba(14, 165, 233, 0.62) !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell:focus-within::before {
+  border-color: rgba(14, 165, 233, 0.42) !important;
+  color: rgb(2, 132, 199) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card [title^="مثال:"] {
+  direction: ltr;
+  unicode-bidi: plaintext;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card button[title^="مثال:"] {
+  justify-content: space-between !important;
+  min-height: 34px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card button[title^="مثال:"] span[dir="ltr"] {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card {
+  border-color: rgba(30, 41, 59, 0.92) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,0.82), rgba(2,6,23,0.62)) !important;
+  box-shadow: 0 18px 48px -42px rgba(0,0,0,0.82) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger:hover,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger:hover {
+  background: rgba(15, 23, 42, 0.78) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__body,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__body {
+  background: rgba(2, 6, 23, 0.36) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-audience-brief,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell {
+  border-color: rgba(30, 41, 59, 0.92) !important;
+  background: rgba(15, 23, 42, 0.58) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell::before {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.96);
+  color: rgb(148, 163, 184);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea {
+  border-color: rgba(30, 41, 59, 0.96) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,0.86), rgba(2,6,23,0.72)) !important;
+  color: rgb(241,245,249) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea::placeholder {
+  color: rgba(148, 163, 184, 0.72) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea:focus {
+  border-color: rgba(56, 189, 248, 0.54) !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.16) !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger {
+    align-items: stretch !important;
+    flex-direction: column;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-audience-brief {
+    align-items: flex-start !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea {
+    min-height: 170px !important;
+    font-size: 12.5px !important;
+  }
+}

@@ -1,0 +1,406 @@
+/* Stage 149 — Smart Insights executive redesign
+   Scope-limited to /reports/smart-insights. Premium Apple-minimal control dock,
+   flat date fields, responsive Bento sections, cleaner insight cards and empty states. */
+
+.smart-brain-page {
+  --si-ink: #0f172a;
+  --si-muted: #64748b;
+  --si-border: rgba(148, 163, 184, .28);
+  --si-panel: rgba(255, 255, 255, .96);
+}
+
+.smart-brain-page .smart-brain-hero {
+  border-radius: 30px !important;
+  border-color: var(--si-border) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow: 0 22px 54px -42px rgba(15,23,42,.34) !important;
+}
+
+.smart-brain-page .smart-brain-hero h1 {
+  letter-spacing: -.02em !important;
+}
+
+.smart-brain-page .smart-brain-kicker {
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow: none !important;
+}
+
+.smart-insights-control-dock {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.72) !important;
+  border-radius: 24px !important;
+  background: rgba(248,250,252,.58) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  direction: rtl !important;
+}
+
+.smart-insights-date-presets {
+  flex: 1 1 340px !important;
+  width: auto !important;
+  min-width: min(100%, 320px) !important;
+  max-width: 460px !important;
+}
+
+.smart-insights-date-presets.report-date-presets,
+.smart-insights-date-presets.report-date-presets.report-date-presets--modern,
+[data-ui-report-date-presets="true"].smart-insights-date-presets {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.smart-insights-date-presets .report-date-presets__chips,
+.smart-insights-date-presets [data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.smart-insights-date-presets .report-date-preset-chip,
+.smart-insights-date-presets [data-ui-report-date-preset="true"] {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: #334155 !important;
+  box-shadow: 0 8px 22px rgba(15,23,42,.04) !important;
+  font-size: .74rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-date-presets .report-date-preset-chip.is-active,
+.smart-insights-date-presets [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(15,23,42,.88) !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.13) !important;
+}
+
+.smart-insights-filter-field.report-filter-field,
+.smart-insights-filter-field[data-ui-report-filter-field="true"] {
+  flex: 0 0 154px !important;
+  width: 154px !important;
+  min-width: 154px !important;
+  max-width: 164px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.smart-insights-filter-field .report-filter-field__head {
+  height: 15px !important;
+  min-height: 15px !important;
+  margin-bottom: 4px !important;
+  padding-inline: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+  justify-content: flex-start !important;
+}
+
+.smart-insights-filter-field .report-filter-field__label {
+  color: var(--si-muted) !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+}
+
+.smart-insights-filter-field .report-filter-field__icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  border-radius: 999px !important;
+  font-size: 8.5px !important;
+}
+
+.smart-insights-filter-field .report-filter-field__body,
+.smart-insights-filter-field .report-filter-field__body > *,
+.smart-insights-filter-field :where(.app-date-field, .app-date-field__control) {
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.smart-insights-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]) {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border: 1px solid rgba(203,213,225,.90) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.96) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.26) !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+}
+
+.smart-insights-refresh-button,
+.smart-insights-reset-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  min-width: 104px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  transition: transform .16s ease, box-shadow .16s ease !important;
+}
+
+.smart-insights-refresh-button {
+  border: 0 !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 12px 26px rgba(15,23,42,.16) !important;
+}
+
+.smart-insights-reset-button {
+  border: 1px solid rgba(203,213,225,.88) !important;
+  background: rgba(255,255,255,.96) !important;
+  color: #475569 !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.24) !important;
+}
+
+.smart-insights-refresh-button:hover:not(:disabled),
+.smart-insights-reset-button:hover {
+  transform: translateY(-1px) !important;
+}
+
+.smart-insights-filter-group {
+  flex: 1 1 260px !important;
+  min-width: min(100%, 260px) !important;
+  padding: 9px !important;
+  border: 1px solid rgba(226,232,240,.72) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.64) !important;
+}
+
+.smart-insights-filter-group--wide {
+  flex-basis: 420px !important;
+}
+
+.smart-insights-filter-group__label {
+  margin-bottom: 7px !important;
+  padding-inline: 2px !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-filter-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+.smart-insights-filter-chip {
+  min-height: 32px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(226,232,240,.88) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.92) !important;
+  color: #475569 !important;
+  font-size: .70rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-filter-chip.is-active {
+  border-color: rgba(15,23,42,.88) !important;
+  background: #111827 !important;
+  color: #fff !important;
+}
+
+.smart-brain-page > section:not(.smart-brain-hero),
+.smart-brain-page .smart-section {
+  border-color: rgba(148,163,184,.28) !important;
+  border-radius: 26px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.045) !important;
+}
+
+.smart-brain-page section[class*="grid gap-3 lg:grid-cols-4"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+}
+
+.smart-brain-page section[class*="grid gap-3 lg:grid-cols-4"] > div,
+.smart-brain-page .smart-neutral-chip,
+.smart-brain-page article,
+.smart-brain-page .rounded-2xl {
+  box-shadow: none !important;
+}
+
+.smart-insights-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.smart-insights-cards-grid article {
+  border-radius: 24px !important;
+  box-shadow: 0 14px 34px rgba(15,23,42,.045) !important;
+}
+
+.smart-insights-empty-state {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0,1fr) !important;
+  gap: 14px !important;
+  align-items: center !important;
+  min-height: 138px !important;
+  padding: 18px !important;
+  border: 1px dashed rgba(148,163,184,.42) !important;
+  border-radius: 22px !important;
+  background: rgba(248,250,252,.72) !important;
+}
+
+.smart-insights-empty-state span {
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 17px !important;
+  border: 1px solid rgba(203,213,225,.72) !important;
+  background: rgba(255,255,255,.86) !important;
+  color: #64748b !important;
+}
+
+.smart-insights-empty-state strong {
+  color: #0f172a !important;
+  font-size: .96rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-empty-state p {
+  margin: 4px 0 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  font-weight: 760 !important;
+  line-height: 1.9 !important;
+}
+
+.dark .smart-brain-page .smart-brain-hero,
+.dark .smart-brain-page > section:not(.smart-brain-hero),
+.dark .smart-brain-page .smart-section {
+  border-color: rgba(148,163,184,.18) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.88)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-insights-control-dock,
+.dark .smart-insights-filter-group {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.38) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.dark .smart-insights-date-presets .report-date-preset-chip,
+.dark .smart-insights-date-presets [data-ui-report-date-preset="true"],
+.dark .smart-insights-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.dark .smart-insights-reset-button,
+.dark .smart-insights-filter-chip {
+  border-color: rgba(51,65,85,.9) !important;
+  background: rgba(15,23,42,.82) !important;
+  color: #f8fafc !important;
+}
+
+.dark .smart-insights-date-presets .report-date-preset-chip.is-active,
+.dark .smart-insights-date-presets [data-ui-report-date-preset="true"].is-active,
+.dark .smart-insights-refresh-button,
+.dark .smart-insights-filter-chip.is-active {
+  border-color: rgba(248,250,252,.78) !important;
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+.dark .smart-insights-empty-state {
+  border-color: rgba(71,85,105,.62) !important;
+  background: rgba(15,23,42,.62) !important;
+}
+
+.dark .smart-insights-empty-state span {
+  border-color: rgba(71,85,105,.72) !important;
+  background: rgba(15,23,42,.78) !important;
+  color: #94a3b8 !important;
+}
+
+.dark .smart-insights-empty-state strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-insights-empty-state p {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 1180px) {
+  .smart-insights-date-presets {
+    flex: 1 1 100% !important;
+    max-width: none !important;
+  }
+
+  .smart-insights-filter-field.report-filter-field,
+  .smart-insights-filter-field[data-ui-report-filter-field="true"],
+  .smart-insights-refresh-button,
+  .smart-insights-reset-button {
+    flex: 1 1 180px !important;
+    width: auto !important;
+    min-width: 180px !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-insights-control-dock {
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-insights-date-presets .report-date-presets__chips,
+  .smart-insights-date-presets [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+
+  .smart-insights-filter-field.report-filter-field,
+  .smart-insights-filter-field[data-ui-report-filter-field="true"],
+  .smart-insights-refresh-button,
+  .smart-insights-reset-button,
+  .smart-insights-filter-group {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+}

@@ -1,0 +1,386 @@
+/*
+ * Phase 79 — Mobile Phones Redesign Pass 2
+ * Scope: inventory browser, table/card rows and sales actions only.
+ * Business logic, API calls, IMEI, pricing, ownership and sale behavior remain unchanged.
+ */
+
+.mobile-phones-redesign-v1 {
+  --phone-inventory-surface: rgba(255, 255, 255, 0.94);
+  --phone-inventory-surface-muted: rgba(248, 250, 252, 0.88);
+  --phone-inventory-border: rgba(203, 213, 225, 0.72);
+  --phone-inventory-row-hover: rgba(248, 250, 252, 0.76);
+  --phone-inventory-action-bg: rgba(255, 255, 255, 0.86);
+  --phone-inventory-action-shadow: 0 14px 30px -26px rgba(15, 23, 42, 0.40);
+}
+
+.dark .mobile-phones-redesign-v1,
+html.dark .mobile-phones-redesign-v1 {
+  --phone-inventory-surface: rgba(15, 23, 42, 0.82);
+  --phone-inventory-surface-muted: rgba(2, 6, 23, 0.52);
+  --phone-inventory-border: rgba(51, 65, 85, 0.84);
+  --phone-inventory-row-hover: rgba(30, 41, 59, 0.52);
+  --phone-inventory-action-bg: rgba(15, 23, 42, 0.74);
+  --phone-inventory-action-shadow: 0 18px 34px -28px rgba(0, 0, 0, 0.66);
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__content {
+  border-radius: 28px;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__controlbar {
+  border-color: var(--phone-inventory-border) !important;
+  background: linear-gradient(180deg, var(--phone-inventory-surface), var(--phone-inventory-surface-muted)) !important;
+  box-shadow: 0 22px 54px -44px rgba(15, 23, 42, 0.34) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__controlbar button,
+.mobile-phones-redesign-v1 .phone-list-shell__controlbar [role="button"] {
+  min-height: 38px;
+  border-radius: 16px !important;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__controlbar > div > div {
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table {
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: linear-gradient(180deg, var(--phone-inventory-surface), var(--phone-inventory-surface-muted)) !important;
+}
+
+.mobile-phones-redesign-v1 .inventory-premium-scroll {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.44) transparent;
+}
+
+.mobile-phones-redesign-v1 .inventory-premium-scroll::-webkit-scrollbar {
+  height: 9px;
+}
+
+.mobile-phones-redesign-v1 .inventory-premium-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobile-phones-redesign-v1 .inventory-premium-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.42);
+  background-clip: padding-box;
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 table {
+  min-width: 900px;
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 thead {
+  box-shadow: 0 1px 0 rgba(203, 213, 225, 0.78);
+}
+
+.dark .mobile-phones-redesign-v1 .phone-inventory-table-v2 thead,
+html.dark .mobile-phones-redesign-v1 .phone-inventory-table-v2 thead {
+  box-shadow: 0 1px 0 rgba(51, 65, 85, 0.86);
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 thead th {
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 tbody {
+  background: transparent !important;
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 tbody tr {
+  position: relative;
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.mobile-phones-redesign-v1 .phone-inventory-table-v2 tbody tr:hover {
+  background: var(--phone-inventory-row-hover) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-device-stack {
+  padding-inline: 0.25rem;
+}
+
+.mobile-phones-redesign-v1 .phone-table-spec-pill,
+.mobile-phones-redesign-v1 .phone-table-device-stack span[title],
+.mobile-phones-redesign-v1 .phone-table-device-stack span[dir="ltr"] {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-table-spec-pill {
+  border-color: rgba(203, 213, 225, 0.72) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.56);
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-spec-pill,
+html.dark .mobile-phones-redesign-v1 .phone-table-spec-pill {
+  border-color: rgba(51, 65, 85, 0.82) !important;
+  background: rgba(15, 23, 42, 0.62) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.mobile-phones-redesign-v1 .phone-table-spec-pill__value,
+.mobile-phones-redesign-v1 .phone-card-spec-pill__value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-phones-redesign-v1 .phone-table-finance-stack {
+  border-color: rgba(203, 213, 225, 0.70) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 252, 0.78)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58), 0 14px 30px -28px rgba(15, 23, 42, 0.32);
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-finance-stack,
+html.dark .mobile-phones-redesign-v1 .phone-table-finance-stack {
+  border-color: rgba(51, 65, 85, 0.82) !important;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.74), rgba(2, 6, 23, 0.54)) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 32px -28px rgba(0, 0, 0, 0.58);
+}
+
+.mobile-phones-redesign-v1 .phone-table-finance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  line-height: 1.65;
+}
+
+.mobile-phones-redesign-v1 .phone-table-finance-row span {
+  color: rgb(100, 116, 139);
+  font-weight: 800;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-finance-row span,
+html.dark .mobile-phones-redesign-v1 .phone-table-finance-row span {
+  color: rgb(148, 163, 184);
+}
+
+.mobile-phones-redesign-v1 .phone-table-finance-row strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+.mobile-phones-redesign-v1 .phone-table-actions-cell {
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-table-inline-actions {
+  align-content: center;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn,
+.mobile-phones-redesign-v1 .phone-table-select-btn {
+  border: 1px solid rgba(203, 213, 225, 0.76) !important;
+  background: var(--phone-inventory-action-bg) !important;
+  box-shadow: var(--phone-inventory-action-shadow) !important;
+  transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease, color 150ms ease;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-action-btn,
+.dark .mobile-phones-redesign-v1 .phone-table-select-btn,
+html.dark .mobile-phones-redesign-v1 .phone-table-action-btn,
+html.dark .mobile-phones-redesign-v1 .phone-table-select-btn {
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn:hover,
+.mobile-phones-redesign-v1 .phone-table-select-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px -28px rgba(15, 23, 42, 0.48) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn:focus-visible,
+.mobile-phones-redesign-v1 .phone-table-select-btn:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand, #10b981) 18%, transparent), var(--phone-inventory-action-shadow) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn--success {
+  border-color: rgba(16, 185, 129, 0.32) !important;
+  background: color-mix(in srgb, #10b981 12%, white) !important;
+  color: rgb(4, 120, 87) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn--warning {
+  border-color: rgba(245, 158, 11, 0.34) !important;
+  background: color-mix(in srgb, #f59e0b 12%, white) !important;
+  color: rgb(146, 64, 14) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn--info {
+  border-color: rgba(14, 165, 233, 0.30) !important;
+  background: color-mix(in srgb, #0ea5e9 11%, white) !important;
+  color: rgb(3, 105, 161) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-table-action-btn--danger {
+  border-color: rgba(244, 63, 94, 0.30) !important;
+  background: color-mix(in srgb, #f43f5e 10%, white) !important;
+  color: rgb(190, 18, 60) !important;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-action-btn--success,
+html.dark .mobile-phones-redesign-v1 .phone-table-action-btn--success {
+  background: rgba(6, 78, 59, 0.34) !important;
+  color: rgb(110, 231, 183) !important;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-action-btn--warning,
+html.dark .mobile-phones-redesign-v1 .phone-table-action-btn--warning {
+  background: rgba(120, 53, 15, 0.34) !important;
+  color: rgb(252, 211, 77) !important;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-action-btn--info,
+html.dark .mobile-phones-redesign-v1 .phone-table-action-btn--info {
+  background: rgba(12, 74, 110, 0.34) !important;
+  color: rgb(125, 211, 252) !important;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-table-action-btn--danger,
+html.dark .mobile-phones-redesign-v1 .phone-table-action-btn--danger {
+  background: rgba(136, 19, 55, 0.34) !important;
+  color: rgb(253, 164, 175) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__cards {
+  align-items: stretch;
+}
+
+.mobile-phones-redesign-v1 .phone-card-surface {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-card-surface::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: -1;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand, #10b981) 58%, #38bdf8), rgba(148, 163, 184, 0.28));
+  opacity: 0.74;
+}
+
+.mobile-phones-redesign-v1 .phone-card-specs-row {
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-card-spec-pill {
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.76) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+.dark .mobile-phones-redesign-v1 .phone-card-spec-pill,
+html.dark .mobile-phones-redesign-v1 .phone-card-spec-pill {
+  background: rgba(15, 23, 42, 0.62) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.mobile-phones-redesign-v1 .phone-card-footer {
+  backdrop-filter: blur(14px) saturate(138%);
+}
+
+.mobile-phones-redesign-v1 .phone-card-actions .ux-btn {
+  min-height: 38px;
+  border-radius: 16px !important;
+}
+
+.mobile-phones-redesign-v1 .phone-card-actions .ux-btn:hover {
+  transform: translateY(-1px);
+}
+
+.mobile-phones-redesign-v1 .phone-card-supplier {
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-card-supplier > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 1280px) {
+  .mobile-phones-redesign-v1 .phone-inventory-table-v2 table {
+    min-width: 840px;
+  }
+
+  .mobile-phones-redesign-v1 .phone-table-action-btn span {
+    display: none;
+  }
+
+  .mobile-phones-redesign-v1 .phone-table-action-btn {
+    min-width: 36px;
+    padding-inline: 0.65rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-phones-redesign-v1 .phone-list-shell__content {
+    padding-inline: 0.75rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-shell__controlbar {
+    padding: 0.85rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-shell__table {
+    margin-inline: -0.35rem;
+    border-radius: 20px !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-surface::before {
+    width: 3px;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-actions {
+    width: 100%;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-actions .ux-btn:not(.ux-btn-ghost):not(.ux-btn-secondary) {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-phones-redesign-v1 .phone-card-specs-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-footer {
+    align-items: stretch !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-supplier,
+  .mobile-phones-redesign-v1 .phone-card-actions {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-phones-redesign-v1 .phone-table-action-btn:hover,
+  .mobile-phones-redesign-v1 .phone-table-select-btn:hover,
+  .mobile-phones-redesign-v1 .phone-card-actions .ux-btn:hover {
+    transform: none;
+  }
+}

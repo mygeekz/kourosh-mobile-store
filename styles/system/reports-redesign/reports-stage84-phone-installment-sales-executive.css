@@ -1,0 +1,746 @@
+/* Stage 84 — Phone installment sales executive redesign
+   Scope: /reports/phone-installment-sales only. Uses independent class names to avoid search/filter cascade bugs. */
+
+.installment-sales-executive-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #0f172a;
+}
+
+.installment-sales-filter-panel,
+.installment-sales-section {
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.installment-sales-filter-panel {
+  padding: 14px 16px 16px;
+  overflow: visible;
+}
+
+.installment-sales-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  direction: rtl;
+}
+
+.installment-sales-filter-presets,
+.installment-sales-filter-fields {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.installment-sales-filter-presets { order: 1; }
+.installment-sales-filter-fields { order: 2; }
+
+.installment-sales-date-presets,
+.installment-sales-executive-page .report-date-presets {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-date-presets .report-date-presets__chips,
+.installment-sales-executive-page .report-date-presets__chips {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  height: 56px !important;
+  padding: 8px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-executive-page .report-date-preset-chip {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .32) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  font-size: .78rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+.installment-sales-executive-page .report-date-preset-chip.is-active {
+  background: #111827 !important;
+  color: #fff !important;
+  border-color: #111827 !important;
+}
+
+.installment-sales-date-box {
+  flex: 0 0 190px;
+  width: 190px;
+  min-width: 190px;
+  max-width: 190px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.installment-sales-date-box > span {
+  color: #64748b;
+  font-size: .68rem;
+  line-height: 1.2;
+  font-weight: 850;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.installment-sales-date-box .app-date-field,
+.installment-sales-date-box .app-date-field__control,
+.installment-sales-date-box .app-date-field__control.installment-sales-date-input {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.installment-sales-date-box .app-date-field__input,
+.installment-sales-date-box input[data-app-date-input='true'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 14px 0 40px !important;
+  margin: 0 !important;
+  direction: ltr !important;
+  text-align: center !important;
+  color: #0f172a !important;
+  font-size: .86rem !important;
+  font-weight: 900 !important;
+  line-height: 42px !important;
+  border: 1px solid rgba(148, 163, 184, .44) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.installment-sales-date-box .app-date-field__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #64748b !important;
+  pointer-events: none !important;
+}
+
+.installment-sales-date-box .app-date-field__icon i {
+  font-size: .86rem !important;
+  color: inherit !important;
+}
+
+.installment-sales-refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  min-height: 42px;
+  margin: 18px 0 0 0;
+  padding: 0 16px;
+  border-radius: 15px;
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  color: #0f172a;
+  box-shadow: none;
+  font-size: .8rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.installment-sales-refresh-button:hover {
+  background: #f8fafc;
+  border-color: rgba(59, 130, 246, .28);
+}
+
+.installment-sales-section {
+  padding: 14px;
+}
+
+.installment-sales-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.installment-sales-section__head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.installment-sales-section__head h2 i {
+  width: 30px;
+  height: 30px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: .82rem;
+}
+
+.installment-sales-section__head p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.installment-sales-section__head--compact { margin-bottom: 10px; }
+
+.installment-sales-metric-grid,
+.installment-sales-top-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.installment-sales-metric-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 94px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 18px;
+  background: #fff;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.installment-sales-metric-card,
+.installment-sales-metric-card * {
+  background-image: none !important;
+}
+
+.installment-sales-metric-card__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  border: 1px solid rgba(59, 130, 246, .16);
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.installment-sales-metric-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-metric-card__label,
+.installment-sales-metric-card strong,
+.installment-sales-metric-card small {
+  display: block;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-metric-card__label {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.installment-sales-metric-card strong {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.installment-sales-metric-card small {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.installment-sales-metric-card--green .installment-sales-metric-card__icon,
+.installment-sales-metric-card--positive .installment-sales-metric-card__icon {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: rgba(16, 185, 129, .2);
+}
+
+.installment-sales-metric-card--negative .installment-sales-metric-card__icon {
+  background: #fff1f2;
+  color: #e11d48;
+  border-color: rgba(244, 63, 94, .22);
+}
+
+.installment-sales-top-card {
+  position: relative;
+  min-height: 110px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 18px;
+  background: #fff;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.installment-sales-top-card__rank {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: .72rem;
+  font-weight: 950;
+}
+
+.installment-sales-top-card strong,
+.installment-sales-top-card small {
+  display: block;
+  max-width: calc(100% - 46px);
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-top-card strong {
+  color: #0f172a;
+  font-size: .9rem;
+  font-weight: 950;
+}
+
+.installment-sales-top-card small {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 750;
+}
+
+.installment-sales-top-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-top-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.installment-sales-table-section {
+  padding: 0;
+  overflow: hidden;
+}
+
+.installment-sales-table-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, .9);
+}
+
+.installment-sales-table-title {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.installment-sales-table-title__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, .16);
+  flex: 0 0 auto;
+}
+
+.installment-sales-table-title h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: .98rem;
+  font-weight: 950;
+}
+
+.installment-sales-table-title p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.installment-sales-table-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  direction: ltr;
+  flex: 0 0 auto;
+}
+
+.installment-sales-search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 330px;
+  max-width: min(330px, 56vw);
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border: 1px solid rgba(148, 163, 184, .42);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.installment-sales-search-field i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: .78rem;
+  pointer-events: none;
+}
+
+.installment-sales-search-field input {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 38px;
+  direction: rtl;
+  text-align: right;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.installment-sales-search-field input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+.installment-sales-page-size-control {
+  display: grid;
+  grid-template-columns: 58px 132px;
+  align-items: stretch;
+  direction: ltr;
+  width: 190px;
+  height: 38px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.installment-sales-page-size-control select {
+  all: unset;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 38px;
+  padding-top: 2px;
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 950;
+  line-height: 38px;
+  text-align: center;
+  text-align-last: center;
+  cursor: pointer;
+}
+
+.installment-sales-page-size-control span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 12px;
+  border-left: 1px solid rgba(226, 232, 240, .9);
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.installment-sales-table-shell {
+  overflow-x: auto;
+}
+
+.installment-sales-table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.installment-sales-col-date { width: 15%; }
+.installment-sales-col-phone { width: 25%; }
+.installment-sales-col-customer { width: 14%; }
+.installment-sales-col-money { width: 17%; }
+.installment-sales-col-profit { width: 13%; }
+.installment-sales-col-action { width: 16%; }
+
+.installment-sales-table th {
+  height: 42px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 950;
+  text-align: right;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, .95);
+  white-space: nowrap;
+}
+
+.installment-sales-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, .72);
+  color: #0f172a;
+  vertical-align: middle;
+}
+
+.installment-sales-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+.installment-sales-table td strong,
+.installment-sales-table td small {
+  display: block;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-table td strong {
+  font-size: .82rem;
+  font-weight: 950;
+}
+
+.installment-sales-table td small {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.installment-sales-phone-cell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-phone-cell > i {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 11px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  color: #64748b;
+  background: #f8fafc;
+  flex: 0 0 auto;
+}
+
+.installment-sales-phone-cell > div {
+  min-width: 0;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.installment-sales-profit--positive { color: #059669; }
+.installment-sales-profit--negative { color: #e11d48; }
+.installment-sales-profit--neutral { color: #0f172a; }
+
+.installment-sales-row-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: fit-content;
+  min-width: 126px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  border-radius: 13px;
+  background: #fff;
+  color: #0f172a;
+  text-decoration: none;
+  font-size: .76rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.installment-sales-row-action:hover {
+  background: #f8fafc;
+  border-color: rgba(59, 130, 246, .28);
+}
+
+.installment-sales-empty-state {
+  padding: 32px;
+  text-align: center;
+  color: #64748b;
+  font-size: .84rem;
+  font-weight: 800;
+}
+
+.installment-sales-pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(226, 232, 240, .9);
+}
+
+.installment-sales-pagination__buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.installment-sales-pagination__buttons button,
+.installment-sales-pagination__buttons span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 850;
+}
+
+.installment-sales-pagination__buttons button {
+  width: 34px;
+  cursor: pointer;
+}
+
+.installment-sales-pagination__buttons button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.installment-sales-pagination__buttons span {
+  padding: 0 12px;
+}
+
+@media (max-width: 980px) {
+  .installment-sales-filter-row,
+  .installment-sales-table-header {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .installment-sales-filter-presets,
+  .installment-sales-filter-fields,
+  .installment-sales-table-tools {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .installment-sales-date-box {
+    flex: 1 1 190px;
+    width: auto;
+    max-width: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .installment-sales-table-tools {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .installment-sales-search-field {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .installment-sales-page-size-control {
+    width: 190px;
+  }
+}

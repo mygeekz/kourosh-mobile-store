@@ -1,0 +1,86 @@
+/* Phase 10: extracted premium empty-state polish */
+.premium-empty-state-card {
+  min-height: 14rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .2rem;
+  padding: 1.6rem 1.4rem;
+}
+
+.premium-empty-state-card__icon {
+  margin-bottom: .2rem;
+  height: 3.7rem;
+  width: 3.7rem;
+  border-radius: 1.25rem;
+}
+
+.premium-empty-state-card__title {
+  letter-spacing: -.015em;
+}
+
+.premium-empty-state-card__description {
+  max-width: 38rem;
+  margin-inline: auto;
+}
+
+.empty-state-modern__chips {
+  margin-top: .95rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+}
+
+.empty-state-modern__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 2rem;
+  padding-inline: .78rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.82);
+  color: rgb(71 85 105);
+}
+
+.empty-state-modern__action {
+  min-height: 2.65rem;
+  padding-inline: 1rem;
+}
+
+.dark .empty-state-modern__chip {
+  border-color: rgba(51,65,85,.92);
+  background: rgba(15,23,42,.78);
+  color: rgb(203 213 225);
+}
+
+.ux-inline-feedback.app-inline-alert {
+  padding: 1rem 1rem 1rem 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .premium-empty-state-card {
+    min-height: 12.5rem;
+    padding: 1.25rem 1rem;
+    border-radius: 1.4rem;
+  }
+
+  .premium-empty-state-card__icon {
+    height: 3.3rem;
+    width: 3.3rem;
+    border-radius: 1.1rem;
+  }
+
+  .premium-empty-state-card__title {
+    font-size: .95rem;
+  }
+
+  .premium-empty-state-card__description {
+    font-size: .86rem;
+  }
+}

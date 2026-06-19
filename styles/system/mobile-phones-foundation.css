@@ -1,0 +1,984 @@
+/* ==========================================================================
+   Kourosh UI Foundation — Mobile Phones phase 9
+   --------------------------------------------------------------------------
+   Purpose:
+   - Consolidates the MobilePhones page CSS into one controlled cascade point.
+   - Preserves the source order of the existing page-level and runtime CSS.
+   - Scope: phone registration blocks, list header, phone inventory table/cards,
+     autocomplete, submit bar, and mobile phone responsive polish.
+   - No inventory, sales, pricing, IMEI, partner, API, or database logic changes.
+   ========================================================================== */
+
+/* ===== Source: styles/pages/mobile-phones.css ===== */
+/* Phase 7 note: no clearly isolated mobile-phones-only selectors were found in legacy-monolith.css.
+   This page currently relies mostly on shared systems (forms, modals, tables, cards, buttons, filters). */
+
+/* ===== Source: styles/runtime-overrides/05-mobile-phones.css ===== */
+/* Mobile phones registration/list/operations polish.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== Mobile phones identity section root layout fix ===== */
+.phone-identity-block {
+  display: block;
+  position: relative;
+  isolation: isolate;
+}
+.phone-identity-block__header {
+  width: 100%;
+}
+.phone-identity-block__header > * {
+  min-width: 0;
+}
+.phone-identity-block__grid {
+  width: 100%;
+  align-items: start;
+  clear: both;
+}
+.phone-identity-block__grid > .phone-identity-block__field {
+  min-width: 0;
+  width: 100%;
+}
+.phone-identity-block__grid :where(input, select, textarea, .addable-autocomplete, .price-input-shell) {
+  width: 100%;
+}
+@media (max-width: 1279px) {
+  .phone-identity-block__header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+}
+@media (max-width: 767px) {
+  .phone-identity-block__grid > .phone-identity-block__field {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+}
+@media (min-width: 768px) {
+  .phone-identity-block:not(.phone-identity-block--edit) .phone-identity-block__field--model,
+  .phone-identity-block:not(.phone-identity-block--edit) .phone-identity-block__field--imei {
+    grid-row: 1;
+  }
+  .phone-identity-block:not(.phone-identity-block--edit) .phone-identity-block__field--color {
+    grid-row: 2;
+  }
+  .phone-identity-block--edit .phone-identity-block__field--model,
+  .phone-identity-block--edit .phone-identity-block__field--imei,
+  .phone-identity-block--edit .phone-identity-block__field--condition {
+    grid-row: 1;
+  }
+  .phone-identity-block--edit .phone-identity-block__field--color {
+    grid-row: 2;
+  }
+}
+
+/* ===== Mobile phones finance/supply section root layout fix ===== */
+.phone-finance-block {
+  display: block;
+  position: relative;
+  isolation: isolate;
+  background-image: none !important;
+}
+.phone-finance-block__header {
+  width: 100%;
+}
+.phone-finance-block__header > * {
+  min-width: 0;
+}
+.phone-finance-block__grid {
+  width: 100%;
+  align-items: start;
+  clear: both;
+}
+.phone-finance-block__grid > .phone-finance-block__field {
+  min-width: 0;
+  width: 100%;
+}
+.phone-finance-block__field {
+  min-height: 100%;
+}
+.phone-finance-block__field :where(input, select, textarea, .addable-autocomplete, .price-input-shell, .rmdp-container) {
+  width: 100%;
+  min-width: 0;
+}
+.phone-finance-block__field--sale,
+.phone-finance-block__field--status {
+  background-image: none !important;
+}
+@media (max-width: 1279px) {
+  .phone-finance-block__header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+}
+@media (max-width: 767px) {
+  .phone-finance-block__grid > .phone-finance-block__field {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+}
+@media (min-width: 1280px) {
+  .phone-finance-block:not(.phone-finance-block--edit) .phone-finance-block__field--purchase,
+  .phone-finance-block:not(.phone-finance-block--edit) .phone-finance-block__field--sale,
+  .phone-finance-block:not(.phone-finance-block--edit) .phone-finance-block__field--supplier {
+    grid-row: 1 !important;
+  }
+  .phone-finance-block--edit .phone-finance-block__field--purchase,
+  .phone-finance-block--edit .phone-finance-block__field--sale,
+  .phone-finance-block--edit .phone-finance-block__field--supplier {
+    grid-row: 1 !important;
+  }
+  .phone-finance-block--edit .phone-finance-block__field--purchase-date,
+  .phone-finance-block--edit .phone-finance-block__field--battery,
+  .phone-finance-block--edit .phone-finance-block__field--status {
+    grid-row: 2 !important;
+  }
+}
+html.dark .phone-finance-block {
+  background-image: none !important;
+}
+
+/* ===== Mobile phones operations/status layout root fix ===== */
+.phone-operations-block,
+.phone-register-submitbar {
+  display: block;
+  position: relative;
+  isolation: isolate;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.phone-operations-block__header {
+  width: 100%;
+}
+
+.phone-operations-block__header > * {
+  min-width: 0;
+}
+
+.phone-operations-block__grid {
+  width: 100%;
+  align-items: start;
+  clear: both;
+}
+
+.phone-operations-block__grid > .phone-operations-block__field,
+.phone-operations-block__field {
+  min-width: 0;
+  width: 100%;
+}
+
+.phone-operations-block__field :where(input, select, textarea, .addable-autocomplete, .price-input-shell, .rmdp-container) {
+  width: 100%;
+  min-width: 0;
+}
+
+.phone-operations-block__field textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.phone-operations-block--edit .phone-operations-block__field textarea {
+  min-height: 7.5rem;
+}
+
+.phone-register-submitbar {
+  background: #fff !important;
+  border-color: rgb(226 232 240 / .92) !important;
+  box-shadow: 0 16px 36px -32px rgba(15,23,42,.18) !important;
+}
+
+html.dark .phone-register-submitbar {
+  background: rgb(2 6 23 / .92) !important;
+  border-color: rgb(30 41 59 / .95) !important;
+  box-shadow: 0 16px 36px -32px rgba(2,6,23,.42) !important;
+}
+
+.phone-register-submitbar :where(button, .ux-btn) {
+  min-height: 38px !important;
+}
+
+@media (max-width: 1279px) {
+  .phone-operations-block__header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .phone-operations-block__grid > .phone-operations-block__field,
+  .phone-operations-block__field {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+  .phone-register-submitbar {
+    align-items: stretch !important;
+  }
+  .phone-register-submitbar :where(button, .ux-btn) {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .phone-operations-block:not(.phone-operations-block--edit) .phone-operations-block__field--status,
+  .phone-operations-block:not(.phone-operations-block--edit) .phone-operations-block__field--notes {
+    grid-row: 1;
+  }
+
+  .phone-operations-block--edit .phone-operations-block__field--notes {
+    grid-row: 1;
+  }
+
+  .phone-finance-block--edit .phone-operations-block__field--status {
+    grid-row: 2;
+  }
+}
+
+
+/* ===== Mobile phones identity autocomplete layering hard fix ===== */
+.phone-identity-block,
+.phone-identity-block__grid,
+.phone-identity-block__field,
+.phone-identity-block__field :where(.phone-addable-autocomplete) {
+  overflow: visible !important;
+}
+
+.phone-identity-block {
+  z-index: 1;
+}
+
+.phone-identity-block:focus-within {
+  z-index: 80 !important;
+}
+
+.phone-addable-autocomplete--open,
+.phone-addable-autocomplete:focus-within {
+  z-index: 120 !important;
+}
+
+/* ===== Mobile phones registered list Apple redesign ===== */
+.phone-list-shell__toolbar .ux-toolbar-surface--premium {
+  border: 1px solid rgba(226,232,240,.92) !important;
+  border-radius: 28px !important;
+  background: rgba(255,255,255,.98) !important;
+  background-image: none !important;
+  box-shadow: 0 20px 40px -34px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+
+.phone-list-shell__toolbar .ux-toolbar-search__input {
+  min-height: 52px !important;
+  border-radius: 20px !important;
+  border-color: rgba(226,232,240,.92) !important;
+  background: rgba(248,250,252,.9) !important;
+  box-shadow: none !important;
+}
+
+.phone-list-shell__toolbar .ux-toolbar-search__input:focus {
+  border-color: rgba(148,163,184,.95) !important;
+  box-shadow: 0 0 0 4px rgba(148,163,184,.12) !important;
+}
+
+.phone-list-shell__toolbar .ux-toolbar-actions :where(button, .btn, .ux-btn) {
+  min-height: 38px !important;
+}
+
+.phone-list-shell__toolbar .text-muted {
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 999px;
+  background: rgba(248,250,252,.9);
+  color: rgb(71 85 105) !important;
+  padding: .48rem .8rem;
+  font-weight: 800;
+}
+
+.phone-list-shell__controlbar {
+  border-color: rgba(226,232,240,.92) !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: 0 18px 36px -34px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.94) !important;
+}
+
+.phone-list-shell__controlbar :where(.bg-white\/85, .bg-slate-50\/90, .bg-white, .bg-slate-50) {
+  background-image: none !important;
+}
+
+.phone-list-shell__table {
+  border-color: rgba(226,232,240,.92) !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 20px 38px -34px rgba(15,23,42,.14) !important;
+}
+
+.phone-list-shell__table thead {
+  background: rgba(248,250,252,.96) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.phone-list-shell__table tbody {
+  background: rgba(255,255,255,.98) !important;
+}
+
+.phone-list-shell__table tbody tr {
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.phone-list-shell__table tbody tr:hover {
+  background: rgba(248,250,252,.82) !important;
+}
+
+.phone-list-shell__cards > * {
+  border-color: rgba(226,232,240,.92) !important;
+  background: rgba(255,255,255,.98) !important;
+  background-image: none !important;
+  box-shadow: 0 18px 34px -34px rgba(15,23,42,.14) !important;
+}
+
+html.dark .phone-list-shell__toolbar .ux-toolbar-surface--premium,
+html.dark .phone-list-shell__controlbar,
+html.dark .phone-list-shell__table,
+html.dark .phone-list-shell__cards > * {
+  background: rgb(2 6 23 / .96) !important;
+  border-color: rgba(30,41,59,.95) !important;
+  box-shadow: 0 22px 42px -34px rgba(2,6,23,.48), inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+html.dark .phone-list-shell__toolbar .ux-toolbar-search__input {
+  background: rgb(15 23 42 / .92) !important;
+  border-color: rgba(51,65,85,.96) !important;
+}
+
+html.dark .phone-list-shell__toolbar .text-muted {
+  border-color: rgba(51,65,85,.95);
+  background: rgb(15 23 42 / .92);
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .phone-list-shell__table thead,
+html.dark .phone-list-shell__table tbody {
+  background: rgb(2 6 23 / .96) !important;
+}
+
+@media (max-width: 768px) {
+  .phone-list-shell__toolbar .ux-toolbar-surface--premium {
+    border-radius: 24px !important;
+  }
+  .phone-list-shell__toolbar .ux-toolbar-actions {
+    width: 100%;
+  }
+  .phone-list-shell__toolbar .ux-toolbar-actions > * {
+    width: 100%;
+  }
+  .phone-list-shell__toolbar .text-muted {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+
+/* ===== Apple minimal phones list top header ===== */
+.phone-list-shell__toolbar {
+  padding-top: .75rem !important;
+  padding-bottom: .5rem !important;
+}
+
+.phone-list-apple-head {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  align-items: center;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 28px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 18px 38px -34px rgba(15,23,42,.14), inset 0 1px 0 rgba(255,255,255,.94);
+  padding: 1rem 1.1rem;
+}
+
+.phone-list-apple-head__title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .8rem;
+}
+
+.phone-list-apple-head__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.92);
+  color: rgb(71 85 105);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.phone-list-apple-head__copy {
+  min-width: 0;
+  text-align: right;
+}
+
+.phone-list-apple-head__copy h3 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.6;
+}
+
+.phone-list-apple-head__copy p {
+  margin: .2rem 0 0;
+  color: rgb(100 116 139);
+  font-size: .77rem;
+  line-height: 1.9;
+}
+
+.phone-list-apple-head__controls {
+  min-width: 0;
+  display: grid;
+  gap: .75rem;
+  justify-items: stretch;
+}
+
+.phone-list-apple-head__search {
+  position: relative;
+  width: 100%;
+}
+
+.phone-list-apple-head__search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgb(148 163 184);
+  pointer-events: none;
+}
+
+.phone-list-apple-head__search-input {
+  width: 100%;
+  min-height: 46px;
+  border-radius: 18px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.9);
+  padding: .75rem 1rem .75rem 3rem;
+  padding-inline-start: 2.75rem;
+  padding-inline-end: 1rem;
+  color: rgb(15 23 42);
+  font-size: .86rem;
+  font-weight: 700;
+  text-align: right;
+  text-overflow: ellipsis;
+  outline: none;
+  transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+.phone-list-apple-head__search-input::placeholder {
+  color: rgb(148 163 184);
+}
+
+.phone-list-apple-head__search-input:focus {
+  border-color: rgba(148,163,184,.95);
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 0 0 4px rgba(148,163,184,.12);
+}
+
+.phone-list-apple-head__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+.phone-list-apple-head__action-btn {
+  min-height: 36px !important;
+}
+
+.phone-list-apple-head__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(248,250,252,.9);
+  color: rgb(71 85 105);
+  padding: .45rem .8rem;
+  font-size: .74rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+html.dark .phone-list-apple-head {
+  background: rgb(2 6 23 / .96);
+  border-color: rgba(30,41,59,.95);
+  box-shadow: 0 22px 42px -34px rgba(2,6,23,.48), inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+html.dark .phone-list-apple-head__icon,
+html.dark .phone-list-apple-head__count,
+html.dark .phone-list-apple-head__search-input {
+  background: rgb(15 23 42 / .9);
+  border-color: rgba(51,65,85,.95);
+}
+
+html.dark .phone-list-apple-head__copy h3,
+html.dark .phone-list-apple-head__search-input {
+  color: rgb(241 245 249);
+}
+
+html.dark .phone-list-apple-head__copy p,
+html.dark .phone-list-apple-head__count,
+html.dark .phone-list-apple-head__icon,
+html.dark .phone-list-apple-head__search-icon,
+html.dark .phone-list-apple-head__search-input::placeholder {
+  color: rgb(148 163 184);
+}
+
+@media (max-width: 1024px) {
+  .phone-list-apple-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .phone-list-apple-head {
+    border-radius: 24px;
+    padding: .9rem;
+  }
+  .phone-list-apple-head__title {
+    align-items: flex-start;
+  }
+  .phone-list-apple-head__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .phone-list-apple-head__actions > * {
+    width: 100%;
+  }
+  .phone-list-apple-head__count {
+    justify-content: center;
+  }
+}
+
+
+/* ===== Phone register submit buttons vivid accent polish ===== */
+.phone-register-submitbar {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: .9rem;
+  position: sticky;
+  bottom: 0.75rem;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+}
+
+.phone-register-submitbar > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.phone-register-submitbar__submit,
+.phone-register-submitbar__reset {
+  min-height: 42px !important;
+  border-radius: 18px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 18px 30px -24px rgba(15,23,42,.22) !important;
+  white-space: nowrap;
+}
+
+.phone-register-submitbar__submit {
+  border: 1px solid rgba(125, 211, 76, .9) !important;
+  background: linear-gradient(180deg, #c9ff4d 0%, #a3f635 100%) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.phone-register-submitbar__submit:hover,
+.phone-register-submitbar__submit:focus-visible {
+  border-color: rgba(101, 163, 13, .95) !important;
+  background: linear-gradient(180deg, #d9ff73 0%, #b9ff43 100%) !important;
+  box-shadow: 0 20px 34px -24px rgba(132,204,22,.42) !important;
+}
+
+.phone-register-submitbar__submit :where(.ux-btn__icon, .btn__icon) {
+  background: rgba(255,255,255,.35) !important;
+  border-color: rgba(255,255,255,.42) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.phone-register-submitbar__reset {
+  border: 1px solid rgba(251, 113, 133, .88) !important;
+  background: linear-gradient(180deg, #ff8aa0 0%, #fb7185 100%) !important;
+  color: white !important;
+}
+
+.phone-register-submitbar__reset:hover,
+.phone-register-submitbar__reset:focus-visible {
+  border-color: rgba(225, 29, 72, .9) !important;
+  background: linear-gradient(180deg, #ff9fb2 0%, #ff6b85 100%) !important;
+  box-shadow: 0 20px 34px -24px rgba(244,63,94,.38) !important;
+}
+
+.phone-register-submitbar__reset :where(.ux-btn__icon, .btn__icon) {
+  background: rgba(255,255,255,.18) !important;
+  border-color: rgba(255,255,255,.18) !important;
+  color: white !important;
+}
+
+html.dark .phone-register-submitbar__submit {
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .phone-register-submitbar__reset {
+  color: white !important;
+}
+
+@media (min-width: 640px) {
+  .phone-register-submitbar > div:last-child {
+    margin-inline-start: auto;
+  }
+  .phone-register-submitbar__submit {
+    order: 1;
+  }
+  .phone-register-submitbar__reset {
+    order: 2;
+  }
+}
+
+@media (max-width: 639px) {
+  .phone-register-submitbar {
+    align-items: stretch !important;
+  }
+  .phone-register-submitbar > div:last-child {
+    width: 100%;
+    flex-direction: column;
+  }
+  .phone-register-submitbar__submit,
+  .phone-register-submitbar__reset {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Mobile phones inventory table: Apple-minimal fit mode, no horizontal scroll */
+.phone-list-shell__table--fit {
+  max-width: 100%;
+  overflow: hidden !important;
+}
+
+.phone-list-shell__table--fit .inventory-premium-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+.phone-list-shell__table--fit table {
+  width: 100%;
+  min-width: 0 !important;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.phone-list-shell__table--fit th,
+.phone-list-shell__table--fit td {
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+.phone-inventory-table-v2 th,
+.phone-inventory-table-v2 td {
+  vertical-align: top;
+}
+
+.phone-inventory-table-v2 th:nth-child(2),
+.phone-inventory-table-v2 td:nth-child(2) {
+  width: auto;
+}
+
+.phone-inventory-table-v2 :where(.truncate, [title]) {
+  max-width: 100%;
+}
+
+.phone-inventory-table-v2 .phone-table-finance-stack {
+  width: 100%;
+  min-width: 0 !important;
+}
+
+.phone-inventory-table-v2 .phone-table-finance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .625rem;
+  min-width: 0;
+  line-height: 1.45;
+}
+
+.phone-inventory-table-v2 .phone-table-finance-row + .phone-table-finance-row {
+  margin-top: .25rem;
+  padding-top: .25rem;
+  border-top: 1px solid rgba(148, 163, 184, .22);
+}
+
+.phone-inventory-table-v2 .phone-table-finance-row span {
+  flex: 0 0 auto;
+  font-size: 9px;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.phone-inventory-table-v2 .phone-table-finance-row strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: rgb(15 23 42);
+}
+
+html.dark .phone-inventory-table-v2 .phone-table-finance-row + .phone-table-finance-row {
+  border-top-color: rgba(51, 65, 85, .72);
+}
+
+html.dark .phone-inventory-table-v2 .phone-table-finance-row span {
+  color: rgb(148 163 184);
+}
+
+html.dark .phone-inventory-table-v2 .phone-table-finance-row strong {
+  color: rgb(226 232 240);
+}
+
+@media (max-width: 767px) {
+  .phone-inventory-table-v2 th,
+  .phone-inventory-table-v2 td {
+    padding-inline: .375rem !important;
+  }
+
+  .phone-inventory-table-v2 .phone-table-finance-stack {
+    padding-inline: .5rem !important;
+  }
+}
+
+
+.phone-inventory-table-v2 .phone-table-actions-cell,
+.phone-inventory-table-v2 .phone-table-actions-wrap {
+  overflow: visible !important;
+}
+
+.phone-inventory-table-v2 .phone-table-actions-menu {
+  max-width: calc(100vw - 2rem);
+  transform-origin: top right;
+}
+
+.phone-inventory-table-v2 .phone-table-actions-menu button {
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .phone-inventory-table-v2 .phone-table-actions-menu {
+    width: 8rem !important;
+  }
+}
+
+/* ===== Contract: styles/system/mobile-phones-ui-contract.css ===== */
+/* ==========================================================================
+   Kourosh UI Contract — MobilePhones phase 9
+   --------------------------------------------------------------------------
+   Purpose:
+   - Adds a narrowly scoped Apple-minimal contract for the heaviest phone page
+     surfaces without changing JSX or business logic.
+   - Scope is limited to existing phone-* classes so other modules are not
+     affected.
+   ========================================================================== */
+
+.phone-identity-block,
+.phone-finance-block,
+.phone-operations-block {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 22px 52px -42px rgba(15, 23, 42, 0.36);
+}
+
+html.dark .phone-identity-block,
+html.dark .phone-finance-block,
+html.dark .phone-operations-block {
+  border-color: rgba(71, 85, 105, 0.42);
+  background: rgba(15, 23, 42, 0.74);
+  box-shadow: 0 24px 58px -46px rgba(0, 0, 0, 0.72);
+}
+
+.phone-identity-block__grid,
+.phone-finance-block__grid,
+.phone-operations-block__grid {
+  gap: 0.875rem;
+}
+
+.phone-identity-block__field,
+.phone-finance-block__field,
+.phone-operations-block__field {
+  min-width: 0;
+}
+
+.phone-identity-block__field :where(input, select, textarea),
+.phone-finance-block__field :where(input, select, textarea),
+.phone-operations-block__field :where(input, select, textarea),
+.phone-addable-autocomplete input {
+  min-height: 46px;
+  border-radius: 18px;
+  text-overflow: ellipsis;
+}
+
+.phone-addable-autocomplete {
+  z-index: 2;
+  isolation: isolate;
+}
+
+.phone-addable-autocomplete__menu {
+  top: calc(100% + 0.5rem) !important;
+  left: 0;
+  right: 0;
+  max-height: min(330px, 44vh);
+  overflow-y: auto;
+}
+
+.phone-addable-autocomplete__option {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+}
+
+.phone-list-apple-head {
+  overflow: hidden;
+}
+
+.phone-list-apple-head__title,
+.phone-list-apple-head__copy,
+.phone-list-apple-head__controls,
+.phone-list-apple-head__actions {
+  min-width: 0;
+}
+
+.phone-list-apple-head__search {
+  min-width: min(100%, 260px);
+}
+
+
+.phone-list-shell__table {
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.phone-list-shell__table :where(table) {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.phone-list-shell__table :where(th, td),
+.phone-inventory-table-v2 :where(th, td) {
+  vertical-align: middle;
+}
+
+.phone-table-device-stack,
+.phone-table-finance-stack {
+  min-width: 0;
+}
+
+.phone-table-spec-pill,
+.phone-card-spec-pill,
+.phone-table-finance-row,
+.phone-card-supplier {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.phone-table-spec-pill__value,
+.phone-card-spec-pill__value,
+.phone-table-finance-row strong {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  white-space: nowrap;
+}
+
+.phone-card-surface {
+  border-radius: 26px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+html.dark .phone-card-surface {
+  border-color: rgba(71, 85, 105, 0.42);
+  background: rgba(15, 23, 42, 0.76);
+}
+
+.phone-table-inline-actions,
+.phone-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.phone-table-action-btn,
+.phone-table-select-btn,
+.phone-card-select-btn {
+  min-height: 36px;
+  min-width: 36px;
+  border-radius: 14px;
+}
+
+@media (max-width: 1024px) {
+  .phone-list-apple-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .phone-list-apple-head__controls,
+  .phone-list-apple-head__actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .phone-list-apple-head__search {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .phone-identity-block,
+  .phone-finance-block,
+  .phone-operations-block {
+    border-radius: 22px;
+  }
+
+  .phone-list-apple-head__actions > *,
+  .phone-register-submitbar__submit,
+  .phone-register-submitbar__reset {
+    width: 100%;
+  }
+
+  .phone-table-inline-actions,
+  .phone-card-actions {
+    justify-content: stretch;
+  }
+
+  .phone-table-action-btn,
+  .phone-table-select-btn,
+  .phone-card-select-btn {
+    flex: 1 1 42px;
+  }
+}
+

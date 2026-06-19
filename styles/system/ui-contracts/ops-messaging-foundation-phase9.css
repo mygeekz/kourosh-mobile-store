@@ -1,0 +1,254 @@
+/* Phase 9 — Telegram / SMS Operations Foundation
+   Scoped plain CSS to avoid PostCSS circular dependencies. */
+
+[data-ui-ops-panel] {
+  --ops-radius-xl: 30px;
+  --ops-radius-lg: 24px;
+  --ops-radius-md: 18px;
+  --ops-border: rgba(226, 232, 240, 0.86);
+  --ops-surface: rgba(255, 255, 255, 0.96);
+  --ops-soft: rgba(248, 250, 252, 0.82);
+  --ops-text: #0f172a;
+  --ops-muted: #64748b;
+  --ops-shadow: 0 24px 70px -54px rgba(15, 23, 42, 0.42);
+  direction: rtl;
+}
+
+.dark [data-ui-ops-panel] {
+  --ops-border: rgba(51, 65, 85, 0.78);
+  --ops-surface: rgba(15, 23, 42, 0.92);
+  --ops-soft: rgba(2, 6, 23, 0.52);
+  --ops-text: #f8fafc;
+  --ops-muted: #94a3b8;
+  --ops-shadow: 0 26px 70px -56px rgba(0, 0, 0, 0.75);
+}
+
+.settings-ops-panel,
+.ops-command-center,
+.ops-logs-panel,
+.ops-health-panel {
+  color: var(--ops-text);
+}
+
+.ops-command-center,
+.ops-logs-panel,
+.ops-health-panel {
+  border-radius: var(--ops-radius-xl) !important;
+  border-color: var(--ops-border) !important;
+  box-shadow: var(--ops-shadow) !important;
+}
+
+.ops-status-card,
+.ops-metric-card,
+.ops-check-card,
+.ops-log-item,
+.ops-filter-panel {
+  border-color: var(--ops-border) !important;
+  box-shadow: 0 18px 48px -42px rgba(15, 23, 42, 0.48) !important;
+}
+
+.ops-status-card,
+.ops-metric-card,
+.ops-check-card {
+  min-width: 0;
+}
+
+.ops-status-card strong,
+.ops-status-card small,
+.ops-metric-card div,
+.ops-check-card h4,
+.ops-log-item h4,
+.ops-filter-panel label,
+.ops-filter-panel .app-label {
+  overflow-wrap: anywhere;
+}
+
+.ops-metric-grid {
+  align-items: stretch;
+}
+
+.ops-metric-card {
+  min-height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.ops-metric-card [dir="ltr"],
+.ops-log-item [dir="ltr"],
+.ops-logs-panel pre,
+.telegram-logs-panel pre,
+.sms-logs-panel pre {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.ops-filter-panel {
+  border-radius: var(--ops-radius-lg) !important;
+}
+
+.ops-filter-panel select,
+.ops-filter-panel input,
+.ops-filter-panel .app-input {
+  min-height: 44px;
+  border-radius: 16px !important;
+  border-color: var(--ops-border) !important;
+  background: var(--ops-surface) !important;
+  color: var(--ops-text) !important;
+}
+
+.ops-filter-panel select:focus,
+.ops-filter-panel input:focus,
+.ops-filter-panel .app-input:focus {
+  border-color: rgba(14, 165, 233, 0.52) !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.13) !important;
+}
+
+.ops-filter-chip {
+  min-height: 34px;
+  white-space: normal;
+  text-align: right;
+}
+
+.ops-log-item {
+  border-radius: var(--ops-radius-lg) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.ops-log-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 22px 62px -48px rgba(15, 23, 42, 0.58) !important;
+}
+
+.ops-log-item[data-log-status="failed"] {
+  border-color: rgba(251, 113, 133, 0.42) !important;
+}
+
+.ops-log-item[data-log-status="success"] {
+  border-color: rgba(52, 211, 153, 0.35) !important;
+}
+
+.ops-inline-fix,
+.ops-modal-error,
+.tg-logs-apple__guidance,
+.tg-logs-apple__fixCoach {
+  border-radius: var(--ops-radius-lg) !important;
+  overflow: hidden;
+}
+
+.ops-inline-fix {
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  background: linear-gradient(135deg, rgba(255, 251, 235, 0.96), rgba(255, 255, 255, 0.94)) !important;
+}
+
+.dark .ops-inline-fix {
+  background: linear-gradient(135deg, rgba(69, 26, 3, 0.32), rgba(15, 23, 42, 0.82)) !important;
+}
+
+.ops-retry-button,
+.tg-logs-apple__quickFixBtn,
+.tg-logs-apple__detailsBtn,
+.sms-logs-panel [data-ui-button] {
+  min-height: 34px;
+  border-radius: 999px !important;
+}
+
+.tg-logs-apple__actions,
+.tg-logs-apple__inlineFixActions {
+  gap: 8px !important;
+}
+
+.tg-logs-apple__table td,
+.tg-logs-apple__table th {
+  vertical-align: middle;
+}
+
+.tg-logs-apple__table td,
+.sms-logs-panel article,
+.sms-health-panel article,
+.ops-check-card,
+.ops-log-item {
+  line-height: 1.75;
+}
+
+.tg-logs-apple__technicalError summary,
+.ops-logs-panel details summary {
+  cursor: pointer;
+  user-select: none;
+}
+
+.tg-logs-apple__debugBox pre,
+.sms-logs-panel pre {
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-radius: 18px;
+}
+
+[data-ui-ops-surface="telegram-command-center"] .telegram-executive-pulse,
+[data-ui-ops-surface="telegram-command-center"] .telegram-executive-card {
+  border-color: var(--ops-border) !important;
+}
+
+.telegram-executive-card.ops-status-card .telegram-card-head {
+  min-width: 0;
+}
+
+.telegram-executive-card.ops-status-card .telegram-card-head div {
+  min-width: 0;
+}
+
+.telegram-executive-card.ops-status-card small {
+  display: block;
+  white-space: normal !important;
+}
+
+@media (max-width: 768px) {
+  .ops-command-center,
+  .ops-logs-panel,
+  .ops-health-panel {
+    border-radius: 22px !important;
+    padding: 16px !important;
+  }
+
+  .ops-metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .ops-filter-panel {
+    padding: 14px !important;
+  }
+
+  .ops-log-item {
+    padding: 14px !important;
+  }
+
+  .tg-logs-apple__actions,
+  .tg-logs-apple__inlineFixActions,
+  .sms-logs-panel [data-ui-ops-actions] {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .tg-logs-apple__actions [data-ui-button],
+  .tg-logs-apple__inlineFixActions [data-ui-button],
+  .sms-logs-panel [data-ui-button] {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .ops-metric-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .ops-filter-panel select,
+  .ops-filter-panel input,
+  .ops-filter-panel .app-input {
+    width: 100%;
+  }
+}

@@ -1,0 +1,177 @@
+
+/* v48 — based on v47.
+   Hard flatten for Telegram "قوانین ارسال" fields.
+   The previous passes reduced spacing, but the ModalField helper/input surfaces
+   were still rendering as nested capsules. This pass flattens those inner layers. */
+
+/* Scope: only the advanced Telegram operations/detail form area. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section {
+  --tg-rules-card-border: rgba(203, 213, 225, 0.86);
+  --tg-rules-soft-bg: rgba(248, 250, 252, 0.72);
+  --tg-rules-input-bg: rgba(248, 250, 252, 0.92);
+}
+
+/* Actual field cards: one card surface, not multiple nested cards. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+  padding: 0.9rem 0.95rem 0.82rem !important;
+  border: 1px solid var(--tg-rules-card-border) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* Label stays inside, with compact rhythm. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field-label {
+  margin: 0 0 0.55rem !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.45 !important;
+  font-size: 0.78rem !important;
+}
+
+/* Flatten the wrapper around input: no extra capsule/background. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-wrap {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+}
+
+/* Input is the only input surface. Make it simple and compact. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-control-premium,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section textarea {
+  height: 2.55rem !important;
+  min-height: 2.55rem !important;
+  padding-block: 0.48rem !important;
+  border-radius: 16px !important;
+  background: var(--tg-rules-input-bg) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+/* Icon chip belongs to the input, but should not create an extra card feel. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-leading-chip {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+  inset-inline-start: 0.52rem !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid rgba(203, 213, 225, 0.82) !important;
+  box-shadow: none !important;
+}
+
+/* Text must clear the icon. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-has-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon textarea {
+  padding-inline-start: 2.55rem !important;
+}
+
+/* The main fix: helper rows must NOT be a second capsule/card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback {
+  margin: 0.46rem 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+}
+
+/* Flatten any paragraph/card classes applied by older CSS. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-error,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback p {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.35rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.72 !important;
+  font-size: 0.7rem !important;
+  color: rgb(100, 116, 139) !important;
+}
+
+/* Also flatten icons inside helper row. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-help i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-error i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback i {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgb(148, 163, 184) !important;
+  margin-top: 0.18rem !important;
+}
+
+/* Three-field row should feel balanced. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid {
+  gap: 0.88rem !important;
+}
+
+/* Full-width quiet hours field: same compact style, no stacked-box look. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .telegram-field--wide,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field.telegram-field--wide {
+  padding: 0.9rem 0.95rem 0.82rem !important;
+}
+
+/* Info/note boxes inside rules: keep one soft surface only. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border {
+  padding: 0.9rem 0.95rem !important;
+  background: rgba(248, 250, 252, 0.78) !important;
+  box-shadow: none !important;
+}
+
+/* Dark mode. */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section {
+  --tg-rules-card-border: rgba(51, 65, 85, 0.95);
+  --tg-rules-soft-bg: rgba(15, 23, 42, 0.72);
+  --tg-rules-input-bg: rgba(15, 23, 42, 0.84);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+  background: rgba(15, 23, 42, 0.82) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-help,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-error,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback p {
+  color: rgb(148, 163, 184) !important;
+}
+
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+    padding: 0.82rem 0.82rem 0.78rem !important;
+  }
+}

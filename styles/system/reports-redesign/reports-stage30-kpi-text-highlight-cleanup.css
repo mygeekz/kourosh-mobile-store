@@ -1,0 +1,57 @@
+/* Stage 30 - Remove residual text highlight blocks inside report KPI cards
+   Scope: reports only. Keeps card borders and icons, removes any nested tint/glow under text. */
+
+.financial-overview-redesign-v1 :where(.premium-stat-card, .fo-compact-metric, .fo-realized-card),
+.reports-layout-executive :where(.premium-stat-card, .kpi-card, .cashflow-kpi-card, .debtors-kpi-card, .creditors-kpi-card, .collection-center-kpi),
+.report-page :where(.premium-stat-card, .kpi-card, .cashflow-kpi-card, .debtors-kpi-card, .creditors-kpi-card, .collection-center-kpi) {
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* The remaining ghost box was coming from nested wrappers/text nodes inheriting soft surface rules.
+   KPI text must sit directly on the card surface, with no pill/background behind it. */
+.financial-overview-redesign-v1 :where(.premium-stat-card > div, .premium-stat-card > div > div:first-child, .premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint),
+.financial-overview-redesign-v1 :where(.fo-compact-metric span, .fo-compact-metric strong, .fo-realized-label, .fo-realized-value, .fo-realized-sub),
+.reports-layout-executive :where(.premium-stat-card > div, .premium-stat-card > div > div:first-child, .premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint),
+.report-page :where(.premium-stat-card > div, .premium-stat-card > div > div:first-child, .premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  text-shadow: none !important;
+  outline: 0 !important;
+}
+
+.financial-overview-redesign-v1 :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint),
+.reports-layout-executive :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint),
+.report-page :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint) {
+  display: block !important;
+  width: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Keep icons visible but prevent icon glow from bleeding behind text. */
+.financial-overview-redesign-v1 :where(.premium-stat-card__icon, .fo-compact-metric i, .fo-realized-icon),
+.reports-layout-executive :where(.premium-stat-card__icon),
+.report-page :where(.premium-stat-card__icon) {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Defensive cleanup for older pseudo overlays on KPI text wrappers. */
+.financial-overview-redesign-v1 :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::before,
+.financial-overview-redesign-v1 :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::after,
+.reports-layout-executive :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::before,
+.reports-layout-executive :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::after,
+.report-page :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::before,
+.report-page :where(.premium-stat-card__label, .premium-stat-card__value, .premium-stat-card__hint)::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}

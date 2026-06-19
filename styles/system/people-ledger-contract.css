@@ -1,0 +1,122 @@
+/* Phase 08 — People ledger/detail contract
+   Scope: CustomerDetail + PartnerDetail visual containment only.
+   Goal: keep ledger numbers, IMEI/system IDs and action rows readable without touching accounting logic. */
+
+.people-detail-apple {
+  --people-ledger-radius: 24px;
+  --people-ledger-border: rgba(226, 232, 240, 0.92);
+  --people-ledger-surface: rgba(255, 255, 255, 0.98);
+  --people-ledger-soft: rgba(248, 250, 252, 0.96);
+  --people-ledger-text: #0f172a;
+  --people-ledger-muted: #64748b;
+  --people-ledger-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.28);
+}
+
+html.dark .people-detail-apple {
+  --people-ledger-border: rgba(51, 65, 85, 0.72);
+  --people-ledger-surface: rgba(15, 23, 42, 0.98);
+  --people-ledger-soft: rgba(2, 6, 23, 0.92);
+  --people-ledger-text: #f8fafc;
+  --people-ledger-muted: #94a3b8;
+  --people-ledger-shadow: 0 18px 42px -36px rgba(0, 0, 0, 0.62);
+}
+
+.people-detail-apple :where(.people-ledger-grid, .detail-card, .people-panel-card) {
+  min-width: 0 !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid) {
+  border-radius: var(--people-ledger-radius) !important;
+  border: 1px solid var(--people-ledger-border) !important;
+  background: var(--people-ledger-surface) !important;
+  box-shadow: var(--people-ledger-shadow) !important;
+  overflow: hidden !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid .overflow-x-auto) {
+  border-radius: calc(var(--people-ledger-radius) - 4px) !important;
+  scrollbar-width: thin;
+}
+
+.people-detail-apple :where(.people-ledger-grid table) {
+  min-width: 880px;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid thead th) {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--people-ledger-soft) !important;
+  color: var(--people-ledger-muted) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid tbody td) {
+  color: var(--people-ledger-text) !important;
+  vertical-align: top !important;
+  line-height: 1.75 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid tbody tr) {
+  transition: background-color 0.16s ease, box-shadow 0.16s ease !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid tbody tr:hover) {
+  background: rgba(248, 250, 252, 0.76) !important;
+}
+
+html.dark .people-detail-apple :where(.people-ledger-grid tbody tr:hover) {
+  background: rgba(30, 41, 59, 0.46) !important;
+}
+
+.people-detail-apple :where(.people-ledger-grid .font-mono, .people-ledger-grid [dir='ltr']) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.people-detail-apple :where(.people-ledger-grid .ledger-actions-row, .people-ledger-grid .customer-ledger-actions, .people-ledger-grid .partner-ledger-actions) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.45rem !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-apple :where(.partner-ledger-entry-metric, .partner-ledger-entry-metric--balance) {
+  border-radius: 18px !important;
+}
+
+.partner-detail-apple :where(.partner-ledger-insight-grid .font-mono, .partner-ledger-insight-grid [dir='ltr']) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .people-detail-apple :where(.people-ledger-grid) {
+    border-radius: 20px !important;
+  }
+
+  .people-detail-apple :where(.people-ledger-grid table) {
+    min-width: 760px;
+  }
+
+  .people-detail-apple :where(.people-ledger-grid thead th, .people-ledger-grid tbody td) {
+    padding-inline: 0.75rem !important;
+  }
+}

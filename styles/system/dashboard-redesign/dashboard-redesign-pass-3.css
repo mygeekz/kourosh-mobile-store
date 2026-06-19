@@ -1,0 +1,343 @@
+/*
+ * Phase 71 — Dashboard Redesign Pass 3
+ * Scope: executive polish for ClockWidget only. No time, data, registry, drag/resize or API behavior changes.
+ */
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card {
+  --dashboard-clock-surface: rgba(255, 255, 255, 0.94);
+  --dashboard-clock-surface-soft: rgba(248, 250, 252, 0.82);
+  --dashboard-clock-border: rgba(203, 213, 225, 0.78);
+  --dashboard-clock-border-strong: rgba(148, 163, 184, 0.3);
+  --dashboard-clock-text: rgb(15, 23, 42);
+  --dashboard-clock-muted: rgb(100, 116, 139);
+  --dashboard-clock-accent: rgb(15, 23, 42);
+  --dashboard-clock-accent-soft: rgba(15, 23, 42, 0.075);
+  --dashboard-clock-success: rgb(5, 150, 105);
+  --dashboard-clock-success-soft: rgba(16, 185, 129, 0.12);
+  --dashboard-clock-shadow: 0 30px 82px -56px rgba(15, 23, 42, 0.44);
+  min-height: 100%;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 92% 4%, rgba(14, 165, 233, 0.11), transparent 29%),
+    radial-gradient(circle at 4% 18%, rgba(16, 185, 129, 0.09), transparent 30%),
+    linear-gradient(180deg, var(--dashboard-clock-surface), rgba(248, 250, 252, 0.9)) !important;
+  border-color: var(--dashboard-clock-border) !important;
+  box-shadow: var(--dashboard-clock-shadow) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-executive-card {
+  --dashboard-clock-surface: rgba(15, 23, 42, 0.9);
+  --dashboard-clock-surface-soft: rgba(2, 6, 23, 0.66);
+  --dashboard-clock-border: rgba(51, 65, 85, 0.88);
+  --dashboard-clock-border-strong: rgba(100, 116, 139, 0.34);
+  --dashboard-clock-text: rgb(248, 250, 252);
+  --dashboard-clock-muted: rgb(203, 213, 225);
+  --dashboard-clock-accent: rgb(248, 250, 252);
+  --dashboard-clock-accent-soft: rgba(248, 250, 252, 0.08);
+  --dashboard-clock-success: rgb(52, 211, 153);
+  --dashboard-clock-success-soft: rgba(16, 185, 129, 0.16);
+  --dashboard-clock-shadow: 0 30px 86px -58px rgba(0, 0, 0, 0.88);
+  background:
+    radial-gradient(circle at 92% 4%, rgba(14, 165, 233, 0.18), transparent 30%),
+    radial-gradient(circle at 4% 20%, rgba(16, 185, 129, 0.13), transparent 30%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.96)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  opacity: 0.72;
+  z-index: 0;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-executive-card::before {
+  border-color: rgba(255, 255, 255, 0.06);
+  opacity: 1;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-hairline {
+  opacity: 0.68;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-header {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-status-orb {
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84), 0 18px 42px -32px rgba(15, 23, 42, 0.42);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-status-orb::after {
+  content: "";
+  position: absolute;
+  inset: auto 8px 8px auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--dashboard-clock-success);
+  box-shadow: 0 0 0 4px var(--dashboard-clock-success-soft);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card.is-closed .dashboard-clock-status-orb::after {
+  background: rgb(148, 163, 184);
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.18);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-title {
+  letter-spacing: -0.02em;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-status-pill,
+.dashboard-redesign-v1 .dashboard-clock-chips > span,
+.dashboard-redesign-v1 .dashboard-clock-analog-panel span[class*="rounded-full"] {
+  min-height: 28px;
+  white-space: nowrap;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-status-pill,
+html.dark .dashboard-redesign-v1 .dashboard-clock-chips > span,
+html.dark .dashboard-redesign-v1 .dashboard-clock-analog-panel span[class*="rounded-full"] {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+  border-color: var(--dashboard-clock-border) !important;
+  background: rgba(255, 255, 255, 0.68) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+  background: rgba(15, 23, 42, 0.72) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-mode-switcher > button {
+  min-height: 34px;
+  border-radius: 14px !important;
+  outline: none;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-mode-switcher > button:focus-visible,
+.dashboard-redesign-v1 .dashboard-clock-smart-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2), 0 0 0 1px rgba(14, 165, 233, 0.4) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-digital {
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-digital {
+  text-shadow: 0 18px 44px rgba(15, 23, 42, 0.68);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-date,
+.dashboard-redesign-v1 .dashboard-clock-detail {
+  color: var(--dashboard-clock-muted) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-smart-link {
+  border-color: rgba(15, 23, 42, 0.18) !important;
+  background: linear-gradient(180deg, rgb(15, 23, 42), rgb(30, 41, 59)) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-smart-link {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: linear-gradient(180deg, rgb(248, 250, 252), rgb(226, 232, 240)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-rhythm-card,
+.dashboard-redesign-v1 .dashboard-clock-metric-card,
+.dashboard-redesign-v1 .dashboard-clock-analog-panel,
+.dashboard-redesign-v1 .dashboard-clock-signal-card {
+  border-color: var(--dashboard-clock-border) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 252, 0.62)) !important;
+  box-shadow: 0 18px 48px -42px rgba(15, 23, 42, 0.36);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-rhythm-card,
+html.dark .dashboard-redesign-v1 .dashboard-clock-metric-card,
+html.dark .dashboard-redesign-v1 .dashboard-clock-analog-panel,
+html.dark .dashboard-redesign-v1 .dashboard-clock-signal-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.76), rgba(2, 6, 23, 0.58)) !important;
+  box-shadow: 0 18px 52px -42px rgba(0, 0, 0, 0.82);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-progress-track {
+  background: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-progress-track {
+  background: rgba(15, 23, 42, 0.9) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.32);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-progress-fill {
+  background: linear-gradient(90deg, rgb(15, 23, 42), rgb(51, 65, 85)) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-progress-fill {
+  background: linear-gradient(90deg, rgb(248, 250, 252), rgb(203, 213, 225)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-metric-card {
+  min-width: 0;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-metric-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--dashboard-clock-border-strong) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-metric-card__icon {
+  border-color: var(--dashboard-clock-border) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-metric-card__icon {
+  background: rgba(2, 6, 23, 0.66) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-metric-card__label {
+  color: var(--dashboard-clock-muted) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-metric-card__value {
+  color: var(--dashboard-clock-text) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-analog-panel {
+  overflow: hidden;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-analog-face {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.72) 52%, rgba(241, 245, 249, 0.86) 100%) !important;
+  border-color: rgba(203, 213, 225, 0.86) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.94),
+    inset 0 -20px 46px -38px rgba(15, 23, 42, 0.42),
+    0 30px 70px -52px rgba(15, 23, 42, 0.46) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-analog-face {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.86) 54%, rgba(2, 6, 23, 0.94) 100%) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -20px 46px -38px rgba(0, 0, 0, 0.86),
+    0 30px 74px -54px rgba(0, 0, 0, 0.92) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-analog-svg {
+  filter: drop-shadow(0 18px 30px rgba(15, 23, 42, 0.08));
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-analog-svg {
+  filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.28));
+}
+
+.dashboard-redesign-v1 .dashboard-clock-signal-card {
+  min-height: 82px;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card--cinematic .dashboard-clock-digital {
+  letter-spacing: 0.08em;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card--minimal .dashboard-clock-rhythm-card {
+  margin-top: 1rem !important;
+}
+
+@media (max-width: 1366px) {
+  .dashboard-redesign-v1 .dashboard-clock-executive-card {
+    padding: 1rem !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-analog-face {
+    width: min(268px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-analog-face--cinematic {
+    width: min(286px, 100%) !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-smart-link {
+    width: fit-content;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-analog-panel {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-redesign-v1 .dashboard-clock-executive-card {
+    padding: 0.9rem !important;
+    border-radius: 22px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-status-orb {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 16px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher > button {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-digital {
+    font-size: clamp(2rem, 13vw, 3rem) !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-smart-link {
+    width: 100%;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-metric-card {
+    border-radius: 18px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-redesign-v1 .dashboard-clock-chips > span {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+    border-radius: 18px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-redesign-v1 .dashboard-clock-executive-card,
+  .dashboard-redesign-v1 .dashboard-clock-smart-link,
+  .dashboard-redesign-v1 .dashboard-clock-metric-card,
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher > button {
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}

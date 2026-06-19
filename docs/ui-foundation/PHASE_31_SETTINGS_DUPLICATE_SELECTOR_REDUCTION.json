@@ -1,0 +1,46 @@
+{
+  "phase": 31,
+  "title": "Settings Duplicate Selector Reduction",
+  "scope": [
+    "styles/system/settings-shell-foundation.css",
+    "styles/system/settings-modules-smart-foundation.css"
+  ],
+  "changed_files": [],
+  "total_removed_rules": 0,
+  "total_removed_bytes": 0,
+  "total_removed_important": 0,
+  "results": [
+    {
+      "file": "styles/system/settings-shell-foundation.css",
+      "bytes": 8193,
+      "lines": 344,
+      "important_count": 35,
+      "qualified_rule_count": 60,
+      "exact_duplicate_rule_groups": 0,
+      "extra_duplicate_occurrences": 0,
+      "removed_rules": 0,
+      "changed": false,
+      "duplicates": []
+    },
+    {
+      "file": "styles/system/settings-modules-smart-foundation.css",
+      "bytes": 15563,
+      "lines": 499,
+      "important_count": 118,
+      "qualified_rule_count": 71,
+      "exact_duplicate_rule_groups": 0,
+      "extra_duplicate_occurrences": 0,
+      "removed_rules": 0,
+      "changed": false,
+      "duplicates": []
+    }
+  ],
+  "qa": {
+    "css_parse_errors": [],
+    "textual_newline_occurrences": [],
+    "brace_issues": [],
+    "missing_css_imports": [],
+    "runtime_override_imports": [],
+    "css_import_count_in_index": 58
+  }
+}

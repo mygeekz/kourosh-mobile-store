@@ -1,0 +1,106 @@
+/* Stage 32: Sales summary executive redesign */
+.sales-report-executive { --sales-border: rgba(148, 163, 184, 0.34); --sales-surface: rgba(255, 255, 255, 0.94); --sales-muted: #64748b; }
+.sales-report-executive .report-exec-filter-card,
+.sales-report-executive .report-exec-section { background: var(--sales-surface); border: 1px solid var(--sales-border); border-radius: 20px; box-shadow: 0 12px 34px rgba(15, 23, 42, 0.045); }
+.sales-report-executive .report-exec-filter-card { display: grid; grid-template-columns: minmax(280px, 1.3fr) minmax(180px, 0.8fr) minmax(180px, 0.8fr) auto; gap: 12px; align-items: end; padding: 14px; margin-bottom: 16px; }
+.sales-report-executive .report-exec-filter-card__presets { align-self: center; min-width: 0; }
+.sales-report-executive .report-exec-filter-field { display: grid; gap: 6px; min-width: 0; }
+.sales-report-executive .report-exec-filter-field label { font-size: 11px; font-weight: 800; color: var(--sales-muted); padding-inline: 6px; }
+.sales-report-executive .report-exec-date-input { min-height: 42px !important; height: 42px !important; width: 100%; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
+
+.sales-report-executive .report-exec-date-input .app-date-field__input,
+.sales-report-executive .report-exec-date-input input[data-app-date-input="true"] {
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  line-height: 42px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, 0.44) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  font-weight: 850 !important;
+  padding: 0 2.35rem 0 .9rem !important;
+}
+.sales-report-executive .report-exec-date-input .app-date-field__input:focus,
+.sales-report-executive .report-exec-date-input input[data-app-date-input="true"]:focus {
+  border-color: rgba(37, 99, 235, 0.36) !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08) !important;
+}
+.sales-report-executive .report-exec-date-input .app-date-field__icon {
+  height: 42px !important;
+  width: 2rem !important;
+  right: .8rem !important;
+  color: #64748b !important;
+}
+.sales-report-executive .report-exec-date-input .app-date-field__icon i,
+.sales-report-executive .sales-exec-metric__icon i {
+  display: inline-block !important;
+  font-style: normal !important;
+  font-size: 15px !important;
+  line-height: 1 !important;
+}
+.sales-report-executive .sales-exec-metric__icon i::before {
+  display: inline-block !important;
+}
+
+.sales-report-executive .report-exec-refresh-button { min-height: 42px; width: max-content; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(15, 23, 42, 0.12); border-radius: 14px; background: #0f172a; color: #fff; padding: 0 16px; font-size: 12px; font-weight: 900; transition: background 140ms ease; }
+.sales-report-executive .report-exec-refresh-button:hover:not(:disabled) { background: #1e293b; }
+.sales-report-executive .report-exec-refresh-button:disabled { opacity: 0.62; cursor: not-allowed; }
+.sales-report-executive .report-empty-state { display: grid; place-items: center; gap: 10px; min-height: 220px; color: var(--sales-muted); background: #fff; border: 1px dashed rgba(148, 163, 184, 0.48); border-radius: 20px; font-size: 13px; font-weight: 700; }
+.sales-report-executive .report-empty-state i { font-size: 24px; }
+.sales-report-executive .report-exec-section { padding: 16px; }
+.sales-report-executive .report-exec-section__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+.sales-report-executive .report-exec-section__head h3 { margin: 0; color: #0f172a; font-size: 15px; font-weight: 950; }
+.sales-report-executive .report-exec-section__head p { margin-top: 5px; color: var(--sales-muted); font-size: 12px; font-weight: 650; line-height: 1.9; }
+.sales-report-executive .report-exec-section__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.sales-exec-metric-grid { display: grid; gap: 12px; }
+.sales-exec-metric-grid--primary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.sales-exec-metric-grid--secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.sales-exec-metric { position: relative; display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 10px; align-items: center; min-height: 92px; padding: 14px; border: 1px solid rgba(148, 163, 184, 0.36); border-radius: 18px; background: #fff; overflow: hidden; }
+.sales-exec-metric::before, .sales-exec-metric::after { display: none !important; content: none !important; }
+.sales-exec-metric__icon { width: 36px; height: 36px; display: inline-grid; place-items: center; border: 1px solid rgba(37, 99, 235, 0.15); border-radius: 13px; background: rgba(37, 99, 235, 0.06); color: #2563eb; box-shadow: none; }
+.sales-exec-metric--success .sales-exec-metric__icon { color: #059669; background: rgba(5, 150, 105, 0.07); border-color: rgba(5, 150, 105, 0.18); }
+.sales-exec-metric--warning .sales-exec-metric__icon { color: #d97706; background: rgba(217, 119, 6, 0.07); border-color: rgba(217, 119, 6, 0.18); }
+.sales-exec-metric--danger .sales-exec-metric__icon { color: #e11d48; background: rgba(225, 29, 72, 0.07); border-color: rgba(225, 29, 72, 0.18); }
+.sales-exec-metric__body, .sales-exec-metric__label, .sales-exec-metric__value, .sales-exec-metric__hint { background: transparent !important; box-shadow: none !important; filter: none !important; text-shadow: none !important; backdrop-filter: none !important; }
+.sales-exec-metric__body { min-width: 0; }
+.sales-exec-metric__label { color: var(--sales-muted); font-size: 11px; font-weight: 850; line-height: 1.7; }
+.sales-exec-metric__value { margin-top: 2px; color: #0f172a; font-size: 20px; line-height: 1.45; font-weight: 950; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sales-exec-metric__hint { margin-top: 2px; color: #64748b; font-size: 11px; font-weight: 700; line-height: 1.6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sales-exec-chart-card { height: 310px; border: 1px solid rgba(148, 163, 184, 0.26); border-radius: 18px; background: #fff; padding: 12px; }
+.sales-report-executive .report-exec-table-section { padding-bottom: 0; overflow: hidden; }
+.sales-report-executive .report-exec-table-search { position: relative; min-width: min(340px, 100%); }
+.sales-report-executive .report-exec-table-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 12px; }
+.sales-report-executive .report-exec-table-search input { width: 100%; min-height: 40px; padding: 0 14px 0 36px; border: 1px solid rgba(148, 163, 184, 0.42); border-radius: 14px; background: #fff; font-size: 12px; font-weight: 750; color: #0f172a; outline: none; }
+.sales-exec-table { min-width: 100%; border-collapse: separate; border-spacing: 0; color: #0f172a; font-size: 12px; text-align: right; }
+.sales-exec-table thead th { background: #f8fafc; color: #64748b; border-top: 1px solid rgba(148, 163, 184, 0.22); border-bottom: 1px solid rgba(148, 163, 184, 0.25); padding: 12px 14px; font-weight: 900; white-space: nowrap; }
+.sales-exec-table tbody td { border-bottom: 1px solid rgba(226, 232, 240, 0.9); padding: 12px 14px; vertical-align: middle; }
+.sales-exec-table tbody tr:hover { background: #f8fafc; }
+.sales-report-item-link { color: #0f172a; font-weight: 850; text-decoration: none; }
+.sales-report-item-link:hover { color: #2563eb; }
+.sales-report-type-pill { display: inline-flex; align-items: center; width: max-content; max-width: 100%; min-height: 26px; padding: 0 10px; border-radius: 999px; background: #f8fafc; border: 1px solid rgba(148, 163, 184, 0.28); color: #475569; font-size: 11px; font-weight: 850; white-space: nowrap; }
+.sales-report-executive .report-row-action--compact { width: max-content !important; flex: 0 0 auto !important; white-space: nowrap; }
+.sales-exec-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-top: 1px solid rgba(148, 163, 184, 0.24); color: #64748b; font-size: 12px; font-weight: 750; }
+.sales-exec-pagination button, .sales-exec-pagination select { min-width: 34px; min-height: 34px; border: 1px solid rgba(148, 163, 184, 0.36); border-radius: 12px; background: #fff; color: #0f172a; font-weight: 800; }
+.sales-exec-pagination select { padding: 0 10px; }
+@media (max-width: 1180px) { .sales-report-executive .report-exec-filter-card, .sales-exec-metric-grid--primary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .sales-report-executive .report-exec-filter-card, .sales-exec-metric-grid--primary, .sales-exec-metric-grid--secondary { grid-template-columns: 1fr; } .sales-report-executive .report-exec-section__head, .sales-exec-pagination { align-items: stretch; flex-direction: column; } .sales-report-executive .report-exec-section__actions { justify-content: flex-start; } .sales-report-executive .report-exec-refresh-button { width: 100%; } }
+.dark .sales-report-executive { --sales-border: rgba(148, 163, 184, 0.18); --sales-surface: rgba(15, 23, 42, 0.82); --sales-muted: #94a3b8; }
+.dark .sales-report-executive .report-exec-filter-card, .dark .sales-report-executive .report-exec-section, .dark .sales-exec-metric, .dark .sales-exec-chart-card, .dark .sales-report-executive .report-exec-table-search input, .dark .sales-exec-pagination button, .dark .sales-exec-pagination select { background: rgba(15, 23, 42, 0.88) !important; color: #e2e8f0 !important; }
+.dark .sales-report-executive .report-exec-date-input .app-date-field__input, .dark .sales-report-executive .report-exec-date-input input[data-app-date-input="true"] { background: rgba(15, 23, 42, 0.88) !important; color: #e2e8f0 !important; border-color: rgba(148, 163, 184, 0.22) !important; }
+.dark .sales-exec-metric__value, .dark .sales-exec-table, .dark .sales-report-item-link, .dark .sales-exec-pagination button, .dark .sales-exec-pagination select { color: #e2e8f0 !important; }
+.dark .sales-exec-table thead th, .dark .sales-exec-table tbody tr:hover, .dark .sales-report-type-pill { background: rgba(30, 41, 59, 0.8); }
+.dark .sales-exec-table tbody td { border-bottom-color: rgba(51, 65, 85, 0.75); }
+
+.sales-report-executive .sales-exec-metric__icon {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 36px;
+}
+.sales-report-executive .sales-exec-metric__icon svg,
+.sales-report-executive .sales-exec-metric__icon i {
+  color: currentColor !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

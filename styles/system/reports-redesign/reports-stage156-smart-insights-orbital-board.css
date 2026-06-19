@@ -1,0 +1,4286 @@
+/* Stage 156 — Smart Insights Orbital Executive Board
+   Full creative redesign based on the approved premium dashboard concept. */
+
+.smart-orbital-board-v156 {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 340px) minmax(420px, 1fr) minmax(280px, 320px) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+  padding: 24px !important;
+  border: 1px solid rgba(203, 213, 225, .82) !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.99), rgba(248,250,252,.96)),
+    radial-gradient(circle at 48% 0%, rgba(79,70,229,.08), transparent 34%),
+    radial-gradient(circle at 100% 16%, rgba(16,185,129,.08), transparent 30%) !important;
+  box-shadow: 0 26px 70px -52px rgba(15, 23, 42, .38), inset 0 1px 0 rgba(255,255,255,.86) !important;
+  direction: ltr !important;
+}
+
+.smart-orbital-board-v156 > * {
+  direction: rtl !important;
+}
+
+.smart-orbital-board-v156__actions,
+.smart-orbital-board-v156__decision,
+.smart-orbital-board-v156__engine {
+  border: 1px solid rgba(226, 232, 240, .86) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.88)) !important;
+  box-shadow: 0 18px 44px rgba(15,23,42,.055), inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.smart-orbital-board-v156__actions {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 560px !important;
+  padding: 20px !important;
+}
+
+.smart-orbital-board-v156__section-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  color: #0f172a !important;
+  font-size: .96rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__section-title i {
+  color: #6d5dfc !important;
+}
+
+.smart-orbital-board-v156__action-list {
+  display: grid !important;
+  gap: 12px !important;
+  margin-top: 16px !important;
+}
+
+.smart-orbital-board-v156__action-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 42px minmax(0,1fr) 46px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 102px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v156__action-score {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 30px !important;
+  border-radius: 12px !important;
+  background: #eef2ff !important;
+  color: #4f46e5 !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__action-body {
+  min-width: 0 !important;
+}
+
+.smart-orbital-board-v156__action-body h4 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .84rem !important;
+  font-weight: 950 !important;
+  line-height: 1.85 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v156__action-body p {
+  margin: 4px 0 0 !important;
+  color: #475569 !important;
+  font-size: .72rem !important;
+  font-weight: 760 !important;
+  line-height: 1.8 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v156__action-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  background: #f5f3ff !important;
+  color: #6d5dfc !important;
+  border: 1px solid rgba(109,93,252,.12) !important;
+}
+
+.smart-orbital-board-v156__action-card:nth-child(2) .smart-orbital-board-v156__action-icon {
+  background: #fff1f2 !important;
+  color: #ef4444 !important;
+  border-color: rgba(239,68,68,.16) !important;
+}
+
+.smart-orbital-board-v156__action-card:nth-child(3) .smart-orbital-board-v156__action-icon {
+  background: #ecfdf5 !important;
+  color: #16a34a !important;
+  border-color: rgba(22,163,74,.16) !important;
+}
+
+.smart-orbital-board-v156__action-card:nth-child(4) .smart-orbital-board-v156__action-icon {
+  background: #eff6ff !important;
+  color: #3b82f6 !important;
+  border-color: rgba(59,130,246,.16) !important;
+}
+
+.smart-orbital-board-v156__action-link {
+  grid-column: 2 / 4 !important;
+  justify-self: start !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 30px !important;
+  margin-top: 2px !important;
+  padding: 0 11px !important;
+  border-radius: 12px !important;
+  background: #111827 !important;
+  color: #fff !important;
+  font-size: .69rem !important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 48px !important;
+  margin-top: auto !important;
+  border: 1px solid rgba(59,130,246,.35) !important;
+  border-radius: 16px !important;
+  background: rgba(239,246,255,.74) !important;
+  color: #2563eb !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__decision {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  min-height: 560px !important;
+  padding: 28px 24px !important;
+  text-align: center !important;
+}
+
+.smart-orbital-board-v156__decision-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 31px !important;
+  padding: 0 15px !important;
+  border-radius: 999px !important;
+  background: #f3f0ff !important;
+  color: #6d5dfc !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+}
+
+.smart-orbital-board-v156__target {
+  display: grid !important;
+  place-items: center !important;
+  width: 86px !important;
+  height: 86px !important;
+  margin-top: 22px !important;
+  border: 1px dashed rgba(109,93,252,.28) !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle, rgba(109,93,252,.10), transparent 62%),
+    rgba(255,255,255,.9) !important;
+  color: #4f46e5 !important;
+  font-size: 2rem !important;
+  box-shadow: 0 18px 42px rgba(79,70,229,.10) !important;
+}
+
+.smart-orbital-board-v156__decision h2 {
+  margin: 18px 0 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.55rem, 2.4vw, 2.4rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+  letter-spacing: -.025em !important;
+}
+
+.smart-orbital-board-v156__decision p {
+  max-width: 640px !important;
+  margin: 12px auto 0 !important;
+  color: #334155 !important;
+  font-size: .92rem !important;
+  font-weight: 800 !important;
+  line-height: 2.1 !important;
+}
+
+.smart-orbital-board-v156__focus-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin-top: 26px !important;
+}
+
+.smart-orbital-board-v156__focus-card {
+  display: grid !important;
+  justify-items: center !important;
+  gap: 7px !important;
+  min-height: 154px !important;
+  padding: 16px 12px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.96) !important;
+  box-shadow: 0 16px 34px rgba(15,23,42,.045) !important;
+}
+
+.smart-orbital-board-v156__focus-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 16px !important;
+  background: #eff6ff !important;
+  color: #3b82f6 !important;
+}
+
+.smart-orbital-board-v156__focus-card:nth-child(2) .smart-orbital-board-v156__focus-icon {
+  background: #fff1f2 !important;
+  color: #ef4444 !important;
+}
+
+.smart-orbital-board-v156__focus-card:nth-child(3) .smart-orbital-board-v156__focus-icon {
+  background: #fffbeb !important;
+  color: #f59e0b !important;
+}
+
+.smart-orbital-board-v156__focus-card:nth-child(4) .smart-orbital-board-v156__focus-icon {
+  background: #ecfdf5 !important;
+  color: #16a34a !important;
+}
+
+.smart-orbital-board-v156__focus-card small {
+  color: #475569 !important;
+  font-size: .76rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-orbital-board-v156__focus-card strong {
+  color: #0f172a !important;
+  font-size: 1.55rem !important;
+  font-weight: 950 !important;
+  line-height: 1.2 !important;
+}
+
+.smart-orbital-board-v156__focus-card em {
+  color: #64748b !important;
+  font-size: .70rem !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+}
+
+.smart-orbital-board-v156__cta-row {
+  width: 100% !important;
+  margin-top: 28px !important;
+}
+
+.smart-orbital-board-v156__primary-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  width: min(100%, 520px) !important;
+  min-height: 56px !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: linear-gradient(135deg, #3157ff, #6d35f4) !important;
+  color: #fff !important;
+  font-size: .92rem !important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+  box-shadow: 0 18px 36px rgba(79,70,229,.22) !important;
+}
+
+.smart-orbital-board-v156__confidence {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 18px !important;
+  width: min(100%, 520px) !important;
+  min-height: 48px !important;
+  margin-top: 14px !important;
+  border-radius: 16px !important;
+  background: rgba(248,250,252,.78) !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-orbital-board-v156__confidence span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.smart-orbital-board-v156__confidence i {
+  color: #6d5dfc !important;
+}
+
+.smart-orbital-board-v156__engine {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  min-height: 560px !important;
+  padding: 24px 20px !important;
+  text-align: center !important;
+}
+
+.smart-orbital-board-v156__engine-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 12px !important;
+}
+
+.smart-orbital-board-v156__engine-head span {
+  display: grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border: 1px solid rgba(203,213,225,.8) !important;
+  border-radius: 15px !important;
+  background: rgba(248,250,252,.82) !important;
+  color: #334155 !important;
+}
+
+.smart-orbital-board-v156__engine-head strong {
+  color: #0f172a !important;
+  font-size: .76rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .14em !important;
+}
+
+.smart-orbital-board-v156__engine h3 {
+  margin: 28px 0 0 !important;
+  color: #0f172a !important;
+  font-size: 1.12rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__gauge {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 190px !important;
+  height: 116px !important;
+  margin-top: 36px !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v156__gauge-ring {
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 190px 190px 0 0 !important;
+  background:
+    conic-gradient(from 270deg at 50% 100%, #5946f0 0 calc(var(--score) * .5), #58c98e calc(var(--score) * .5) 50%, transparent 50% 100%) !important;
+  mask: radial-gradient(circle at 50% 100%, transparent 0 54%, #000 55% 72%, transparent 73%) !important;
+  -webkit-mask: radial-gradient(circle at 50% 100%, transparent 0 54%, #000 55% 72%, transparent 73%) !important;
+}
+
+.smart-orbital-board-v156__gauge-value {
+  position: relative !important;
+  z-index: 1 !important;
+  display: grid !important;
+  justify-items: center !important;
+  margin-top: 28px !important;
+}
+
+.smart-orbital-board-v156__gauge-value strong {
+  color: #0f172a !important;
+  font-size: 3.15rem !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+}
+
+.smart-orbital-board-v156__gauge-value span {
+  color: #334155 !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__status-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-height: 38px !important;
+  margin-top: 24px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(16,185,129,.28) !important;
+  border-radius: 999px !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__micro-bars {
+  display: grid !important;
+  grid-template-columns: repeat(13, 1fr) !important;
+  align-items: end !important;
+  gap: 9px !important;
+  width: 100% !important;
+  height: 84px !important;
+  margin-top: 46px !important;
+  padding: 0 8px !important;
+}
+
+.smart-orbital-board-v156__micro-bars span {
+  display: block !important;
+  width: 5px !important;
+  min-height: 10px !important;
+  justify-self: center !important;
+  border-radius: 999px !important;
+  background: #3157ff !important;
+}
+
+.smart-orbital-board-v156__micro-bars span.is-green { background: #58c98e !important; }
+.smart-orbital-board-v156__micro-bars span.is-muted { background: #cbd5e1 !important; }
+
+.smart-orbital-board-v156__engine-note {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0,1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+  width: 100% !important;
+  margin-top: auto !important;
+  padding: 14px !important;
+  border-radius: 20px !important;
+  background: rgba(248,250,252,.82) !important;
+  text-align: right !important;
+}
+
+.smart-orbital-board-v156__engine-note i {
+  display: grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 15px !important;
+  background: #f5f3ff !important;
+  color: #6d5dfc !important;
+}
+
+.smart-orbital-board-v156__engine-note p {
+  margin: 0 !important;
+  color: #334155 !important;
+  font-size: .77rem !important;
+  font-weight: 820 !important;
+  line-height: 1.9 !important;
+}
+
+.dark .smart-orbital-board-v156 {
+  border-color: rgba(51,65,85,.78) !important;
+  background:
+    linear-gradient(145deg, rgba(15,23,42,.96), rgba(2,6,23,.94)),
+    radial-gradient(circle at 48% 0%, rgba(99,102,241,.16), transparent 34%),
+    radial-gradient(circle at 100% 16%, rgba(16,185,129,.12), transparent 30%) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-orbital-board-v156__actions,
+.dark .smart-orbital-board-v156__decision,
+.dark .smart-orbital-board-v156__engine,
+.dark .smart-orbital-board-v156__action-card,
+.dark .smart-orbital-board-v156__focus-card {
+  border-color: rgba(51,65,85,.72) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-orbital-board-v156__section-title,
+.dark .smart-orbital-board-v156__action-body h4,
+.dark .smart-orbital-board-v156__decision h2,
+.dark .smart-orbital-board-v156__focus-card strong,
+.dark .smart-orbital-board-v156__engine-head strong,
+.dark .smart-orbital-board-v156__engine h3,
+.dark .smart-orbital-board-v156__gauge-value strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-orbital-board-v156__action-body p,
+.dark .smart-orbital-board-v156__decision p,
+.dark .smart-orbital-board-v156__focus-card small,
+.dark .smart-orbital-board-v156__focus-card em,
+.dark .smart-orbital-board-v156__gauge-value span,
+.dark .smart-orbital-board-v156__engine-note p {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-orbital-board-v156__engine-note,
+.dark .smart-orbital-board-v156__confidence {
+  background: rgba(15,23,42,.58) !important;
+}
+
+@media (max-width: 1280px) {
+  .smart-orbital-board-v156 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__engine {
+    min-height: auto !important;
+  }
+
+  .smart-orbital-board-v156__action-list {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-orbital-board-v156 {
+    padding: 12px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v156__focus-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__engine {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+}
+
+
+/* Stage 157 final audit polish — data-driven safeguards and responsive refinements */
+.smart-orbital-board-v156__empty-actions {
+  display: grid !important;
+  place-items: center !important;
+  gap: 8px !important;
+  min-height: 220px !important;
+  padding: 18px !important;
+  border: 1px dashed rgba(148,163,184,.42) !important;
+  border-radius: 22px !important;
+  background: rgba(248,250,252,.72) !important;
+  text-align: center !important;
+}
+
+.smart-orbital-board-v156__empty-actions i {
+  display: grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.smart-orbital-board-v156__empty-actions strong {
+  color: #0f172a !important;
+  font-size: .9rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__empty-actions p {
+  margin: 0 !important;
+  color: #64748b !important;
+  font-size: .76rem !important;
+  font-weight: 760 !important;
+  line-height: 1.9 !important;
+}
+
+.smart-orbital-board-v156__micro-bars span {
+  transition: height .28s ease, background-color .18s ease !important;
+}
+
+.smart-orbital-board-v156__focus-card {
+  min-width: 0 !important;
+}
+
+.smart-orbital-board-v156__focus-card small,
+.smart-orbital-board-v156__action-body h4,
+.smart-orbital-board-v156__action-body p {
+  overflow-wrap: anywhere !important;
+}
+
+.smart-orbital-board-v156__gauge-ring {
+  background:
+    conic-gradient(from 270deg at 50% 100%, #5946f0 0 calc(var(--score) * .35), #58c98e calc(var(--score) * .35) calc(var(--score) * .5), #e2e8f0 calc(var(--score) * .5) 50%, transparent 50% 100%) !important;
+}
+
+.dark .smart-orbital-board-v156__empty-actions {
+  border-color: rgba(71,85,105,.62) !important;
+  background: rgba(15,23,42,.62) !important;
+}
+
+.dark .smart-orbital-board-v156__empty-actions strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-orbital-board-v156__empty-actions p {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 1560px) and (min-width: 1281px) {
+  .smart-orbital-board-v156 {
+    grid-template-columns: minmax(260px, 320px) minmax(390px, 1fr) minmax(260px, 300px) !important;
+    gap: 14px !important;
+    padding: 18px !important;
+  }
+
+  .smart-orbital-board-v156__decision {
+    padding-inline: 18px !important;
+  }
+
+  .smart-orbital-board-v156__decision h2 {
+    font-size: clamp(1.35rem, 2vw, 2.05rem) !important;
+  }
+}
+
+
+/* Stage 158 — Smart action logic clarity
+   Makes actions explain "what must improve" and allows registering execution. */
+
+.smart-orbital-board-v158__action-list {
+  gap: 14px !important;
+}
+
+.smart-orbital-board-v158__action-card {
+  grid-template-columns: 40px minmax(0,1fr) 44px !important;
+  min-height: 170px !important;
+  align-items: start !important;
+}
+
+.smart-orbital-board-v158__outcome {
+  display: grid !important;
+  gap: 3px !important;
+  margin-top: 9px !important;
+  padding: 9px 10px !important;
+  border: 1px solid rgba(226,232,240,.76) !important;
+  border-radius: 14px !important;
+  background: rgba(248,250,252,.78) !important;
+}
+
+.smart-orbital-board-v158__outcome span {
+  color: #64748b !important;
+  font-size: .64rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v158__outcome strong {
+  color: #0f172a !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.smart-orbital-board-v158__outcome small {
+  color: #64748b !important;
+  font-size: .66rem !important;
+  font-weight: 760 !important;
+  line-height: 1.75 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v158__action-controls {
+  grid-column: 2 / 4 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 7px !important;
+  margin-top: 2px !important;
+}
+
+.smart-orbital-board-v158__done-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  min-height: 30px !important;
+  padding: 0 11px !important;
+  border: 1px solid rgba(16,185,129,.26) !important;
+  border-radius: 12px !important;
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  font-size: .69rem !important;
+  font-weight: 950 !important;
+}
+
+.dark .smart-orbital-board-v158__outcome {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.56) !important;
+}
+
+.dark .smart-orbital-board-v158__outcome strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-orbital-board-v158__outcome span,
+.dark .smart-orbital-board-v158__outcome small {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-orbital-board-v158__done-button {
+  border-color: rgba(16,185,129,.30) !important;
+  background: rgba(16,185,129,.12) !important;
+  color: #86efac !important;
+}
+
+/* Stage 159 — Scrollable action rail + real KPI strip */
+.smart-orbital-board-v156 { align-items: stretch !important; }
+.smart-orbital-board-v156__actions,.smart-orbital-board-v156__decision,.smart-orbital-board-v156__engine{height:560px!important;min-height:560px!important;max-height:560px!important}
+.smart-orbital-board-v156__actions{overflow:hidden!important}
+.smart-orbital-board-v158__action-list,.smart-orbital-board-v156__action-list{flex:1 1 auto!important;min-height:0!important;max-height:392px!important;overflow-y:auto!important;overflow-x:hidden!important;padding-inline-end:4px!important;scroll-behavior:smooth!important;scrollbar-width:thin!important;scrollbar-color:rgba(148,163,184,.55) transparent!important}
+.smart-orbital-board-v158__action-list::-webkit-scrollbar,.smart-orbital-board-v156__action-list::-webkit-scrollbar{width:6px!important}
+.smart-orbital-board-v158__action-list::-webkit-scrollbar-thumb,.smart-orbital-board-v156__action-list::-webkit-scrollbar-thumb{border-radius:999px!important;background:rgba(148,163,184,.55)!important}
+.smart-orbital-board-v158__action-card{min-height:174px!important}
+.smart-orbital-board-v156__all-actions{flex:0 0 auto!important;margin-top:12px!important}
+.smart-orbital-kpi-strip-v159{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;gap:16px!important;padding:18px!important;border:1px solid rgba(203,213,225,.78)!important;border-radius:30px!important;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,252,.92))!important;box-shadow:0 22px 58px -46px rgba(15,23,42,.30),inset 0 1px 0 rgba(255,255,255,.78)!important}
+.smart-orbital-kpi-card-v159{position:relative!important;display:grid!important;grid-template-columns:58px minmax(0,1fr)!important;grid-template-rows:minmax(118px,auto) 42px!important;gap:10px 14px!important;min-height:206px!important;padding:18px!important;border:1px solid rgba(226,232,240,.84)!important;border-radius:24px!important;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,252,.88))!important;box-shadow:0 16px 42px rgba(15,23,42,.055)!important;overflow:hidden!important}
+.smart-orbital-kpi-card-v159::before{content:''!important;position:absolute!important;inset-inline-start:0!important;inset-block:18px!important;width:3px!important;border-radius:999px!important;background:#3b82f6!important}
+.smart-orbital-kpi-card-v159--green::before{background:#22c55e!important}.smart-orbital-kpi-card-v159--amber::before{background:#f59e0b!important}.smart-orbital-kpi-card-v159--violet::before{background:#7c3aed!important}
+.smart-orbital-kpi-card-v159__icon{display:grid!important;place-items:center!important;width:58px!important;height:58px!important;border-radius:22px!important;background:#eff6ff!important;color:#3b82f6!important;font-size:1.2rem!important;border:1px solid rgba(59,130,246,.14)!important;box-shadow:0 14px 30px rgba(59,130,246,.10)!important}
+.smart-orbital-kpi-card-v159--green .smart-orbital-kpi-card-v159__icon{background:#ecfdf5!important;color:#22c55e!important;border-color:rgba(34,197,94,.14)!important}
+.smart-orbital-kpi-card-v159--amber .smart-orbital-kpi-card-v159__icon{background:#fff7ed!important;color:#f59e0b!important;border-color:rgba(245,158,11,.16)!important}
+.smart-orbital-kpi-card-v159--violet .smart-orbital-kpi-card-v159__icon{background:#f5f3ff!important;color:#7c3aed!important;border-color:rgba(124,58,237,.14)!important}
+.smart-orbital-kpi-card-v159__body{min-width:0!important}.smart-orbital-kpi-card-v159__body h3{margin:0!important;color:#0f172a!important;font-size:.92rem!important;font-weight:950!important;line-height:1.8!important}.smart-orbital-kpi-card-v159__body strong{display:block!important;margin-top:8px!important;color:#0f172a!important;font-size:clamp(1.9rem,3vw,3rem)!important;font-weight:950!important;line-height:1!important;letter-spacing:-.03em!important}.smart-orbital-kpi-card-v159__body p{margin:6px 0 0!important;color:#475569!important;font-size:.82rem!important;font-weight:850!important}.smart-orbital-kpi-card-v159__body span{display:inline-flex!important;align-items:center!important;min-height:28px!important;margin-top:10px!important;padding:0 10px!important;border-radius:999px!important;background:rgba(248,250,252,.82)!important;color:#64748b!important;font-size:.72rem!important;font-weight:900!important}
+.smart-orbital-kpi-card-v159__spark{grid-column:1/-1!important;display:flex!important;align-items:flex-end!important;justify-content:center!important;gap:10px!important;height:42px!important;margin-top:auto!important}.smart-orbital-kpi-card-v159__spark i{display:block!important;width:3px!important;min-height:8px!important;border-radius:999px!important;background:#3b82f6!important;opacity:.75!important}.smart-orbital-kpi-card-v159--green .smart-orbital-kpi-card-v159__spark i{background:#22c55e!important}.smart-orbital-kpi-card-v159--amber .smart-orbital-kpi-card-v159__spark i{background:#f59e0b!important}.smart-orbital-kpi-card-v159--violet .smart-orbital-kpi-card-v159__spark i{background:#7c3aed!important}
+.dark .smart-orbital-kpi-strip-v159,.dark .smart-orbital-kpi-card-v159{border-color:rgba(51,65,85,.76)!important;background:linear-gradient(180deg,rgba(15,23,42,.88),rgba(2,6,23,.72))!important;box-shadow:none!important}.dark .smart-orbital-kpi-card-v159__body h3,.dark .smart-orbital-kpi-card-v159__body strong{color:#f8fafc!important}.dark .smart-orbital-kpi-card-v159__body p,.dark .smart-orbital-kpi-card-v159__body span{color:#94a3b8!important}.dark .smart-orbital-kpi-card-v159__body span{background:rgba(15,23,42,.72)!important}
+@media (max-width:1280px){.smart-orbital-board-v156__actions,.smart-orbital-board-v156__decision,.smart-orbital-board-v156__engine{height:auto!important;min-height:auto!important;max-height:none!important}.smart-orbital-board-v158__action-list,.smart-orbital-board-v156__action-list{max-height:520px!important}}
+@media (max-width:760px){.smart-orbital-kpi-strip-v159{padding:12px!important;border-radius:24px!important}.smart-orbital-kpi-card-v159{min-height:auto!important;grid-template-rows:auto 42px!important}}
+
+
+/* Stage 163 — rollback-balanced fix
+   Base: stage160. Restores the successful premium board while fixing only:
+   1) action rail internal scroll/readability
+   2) KPI card balance without over-compressing the design.
+*/
+
+/* Keep main board balanced and prevent the action column from stretching the full board. */
+.smart-orbital-board-v156 {
+  align-items: stretch !important;
+}
+
+.smart-orbital-board-v156__actions,
+.smart-orbital-board-v156__decision,
+.smart-orbital-board-v156__engine {
+  height: 560px !important;
+  min-height: 560px !important;
+  max-height: 560px !important;
+}
+
+/* Action rail: readable scroll queue, not tiny compressed rows. */
+.smart-orbital-board-v156__actions {
+  overflow: hidden !important;
+  padding: 18px 16px !important;
+}
+
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: 404px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-inline-end: 6px !important;
+  display: grid !important;
+  gap: 12px !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(148,163,184,.55) transparent !important;
+}
+
+.smart-orbital-board-v156__action-list::-webkit-scrollbar,
+.smart-orbital-board-v158__action-list::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.smart-orbital-board-v156__action-list::-webkit-scrollbar-thumb,
+.smart-orbital-board-v158__action-list::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+  background: rgba(148,163,184,.55) !important;
+}
+
+/* Action card: keep the premium card feel, but remove the heavy condition box from the visible layout. */
+.smart-orbital-board-v156__action-card,
+.smart-orbital-board-v158__action-card {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) 44px !important;
+  grid-template-areas:
+    "score body icon"
+    "controls controls controls" !important;
+  align-items: start !important;
+  gap: 10px !important;
+  min-height: 136px !important;
+  padding: 12px !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,.045) !important;
+}
+
+.smart-orbital-board-v156__action-score {
+  grid-area: score !important;
+  width: 36px !important;
+  height: 30px !important;
+  border-radius: 12px !important;
+}
+
+.smart-orbital-board-v156__action-body {
+  grid-area: body !important;
+  min-width: 0 !important;
+}
+
+.smart-orbital-board-v156__action-icon {
+  grid-area: icon !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 15px !important;
+}
+
+.smart-orbital-board-v156__action-body h4 {
+  font-size: .80rem !important;
+  line-height: 1.7 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  white-space: normal !important;
+}
+
+.smart-orbital-board-v156__action-body p {
+  margin-top: 4px !important;
+  font-size: .70rem !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-orbital-board-v163__hint {
+  display: inline-flex !important;
+  align-items: center !important;
+  max-width: 100% !important;
+  gap: 6px !important;
+  min-height: 26px !important;
+  margin-top: 7px !important;
+  padding: 0 9px !important;
+  border: 1px solid rgba(226,232,240,.84) !important;
+  border-radius: 999px !important;
+  background: rgba(248,250,252,.86) !important;
+  color: #475569 !important;
+  font-size: .64rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-orbital-board-v163__hint span {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.smart-orbital-board-v163__hint i {
+  color: #4f46e5 !important;
+  font-size: .62rem !important;
+}
+
+.smart-orbital-board-v158__outcome {
+  display: none !important;
+}
+
+.smart-orbital-board-v158__action-controls {
+  grid-area: controls !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin-top: 0 !important;
+}
+
+.smart-orbital-board-v156__action-link,
+.smart-orbital-board-v158__done-button {
+  flex: 1 1 0 !important;
+  min-height: 32px !important;
+  border-radius: 12px !important;
+  font-size: .68rem !important;
+}
+
+/* KPI strip: preserve the premium cards, just make them balanced and not overly tall. */
+.smart-orbital-kpi-strip-v159 {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+  padding: 14px !important;
+  border-radius: 28px !important;
+}
+
+.smart-orbital-kpi-card-v159 {
+  grid-template-columns: 54px minmax(0, 1fr) !important;
+  grid-template-rows: minmax(96px, auto) 34px !important;
+  gap: 8px 12px !important;
+  min-height: 168px !important;
+  padding: 15px !important;
+  border-radius: 22px !important;
+}
+
+.smart-orbital-kpi-card-v159::before {
+  inset-block: 22px !important;
+  width: 2px !important;
+}
+
+.smart-orbital-kpi-card-v159__icon {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 19px !important;
+  font-size: 1rem !important;
+  box-shadow: 0 12px 24px rgba(59,130,246,.08) !important;
+}
+
+.smart-orbital-kpi-card-v159__body h3 {
+  font-size: .82rem !important;
+  line-height: 1.65 !important;
+}
+
+.smart-orbital-kpi-card-v159__body strong {
+  margin-top: 4px !important;
+  font-size: clamp(1.55rem, 2.2vw, 2.35rem) !important;
+}
+
+.smart-orbital-kpi-card-v159__body p {
+  margin-top: 4px !important;
+  font-size: .72rem !important;
+}
+
+.smart-orbital-kpi-card-v159__body span {
+  min-height: 24px !important;
+  margin-top: 7px !important;
+  padding: 0 8px !important;
+  font-size: .64rem !important;
+}
+
+.smart-orbital-kpi-card-v159__spark {
+  height: 34px !important;
+  gap: 8px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.78) !important;
+}
+
+.smart-orbital-kpi-card-v159__spark i {
+  width: 2.5px !important;
+  max-height: 26px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1281px) {
+  .smart-orbital-board-v156 {
+    grid-template-columns: minmax(270px, 320px) minmax(390px, 1fr) minmax(260px, 300px) !important;
+    gap: 14px !important;
+    padding: 14px !important;
+  }
+
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__engine {
+    height: 540px !important;
+    min-height: 540px !important;
+    max-height: 540px !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 382px !important;
+  }
+
+  .smart-orbital-board-v156__decision h2 {
+    font-size: clamp(1.35rem, 2vw, 1.95rem) !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__engine {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 520px !important;
+  }
+}
+
+.dark .smart-orbital-board-v163__hint {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.72) !important;
+  color: #cbd5e1 !important;
+}
+
+.dark .smart-orbital-board-v163__hint i {
+  color: #a5b4fc !important;
+}
+
+
+/* Stage 164 — KPI grid polish only
+   Scope: the four KPI cards below Smart Insight Engine.
+   Responsive standard: CSS Grid/Bento with repeat(auto-fit, minmax(220px, 1fr)).
+   No fixed desktop-only widths, no margin/position layout patches. */
+
+.smart-orbital-kpi-strip-v164 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  padding: 12px !important;
+  border: 1px solid rgba(203, 213, 225, .76) !important;
+  border-radius: 26px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow:
+    0 18px 48px -42px rgba(15,23,42,.28),
+    inset 0 1px 0 rgba(255,255,255,.78) !important;
+  align-items: stretch !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159 {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  gap: 9px 12px !important;
+  min-height: 142px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(226,232,240,.84) !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.90)) !important;
+  box-shadow: 0 12px 30px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-inline-start: 0 !important;
+  inset-block: 20px !important;
+  width: 2px !important;
+  border-radius: 999px !important;
+  opacity: .82 !important;
+  background: #3b82f6 !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159--green::before { background: #22c55e !important; }
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159--amber::before { background: #f59e0b !important; }
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159--violet::before { background: #7c3aed !important; }
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 17px !important;
+  font-size: .95rem !important;
+  box-shadow: none !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body {
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  grid-template-areas:
+    "title title"
+    "unit value"
+    "delta delta" !important;
+  align-items: center !important;
+  gap: 2px 8px !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body h3 {
+  grid-area: title !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body strong {
+  grid-area: value !important;
+  justify-self: end !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.55rem, 2.6vw, 2.35rem) !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  letter-spacing: -.035em !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body p {
+  grid-area: unit !important;
+  margin: 0 !important;
+  color: #475569 !important;
+  font-size: .70rem !important;
+  font-weight: 850 !important;
+  line-height: 1.5 !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body span {
+  grid-area: delta !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-self: start !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-height: 24px !important;
+  margin: 4px 0 0 !important;
+  padding: 0 8px !important;
+  border-radius: 999px !important;
+  background: rgba(248,250,252,.86) !important;
+  color: #64748b !important;
+  font-size: .62rem !important;
+  font-weight: 900 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__spark {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  height: 30px !important;
+  margin-top: 4px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.78) !important;
+}
+
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__spark i {
+  display: block !important;
+  width: 2px !important;
+  min-height: 7px !important;
+  max-height: 22px !important;
+  border-radius: 999px !important;
+  opacity: .78 !important;
+}
+
+/* Improve behavior on narrower desktop where sidebar is open. */
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-kpi-strip-v164 {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159 {
+    min-height: 132px !important;
+    padding: 12px !important;
+  }
+
+  .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body strong {
+    font-size: clamp(1.35rem, 2vw, 2rem) !important;
+  }
+}
+
+/* Tablet/mobile: natural wrapping, no rigid desktop layout. */
+@media (max-width: 760px) {
+  .smart-orbital-kpi-strip-v164 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    padding: 10px !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159 {
+    min-height: 126px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body h3 {
+    white-space: normal !important;
+  }
+}
+
+.dark .smart-orbital-kpi-strip-v164,
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159 {
+  border-color: rgba(51,65,85,.76) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.74)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body h3,
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body p,
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body span {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__body span {
+  background: rgba(15,23,42,.72) !important;
+}
+
+.dark .smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v159__spark {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.62) !important;
+}
+
+
+/* Stage 165 — KPI reference-match design
+   Exact target structure: four independent premium cards, large colored circular icon,
+   title, big number, delta row, and a free sparkline at bottom. */
+
+.smart-orbital-kpi-strip-v164 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 18px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.72) !important;
+  border-radius: 28px !important;
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: 0 18px 44px -40px rgba(15,23,42,.24) !important;
+}
+
+.smart-orbital-kpi-card-v165 {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 86px minmax(0, 1fr) !important;
+  grid-template-rows: minmax(154px, auto) 48px !important;
+  gap: 8px 18px !important;
+  min-height: 238px !important;
+  padding: 26px 24px 18px !important;
+  border: 1px solid rgba(226,232,240,.80) !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,.88)) !important;
+  box-shadow:
+    0 20px 44px rgba(15,23,42,.065),
+    inset 0 1px 0 rgba(255,255,255,.78) !important;
+  overflow: hidden !important;
+}
+
+/* No side rail in the reference card. */
+.smart-orbital-kpi-strip-v164 .smart-orbital-kpi-card-v165::before {
+  display: none !important;
+}
+
+.smart-orbital-kpi-card-v165__icon {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 72px !important;
+  height: 72px !important;
+  align-self: start !important;
+  border-radius: 999px !important;
+  font-size: 1.65rem !important;
+  box-shadow:
+    0 18px 34px rgba(15,23,42,.08),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+}
+
+.smart-orbital-kpi-card-v165--blue .smart-orbital-kpi-card-v165__icon {
+  background: rgba(219,234,254,.80) !important;
+  color: #3b82f6 !important;
+  border: 1px solid rgba(59,130,246,.22) !important;
+}
+
+.smart-orbital-kpi-card-v165--amber .smart-orbital-kpi-card-v165__icon {
+  background: rgba(255,237,213,.78) !important;
+  color: #f97316 !important;
+  border: 1px solid rgba(249,115,22,.22) !important;
+}
+
+.smart-orbital-kpi-card-v165--green .smart-orbital-kpi-card-v165__icon {
+  background: rgba(220,252,231,.78) !important;
+  color: #22c55e !important;
+  border: 1px solid rgba(34,197,94,.22) !important;
+}
+
+.smart-orbital-kpi-card-v165--violet .smart-orbital-kpi-card-v165__icon {
+  background: rgba(237,233,254,.78) !important;
+  color: #6d5dfc !important;
+  border: 1px solid rgba(109,93,252,.24) !important;
+}
+
+.smart-orbital-kpi-card-v165__body {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-areas:
+    "title"
+    "value"
+    "delta" !important;
+  align-content: start !important;
+  justify-items: end !important;
+  gap: 10px !important;
+  text-align: right !important;
+  min-width: 0 !important;
+}
+
+.smart-orbital-kpi-card-v165__body h3 {
+  grid-area: title !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .98rem !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+  white-space: normal !important;
+}
+
+.smart-orbital-kpi-card-v165__body strong {
+  grid-area: value !important;
+  margin: 8px 0 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(2.45rem, 3.4vw, 3.55rem) !important;
+  font-weight: 950 !important;
+  line-height: .95 !important;
+  letter-spacing: -.045em !important;
+}
+
+.smart-orbital-kpi-card-v165__delta {
+  grid-area: delta !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #059669 !important;
+  font-size: .84rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-orbital-kpi-card-v165__delta.is-down {
+  color: #ef4444 !important;
+}
+
+.smart-orbital-kpi-card-v165__delta i {
+  font-size: .78rem !important;
+}
+
+.smart-orbital-kpi-card-v165__spark {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.smart-orbital-kpi-card-v165__spark i {
+  width: 3px !important;
+  min-height: 6px !important;
+  max-height: 34px !important;
+  border-radius: 999px !important;
+  opacity: .88 !important;
+}
+
+.smart-orbital-kpi-card-v165--blue .smart-orbital-kpi-card-v165__spark i { background: #3b82f6 !important; }
+.smart-orbital-kpi-card-v165--amber .smart-orbital-kpi-card-v165__spark i { background: #f97316 !important; }
+.smart-orbital-kpi-card-v165--green .smart-orbital-kpi-card-v165__spark i { background: #22c55e !important; }
+.smart-orbital-kpi-card-v165--violet .smart-orbital-kpi-card-v165__spark i { background: #8b5cf6 !important; }
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-kpi-strip-v164 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .smart-orbital-kpi-card-v165 {
+    min-height: 214px !important;
+    grid-template-columns: 70px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(136px, auto) 42px !important;
+    padding: 22px 20px 16px !important;
+  }
+
+  .smart-orbital-kpi-card-v165__icon {
+    width: 62px !important;
+    height: 62px !important;
+    font-size: 1.35rem !important;
+  }
+
+  .smart-orbital-kpi-card-v165__body h3 {
+    font-size: .86rem !important;
+  }
+
+  .smart-orbital-kpi-card-v165__body strong {
+    font-size: clamp(2rem, 2.7vw, 2.85rem) !important;
+  }
+
+  .smart-orbital-kpi-card-v165__delta {
+    font-size: .74rem !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-orbital-kpi-strip-v164 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .smart-orbital-kpi-card-v165 {
+    min-height: 190px !important;
+    padding: 18px !important;
+  }
+}
+
+.dark .smart-orbital-kpi-strip-v164 {
+  border-color: rgba(51,65,85,.76) !important;
+  background: rgba(15,23,42,.42) !important;
+}
+
+.dark .smart-orbital-kpi-card-v165 {
+  border-color: rgba(51,65,85,.72) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-orbital-kpi-card-v165__body h3,
+.dark .smart-orbital-kpi-card-v165__body strong {
+  color: #f8fafc !important;
+}
+
+
+/* Stage 166 — Full rebuild of the 4 KPI cards to match the provided reference.
+   The previous KPI structure is not reused visually. No capsule sparkline, no side rail, no compressed layout. */
+
+.smart-kpi-reference-grid-v166 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 18px !important;
+  width: 100% !important;
+  padding: 18px !important;
+  border: 1px solid rgba(226, 232, 240, .78) !important;
+  border-radius: 26px !important;
+  background: rgba(255, 255, 255, .76) !important;
+  box-shadow:
+    0 18px 46px -42px rgba(15,23,42,.28),
+    inset 0 1px 0 rgba(255,255,255,.78) !important;
+  direction: ltr !important;
+}
+
+.smart-kpi-reference-card-v166 {
+  direction: rtl !important;
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 86px minmax(0, 1fr) !important;
+  grid-template-rows: minmax(154px, auto) 58px !important;
+  gap: 8px 18px !important;
+  min-height: 250px !important;
+  padding: 28px 24px 18px !important;
+  border: 1px solid rgba(226, 232, 240, .82) !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,.90)) !important;
+  box-shadow:
+    0 18px 42px rgba(15,23,42,.065),
+    inset 0 1px 0 rgba(255,255,255,.82) !important;
+  overflow: hidden !important;
+}
+
+.smart-kpi-reference-card-v166__icon {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 76px !important;
+  height: 76px !important;
+  border-radius: 999px !important;
+  font-size: 1.72rem !important;
+  box-shadow:
+    0 18px 34px rgba(15,23,42,.08),
+    inset 0 1px 0 rgba(255,255,255,.78) !important;
+}
+
+.smart-kpi-reference-card-v166--violet .smart-kpi-reference-card-v166__icon {
+  background: rgba(237,233,254,.78) !important;
+  color: #6d5dfc !important;
+  border: 1px solid rgba(109,93,252,.25) !important;
+}
+
+.smart-kpi-reference-card-v166--green .smart-kpi-reference-card-v166__icon {
+  background: rgba(220,252,231,.78) !important;
+  color: #22c55e !important;
+  border: 1px solid rgba(34,197,94,.23) !important;
+}
+
+.smart-kpi-reference-card-v166--amber .smart-kpi-reference-card-v166__icon {
+  background: rgba(255,237,213,.80) !important;
+  color: #f97316 !important;
+  border: 1px solid rgba(249,115,22,.24) !important;
+}
+
+.smart-kpi-reference-card-v166--blue .smart-kpi-reference-card-v166__icon {
+  background: rgba(219,234,254,.82) !important;
+  color: #3b82f6 !important;
+  border: 1px solid rgba(59,130,246,.24) !important;
+}
+
+.smart-kpi-reference-card-v166__content {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+  display: grid !important;
+  align-content: start !important;
+  justify-items: end !important;
+  text-align: right !important;
+}
+
+.smart-kpi-reference-card-v166__content h3 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.smart-kpi-reference-card-v166__content strong {
+  display: block !important;
+  margin-top: 26px !important;
+  color: #0f172a !important;
+  font-size: clamp(2.75rem, 3.5vw, 3.75rem) !important;
+  font-weight: 950 !important;
+  line-height: .9 !important;
+  letter-spacing: -.05em !important;
+}
+
+.smart-kpi-reference-card-v166__delta {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  margin-top: 24px !important;
+  color: #059669 !important;
+  font-size: .88rem !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
+}
+
+.smart-kpi-reference-card-v166__delta.is-down {
+  color: #ef4444 !important;
+}
+
+.smart-kpi-reference-card-v166__delta i {
+  font-size: .82rem !important;
+}
+
+.smart-kpi-reference-card-v166__sparkline {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  align-self: end !important;
+  width: 100% !important;
+  height: 56px !important;
+  overflow: visible !important;
+}
+
+.smart-kpi-reference-card-v166__sparkline polyline {
+  fill: none !important;
+  stroke-width: 2.5 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  vector-effect: non-scaling-stroke !important;
+}
+
+.smart-kpi-reference-card-v166--violet .smart-kpi-reference-card-v166__sparkline polyline { stroke: #8b5cf6 !important; }
+.smart-kpi-reference-card-v166--green .smart-kpi-reference-card-v166__sparkline polyline { stroke: #22c55e !important; }
+.smart-kpi-reference-card-v166--amber .smart-kpi-reference-card-v166__sparkline polyline { stroke: #f97316 !important; }
+.smart-kpi-reference-card-v166--blue .smart-kpi-reference-card-v166__sparkline polyline { stroke: #3b82f6 !important; }
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-kpi-reference-grid-v166 {
+    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)) !important;
+    gap: 14px !important;
+    padding: 14px !important;
+  }
+
+  .smart-kpi-reference-card-v166 {
+    grid-template-columns: 68px minmax(0, 1fr) !important;
+    grid-template-rows: minmax(132px, auto) 48px !important;
+    min-height: 210px !important;
+    padding: 22px 18px 16px !important;
+    gap: 8px 12px !important;
+  }
+
+  .smart-kpi-reference-card-v166__icon {
+    width: 62px !important;
+    height: 62px !important;
+    font-size: 1.34rem !important;
+  }
+
+  .smart-kpi-reference-card-v166__content h3 {
+    font-size: .86rem !important;
+  }
+
+  .smart-kpi-reference-card-v166__content strong {
+    margin-top: 18px !important;
+    font-size: clamp(2.05rem, 2.8vw, 2.9rem) !important;
+  }
+
+  .smart-kpi-reference-card-v166__delta {
+    margin-top: 16px !important;
+    font-size: .74rem !important;
+  }
+
+  .smart-kpi-reference-card-v166__sparkline {
+    height: 46px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-kpi-reference-grid-v166 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 12px !important;
+    padding: 10px !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-kpi-reference-card-v166 {
+    min-height: 196px !important;
+    padding: 18px !important;
+  }
+}
+
+.dark .smart-kpi-reference-grid-v166 {
+  border-color: rgba(51,65,85,.76) !important;
+  background: rgba(15,23,42,.42) !important;
+}
+
+.dark .smart-kpi-reference-card-v166 {
+  border-color: rgba(51,65,85,.72) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-kpi-reference-card-v166__content h3,
+.dark .smart-kpi-reference-card-v166__content strong {
+  color: #f8fafc !important;
+}
+
+
+/* Stage 167 — Right engine gauge polish + remove decision confidence bleed.
+   Scope:
+   1) removes the center confidence row that visually leaked behind KPI cards
+   2) rebuilds the right-side management score gauge to match the provided reference:
+      thick semicircle, rounded caps, purple→blue→green gradient, grey rear track.
+*/
+
+.smart-orbital-board-v156__confidence {
+  display: none !important;
+}
+
+.smart-orbital-board-v156__engine {
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v156__gauge {
+  display: none !important;
+}
+
+.smart-engine-gauge-v167 {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: min(100%, 230px) !important;
+  height: 168px !important;
+  margin-top: 30px !important;
+  isolation: isolate !important;
+}
+
+.smart-engine-gauge-v167__svg {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+
+.smart-engine-gauge-v167__track,
+.smart-engine-gauge-v167__progress {
+  fill: none !important;
+  stroke-linecap: round !important;
+  stroke-width: 17 !important;
+}
+
+.smart-engine-gauge-v167__track {
+  stroke: #e2e8f0 !important;
+}
+
+.smart-engine-gauge-v167__progress {
+  stroke: url(#smartEngineGaugeGradientV167) !important;
+  stroke-dasharray: calc(var(--score) * 1) 100 !important;
+  filter: url(#smartEngineGaugeGlowV167) !important;
+}
+
+.smart-engine-gauge-v167__value {
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  justify-items: center !important;
+  margin-top: 30px !important;
+  text-align: center !important;
+}
+
+.smart-engine-gauge-v167__value strong {
+  color: #0f172a !important;
+  font-size: clamp(3.15rem, 4.8vw, 4.35rem) !important;
+  font-weight: 950 !important;
+  line-height: .92 !important;
+  letter-spacing: -.055em !important;
+}
+
+.smart-engine-gauge-v167__value span {
+  margin-top: 9px !important;
+  color: #0f172a !important;
+  font-size: .95rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__status-chip {
+  margin-top: 10px !important;
+}
+
+/* Better match reference spacing inside the right column. */
+.smart-orbital-board-v156__engine h3 {
+  margin-top: 28px !important;
+  font-size: 1.12rem !important;
+}
+
+.smart-orbital-board-v156__micro-bars {
+  margin-top: 34px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-engine-gauge-v167 {
+    width: min(100%, 210px) !important;
+    height: 154px !important;
+    margin-top: 24px !important;
+  }
+
+  .smart-engine-gauge-v167__track,
+  .smart-engine-gauge-v167__progress {
+    stroke-width: 15 !important;
+  }
+
+  .smart-engine-gauge-v167__value strong {
+    font-size: clamp(2.7rem, 4vw, 3.6rem) !important;
+  }
+
+  .smart-engine-gauge-v167__value span {
+    font-size: .86rem !important;
+  }
+}
+
+.dark .smart-engine-gauge-v167__track {
+  stroke: #334155 !important;
+}
+
+.dark .smart-engine-gauge-v167__value strong,
+.dark .smart-engine-gauge-v167__value span {
+  color: #f8fafc !important;
+}
+
+
+/* Stage 168 — Gauge arc + Vazir font correction
+   Scope: right Smart Insight Engine gauge only.
+   Fixes:
+   - arc no longer collides with the number
+   - softer, cleaner semicircle with rounded caps
+   - Vazir-aligned numeric typography
+*/
+
+.smart-engine-gauge-v167 {
+  width: min(100%, 238px) !important;
+  height: 174px !important;
+  margin-top: 26px !important;
+  align-items: start !important;
+}
+
+.smart-engine-gauge-v167__svg {
+  top: 0 !important;
+  height: 146px !important;
+}
+
+.smart-engine-gauge-v167__track,
+.smart-engine-gauge-v167__progress {
+  stroke-linecap: round !important;
+  stroke-width: 15 !important;
+}
+
+.smart-engine-gauge-v167__track {
+  stroke: #e4eaf2 !important;
+}
+
+.smart-engine-gauge-v167__progress {
+  stroke-dasharray: calc(var(--score) * 1) 100 !important;
+  filter: url(#smartEngineGaugeGlowV167) !important;
+}
+
+.smart-engine-gauge-v167__value {
+  margin-top: 64px !important;
+}
+
+.smart-engine-gauge-v167__value strong {
+  font-family: Vazirmatn, Vazir, "Vazir FD", "IRANSansX", Tahoma, Arial, sans-serif !important;
+  font-size: clamp(2.85rem, 4.2vw, 3.85rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.035em !important;
+  line-height: .9 !important;
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: "tnum" 1 !important;
+}
+
+.smart-engine-gauge-v167__value span {
+  margin-top: 10px !important;
+  font-family: Vazirmatn, Vazir, "Vazir FD", "IRANSansX", Tahoma, Arial, sans-serif !important;
+  font-size: .88rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.smart-orbital-board-v156__status-chip {
+  margin-top: 4px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-engine-gauge-v167 {
+    width: min(100%, 222px) !important;
+    height: 162px !important;
+    margin-top: 22px !important;
+  }
+
+  .smart-engine-gauge-v167__svg {
+    height: 136px !important;
+  }
+
+  .smart-engine-gauge-v167__track,
+  .smart-engine-gauge-v167__progress {
+    stroke-width: 14 !important;
+  }
+
+  .smart-engine-gauge-v167__value {
+    margin-top: 60px !important;
+  }
+
+  .smart-engine-gauge-v167__value strong {
+    font-size: clamp(2.55rem, 3.7vw, 3.35rem) !important;
+  }
+
+  .smart-engine-gauge-v167__value span {
+    font-size: .80rem !important;
+  }
+}
+
+
+/* Stage 169 — Center decision icon + CTA containment fix
+   Scope: middle Next Best Decision column only.
+   1) Rebuilds target icon like the reference: soft halo, dotted ring, crisp purple target.
+   2) Keeps the CTA inside the central decision card, no overflow outside the panel.
+*/
+
+.smart-orbital-board-v156__decision {
+  position: relative !important;
+  overflow: hidden !important;
+  padding-bottom: 26px !important;
+}
+
+.smart-center-target-v169,
+.smart-orbital-board-v156__target.smart-center-target-v169 {
+  position: relative !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 92px !important;
+  height: 92px !important;
+  margin-top: 16px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.98) 0 38%, rgba(238,242,255,.92) 39% 60%, rgba(255,255,255,0) 61%) !important;
+  color: #5b46f3 !important;
+  font-size: 2.15rem !important;
+  box-shadow:
+    0 20px 44px rgba(79,70,229,.12),
+    inset 0 1px 0 rgba(255,255,255,.90) !important;
+}
+
+.smart-center-target-v169__halo {
+  position: absolute !important;
+  inset: 2px !important;
+  border-radius: 999px !important;
+  background:
+    radial-gradient(circle, rgba(109,93,252,.12), rgba(109,93,252,.05) 42%, rgba(109,93,252,0) 68%) !important;
+  filter: blur(.2px) !important;
+}
+
+.smart-center-target-v169__ring {
+  position: absolute !important;
+  inset: 5px !important;
+  border-radius: 999px !important;
+  border: 1.5px dashed rgba(109,93,252,.28) !important;
+}
+
+.smart-center-target-v169 i {
+  position: relative !important;
+  z-index: 2 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.78) !important;
+  color: #5b46f3 !important;
+  text-shadow: 0 6px 18px rgba(91,70,243,.18) !important;
+}
+
+/* CTA must live inside the card, not overlap the KPI strip. */
+.smart-orbital-board-v156__cta-row {
+  width: 100% !important;
+  margin-top: 22px !important;
+  margin-bottom: 0 !important;
+  padding: 0 18px !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+.smart-orbital-board-v156__primary-cta {
+  width: min(100%, 500px) !important;
+  min-height: 52px !important;
+  border-radius: 15px !important;
+  box-shadow: 0 14px 30px rgba(79,70,229,.20) !important;
+}
+
+/* Pull following confidence/hidden remnants out of layout, even if old CSS is cached. */
+.smart-orbital-board-v156__confidence {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Central metrics slightly more compact so the CTA fits naturally inside. */
+.smart-orbital-board-v156__focus-grid {
+  margin-top: 22px !important;
+  gap: 10px !important;
+}
+
+.smart-orbital-board-v156__focus-card {
+  min-height: 140px !important;
+  padding: 14px 10px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-center-target-v169,
+  .smart-orbital-board-v156__target.smart-center-target-v169 {
+    width: 82px !important;
+    height: 82px !important;
+    margin-top: 12px !important;
+    font-size: 1.92rem !important;
+  }
+
+  .smart-center-target-v169 i {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .smart-orbital-board-v156__decision h2 {
+    margin-top: 14px !important;
+  }
+
+  .smart-orbital-board-v156__focus-grid {
+    margin-top: 18px !important;
+  }
+
+  .smart-orbital-board-v156__focus-card {
+    min-height: 124px !important;
+    padding: 12px 9px !important;
+  }
+
+  .smart-orbital-board-v156__cta-row {
+    margin-top: 18px !important;
+    padding-inline: 14px !important;
+  }
+
+  .smart-orbital-board-v156__primary-cta {
+    min-height: 48px !important;
+  }
+}
+
+.dark .smart-center-target-v169,
+.dark .smart-orbital-board-v156__target.smart-center-target-v169 {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(15,23,42,.96) 0 38%, rgba(49,46,129,.36) 39% 60%, rgba(15,23,42,0) 61%) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-center-target-v169 i {
+  background: rgba(15,23,42,.72) !important;
+  color: #a5b4fc !important;
+}
+
+.dark .smart-center-target-v169__ring {
+  border-color: rgba(165,180,252,.35) !important;
+}
+
+
+/* Stage 170 — Center card height + custom target icon
+   Scope: three main board columns + center icon/CTA.
+   Fixes:
+   - all three columns get enough equal height
+   - CTA stays inside the center card
+   - target icon becomes custom SVG, not FontAwesome
+*/
+
+.smart-orbital-board-v156__actions,
+.smart-orbital-board-v156__decision,
+.smart-orbital-board-v156__engine {
+  height: 620px !important;
+  min-height: 620px !important;
+  max-height: 620px !important;
+}
+
+.smart-orbital-board-v156__decision {
+  display: flex !important;
+  flex-direction: column !important;
+  padding-top: 28px !important;
+  padding-bottom: 28px !important;
+  overflow: hidden !important;
+}
+
+.smart-center-target-v169,
+.smart-orbital-board-v156__target.smart-center-target-v169 {
+  width: 98px !important;
+  height: 98px !important;
+  margin-top: 18px !important;
+  font-size: unset !important;
+}
+
+.smart-center-target-v169 i {
+  display: none !important;
+}
+
+.smart-center-target-v170__svg {
+  position: relative !important;
+  z-index: 3 !important;
+  width: 56px !important;
+  height: 56px !important;
+  overflow: visible !important;
+}
+
+.smart-center-target-v170__svg circle,
+.smart-center-target-v170__svg path {
+  fill: none !important;
+  stroke: #5b46f3 !important;
+  stroke-width: 4.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  filter: drop-shadow(0 8px 16px rgba(91,70,243,.18)) !important;
+}
+
+.smart-center-target-v170__svg circle:nth-child(2) {
+  stroke-width: 3.8 !important;
+  opacity: .92 !important;
+}
+
+.smart-center-target-v170__svg circle:nth-child(3) {
+  fill: #5b46f3 !important;
+  stroke-width: 0 !important;
+  opacity: 1 !important;
+}
+
+.smart-center-target-v169__ring {
+  inset: 3px !important;
+  border-width: 1.4px !important;
+  border-color: rgba(109,93,252,.25) !important;
+}
+
+.smart-center-target-v169__halo {
+  inset: -3px !important;
+  background:
+    radial-gradient(circle, rgba(109,93,252,.14), rgba(109,93,252,.06) 45%, rgba(109,93,252,0) 72%) !important;
+}
+
+.smart-orbital-board-v156__decision h2 {
+  margin-top: 18px !important;
+}
+
+.smart-orbital-board-v156__decision p {
+  margin-top: 10px !important;
+}
+
+.smart-orbital-board-v156__focus-grid {
+  margin-top: 24px !important;
+  flex: 0 0 auto !important;
+}
+
+.smart-orbital-board-v156__focus-card {
+  min-height: 142px !important;
+}
+
+.smart-orbital-board-v156__cta-row {
+  margin-top: auto !important;
+  padding: 22px 18px 0 !important;
+  width: 100% !important;
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+.smart-orbital-board-v156__primary-cta {
+  width: min(100%, 500px) !important;
+  min-height: 54px !important;
+  border-radius: 16px !important;
+  transform: none !important;
+}
+
+/* Action rail adjusts to the taller equal columns without stretching the page. */
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  max-height: 456px !important;
+}
+
+/* Right panel spacing with taller column. */
+.smart-orbital-board-v156__engine {
+  padding-bottom: 24px !important;
+}
+
+.smart-orbital-board-v156__engine-note {
+  margin-top: auto !important;
+}
+
+/* In desktop ranges with sidebar open, still keep enough height. */
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__engine {
+    height: 590px !important;
+    min-height: 590px !important;
+    max-height: 590px !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 418px !important;
+  }
+
+  .smart-center-target-v169,
+  .smart-orbital-board-v156__target.smart-center-target-v169 {
+    width: 88px !important;
+    height: 88px !important;
+    margin-top: 14px !important;
+  }
+
+  .smart-center-target-v170__svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .smart-orbital-board-v156__focus-card {
+    min-height: 130px !important;
+  }
+
+  .smart-orbital-board-v156__cta-row {
+    padding-top: 18px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-orbital-board-v156__actions,
+  .smart-orbital-board-v156__decision,
+  .smart-orbital-board-v156__engine {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+
+  .smart-orbital-board-v156__cta-row {
+    margin-top: 22px !important;
+  }
+}
+
+.dark .smart-center-target-v170__svg circle,
+.dark .smart-center-target-v170__svg path {
+  stroke: #a5b4fc !important;
+}
+
+.dark .smart-center-target-v170__svg circle:nth-child(3) {
+  fill: #a5b4fc !important;
+}
+
+
+/* Stage 171 — Center target icon refine
+   Makes the middle icon closer to the reference: clearer dart/arrow, target rings,
+   sharper arrow head, lighter halo and better proportions. */
+
+.smart-center-target-v169,
+.smart-orbital-board-v156__target.smart-center-target-v169 {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.98) 0 34%, rgba(238,242,255,.78) 35% 58%, rgba(255,255,255,0) 59%) !important;
+}
+
+.smart-center-target-v169__ring {
+  inset: 4px !important;
+  border: 1.3px dashed rgba(109,93,252,.24) !important;
+}
+
+.smart-center-target-v169__halo {
+  inset: -8px !important;
+  background:
+    radial-gradient(circle, rgba(109,93,252,.12), rgba(109,93,252,.045) 45%, rgba(109,93,252,0) 72%) !important;
+}
+
+.smart-center-target-v171__svg {
+  width: 58px !important;
+  height: 58px !important;
+  overflow: visible !important;
+}
+
+.smart-center-target-v171__target circle {
+  fill: none !important;
+  stroke: #5b46f3 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  filter: drop-shadow(0 7px 13px rgba(91,70,243,.16)) !important;
+}
+
+.smart-center-target-v171__target circle:nth-child(1) {
+  stroke-width: 4.2 !important;
+  opacity: .95 !important;
+}
+
+.smart-center-target-v171__target circle:nth-child(2) {
+  stroke-width: 3.6 !important;
+  opacity: .92 !important;
+}
+
+.smart-center-target-v171__target circle:nth-child(3) {
+  fill: #5b46f3 !important;
+  stroke-width: 0 !important;
+}
+
+.smart-center-target-v171__arrow path {
+  fill: none !important;
+  stroke: #5b46f3 !important;
+  stroke-width: 4.3 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  filter: drop-shadow(0 8px 15px rgba(91,70,243,.17)) !important;
+}
+
+/* Disable previous generic SVG rules where they over-thickened everything. */
+.smart-center-target-v170__svg circle,
+.smart-center-target-v170__svg path {
+  stroke-width: unset !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-center-target-v171__svg {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .smart-center-target-v171__target circle:nth-child(1) {
+    stroke-width: 3.9 !important;
+  }
+
+  .smart-center-target-v171__target circle:nth-child(2) {
+    stroke-width: 3.3 !important;
+  }
+
+  .smart-center-target-v171__arrow path {
+    stroke-width: 4 !important;
+  }
+}
+
+.dark .smart-center-target-v171__target circle,
+.dark .smart-center-target-v171__arrow path {
+  stroke: #a5b4fc !important;
+}
+
+.dark .smart-center-target-v171__target circle:nth-child(3) {
+  fill: #a5b4fc !important;
+}
+
+/* Stage 172 — Recommended actions column rebuilt to match the approved reference.
+   Goals:
+   - clean premium left column with centered title tile
+   - action cards matching the reference card structure
+   - show only useful buttons per card (open section / mark done)
+   - preserve scroll when actions exceed column height
+*/
+
+.smart-orbital-board-v156__actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+}
+
+.smart-orbital-board-v156__section-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 72px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 20px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  color: #0f172a !important;
+  font-size: 1.05rem !important;
+  font-weight: 950 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75) !important;
+}
+
+.smart-orbital-board-v156__section-title i {
+  color: #6d5dfc !important;
+  font-size: 1rem !important;
+}
+
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  max-height: 460px !important;
+  gap: 14px !important;
+  padding-inline-end: 8px !important;
+}
+
+.smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+.smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  min-height: 138px !important;
+  padding: 18px 16px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 0 16px 36px rgba(15,23,42,.045) !important;
+}
+
+.smart-orbital-board-v172__action-head {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0,1fr) 52px !important;
+  align-items: start !important;
+  gap: 12px !important;
+}
+
+.smart-orbital-board-v172__action-score {
+  width: 38px !important;
+  height: 32px !important;
+  border-radius: 12px !important;
+  background: rgba(237,233,254,.88) !important;
+  color: #5b46f3 !important;
+  font-size: .9rem !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+}
+
+.smart-orbital-board-v172__action-icon {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+  background: rgba(245,243,255,.95) !important;
+  border: 1px solid rgba(196,181,253,.65) !important;
+  color: #6d5dfc !important;
+  box-shadow: 0 8px 20px rgba(109,93,252,.08) !important;
+}
+
+.smart-orbital-board-v172__action-card:nth-child(2) .smart-orbital-board-v172__action-icon {
+  background: rgba(254,242,242,.98) !important;
+  border-color: rgba(252,165,165,.55) !important;
+  color: #ef4444 !important;
+}
+.smart-orbital-board-v172__action-card:nth-child(3) .smart-orbital-board-v172__action-icon {
+  background: rgba(240,253,244,.98) !important;
+  border-color: rgba(134,239,172,.55) !important;
+  color: #22c55e !important;
+}
+.smart-orbital-board-v172__action-card:nth-child(4) .smart-orbital-board-v172__action-icon,
+.smart-orbital-board-v172__action-card:nth-child(n+4) .smart-orbital-board-v172__action-icon {
+  background: rgba(239,246,255,.98) !important;
+  border-color: rgba(147,197,253,.55) !important;
+  color: #3b82f6 !important;
+}
+
+.smart-orbital-board-v172__action-body {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding-top: 2px !important;
+}
+
+.smart-orbital-board-v172__action-body h4 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+  font-weight: 950 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v172__action-body p {
+  margin: 10px 0 0 !important;
+  color: #475569 !important;
+  font-size: .87rem !important;
+  line-height: 1.75 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v163__hint {
+  display: none !important;
+}
+
+.smart-orbital-board-v172__action-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin-top: auto !important;
+  flex-wrap: wrap !important;
+}
+
+.smart-orbital-board-v172__action-link,
+.smart-orbital-board-v172__done-button {
+  min-height: 40px !important;
+  padding: 0 16px !important;
+  border-radius: 14px !important;
+  font-size: .82rem !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.smart-orbital-board-v172__action-link {
+  min-width: 126px !important;
+  background: linear-gradient(180deg, #1f2937, #111827) !important;
+  border: 1px solid rgba(15,23,42,.95) !important;
+  color: #fff !important;
+}
+
+.smart-orbital-board-v172__action-link:hover {
+  filter: brightness(1.04) !important;
+}
+
+.smart-orbital-board-v172__done-button {
+  background: rgba(248,250,252,.98) !important;
+  border: 1px solid rgba(203,213,225,.95) !important;
+  color: #334155 !important;
+  min-width: 104px !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 54px !important;
+  margin-top: 4px !important;
+  border-radius: 16px !important;
+  border: 1.5px solid rgba(147,197,253,.7) !important;
+  background: rgba(255,255,255,.9) !important;
+  color: #2563eb !important;
+  font-size: .95rem !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+}
+
+.smart-orbital-board-v156__all-actions:hover {
+  background: rgba(239,246,255,.96) !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-board-v156__section-title {
+    min-height: 64px !important;
+    font-size: .98rem !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 440px !important;
+    gap: 12px !important;
+  }
+
+  .smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+  .smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+    min-height: 128px !important;
+    padding: 15px 14px !important;
+  }
+
+  .smart-orbital-board-v172__action-head {
+    grid-template-columns: 40px minmax(0,1fr) 46px !important;
+    gap: 10px !important;
+  }
+
+  .smart-orbital-board-v172__action-body h4 {
+    font-size: .92rem !important;
+  }
+
+  .smart-orbital-board-v172__action-body p {
+    margin-top: 8px !important;
+    font-size: .8rem !important;
+  }
+
+  .smart-orbital-board-v172__action-link,
+  .smart-orbital-board-v172__done-button {
+    min-height: 36px !important;
+    font-size: .76rem !important;
+    padding-inline: 12px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-orbital-board-v172__action-controls {
+    justify-content: stretch !important;
+  }
+
+  .smart-orbital-board-v172__action-link,
+  .smart-orbital-board-v172__done-button {
+    flex: 1 1 160px !important;
+  }
+}
+
+.dark .smart-orbital-board-v156__actions {
+  background: linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.86)) !important;
+}
+.dark .smart-orbital-board-v156__section-title,
+.dark .smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card {
+  border-color: rgba(51,65,85,.82) !important;
+  background: rgba(15,23,42,.82) !important;
+}
+.dark .smart-orbital-board-v172__action-body h4 { color: #f8fafc !important; }
+.dark .smart-orbital-board-v172__action-body p { color: #cbd5e1 !important; }
+.dark .smart-orbital-board-v156__all-actions { background: rgba(15,23,42,.86) !important; border-color: rgba(96,165,250,.45) !important; color: #93c5fd !important; }
+
+/* Stage 173 — Fix recommended-actions overlap/clipping issues
+   Problems fixed based on screenshot:
+   1) icon box was sitting on top of the title/body
+   2) title/body lacked side-safe padding for score/icon
+   3) card height was too small so text/buttons got clipped
+   4) action list viewport needed slightly calmer spacing
+*/
+
+.smart-orbital-board-v156__actions {
+  gap: 14px !important;
+}
+
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  max-height: 452px !important;
+  gap: 16px !important;
+  padding-inline-end: 8px !important;
+  padding-inline-start: 2px !important;
+}
+
+.smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+.smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+  position: relative !important;
+  min-height: 176px !important;
+  padding: 18px 16px 14px !important;
+  overflow: hidden !important;
+}
+
+.smart-orbital-board-v172__action-head {
+  display: block !important;
+  position: relative !important;
+  min-height: 104px !important;
+}
+
+.smart-orbital-board-v172__action-score {
+  position: absolute !important;
+  top: 0 !important;
+  inset-inline-start: 0 !important;
+  z-index: 3 !important;
+}
+
+.smart-orbital-board-v172__action-icon {
+  position: absolute !important;
+  top: 0 !important;
+  inset-inline-end: 0 !important;
+  z-index: 3 !important;
+}
+
+.smart-orbital-board-v172__action-body {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: center !important;
+  min-height: 104px !important;
+  padding-top: 6px !important;
+  padding-inline: 56px !important;
+}
+
+.smart-orbital-board-v172__action-body h4 {
+  margin: 0 !important;
+  font-size: .98rem !important;
+  line-height: 1.8 !important;
+  font-weight: 950 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+.smart-orbital-board-v172__action-body p {
+  margin: 10px 0 0 !important;
+  font-size: .84rem !important;
+  line-height: 1.8 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+
+.smart-orbital-board-v172__action-controls {
+  margin-top: 6px !important;
+  padding-top: 2px !important;
+}
+
+.smart-orbital-board-v172__action-link,
+.smart-orbital-board-v172__done-button {
+  min-height: 38px !important;
+  padding-inline: 14px !important;
+  white-space: nowrap !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  min-height: 50px !important;
+  margin-top: 2px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 438px !important;
+  }
+
+  .smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+  .smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+    min-height: 168px !important;
+    padding: 16px 14px 13px !important;
+  }
+
+  .smart-orbital-board-v172__action-head {
+    min-height: 98px !important;
+  }
+
+  .smart-orbital-board-v172__action-body {
+    min-height: 98px !important;
+    padding-inline: 52px !important;
+  }
+
+  .smart-orbital-board-v172__action-body h4 {
+    font-size: .92rem !important;
+  }
+
+  .smart-orbital-board-v172__action-body p {
+    font-size: .78rem !important;
+  }
+}
+
+/* Stage 174 — Recommended actions final readability polish
+   Fixes the remaining issues from stage173:
+   - action buttons were clipped at the bottom of cards
+   - cards needed more internal height and cleaner hierarchy
+   - two CTA buttons needed a predictable full-width layout
+   - scroll viewport needed safe bottom padding
+*/
+
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  max-height: 448px !important;
+  gap: 14px !important;
+  padding: 0 8px 18px 2px !important;
+  align-content: start !important;
+}
+
+.smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+.smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+  min-height: 206px !important;
+  height: auto !important;
+  padding: 18px 16px 16px !important;
+  overflow: visible !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.smart-orbital-board-v172__action-head {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) 50px !important;
+  grid-template-areas: "score body icon" !important;
+  align-items: start !important;
+  min-height: 112px !important;
+  gap: 12px !important;
+}
+
+.smart-orbital-board-v172__action-score {
+  grid-area: score !important;
+  position: static !important;
+  width: 38px !important;
+  height: 32px !important;
+  align-self: start !important;
+  justify-self: start !important;
+}
+
+.smart-orbital-board-v172__action-icon {
+  grid-area: icon !important;
+  position: static !important;
+  width: 48px !important;
+  height: 48px !important;
+  align-self: start !important;
+  justify-self: end !important;
+}
+
+.smart-orbital-board-v172__action-body {
+  grid-area: body !important;
+  min-height: 112px !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  min-width: 0 !important;
+}
+
+.smart-orbital-board-v172__action-body h4 {
+  font-size: .94rem !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-orbital-board-v172__action-body p {
+  margin-top: 8px !important;
+  font-size: .80rem !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-orbital-board-v172__action-controls {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 14px !important;
+  padding: 0 !important;
+}
+
+.smart-orbital-board-v172__action-link,
+.smart-orbital-board-v172__done-button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  padding: 0 10px !important;
+  border-radius: 13px !important;
+  font-size: .76rem !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.smart-orbital-board-v172__done-button {
+  background: rgba(248,250,252,.98) !important;
+  border-color: rgba(203,213,225,.95) !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  flex: 0 0 auto !important;
+  min-height: 52px !important;
+  margin-top: 6px !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 426px !important;
+    gap: 12px !important;
+  }
+
+  .smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+  .smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+    min-height: 192px !important;
+    padding: 16px 14px 14px !important;
+  }
+
+  .smart-orbital-board-v172__action-head {
+    grid-template-columns: 38px minmax(0, 1fr) 44px !important;
+    min-height: 104px !important;
+    gap: 10px !important;
+  }
+
+  .smart-orbital-board-v172__action-body {
+    min-height: 104px !important;
+  }
+
+  .smart-orbital-board-v172__action-icon {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .smart-orbital-board-v172__action-body h4 {
+    font-size: .88rem !important;
+  }
+
+  .smart-orbital-board-v172__action-body p {
+    font-size: .74rem !important;
+  }
+
+  .smart-orbital-board-v172__action-link,
+  .smart-orbital-board-v172__done-button {
+    min-height: 38px !important;
+    font-size: .70rem !important;
+    padding-inline: 8px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-orbital-board-v172__action-controls {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Stage 175 — Recommended actions scale-down polish
+   Scope: left recommended-actions column only.
+   Fixes oversized icons, heavy typography, and clipped controls in the narrow rail.
+*/
+
+.smart-orbital-board-v156__actions {
+  padding: 14px !important;
+  gap: 12px !important;
+}
+
+.smart-orbital-board-v156__section-title {
+  min-height: 58px !important;
+  border-radius: 18px !important;
+  font-size: .94rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-orbital-board-v156__section-title i {
+  font-size: .88rem !important;
+}
+
+.smart-orbital-board-v156__action-list,
+.smart-orbital-board-v158__action-list {
+  max-height: 448px !important;
+  gap: 12px !important;
+  padding-inline-end: 6px !important;
+}
+
+.smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+.smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+  min-height: 150px !important;
+  padding: 14px 12px 12px !important;
+  border-radius: 19px !important;
+}
+
+.smart-orbital-board-v172__action-head {
+  min-height: 86px !important;
+}
+
+.smart-orbital-board-v172__action-score {
+  width: 32px !important;
+  height: 28px !important;
+  border-radius: 10px !important;
+  font-size: .74rem !important;
+}
+
+.smart-orbital-board-v172__action-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 13px !important;
+  font-size: .86rem !important;
+}
+
+.smart-orbital-board-v172__action-body {
+  min-height: 86px !important;
+  padding-inline: 46px !important;
+  padding-top: 2px !important;
+}
+
+.smart-orbital-board-v172__action-body h4 {
+  font-size: .84rem !important;
+  line-height: 1.65 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-orbital-board-v172__action-body p {
+  margin-top: 7px !important;
+  font-size: .72rem !important;
+  line-height: 1.65 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-orbital-board-v172__action-controls {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 7px !important;
+  margin-top: 4px !important;
+  padding-top: 0 !important;
+}
+
+.smart-orbital-board-v172__action-link,
+.smart-orbital-board-v172__done-button {
+  width: 100% !important;
+  min-height: 32px !important;
+  padding: 0 10px !important;
+  border-radius: 11px !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.smart-orbital-board-v172__done-button {
+  min-height: 30px !important;
+  opacity: .96 !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  min-height: 46px !important;
+  border-radius: 14px !important;
+  font-size: .82rem !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-orbital-board-v156__actions {
+    padding: 13px !important;
+  }
+
+  .smart-orbital-board-v156__section-title {
+    min-height: 54px !important;
+    font-size: .88rem !important;
+  }
+
+  .smart-orbital-board-v156__action-list,
+  .smart-orbital-board-v158__action-list {
+    max-height: 432px !important;
+    gap: 10px !important;
+  }
+
+  .smart-orbital-board-v156__action-card.smart-orbital-board-v172__action-card,
+  .smart-orbital-board-v158__action-card.smart-orbital-board-v172__action-card {
+    min-height: 142px !important;
+    padding: 12px 11px 11px !important;
+  }
+
+  .smart-orbital-board-v172__action-head {
+    min-height: 82px !important;
+  }
+
+  .smart-orbital-board-v172__action-body {
+    min-height: 82px !important;
+    padding-inline: 42px !important;
+  }
+
+  .smart-orbital-board-v172__action-body h4 {
+    font-size: .78rem !important;
+  }
+
+  .smart-orbital-board-v172__action-body p {
+    font-size: .68rem !important;
+  }
+
+  .smart-orbital-board-v172__action-icon {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 12px !important;
+  }
+
+  .smart-orbital-board-v172__action-score {
+    width: 30px !important;
+    height: 26px !important;
+    font-size: .68rem !important;
+  }
+
+  .smart-orbital-board-v172__action-link,
+  .smart-orbital-board-v172__done-button {
+    min-height: 30px !important;
+    font-size: .64rem !important;
+  }
+}
+
+
+/* Stage 176 — Recommended actions: real compact Action Queue
+   Replaces the card-like action layout with a responsive queue row:
+   icon | text | priority, then only useful controls.
+*/
+
+.smart-orbital-board-v156__actions {
+  padding: 14px !important;
+  gap: 12px !important;
+}
+
+.smart-orbital-board-v156__section-title {
+  min-height: 56px !important;
+  border-radius: 18px !important;
+  font-size: .92rem !important;
+}
+
+.smart-action-queue-v176 {
+  display: grid !important;
+  gap: 10px !important;
+  max-height: 452px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 2px 2px 12px 0 !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(148,163,184,.48) transparent !important;
+}
+
+.smart-action-queue-v176::-webkit-scrollbar {
+  width: 5px !important;
+}
+
+.smart-action-queue-v176::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+  background: rgba(148,163,184,.48) !important;
+}
+
+.smart-action-row-v176 {
+  display: grid !important;
+  grid-template-columns: 36px minmax(0, 1fr) auto !important;
+  grid-template-areas:
+    "icon body score"
+    "icon controls controls" !important;
+  align-items: start !important;
+  gap: 9px 10px !important;
+  min-height: 116px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) !important;
+  box-shadow: 0 10px 26px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+.smart-action-row-v176__icon {
+  grid-area: icon !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  background: rgba(245,243,255,.96) !important;
+  border: 1px solid rgba(196,181,253,.64) !important;
+  color: #6d5dfc !important;
+  font-size: .82rem !important;
+}
+
+.smart-action-row-v176:nth-child(2) .smart-action-row-v176__icon {
+  background: rgba(254,242,242,.98) !important;
+  border-color: rgba(252,165,165,.58) !important;
+  color: #ef4444 !important;
+}
+
+.smart-action-row-v176:nth-child(3) .smart-action-row-v176__icon {
+  background: rgba(240,253,244,.98) !important;
+  border-color: rgba(134,239,172,.58) !important;
+  color: #22c55e !important;
+}
+
+.smart-action-row-v176:nth-child(n+4) .smart-action-row-v176__icon {
+  background: rgba(239,246,255,.98) !important;
+  border-color: rgba(147,197,253,.58) !important;
+  color: #3b82f6 !important;
+}
+
+.smart-action-row-v176__body {
+  grid-area: body !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+.smart-action-row-v176__body h4 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-action-row-v176__body p {
+  margin: 5px 0 0 !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 760 !important;
+  line-height: 1.65 !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important;
+  line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.smart-action-row-v176__score {
+  grid-area: score !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  min-width: 32px !important;
+  height: 26px !important;
+  padding: 0 8px !important;
+  border-radius: 999px !important;
+  background: rgba(237,233,254,.88) !important;
+  color: #5b46f3 !important;
+  font-size: .70rem !important;
+  font-weight: 950 !important;
+  justify-self: end !important;
+}
+
+.smart-action-row-v176__controls {
+  grid-area: controls !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+}
+
+.smart-action-row-v176__link,
+.smart-action-row-v176__done {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  min-height: 31px !important;
+  padding: 0 8px !important;
+  border-radius: 11px !important;
+  font-size: .64rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.smart-action-row-v176__link {
+  background: linear-gradient(180deg, #1f2937, #111827) !important;
+  color: #fff !important;
+  border: 1px solid rgba(15,23,42,.92) !important;
+}
+
+.smart-action-row-v176__done {
+  border: 1px solid rgba(203,213,225,.92) !important;
+  background: rgba(255,255,255,.92) !important;
+  color: #334155 !important;
+}
+
+.smart-action-row-v176__controls .smart-action-row-v176__done:only-child {
+  grid-column: 1 / -1 !important;
+}
+
+.smart-orbital-board-v156__action-card,
+.smart-orbital-board-v158__action-card,
+.smart-orbital-board-v172__action-card,
+.smart-orbital-board-v156__action-score,
+.smart-orbital-board-v172__action-score,
+.smart-orbital-board-v156__action-icon,
+.smart-orbital-board-v172__action-icon,
+.smart-orbital-board-v156__action-body,
+.smart-orbital-board-v172__action-body,
+.smart-orbital-board-v172__action-controls {
+  /* The v176 JSX no longer uses these, but this prevents old cascade from affecting reused children if cached. */
+}
+
+.smart-orbital-board-v156__all-actions {
+  min-height: 46px !important;
+  margin-top: 2px !important;
+  border-radius: 14px !important;
+  font-size: .82rem !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-action-queue-v176 {
+    max-height: 432px !important;
+    gap: 9px !important;
+  }
+
+  .smart-action-row-v176 {
+    grid-template-columns: 32px minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+    min-height: 108px !important;
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .smart-action-row-v176__icon {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 10px !important;
+    font-size: .74rem !important;
+  }
+
+  .smart-action-row-v176__body h4 {
+    font-size: .74rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .smart-action-row-v176__body p {
+    font-size: .62rem !important;
+  }
+
+  .smart-action-row-v176__score {
+    min-width: 28px !important;
+    height: 24px !important;
+    font-size: .64rem !important;
+  }
+
+  .smart-action-row-v176__link,
+  .smart-action-row-v176__done {
+    min-height: 29px !important;
+    font-size: .60rem !important;
+    padding-inline: 6px !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-action-row-v176__controls {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.dark .smart-action-row-v176 {
+  border-color: rgba(51,65,85,.76) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-action-row-v176__body h4 {
+  color: #f8fafc !important;
+}
+
+.dark .smart-action-row-v176__body p {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-action-row-v176__done {
+  border-color: rgba(71,85,105,.78) !important;
+  background: rgba(15,23,42,.82) !important;
+  color: #cbd5e1 !important;
+}
+
+
+/* Stage 177 — Action Queue item height + smaller buttons
+   Scope: recommended-actions column only.
+   User request: increase each action row height, reduce button size.
+*/
+
+.smart-action-queue-v176 {
+  gap: 12px !important;
+  max-height: 452px !important;
+  padding-bottom: 16px !important;
+}
+
+.smart-action-row-v176 {
+  min-height: 138px !important;
+  padding: 14px 12px !important;
+  grid-template-rows: auto auto !important;
+  gap: 10px 10px !important;
+  border-radius: 19px !important;
+}
+
+.smart-action-row-v176__body h4 {
+  font-size: .82rem !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-action-row-v176__body p {
+  margin-top: 7px !important;
+  font-size: .68rem !important;
+  line-height: 1.75 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-action-row-v176__controls {
+  gap: 6px !important;
+  align-self: end !important;
+}
+
+.smart-action-row-v176__link,
+.smart-action-row-v176__done {
+  min-height: 27px !important;
+  padding: 0 7px !important;
+  border-radius: 9px !important;
+  font-size: .58rem !important;
+  font-weight: 900 !important;
+  gap: 4px !important;
+}
+
+.smart-action-row-v176__link i,
+.smart-action-row-v176__done i {
+  font-size: .58rem !important;
+}
+
+.smart-action-row-v176__icon {
+  width: 33px !important;
+  height: 33px !important;
+  border-radius: 11px !important;
+}
+
+.smart-action-row-v176__score {
+  height: 24px !important;
+  min-width: 30px !important;
+  padding-inline: 7px !important;
+  font-size: .64rem !important;
+}
+
+/* Desktop with sidebar open: keep height readable, buttons compact. */
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-action-queue-v176 {
+    max-height: 436px !important;
+    gap: 11px !important;
+  }
+
+  .smart-action-row-v176 {
+    min-height: 128px !important;
+    padding: 12px 10px !important;
+  }
+
+  .smart-action-row-v176__body h4 {
+    font-size: .76rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .smart-action-row-v176__body p {
+    font-size: .62rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .smart-action-row-v176__link,
+  .smart-action-row-v176__done {
+    min-height: 25px !important;
+    padding-inline: 6px !important;
+    border-radius: 8px !important;
+    font-size: .55rem !important;
+  }
+
+  .smart-action-row-v176__link i,
+  .smart-action-row-v176__done i {
+    font-size: .54rem !important;
+  }
+}
+
+/* Mobile/tablet: buttons can stack and regain a bit of tap height. */
+@media (max-width: 1280px) {
+  .smart-action-row-v176 {
+    min-height: 132px !important;
+  }
+
+  .smart-action-row-v176__link,
+  .smart-action-row-v176__done {
+    min-height: 30px !important;
+    font-size: .64rem !important;
+  }
+}
+
+
+/* Stage 178 — Action buttons final polish
+   Scope: recommended-actions column only.
+   - smaller action button typography
+   - remove/hide non-functional "view all actions" button
+*/
+
+.smart-action-row-v176__link,
+.smart-action-row-v176__done {
+  min-height: 25px !important;
+  padding: 0 6px !important;
+  border-radius: 8px !important;
+  font-size: .52rem !important;
+  font-weight: 900 !important;
+  gap: 4px !important;
+  letter-spacing: 0 !important;
+}
+
+.smart-action-row-v176__link i,
+.smart-action-row-v176__done i {
+  font-size: .50rem !important;
+}
+
+.smart-action-row-v176__controls {
+  gap: 5px !important;
+}
+
+.smart-orbital-board-v156__all-actions {
+  display: none !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-action-row-v176__link,
+  .smart-action-row-v176__done {
+    min-height: 24px !important;
+    padding-inline: 5px !important;
+    font-size: .49rem !important;
+    border-radius: 8px !important;
+  }
+
+  .smart-action-row-v176__link i,
+  .smart-action-row-v176__done i {
+    font-size: .48rem !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .smart-action-row-v176__link,
+  .smart-action-row-v176__done {
+    min-height: 29px !important;
+    font-size: .62rem !important;
+  }
+}
+
+
+/* Stage 179 — Clickable action cards
+   Scope: recommended-actions column only.
+   Removes inner buttons entirely. Each action row is now the CTA:
+   - if action.to exists: the whole card navigates to the related section
+   - otherwise: the whole card opens the insight details
+*/
+
+.smart-action-queue-v176 {
+  gap: 12px !important;
+  max-height: 452px !important;
+  padding-bottom: 18px !important;
+}
+
+.smart-action-row-v179,
+.smart-action-row-v176.smart-action-row-v179 {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) auto !important;
+  grid-template-areas:
+    "icon body score"
+    "icon hint hint" !important;
+  align-items: start !important;
+  gap: 9px 10px !important;
+  min-height: 124px !important;
+  padding: 13px 12px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) !important;
+  box-shadow: 0 10px 26px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  width: 100% !important;
+  text-align: right !important;
+  appearance: none !important;
+}
+
+.smart-action-row-v179:hover {
+  border-color: rgba(148,163,184,.95) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,.98)) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px rgba(15,23,42,.06) !important;
+}
+
+.smart-action-row-v179:focus-visible {
+  outline: 2px solid rgba(79,70,229,.34) !important;
+  outline-offset: 2px !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__icon {
+  grid-area: icon !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 11px !important;
+  font-size: .78rem !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__body {
+  grid-area: body !important;
+  min-width: 0 !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__body h4 {
+  font-size: .80rem !important;
+  line-height: 1.72 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__body p {
+  margin-top: 6px !important;
+  font-size: .68rem !important;
+  line-height: 1.7 !important;
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__score {
+  grid-area: score !important;
+  height: 24px !important;
+  min-width: 30px !important;
+  padding-inline: 7px !important;
+  font-size: .64rem !important;
+}
+
+.smart-action-row-v179__hint {
+  grid-area: hint !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-self: start !important;
+  gap: 6px !important;
+  min-height: 24px !important;
+  margin-top: 2px !important;
+  padding: 0 8px !important;
+  border-radius: 999px !important;
+  background: rgba(248,250,252,.82) !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  color: #64748b !important;
+  font-size: .58rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-action-row-v179__hint i {
+  font-size: .55rem !important;
+  color: #4f46e5 !important;
+}
+
+/* Fully remove old internal controls/buttons. */
+.smart-action-row-v176__controls,
+.smart-action-row-v176__link,
+.smart-action-row-v176__done,
+.smart-orbital-board-v172__action-controls,
+.smart-orbital-board-v172__action-link,
+.smart-orbital-board-v172__done-button {
+  display: none !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-action-row-v179,
+  .smart-action-row-v176.smart-action-row-v179 {
+    grid-template-columns: 30px minmax(0, 1fr) auto !important;
+    min-height: 116px !important;
+    padding: 11px 10px !important;
+    gap: 8px !important;
+  }
+
+  .smart-action-row-v179 .smart-action-row-v176__icon {
+    width: 29px !important;
+    height: 29px !important;
+    border-radius: 10px !important;
+    font-size: .72rem !important;
+  }
+
+  .smart-action-row-v179 .smart-action-row-v176__body h4 {
+    font-size: .74rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .smart-action-row-v179 .smart-action-row-v176__body p {
+    font-size: .62rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .smart-action-row-v179__hint {
+    min-height: 22px !important;
+    font-size: .54rem !important;
+  }
+}
+
+.dark .smart-action-row-v179 {
+  border-color: rgba(51,65,85,.76) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-action-row-v179:hover {
+  border-color: rgba(100,116,139,.88) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.84)) !important;
+}
+
+.dark .smart-action-row-v179__hint {
+  border-color: rgba(51,65,85,.76) !important;
+  background: rgba(15,23,42,.62) !important;
+  color: #94a3b8 !important;
+}
+
+
+/* Stage 181 — clickable actions without internal CTA chip + collection action integration */
+.smart-action-row-v179__hint {
+  display: none !important;
+}
+
+.smart-action-row-v179,
+.smart-action-row-v176.smart-action-row-v179 {
+  grid-template-areas: "icon body score" !important;
+  min-height: 104px !important;
+  align-items: center !important;
+}
+
+.smart-action-row-v179 .smart-action-row-v176__body p {
+  -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
+}
+
+@media (max-width: 1500px) and (min-width: 1025px) {
+  .smart-action-row-v179,
+  .smart-action-row-v176.smart-action-row-v179 {
+    min-height: 98px !important;
+  }
+}
+
+
+/* Stage 182 — Predictive Engine redesign
+   Scope: Smart Insights / Predictive financial 7-day forecast section.
+   Approved concept:
+   - premium hero with confidence card
+   - four executive KPI cards
+   - no product images
+   - stockout queue + future warning board
+   - responsive Bento/Grid layout
+*/
+
+.smart-predictive-v182 {
+  position: relative !important;
+  display: grid !important;
+  gap: 18px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(203, 213, 225, .78) !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(99,102,241,.08), transparent 28%),
+    radial-gradient(circle at 92% 12%, rgba(59,130,246,.08), transparent 26%),
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) !important;
+  box-shadow:
+    0 26px 70px -56px rgba(15,23,42,.44),
+    inset 0 1px 0 rgba(255,255,255,.82) !important;
+  overflow: hidden !important;
+}
+
+.smart-predictive-v182__hero {
+  display: grid !important;
+  grid-template-columns: minmax(170px, 220px) minmax(0, 1fr) 160px !important;
+  align-items: center !important;
+  gap: 22px !important;
+  min-height: 170px !important;
+  padding: 22px !important;
+  border: 1px solid rgba(226,232,240,.76) !important;
+  border-radius: 26px !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.96), rgba(238,242,255,.62) 55%, rgba(239,246,255,.78)) !important;
+}
+
+.smart-predictive-v182__confidence {
+  display: grid !important;
+  grid-template-columns: 54px minmax(0,1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 120px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.78) !important;
+  box-shadow: 0 16px 34px rgba(15,23,42,.055) !important;
+}
+
+.smart-predictive-v182__confidence-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 18px !important;
+  color: #6366f1 !important;
+  background: rgba(238,242,255,.9) !important;
+  border: 1px solid rgba(199,210,254,.78) !important;
+  font-size: 1.15rem !important;
+}
+
+.smart-predictive-v182__confidence small,
+.smart-predictive-v182__kpi small {
+  display: block !important;
+  color: #475569 !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.smart-predictive-v182__confidence strong {
+  display: block !important;
+  margin-top: 4px !important;
+  color: #0f172a !important;
+  font-size: 2.15rem !important;
+  font-weight: 950 !important;
+  line-height: .95 !important;
+}
+
+.smart-predictive-v182__confidence em {
+  display: inline-flex !important;
+  margin-top: 10px !important;
+  min-height: 26px !important;
+  align-items: center !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  background: rgba(220,252,231,.88) !important;
+  color: #059669 !important;
+  font-size: .68rem !important;
+  font-style: normal !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__hero-copy {
+  text-align: right !important;
+  justify-self: center !important;
+}
+
+.smart-predictive-v182__eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 28px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  background: rgba(238,242,255,.86) !important;
+  color: #4f46e5 !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+  direction: ltr !important;
+}
+
+.smart-predictive-v182__hero-copy h2 {
+  margin: 14px 0 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.7rem, 2.8vw, 2.45rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -.035em !important;
+}
+
+.smart-predictive-v182__hero-copy p {
+  max-width: 740px !important;
+  margin: 12px auto 0 !important;
+  color: #334155 !important;
+  font-size: .95rem !important;
+  font-weight: 800 !important;
+  line-height: 2 !important;
+}
+
+.smart-predictive-v182__hero-art {
+  position: relative !important;
+  justify-self: end !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 126px !important;
+  height: 126px !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 38% 32%, rgba(255,255,255,.92), rgba(224,231,255,.70) 55%, rgba(99,102,241,.15)) !important;
+  color: #6366f1 !important;
+  font-size: 3.1rem !important;
+  box-shadow: 0 18px 38px rgba(99,102,241,.12) !important;
+}
+
+.smart-predictive-v182__hero-art span {
+  position: absolute !important;
+  inset: auto 22px 20px 22px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #6366f1, #22c55e) !important;
+  opacity: .34 !important;
+}
+
+.smart-predictive-v182__kpis {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.smart-predictive-v182__kpi {
+  position: relative !important;
+  min-height: 150px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.92) !important;
+  box-shadow: 0 16px 34px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+.smart-predictive-v182__kpi > span {
+  position: absolute !important;
+  inset-inline-end: 18px !important;
+  top: 18px !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+  font-size: 1rem !important;
+}
+
+.smart-predictive-v182__kpi strong {
+  display: block !important;
+  margin-top: 20px !important;
+  padding-inline-end: 58px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.25rem, 2vw, 1.85rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+}
+
+.smart-predictive-v182__kpi em {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 28px !important;
+  margin-top: 14px !important;
+  padding: 0 11px !important;
+  border-radius: 999px !important;
+  background: rgba(240,253,244,.88) !important;
+  color: #059669 !important;
+  font-size: .70rem !important;
+  font-style: normal !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__kpi--blue > span,
+.smart-predictive-v182__kpi--indigo > span { color: #2563eb !important; background: rgba(219,234,254,.88) !important; border: 1px solid rgba(147,197,253,.7) !important; }
+.smart-predictive-v182__kpi--green > span { color: #16a34a !important; background: rgba(220,252,231,.88) !important; border: 1px solid rgba(134,239,172,.72) !important; }
+.smart-predictive-v182__kpi--amber > span { color: #f59e0b !important; background: rgba(255,247,237,.95) !important; border: 1px solid rgba(253,186,116,.68) !important; }
+
+.smart-predictive-v182__body {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 390px) minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+
+.smart-predictive-v182__stock,
+.smart-predictive-v182__alerts {
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow: 0 16px 36px rgba(15,23,42,.045) !important;
+  overflow: hidden !important;
+}
+
+.smart-predictive-v182__panel-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 72px !important;
+  padding: 16px 18px !important;
+  border-bottom: 1px solid rgba(226,232,240,.76) !important;
+}
+
+.smart-predictive-v182__panel-head h3 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 1.03rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__panel-head p {
+  margin: 4px 0 0 !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-predictive-v182__panel-head > span {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  color: #6366f1 !important;
+  background: rgba(238,242,255,.82) !important;
+}
+
+.smart-predictive-v182__stock-list {
+  display: grid !important;
+  gap: 10px !important;
+  padding: 14px !important;
+  max-height: 470px !important;
+  overflow-y: auto !important;
+}
+
+.smart-predictive-v182__stock-item {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-height: 92px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.76) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.82) !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease !important;
+}
+
+.smart-predictive-v182__stock-item:hover,
+.smart-predictive-v182__alert:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(148,163,184,.88) !important;
+  box-shadow: 0 14px 30px rgba(15,23,42,.055) !important;
+}
+
+.smart-predictive-v182__stock-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  background: rgba(254,242,242,.84) !important;
+  color: #ef4444 !important;
+}
+
+.smart-predictive-v182__stock-item h4 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.smart-predictive-v182__stock-item p {
+  margin: 4px 0 0 !important;
+  color: #64748b !important;
+  font-size: .66rem !important;
+  font-weight: 850 !important;
+  line-height: 1.6 !important;
+}
+
+.smart-predictive-v182__stock-item strong {
+  display: block !important;
+  margin-top: 5px !important;
+  color: #dc2626 !important;
+  font-size: .68rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__stock-item > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 52px !important;
+  min-height: 28px !important;
+  border-radius: 999px !important;
+  background: rgba(255,247,237,.95) !important;
+  color: #ea580c !important;
+  font-size: .66rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__alerts {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.smart-predictive-v182__alert-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 14px !important;
+  padding: 16px !important;
+  align-content: start !important;
+  flex: 1 1 auto !important;
+}
+
+.smart-predictive-v182__alert {
+  display: grid !important;
+  grid-template-columns: 54px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 14px !important;
+  min-height: 150px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.86) !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  overflow: hidden !important;
+}
+
+.smart-predictive-v182__alert--critical,
+.smart-predictive-v182__alert--high {
+  background: linear-gradient(135deg, rgba(255,241,242,.88), rgba(255,255,255,.92)) !important;
+  border-color: rgba(252,165,165,.64) !important;
+}
+.smart-predictive-v182__alert--medium {
+  background: linear-gradient(135deg, rgba(255,247,237,.9), rgba(255,255,255,.92)) !important;
+  border-color: rgba(253,186,116,.64) !important;
+}
+
+.smart-predictive-v182__alert-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 18px !important;
+  color: #f97316 !important;
+  background: rgba(255,237,213,.88) !important;
+  border: 1px solid rgba(253,186,116,.65) !important;
+  font-size: 1.05rem !important;
+}
+
+.smart-predictive-v182__alert h4 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  line-height: 1.8 !important;
+}
+
+.smart-predictive-v182__alert p {
+  margin: 6px 0 0 !important;
+  color: #475569 !important;
+  font-size: .78rem !important;
+  font-weight: 820 !important;
+  line-height: 1.9 !important;
+}
+
+.smart-predictive-v182__alert em {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 34px !important;
+  margin-top: 14px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.8) !important;
+  border: 1px solid rgba(226,232,240,.8) !important;
+  color: #334155 !important;
+  font-size: .72rem !important;
+  font-style: normal !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__empty {
+  display: grid !important;
+  place-items: center !important;
+  min-height: 160px !important;
+  padding: 20px !important;
+  border: 1px dashed rgba(203,213,225,.9) !important;
+  border-radius: 20px !important;
+  background: rgba(248,250,252,.78) !important;
+  text-align: center !important;
+  color: #64748b !important;
+}
+
+.smart-predictive-v182__empty i {
+  color: #22c55e !important;
+  font-size: 1.35rem !important;
+}
+
+.smart-predictive-v182__empty strong {
+  margin-top: 10px !important;
+  color: #0f172a !important;
+  font-size: .9rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-predictive-v182__empty p {
+  margin: 6px 0 0 !important;
+  font-size: .74rem !important;
+  font-weight: 800 !important;
+}
+
+.smart-predictive-v182__empty--wide {
+  grid-column: 1 / -1 !important;
+}
+
+.smart-predictive-v182__footer {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 54px !important;
+  padding: 0 16px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.74) !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 850 !important;
+}
+
+.smart-predictive-v182__footer strong {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  color: #d97706 !important;
+  font-weight: 950 !important;
+}
+
+@media (max-width: 1500px) {
+  .smart-predictive-v182__hero {
+    grid-template-columns: minmax(150px, 200px) minmax(0, 1fr) 110px !important;
+  }
+
+  .smart-predictive-v182__hero-art {
+    width: 104px !important;
+    height: 104px !important;
+    border-radius: 24px !important;
+    font-size: 2.4rem !important;
+  }
+
+  .smart-predictive-v182__body {
+    grid-template-columns: minmax(260px, 360px) minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .smart-predictive-v182__hero {
+    grid-template-columns: 1fr !important;
+    text-align: center !important;
+  }
+
+  .smart-predictive-v182__confidence,
+  .smart-predictive-v182__hero-art {
+    justify-self: center !important;
+  }
+
+  .smart-predictive-v182__hero-copy {
+    text-align: center !important;
+  }
+
+  .smart-predictive-v182__body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-predictive-v182__stock-list {
+    max-height: none !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .smart-predictive-v182 {
+    padding: 12px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-predictive-v182__hero {
+    padding: 16px !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-predictive-v182__kpis {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
+
+  .smart-predictive-v182__stock-item,
+  .smart-predictive-v182__alert {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-predictive-v182__stock-icon,
+  .smart-predictive-v182__alert-icon {
+    justify-self: start !important;
+  }
+}
+
+.dark .smart-predictive-v182 {
+  border-color: rgba(51,65,85,.8) !important;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(99,102,241,.14), transparent 30%),
+    linear-gradient(180deg, rgba(15,23,42,.92), rgba(2,6,23,.82)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-predictive-v182__hero,
+.dark .smart-predictive-v182__confidence,
+.dark .smart-predictive-v182__kpi,
+.dark .smart-predictive-v182__stock,
+.dark .smart-predictive-v182__alerts,
+.dark .smart-predictive-v182__stock-item,
+.dark .smart-predictive-v182__alert,
+.dark .smart-predictive-v182__footer {
+  border-color: rgba(51,65,85,.76) !important;
+  background: rgba(15,23,42,.72) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-predictive-v182__hero-copy h2,
+.dark .smart-predictive-v182__confidence strong,
+.dark .smart-predictive-v182__kpi strong,
+.dark .smart-predictive-v182__panel-head h3,
+.dark .smart-predictive-v182__stock-item h4,
+.dark .smart-predictive-v182__alert h4,
+.dark .smart-predictive-v182__empty strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-predictive-v182__hero-copy p,
+.dark .smart-predictive-v182__stock-item p,
+.dark .smart-predictive-v182__alert p,
+.dark .smart-predictive-v182__footer {
+  color: #cbd5e1 !important;
+}

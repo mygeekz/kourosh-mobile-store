@@ -1,0 +1,486 @@
+/* Stage 17 — Products commercial polish
+   Scope: products page only. Keep logic/routes intact; reduce visual noise and improve hierarchy. */
+
+.products-page .page-shell-modern {
+  border-radius: 24px !important;
+  padding: 14px 16px !important;
+  box-shadow: 0 18px 46px -40px rgba(15, 23, 42, 0.32) !important;
+}
+
+.products-page .page-shell-icon {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+}
+
+.products-page .page-shell-modern h1 {
+  font-size: 1.35rem !important;
+  line-height: 1.35 !important;
+}
+
+.products-page .page-shell-modern .page-shell-status-chip {
+  display: none !important;
+}
+
+.products-page .page-shell-header-content {
+  margin-top: 10px !important;
+  padding-top: 10px !important;
+}
+
+.products-page .responsive-filter-bar {
+  gap: 10px !important;
+}
+
+.products-page .responsive-filter-bar__main {
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.products-page .responsive-filter-bar__search {
+  max-width: 520px !important;
+  margin-inline-start: auto !important;
+}
+
+.products-page .ux-toolbar-search__input {
+  height: 42px !important;
+  border-radius: 16px !important;
+  font-size: 12.5px !important;
+}
+
+.products-page .page-shell-actions,
+.products-page .responsive-filter-bar__secondary .products-commerce-hero {
+  min-width: 0 !important;
+}
+
+.products-page .page-shell-actions > div,
+.products-page .responsive-filter-bar__secondary > div:not(.products-commerce-hero) {
+  gap: 8px !important;
+}
+
+.products-page .page-shell-actions :where(.ux-btn, button),
+.products-page .responsive-filter-bar__secondary :where(.ux-btn, button) {
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+
+.products-page .page-shell-actions .ux-btn:is([class*="primary"]),
+.products-page .page-shell-actions button:is([class*="primary"]) {
+  font-weight: 800 !important;
+}
+
+.products-commerce-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(250px, 360px);
+  gap: 12px;
+  align-items: stretch;
+  width: 100%;
+}
+
+.products-commerce-hero__summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 12px 14px;
+}
+
+.dark .products-commerce-hero__summary,
+html.dark .products-commerce-hero__summary {
+  border-color: rgba(30, 41, 59, 0.95);
+  background: rgba(2, 6, 23, 0.76);
+}
+
+.products-commerce-hero__icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 15px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.dark .products-commerce-hero__icon,
+html.dark .products-commerce-hero__icon {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.products-commerce-hero__eyebrow {
+  margin-bottom: 2px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.products-commerce-hero__summary h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.65;
+}
+
+.dark .products-commerce-hero__summary h2,
+html.dark .products-commerce-hero__summary h2 {
+  color: #f8fafc;
+}
+
+.products-commerce-hero__summary p {
+  margin: 0;
+  max-width: 46rem;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.85;
+}
+
+.products-commerce-hero__links {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  min-width: 0;
+}
+
+.products-commerce-hero__links .hub-card,
+.products-commerce-hero__links a {
+  min-height: 54px !important;
+}
+
+.products-commerce-hero__links :where(.rounded-2xl, .rounded-\[26px\], .rounded-\[28px\]) {
+  border-radius: 18px !important;
+}
+
+.products-commerce-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+.products-page .inventory-pastel-card,
+.products-page .inventory-apple-stat {
+  min-height: unset !important;
+  border-radius: 18px !important;
+  padding: 12px !important;
+  box-shadow: 0 14px 34px -34px rgba(15, 23, 42, 0.36) !important;
+}
+
+.products-page .inventory-pastel-card-compact {
+  padding: 11px 12px !important;
+}
+
+.products-page .inventory-pastel-card :where(.text-2xl, .text-3xl) {
+  font-size: 1.25rem !important;
+  line-height: 1.45 !important;
+}
+
+.products-page .inventory-pastel-card :where(.h-12, .w-12) {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+}
+
+.products-commerce-table-card {
+  margin-top: 2px !important;
+  border-radius: 22px !important;
+}
+
+.products-commerce-table-card > .space-y-5 {
+  padding: 18px !important;
+}
+
+.products-commerce-kpi-grid {
+  gap: 10px !important;
+}
+
+.products-page .filter-chips-bar,
+.products-page [class*="FilterChipsBar"] {
+  margin-top: 0 !important;
+}
+
+.products-page .product-list-table {
+  font-size: 13px !important;
+}
+
+.products-commerce-table-wrap {
+  border-radius: 18px !important;
+  background: #fff;
+}
+
+.products-page .product-list-table thead th {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.products-page .product-list-table tbody td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  vertical-align: middle !important;
+}
+
+.products-page .product-list-table tbody tr:hover {
+  background: rgba(248, 250, 252, 0.88) !important;
+}
+
+.products-page .product-table-actions {
+  gap: 6px !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn,
+.products-page .product-table-actions button.product-row-action-btn {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  color: #334155 !important;
+  border: 1px solid #dbe3ee !important;
+  box-shadow: none !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn:hover,
+.products-page .product-table-actions button.product-row-action-btn:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  transform: none !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn:disabled,
+.products-page .product-table-actions button.product-row-action-btn:disabled {
+  opacity: 0.42 !important;
+}
+
+.products-page .ux-pagination-bar {
+  margin-top: 14px !important;
+  padding: 10px 12px !important;
+  border-radius: 18px !important;
+}
+
+@media (max-width: 1180px) {
+  .products-commerce-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .products-commerce-hero__links,
+  .products-commerce-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .products-page .page-shell-modern {
+    border-radius: 20px !important;
+    padding: 12px !important;
+  }
+
+  .products-commerce-hero__links,
+  .products-commerce-hero__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .products-commerce-table-card > .space-y-5 {
+    padding: 12px !important;
+  }
+}
+
+/* Stage 18 — Products search relocation + modal micro-alignment
+   Scope: products page and product modals only. */
+.products-page .responsive-filter-bar__search {
+  display: none !important;
+}
+
+.products-commerce-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.products-commerce-stock-filters {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.products-commerce-stock-filters .filter-chips-bar {
+  margin: 0 !important;
+}
+
+.products-commerce-search-block {
+  position: relative;
+  width: min(100%, 520px);
+  min-width: 320px;
+  flex: 1 1 420px;
+}
+
+.products-commerce-local-search {
+  position: relative;
+  width: 100%;
+}
+
+.products-commerce-local-search__input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0 14px 0 44px;
+  color: #0f172a;
+  font-size: 12.5px;
+  font-weight: 750;
+  outline: none;
+  box-shadow: 0 16px 36px -34px rgba(15, 23, 42, 0.32);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.products-commerce-local-search__input::placeholder {
+  color: #94a3b8;
+  font-weight: 650;
+}
+
+.products-commerce-local-search__input:focus {
+  border-color: rgba(59, 130, 246, 0.42);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08), 0 18px 38px -34px rgba(15, 23, 42, 0.36);
+}
+
+.products-commerce-local-search__icon {
+  position: absolute;
+  left: 14px;
+  right: auto;
+  top: 50%;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: #94a3b8;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.products-commerce-search-suggestion {
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.dark .products-commerce-local-search__input,
+html.dark .products-commerce-local-search__input {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: rgba(2, 6, 23, 0.72);
+  color: #f8fafc;
+}
+
+.dark .products-commerce-local-search__input:focus,
+html.dark .products-commerce-local-search__input:focus {
+  border-color: rgba(96, 165, 250, 0.44);
+  background: rgba(15, 23, 42, 0.88);
+}
+
+/* Product modal summary: ensure every stat chip has a visible, aligned icon. */
+.product-modal-apple-summary__item {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 10px !important;
+  align-items: center !important;
+  text-align: right !important;
+}
+
+.product-modal-apple-summary__icon {
+  grid-row: 1 / span 2 !important;
+  grid-column: 1 !important;
+  align-self: center !important;
+}
+
+.product-modal-apple-summary__icon i {
+  display: block !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+.product-modal-apple-summary__item strong,
+.product-modal-apple-summary__item > span:not(.product-modal-apple-summary__icon) {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+}
+
+/* Management modal: tighten icon/text rhythm without changing the layout. */
+.product-management-apple :where(.product-management-apple-badge, .product-management-tabs button, .product-management-panel__head h4, .product-management-name-cell) {
+  display: inline-flex;
+  align-items: center;
+}
+
+.product-management-apple-badge,
+.product-management-tabs button {
+  gap: 8px !important;
+}
+
+.product-management-panel__head h4 {
+  gap: 9px !important;
+  line-height: 1.55 !important;
+}
+
+.product-management-panel__head h4 i,
+.product-management-tabs button i,
+.product-management-apple-badge i {
+  display: grid !important;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  flex: 0 0 auto;
+  line-height: 1 !important;
+}
+
+.product-management-name-cell {
+  gap: 9px !important;
+}
+
+.product-management-name-cell > span {
+  display: grid !important;
+  width: 28px !important;
+  height: 28px !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+}
+
+.product-management-name-cell strong {
+  line-height: 1.7 !important;
+}
+
+.product-management-form .modal-field-label,
+.product-management-form .app-field-feedback :where(p, span) {
+  line-height: 1.7 !important;
+}
+
+@media (max-width: 920px) {
+  .products-commerce-control-row {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .products-commerce-search-block {
+    width: 100%;
+    min-width: 0;
+    flex-basis: auto;
+  }
+}

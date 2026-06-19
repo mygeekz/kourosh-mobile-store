@@ -1,0 +1,17 @@
+/* Phase 6: normalized responsive helpers extracted from index.css */
+@media (max-width: 768px) {
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 1rem !important;
+  }
+}

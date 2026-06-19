@@ -1,0 +1,510 @@
+/* Phase 18 — Field/Form after-primitives legacy quarantine.
+   Preserves the previous 01b cascade position while removing one direct runtime-overrides import. */
+
+/* People foundation continuation after unified field primitives.
+   Extracted from index.css while preserving cascade order. */
+
+/* UI Sprint 1 — commercial polish: stable button/icon alignment and safer setting controls. */
+:root {
+  --commercial-btn-radius: 18px;
+  --commercial-btn-h: 44px;
+  --commercial-btn-icon: 26px;
+}
+.ux-btn,
+.ux-btn--native,
+a.ux-btn,
+button[data-ux-enhanced='true'] {
+  min-height: var(--commercial-btn-h) !important;
+  border-radius: var(--commercial-btn-radius) !important;
+  padding-inline: 14px !important;
+}
+.ux-icon-btn,
+.ux-btn:has(.ux-btn__content:empty) {
+  width: var(--commercial-btn-h) !important;
+  min-width: var(--commercial-btn-h) !important;
+  padding-inline: 0 !important;
+}
+.ux-btn__content {
+  direction: inherit !important;
+  flex-wrap: nowrap !important;
+}
+.ux-btn__label {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+.ux-btn__icon,
+.ux-btn__spinner {
+  width: var(--commercial-btn-icon) !important;
+  height: var(--commercial-btn-icon) !important;
+  min-width: var(--commercial-btn-icon) !important;
+  min-height: var(--commercial-btn-icon) !important;
+  flex: 0 0 var(--commercial-btn-icon) !important;
+}
+html[dir='rtl'] .ux-btn__content,
+html[data-button-icon-side='start'][dir='rtl'] .ux-btn__content {
+  flex-direction: row !important;
+}
+html[data-button-icon-side='end'][dir='rtl'] .ux-btn__content {
+  flex-direction: row-reverse !important;
+}
+.settings-shell button,
+.settings-shell .ux-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+.settings-shell input,
+.settings-shell select,
+.settings-shell textarea {
+  text-align: right;
+}
+.settings-shell input[type='number'],
+.settings-shell input[type='time'] {
+  text-align: center;
+  direction: ltr;
+}
+
+/* UI Sprint 1.2 — Settings readability and no-truncate fixes */
+.settings-shell .ux-btn,
+.settings-shell button {
+  max-width: 100%;
+}
+.settings-shell .ux-btn__label,
+.settings-shell .ux-btn__label-main {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.35 !important;
+}
+.settings-sidebar .settings-tab-item > div {
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+}
+.settings-sidebar .settings-tab-icon {
+  order: 0 !important;
+  margin-inline-start: 0 !important;
+}
+.settings-sidebar .settings-tab-item {
+  text-align: right !important;
+}
+.settings-sidebar .settings-tab-item.bg-primary,
+.settings-sidebar .settings-tab-item[class*="bg-primary"],
+.settings-sidebar button.settings-tab-item[class*="border-primary"] {
+  background: rgba(14,165,233,0.08) !important;
+  border-color: rgba(14,165,233,0.22) !important;
+  color: rgb(15 23 42) !important;
+}
+.dark .settings-sidebar .settings-tab-item.bg-primary,
+.dark .settings-sidebar .settings-tab-item[class*="bg-primary"],
+.dark .settings-sidebar button.settings-tab-item[class*="border-primary"] {
+  background: rgba(56,189,248,0.10) !important;
+  border-color: rgba(56,189,248,0.24) !important;
+  color: rgb(241 245 249) !important;
+}
+.settings-sidebar .settings-tab-item.bg-primary .settings-tab-icon,
+.settings-sidebar .settings-tab-item[class*="bg-primary"] .settings-tab-icon,
+.settings-sidebar button.settings-tab-item[class*="border-primary"] .settings-tab-icon {
+  background: rgba(14,165,233,0.14) !important;
+  color: rgb(2 132 199) !important;
+  border-color: rgba(14,165,233,0.22) !important;
+}
+.dark .settings-sidebar .settings-tab-item.bg-primary .settings-tab-icon,
+.dark .settings-sidebar .settings-tab-item[class*="bg-primary"] .settings-tab-icon,
+.dark .settings-sidebar button.settings-tab-item[class*="border-primary"] .settings-tab-icon {
+  background: rgba(56,189,248,0.15) !important;
+  color: rgb(125 211 252) !important;
+  border-color: rgba(56,189,248,0.26) !important;
+}
+
+/* UI Sprint 1.4 — Settings/sidebar active token repair */
+:root {
+  --button-radius-app: var(--btn-radius, 18px);
+}
+
+.ux-btn,
+.ux-btn-primary,
+.ux-btn-secondary,
+.ux-btn-success,
+.ux-btn-danger,
+.ux-btn-warning,
+.ux-btn-ghost,
+.premium-submit-btn,
+.premium-cancel-btn,
+.inventory-inline-add,
+.people-primary-btn,
+.people-secondary-btn,
+button[data-ux-enhanced='true'] {
+  border-radius: var(--button-radius-app) !important;
+}
+
+.dark .ux-sidebar-list [style*="--sidebar-active-bg"],
+.dark .ux-sidebar-list .text-\[var\(--sidebar-hover-fg\)\] {
+  color: var(--sidebar-hover-fg-dark) !important;
+}
+
+.settings-sidebar .settings-tab-item,
+.settings-sidebar button.settings-tab-item {
+  display: block !important;
+  width: 100% !important;
+  text-align: right !important;
+  background: rgba(255,255,255,0.86) !important;
+  border-color: rgba(226,232,240,0.92) !important;
+  color: rgb(30 41 59) !important;
+}
+
+.settings-sidebar .settings-tab-item[data-active='true'],
+.settings-sidebar button.settings-tab-item[data-active='true'] {
+  background: var(--sidebar-active-bg) !important;
+  border-color: var(--sidebar-hover-border) !important;
+  color: var(--sidebar-hover-fg) !important;
+  box-shadow: 0 16px 34px -28px rgba(15,23,42,.28) !important;
+}
+
+.dark .settings-sidebar .settings-tab-item[data-active='true'],
+.dark .settings-sidebar button.settings-tab-item[data-active='true'] {
+  color: var(--sidebar-hover-fg-dark) !important;
+  box-shadow: 0 18px 34px -28px rgba(2,6,23,.8) !important;
+}
+
+.settings-sidebar .settings-tab-row,
+.settings-sidebar .settings-tab-item > div {
+  direction: rtl !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  text-align: right !important;
+}
+
+.settings-sidebar .settings-tab-icon {
+  order: 0 !important;
+  margin-left: .75rem !important;
+  margin-right: 0 !important;
+  background: rgba(241,245,249,.96) !important;
+  color: rgb(100 116 139) !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+}
+
+.settings-sidebar .settings-tab-item[data-active='true'] .settings-tab-icon {
+  background: var(--sidebar-hover-bg-strong) !important;
+  color: var(--sidebar-hover-fg) !important;
+  border-color: var(--sidebar-hover-border) !important;
+}
+
+.dark .settings-sidebar .settings-tab-item[data-active='true'] .settings-tab-icon {
+  color: var(--sidebar-hover-fg-dark) !important;
+}
+
+.settings-sidebar .settings-tab-item .min-w-0,
+.settings-sidebar .settings-tab-row .min-w-0 {
+  text-align: right !important;
+  align-items: flex-start !important;
+}
+
+/* Mobile-phone add/edit combobox: dark-safe and always above neighbouring cards */
+.phone-addable-autocomplete {
+  position: relative;
+  z-index: 30;
+}
+.phone-addable-autocomplete:focus-within {
+  z-index: 220;
+}
+.phone-addable-autocomplete__menu {
+  z-index: 240 !important;
+  background: rgba(255,255,255,.98) !important;
+  color: rgb(15 23 42) !important;
+}
+.dark .phone-addable-autocomplete__menu {
+  background: rgba(15,23,42,.98) !important;
+  color: rgb(226 232 240) !important;
+  border-color: rgba(71,85,105,.95) !important;
+  box-shadow: 0 28px 70px -34px rgba(2,6,23,.95) !important;
+}
+.phone-addable-autocomplete__option {
+  color: rgb(51 65 85) !important;
+}
+.dark .phone-addable-autocomplete__option {
+  color: rgb(226 232 240) !important;
+}
+.dark .phone-addable-autocomplete__option:hover {
+  background: rgba(30,41,59,.96) !important;
+  color: rgb(248 250 252) !important;
+}
+
+/* Apply button style controls to native action buttons too, except explicitly skipped navigation buttons */
+:where(button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  border-radius: var(--button-radius-app) !important;
+}
+
+html[data-button-shadow='soft'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  box-shadow: 0 8px 18px -16px rgba(15,23,42,.24);
+}
+html[data-button-shadow='medium'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  box-shadow: 0 14px 28px -22px rgba(15,23,42,.30);
+}
+html[data-button-shadow='strong'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  box-shadow: 0 18px 36px -24px rgba(15,23,42,.38);
+}
+html[data-button-motion='calm'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button):hover {
+  transform: none;
+}
+html[data-button-motion='balanced'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button):hover {
+  transform: translateY(-1px);
+}
+html[data-button-motion='expressive'] :where(button):not([data-skip-global-button='true']):not(.unstyled-button):hover {
+  transform: translateY(-2px) scale(1.01);
+}
+
+
+/* UI Sprint 1.6 — commercial modules + mobile phones polish */
+.ux-btn.ux-icon-btn,
+.ux-icon-btn,
+button.ux-icon-btn {
+  width: auto !important;
+  min-width: 3.35rem !important;
+  padding-inline: .82rem !important;
+}
+.ux-btn.ux-icon-btn .ux-btn__content,
+.ux-icon-btn .ux-btn__content {
+  min-width: 1.75rem !important;
+}
+.settings-shell [class*="fa-arrow-down-and-arrow-up-right-to-center"]::before {
+  content: "\f05b";
+}
+.phone-addable-autocomplete,
+.phone-addable-autocomplete * {
+  box-sizing: border-box;
+}
+.phone-addable-autocomplete__menu {
+  position: absolute !important;
+  inset-inline-start: 0 !important;
+  inset-inline-end: 0 !important;
+  top: calc(100% + .35rem) !important;
+  max-height: 18rem !important;
+  overflow: hidden !important;
+}
+.phone-addable-autocomplete__menu .max-h-60 {
+  max-height: 14rem !important;
+}
+.phone-addable-autocomplete input,
+.phone-addable-autocomplete .ux-input {
+  background-color: rgba(255,255,255,.96) !important;
+  color: rgb(15 23 42) !important;
+}
+.dark .phone-addable-autocomplete input,
+.dark .phone-addable-autocomplete .ux-input {
+  background-color: rgba(15,23,42,.94) !important;
+  color: rgb(248 250 252) !important;
+  border-color: rgba(71,85,105,.88) !important;
+}
+.dark .phone-addable-autocomplete input::placeholder {
+  color: rgb(148 163 184) !important;
+}
+.phone-addable-autocomplete__option {
+  min-height: 2.35rem !important;
+}
+.ux-toolbar-surface .ux-toolbar-search {
+  max-width: 34rem;
+  margin-inline-start: auto;
+}
+[dir='rtl'] .ux-toolbar-surface .ux-toolbar-search {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+/* UI Sprint mobile fix: comboboxes must float above neighbouring form cards */
+.phone-addable-autocomplete:focus-within {
+  z-index: 9999 !important;
+}
+.phone-addable-autocomplete__menu {
+  z-index: 9999 !important;
+  box-shadow: 0 34px 80px -30px rgba(15,23,42,.44) !important;
+}
+.dark .phone-addable-autocomplete__menu {
+  background: rgba(15,23,42,.99) !important;
+}
+/* Wider icon-only actions for touch ergonomics */
+.ux-btn.h-8.w-8, .ux-btn.h-9.w-9, button.h-8.w-8, button.h-9.w-9 {
+  min-width: 2.65rem !important;
+  width: 2.65rem !important;
+}
+
+/* UI Sprint — Classic brand button preset + phone combobox stacking */
+html[data-button-preset='classic'] :where(.ux-btn, .people-action-btn, button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  color: rgb(30 41 59) !important;
+  border-color: rgba(148,163,184,.42) !important;
+  box-shadow: 0 14px 34px -28px rgba(15,23,42,.38), inset 0 1px 0 rgba(255,255,255,.92) !important;
+}
+html.dark[data-button-preset='classic'] :where(.ux-btn, .people-action-btn, button):not([data-skip-global-button='true']):not(.unstyled-button) {
+  background: linear-gradient(180deg, rgba(30,41,59,.94), rgba(15,23,42,.90)) !important;
+  color: rgb(248 250 252) !important;
+  border-color: rgba(148,163,184,.24) !important;
+  box-shadow: 0 18px 42px -32px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+html[data-button-preset='classic'] :where(.app-sidebar, .settings-sidebar) :where(button, a, .settings-tab-item) {
+  background-image: linear-gradient(180deg, rgba(255,255,255,.78), rgba(248,250,252,.54));
+  border-color: rgba(148,163,184,.26);
+}
+html.dark[data-button-preset='classic'] :where(.app-sidebar, .settings-sidebar) :where(button, a, .settings-tab-item) {
+  background-image: linear-gradient(180deg, rgba(30,41,59,.44), rgba(15,23,42,.32));
+  border-color: rgba(148,163,184,.18);
+}
+.mobile-phone-form,
+.phone-form-shell,
+.phone-addable-autocomplete {
+  overflow: visible !important;
+}
+.phone-addable-autocomplete {
+  isolation: isolate;
+  z-index: 80 !important;
+}
+.phone-addable-autocomplete:focus-within {
+  z-index: 999 !important;
+}
+.phone-addable-autocomplete__menu {
+  position: absolute !important;
+  z-index: 1000 !important;
+}
+
+/* Reports phase B: fast date presets */
+.report-date-presets {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 2.75rem;
+  width: 100%;
+  padding: .38rem;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.78));
+  box-shadow: 0 14px 42px -34px rgba(15, 23, 42, .72);
+}
+.dark .report-date-presets {
+  border-color: rgba(51, 65, 85, .78);
+  background: linear-gradient(180deg, rgba(15,23,42,.82), rgba(2,6,23,.68));
+  box-shadow: 0 20px 54px -42px rgba(0,0,0,.95);
+}
+.report-date-presets__label {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  white-space: nowrap;
+  padding-inline: .55rem .35rem;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgb(100, 116, 139);
+}
+.dark .report-date-presets__label { color: rgb(203, 213, 225); }
+.report-date-presets__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+  min-width: 0;
+  flex: 1;
+}
+.report-date-preset-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .38rem;
+  min-height: 2.15rem;
+  padding: .48rem .7rem;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgb(71, 85, 105);
+  font-size: 12px;
+  font-weight: 900;
+  transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.report-date-preset-chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: rgba(15, 23, 42, .055);
+}
+.report-date-preset-chip.is-active {
+  border-color: rgba(99, 102, 241, .24);
+  background: linear-gradient(180deg, rgba(99,102,241,.13), rgba(99,102,241,.07));
+  color: rgb(49, 46, 129);
+  box-shadow: 0 12px 30px -24px rgba(79, 70, 229, .9);
+}
+.report-date-preset-chip.is-custom {
+  cursor: default;
+  opacity: .72;
+}
+.report-date-preset-chip.is-custom:not(.is-active) { display: none; }
+.dark .report-date-preset-chip { color: rgb(203, 213, 225); }
+.dark .report-date-preset-chip:hover:not(:disabled) { background: rgba(255, 255, 255, .06); }
+.dark .report-date-preset-chip.is-active {
+  border-color: rgba(129, 140, 248, .34);
+  background: linear-gradient(180deg, rgba(99,102,241,.24), rgba(99,102,241,.11));
+  color: rgb(224, 231, 255);
+}
+.report-date-presets--compact { width: auto; min-width: min(100%, 38rem); }
+@media (max-width: 640px) {
+  .report-date-presets { align-items: stretch; flex-direction: column; }
+  .report-date-presets__label { width: 100%; padding-block: .15rem; }
+  .report-date-presets__chips { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .report-date-preset-chip { width: 100%; }
+}
+
+/* Reports final stability hotfix: keep advanced report controls readable after Brain/Action layers */
+.report-page,
+.reports-page,
+.reports-shell,
+.reports-layout,
+.reports-premium-feel {
+  min-width: 0;
+  overflow-x: clip;
+}
+.report-page :where(.reports-premium-panel, .report-auto-action-engine, .reports-decision-engine, .premium-report-shell, .modern-report-shell) {
+  max-width: 100%;
+  min-width: 0;
+}
+.report-page :where(.reports-premium-panel, .report-auto-action-engine) :where(p, span, h1, h2, h3, h4, a, button) {
+  overflow-wrap: anywhere;
+}
+.report-auto-action-engine .grid,
+.reports-decision-engine .grid {
+  align-items: stretch;
+}
+.report-auto-action-engine :where(.reports-premium-microcard, .reports-premium-action-link),
+.reports-decision-engine :where(.reports-premium-microcard, .reports-premium-action-link) {
+  min-width: 0;
+}
+.report-date-presets {
+  max-width: 100%;
+  overflow: visible;
+}
+.report-date-presets__chips {
+  justify-content: flex-start;
+}
+.report-date-preset-chip {
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+@media (max-width: 1024px) {
+  .report-date-presets {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .report-date-presets__label {
+    width: 100%;
+  }
+  .report-date-presets__chips {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .report-auto-action-engine,
+  .reports-decision-engine {
+    border-radius: 22px !important;
+    padding: .85rem !important;
+  }
+  .report-page :where(.grid) {
+    min-width: 0;
+  }
+}
+
+

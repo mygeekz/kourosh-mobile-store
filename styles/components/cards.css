@@ -1,0 +1,401 @@
+/* ───────────────────────────── App Design System helpers ───────────────────────────── */
+@layer components {
+  /* A unified card surface used across list pages, toolbars, widgets, etc. */
+  .app-card {
+    @apply relative overflow-hidden rounded-2xl;
+    @apply bg-white dark:bg-slate-950;
+    @apply border border-slate-200/80 dark:border-slate-800/80;
+    @apply shadow-[0_1px_2px_rgba(15,23,42,0.05),0_10px_30px_-24px_rgba(15,23,42,0.18)];
+  }
+
+  .app-card::before {
+    content: none;
+  }
+
+  .app-card > * {
+    @apply relative;
+  }
+
+  .app-card-muted {
+    @apply rounded-2xl bg-slate-50 dark:bg-slate-900/70;
+    @apply border border-slate-200/80 dark:border-slate-800/80;
+  }
+
+  
+  /* Premium tables inside cards */
+  .app-card table {
+    @apply w-full border-separate border-spacing-0;
+  }
+  .app-card thead th {
+    @apply text-xs font-extrabold text-gray-700 dark:text-gray-200;
+    @apply bg-black/[0.03] dark:bg-white/[0.06];
+    @apply px-3 py-2 text-right;
+    @apply border-b border-black/10 dark:border-white/10;
+  }
+  .app-card tbody td {
+    @apply px-3 py-2 text-sm text-gray-800 dark:text-gray-100;
+    @apply border-b border-black/5 dark:border-white/5;
+  }
+  .app-card tbody tr:hover td {
+    @apply bg-black/[0.02] dark:bg-white/[0.04];
+  }
+  .app-card tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .app-card .table-note {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+.app-section-title {
+    @apply text-sm md:text-base font-semibold text-text;
+  }
+
+  .app-subtle {
+    @apply text-xs md:text-sm text-muted;
+  }
+
+  /* Unified form controls */
+  .app-label {
+    @apply block text-xs font-bold text-gray-600 dark:text-gray-300 mb-1;
+  }
+
+  .app-input,
+  .app-select,
+  .app-textarea {
+    @apply w-full rounded-2xl;
+    @apply bg-white dark:bg-slate-950/90;
+    @apply border border-black/10 dark:border-white/10;
+    @apply text-sm text-gray-900 dark:text-gray-100;
+    @apply outline-none;
+    /* Tailwind may not generate `ring-primary/xx` if `primary` lacks <alpha-value>. */
+    @apply focus:ring-2;
+    @apply focus:ring-[hsl(var(--primary)/0.30)];
+  }
+
+  .app-input,
+  .app-select {
+    @apply h-11 px-3;
+  }
+
+  .app-textarea {
+    @apply min-h-[96px] p-3;
+  }
+
+  .app-help {
+    display: inline-flex;
+    @apply mt-1 items-start gap-1.5 text-[11px] leading-6 text-slate-500 dark:text-slate-400;
+  }
+
+  .app-help::before {
+    content: '\f05a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    @apply mt-[2px] text-[10px] text-slate-400 dark:text-slate-500;
+  }
+
+  .app-field-feedback {
+    display: flex;
+    @apply mt-1.5 flex-col gap-1.5 rounded-2xl border px-3 py-2;
+    border-color: rgba(226,232,240,0.85);
+    background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.86));
+    box-shadow: 0 12px 26px -26px rgba(15,23,42,0.18);
+  }
+
+  .dark .app-field-feedback {
+    border-color: rgba(51,65,85,0.82);
+    background: linear-gradient(180deg, rgba(15,23,42,0.82), rgba(2,6,23,0.76));
+  }
+
+  .app-field-feedback--hint {
+    border-color: rgba(226,232,240,0.9);
+  }
+
+  .app-field-feedback--error {
+    border-color: rgba(252,165,165,0.7);
+    background: linear-gradient(180deg, rgba(255,241,242,0.98), rgba(254,242,242,0.9));
+    box-shadow: 0 16px 30px -28px rgba(239,68,68,0.24);
+  }
+
+  .dark .app-field-feedback--error {
+    border-color: rgba(127,29,29,0.72);
+    background: linear-gradient(180deg, rgba(69,10,10,0.34), rgba(63,10,10,0.18));
+  }
+
+
+  .modal-surface {
+    @apply border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900;
+    box-shadow: 0 20px 60px -28px rgba(15, 23, 42, 0.38);
+  }
+
+  .modal-field {
+    @apply space-y-0.5;
+  }
+
+  .field-icon-chip {
+    display: inline-flex;
+    @apply h-8 w-8 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-500 shadow-sm dark:border-white/10 dark:bg-white/[0.05] dark:text-gray-300;
+  }
+
+  .modal-field .app-input,
+  .modal-field .app-select,
+  .modal-field .app-textarea,
+  .modal-field input:not([type="checkbox"]):not([type="radio"]),
+  .modal-field select,
+  .modal-field textarea {
+    @apply rounded-2xl border border-black/10 dark:border-white/10 bg-white px-3 text-sm text-gray-900 dark:bg-slate-950/90 dark:text-gray-100 outline-none transition;
+    /* dark bg moved below if needed */
+    @apply focus:ring-2 focus:ring-[hsl(var(--primary)/0.18)] focus:border-[hsl(var(--primary)/0.28)];
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  .modal-field input:not([type="checkbox"]):not([type="radio"]),
+  .modal-field select {
+    @apply h-11;
+  }
+
+  .modal-field textarea {
+    @apply min-h-[96px] p-3;
+  }
+
+  .modal-actions {
+    display: flex;
+    @apply justify-end gap-2 pt-4 mt-4 border-t border-black/5 dark:border-white/10;
+  }
+
+  .modal-btn {
+    display: inline-flex;
+    @apply items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition disabled:opacity-60;
+  }
+
+  .modal-btn-secondary {
+    @apply border border-black/10 bg-white text-gray-700 hover:bg-gray-50 dark:border-white/10 dark:bg-white/[0.03] dark:text-gray-200 dark:hover:bg-white/[0.06];
+  }
+
+  .modal-btn-primary {
+    @apply bg-gray-900 text-white hover:bg-black dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100;
+  }
+
+  .inventory-pastel-card {
+    @apply rounded-[24px] border p-4 shadow-[0_1px_2px_rgba(15,23,42,0.05)];
+  }
+
+  .inventory-pastel-card-compact {
+    @apply px-4 py-3 min-h-[112px];
+  }
+
+  .inventory-soft-panel {
+    @apply rounded-[26px] border border-slate-200/80 bg-white p-4 shadow-[0_8px_24px_-20px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-950;
+  }
+
+  .inventory-soft-input {
+    @apply h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-slate-300 focus:ring-4 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-700 dark:focus:ring-slate-900;
+  }
+
+  .inventory-soft-select {
+    @apply h-12 w-full rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition focus:border-slate-300 focus:ring-4 focus:ring-slate-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-slate-700 dark:focus:ring-slate-900;
+  }
+
+
+
+   .premium-modal-shell {
+    @apply rounded-[30px] border border-slate-200/80 bg-white p-3 md:p-4;
+    box-shadow: 0 24px 70px -36px rgba(15, 23, 42, 0.22);
+  }
+
+  .dark  .premium-modal-shell {
+    background-image: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.94));
+    border-color: rgba(51,65,85,0.9);
+  }
+
+  .premium-modal-hero {
+    @apply relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-4 md:p-5;
+  }
+
+  .dark .premium-modal-hero {
+    background-image: linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.82));
+    border-color: rgba(51,65,85,0.84);
+  }
+
+  .premium-modal-badge {
+    display: inline-flex;
+    @apply items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-semibold tracking-[0.18em] text-slate-500;
+  }
+
+  .premium-modal-icon {
+    display: inline-flex;
+    @apply h-14 w-14 items-center justify-center rounded-[22px] border border-slate-200 bg-gradient-to-br from-slate-50 to-white text-slate-700 shadow-sm;
+    box-shadow: 0 12px 30px -18px rgba(15,23,42,0.30);
+  }
+
+  .premium-kpi-strip {
+    @apply grid grid-cols-2 gap-3 lg:grid-cols-2;
+  }
+
+  .premium-kpi-card {
+    @apply rounded-2xl border border-slate-200/80 bg-slate-50/80 px-3 py-2.5;
+  }
+
+  .dark .premium-kpi-card {
+    background-color: rgb(15 23 42 / 0.82);
+    border-color: rgba(51,65,85,0.82);
+  }
+
+  .premium-kpi-label {
+    @apply text-[11px] font-semibold tracking-[0.08em] text-slate-500;
+  }
+
+  .premium-kpi-value {
+    @apply mt-2 text-lg font-black tracking-tight text-slate-900;
+  }
+
+  .premium-form-grid {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2;
+  }
+
+  .premium-form-section {
+    @apply rounded-[28px] border border-slate-200/80 bg-slate-50/50 p-4 md:p-4;
+  }
+
+  .dark .premium-form-section {
+    background-color: rgb(15 23 42 / 0.72);
+    border-color: rgba(51,65,85,0.82);
+  }
+
+  .premium-section-title {
+    display: flex;
+    @apply items-center gap-3 text-sm font-bold text-slate-900;
+  }
+  .dark .premium-section-title { color: rgb(248 250 252); }
+
+  .premium-section-title-icon {
+    display: inline-flex;
+    @apply h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm;
+  }
+
+  .premium-modal-note {
+    @apply rounded-2xl border border-dashed border-slate-200 px-4 py-3 text-xs leading-6 text-slate-500;
+    background-color: rgb(255 255 255 / 0.80);
+  }
+
+  .dark .premium-modal-note {
+    background-color: rgb(15 23 42 / 0.64);
+    border-color: rgba(71,85,105,0.86);
+    color: rgb(148 163 184);
+  }
+
+  .inventory-premium-input,
+  .inventory-premium-select {
+    @apply h-12 w-full rounded-[20px] border border-slate-200 bg-white px-4 text-sm text-slate-800 outline-none transition placeholder:text-slate-400;
+    @apply focus:border-slate-300 focus:ring-4 focus:ring-slate-100;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), 0 1px 2px rgba(15,23,42,0.03);
+  }
+
+  .dark .inventory-premium-input,
+  .dark .inventory-premium-select {
+    background-color: rgb(2 6 23 / 0.88);
+    border-color: rgba(71,85,105,0.82);
+    color: rgb(248 250 252);
+  }
+
+  .dark .inventory-premium-input::placeholder { color: rgb(100 116 139); }
+
+  .inventory-premium-input.has-leading-icon,
+  .inventory-premium-select.has-leading-icon {
+    @apply pr-14;
+    padding-inline-start: 0.95rem;
+  }
+
+  .premium-input-wrap {
+    @apply relative;
+  }
+
+  .premium-input-leading-icon {
+    @apply pointer-events-none absolute right-4 top-1/2 z-[1] -translate-y-1/2 text-slate-400;
+  }
+
+  .premium-modal-actions {
+    display: flex;
+    @apply mt-2 flex-col-reverse gap-3 border-t border-slate-200/80 pt-5 sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .premium-helper-inline {
+    display: inline-flex;
+    @apply items-center gap-2 text-xs text-slate-500;
+  }
+
+  .premium-submit-btn {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-primary ux-btn-md;
+    isolation: isolate;
+  }
+
+  .premium-cancel-btn {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-secondary ux-btn-md;
+    isolation: isolate;
+  }
+
+  .inventory-inline-add {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-secondary ux-btn-md;
+    isolation: isolate;
+  }
+
+  .repairs-saved-views .ux-input { min-height: 44px; }
+  .repairs-saved-views .ux-input,
+  .repairs-saved-views select { padding-inline-start: 0.9rem; padding-inline-end: 2.75rem; }
+  .repairs-saved-views .text-gray-400 { color: rgb(148 163 184); }
+  .repairs-saved-views .dark\:text-gray-400 { color: rgb(100 116 139); }
+  .repairs-saved-views .rounded-2xl.border.border-gray-200\/80 { border-color: rgba(51,65,85,0.8); background-image: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,0.96)); }
+  .repair-status-pill { min-width: 124px; justify-content: space-between; padding-inline: 0.75rem; }
+  .repair-status-pill .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .inventory-pastel-card.inventory-pastel-card-compact { padding: 0.95rem 1rem; border-radius: 22px; }
+  .inventory-pastel-card.inventory-pastel-card-compact .text-\[24px\] { font-size: 1.45rem; }
+
+  .app-error {
+    display: inline-flex;
+    @apply items-start gap-1.5 text-[11px] font-semibold leading-6 text-rose-700 dark:text-rose-300;
+  }
+
+  .app-error::before {
+    content: '\f06a';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    @apply mt-[2px] text-[10px] text-rose-500 dark:text-rose-400;
+  }
+
+  .app-input[aria-invalid='true'],
+  .app-select[aria-invalid='true'],
+  .app-textarea[aria-invalid='true'],
+  .modal-control-premium[aria-invalid='true'],
+  .inventory-premium-input[aria-invalid='true'],
+  .inventory-premium-select[aria-invalid='true'] {
+    border-color: rgba(244,63,94,0.42) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 0 0 4px rgba(251,113,133,0.12);
+  }
+
+  .dark .app-input[aria-invalid='true'],
+  .dark .app-select[aria-invalid='true'],
+  .dark .app-textarea[aria-invalid='true'],
+  .dark .modal-control-premium[aria-invalid='true'],
+  .dark .inventory-premium-input[aria-invalid='true'],
+  .dark .inventory-premium-select[aria-invalid='true'] {
+    border-color: rgba(251,113,133,0.48) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 0 0 4px rgba(190,24,93,0.16);
+  }
+
+  .modal-field-premium--error .modal-field-label,
+  .modal-field-premium--error .modal-field-label span:first-child {
+    color: rgb(190 24 93);
+  }
+
+  .dark .modal-field-premium--error .modal-field-label,
+  .dark .modal-field-premium--error .modal-field-label span:first-child {
+    color: rgb(251 113 133);
+  }
+
+  .form-error-summary__item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(251,113,133,0.12);
+  }
+}
+

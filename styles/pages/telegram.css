@@ -1,0 +1,1627 @@
+/* Phase 7: extracted Telegram / SMS studio domain styles from legacy monolith */
+
+@layer components {
+/* === TELEGRAM (Premium) === */
+  .tg-panel {
+    @apply relative overflow-hidden rounded-3xl border border-gray-200/70 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/60;
+  }
+  .tg-panel__bar {
+    @apply h-px w-full bg-slate-200 dark:bg-slate-800;
+  }
+  .tg-panel__header {
+    display: flex;
+    @apply flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between;
+  }
+  .tg-panel__title { @apply text-base font-extrabold text-gray-900 dark:text-slate-50; }
+  .tg-panel__subtitle { @apply mt-1 text-xs text-gray-500 dark:text-gray-400; }
+  .tg-panel__meta { display: flex; @apply flex-wrap items-center gap-2; }
+  .tg-chip {
+    display: inline-flex;
+    @apply items-center gap-2 rounded-xl border border-gray-200/70 bg-gray-50 px-3 py-1.5 text-xs font-bold text-gray-700 dark:border-slate-800 dark:bg-white/5 dark:text-gray-200;
+  }
+  .tg-panel__actions { display: flex; @apply items-center gap-2; }
+  .tg-btn {
+    display: inline-flex;
+    @apply items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-extrabold transition active:scale-[0.99] disabled:opacity-60;
+    @apply border border-gray-200/70 bg-white text-gray-900 hover:bg-gray-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-white/5;
+    background-color: rgb(255 255 255 / 0.05);
+  }
+  .tg-btn--ghost { @apply bg-transparent hover:bg-gray-50 dark:hover:bg-white/5; }
+  .tg-btn--primary {
+    @apply border-slate-900 bg-slate-900 text-white hover:bg-slate-800 dark:border-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200;
+  }
+  .tg-btn--primary:hover { filter: none; }
+  .tg-btn--indigo { @apply border-transparent text-white bg-indigo-600 hover:bg-indigo-700; }
+
+  .tg-grid { @apply grid grid-cols-1 gap-4 p-4 pt-0 xl:grid-cols-5; }
+  .tg-stack { @apply space-y-4 xl:col-span-2; }
+  .tg-card {
+    @apply rounded-2xl border border-gray-200/70 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/60;
+  }
+  .tg-card--wide { @apply xl:col-span-3; }
+  .tg-card__head { display: flex; @apply items-start justify-between gap-3; }
+  .tg-card__head--split { display: flex; @apply flex-col gap-3 sm:flex-row sm:items-center sm:justify-between; }
+  .tg-card__title { @apply text-sm font-extrabold text-gray-900 dark:text-slate-50; }
+  .tg-card__hint { @apply text-xs text-gray-500 dark:text-gray-400; }
+  .tg-card__foot { display: flex; @apply mt-2 items-center justify-between text-xs; }
+  .tg-muted { @apply text-gray-500 dark:text-gray-400; }
+  .tg-strong { @apply font-extrabold text-gray-900 dark:text-slate-50; }
+
+  .tg-textarea {
+    @apply mt-3 w-full min-h-[160px] rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none;
+    @apply focus:ring-2 focus:ring-[hsl(var(--primary)/0.25)] dark:border-slate-800 dark:text-slate-100;
+    /* dark bg moved below if needed */
+  }
+  .tg-textarea--mono { @apply font-mono min-h-[180px]; }
+  .tg-select {
+    @apply rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-bold text-gray-800 outline-none;
+    @apply focus:ring-2 focus:ring-[hsl(var(--primary)/0.25)] dark:border-slate-800 dark:text-slate-100;
+    /* dark bg moved below if needed */
+  }
+
+  .tg-vars { display: flex; @apply mt-3 flex-wrap gap-2; }
+  .tg-var {
+    display: inline-flex;
+    @apply rounded-xl border border-gray-200/70 bg-gray-50 px-2 py-1 text-[11px] font-mono text-gray-700 dark:border-slate-800 dark:bg-white/5 dark:text-gray-200;
+  }
+
+  .tg-actions-row { display: flex; @apply mt-3 flex-wrap items-center gap-2; }
+
+  .tg-switches { @apply mt-3 grid grid-cols-1 gap-2; }
+
+  .ui-switch-toggle-btn {
+    display: inline-flex;
+    @apply items-center gap-2 rounded-2xl border px-3 py-2 text-sm font-semibold transition-all duration-200;
+    @apply border-slate-200 bg-white text-slate-700 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.35)];
+    @apply hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-[0_18px_34px_-22px_rgba(15,23,42,0.42)];
+    @apply focus:outline-none focus:ring-2 focus:ring-[hsl(var(--primary)/0.24)] focus:ring-offset-2 focus:ring-offset-white;
+    @apply dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:shadow-[0_18px_34px_-24px_rgba(2,6,23,0.65)];
+    @apply dark:hover:border-white/20 dark:hover:bg-slate-800/90 dark:focus:ring-offset-slate-950;
+  }
+
+  .ui-switch-toggle-btn[data-state="on"] {
+    @apply border-emerald-200 bg-emerald-50/90 text-emerald-700;
+    box-shadow: 0 18px 34px -24px rgba(5, 150, 105, 0.36), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+
+  .ui-switch-toggle-btn[data-state="off"] {
+    @apply border-amber-200 bg-amber-50/90 text-amber-700;
+    box-shadow: 0 18px 34px -24px rgba(217, 119, 6, 0.28), inset 0 1px 0 rgba(255,255,255,0.55);
+  }
+
+  .dark .ui-switch-toggle-btn[data-state="on"] {
+    border-color: rgba(16, 185, 129, 0.3);
+    background-color: rgba(16, 185, 129, 0.12);
+    color: rgb(167 243 208);
+    box-shadow: 0 18px 34px -24px rgba(16, 185, 129, 0.28);
+  }
+
+  .dark .ui-switch-toggle-btn[data-state="off"] {
+    border-color: rgba(245, 158, 11, 0.25);
+    background-color: rgba(245, 158, 11, 0.12);
+    color: rgb(254 243 199);
+    box-shadow: 0 18px 34px -24px rgba(245, 158, 11, 0.22);
+  }
+
+  .ui-switch-toggle-btn__icon {
+    display: inline-flex;
+    @apply h-8 w-8 items-center justify-center rounded-2xl border text-sm shadow-sm transition;
+    @apply border-white/70 bg-white/90 text-current dark:border-white/10 dark:bg-white/5;
+  }
+
+  .ui-switch-toggle-btn__meta {
+    @apply text-[11px] font-bold opacity-70;
+  }
+
+  .ui-switch-toggle-btn__label {
+    @apply leading-none;
+  }
+
+  .tg-switch {
+    @apply relative overflow-hidden items-center gap-3 rounded-[22px] border px-3.5 py-2.5 text-right transition-all duration-200;
+    @apply border-slate-200/90 bg-white text-slate-700 shadow-[0_14px_30px_-24px_rgba(15,23,42,0.35)];
+    @apply hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-[0_22px_44px_-28px_rgba(15,23,42,0.42)];
+    @apply dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:shadow-[0_20px_38px_-26px_rgba(2,6,23,0.65)];
+    @apply dark:hover:border-white/20 dark:hover:bg-slate-800/90;
+  }
+
+  .tg-switch::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 10px;
+    inset-block-start: 50%;
+    width: 38px;
+    height: 22px;
+    border-radius: 9999px;
+    transform: translateY(-50%);
+    background: linear-gradient(180deg, rgba(148,163,184,0.22), rgba(148,163,184,0.14));
+    border: 1px solid rgba(148,163,184,0.18);
+    transition: all 180ms ease;
+  }
+
+  .tg-switch--on::after {
+    background: linear-gradient(180deg, hsl(var(--primary)/0.24), hsl(var(--primary)/0.16));
+    border-color: hsl(var(--primary)/0.28);
+  }
+
+  .dark .tg-switch::after {
+    background: linear-gradient(180deg, rgba(71,85,105,0.4), rgba(30,41,59,0.44));
+    border-color: rgba(148,163,184,0.12);
+  }
+
+  .tg-switch__dot {
+    @apply relative z-10 h-4 w-4 rounded-full bg-slate-300 shadow-[0_2px_10px_rgba(15,23,42,0.18)] transition-all duration-200 dark:bg-slate-600;
+    margin-inline-start: 18px;
+  }
+
+  .tg-switch--on .tg-switch__dot {
+    @apply bg-[hsl(var(--primary)/0.95)] shadow-[0_8px_18px_-10px_hsl(var(--primary)/0.85)];
+    transform: translateX(16px);
+  }
+
+  .tg-switch__label { @apply relative z-10 text-sm font-extrabold text-slate-900 dark:text-slate-50; }
+  .tg-switch__key { @apply relative z-10 ms-auto rounded-full border border-slate-200/80 bg-slate-50 px-2 py-0.5 text-[10px] font-mono text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-300; }
+  .tg-switch {
+    display: flex;
+    @apply items-center gap-3 rounded-2xl border border-gray-200/70 bg-white px-3 py-2 text-right transition;
+    @apply hover:bg-gray-50 dark:border-slate-800 dark:bg-slate-950/30 dark:hover:bg-white/5;
+  }
+  .tg-switch--on {
+    @apply border-[hsl(var(--primary)/0.35)];
+    background: linear-gradient(135deg, hsl(var(--primary)/0.10), rgba(99,102,241,0.06));
+  }
+  .tg-switch__dot {
+    @apply h-2.5 w-2.5 rounded-full bg-gray-300 dark:bg-slate-700;
+  }
+  .tg-switch--on .tg-switch__dot { @apply bg-[hsl(var(--primary)/0.9)]; }
+  .tg-switch__label { @apply text-sm font-bold text-gray-900 dark:text-slate-50; }
+  .tg-switch__key { @apply ms-auto text-[11px] font-mono text-gray-400; }
+
+  .tg-preview {
+    @apply mt-4 rounded-2xl border border-gray-200/70 bg-gray-50 p-4 dark:border-slate-800;
+    /* dark bg moved below if needed */
+  }
+  .tg-preview__title { @apply mb-2 text-xs font-extrabold text-gray-600 dark:text-gray-300; }
+  .tg-preview__body { @apply whitespace-pre-wrap text-sm text-gray-900 dark:text-slate-100; }
+  .tg-preview--empty { @apply text-sm text-gray-500 dark:text-gray-400; }
+
+  .tg-sample { @apply mt-4 text-xs text-gray-500 dark:text-gray-400; }
+  .tg-sample summary { @apply cursor-pointer select-none font-bold; }
+  .tg-sample pre { @apply mt-2 whitespace-pre-wrap; }
+}
+
+/* === Telegram cleanup: less colorful, more premium === */
+  .tg-panel {
+    border-color: rgba(226,232,240,0.9);
+    background: rgba(255,255,255,0.84);
+    box-shadow: 0 18px 44px -34px rgba(15,23,42,0.18);
+    backdrop-filter: blur(16px);
+  }
+
+  .tg-panel__bar {
+    background: rgba(226,232,240,0.9);
+  }
+
+  .tg-chip {
+    border-color: rgba(226,232,240,0.9);
+    background: rgba(255,255,255,0.76);
+    color: rgb(71 85 105);
+  }
+
+  .tg-card {
+    border-color: rgba(226,232,240,0.88);
+    background: rgba(255,255,255,0.72);
+    box-shadow: 0 14px 36px -30px rgba(15,23,42,0.12);
+  }
+
+  .tg-btn {
+    border-color: rgba(226,232,240,0.9);
+    background: rgba(255,255,255,0.78);
+    box-shadow: none;
+  }
+
+  .tg-btn--primary {
+    box-shadow: 0 12px 28px -20px rgba(15,23,42,0.24);
+  }
+
+  /* Settings > Telegram studio anchors and cards */
+  [id^='tg-anchor-'],
+  [id^='tg-item-'],
+  [id^='tg-audience-'] {
+    backdrop-filter: blur(14px);
+  }
+
+  #tg-anchor-mission-control,
+  #tg-anchor-telegram-quick,
+  #tg-anchor-telegram-todo,
+  #tg-anchor-otp,
+  #tg-anchor-notifications,
+  #tg-anchor-queue,
+  #tg-anchor-bot-core {
+    border-color: rgba(226,232,240,0.88) !important;
+    background: rgba(255,255,255,0.82) !important;
+    box-shadow: 0 18px 44px -34px rgba(15,23,42,0.16) !important;
+  }
+
+  #tg-anchor-mission-control .rounded-2xl,
+  #tg-anchor-telegram-quick .rounded-2xl,
+  #tg-anchor-telegram-todo .rounded-2xl,
+  #tg-anchor-otp .rounded-2xl,
+  #tg-anchor-notifications .rounded-2xl,
+  #tg-anchor-queue .rounded-2xl,
+  #tg-anchor-bot-core .rounded-2xl,
+  [id^='tg-item-'] .rounded-2xl,
+  [id^='tg-audience-'] .rounded-2xl {
+    border-color: rgba(226,232,240,0.85) !important;
+    background: rgba(255,255,255,0.74) !important;
+    box-shadow: none !important;
+  }
+
+  #tg-anchor-mission-control .bg-gradient-to-br,
+  #tg-anchor-telegram-quick .bg-gradient-to-br,
+  #tg-anchor-telegram-todo .bg-gradient-to-br,
+  #tg-anchor-otp .bg-gradient-to-br,
+  #tg-anchor-notifications .bg-gradient-to-br,
+  #tg-anchor-queue .bg-gradient-to-br,
+  #tg-anchor-bot-core .bg-gradient-to-br {
+    background-image: none !important;
+  }
+
+  [id^='tg-item-'],
+  [id^='tg-audience-'] {
+    border-color: rgba(226,232,240,0.85) !important;
+    background: rgba(255,255,255,0.78) !important;
+    box-shadow: 0 14px 34px -30px rgba(15,23,42,0.12) !important;
+  }
+
+  html.dark .tg-panel,
+  html.dark .tg-card,
+  html.dark .tg-chip,
+  html.dark .tg-btn,
+  html.dark #tg-anchor-mission-control,
+  html.dark #tg-anchor-telegram-quick,
+  html.dark #tg-anchor-telegram-todo,
+  html.dark #tg-anchor-otp,
+  html.dark #tg-anchor-notifications,
+  html.dark #tg-anchor-queue,
+  html.dark #tg-anchor-bot-core,
+  html.dark [id^='tg-item-'],
+  html.dark [id^='tg-audience-'] {
+    border-color: rgba(51,65,85,0.88) !important;
+    background: rgba(2,6,23,0.56) !important;
+    box-shadow: 0 18px 42px -34px rgba(0,0,0,0.45) !important;
+  }
+
+/* === Stage 21: sidebar transparency + telegram studio cleanup === */
+.ux-nav-compact li > button > div,
+.ux-nav-compact li > a > div {
+  backdrop-filter: blur(10px);
+}
+
+.ux-nav-compact li > button > div,
+.ux-nav-compact li > a > div {
+  box-shadow: none !important;
+}
+
+.ux-nav-compact li > button:hover > div,
+.ux-nav-compact li > a:hover > div {
+  background: rgba(255,255,255,0.52) !important;
+}
+
+html.dark .ux-nav-compact li > button:hover > div,
+html.dark .ux-nav-compact li > a:hover > div {
+  background: rgba(255,255,255,0.05) !important;
+}
+
+.ux-nav-compact .icon-bubble {
+  box-shadow: none !important;
+}
+
+[id^='tg-anchor-'],
+[id^='tg-item-'],
+[id^='tg-audience-'] {
+  border-radius: 26px !important;
+}
+
+#tg-anchor-mission-control,
+#tg-anchor-telegram-quick,
+#tg-anchor-telegram-todo,
+#tg-anchor-otp,
+#tg-anchor-notifications,
+#tg-anchor-queue,
+#tg-anchor-bot-core {
+  background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.66)) !important;
+  border-color: rgba(226,232,240,0.95) !important;
+  box-shadow: 0 20px 48px -38px rgba(15,23,42,0.14) !important;
+}
+
+[id^='tg-anchor-'] .rounded-3xl,
+[id^='tg-anchor-'] .rounded-[28px],
+[id^='tg-anchor-'] .rounded-[30px],
+[id^='tg-anchor-'] .rounded-[32px],
+[id^='tg-item-'],
+[id^='tg-audience-'] {
+  background: rgba(255,255,255,0.64) !important;
+  border-color: rgba(226,232,240,0.92) !important;
+  box-shadow: none !important;
+}
+
+[id^='tg-anchor-'] .bg-gradient-to-r,
+[id^='tg-anchor-'] .bg-gradient-to-br {
+  background-image: none !important;
+}
+
+[id^='tg-anchor-'] [class*='from-'],
+[id^='tg-anchor-'] [class*='via-'],
+[id^='tg-anchor-'] [class*='to-'] {
+  background-image: none !important;
+}
+
+[id^='tg-anchor-'] .inline-flex.rounded-full,
+[id^='tg-anchor-'] .inline-flex.rounded-2xl {
+  box-shadow: none !important;
+}
+
+[id^='tg-anchor-'] .h-3.overflow-hidden.rounded-full,
+[id^='tg-anchor-'] .h-2.overflow-hidden.rounded-full {
+  background: rgba(226,232,240,0.8) !important;
+}
+
+[id^='tg-anchor-'] .h-3.overflow-hidden.rounded-full > div,
+[id^='tg-anchor-'] .h-2.overflow-hidden.rounded-full > div {
+  background-image: linear-gradient(90deg, rgba(15,23,42,0.78), rgba(71,85,105,0.72)) !important;
+}
+
+[id^='tg-anchor-'] .text-sky-600,
+[id^='tg-anchor-'] .text-sky-700,
+[id^='tg-anchor-'] .text-cyan-600,
+[id^='tg-anchor-'] .text-violet-700 {
+  color: rgb(51 65 85) !important;
+}
+
+[id^='tg-anchor-'] .border-sky-100,
+[id^='tg-anchor-'] .border-sky-200,
+[id^='tg-anchor-'] .border-violet-200,
+[id^='tg-anchor-'] .border-emerald-200,
+[id^='tg-anchor-'] .border-amber-200,
+[id^='tg-anchor-'] .border-rose-200 {
+  border-color: rgba(226,232,240,0.9) !important;
+}
+
+[id^='tg-anchor-'] .bg-sky-50,
+[id^='tg-anchor-'] .bg-sky-50\/70,
+[id^='tg-anchor-'] .bg-violet-50,
+[id^='tg-anchor-'] .bg-emerald-50,
+[id^='tg-anchor-'] .bg-amber-50,
+[id^='tg-anchor-'] .bg-rose-50,
+[id^='tg-anchor-'] .bg-cyan-50 {
+  background: rgba(248,250,252,0.78) !important;
+}
+
+html.dark #tg-anchor-mission-control,
+html.dark #tg-anchor-telegram-quick,
+html.dark #tg-anchor-telegram-todo,
+html.dark #tg-anchor-otp,
+html.dark #tg-anchor-notifications,
+html.dark #tg-anchor-queue,
+html.dark #tg-anchor-bot-core,
+html.dark [id^='tg-item-'],
+html.dark [id^='tg-audience-'],
+html.dark [id^='tg-anchor-'] .rounded-3xl,
+html.dark [id^='tg-anchor-'] .rounded-[28px],
+html.dark [id^='tg-anchor-'] .rounded-[30px],
+html.dark [id^='tg-anchor-'] .rounded-[32px] {
+  background: linear-gradient(180deg, rgba(2,6,23,0.74), rgba(2,6,23,0.6)) !important;
+  border-color: rgba(51,65,85,0.92) !important;
+  box-shadow: 0 18px 40px -34px rgba(0,0,0,0.38) !important;
+}
+
+html.dark [id^='tg-anchor-'] .h-3.overflow-hidden.rounded-full,
+html.dark [id^='tg-anchor-'] .h-2.overflow-hidden.rounded-full {
+  background: rgba(30,41,59,0.84) !important;
+}
+
+html.dark [id^='tg-anchor-'] .h-3.overflow-hidden.rounded-full > div,
+html.dark [id^='tg-anchor-'] .h-2.overflow-hidden.rounded-full > div {
+  background-image: linear-gradient(90deg, rgba(148,163,184,0.74), rgba(226,232,240,0.68)) !important;
+}
+
+/* === Stage 22: unified SMS + Telegram card hierarchy === */
+.sms-studio-card {
+  position: relative;
+  border-radius: 26px;
+  border: 1px solid rgba(226,232,240,0.92);
+  background: rgba(255,255,255,0.82);
+  padding: 16px;
+  box-shadow: 0 18px 40px -34px rgba(15,23,42,0.16);
+  backdrop-filter: blur(12px);
+}
+.sms-studio-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  border-radius: 999px;
+  background: rgba(148,163,184,0.9);
+}
+.sms-studio-card--emerald::before { background: rgb(16 185 129); }
+.sms-studio-card--blue::before { background: rgb(59 130 246); }
+.sms-studio-card--amber::before { background: rgb(245 158 11); }
+.sms-studio-card--gray::before { background: rgb(148 163 184); }
+.sms-studio-card__status-wrap { display:flex; justify-content:flex-start; flex-shrink: 0; }
+.sms-studio-card__status { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:6px 10px; font-size:11px; font-weight:800; border:1px solid rgba(203,213,225,0.9); background:rgba(248,250,252,0.9); color:rgb(51 65 85); }
+.sms-studio-card__status.is-active { border-color: rgba(16,185,129,0.22); background: rgba(236,253,245,0.95); color: rgb(6 95 70); }
+.sms-studio-card__status.is-inactive { border-color: rgba(239,68,68,0.18); background: rgba(254,242,242,0.96); color: rgb(153 27 27); }
+.sms-studio-card__head { display:flex; flex-direction:column; gap:12px; }
+.sms-studio-card__title-bar, .tg-studio-card__title-bar { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.sms-studio-card__title-row { display:flex; align-items:flex-start; gap:12px; min-width:0; flex:1; }
+.sms-studio-card__icon, .tg-studio-card__icon { display:inline-flex; height:40px; width:40px; align-items:center; justify-content:center; border-radius:14px; border:1px solid rgba(226,232,240,0.95); background: rgba(248,250,252,0.95); color: rgb(37 99 235); box-shadow: 0 8px 18px -16px rgba(37,99,235,0.35); flex-shrink:0; }
+.sms-studio-card__title { font-size: 15px; font-weight: 900; line-height: 1.8; color: rgb(15 23 42); }
+.sms-studio-card__subtitle { margin-top: 2px; font-size: 12px; line-height: 1.8; color: rgb(100 116 139); }
+.sms-studio-card__actions, .tg-studio-card__actions { display:flex; flex-wrap:wrap; gap:8px; margin-top: 2px; }
+.sms-studio-card__tokens { margin-top: 14px; border-radius: 20px; border:1px solid rgba(226,232,240,0.9); background: rgba(248,250,252,0.78); padding: 12px; }
+.sms-studio-card__section-title { display:flex; align-items:center; gap:8px; font-size:12px; font-weight:800; color: rgb(71 85 105); margin-bottom: 10px; }
+.sms-studio-card__section-title i { color: rgb(124 58 237); }
+.sms-studio-card__token-list { display:flex; flex-wrap:wrap; gap:8px; }
+.sms-studio-card__token { display:inline-flex; align-items:center; gap:8px; border-radius:999px; border:1px solid rgba(196,181,253,0.65); background: rgba(245,243,255,0.95); padding: 6px 10px; font-size: 11px; font-weight: 700; color: rgb(109 40 217); }
+.sms-studio-card__token-index { display:inline-flex; min-width:18px; height:18px; align-items:center; justify-content:center; border-radius:999px; background: rgba(255,255,255,0.95); font-size:10px; color: rgb(91 33 182); }
+.sms-studio-card__field { margin-top: 14px; }
+.sms-studio-card__section-title--field i { color: rgb(14 165 233); }
+.sms-studio-card__note { margin-top:8px; display:flex; align-items:flex-start; gap:8px; font-size:12px; line-height:1.8; color: rgb(100 116 139); }
+.sms-studio-card__note i { margin-top:2px; color: rgb(148 163 184); }
+
+.tg-studio-card { position: relative; border-radius: 24px; border: 1px solid rgba(226,232,240,0.88); background: rgba(255,255,255,0.78); padding: 16px; text-align: right; box-shadow: 0 16px 38px -32px rgba(15,23,42,0.14); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.tg-studio-card:hover { transform: translateY(-1px); box-shadow: 0 20px 42px -32px rgba(15,23,42,0.18); }
+.tg-studio-card.is-selected { border-color: rgba(59,130,246,0.34); box-shadow: 0 20px 44px -32px rgba(59,130,246,0.16); }
+.tg-studio-card__title-line { display:flex; align-items:flex-start; gap:12px; min-width:0; flex:1; }
+.tg-studio-card__eyebrow { font-size:11px; font-weight:900; color: rgb(100 116 139); }
+.tg-studio-card__title { margin-top:2px; font-size:17px; font-weight:900; line-height:1.7; color: rgb(15 23 42); }
+.tg-studio-card__desc { margin-top:8px; font-size:12px; line-height:1.9; color: rgb(100 116 139); }
+.tg-studio-card__status { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:6px 10px; font-size:11px; font-weight:900; border:1px solid rgba(226,232,240,0.9); background: rgba(248,250,252,0.92); color: rgb(51 65 85); }
+.tg-studio-card__status--neutral { background: rgba(239,246,255,0.96); border-color: rgba(125,211,252,0.6); color: rgb(3 105 161); }
+.tg-studio-card__status.is-active { background: rgba(255,251,235,0.96); border-color: rgba(253,230,138,0.7); color: rgb(146 64 14); }
+.tg-studio-card__status.is-warning { background: rgba(245,243,255,0.96); border-color: rgba(196,181,253,0.7); color: rgb(109 40 217); }
+.tg-studio-card__action-pill { display:inline-flex; align-items:center; gap:6px; border-radius:999px; border:1px solid rgba(226,232,240,0.9); background: rgba(255,255,255,0.9); padding:6px 10px; font-size:11px; font-weight:800; color: rgb(71 85 105); }
+.tg-studio-card__stats > div { border-radius: 18px; border:1px solid rgba(226,232,240,0.82); background: rgba(255,255,255,0.88); padding: 10px 12px; }
+
+@media (max-width: 640px) {
+  .sms-studio-card__title-bar, .tg-studio-card__title-bar {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .sms-studio-card__actions, .tg-studio-card__actions {
+    gap: 6px;
+  }
+}
+html.dark .sms-studio-card, html.dark .tg-studio-card { border-color: rgba(51,65,85,0.88); background: rgba(2,6,23,0.6); box-shadow: 0 18px 42px -34px rgba(0,0,0,0.45); }
+html.dark .sms-studio-card__status, html.dark .tg-studio-card__status, html.dark .tg-studio-card__action-pill { border-color: rgba(51,65,85,0.9); background: rgba(15,23,42,0.72); color: rgb(226 232 240); }
+html.dark .sms-studio-card__status.is-active { background: rgba(6,78,59,0.35); color: rgb(167 243 208); }
+html.dark .sms-studio-card__status.is-inactive { background: rgba(127,29,29,0.35); color: rgb(254 202 202); }
+html.dark .sms-studio-card__icon, html.dark .tg-studio-card__icon { border-color: rgba(51,65,85,0.9); background: rgba(15,23,42,0.84); color: rgb(125 211 252); }
+html.dark .sms-studio-card__title, html.dark .tg-studio-card__title { color: rgb(248 250 252); }
+html.dark .sms-studio-card__subtitle, html.dark .tg-studio-card__eyebrow, html.dark .tg-studio-card__desc, html.dark .sms-studio-card__note { color: rgb(148 163 184); }
+html.dark .sms-studio-card__tokens, html.dark .tg-studio-card__stats > div { border-color: rgba(51,65,85,0.88); background: rgba(15,23,42,0.66); }
+html.dark .sms-studio-card__token { border-color: rgba(109,40,217,0.35); background: rgba(91,33,182,0.18); color: rgb(221 214 254); }
+html.dark .sms-studio-card__token-index { background: rgba(30,41,59,0.95); color: rgb(196 181 253); }
+/* === V8 Telegram Settings: executive compact, neutral, non-color-block UI === */
+#telegram-settings-form {
+  --tg-v8-border: rgba(226,232,240,0.92);
+  --tg-v8-border-strong: rgba(203,213,225,0.96);
+  --tg-v8-surface: rgba(255,255,255,0.88);
+  --tg-v8-surface-soft: rgba(248,250,252,0.82);
+}
+#telegram-settings-form .premium-form-section,
+#telegram-settings-form > [id^='tg-anchor-'],
+#telegram-settings-form #tg-anchor-otp,
+#telegram-settings-form #tg-anchor-notifications {
+  border-radius: 24px !important;
+  border: 1px solid var(--tg-v8-border) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.80)) !important;
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.80)) !important;
+  box-shadow: 0 18px 44px -36px rgba(15,23,42,0.18) !important;
+  padding: 16px !important;
+}
+#telegram-settings-form [class*='bg-gradient-to-br'],
+#telegram-settings-form [class*='bg-gradient-to-r'],
+#telegram-settings-form [class*='bg-[radial-gradient'],
+#telegram-settings-form [class*='from-'],
+#telegram-settings-form [class*='via-'],
+#telegram-settings-form [class*='to-'] { background-image: none !important; }
+#telegram-settings-form [class*='bg-sky-50'],
+#telegram-settings-form [class*='bg-cyan-50'],
+#telegram-settings-form [class*='bg-violet-50'],
+#telegram-settings-form [class*='bg-fuchsia-50'],
+#telegram-settings-form [class*='bg-amber-50'],
+#telegram-settings-form [class*='bg-orange-50'],
+#telegram-settings-form [class*='bg-rose-50'],
+#telegram-settings-form [class*='bg-emerald-50'],
+#telegram-settings-form [class*='bg-teal-50'],
+#telegram-settings-form [class*='bg-indigo-50'] { background-color: var(--tg-v8-surface-soft) !important; }
+#telegram-settings-form [class*='border-sky-'],
+#telegram-settings-form [class*='border-cyan-'],
+#telegram-settings-form [class*='border-violet-'],
+#telegram-settings-form [class*='border-fuchsia-'],
+#telegram-settings-form [class*='border-amber-'],
+#telegram-settings-form [class*='border-orange-'],
+#telegram-settings-form [class*='border-rose-'],
+#telegram-settings-form [class*='border-emerald-'],
+#telegram-settings-form [class*='border-teal-'],
+#telegram-settings-form [class*='border-indigo-'] { border-color: var(--tg-v8-border) !important; }
+#telegram-settings-form [class*='text-sky-'],
+#telegram-settings-form [class*='text-cyan-'],
+#telegram-settings-form [class*='text-violet-'],
+#telegram-settings-form [class*='text-fuchsia-'],
+#telegram-settings-form [class*='text-amber-'],
+#telegram-settings-form [class*='text-orange-'],
+#telegram-settings-form [class*='text-rose-'],
+#telegram-settings-form [class*='text-emerald-'],
+#telegram-settings-form [class*='text-teal-'],
+#telegram-settings-form [class*='text-indigo-'] { color: rgb(51 65 85) !important; }
+#telegram-settings-form .premium-form-section > div,
+#telegram-settings-form [id^='tg-anchor-'] > div,
+#telegram-settings-form .tg-card,
+#telegram-settings-form .tg-studio-card,
+#telegram-settings-form [id^='tg-item-'],
+#telegram-settings-form [id^='tg-audience-'] {
+  border-radius: 18px !important;
+  border-color: var(--tg-v8-border) !important;
+  background: var(--tg-v8-surface) !important;
+  box-shadow: none !important;
+}
+#telegram-settings-form .rounded-\[30px\],
+#telegram-settings-form .rounded-\[28px\],
+#telegram-settings-form .rounded-3xl,
+#telegram-settings-form .rounded-\[24px\] { border-radius: 18px !important; }
+#telegram-settings-form .p-6,
+#telegram-settings-form .p-5,
+#telegram-settings-form .p-4 { padding: 14px !important; }
+#telegram-settings-form .gap-6 { gap: 16px !important; }
+#telegram-settings-form .gap-5 { gap: 14px !important; }
+#telegram-settings-form .gap-4 { gap: 12px !important; }
+#telegram-settings-form .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 16px !important; }
+#telegram-settings-form .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: 14px !important; }
+#telegram-settings-form .text-3xl { font-size: 1.55rem !important; line-height: 2rem !important; }
+#telegram-settings-form .text-2xl { font-size: 1.25rem !important; line-height: 1.9rem !important; }
+#telegram-settings-form .text-xl { font-size: 1.05rem !important; line-height: 1.8rem !important; }
+#telegram-settings-form .text-lg { font-size: 0.98rem !important; line-height: 1.7rem !important; }
+#telegram-settings-form .inline-flex.h-11.w-11,
+#telegram-settings-form .inline-flex.w-12.h-12,
+#telegram-settings-form .inline-flex.h-12.w-12,
+#telegram-settings-form .tg-studio-card__icon,
+#telegram-settings-form .sms-studio-card__icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 12px !important;
+  background: rgba(248,250,252,0.94) !important;
+  border-color: var(--tg-v8-border-strong) !important;
+  color: rgb(30 41 59) !important;
+  box-shadow: none !important;
+}
+#telegram-settings-form .inline-flex.rounded-full,
+#telegram-settings-form .inline-flex.rounded-2xl,
+#telegram-settings-form .tg-chip,
+#telegram-settings-form .tg-studio-card__status,
+#telegram-settings-form .sms-studio-card__status,
+#telegram-settings-form .tg-studio-card__action-pill {
+  border-radius: 999px !important;
+  border-color: var(--tg-v8-border) !important;
+  background: rgba(248,250,252,0.90) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+#telegram-settings-form button[class*='rounded-3xl'],
+#telegram-settings-form button[class*='rounded-[24px]'],
+#telegram-settings-form button[class*='rounded-2xl'] { border-radius: 16px !important; box-shadow: none !important; }
+#telegram-settings-form button:hover,
+#telegram-settings-form .tg-studio-card:hover { transform: translateY(-1px) !important; box-shadow: 0 16px 34px -30px rgba(15,23,42,0.22) !important; }
+#telegram-settings-form .h-3.overflow-hidden.rounded-full,
+#telegram-settings-form .h-2\.5.overflow-hidden.rounded-full,
+#telegram-settings-form .h-2.overflow-hidden.rounded-full { height: 6px !important; background: rgba(226,232,240,0.92) !important; }
+#telegram-settings-form .h-3.overflow-hidden.rounded-full > div,
+#telegram-settings-form .h-2\.5.overflow-hidden.rounded-full > div,
+#telegram-settings-form .h-2.overflow-hidden.rounded-full > div { background: linear-gradient(90deg, rgb(15 23 42), rgb(71 85 105)) !important; }
+#telegram-settings-form textarea,
+#telegram-settings-form input,
+#telegram-settings-form select { border-radius: 16px !important; }
+#telegram-settings-form .tg-studio-card { padding: 14px !important; }
+#telegram-settings-form .tg-studio-card__title { font-size: 15px !important; line-height: 1.65 !important; }
+#telegram-settings-form .tg-studio-card__desc,
+#telegram-settings-form .sms-studio-card__subtitle { line-height: 1.75 !important; }
+html.dark #telegram-settings-form {
+  --tg-v8-border: rgba(51,65,85,0.88);
+  --tg-v8-border-strong: rgba(71,85,105,0.9);
+  --tg-v8-surface: rgba(15,23,42,0.74);
+  --tg-v8-surface-soft: rgba(15,23,42,0.62);
+}
+html.dark #telegram-settings-form .premium-form-section,
+html.dark #telegram-settings-form > [id^='tg-anchor-'],
+html.dark #telegram-settings-form #tg-anchor-otp,
+html.dark #telegram-settings-form #tg-anchor-notifications {
+  background: linear-gradient(180deg, rgba(15,23,42,0.82), rgba(2,6,23,0.68)) !important;
+  background-image: linear-gradient(180deg, rgba(15,23,42,0.82), rgba(2,6,23,0.68)) !important;
+  box-shadow: 0 20px 42px -34px rgba(0,0,0,0.48) !important;
+}
+html.dark #telegram-settings-form [class*='bg-sky-50'],
+html.dark #telegram-settings-form [class*='bg-cyan-50'],
+html.dark #telegram-settings-form [class*='bg-violet-50'],
+html.dark #telegram-settings-form [class*='bg-fuchsia-50'],
+html.dark #telegram-settings-form [class*='bg-amber-50'],
+html.dark #telegram-settings-form [class*='bg-orange-50'],
+html.dark #telegram-settings-form [class*='bg-rose-50'],
+html.dark #telegram-settings-form [class*='bg-emerald-50'],
+html.dark #telegram-settings-form [class*='bg-teal-50'],
+html.dark #telegram-settings-form [class*='bg-indigo-50'] { background-color: rgba(15,23,42,0.66) !important; }
+html.dark #telegram-settings-form .inline-flex.rounded-full,
+html.dark #telegram-settings-form .inline-flex.rounded-2xl,
+html.dark #telegram-settings-form .tg-chip,
+html.dark #telegram-settings-form .tg-studio-card__status,
+html.dark #telegram-settings-form .sms-studio-card__status,
+html.dark #telegram-settings-form .tg-studio-card__action-pill {
+  background: rgba(15,23,42,0.72) !important;
+  border-color: rgba(51,65,85,0.9) !important;
+  color: rgb(226 232 240) !important;
+}
+
+/* === V83 Telegram Control Center — Apple executive polish === */
+#telegram-settings-form {
+  --tg-v83-radius-lg: 26px;
+  --tg-v83-radius-md: 18px;
+  --tg-v83-border: rgba(226, 232, 240, 0.92);
+  --tg-v83-border-strong: rgba(203, 213, 225, 0.96);
+  --tg-v83-bg: rgba(255, 255, 255, 0.96);
+  --tg-v83-bg-soft: rgba(248, 250, 252, 0.92);
+  --tg-v83-text: rgb(15, 23, 42);
+  --tg-v83-muted: rgb(100, 116, 139);
+  --tg-v83-shadow: 0 22px 54px -42px rgba(15, 23, 42, 0.22);
+}
+
+#telegram-settings-form > .premium-form-section {
+  border-radius: var(--tg-v83-radius-lg) !important;
+  border: 1px solid var(--tg-v83-border) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94)) !important;
+  box-shadow: var(--tg-v83-shadow) !important;
+  overflow: hidden;
+}
+
+#telegram-settings-form :where(.premium-form-section, [id^='tg-anchor-'], .tg-card, .tg-studio-card, [id^='tg-item-']) {
+  color: var(--tg-v83-text) !important;
+}
+
+#telegram-settings-form :where([id^='tg-anchor-'], .tg-card, .tg-studio-card, [id^='tg-item-'], [id^='tg-audience-']) {
+  border-radius: var(--tg-v83-radius-lg) !important;
+  border: 1px solid var(--tg-v83-border) !important;
+  background: var(--tg-v83-bg) !important;
+  box-shadow: 0 16px 40px -34px rgba(15, 23, 42, 0.18) !important;
+}
+
+#telegram-settings-form :where(.rounded-2xl, .rounded-3xl, .rounded-\[24px\], .rounded-\[28px\], .rounded-\[30px\], .rounded-\[32px\]) {
+  border-radius: var(--tg-v83-radius-md) !important;
+}
+
+#telegram-settings-form :where(input, select, textarea) {
+  min-height: 44px !important;
+  border-radius: 16px !important;
+  border-color: var(--tg-v83-border-strong) !important;
+  background: rgba(255,255,255,0.98) !important;
+  color: var(--tg-v83-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.74), 0 10px 28px -26px rgba(15,23,42,0.18) !important;
+}
+
+#telegram-settings-form :where(input, select, textarea):focus {
+  border-color: rgba(100, 116, 139, 0.62) !important;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.16), inset 0 1px 0 rgba(255,255,255,0.74) !important;
+}
+
+#telegram-settings-form :where(.inline-flex.rounded-full, .inline-flex.rounded-2xl, .tg-chip, .tg-studio-card__status, .sms-studio-card__status, .tg-studio-card__action-pill) {
+  border-color: var(--tg-v83-border) !important;
+  background: var(--tg-v83-bg-soft) !important;
+  color: rgb(51, 65, 85) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form :where(.inline-flex.h-11.w-11, .inline-flex.h-12.w-12, .tg-studio-card__icon, .sms-studio-card__icon, .tg-apple-setup-row__icon, .tg-apple-setup-card__icon) {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--tg-v83-border-strong) !important;
+  background: var(--tg-v83-bg-soft) !important;
+  color: rgb(51, 65, 85) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form .telegram-monitor-actions,
+#telegram-settings-form .telegram-monitor-v2-actions,
+#telegram-settings-form .telegram-monitor-v2-actions-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn) {
+  min-height: 38px;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) {
+  border-color: var(--tg-v83-border-strong) !important;
+  background: rgba(255,255,255,0.92) !important;
+  color: rgb(51, 65, 85) !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary {
+  border-color: rgba(14, 165, 233, 0.28) !important;
+  background: linear-gradient(180deg, rgba(14,165,233,0.96), rgba(2,132,199,0.96)) !important;
+  color: rgb(248,250,252) !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__icon,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__spinner,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__label-main,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__label,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__content {
+  color: inherit !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__icon,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__spinner {
+  background: rgba(248,250,252,0.96) !important;
+  color: rgb(51, 65, 85) !important;
+}
+
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__label-main,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__label,
+#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__content {
+  color: inherit !important;
+}
+
+html.dark #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) {
+  border-color: var(--tg-v83-border-strong) !important;
+  background: rgba(15, 23, 42, 0.86) !important;
+  color: rgb(226, 232, 240) !important;
+}
+
+html.dark #telegram-settings-form .tg-apple-setup-card {
+  border-color: var(--tg-v83-border-strong) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,0.90), rgba(2,6,23,0.78)) !important;
+  color: rgb(248, 250, 252) !important;
+}
+
+html.dark #telegram-settings-form .tg-apple-setup-card__icon {
+  background: rgba(2, 6, 23, 0.46) !important;
+  color: rgb(226, 232, 240) !important;
+  border-color: var(--tg-v83-border-strong) !important;
+}
+
+html.dark #telegram-settings-form .tg-apple-setup-card__hint {
+  color: rgb(148, 163, 184) !important;
+}
+
+
+html.dark #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary {
+  border-color: rgba(56, 189, 248, 0.28) !important;
+  background: linear-gradient(180deg, rgba(56,189,248,0.90), rgba(14,165,233,0.86)) !important;
+  color: rgb(248,250,252) !important;
+}
+
+html.dark #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__icon,
+html.dark #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn):not(.ux-btn-primary):not(.ux-btn-danger):not(.ux-btn-warning):not(.ux-btn-success) .ux-btn__spinner {
+  background: rgba(255,255,255,0.08) !important;
+  color: rgb(226,232,240) !important;
+}
+
+#telegram-settings-form :where(button, .ux-btn):hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px -30px rgba(15, 23, 42, 0.22) !important;
+}
+
+#telegram-settings-form [role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#telegram-settings-form [id^='tg-item-'] [role='button'] {
+  outline: none;
+}
+
+#telegram-settings-form [id^='tg-item-'] [role='button']:focus-visible {
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.16) !important;
+}
+
+#telegram-settings-form .h-3.overflow-hidden.rounded-full,
+#telegram-settings-form .h-2\.5.overflow-hidden.rounded-full,
+#telegram-settings-form .h-2.overflow-hidden.rounded-full {
+  height: 6px !important;
+  background: rgba(226, 232, 240, 0.96) !important;
+}
+
+#telegram-settings-form .h-3.overflow-hidden.rounded-full > div,
+#telegram-settings-form .h-2\.5.overflow-hidden.rounded-full > div,
+#telegram-settings-form .h-2.overflow-hidden.rounded-full > div {
+  background: linear-gradient(90deg, rgb(15, 23, 42), rgb(71, 85, 105)) !important;
+}
+
+#telegram-settings-form .text-3xl { font-size: 1.6rem !important; line-height: 2rem !important; }
+#telegram-settings-form .text-2xl { font-size: 1.32rem !important; line-height: 1.9rem !important; }
+#telegram-settings-form .text-xl { font-size: 1.08rem !important; line-height: 1.85rem !important; }
+#telegram-settings-form .text-lg { font-size: 1rem !important; line-height: 1.75rem !important; }
+
+#telegram-settings-form .telegram-chatid-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+#telegram-settings-form .telegram-chatid-picker > input {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn {
+  flex: 0 0 auto;
+  white-space: nowrap !important;
+  justify-content: center !important;
+}
+
+#telegram-settings-form .tg-apple-check-row {
+  text-align: right !important;
+  padding: 14px !important;
+}
+
+#telegram-settings-form .tg-apple-check-row__body {
+  align-items: start;
+}
+
+#telegram-settings-form .tg-apple-check-row__icon {
+  display: inline-flex;
+  align-self: start;
+  justify-content: center;
+  justify-self: end;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin-top: 2px;
+  margin-inline-start: auto;
+  border-radius: 14px;
+  border: 1px solid var(--tg-v83-border-strong);
+  background: var(--tg-v83-bg-soft);
+  color: var(--tg-v83-text);
+}
+
+#telegram-settings-form .tg-apple-check-row__icon i {
+  font-size: 14px;
+}
+
+#telegram-settings-form .tg-apple-queue-panel {
+  margin-top: 18px;
+  margin-bottom: 18px;
+}
+
+#telegram-settings-form .tg-apple-queue-toolbar {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+#telegram-settings-form .tg-apple-queue-btn {
+  justify-content: center !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card {
+  min-height: 164px !important;
+  padding: 0 !important;
+  border: 1px solid var(--tg-v83-border-strong) !important;
+  border-radius: 20px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94)) !important;
+  color: var(--tg-v83-text) !important;
+  box-shadow: 0 14px 30px -28px rgba(15,23,42,0.18) !important;
+  overflow: hidden !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card .ux-btn__content {
+  width: 100% !important;
+  height: 100% !important;
+  align-items: stretch !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__inner {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  height: 100% !important;
+  gap: 12px !important;
+  padding: 14px 14px 12px !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__status {
+  flex: 0 1 auto !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--tg-v83-border-strong) !important;
+  background: var(--tg-v83-bg-soft) !important;
+  color: var(--tg-v83-text) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__icon.is-done {
+  color: rgb(4, 120, 87) !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__icon i {
+  font-size: 14px !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__body {
+  min-width: 0 !important;
+  margin-top: auto !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__title {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  font-weight: 950 !important;
+  color: var(--tg-v83-text) !important;
+}
+
+#telegram-settings-form .tg-apple-setup-card__hint {
+  font-size: 11px !important;
+  line-height: 1.7 !important;
+  color: var(--tg-v83-muted) !important;
+}
+
+
+#telegram-settings-form .telegram-monitor-head,
+#telegram-settings-form .telegram-monitor-v2-head {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+#telegram-settings-form #tg-anchor-bot-core {
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+#telegram-settings-form .app-subtle,
+#telegram-settings-form :where(p, .tg-card__hint, .tg-studio-card__desc, .sms-studio-card__subtitle) {
+  color: var(--tg-v83-muted) !important;
+}
+
+html.dark #telegram-settings-form {
+  --tg-v83-border: rgba(51, 65, 85, 0.88);
+  --tg-v83-border-strong: rgba(71, 85, 105, 0.9);
+  --tg-v83-bg: rgba(15, 23, 42, 0.82);
+  --tg-v83-bg-soft: rgba(15, 23, 42, 0.64);
+  --tg-v83-text: rgb(248, 250, 252);
+  --tg-v83-muted: rgb(148, 163, 184);
+  --tg-v83-shadow: 0 24px 58px -40px rgba(0, 0, 0, 0.54);
+}
+
+html.dark #telegram-settings-form > .premium-form-section {
+  background: linear-gradient(180deg, rgba(15,23,42,0.90), rgba(2,6,23,0.74)) !important;
+}
+
+html.dark #telegram-settings-form :where(input, select, textarea) {
+  background: rgba(2, 6, 23, 0.56) !important;
+  color: rgb(248, 250, 252) !important;
+  border-color: var(--tg-v83-border-strong) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 32px -28px rgba(2,6,23,0.6) !important;
+}
+
+html.dark #telegram-settings-form :where(.inline-flex.rounded-full, .inline-flex.rounded-2xl, .tg-chip, .tg-studio-card__status, .sms-studio-card__status, .tg-studio-card__action-pill) {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: var(--tg-v83-border) !important;
+  color: rgb(226, 232, 240) !important;
+}
+
+html.dark #telegram-settings-form :where(.inline-flex.h-11.w-11, .inline-flex.h-12.w-12, .tg-studio-card__icon, .sms-studio-card__icon, .tg-apple-setup-row__icon, .tg-apple-setup-card__icon) {
+  background: rgba(2, 6, 23, 0.48) !important;
+  color: rgb(226, 232, 240) !important;
+  border-color: var(--tg-v83-border-strong) !important;
+}
+
+@media (max-width: 767px) {
+  #telegram-settings-form > .premium-form-section { padding: 12px !important; }
+  #telegram-settings-form .telegram-monitor-actions,
+  #telegram-settings-form .telegram-monitor-v2-actions,
+  #telegram-settings-form .telegram-monitor-v2-actions-grid {
+    align-items: stretch !important;
+  }
+  #telegram-settings-form :where(.telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .ux-btn) {
+    width: 100%;
+    justify-content: center !important;
+  }
+}
+
+#telegram-settings-form .tg-apple-setup-row__content {
+  width: 100% !important;
+  direction: ltr !important;
+}
+
+#telegram-settings-form .tg-apple-setup-row__main {
+  min-width: 0 !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+#telegram-settings-form .tg-apple-setup-row__content .tg-apple-mini-status {
+  margin-inline-start: auto !important;
+  align-self: start !important;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn {
+  justify-content: flex-start !important;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__content {
+  width: 100% !important;
+  justify-content: flex-start !important;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__icon {
+  margin-inline-start: 0 !important;
+  margin-inline-end: .35rem !important;
+}
+
+#telegram-settings-form .tg-apple-queue-panel {
+  margin-top: 22px !important;
+  margin-bottom: 22px !important;
+}
+
+/* === Settings > Telegram: executive shell polish === */
+#telegram-settings-form .telegram-executive-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid var(--tg-v83-border);
+  border-radius: var(--tg-v83-radius-lg);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92));
+  box-shadow: var(--tg-v83-shadow);
+  padding: 18px;
+}
+
+#telegram-settings-form .telegram-executive-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.85fr);
+  gap: 14px 16px;
+  align-items: start;
+}
+
+#telegram-settings-form .telegram-executive-copy {
+  min-width: 0;
+}
+
+#telegram-settings-form .telegram-executive-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(248,250,252,0.94);
+  font-size: 11px;
+  font-weight: 900;
+  color: rgb(51,65,85);
+}
+
+#telegram-settings-form .telegram-executive-copy h2 {
+  margin: 10px 0 0;
+  font-size: 1.18rem;
+  line-height: 1.75;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: var(--tg-v83-text);
+}
+
+#telegram-settings-form .telegram-executive-copy p {
+  margin: 8px 0 0;
+  max-width: 72ch;
+  font-size: 13px;
+  line-height: 1.95;
+  color: var(--tg-v83-muted);
+}
+
+#telegram-settings-form .telegram-executive-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#telegram-settings-form .telegram-mode-toggle {
+  display: inline-flex;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--tg-v83-border);
+  border-radius: 18px;
+  background: rgba(248,250,252,0.9);
+}
+
+#telegram-settings-form .telegram-mode-toggle button {
+  min-width: 82px;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgb(100,116,139);
+  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+#telegram-settings-form .telegram-mode-toggle button.is-active {
+  border-color: rgba(14,165,233,0.22);
+  background: rgba(255,255,255,0.98);
+  color: rgb(15,23,42);
+  box-shadow: 0 10px 20px -18px rgba(15,23,42,0.35);
+}
+
+#telegram-settings-form .telegram-executive-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#telegram-settings-form .telegram-executive-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  min-height: 96px;
+  padding: 15px 16px;
+  border-radius: 22px;
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(255,255,255,0.94);
+  box-shadow: 0 14px 34px -30px rgba(15,23,42,0.14);
+}
+
+#telegram-settings-form .telegram-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+#telegram-settings-form .telegram-card-head > span {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 1px solid var(--tg-v83-border-strong);
+  background: rgba(248,250,252,0.98);
+  color: rgb(37,99,235);
+  box-shadow: 0 10px 22px -18px rgba(37,99,235,0.28);
+}
+
+#telegram-settings-form .telegram-card-head > div {
+  min-width: 0;
+}
+
+#telegram-settings-form .telegram-card-head strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 950;
+  color: var(--tg-v83-text);
+}
+
+#telegram-settings-form .telegram-card-head small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.9;
+  color: var(--tg-v83-muted);
+}
+
+#telegram-settings-form .telegram-state {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 30px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(248,250,252,0.94);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+  color: rgb(71,85,105);
+}
+
+#telegram-settings-form .telegram-state.is-ok {
+  border-color: rgba(16,185,129,0.18);
+  background: rgba(236,253,245,0.95);
+  color: rgb(4,120,87);
+}
+
+#telegram-settings-form .telegram-state.is-risk {
+  border-color: rgba(244,63,94,0.18);
+  background: rgba(255,241,242,0.95);
+  color: rgb(190,18,60);
+}
+
+#telegram-settings-form .telegram-state.is-idle {
+  border-color: rgba(148,163,184,0.22);
+  background: rgba(248,250,252,0.94);
+  color: rgb(71,85,105);
+}
+
+#telegram-settings-form .telegram-state.is-info {
+  border-color: rgba(59,130,246,0.18);
+  background: rgba(239,246,255,0.95);
+  color: rgb(29,78,216);
+}
+
+#telegram-settings-form .telegram-executive-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 12px;
+}
+
+#telegram-settings-form .telegram-field--wide {
+  grid-column: 1 / -1;
+}
+
+#telegram-settings-form .telegram-chatid-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 10px;
+  align-items: end;
+}
+
+#telegram-settings-form .telegram-chatid-picker > input {
+  min-width: 0;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn {
+  min-width: 144px;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__content {
+  width: 100% !important;
+  justify-content: center !important;
+}
+
+#telegram-settings-form .telegram-chatid-guide {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  border-radius: var(--tg-v83-radius-lg);
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(248,250,252,0.94);
+}
+
+#telegram-settings-form .telegram-chatid-guide__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 14px;
+  align-items: start;
+}
+
+#telegram-settings-form .telegram-chatid-guide__head strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.75;
+  font-weight: 950;
+  color: var(--tg-v83-text);
+}
+
+#telegram-settings-form .telegram-chatid-guide__head p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.95;
+  color: var(--tg-v83-muted);
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 13px;
+  border-radius: 18px;
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(255,255,255,0.92);
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--tg-v83-text);
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps li span {
+  display: inline-flex;
+  min-width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--tg-v83-border-strong);
+  background: rgba(248,250,252,0.96);
+  font-size: 11px;
+  font-weight: 950;
+  color: rgb(51,65,85);
+  flex-shrink: 0;
+}
+
+#telegram-settings-form .telegram-chatid-guide__hint {
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(59,130,246,0.18);
+  background: rgba(239,246,255,0.96);
+  color: rgb(30,64,175);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+#telegram-settings-form .telegram-chatid-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+#telegram-settings-form .telegram-chatid-results button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 100px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid var(--tg-v83-border);
+  background: rgba(255,255,255,0.96);
+  text-align: right;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease;
+}
+
+#telegram-settings-form .telegram-chatid-results button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px -30px rgba(15,23,42,0.2);
+}
+
+#telegram-settings-form .telegram-chatid-results button.is-active {
+  border-color: rgba(14,165,233,0.28);
+  background: rgba(239,246,255,0.98);
+}
+
+#telegram-settings-form .telegram-chatid-results__title {
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.7;
+  color: var(--tg-v83-text);
+  word-break: break-word;
+}
+
+#telegram-settings-form .telegram-chatid-results__meta {
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.8;
+  color: var(--tg-v83-muted);
+}
+
+#telegram-settings-form .telegram-chatid-results small {
+  font-size: 10px;
+  line-height: 1.8;
+  color: var(--tg-v83-muted);
+}
+
+@media (max-width: 1024px) {
+  #telegram-settings-form .telegram-executive-hero {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form .telegram-executive-actions {
+    justify-content: flex-start;
+  }
+
+  #telegram-settings-form .telegram-executive-grid,
+  #telegram-settings-form .telegram-executive-form,
+  #telegram-settings-form .telegram-chatid-guide__steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  #telegram-settings-form .telegram-executive-shell,
+  #telegram-settings-form .telegram-chatid-guide {
+    padding: 14px;
+  }
+
+  #telegram-settings-form .telegram-executive-card {
+    flex-direction: column;
+  }
+
+  #telegram-settings-form .telegram-state {
+    width: 100%;
+  }
+
+  #telegram-settings-form .telegram-chatid-guide__head {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form .telegram-chatid-picker {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form .telegram-chatid-picker__btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+html.dark #telegram-settings-form .telegram-executive-shell,
+html.dark #telegram-settings-form .telegram-chatid-guide,
+html.dark #telegram-settings-form .telegram-executive-card,
+html.dark #telegram-settings-form .telegram-chatid-results button,
+html.dark #telegram-settings-form .telegram-chatid-guide__steps li {
+  border-color: var(--tg-v83-border-strong);
+  background: rgba(15,23,42,0.74);
+}
+
+html.dark #telegram-settings-form .telegram-executive-kicker,
+html.dark #telegram-settings-form .telegram-mode-toggle,
+html.dark #telegram-settings-form .telegram-mode-toggle button.is-active,
+html.dark #telegram-settings-form .telegram-state,
+html.dark #telegram-settings-form .telegram-chatid-guide__steps li span {
+  background: rgba(15,23,42,0.84);
+  border-color: var(--tg-v83-border-strong);
+  color: rgb(226,232,240);
+}
+
+html.dark #telegram-settings-form .telegram-executive-copy p,
+html.dark #telegram-settings-form .telegram-chatid-guide__head p,
+html.dark #telegram-settings-form .telegram-chatid-results__meta,
+html.dark #telegram-settings-form .telegram-chatid-results small {
+  color: rgb(148,163,184);
+}
+
+html.dark #telegram-settings-form .telegram-state.is-ok {
+  background: rgba(6,95,70,0.25);
+  color: rgb(167,243,208);
+}
+
+html.dark #telegram-settings-form .telegram-state.is-risk {
+  background: rgba(127,29,29,0.32);
+  color: rgb(254,202,202);
+}
+
+html.dark #telegram-settings-form .telegram-state.is-idle {
+  background: rgba(15,23,42,0.82);
+  color: rgb(203,213,225);
+}
+
+html.dark #telegram-settings-form .telegram-state.is-info {
+  background: rgba(30,41,59,0.72);
+  color: rgb(191,219,254);
+}
+
+html.dark #telegram-settings-form .telegram-chatid-guide__hint,
+html.dark #telegram-settings-form .telegram-chatid-results button.is-active {
+  background: rgba(30,41,59,0.78);
+  color: rgb(226,232,240);
+}
+
+/* Compact Chat ID guide — keeps the simple Telegram setup visible with less scrolling. */
+#telegram-settings-form .telegram-chatid-guide {
+  gap: 10px;
+  padding: 14px;
+  border-radius: 20px;
+}
+
+#telegram-settings-form .telegram-chatid-guide__head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+#telegram-settings-form .telegram-chatid-guide__head strong {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#telegram-settings-form .telegram-chatid-guide__head p {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+#telegram-settings-form .telegram-chatid-guide__head .ux-btn,
+#telegram-settings-form .telegram-chatid-guide__head a {
+  min-height: 34px !important;
+  border-radius: 14px !important;
+  padding-inline: 12px !important;
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps li {
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.55;
+  min-height: 44px;
+}
+
+#telegram-settings-form .telegram-chatid-guide__steps li span {
+  min-width: 22px;
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+}
+
+#telegram-settings-form .telegram-chatid-guide__hint {
+  padding: 9px 11px;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  #telegram-settings-form .telegram-chatid-guide__steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  #telegram-settings-form .telegram-chatid-guide {
+    padding: 12px;
+  }
+
+  #telegram-settings-form .telegram-chatid-guide__head {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form .telegram-chatid-guide__head .flex {
+    width: 100%;
+  }
+
+  #telegram-settings-form .telegram-chatid-guide__head .ux-btn,
+  #telegram-settings-form .telegram-chatid-guide__head a {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,120 @@
+/* Stage 76 — Phone sales table tools/search placement
+   Fixes the detached magnifier icon and makes the table tools match the approved search + page-size pattern. */
+
+.phone-sales-executive-page .phone-sales-table-header {
+  align-items: flex-start !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-tools {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  direction: ltr !important;
+  width: auto !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search {
+  position: relative !important;
+  direction: ltr !important;
+  display: block !important;
+  width: 330px !important;
+  max-width: min(330px, 56vw) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search i,
+.phone-sales-executive-page .phone-sales-table-search > i.fa-magnifying-glass {
+  position: absolute !important;
+  left: 13px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search input,
+.phone-sales-executive-page .phone-sales-table-search input[type='text'],
+.phone-sales-executive-page .phone-sales-table-search input[type='search'] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  padding: 0 14px 0 38px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: #0f172a !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 38px !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search input::-webkit-search-decoration,
+.phone-sales-executive-page .phone-sales-table-search input::-webkit-search-cancel-button,
+.phone-sales-executive-page .phone-sales-table-search input::-webkit-search-results-button,
+.phone-sales-executive-page .phone-sales-table-search input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size {
+  flex: 0 0 auto !important;
+  direction: rtl !important;
+  margin: 0 !important;
+}
+
+/* Safety: no loose search icon is allowed to render outside the search field. */
+.phone-sales-executive-page .phone-sales-section > i.fa-magnifying-glass,
+.phone-sales-executive-page .phone-sales-table-section > i.fa-magnifying-glass,
+.phone-sales-executive-page .phone-sales-table-header > i.fa-magnifying-glass {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .phone-sales-executive-page .phone-sales-table-tools {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-table-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-page-size {
+    width: fit-content !important;
+  }
+}

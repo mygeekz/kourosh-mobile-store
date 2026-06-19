@@ -1,0 +1,63 @@
+
+/* v129 — force ledger inline icons to the right side, keep v128 design */
+.partner-ledger-v128 .partner-ledger-v128__mini-box {
+  direction: rtl !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__mini-icon {
+  order: -1 !important;
+  margin-left: 10px !important;
+  margin-right: 0 !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__mini-copy {
+  order: 1 !important;
+  text-align: right !important;
+}
+
+/* quick summary cards: icon must stay on the right */
+.partner-ledger-v128 .partner-ledger-v128__quick-item {
+  direction: rtl !important;
+  flex-direction: row !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__quick-item > .partner-ledger-v128__box-icon {
+  order: -1 !important;
+  margin-left: 10px !important;
+  margin-right: 0 !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__quick-item > .min-w-0 {
+  order: 1 !important;
+  text-align: right !important;
+}
+
+/* top stat cards: keep icon on the right, including "آخرین به‌روزرسانی پرونده" */
+.partner-ledger-v128 .partner-ledger-v128__stat-head {
+  direction: rtl !important;
+  flex-direction: row !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__stat-head > .partner-ledger-v128__box-icon {
+  order: -1 !important;
+  margin-left: 10px !important;
+  margin-right: 0 !important;
+}
+
+.partner-ledger-v128 .partner-ledger-v128__stat-head > div {
+  order: 1 !important;
+  text-align: right !important;
+}
+
+/* If a FontAwesome glyph is missing, keep a visible fallback block */
+.partner-ledger-v128 .partner-ledger-v128__box-icon i,
+.partner-ledger-v128 .partner-ledger-v128__mini-icon i {
+  display: inline-block !important;
+  min-width: 1em !important;
+  min-height: 1em !important;
+  line-height: 1 !important;
+}

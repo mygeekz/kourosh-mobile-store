@@ -1,0 +1,69 @@
+{
+  "phase": "PHASE_30_DASHBOARD_DUPLICATE_SELECTOR_REDUCTION",
+  "scope": [
+    "styles/system/dashboard-smart-widgets-foundation.css"
+  ],
+  "changed_css_files": [],
+  "exact_duplicate_rule_groups": 0,
+  "extra_duplicate_occurrences": 0,
+  "rules_scanned_recursive": 141,
+  "file_stats": {
+    "styles/system/dashboard-smart-widgets-foundation.css": {
+      "bytes": 34752,
+      "lines": 948,
+      "important_count": 291,
+      "sha256": "9a6c6f44d7b71147ec498c4503eac0ffba7f746d9674e7ae28463c67ee2fbbfb"
+    }
+  },
+  "duplicates": [],
+  "same_selector_different_body_not_touched": [
+    {
+      "context": [],
+      "selector": ":root",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": "html.dark",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": ".app-sidebar :where(.sidebar-nav-link[aria-current=\"page\"], .ux-sidebar-list a[aria-current=\"page\"], .ux-sidebar-list button[aria-current=\"page\"])",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": ".app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active=\"true\"]",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": "html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active=\"true\"]",
+      "count": 3,
+      "distinct_bodies": 3
+    },
+    {
+      "context": [],
+      "selector": "html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open=\"true\"]",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": ".app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active=\"true\"] .icon-bubble",
+      "count": 2,
+      "distinct_bodies": 2
+    },
+    {
+      "context": [],
+      "selector": "html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active=\"true\"] .icon-bubble",
+      "count": 2,
+      "distinct_bodies": 2
+    }
+  ]
+}

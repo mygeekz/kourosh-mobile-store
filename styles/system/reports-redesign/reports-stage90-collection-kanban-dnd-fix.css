@@ -1,0 +1,23 @@
+/* Stage 90 — Collection center Kanban drag & drop fix */
+.collection-center-page .collection-kanban-card {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.collection-center-page .collection-kanban-card:active {
+  cursor: grabbing;
+}
+
+.collection-center-page .collection-kanban-card.is-dragging {
+  transform: scale(.985);
+}
+
+.collection-center-page .collection-kanban-column.is-drop-ready {
+  outline: 2px dashed rgba(99, 102, 241, .28);
+  outline-offset: -7px;
+}
+
+.collection-center-page .collection-kanban-column[data-kanban-stage] {
+  min-height: 22rem;
+}

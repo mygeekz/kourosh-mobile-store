@@ -1,0 +1,252 @@
+
+@layer components {
+  .smart-tooltip-layer {
+    z-index: 9999;
+    transition: opacity 140ms ease, transform 140ms ease;
+  }
+
+  .smart-tooltip-bubble {
+    max-width: min(320px, calc(100vw - 32px));
+    border-radius: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(15, 23, 42, 0.96);
+    color: #fff;
+    box-shadow: 0 18px 45px -24px rgba(15, 23, 42, 0.55);
+    padding: 10px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.75;
+    text-align: right;
+    direction: rtl;
+    backdrop-filter: blur(8px);
+    white-space: normal;
+  }
+
+  .smart-tooltip-bubble::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    transform: translateX(-50%) rotate(45deg);
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(15, 23, 42, 0.96);
+  }
+
+  button, a, input, select, textarea, [role='button'] {
+    transition: box-shadow 140ms ease, border-color 140ms ease, background-color 140ms ease, transform 140ms ease;
+  }
+}
+
+/* Stage 439 - SmartTooltipLayer viewport-aware premium tooltip */
+.smart-tooltip-layer {
+  z-index: 1200 !important;
+  transform: none !important;
+  transition: opacity 120ms ease, transform 150ms cubic-bezier(.2,.8,.2,1) !important;
+  will-change: opacity, transform, left, top !important;
+}
+
+.smart-tooltip-layer--hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.smart-tooltip-layer--visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.smart-tooltip-layer--bottom.smart-tooltip-layer--visible {
+  transform: translateY(2px) scale(1) !important;
+}
+
+.smart-tooltip-layer--top.smart-tooltip-layer--visible {
+  transform: translateY(-2px) scale(1) !important;
+}
+
+.smart-tooltip-bubble {
+  position: relative !important;
+  max-width: min(340px, calc(100vw - 28px)) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .74) !important;
+  background:
+    radial-gradient(circle at var(--smart-tooltip-arrow-x, 50%) 0%, rgba(56, 189, 248, .18), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 20px 52px -30px rgba(15, 23, 42, .34), 0 10px 24px -22px rgba(15,23,42,.18) !important;
+  padding: 10px 13px !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.75 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  backdrop-filter: blur(14px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.18) !important;
+  white-space: normal !important;
+}
+
+.smart-tooltip-bubble::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 12px !important;
+  height: 12px !important;
+  border: 1px solid rgba(203, 213, 225, .74) !important;
+  background: rgba(255, 255, 255, .94) !important;
+  transform: rotate(45deg) !important;
+  border-radius: 3px !important;
+}
+
+.smart-tooltip-layer--bottom .smart-tooltip-bubble::after {
+  top: -7px !important;
+  left: calc(var(--smart-tooltip-arrow-x, 50%) - 6px) !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.smart-tooltip-layer--top .smart-tooltip-bubble::after {
+  bottom: -7px !important;
+  left: calc(var(--smart-tooltip-arrow-x, 50%) - 6px) !important;
+  border-left: 0 !important;
+  border-top: 0 !important;
+}
+
+.smart-tooltip-layer--left .smart-tooltip-bubble::after {
+  right: -7px !important;
+  top: calc(var(--smart-tooltip-arrow-y, 50%) - 6px) !important;
+  border-left: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.smart-tooltip-layer--right .smart-tooltip-bubble::after {
+  left: -7px !important;
+  top: calc(var(--smart-tooltip-arrow-y, 50%) - 6px) !important;
+  border-right: 0 !important;
+  border-top: 0 !important;
+}
+
+html.dark .smart-tooltip-bubble {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background:
+    radial-gradient(circle at var(--smart-tooltip-arrow-x, 50%) 0%, rgba(56, 189, 248, .16), transparent 34%),
+    linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.94)) !important;
+  color: rgb(248 250 252) !important;
+  box-shadow: 0 24px 60px -32px rgba(2, 6, 23, .78), 0 10px 24px -22px rgba(2,6,23,.58) !important;
+}
+
+html.dark .smart-tooltip-bubble::after {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background: rgba(15, 23, 42, .96) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smart-tooltip-layer {
+    transition: none !important;
+  }
+}
+
+/* Stage 440 - Tooltip top layer + Apple-base header popovers */
+.smart-tooltip-layer {
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+}
+
+.smart-tooltip-bubble {
+  z-index: 2147483647 !important;
+}
+
+/* Apple-base: remove gradient/aura visual noise from header quick popovers. */
+.header-smart-popover {
+  z-index: 9000 !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  background: rgba(255, 255, 255, .98) !important;
+  background-image: none !important;
+  backdrop-filter: blur(16px) saturate(1.04) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.04) !important;
+  box-shadow: 0 22px 60px -34px rgba(15, 23, 42, .24), 0 8px 20px -18px rgba(15, 23, 42, .14) !important;
+}
+
+.header-smart-popover__aura {
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+.header-smart-popover__arrow {
+  background: rgba(255, 255, 255, .98) !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  box-shadow: none !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile::before,
+[data-ui-header-quick-panel] .header-finance-pulse-mini::before {
+  display: none !important;
+  content: none !important;
+  animation: none !important;
+}
+
+[data-ui-header-quick-panel] .header-finance-pulse-tile,
+[data-ui-header-quick-panel] .header-finance-pulse-mini {
+  background-image: none !important;
+}
+
+.header-smart-popover .header-quick-role-pill {
+  background: rgba(248, 250, 252, .96) !important;
+  box-shadow: none !important;
+}
+
+/* Keep the tooltip visually above open menus and avoid it being visually muted by menu layers. */
+.smart-tooltip-layer--visible {
+  z-index: 2147483647 !important;
+  filter: none !important;
+}
+
+html.dark .header-smart-popover {
+  border-color: rgba(51, 65, 85, .88) !important;
+  background: rgba(15, 23, 42, .98) !important;
+  background-image: none !important;
+  box-shadow: 0 24px 64px -36px rgba(2, 6, 23, .78), 0 8px 20px -18px rgba(2, 6, 23, .54) !important;
+}
+
+html.dark .header-smart-popover__arrow {
+  border-color: rgba(51, 65, 85, .88) !important;
+  background: rgba(15, 23, 42, .98) !important;
+}
+
+html.dark .header-smart-popover .header-quick-role-pill {
+  background: rgba(30, 41, 59, .96) !important;
+}
+
+/* Stage 441 - Body portal tooltip top-layer enforcement */
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  contain: layout style paint !important;
+  pointer-events: none !important;
+}
+
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] .smart-tooltip-bubble {
+  position: relative !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  transform: translateZ(0) !important;
+}
+
+/* Ensure header popovers/dropdowns can never overtake the body-portal tooltip. */
+.header-smart-popover,
+[data-ui-header-quick-panel],
+[data-ui-header-menu],
+[data-ui-dropdown],
+[role="menu"] {
+  z-index: 9000 !important;
+}
+
+/* App shell/header/sidebar layers must stay under tooltip top layer. */
+.header-premium-shell,
+[data-ui-navigation="header"],
+[data-ui-sidebar],
+[data-ui-navigation="sidebar"] {
+  z-index: 1000 !important;
+}

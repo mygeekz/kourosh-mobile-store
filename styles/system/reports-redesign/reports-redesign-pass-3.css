@@ -1,0 +1,439 @@
+/* Phase 76 — Reports Redesign Pass 3
+   Financial / cashflow / debtors / creditors operational reports.
+   Scope-only visual polish. No report logic should depend on this file. */
+
+.reports-financial-redesign-v1 {
+  --report-fin-surface: rgba(255, 255, 255, 0.92);
+  --report-fin-surface-soft: rgba(248, 250, 252, 0.78);
+  --report-fin-border: rgba(148, 163, 184, 0.24);
+  --report-fin-border-strong: rgba(148, 163, 184, 0.34);
+  --report-fin-text: rgb(15, 23, 42);
+  --report-fin-muted: rgb(100, 116, 139);
+  --report-fin-shadow: 0 18px 48px rgba(15, 23, 42, 0.07);
+  --report-fin-shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.055);
+  --report-fin-radius-xl: 26px;
+  --report-fin-radius-lg: 20px;
+}
+
+.dark .reports-financial-redesign-v1,
+html.dark .reports-financial-redesign-v1 {
+  --report-fin-surface: rgba(2, 6, 23, 0.84);
+  --report-fin-surface-soft: rgba(15, 23, 42, 0.68);
+  --report-fin-border: rgba(148, 163, 184, 0.18);
+  --report-fin-border-strong: rgba(148, 163, 184, 0.26);
+  --report-fin-text: rgb(248, 250, 252);
+  --report-fin-muted: rgb(148, 163, 184);
+  --report-fin-shadow: 0 22px 54px rgba(0, 0, 0, 0.28);
+  --report-fin-shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.22);
+}
+
+.reports-financial-redesign-v1.report-page,
+.reports-financial-redesign-v1.cashflow-report-page {
+  min-width: 0;
+}
+
+/* Financial overview */
+.financial-overview-redesign-v1 .report-header-shell,
+.reports-financial-redesign-v1 .cashflow-filter-panel,
+.reports-financial-redesign-v1.debtors-report-page .debtors-report-hero,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-hero {
+  border-color: var(--report-fin-border) !important;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(14, 165, 233, 0.09), transparent 34%),
+    linear-gradient(180deg, var(--report-fin-surface), var(--report-fin-surface-soft)) !important;
+  box-shadow: var(--report-fin-shadow) !important;
+  border-radius: 30px !important;
+  overflow: hidden;
+}
+
+.financial-overview-redesign-v1 .report-header-shell {
+  padding: 0.75rem !important;
+}
+
+.financial-overview-redesign-v1 .report-filter-grid > div,
+.financial-overview-redesign-v1 .report-header-main--single > div:last-child,
+.reports-financial-redesign-v1 .cashflow-filter-panel__body .cashflow-filter-field,
+.reports-financial-redesign-v1 .cashflow-filter-panel__body > .rounded-2xl {
+  border-color: var(--report-fin-border) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045) !important;
+}
+
+.dark .financial-overview-redesign-v1 .report-filter-grid > div,
+.dark .financial-overview-redesign-v1 .report-header-main--single > div:last-child,
+.dark .reports-financial-redesign-v1 .cashflow-filter-panel__body .cashflow-filter-field,
+.dark .reports-financial-redesign-v1 .cashflow-filter-panel__body > .rounded-2xl {
+  background: rgba(15, 23, 42, 0.62) !important;
+  box-shadow: none !important;
+}
+
+.financial-overview-redesign-v1 .premium-stat-card,
+.financial-overview-redesign-v1 [class*="premium-stat-card"],
+.reports-financial-redesign-v1 .cashflow-kpi-card,
+.reports-financial-redesign-v1.debtors-report-page .debtors-kpi-card,
+.reports-financial-redesign-v1.creditors-report-page .creditors-kpi-card {
+  border-color: var(--report-fin-border) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.76)) !important;
+  box-shadow: var(--report-fin-shadow-soft) !important;
+  border-radius: var(--report-fin-radius-xl) !important;
+}
+
+.dark .financial-overview-redesign-v1 .premium-stat-card,
+.dark .financial-overview-redesign-v1 [class*="premium-stat-card"],
+.dark .reports-financial-redesign-v1 .cashflow-kpi-card,
+.dark .reports-financial-redesign-v1.debtors-report-page .debtors-kpi-card,
+.dark .reports-financial-redesign-v1.creditors-report-page .creditors-kpi-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(2, 6, 23, 0.72)) !important;
+  box-shadow: var(--report-fin-shadow-soft) !important;
+}
+
+.financial-overview-redesign-v1 .rounded-3xl.border,
+.reports-financial-redesign-v1 .cashflow-chart-card,
+.reports-financial-redesign-v1 .cashflow-risk-card,
+.reports-financial-redesign-v1.debtors-report-page .debtors-table-card,
+.reports-financial-redesign-v1.creditors-report-page .creditors-top-card,
+.reports-financial-redesign-v1.creditors-report-page .creditors-table-card {
+  border-color: var(--report-fin-border) !important;
+  background: var(--report-fin-surface) !important;
+  box-shadow: var(--report-fin-shadow-soft) !important;
+  border-radius: var(--report-fin-radius-xl) !important;
+}
+
+/* Cashflow workbench */
+.reports-financial-redesign-v1 .cashflow-filter-panel {
+  padding: 1rem !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-filter-panel__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.3rem 0.15rem 0.9rem;
+}
+
+.reports-financial-redesign-v1 .cashflow-filter-panel__icon,
+.reports-financial-redesign-v1 .cashflow-card-icon,
+.reports-financial-redesign-v1 .cashflow-risk-card__icon,
+.reports-financial-redesign-v1.debtors-report-page .debtors-report-hero .h-11,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-hero__icon {
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.12), rgba(99, 102, 241, 0.08)) !important;
+  border: 1px solid rgba(14, 165, 233, 0.18) !important;
+  color: rgb(2, 132, 199) !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-filter-panel__head h3 {
+  margin: 0;
+  color: var(--report-fin-text);
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.reports-financial-redesign-v1 .cashflow-filter-panel__head p {
+  margin: 0.35rem 0 0;
+  color: var(--report-fin-muted);
+  font-size: 0.82rem;
+  line-height: 1.9;
+}
+
+.reports-financial-redesign-v1 .cashflow-filter-panel__body {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.2fr) repeat(3, minmax(160px, 0.85fr)) auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.reports-financial-redesign-v1 .cashflow-select-field,
+.reports-financial-redesign-v1 .report-local-search-input,
+.reports-financial-redesign-v1 .cashflow-refresh-button,
+.reports-financial-redesign-v1 .creditors-refresh-button,
+.reports-financial-redesign-v1 .creditors-detail-button {
+  border-radius: 16px !important;
+  border: 1px solid var(--report-fin-border) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: var(--report-fin-text) !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease !important;
+}
+
+.dark .reports-financial-redesign-v1 .cashflow-select-field,
+.dark .reports-financial-redesign-v1 .report-local-search-input,
+.dark .reports-financial-redesign-v1 .cashflow-refresh-button,
+.dark .reports-financial-redesign-v1 .creditors-refresh-button,
+.dark .reports-financial-redesign-v1 .creditors-detail-button {
+  background: rgba(15, 23, 42, 0.72) !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-refresh-button,
+.reports-financial-redesign-v1 .creditors-refresh-button,
+.reports-financial-redesign-v1 .creditors-detail-button,
+.reports-financial-redesign-v1.debtors-report-page a.bg-primary-600,
+.reports-financial-redesign-v1.debtors-report-page button.bg-slate-900 {
+  min-height: 42px;
+  padding-inline: 1rem !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.14) !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-refresh-button:hover,
+.reports-financial-redesign-v1 .creditors-refresh-button:hover,
+.reports-financial-redesign-v1 .creditors-detail-button:hover,
+.reports-financial-redesign-v1.debtors-report-page a.bg-primary-600:hover,
+.reports-financial-redesign-v1.debtors-report-page button.bg-slate-900:hover {
+  transform: translateY(-1px);
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-grid,
+.reports-financial-redesign-v1 .debtors-kpi-grid,
+.reports-financial-redesign-v1 .creditors-kpi-grid {
+  gap: 0.8rem !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-card,
+.reports-financial-redesign-v1 .debtors-kpi-card,
+.reports-financial-redesign-v1 .creditors-kpi-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-card::before,
+.reports-financial-redesign-v1 .debtors-kpi-card::before,
+.reports-financial-redesign-v1 .creditors-kpi-card::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.85), rgba(99, 102, 241, 0.7));
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-card--outflow::before,
+.reports-financial-redesign-v1.debtors-report-page .debtors-kpi-card:nth-child(2)::before,
+.reports-financial-redesign-v1.creditors-report-page .creditors-kpi-card:nth-child(2)::before {
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.86), rgba(251, 146, 60, 0.76));
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-card--net::before {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.86), rgba(14, 165, 233, 0.72));
+}
+
+.reports-financial-redesign-v1 .cashflow-kpi-value,
+.reports-financial-redesign-v1 .debtors-kpi-card .text-2xl,
+.reports-financial-redesign-v1 .creditors-kpi-card .text-xl {
+  letter-spacing: -0.035em;
+  color: var(--report-fin-text) !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-risk-grid,
+.reports-financial-redesign-v1 .cashflow-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.reports-financial-redesign-v1 .cashflow-chart-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.reports-financial-redesign-v1 .cashflow-risk-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-risk-card__label,
+.reports-financial-redesign-v1 .cashflow-risk-card p,
+.reports-financial-redesign-v1.debtors-report-page .text-muted,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-subtitle {
+  color: var(--report-fin-muted) !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-risk-card__value {
+  margin-top: 0.15rem;
+  color: var(--report-fin-text) !important;
+  font-weight: 950;
+}
+
+.reports-financial-redesign-v1 .cashflow-chart-card {
+  overflow: hidden;
+}
+
+.reports-financial-redesign-v1 .cashflow-chart-card > .text-sm {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--report-fin-text) !important;
+  font-weight: 950 !important;
+}
+
+.reports-financial-redesign-v1 .cashflow-chart-card > .text-sm::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgb(14, 165, 233);
+  box-shadow: 0 0 0 5px rgba(14, 165, 233, 0.1);
+}
+
+/* Debtors / creditors operational tables */
+.reports-financial-redesign-v1.debtors-report-page,
+.reports-financial-redesign-v1.creditors-report-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.reports-financial-redesign-v1.debtors-report-page .debtors-report-hero,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-hero {
+  padding: 0 !important;
+}
+
+.reports-financial-redesign-v1.debtors-report-page .debtors-report-hero > .flex,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-hero__head {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.12));
+}
+
+.dark .reports-financial-redesign-v1.debtors-report-page .debtors-report-hero > .flex,
+.dark .reports-financial-redesign-v1.creditors-report-page .creditors-report-hero__head {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.42), rgba(2, 6, 23, 0.1));
+}
+
+.reports-financial-redesign-v1.debtors-report-page .debtors-search-row,
+.reports-financial-redesign-v1.creditors-report-page .creditors-report-tools {
+  border: 1px solid var(--report-fin-border);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.54);
+  padding: 0.55rem;
+}
+
+.dark .reports-financial-redesign-v1.debtors-report-page .debtors-search-row,
+.dark .reports-financial-redesign-v1.creditors-report-page .creditors-report-tools {
+  background: rgba(15, 23, 42, 0.56);
+}
+
+.reports-financial-redesign-v1.debtors-report-page .debtors-table-card,
+.reports-financial-redesign-v1.creditors-report-page .creditors-top-card,
+.reports-financial-redesign-v1.creditors-report-page .creditors-table-card {
+  overflow: hidden;
+}
+
+.reports-financial-redesign-v1 .debtors-table thead,
+.reports-financial-redesign-v1 .creditors-table thead {
+  background: rgba(14, 165, 233, 0.07) !important;
+}
+
+.reports-financial-redesign-v1 .debtors-table th,
+.reports-financial-redesign-v1 .creditors-table th {
+  color: var(--report-fin-text) !important;
+  font-size: 0.78rem;
+  letter-spacing: -0.015em;
+}
+
+.reports-financial-redesign-v1 .debtors-table td,
+.reports-financial-redesign-v1 .creditors-table td {
+  border-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+.reports-financial-redesign-v1 .debtors-table tbody tr,
+.reports-financial-redesign-v1 .creditors-table tbody tr {
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.reports-financial-redesign-v1 .debtors-table tbody tr:hover,
+.reports-financial-redesign-v1 .creditors-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.045) !important;
+}
+
+.reports-financial-redesign-v1 .creditors-avatar,
+.reports-financial-redesign-v1 .creditors-rank-avatar {
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.14), rgba(99, 102, 241, 0.12)) !important;
+  border-color: rgba(14, 165, 233, 0.2) !important;
+  color: rgb(2, 132, 199) !important;
+}
+
+.reports-financial-redesign-v1 .creditors-local-filter-pill,
+.reports-financial-redesign-v1 .report-basis-badge {
+  border-color: var(--report-fin-border) !important;
+  background: rgba(255, 255, 255, 0.66) !important;
+  color: var(--report-fin-muted) !important;
+}
+
+.dark .reports-financial-redesign-v1 .creditors-local-filter-pill,
+.dark .reports-financial-redesign-v1 .report-basis-badge {
+  background: rgba(15, 23, 42, 0.64) !important;
+}
+
+.reports-financial-redesign-v1 .report-local-search-input:focus,
+.reports-financial-redesign-v1 .cashflow-select-field:focus,
+.reports-financial-redesign-v1 button:focus-visible,
+.reports-financial-redesign-v1 a:focus-visible {
+  outline: none !important;
+  border-color: rgba(14, 165, 233, 0.42) !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.13) !important;
+}
+
+@media (max-width: 1280px) {
+  .reports-financial-redesign-v1 .cashflow-filter-panel__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reports-financial-redesign-v1 .cashflow-filter-panel__body .cashflow-preset-chips,
+  .reports-financial-redesign-v1 .cashflow-refresh-button {
+    grid-column: 1 / -1;
+  }
+
+  .reports-financial-redesign-v1 .cashflow-risk-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .financial-overview-redesign-v1 .report-header-shell,
+  .reports-financial-redesign-v1 .cashflow-filter-panel,
+  .reports-financial-redesign-v1.debtors-report-page .debtors-report-hero,
+  .reports-financial-redesign-v1.creditors-report-page .creditors-report-hero {
+    border-radius: 24px !important;
+  }
+
+  .reports-financial-redesign-v1 .cashflow-filter-panel__body,
+  .reports-financial-redesign-v1 .cashflow-risk-grid,
+  .reports-financial-redesign-v1 .cashflow-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-financial-redesign-v1.debtors-report-page .debtors-search-row,
+  .reports-financial-redesign-v1.creditors-report-page .creditors-report-tools {
+    align-items: stretch !important;
+  }
+
+  .reports-financial-redesign-v1 .cashflow-refresh-button,
+  .reports-financial-redesign-v1 .creditors-refresh-button,
+  .reports-financial-redesign-v1 .creditors-detail-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .reports-financial-redesign-v1 {
+    --report-fin-radius-xl: 22px;
+  }
+
+  .financial-overview-redesign-v1 .report-header-shell,
+  .reports-financial-redesign-v1 .cashflow-filter-panel,
+  .reports-financial-redesign-v1.debtors-report-page .debtors-report-hero,
+  .reports-financial-redesign-v1.creditors-report-page .creditors-report-hero {
+    margin-inline: -0.25rem;
+  }
+
+  .reports-financial-redesign-v1 .cashflow-kpi-value,
+  .reports-financial-redesign-v1 .debtors-kpi-card .text-2xl,
+  .reports-financial-redesign-v1 .creditors-kpi-card .text-xl {
+    font-size: 1.2rem !important;
+  }
+}

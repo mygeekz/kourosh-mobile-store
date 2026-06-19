@@ -1,0 +1,285 @@
+/* Stage 65 — Compare sales final filter/card/modal fixes
+   Scope: /reports/periodic-comparison only. */
+
+/* Filter: prevent controls from floating over divider line and make date/baseline fields solid. */
+.compare-sales-executive-page .compare-sales-filter-panel {
+  padding: 14px 16px !important;
+  gap: 12px !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row {
+  align-items: flex-start !important;
+  row-gap: 10px !important;
+  column-gap: 10px !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--primary {
+  padding-bottom: 2px !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box,
+.compare-sales-executive-page .compare-sales-baseline-select {
+  flex: 0 0 164px !important;
+  width: 164px !important;
+  min-width: 164px !important;
+  max-width: 164px !important;
+  min-height: 52px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box > span,
+.compare-sales-executive-page .compare-sales-baseline-select > span {
+  height: 14px !important;
+  line-height: 14px !important;
+  padding: 0 5px !important;
+  margin: 0 !important;
+  color: #64748b !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-size: .66rem !important;
+  font-weight: 850 !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field,
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__control,
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__control.compare-sales-date-input {
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__input,
+.compare-sales-executive-page .compare-sales-date-box input[data-app-date-input='true'],
+.compare-sales-executive-page .compare-sales-baseline-select select {
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .44) !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  color: #0f172a !important;
+  font-size: .82rem !important;
+  font-weight: 900 !important;
+  line-height: 36px !important;
+  box-sizing: border-box !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__input,
+.compare-sales-executive-page .compare-sales-date-box input[data-app-date-input='true'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  direction: ltr !important;
+  text-align: center !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__icon { display: none !important; }
+
+.compare-sales-executive-page .compare-sales-refresh-button {
+  margin-right: auto !important;
+  margin-top: 14px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding-inline: 13px !important;
+  border-radius: 13px !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--secondary {
+  padding-top: 11px !important;
+  margin-top: 2px !important;
+  align-items: center !important;
+  border-top: 1px solid rgba(226, 232, 240, .9) !important;
+}
+
+/* Section title icon. */
+.compare-sales-executive-page .compare-sales-section__head h2 {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.compare-sales-executive-page .compare-sales-section__head h2 i {
+  width: 30px !important;
+  height: 30px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 12px !important;
+  color: #2563eb !important;
+  background: #eff6ff !important;
+  border: 1px solid rgba(59, 130, 246, .16) !important;
+  font-size: .86rem !important;
+}
+
+/* Metric cards: remove inner text boxes/highlights. */
+.compare-sales-executive-page .compare-sales-metric-card,
+.compare-sales-executive-page .compare-sales-metric-card * {
+  box-shadow: none !important;
+}
+
+.compare-sales-executive-page .compare-sales-metric-card > div,
+.compare-sales-executive-page .compare-sales-metric-card__label,
+.compare-sales-executive-page .compare-sales-metric-card strong,
+.compare-sales-executive-page .compare-sales-metric-card small {
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  border-radius: 0 !important;
+  padding-inline: 0 !important;
+}
+
+.compare-sales-executive-page .compare-sales-metric-card > div::before,
+.compare-sales-executive-page .compare-sales-metric-card > div::after,
+.compare-sales-executive-page .compare-sales-metric-card__label::before,
+.compare-sales-executive-page .compare-sales-metric-card__label::after,
+.compare-sales-executive-page .compare-sales-metric-card strong::before,
+.compare-sales-executive-page .compare-sales-metric-card strong::after,
+.compare-sales-executive-page .compare-sales-metric-card small::before,
+.compare-sales-executive-page .compare-sales-metric-card small::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Portal modal: truly above sidebar and centered in viewport. */
+.compare-sales-details-portal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 24px !important;
+  background: rgba(15, 23, 42, .28) !important;
+  backdrop-filter: blur(10px) !important;
+  direction: rtl !important;
+}
+
+.compare-sales-details-shell {
+  width: min(1040px, calc(100vw - 48px)) !important;
+  max-height: min(86vh, 820px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  box-shadow: 0 26px 80px rgba(15, 23, 42, .24) !important;
+}
+
+.compare-sales-details-shell__header {
+  min-height: 64px !important;
+  padding: 13px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  background: #fff !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+}
+
+.compare-sales-details-shell__title {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+.compare-sales-details-shell__icon,
+.compare-sales-details-shell__close {
+  width: 36px !important;
+  height: 36px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  background: #f8fafc !important;
+  color: #2563eb !important;
+}
+
+.compare-sales-details-shell__close {
+  color: #475569 !important;
+  cursor: pointer !important;
+}
+
+.compare-sales-details-shell__title strong {
+  display: block !important;
+  color: #0f172a !important;
+  font-size: .98rem !important;
+  font-weight: 950 !important;
+  line-height: 1.45 !important;
+}
+
+.compare-sales-details-shell__title small {
+  display: block !important;
+  margin-top: 2px !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 750 !important;
+}
+
+.compare-sales-details-shell .compare-sales-details-modal {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  background: #f8fafc !important;
+}
+
+.compare-sales-details-action {
+  height: 36px !important;
+  min-width: max-content !important;
+  padding: 0 14px !important;
+  border-radius: 999px !important;
+  font-size: .8rem !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+  gap: 8px !important;
+}
+
+@media (max-width: 760px) {
+  .compare-sales-executive-page .compare-sales-date-box,
+  .compare-sales-executive-page .compare-sales-baseline-select {
+    flex: 1 1 11rem !important;
+    width: auto !important;
+    min-width: 11rem !important;
+    max-width: none !important;
+  }
+
+  .compare-sales-executive-page .compare-sales-refresh-button {
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .compare-sales-details-portal {
+    padding: 10px !important;
+  }
+
+  .compare-sales-details-shell {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 20px !important;
+  }
+}

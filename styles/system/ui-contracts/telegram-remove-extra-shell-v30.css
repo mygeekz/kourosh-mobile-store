@@ -1,0 +1,47 @@
+/* Phase 30 — Telegram: remove the extra middle surface.
+   Keep the page-level Apple background and the actual field/cards, but make layout wrappers transparent. */
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-form,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-form > .grid,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .grid.grid-cols-1.gap-4.md\:grid-cols-2,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .grid.grid-cols-1.gap-4.md\:grid-cols-2.items-stretch,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-form-grid,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-fields-grid {
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+/* The section shell should be the only broad content surface inside the main Telegram background. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell {
+  padding: 28px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  background-image: none !important;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.045) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell {
+  border-color: rgba(51, 65, 85, 0.84) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24) !important;
+}
+
+/* Field/card objects keep their own Apple cards. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .modal-field,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-field--wide,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-route-status-card,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-guide-card {
+  border-radius: 22px !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-executive-shell {
+    padding: 18px !important;
+    border-radius: 24px !important;
+  }
+}

@@ -1,0 +1,193 @@
+/* Stage 131 — Cashflow filter row final alignment
+   Scope-limited to /reports/cashflow.
+   Fixes the filter area shown in the screenshot: row balance, date field flattening,
+   compact forecast control, and breathing room from the lower panel edge. */
+
+.cashflow-report-page .cashflow-filter-panel {
+  padding: 18px 20px 20px !important;
+}
+
+.cashflow-report-page .cashflow-filter-panel__body {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  direction: rtl !important;
+}
+
+.cashflow-report-page .cashflow-filter-row {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  direction: rtl !important;
+}
+
+.cashflow-report-page .cashflow-filter-row--presets {
+  flex-wrap: nowrap !important;
+}
+
+.cashflow-report-page .cashflow-filter-row--dates {
+  align-items: flex-start !important;
+  padding-bottom: 4px !important;
+}
+
+.cashflow-report-page .cashflow-preset-chips {
+  flex: 1 1 430px !important;
+  width: auto !important;
+  min-width: min(100%, 360px) !important;
+  max-width: 520px !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--forecast.report-filter-field,
+.cashflow-report-page .cashflow-filter-field--forecast[data-ui-report-filter-field="true"] {
+  flex: 0 0 132px !important;
+  width: 132px !important;
+  min-width: 132px !important;
+  max-width: 132px !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.cashflow-report-page .cashflow-refresh-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 108px !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+  align-self: flex-end !important;
+}
+
+.cashflow-report-page .cashflow-filter-row--dates .cashflow-filter-field--date.report-filter-field,
+.cashflow-report-page .cashflow-filter-row--dates .cashflow-filter-field--date[data-ui-report-filter-field="true"] {
+  flex: 0 1 204px !important;
+  width: 204px !important;
+  min-width: 184px !important;
+  max-width: 214px !important;
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+/* remove every remaining structural frame around date/forecast fields */
+.cashflow-report-page .cashflow-filter-field.report-filter-field,
+.cashflow-report-page .cashflow-filter-field[data-ui-report-filter-field="true"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-filter-field .report-filter-field__head {
+  height: 16px !important;
+  min-height: 16px !important;
+  margin-bottom: 3px !important;
+  padding-inline: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-filter-field .report-filter-field__body,
+.cashflow-report-page .cashflow-filter-field .report-filter-field__body > *,
+.cashflow-report-page .cashflow-filter-field :where(.app-date-field, .app-date-field__control) {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.cashflow-report-page .cashflow-date-input {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: rgba(255, 255, 255, .94) !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .28) !important;
+  transform: none !important;
+}
+
+.cashflow-report-page .cashflow-select-field {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: .78rem !important;
+}
+
+.cashflow-report-page .cashflow-refresh-button {
+  height: 38px !important;
+  border-radius: 14px !important;
+}
+
+.cashflow-report-page .cashflow-preset-chips.report-date-presets,
+.cashflow-report-page .cashflow-preset-chips.report-date-presets.report-date-presets--modern,
+.cashflow-report-page [data-ui-report-date-presets="true"].cashflow-preset-chips {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-preset-chips .report-date-presets__chips,
+.cashflow-report-page .cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+}
+
+.dark .cashflow-report-page .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.dark .cashflow-report-page .cashflow-date-input,
+.dark .cashflow-report-page .cashflow-select-field {
+  border-color: rgba(51, 65, 85, .9) !important;
+  background: rgba(15, 23, 42, .78) !important;
+  color: #f8fafc !important;
+}
+
+@media (max-width: 1180px) {
+  .cashflow-report-page .cashflow-filter-row--presets {
+    flex-wrap: wrap !important;
+  }
+
+  .cashflow-report-page .cashflow-preset-chips,
+  .cashflow-report-page .cashflow-filter-field--forecast.report-filter-field,
+  .cashflow-report-page .cashflow-refresh-button {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+
+  .cashflow-report-page .cashflow-filter-row--dates {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(184px, 1fr)) !important;
+  }
+
+  .cashflow-report-page .cashflow-filter-row--dates .cashflow-filter-field--date.report-filter-field,
+  .cashflow-report-page .cashflow-filter-row--dates .cashflow-filter-field--date[data-ui-report-filter-field="true"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .cashflow-report-page .cashflow-filter-row--dates {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cashflow-report-page .cashflow-preset-chips .report-date-presets__chips,
+  .cashflow-report-page .cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}

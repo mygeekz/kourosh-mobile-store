@@ -1,0 +1,77 @@
+
+/* v42 — based on v41.
+   1) Fix truncated customer connection option labels.
+   2) Restore Apple-base background for مرکز عملیات تلگرام. */
+
+/* Customer connection options: allow complete labels, no ellipsis. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle {
+  grid-template-columns: repeat(2, minmax(128px, 1fr)) !important;
+  gap: 0.75rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button {
+  min-height: 4.8rem !important;
+  padding: 0.72rem 0.8rem !important;
+  overflow: visible !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button small {
+  display: block !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button strong {
+  line-height: 1.55 !important;
+  font-size: 0.8rem !important;
+  margin-bottom: 0.2rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button small {
+  line-height: 1.45 !important;
+  font-size: 0.68rem !important;
+}
+
+/* Center operations Telegram: give the main card a real Apple-base surface again. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+  box-shadow: 0 14px 36px -30px rgba(15, 23, 42, 0.22) !important;
+  backdrop-filter: none !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+  background: rgba(15, 23, 42, 0.84) !important;
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  box-shadow: 0 16px 36px -28px rgba(2, 6, 23, 0.72) !important;
+}
+
+/* Neutralize colored decorative gradients inside the operations card without flattening the card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child::before,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Keep nested status panel readable inside the restored surface. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .bg-white\/80,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .bg-white\/90 {
+  background: rgba(248, 250, 252, 0.9) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .dark\:bg-slate-950\/60,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .dark\:bg-slate-950\/70 {
+  background: rgba(2, 6, 23, 0.64) !important;
+  border-color: rgba(51, 65, 85, 0.9) !important;
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle {
+    grid-template-columns: 1fr !important;
+  }
+}

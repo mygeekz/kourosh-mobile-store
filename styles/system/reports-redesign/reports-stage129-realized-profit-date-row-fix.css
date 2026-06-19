@@ -1,0 +1,88 @@
+/* Stage 129 — Realized Profit date row fix
+   - move both date boxes to a dedicated second row
+   - keep them side by side
+   - remove any remaining outer card feel around date fields */
+
+.realized-profit-filter-bar {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+.realized-profit-filter-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  direction: rtl !important;
+}
+
+.realized-profit-filter-row--primary {
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+}
+
+.realized-profit-filter-row--dates {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(190px, 214px)) !important;
+  justify-content: start !important;
+  align-items: start !important;
+  gap: 12px !important;
+}
+
+.realized-profit-date-presets {
+  flex: 1 1 370px !important;
+  min-width: min(100%, 350px) !important;
+  max-width: 470px !important;
+}
+
+.realized-profit-refresh-button {
+  flex: 0 0 auto !important;
+  align-self: center !important;
+}
+
+.realized-profit-date-field.report-filter-field,
+.realized-profit-date-field[data-ui-report-filter-field="true"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  align-self: start !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.realized-profit-date-field .report-filter-field__head,
+.realized-profit-date-field .report-filter-field__body,
+.realized-profit-date-field .report-filter-field__body > *,
+.realized-profit-date-field .app-date-field,
+.realized-profit-date-field .app-date-field__control {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.realized-profit-date-field .report-filter-field__body {
+  padding: 0 !important;
+}
+
+.realized-profit-date-field :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.realized-profit-date-input {
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .28) !important;
+}
+
+@media (max-width: 900px) {
+  .realized-profit-filter-row--dates {
+    grid-template-columns: 1fr !important;
+  }
+
+  .realized-profit-refresh-button,
+  .realized-profit-date-presets {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}

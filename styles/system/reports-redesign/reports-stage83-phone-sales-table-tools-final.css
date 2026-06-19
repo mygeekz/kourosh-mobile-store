@@ -1,0 +1,201 @@
+/* Stage 83 — Phone sales table tools final unified fix
+   Root cause found:
+   1) Search had two visible frames because the wrapper had a border while the input/focus styles could still draw their own frame.
+      Final fix: wrapper is only a positioning shell; the input owns the single visible border.
+   2) Page-size label fell outside because markup used phone-sales-page-size-shell but its final CSS was not imported after stage82.
+      Final fix: define shell/select/label here and import this file last. */
+
+.phone-sales-executive-page .phone-sales-table-tools,
+.phone-sales-executive-page .phone-sales-table-tools--final {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: ltr !important;
+  width: auto !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Search: the shell has NO frame; input is the only framed element. */
+.phone-sales-executive-page .phone-sales-table-search-final {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: block !important;
+  width: 330px !important;
+  max-width: min(330px, 56vw) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: visible !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final,
+.phone-sales-executive-page .phone-sales-table-search-final * {
+  background-image: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final::before,
+.phone-sales-executive-page .phone-sales-table-search-final::after,
+.phone-sales-executive-page .phone-sales-table-search-final *::before,
+.phone-sales-executive-page .phone-sales-table-search-final *::after {
+  content: none !important;
+  display: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final > i,
+.phone-sales-executive-page .phone-sales-table-search-final > i.fa-solid.fa-magnifying-glass {
+  position: absolute !important;
+  left: 13px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final input,
+.phone-sales-executive-page .phone-sales-table-search-final input[type='text'],
+.phone-sales-executive-page .phone-sales-table-search-final input[type='search'] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px 0 40px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  caret-color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 38px !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final input:focus,
+.phone-sales-executive-page .phone-sales-table-search-final input:focus-visible,
+.phone-sales-executive-page .phone-sales-table-search-final input:active {
+  border-color: rgba(59, 130, 246, .58) !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search-final input::-webkit-search-decoration,
+.phone-sales-executive-page .phone-sales-table-search-final input::-webkit-search-cancel-button,
+.phone-sales-executive-page .phone-sales-table-search-final input::-webkit-search-results-button,
+.phone-sales-executive-page .phone-sales-table-search-final input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+/* Page size: one complete segmented control. */
+.phone-sales-executive-page .phone-sales-page-size-shell {
+  box-sizing: border-box !important;
+  display: grid !important;
+  grid-template-columns: 58px 132px !important;
+  align-items: stretch !important;
+  direction: ltr !important;
+  width: 190px !important;
+  min-width: 190px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size-shell select {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 58px !important;
+  height: 38px !important;
+  padding: 1px 0 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  font-size: .8rem !important;
+  font-weight: 950 !important;
+  line-height: 38px !important;
+  cursor: pointer !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size-shell span {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 132px !important;
+  height: 38px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  border-left: 1px solid rgba(226, 232, 240, .9) !important;
+  background: transparent !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 850 !important;
+  line-height: 38px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  .phone-sales-executive-page .phone-sales-table-tools,
+  .phone-sales-executive-page .phone-sales-table-tools--final {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-table-search-final {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-page-size-shell {
+    width: 190px !important;
+  }
+}

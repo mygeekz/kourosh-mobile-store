@@ -1,0 +1,512 @@
+{
+  "phase": "90",
+  "title": "Global Final UI QA / Consolidated Release Audit",
+  "generated_at": "2026-05-28",
+  "source_zip": "kourosh_phase89_settings_users_account_business_final_polish.zip",
+  "counts": {
+    "css_files": 180,
+    "css_size_bytes": 2308639,
+    "css_size_mb": 2.2,
+    "css_lines": 76156,
+    "important_count": 14902,
+    "tsx_files": 218,
+    "ts_files": 88,
+    "index_css_imports_total": 89,
+    "index_css_imports_internal": 86,
+    "index_css_imports_external_packages": 3,
+    "runtime_overrides_imports": 0,
+    "runtime_overrides_directory_exists": false,
+    "ui_foundation_docs_files": 209
+  },
+  "qa": {
+    "missing_internal_css_imports": [],
+    "external_css_imports_not_checked_as_files": [
+      "react-grid-layout/css/styles.css",
+      "react-resizable/css/styles.css",
+      "@fortawesome/fontawesome-free/css/all.min.css"
+    ],
+    "css_parser_errors": [],
+    "literal_backslash_n_css_files": [],
+    "brace_count_issues": [],
+    "css_internal_import_missing": []
+  },
+  "top_largest_css_files": [
+    {
+      "bytes": 414936,
+      "kb": 405.2,
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "important": 978
+    },
+    {
+      "bytes": 168517,
+      "kb": 164.6,
+      "file": "styles/system/telegram-ui-foundation.css",
+      "important": 1808
+    },
+    {
+      "bytes": 122328,
+      "kb": 119.5,
+      "file": "styles/system/modal-partner-foundation.css",
+      "important": 1473
+    },
+    {
+      "bytes": 66206,
+      "kb": 64.7,
+      "file": "styles/system/search-input-foundation.css",
+      "important": 854
+    },
+    {
+      "bytes": 62348,
+      "kb": 60.9,
+      "file": "styles/pages/telegram.css",
+      "important": 263
+    },
+    {
+      "bytes": 60790,
+      "kb": 59.4,
+      "file": "styles/pages/reports.css",
+      "important": 355
+    },
+    {
+      "bytes": 39054,
+      "kb": 38.1,
+      "file": "styles/system/people-table-detail-foundation.css",
+      "important": 579
+    },
+    {
+      "bytes": 37827,
+      "kb": 36.9,
+      "file": "styles/system/modal-products-foundation.css",
+      "important": 239
+    },
+    {
+      "bytes": 36571,
+      "kb": 35.7,
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "important": 328
+    },
+    {
+      "bytes": 35491,
+      "kb": 34.7,
+      "file": "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+      "important": 110
+    },
+    {
+      "bytes": 34752,
+      "kb": 33.9,
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "important": 291
+    },
+    {
+      "bytes": 30543,
+      "kb": 29.8,
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "important": 531
+    },
+    {
+      "bytes": 28624,
+      "kb": 28.0,
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "important": 529
+    },
+    {
+      "bytes": 26015,
+      "kb": 25.4,
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "important": 150
+    },
+    {
+      "bytes": 25673,
+      "kb": 25.1,
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "important": 439
+    },
+    {
+      "bytes": 25255,
+      "kb": 24.7,
+      "file": "styles/system/mobile-phones-foundation.css",
+      "important": 112
+    },
+    {
+      "bytes": 24179,
+      "kb": 23.6,
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "important": 289
+    },
+    {
+      "bytes": 23813,
+      "kb": 23.3,
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "important": 206
+    },
+    {
+      "bytes": 23496,
+      "kb": 22.9,
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "important": 297
+    },
+    {
+      "bytes": 22305,
+      "kb": 21.8,
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "important": 79
+    },
+    {
+      "bytes": 18847,
+      "kb": 18.4,
+      "file": "styles/system/partner-detail-responsive-ledger-foundation.css",
+      "important": 205
+    },
+    {
+      "bytes": 18238,
+      "kb": 17.8,
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "important": 74
+    },
+    {
+      "bytes": 18018,
+      "kb": 17.6,
+      "file": "styles/system/finance-tables-foundation.css",
+      "important": 180
+    },
+    {
+      "bytes": 17987,
+      "kb": 17.6,
+      "file": "styles/system/modal-people-foundation.css",
+      "important": 129
+    },
+    {
+      "bytes": 17815,
+      "kb": 17.4,
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "important": 168
+    }
+  ],
+  "top_important_css_files": [
+    {
+      "important": 1808,
+      "file": "styles/system/telegram-ui-foundation.css",
+      "kb": 164.6
+    },
+    {
+      "important": 1473,
+      "file": "styles/system/modal-partner-foundation.css",
+      "kb": 119.5
+    },
+    {
+      "important": 978,
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "kb": 405.2
+    },
+    {
+      "important": 854,
+      "file": "styles/system/search-input-foundation.css",
+      "kb": 64.7
+    },
+    {
+      "important": 579,
+      "file": "styles/system/people-table-detail-foundation.css",
+      "kb": 38.1
+    },
+    {
+      "important": 531,
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "kb": 29.8
+    },
+    {
+      "important": 529,
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "kb": 28.0
+    },
+    {
+      "important": 439,
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "kb": 25.1
+    },
+    {
+      "important": 355,
+      "file": "styles/pages/reports.css",
+      "kb": 59.4
+    },
+    {
+      "important": 328,
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "kb": 35.7
+    },
+    {
+      "important": 297,
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "kb": 22.9
+    },
+    {
+      "important": 291,
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "kb": 33.9
+    },
+    {
+      "important": 289,
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "kb": 23.6
+    },
+    {
+      "important": 263,
+      "file": "styles/pages/telegram.css",
+      "kb": 60.9
+    },
+    {
+      "important": 239,
+      "file": "styles/system/modal-products-foundation.css",
+      "kb": 36.9
+    },
+    {
+      "important": 206,
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "kb": 23.3
+    },
+    {
+      "important": 205,
+      "file": "styles/system/partner-detail-responsive-ledger-foundation.css",
+      "kb": 18.4
+    },
+    {
+      "important": 187,
+      "file": "styles/system/people-runtime/people-commercial-redesign-foundation.css",
+      "kb": 14.8
+    },
+    {
+      "important": 180,
+      "file": "styles/system/finance-tables-foundation.css",
+      "kb": 17.6
+    },
+    {
+      "important": 168,
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "kb": 17.4
+    }
+  ],
+  "exact_duplicate_css_files": [
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "extra_exact_duplicates": 25
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "extra_exact_duplicates": 5
+    }
+  ],
+  "selector_diff_css_files": [
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "selectors_with_different_bodies": 73
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "selectors_with_different_bodies": 66
+    },
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "selectors_with_different_bodies": 58
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "selectors_with_different_bodies": 22
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "selectors_with_different_bodies": 21
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "selectors_with_different_bodies": 13
+    },
+    {
+      "file": "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+      "selectors_with_different_bodies": 10
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "selectors_with_different_bodies": 8
+    },
+    {
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "selectors_with_different_bodies": 8
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "selectors_with_different_bodies": 6
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "selectors_with_different_bodies": 5
+    },
+    {
+      "file": "styles/system/mobile-phones-foundation.css",
+      "selectors_with_different_bodies": 5
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "selectors_with_different_bodies": 5
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "selectors_with_different_bodies": 4
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "selectors_with_different_bodies": 4
+    },
+    {
+      "file": "styles/components/unified-fields.css",
+      "selectors_with_different_bodies": 3
+    },
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "selectors_with_different_bodies": 3
+    },
+    {
+      "file": "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css",
+      "selectors_with_different_bodies": 3
+    },
+    {
+      "file": "styles/pages/partners.css",
+      "selectors_with_different_bodies": 2
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "selectors_with_different_bodies": 2
+    },
+    {
+      "file": "styles/system/settings-shell-foundation.css",
+      "selectors_with_different_bodies": 2
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "selectors_with_different_bodies": 2
+    },
+    {
+      "file": "styles/global.css",
+      "selectors_with_different_bodies": 1
+    },
+    {
+      "file": "styles/components/modals.css",
+      "selectors_with_different_bodies": 1
+    },
+    {
+      "file": "styles/legacy/03d-legacy-premium-tabs-inventory-detail.css",
+      "selectors_with_different_bodies": 1
+    }
+  ],
+  "redesign_css_files": [
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-1.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-3.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-4.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-5.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-6.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-7.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-1.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-2.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-3.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-4.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-5.css",
+    "styles/system/reports-redesign/reports-redesign-pass-1.css",
+    "styles/system/reports-redesign/reports-redesign-pass-2.css",
+    "styles/system/reports-redesign/reports-redesign-pass-3.css",
+    "styles/system/reports-redesign/reports-redesign-pass-4.css",
+    "styles/system/mobile-redesign/mobile-phones-redesign-pass-1.css",
+    "styles/system/mobile-redesign/mobile-phones-redesign-pass-2.css",
+    "styles/system/mobile-redesign/mobile-phones-redesign-pass-3.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-1.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-2.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-3.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css",
+    "styles/system/settings-redesign/settings-general-modules-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-redesign-pass-1.css",
+    "styles/system/settings-redesign/settings-users-account-business-final-polish.css"
+  ],
+  "native_preview_attribute_candidates": [
+    {
+      "file": "components/PriceInput.tsx",
+      "line": 143,
+      "tag": "input"
+    },
+    {
+      "file": "components/SearchComponent.tsx",
+      "line": 40,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddInstallmentSalePage.tsx",
+      "line": 822,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddInstallmentSalePage.tsx",
+      "line": 1796,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 251,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 266,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 287,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 304,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 320,
+      "tag": "input"
+    },
+    {
+      "file": "pages/AddRepair.tsx",
+      "line": 354,
+      "tag": "textarea"
+    },
+    {
+      "file": "pages/Products.tsx",
+      "line": 1328,
+      "tag": "input"
+    },
+    {
+      "file": "pages/settings/SettingsLocalPanel.tsx",
+      "line": 100,
+      "tag": "input"
+    },
+    {
+      "file": "pages/settings/SettingsLocalPanel.tsx",
+      "line": 123,
+      "tag": "input"
+    },
+    {
+      "file": "pages/settings/SettingsLocalPanel.tsx",
+      "line": 131,
+      "tag": "input"
+    },
+    {
+      "file": "pages/settings/SettingsLocalPanel.tsx",
+      "line": 139,
+      "tag": "input"
+    }
+  ],
+  "recommendations": [
+    "Run a real local build with npm install/npm run build on the user machine because node_modules is not included in the zip.",
+    "Prioritize visual QA of Telegram, Dashboard, Reports, MobilePhones, PeopleDetail, Products/Services/Repairs, and Settings.",
+    "Do not continue broad automatic CSS cleanup; remaining duplication is mostly intentional cascade with different declaration bodies.",
+    "Future reductions should be page-scoped and screenshot-driven."
+  ]
+}

@@ -1,0 +1,97 @@
+/* Stage 25 — operational report actions and duplicate header cleanup
+   Keeps ReportsLayout as the only title layer; table rows become direct action gateways. */
+
+.debtors-report-title-block,
+.creditors-report-title-block {
+  display: none !important;
+}
+
+.debtors-report-hero > .flex,
+.creditors-report-hero__head > .flex {
+  justify-content: flex-end !important;
+}
+
+.debtors-report-hero,
+.creditors-report-hero {
+  box-shadow: 0 18px 50px -44px rgba(15, 23, 42, 0.28) !important;
+}
+
+.report-row-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.report-row-action,
+.collection-action-link {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: rgb(30, 41, 59);
+  padding: 0.42rem 0.72rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 12px 28px -24px rgba(15, 23, 42, 0.38);
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.report-row-action--primary {
+  border-color: rgba(37, 99, 235, 0.24);
+  background: rgba(239, 246, 255, 0.94);
+  color: rgb(29, 78, 216);
+}
+
+.report-row-action:hover,
+.report-row-action:focus-visible,
+.collection-action-link:hover,
+.collection-action-link:focus-visible {
+  border-color: rgba(37, 99, 235, 0.42);
+  background: rgba(239, 246, 255, 0.98);
+  color: rgb(29, 78, 216);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px -25px rgba(37, 99, 235, 0.42);
+  outline: none;
+}
+
+.collection-center-list-card .report-row-actions,
+.collection-center-list-card .collection-action-link {
+  align-self: stretch;
+}
+
+.dark .report-row-action,
+.dark .collection-action-link {
+  border-color: rgba(148, 163, 184, 0.2);
+  background: rgba(15, 23, 42, 0.82);
+  color: rgb(226, 232, 240);
+}
+
+.dark .report-row-action--primary,
+.dark .report-row-action:hover,
+.dark .report-row-action:focus-visible,
+.dark .collection-action-link:hover,
+.dark .collection-action-link:focus-visible {
+  border-color: rgba(96, 165, 250, 0.42);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgb(191, 219, 254);
+}
+
+@media (max-width: 768px) {
+  .report-row-actions {
+    width: 100%;
+  }
+
+  .report-row-action,
+  .collection-action-link {
+    min-height: 2.45rem;
+    flex: 1 1 auto;
+  }
+}

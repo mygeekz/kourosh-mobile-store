@@ -1,0 +1,744 @@
+/* Auto-generated UI Foundation.
+   Scope: controlled consolidation for Products / Services / Repairs UI.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+/* ===== Source: styles/runtime-overrides/07d-product-category-supplier-management.css ===== */
+/* ===== v45 product category/supplier management Apple redesign ===== */
+.product-management-apple {
+  direction: rtl;
+}
+
+.product-management-apple-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid rgba(226, 232, 240, .92);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94));
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 24px 54px -44px rgba(15,23,42,.18);
+}
+
+.dark .product-management-apple-hero {
+  border-color: rgba(51,65,85,.92);
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.9));
+}
+
+.product-management-apple-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgba(226,232,240,.96);
+  border-radius: 999px;
+  background: rgba(248,250,252,.9);
+  padding: .36rem .7rem;
+  color: rgb(71 85 105);
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.dark .product-management-apple-badge {
+  border-color: rgba(51,65,85,.9);
+  background: rgba(15,23,42,.82);
+  color: rgb(203 213 225);
+}
+
+.product-management-apple-hero h3 {
+  margin-top: .75rem;
+  font-size: 1.55rem;
+  line-height: 1.28;
+  letter-spacing: -.02em;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .product-management-apple-hero h3 { color: rgb(248 250 252); }
+
+.product-management-apple-hero p {
+  margin-top: .4rem;
+  max-width: 44rem;
+  color: rgb(100 116 139);
+  line-height: 1.9;
+  font-size: .9rem;
+}
+
+.dark .product-management-apple-hero p { color: rgb(148 163 184); }
+
+.product-management-apple-stats {
+  display: inline-flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.product-management-apple-stats span {
+  min-width: 7rem;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(226,232,240,.92);
+  background: rgba(255,255,255,.85);
+  padding: .8rem .95rem;
+}
+
+.dark .product-management-apple-stats span {
+  border-color: rgba(51,65,85,.92);
+  background: rgba(15,23,42,.74);
+}
+
+.product-management-apple-stats strong {
+  font-size: 1.45rem;
+  line-height: 1;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .product-management-apple-stats strong { color: rgb(248 250 252); }
+
+.product-management-apple-stats small {
+  font-size: .75rem;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.dark .product-management-apple-stats small { color: rgb(148 163 184); }
+
+.product-management-tabs {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .45rem;
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 22px;
+  background: rgba(248,250,252,.9);
+  padding: .35rem;
+}
+
+.dark .product-management-tabs {
+  border-color: rgba(51,65,85,.9);
+  background: rgba(15,23,42,.72);
+}
+
+.product-management-tabs button {
+  min-height: 2.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+  border-radius: 17px;
+  padding: .55rem 1rem;
+  font-weight: 850;
+  font-size: .82rem;
+  color: rgb(71 85 105);
+  transition: background-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.dark .product-management-tabs button { color: rgb(203 213 225); }
+
+.product-management-tabs button.is-active {
+  background: #fff;
+  color: rgb(15 23 42);
+  box-shadow: 0 16px 34px -30px rgba(15,23,42,.22);
+}
+
+.dark .product-management-tabs button.is-active {
+  background: rgba(2,6,23,.92);
+  color: rgb(248 250 252);
+}
+
+.product-management-panel {
+  border: 1px solid rgba(226,232,240,.94);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.95));
+  padding: 1.05rem;
+  box-shadow: 0 20px 48px -42px rgba(15,23,42,.16);
+}
+
+.dark .product-management-panel {
+  border-color: rgba(51,65,85,.92);
+  background: linear-gradient(180deg, rgba(15,23,42,.95), rgba(2,6,23,.9));
+}
+
+.product-management-panel__head {
+  margin-bottom: .9rem;
+}
+
+.product-management-panel__head h4 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .product-management-panel__head h4 { color: rgb(248 250 252); }
+
+.product-management-panel__head p {
+  margin-top: .24rem;
+  font-size: .82rem;
+  line-height: 1.8;
+  color: rgb(100 116 139);
+}
+
+.dark .product-management-panel__head p { color: rgb(148 163 184); }
+
+.product-management-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .85rem;
+  align-items: end;
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 22px;
+  background: rgba(255,255,255,.76);
+  padding: .9rem;
+  margin-bottom: 1rem;
+}
+
+.dark .product-management-form {
+  border-color: rgba(51,65,85,.9);
+  background: rgba(15,23,42,.65);
+}
+
+.product-management-submit {
+  min-height: 2.75rem !important;
+  border-radius: 999px !important;
+  padding-inline: 1rem !important;
+}
+
+.product-management-table-shell {
+  overflow-x: auto;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 24px;
+  background: #fff;
+}
+
+.dark .product-management-table-shell {
+  border-color: rgba(51,65,85,.92);
+  background: rgba(2,6,23,.72);
+}
+
+.product-management-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .88rem;
+}
+
+.product-management-table thead {
+  background: rgba(248,250,252,.92);
+}
+
+.dark .product-management-table thead { background: rgba(15,23,42,.8); }
+
+.product-management-table th {
+  padding: .85rem .95rem;
+  color: rgb(100 116 139);
+  font-size: .75rem;
+  font-weight: 850;
+  text-align: right;
+}
+
+.product-management-table th:first-child { width: 4rem; }
+.product-management-table th:last-child { width: 16rem; text-align: center; }
+
+.product-management-table td {
+  padding: .85rem .95rem;
+  border-top: 1px solid rgba(226,232,240,.72);
+  vertical-align: middle;
+  color: rgb(51 65 85);
+}
+
+.dark .product-management-table td {
+  border-top-color: rgba(51,65,85,.72);
+  color: rgb(203 213 225);
+}
+
+.product-management-name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  min-width: 0;
+}
+
+.product-management-name-cell > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: .9rem;
+  background: rgba(99,102,241,.1);
+  color: rgb(79 70 229);
+}
+
+.product-management-name-cell--supplier > span {
+  background: rgba(16,185,129,.1);
+  color: rgb(5 150 105);
+}
+
+.product-management-name-cell strong {
+  font-weight: 800;
+  color: rgb(15 23 42);
+}
+
+.dark .product-management-name-cell strong { color: rgb(248 250 252); }
+
+.product-management-row-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.product-management-row-actions .ux-btn {
+  min-height: 2.1rem !important;
+  border-radius: 999px !important;
+  font-size: .74rem !important;
+  padding-inline: .78rem !important;
+}
+
+.product-management-empty {
+  padding: 2rem 1rem !important;
+  text-align: center;
+  color: rgb(100 116 139) !important;
+}
+
+@media (max-width: 768px) {
+  .product-management-apple-hero {
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 24px;
+  }
+
+  .product-management-apple-stats {
+    width: 100%;
+  }
+
+  .product-management-apple-stats span {
+    flex: 1 1 calc(50% - .375rem);
+    min-width: 0;
+  }
+
+  .product-management-tabs {
+    width: 100%;
+  }
+
+  .product-management-form {
+    grid-template-columns: 1fr;
+  }
+
+  .product-management-submit {
+    width: 100%;
+  }
+}
+
+/* ===== v46 category field label position fix ===== */
+.product-modal-apple .product-modal-apple-field--category {
+  margin-top: .28rem;
+}
+
+.product-modal-apple .product-modal-apple-field--category .modal-field-label {
+  position: relative;
+  z-index: 1;
+  margin-bottom: .72rem !important;
+}
+
+.product-modal-apple .product-modal-apple-field--category .premium-input-wrap {
+  position: relative;
+  z-index: 0;
+}
+
+/* ===== v47 management modal header/actions + product table name column ===== */
+.product-management-modal-title {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.product-management-modal-title i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: .9rem;
+  background: rgba(99,102,241,.12);
+  color: rgb(79 70 229);
+}
+
+.product-management-apple-hero__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.product-management-apple-hero__copy {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.product-management-apple-hero__aside {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .85rem;
+}
+
+.product-management-tabs--hero {
+  margin-top: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: auto;
+}
+
+.product-management-panel__head h4 {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.product-management-row-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  flex-wrap: nowrap;
+}
+
+.product-management-row-btn {
+  width: 2.15rem !important;
+  min-width: 2.15rem !important;
+  height: 2.15rem !important;
+  min-height: 2.15rem !important;
+  border-radius: .9rem !important;
+  padding: 0 !important;
+}
+
+.product-management-row-btn :where(.ux-btn__content, .btn__content) {
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.product-management-row-btn :where(.ux-btn__label, .btn__label, .ux-btn__content > span:not(.ux-btn__icon):not(.ux-btn__spinner)) {
+  display: none !important;
+}
+
+.product-management-row-btn :where(.ux-btn__icon, .ux-btn__spinner, i, svg) {
+  margin: 0 !important;
+}
+
+.product-management-table th:last-child,
+.product-management-table td:last-child {
+  width: 6.5rem !important;
+}
+
+/* ===== Source: styles/runtime-overrides/07e-product-list-table-density.css ===== */
+#products-print-area .product-list-table {
+  table-layout: fixed;
+}
+
+#products-print-area .product-list-table th:nth-child(1),
+#products-print-area .product-list-table td:nth-child(1) {
+  width: 24% !important;
+}
+
+#products-print-area .product-list-table th:last-child,
+#products-print-area .product-list-table td:last-child {
+  width: 8.25rem !important;
+}
+
+#products-print-area .product-list-table td:nth-child(1) {
+  white-space: normal !important;
+}
+
+.product-table-name-cell {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+
+@media (max-width: 900px) {
+  .product-management-apple-hero__top {
+    flex-direction: column;
+  }
+
+  .product-management-apple-hero__aside {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .product-management-tabs--hero {
+    justify-content: flex-start;
+  }
+}
+
+/* ===== v48 executive compaction: product list table ===== */
+#products-print-area .product-list-table th,
+#products-print-area .product-list-table td {
+  vertical-align: middle;
+  padding-inline: .72rem !important;
+}
+
+#products-print-area .product-list-table th:nth-child(1),
+#products-print-area .product-list-table td:nth-child(1) {
+  width: 22% !important;
+}
+
+#products-print-area .product-list-table th:nth-child(2),
+#products-print-area .product-list-table td:nth-child(2) {
+  width: 11% !important;
+}
+
+#products-print-area .product-list-table th:nth-child(3),
+#products-print-area .product-list-table td:nth-child(3) {
+  width: 10% !important;
+}
+
+#products-print-area .product-list-table th:nth-child(4),
+#products-print-area .product-list-table td:nth-child(4),
+#products-print-area .product-list-table th:nth-child(5),
+#products-print-area .product-list-table td:nth-child(5) {
+  width: 10.5% !important;
+}
+
+#products-print-area .product-list-table th:nth-child(6),
+#products-print-area .product-list-table td:nth-child(6) {
+  width: 6% !important;
+  text-align: center !important;
+}
+
+#products-print-area .product-list-table th:nth-child(7),
+#products-print-area .product-list-table td:nth-child(7) {
+  width: 10.5% !important;
+}
+
+#products-print-area .product-list-table th:nth-child(8),
+#products-print-area .product-list-table td:nth-child(8) {
+  width: 8.8rem !important;
+}
+
+#products-print-area .product-list-table td:nth-child(1),
+#products-print-area .product-list-table td:nth-child(2),
+#products-print-area .product-list-table td:nth-child(3) {
+  white-space: nowrap !important;
+}
+
+.product-table-name-cell,
+.product-table-meta-cell {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.product-table-money-cell,
+.product-table-date-cell,
+.product-table-stock-cell {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-table-money-cell {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-table-stock-cell {
+  justify-content: center;
+  min-width: 2ch;
+}
+
+.product-table-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .22rem !important;
+  flex-wrap: nowrap;
+}
+
+.product-table-actions .product-row-action-btn.ux-btn,
+.product-table-actions button.product-row-action-btn.ux-btn,
+.product-table-actions .product-row-action-btn.ux-icon-btn {
+  width: 2rem !important;
+  min-width: 2rem !important;
+  height: 1.92rem !important;
+  min-height: 1.92rem !important;
+  border-radius: .78rem !important;
+}
+
+@media (max-width: 1400px) {
+  #products-print-area .product-list-table th,
+  #products-print-area .product-list-table td {
+    padding-inline: .62rem !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(1),
+  #products-print-area .product-list-table td:nth-child(1) {
+    width: 20% !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(2),
+  #products-print-area .product-list-table td:nth-child(2),
+  #products-print-area .product-list-table th:nth-child(3),
+  #products-print-area .product-list-table td:nth-child(3) {
+    width: 9.5% !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(4),
+  #products-print-area .product-list-table td:nth-child(4),
+  #products-print-area .product-list-table th:nth-child(5),
+  #products-print-area .product-list-table td:nth-child(5) {
+    width: 10% !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(6),
+  #products-print-area .product-list-table td:nth-child(6) {
+    width: 5.6% !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(7),
+  #products-print-area .product-list-table td:nth-child(7) {
+    width: 9.5% !important;
+  }
+
+  #products-print-area .product-list-table th:nth-child(8),
+  #products-print-area .product-list-table td:nth-child(8) {
+    width: 8.2rem !important;
+  }
+}
+
+/* ===== Contract: Products operational surfaces ===== */
+.products-page,
+.product-management-apple,
+.product-modal-apple {
+  --product-surface: rgb(255 255 255);
+  --product-surface-muted: rgb(248 250 252);
+  --product-border: rgba(226, 232, 240, 0.92);
+  --product-text: rgb(15 23 42);
+  --product-muted: rgb(100 116 139);
+  --product-radius: 18px;
+  --product-control-height: 40px;
+}
+
+.dark .products-page,
+.dark .product-management-apple,
+.dark .product-modal-apple {
+  --product-surface: rgb(2 6 23);
+  --product-surface-muted: rgb(15 23 42);
+  --product-border: rgba(51, 65, 85, 0.86);
+  --product-text: rgb(241 245 249);
+  --product-muted: rgb(148 163 184);
+}
+
+.products-page :where(.app-card, .product-management-panel, .product-management-apple-hero, .product-management-table-shell),
+.product-modal-apple :where(.product-modal-apple-section, .product-modal-apple-hero) {
+  border-color: var(--product-border) !important;
+  background: var(--product-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.products-page :where(input, textarea, select),
+.product-modal-apple :where(input, textarea, select),
+.product-management-apple :where(input, textarea, select) {
+  min-height: var(--product-control-height) !important;
+  border-radius: 12px !important;
+  border-color: var(--product-border) !important;
+  background: var(--product-surface) !important;
+  color: var(--product-text) !important;
+  box-shadow: none !important;
+}
+
+.products-page :where(input, textarea, select)::placeholder,
+.product-modal-apple :where(input, textarea, select)::placeholder,
+.product-management-apple :where(input, textarea, select)::placeholder {
+  color: var(--product-muted) !important;
+}
+
+.product-list-table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.product-list-table :where(th, td) {
+  vertical-align: middle !important;
+}
+
+.product-table-name-cell,
+.product-table-meta-cell,
+.product-table-date-cell,
+.product-table-stock-cell,
+.product-table-money-cell,
+.product-management-name-cell {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.7;
+}
+
+.product-table-money-cell,
+.product-table-stock-cell {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-table-actions,
+.product-management-row-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  flex-wrap: wrap !important;
+  min-width: max-content;
+}
+
+.product-row-action-btn,
+.product-management-row-btn {
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border-radius: 12px !important;
+}
+
+.product-management-tabs,
+.product-management-form,
+.product-modal-apple-actions {
+  gap: 8px !important;
+}
+
+@media (max-width: 768px) {
+  .product-management-apple-hero,
+  .product-modal-apple-hero__top,
+  .product-modal-apple-actions {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .product-management-table-shell,
+  #products-print-area {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .product-list-table,
+  .product-management-table {
+    min-width: 760px !important;
+  }
+}

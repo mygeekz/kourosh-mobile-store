@@ -1,0 +1,32 @@
+{
+  "phase": "37",
+  "name": "Telegram Manual Selector Consolidation — Pass 1",
+  "file": "styles/system/telegram-ui-foundation.css",
+  "method": "manual conservative consolidation of one repeated selector family; computed final declarations preserved by moving unique earlier declarations into the final rule",
+  "removed_blocks_count": 3,
+  "removed_selectors": [
+    "#telegram-settings-form .telegram-plain-field-heading",
+    "#telegram-settings-form .telegram-plain-field-heading__icon",
+    ".dark #telegram-settings-form .telegram-plain-field-heading__icon"
+  ],
+  "preserved_declarations": [
+    "min-width: 0 on heading",
+    "flex: 0 0 26px on icon"
+  ],
+  "before_bytes": 180071,
+  "after_bytes": 179207,
+  "delta_bytes": -864,
+  "before_lines": 5809,
+  "after_lines": 5786,
+  "delta_lines": -23,
+  "sha256_before": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd",
+  "sha256_after": "1b2736d7c257007da70ea4e1fedfe166c2b57e65bb4d241e4548005b66a287c1",
+  "qa": {
+    "css_files": 151,
+    "missing_imports": [],
+    "runtime_imports_in_index": false,
+    "literal_backslash_n_css": [],
+    "brace_balance_issues": [],
+    "css_parser_errors": []
+  }
+}

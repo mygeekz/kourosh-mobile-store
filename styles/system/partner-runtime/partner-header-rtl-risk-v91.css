@@ -1,0 +1,152 @@
+
+/* v91 — Partner header RTL + real risk engine visual polish */
+
+/* Real RTL order: right card = account, middle = metrics, left = risk */
+.partner-header-mockup-v89__cards {
+  direction: rtl !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.05fr) minmax(0, .95fr) !important;
+}
+
+.partner-header-mockup-v89__card--account { order: 1 !important; }
+.partner-header-mockup-v89__card--metrics { order: 2 !important; }
+.partner-header-mockup-v89__card--risk { order: 3 !important; }
+
+/* Header identity stays truly right aligned; actions stay top-left. */
+.partner-header-mockup-v89__hero { direction: rtl !important; }
+.partner-header-mockup-v89__identity {
+  order: 1 !important;
+  justify-self: end !important;
+  text-align: right !important;
+}
+.partner-header-mockup-v89__actions {
+  order: 2 !important;
+  justify-self: start !important;
+  direction: rtl !important;
+}
+
+/* Chip row: begin from the right in RTL */
+.partner-header-mockup-v89__chips {
+  direction: rtl !important;
+  justify-content: flex-start !important;
+  flex-direction: row-reverse !important;
+}
+
+.partner-header-mockup-v89__card {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__card-head {
+  flex-direction: row !important;
+}
+
+.partner-header-mockup-v89__card-head > div {
+  text-align: right !important;
+}
+
+/* Risk tones from real engine */
+.partner-header-mockup-v89__card--risk-success .partner-header-mockup-v89__risk-copy strong { color: rgb(22 163 74) !important; }
+.partner-header-mockup-v89__card--risk-attention .partner-header-mockup-v89__risk-copy strong { color: rgb(217 119 6) !important; }
+.partner-header-mockup-v89__card--risk-warning .partner-header-mockup-v89__risk-copy strong { color: rgb(234 88 12) !important; }
+.partner-header-mockup-v89__card--risk-danger .partner-header-mockup-v89__risk-copy strong { color: rgb(225 29 72) !important; }
+
+.partner-header-mockup-v89__risk-arc--success span {
+  border-top-color: rgb(34 197 94) !important;
+  border-left-color: rgb(34 197 94) !important;
+}
+.partner-header-mockup-v89__risk-arc--attention span {
+  border-top-color: rgb(245 158 11) !important;
+  border-left-color: rgb(245 158 11) !important;
+}
+.partner-header-mockup-v89__risk-arc--warning span {
+  border-top-color: rgb(249 115 22) !important;
+  border-left-color: rgb(249 115 22) !important;
+}
+.partner-header-mockup-v89__risk-arc--danger span {
+  border-top-color: rgb(225 29 72) !important;
+  border-left-color: rgb(225 29 72) !important;
+}
+
+.partner-header-mockup-v89__card--risk-success .partner-header-mockup-v89__risk-copy b {
+  background: rgb(220 252 231) !important;
+  color: rgb(22 101 52) !important;
+}
+.partner-header-mockup-v89__card--risk-attention .partner-header-mockup-v89__risk-copy b {
+  background: rgb(254 243 199) !important;
+  color: rgb(146 64 14) !important;
+}
+.partner-header-mockup-v89__card--risk-warning .partner-header-mockup-v89__risk-copy b {
+  background: rgb(255 237 213) !important;
+  color: rgb(154 52 18) !important;
+}
+.partner-header-mockup-v89__card--risk-danger .partner-header-mockup-v89__risk-copy b {
+  background: rgb(255 228 230) !important;
+  color: rgb(190 18 60) !important;
+}
+
+/* Keep the score visually compact, not alarming unless truly high. */
+.partner-header-mockup-v89__risk-body {
+  grid-template-columns: minmax(0, 1fr) 96px !important;
+  max-width: 100% !important;
+}
+
+.partner-header-mockup-v89__risk-arc {
+  order: 2 !important;
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 22px !important;
+}
+
+.partner-header-mockup-v89__risk-arc span {
+  width: 66px !important;
+  height: 66px !important;
+  border-width: 9px !important;
+}
+
+.partner-header-mockup-v89__risk-copy {
+  order: 1 !important;
+  text-align: right !important;
+  justify-items: start !important;
+}
+
+/* Account card should visually be the primary right-side decision card. */
+.partner-header-mockup-v89__card--account .partner-header-mockup-v89__account-amount,
+.partner-header-mockup-v89__card--account .partner-header-mockup-v89__account-text {
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__alert {
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+/* Financial metric internal order should feel RTL */
+.partner-header-mockup-v89__metric-grid {
+  direction: rtl !important;
+}
+
+.partner-header-mockup-v89__metric {
+  text-align: center !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-header-mockup-v89__cards {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-header-mockup-v89__card--account,
+  .partner-header-mockup-v89__card--metrics,
+  .partner-header-mockup-v89__card--risk {
+    order: initial !important;
+  }
+
+  .partner-header-mockup-v89__actions {
+    order: 2 !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-header-mockup-v89__identity {
+    order: 1 !important;
+    justify-self: stretch !important;
+  }
+}

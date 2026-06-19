@@ -1,0 +1,28 @@
+{
+  "phase": 46,
+  "title": "Modal Partner Manual Selector Consolidation — Pass 4",
+  "changed_files": [
+    "styles/system/modal-partner-foundation.css"
+  ],
+  "target_families": [
+    ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance, .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance",
+    ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon, .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child",
+    ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span, .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child)",
+    ".partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong, .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong"
+  ],
+  "declarations_removed": 22,
+  "empty_blocks_removed": 1,
+  "bytes_reduced": 901,
+  "lines_reduced": 25,
+  "important_reduced": 22,
+  "strategy": "property-level consolidation only when later same exact top-level selector group reassigns the same property",
+  "untouched": [
+    "media queries",
+    "dark mode",
+    "state color variants",
+    "account-card placement",
+    "JSX",
+    "API",
+    "business logic"
+  ]
+}

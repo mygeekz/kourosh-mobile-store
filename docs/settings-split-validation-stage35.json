@@ -1,0 +1,36 @@
+{
+  "stage": "35",
+  "summary": "Settings Commercial Modules / Feature Flags panel extracted.",
+  "syntaxTranspileOk": true,
+  "transpileDiagnostics": [
+    {
+      "file": "/mnt/data/stage35/pages/Settings.tsx",
+      "diagnostics": []
+    },
+    {
+      "file": "/mnt/data/stage35/pages/settings/SettingsModulesPanel.tsx",
+      "diagnostics": []
+    }
+  ],
+  "missingLocalImports": [],
+  "scriptChecks": [
+    {
+      "file": "scripts/vite-dev.cjs",
+      "ok": true,
+      "stderr": ""
+    },
+    {
+      "file": "scripts/postcss-warning-filter.cjs",
+      "ok": true,
+      "stderr": ""
+    }
+  ],
+  "sizesBytes": {
+    "pages/Settings.tsx": 273337,
+    "pages/settings/SettingsModulesPanel.tsx": 20138
+  },
+  "notes": [
+    "State and handlers remain in pages/Settings.tsx.",
+    "No CSS files changed in this stage."
+  ]
+}

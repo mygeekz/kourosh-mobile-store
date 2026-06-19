@@ -1,0 +1,53 @@
+/* Phase 76: global app shell cohesion */
+:root {
+  --app-card-radius-xl: 26px;
+  --app-card-radius-lg: 22px;
+  --app-shell-gap: 1.125rem;
+  --app-muted-copy-light: rgb(100 116 139);
+  --app-muted-copy-dark: rgb(148 163 184);
+}
+
+.page-content-stack,
+.page-shell-modern,
+.dashboard-shell,
+.reports-shell,
+.sales-shell {
+  gap: var(--app-shell-gap);
+}
+
+.app-card,
+.report-card,
+.dashboard-widget,
+.sales-panel,
+.settings-panel {
+  border-radius: var(--app-card-radius-lg);
+}
+
+.page-shell-modern,
+.section-shell,
+.dashboard-hero,
+.report-hero {
+  border-radius: var(--app-card-radius-xl);
+}
+
+.app-subtle,
+.muted-copy,
+.text-muted {
+  color: var(--app-muted-copy-light);
+}
+
+.dark .app-subtle,
+.dark .muted-copy,
+.dark .text-muted {
+  color: var(--app-muted-copy-dark);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --app-card-radius-xl: 24px;
+    --app-card-radius-lg: 20px;
+    --app-shell-gap: 1rem;
+  }
+}
+
+

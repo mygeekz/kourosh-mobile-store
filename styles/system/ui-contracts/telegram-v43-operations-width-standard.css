@@ -1,0 +1,45 @@
+
+/* v43 — based on v42.
+   Standardize the width of "مرکز عملیات تلگرام" so it matches upper Telegram sections. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Some older utility classes inside the operations card can cap the right column.
+   Keep internal columns flexible without shrinking the outer card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-sm {
+  max-width: 24rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .max-w-2xl {
+  max-width: 48rem !important;
+}
+
+/* Make the operations card align visually with the merged cards above. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode {
+  margin-top: 1.15rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+  border-radius: 28px !important;
+  padding: 1.15rem 1.2rem !important;
+}
+
+@media (max-width: 900px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child {
+    padding: 1rem !important;
+    border-radius: 24px !important;
+  }
+}

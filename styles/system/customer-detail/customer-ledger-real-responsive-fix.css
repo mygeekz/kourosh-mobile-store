@@ -1,0 +1,1126 @@
+/* Ultra-compact ledger summary cards */
+#customer-ledger-section + .detail-card .customer-ledger-summary-grid {
+  gap: 8px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card {
+  min-height: 72px !important;
+  padding: 10px 11px !important;
+  border-radius: 16px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card > div {
+  gap: 8px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card .text-\[12px\] {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card .text-\[18px\] {
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  margin-top: 3px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card .text-\[12px\].font-extrabold,
+#customer-ledger-section + .detail-card .customer-ledger-summary-card .mt-0\.5.text-\[12px\] {
+  font-size: 10px !important;
+  line-height: 1.15 !important;
+  margin-top: 2px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-summary-card span[class*="h-9"] {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+}
+
+/* Responsive ledger stream */
+#customer-ledger-section + .detail-card .customer-ledger-stream-head {
+  display: none !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-stream .space-y-3.p-4 {
+  padding: 12px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-stream-row {
+  border-radius: 22px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-stream-row-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, .9fr) 106px !important;
+  gap: 12px !important;
+  align-items: center !important;
+  padding: 12px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main {
+  min-width: 0 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main h4 {
+  font-size: 16px !important;
+  line-height: 1.7 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main .rounded-full {
+  font-size: 11px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box {
+  min-width: 0 !important;
+  padding: 8px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box > div {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 6px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box > div > div {
+  min-width: 0 !important;
+  padding: 8px 6px !important;
+  border-radius: 16px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box .text-\[12px\] {
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box .text-\[10px\] {
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  align-items: center !important;
+  justify-content: flex-start !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > * {
+  align-self: center !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions button {
+  min-width: 92px !important;
+}
+
+@media (max-width: 1280px) {
+  #customer-ledger-section + .detail-card .customer-ledger-stream-row-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #customer-ledger-section + .detail-card .customer-ledger-row-actions {
+    justify-content: flex-start !important;
+  }
+}
+@media (max-width: 720px) {
+  #customer-ledger-section + .detail-card .customer-ledger-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+  #customer-ledger-section + .detail-card .customer-ledger-summary-card {
+    min-height: 66px !important;
+  }
+  #customer-ledger-section + .detail-card .customer-ledger-money-box > div {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Ultra-compact right smart summary cards */
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary {
+  padding: 14px !important;
+  border-radius: 18px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary h3 {
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary > div:first-child p {
+  font-size: 11px !important;
+  line-height: 1.7 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-list {
+  margin-top: 12px !important;
+  gap: 8px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-item {
+  min-height: 70px !important;
+  padding: 11px 12px !important;
+  border-radius: 14px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-item .text-\[12px\] {
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-item .text-base,
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-item .text-\[14px\] {
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary-item span[class*="h-7"] {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-smart-summary button {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+  padding-block: 8px !important;
+}
+
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > * {
+  align-self: flex-start !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat {
+  min-height: 76px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat .text-\[15px\] {
+  font-size: 14px !important;
+  line-height: 1.3 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat span[class*="h-8"] {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+}
+
+
+/* v22 final pixel tuning for ledger row and expanded details */
+#customer-ledger-section + .detail-card .customer-ledger-stream-row-grid {
+  grid-template-columns: minmax(0, 1.5fr) minmax(240px, .88fr) 112px !important;
+  gap: 14px !important;
+  padding: 14px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main h4 {
+  margin-bottom: 4px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main > div:first-child + div {
+  margin-top: 8px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-main button,
+#customer-ledger-section + .detail-card .customer-ledger-main span.inline-flex {
+  white-space: nowrap !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  min-width: 104px !important;
+  gap: 8px !important;
+  align-self: stretch !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span {
+  min-width: 74px !important;
+  justify-content: center !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+  min-width: 96px !important;
+  max-width: 104px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box {
+  align-self: center !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-money-box > div > div {
+  min-height: 72px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat {
+  min-height: 70px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat > div {
+  align-items: center !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.25 !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat .text-\[15px\] {
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+  margin-top: 5px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-expanded-stat span[class*="h-8"] {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+  font-size: 10.5px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-stream-row .px-4.pb-4 > div {
+  border-radius: 20px !important;
+  padding: 12px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-stream-row .border-dashed {
+  border-radius: 16px !important;
+  padding: 10px 12px !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+}
+@media (max-width: 1280px) {
+  #customer-ledger-section + .detail-card .customer-ledger-row-actions {
+    min-width: 0 !important;
+    align-self: auto !important;
+  }
+  #customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+    max-width: none !important;
+  }
+}
+
+
+/* v23 stack status and details vertically */
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  min-width: 96px !important;
+  width: 96px !important;
+  gap: 8px !important;
+  align-self: flex-start !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span,
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+  justify-content: center !important;
+  align-self: flex-start !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span {
+  padding-inline: 10px !important;
+}
+@media (max-width: 1280px) {
+  #customer-ledger-section + .detail-card .customer-ledger-row-actions {
+    width: 96px !important;
+    min-width: 96px !important;
+  }
+}
+
+
+/* v24 remove extra white box from status badge */
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding-inline: 12px !important;
+  padding-block: 5px !important;
+  border-radius: 999px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+}
+
+
+/* v25 simplify status chip so no white-box feel */
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  width: auto !important;
+  min-width: 96px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span {
+  width: auto !important;
+  min-width: fit-content !important;
+  max-width: fit-content !important;
+  border-width: 0 !important;
+  box-shadow: none !important;
+  padding: 5px 10px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+}
+
+
+/* v26 normalize status chip and details button sizes */
+#customer-ledger-section + .detail-card .customer-ledger-row-actions {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+  gap: 6px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span,
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > button {
+  display: inline-flex !important;
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  padding: 0 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-row-actions > span {
+  border-width: 1px !important;
+  box-shadow: none !important;
+}
+
+
+/* v27 compact ledger toolbar */
+#customer-ledger-section + .detail-card .customer-ledger-toolbar {
+  gap: 10px !important;
+  padding: 12px !important;
+  border-radius: 22px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-toolbar .fa-magnifying-glass {
+  left: 12px !important;
+  font-size: 13px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-toolbar-search input {
+  min-height: 42px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-toolbar-filter > div,
+#customer-ledger-section + .detail-card .customer-ledger-toolbar-meta > label,
+#customer-ledger-section + .detail-card .customer-ledger-toolbar-meta > span {
+  border-radius: 14px !important;
+}
+#customer-ledger-section + .detail-card .customer-ledger-toolbar-print {
+  flex: 0 0 auto !important;
+}
+@media (max-width: 1280px) {
+  #customer-ledger-section + .detail-card .customer-ledger-toolbar {
+    align-items: stretch !important;
+  }
+  #customer-ledger-section + .detail-card .customer-ledger-toolbar-search {
+    max-width: none !important;
+  }
+}
+
+
+/* v28 center purchase-history heading and ledger edit modal */
+#customer-history-section + .detail-card .customer-history-header {
+  align-items: center !important;
+  min-height: 40px;
+  padding-top: 6px !important;
+  margin-top: 4px !important;
+}
+#customer-history-section + .detail-card .customer-history-header h2 {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+#customer-history-section + .detail-card .customer-history-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+  position: relative;
+  z-index: 1;
+}
+#customer-history-section + .detail-card .customer-history-chip i {
+  line-height: 1 !important;
+  position: relative;
+  top: 0 !important;
+}
+.customer-ledger-edit-modal-center .modal-shell-sidebar-safe--large {
+  width: min(100%, var(--modal-max-width, 896px)) !important;
+  max-width: min(var(--modal-max-width, 896px), calc(100vw - 2rem)) !important;
+  margin-inline: auto !important;
+}
+@media (max-width: 1080px) {
+  .customer-ledger-edit-modal-center .modal-shell-sidebar-safe--large {
+    width: calc(100vw - 1rem) !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+}
+
+
+/* v30 compact telegram action buttons */
+.customer-telegram-header .customer-telegram-actions {
+  gap: 8px !important;
+}
+.customer-telegram-header .customer-telegram-action-btn {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding-inline: 14px !important;
+  border-radius: 14px !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+.customer-telegram-header .customer-telegram-action-btn i {
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+@media (max-width: 768px) {
+  .customer-telegram-header .customer-telegram-actions {
+    width: 100% !important;
+  }
+  .customer-telegram-header .customer-telegram-action-btn {
+    flex: 1 1 auto;
+    justify-content: center !important;
+  }
+}
+
+
+/* v31 compact quick actions and customer extra section */
+.customer-extra-section .customer-quick-actions-card,
+.customer-extra-section .customer-extra-card {
+  border-radius: 22px !important;
+}
+.customer-extra-section .customer-quick-action-btn {
+  min-height: 68px !important;
+}
+.customer-extra-section .customer-quick-action-btn .text-\[13px\] {
+  line-height: 1.4 !important;
+}
+.customer-extra-section .customer-quick-action-btn .text-\[11px\] {
+  line-height: 1.35 !important;
+}
+.customer-extra-section .customer-basic-info-card i {
+  font-size: 12px !important;
+}
+@media (max-width: 1280px) {
+  .customer-extra-section .grid.xl\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
+@media (max-width: 640px) {
+  .customer-extra-section .grid.xl\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v32 ultra-compact quick actions section only */
+.customer-extra-section {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+.customer-extra-section .customer-quick-actions-card {
+  padding: 14px !important;
+  border-radius: 20px !important;
+}
+.customer-extra-section .customer-quick-actions-header {
+  margin-bottom: 12px !important;
+}
+.customer-extra-section .customer-quick-actions-header h3 {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+.customer-extra-section .customer-quick-actions-header p {
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+  margin-top: 2px !important;
+}
+.customer-extra-section .customer-quick-actions-header span[class*="h-6"] {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  border-radius: 8px !important;
+  font-size: 10px !important;
+}
+.customer-extra-section .customer-quick-actions-grid {
+  gap: 8px !important;
+}
+.customer-extra-section .customer-quick-action-btn {
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  gap: 10px !important;
+}
+.customer-extra-section .customer-quick-action-btn .text-\[13px\] {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+.customer-extra-section .customer-quick-action-btn .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.25 !important;
+  margin-top: 1px !important;
+}
+.customer-extra-section .customer-quick-action-btn span[class*="h-10"] {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+}
+@media (max-width: 1280px) {
+  .customer-extra-section .customer-quick-actions-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  }
+}
+@media (max-width: 640px) {
+  .customer-extra-section .customer-quick-actions-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v33 compact CRM + basic info cards */
+.customer-extra-section .customer-extra-grids {
+  gap: 12px !important;
+  margin-top: 12px !important;
+}
+.customer-extra-section .customer-crm-card,
+.customer-extra-section .customer-basic-card {
+  padding: 14px !important;
+  border-radius: 20px !important;
+}
+.customer-extra-section .customer-extra-card-header {
+  margin-bottom: 12px !important;
+}
+.customer-extra-section .customer-extra-card-header .text-\[15px\] {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+.customer-extra-section .customer-extra-card-header p {
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+  margin-top: 2px !important;
+}
+.customer-extra-section .customer-extra-card-header span[class*="h-9"],
+.customer-extra-section .customer-extra-card-header span[class*="h-10"] {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 12px !important;
+}
+.customer-extra-section .customer-basic-info-card {
+  min-height: 68px !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+.customer-extra-section .customer-basic-info-card .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+.customer-extra-section .customer-basic-info-card .text-\[14px\] {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+.customer-extra-section .customer-basic-info-card i {
+  font-size: 11px !important;
+}
+.customer-extra-section .customer-crm-empty {
+  padding: 18px 14px !important;
+  border-radius: 16px !important;
+}
+.customer-extra-section .customer-crm-empty span[class*="h-11"] {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 12px !important;
+}
+.customer-extra-section .customer-crm-empty .text-\[12px\] {
+  font-size: 11px !important;
+}
+.customer-extra-section .customer-crm-empty p {
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+}
+.customer-extra-section .customer-crm-form {
+  margin-top: 12px !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+.customer-extra-section .customer-crm-form label {
+  margin-bottom: 6px !important;
+  font-size: 11px !important;
+}
+.customer-extra-section .customer-crm-input {
+  height: 38px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+  padding-inline: 12px !important;
+}
+.customer-extra-section .customer-crm-add-btn {
+  height: 38px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  padding-inline: 12px !important;
+}
+@media (max-width: 640px) {
+  .customer-extra-section .customer-crm-form .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v34 compact customer overview hero/dashboard */
+.customer-detail-hero .customer-overview-hero-top {
+  gap: 14px !important;
+}
+.customer-detail-hero .detail-hero-card__icon {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  border-radius: 14px !important;
+}
+.customer-detail-hero .detail-hero-card__icon .text-2xl {
+  font-size: 18px !important;
+}
+.customer-detail-hero h2.text-2xl {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+}
+.customer-detail-hero p.text-sm {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+}
+.customer-detail-hero .customer-hero-chip-row {
+  gap: 6px !important;
+  margin-top: 10px !important;
+}
+.customer-detail-hero .customer-hero-chip,
+.customer-detail-hero .customer-hero-chip-row .financial-status-badge {
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+}
+.customer-detail-hero .customer-hero-chip i,
+.customer-detail-hero .customer-hero-chip-row .financial-status-badge i {
+  font-size: 10px !important;
+}
+.customer-detail-hero .customer-overview-actions {
+  gap: 8px !important;
+}
+.customer-detail-hero .customer-overview-actions .people-action-btn {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  padding-inline: 12px !important;
+  font-size: 11px !important;
+}
+.customer-detail-hero .customer-overview-actions .people-action-btn i {
+  font-size: 11px !important;
+}
+.customer-detail-hero .customer-overview-dashboard {
+  margin-top: 14px !important;
+}
+.customer-detail-hero .customer-overview-dashboard-grid {
+  gap: 12px !important;
+}
+.customer-detail-hero .customer-overview-card {
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+.customer-detail-hero .customer-overview-card .text-\[24px\] {
+  font-size: 20px !important;
+  line-height: 1.35 !important;
+}
+.customer-detail-hero .customer-overview-card .text-\[18px\] {
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+}
+.customer-detail-hero .customer-overview-card .text-\[13px\] {
+  font-size: 12px !important;
+}
+.customer-detail-hero .customer-overview-card .text-\[12px\] {
+  font-size: 11px !important;
+  line-height: 1.6 !important;
+}
+.customer-detail-hero .customer-overview-card .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+}
+.customer-detail-hero .customer-overview-card span[class*="h-14"] {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  border-radius: 16px !important;
+}
+.customer-detail-hero .customer-overview-card span[class*="h-10"] {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 12px !important;
+}
+.customer-detail-hero .customer-overview-card span[class*="h-6"] {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  border-radius: 8px !important;
+}
+.customer-detail-hero .customer-overview-card .customer-overview-metric-cell {
+  min-height: 94px !important;
+  padding: 12px !important;
+}
+.customer-detail-hero .customer-overview-card button.h-10 {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 14px !important;
+  font-size: 11px !important;
+}
+.customer-detail-hero .customer-overview-card .rounded-2xl.border.border-amber-200 {
+  margin-top: 10px !important;
+  padding: 8px 10px !important;
+  border-radius: 14px !important;
+}
+.customer-detail-hero .customer-overview-card .mx-auto.mt-3[style] {
+  width: 144px !important;
+  height: 144px !important;
+  min-width: 144px !important;
+}
+.customer-detail-hero .customer-overview-card svg[aria-label="نمودار دایره‌ای امتیاز اعتماد مشتری"] {
+  width: 144px !important;
+  height: 144px !important;
+}
+.customer-detail-hero .customer-overview-card .absolute.inset-0 .text-\[38px\] {
+  font-size: 30px !important;
+}
+.customer-detail-hero .customer-overview-card .absolute.inset-0 .text-\[13px\] {
+  font-size: 11px !important;
+}
+@media (max-width: 1024px) {
+  .customer-detail-hero .customer-overview-actions {
+    max-width: none !important;
+    justify-content: flex-start !important;
+  }
+}
+
+
+/* v61 — dedicated customer-edit controls: no double box, no blue focus */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:active,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203, 213, 225, .96) !important;
+  border-radius: 999px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-input {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}
+
+
+/* v62 — crash fix cleanup: no React focus state dependency */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  box-shadow: none !important;
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+
+/* v64 — force the inner input layer to be visually invisible; wrapper is the only box */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.customer-edit-v2-overlay .customer-edit-v2-native-field {
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:hover,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-control-input,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus-visible,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus-visible {
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+
+/* v65 — final: no real input for customer name/phone, so global input focus CSS cannot apply */
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: #fff !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus-visible,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:active {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+  pointer-events: none !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  border-radius: 999px !important;
+  background: rgba(203, 213, 225, .96) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}

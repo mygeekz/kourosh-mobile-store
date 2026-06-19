@@ -1,0 +1,269 @@
+/* ==========================================================================
+   Kourosh Dashboard Redesign — Pass 1
+   --------------------------------------------------------------------------
+   Scope: dashboard page only (.dashboard-redesign-v1)
+   Goal: executive Apple-minimal visual polish for hero, spotlight cards,
+   dashboard widgets, card manager, quick actions, and add-widget modal.
+   No dashboard data/API/layout persistence/drag logic changes.
+   ========================================================================== */
+
+.dashboard-redesign-v1 {
+  --dashboard-surface: rgba(255, 255, 255, 0.96);
+  --dashboard-surface-soft: rgba(248, 250, 252, 0.86);
+  --dashboard-border: rgba(203, 213, 225, 0.72);
+  --dashboard-border-strong: rgba(148, 163, 184, 0.34);
+  --dashboard-text: rgb(15, 23, 42);
+  --dashboard-muted: rgb(100, 116, 139);
+  --dashboard-radius-xl: 28px;
+  --dashboard-radius-lg: 22px;
+  --dashboard-shadow: 0 20px 56px -44px rgba(15, 23, 42, 0.28);
+  --dashboard-shadow-hover: 0 28px 72px -50px rgba(15, 23, 42, 0.34);
+  min-width: 0;
+  background:
+    radial-gradient(circle at 88% 2%, rgba(59, 130, 246, 0.075), transparent 28%),
+    radial-gradient(circle at 6% 18%, rgba(16, 185, 129, 0.06), transparent 24%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.55), rgba(255, 255, 255, 0));
+}
+
+html.dark .dashboard-redesign-v1 {
+  --dashboard-surface: rgba(15, 23, 42, 0.94);
+  --dashboard-surface-soft: rgba(30, 41, 59, 0.56);
+  --dashboard-border: rgba(51, 65, 85, 0.82);
+  --dashboard-border-strong: rgba(100, 116, 139, 0.42);
+  --dashboard-text: rgb(248, 250, 252);
+  --dashboard-muted: rgb(148, 163, 184);
+  --dashboard-shadow: 0 22px 64px -46px rgba(2, 6, 23, 0.88);
+  --dashboard-shadow-hover: 0 30px 80px -52px rgba(2, 6, 23, 0.92);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.13), transparent 30%),
+    radial-gradient(circle at 6% 18%, rgba(20, 184, 166, 0.09), transparent 25%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(2, 6, 23, 0));
+}
+
+.dashboard-redesign-v1 .dashboard-hero-panel,
+.dashboard-redesign-v1 .dashboard-card-manager-panel,
+.dashboard-redesign-v1 .dashboard-executive-panel,
+.dashboard-redesign-v1 .dashboard-spotlight-card,
+.dashboard-redesign-v1 .dashboard-widget-shell {
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface) !important;
+  box-shadow: var(--dashboard-shadow) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-hero-panel,
+.dashboard-redesign-v1 .dashboard-card-manager-panel,
+.dashboard-redesign-v1 .dashboard-executive-panel {
+  border-radius: var(--dashboard-radius-xl) !important;
+  position: relative;
+}
+
+.dashboard-redesign-v1 .dashboard-hero-panel::after,
+.dashboard-redesign-v1 .dashboard-card-manager-panel::after,
+.dashboard-redesign-v1 .dashboard-executive-panel::after {
+  content: "";
+  position: absolute;
+  inset-inline: 20px;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.34), rgba(99, 102, 241, 0.25), transparent);
+  opacity: 0.78;
+}
+
+.dashboard-redesign-v1 .dashboard-hero-panel:hover,
+.dashboard-redesign-v1 .dashboard-executive-panel:hover,
+.dashboard-redesign-v1 .dashboard-spotlight-card:hover,
+.dashboard-redesign-v1 .dashboard-widget-shell:hover {
+  border-color: var(--dashboard-border-strong) !important;
+  box-shadow: var(--dashboard-shadow-hover) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-hero-panel {
+  padding: 18px !important;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-grid,
+.dashboard-redesign-v1 .dashboard-executive-grid {
+  gap: 14px !important;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card {
+  min-width: 0;
+  border-radius: 24px !important;
+  padding: 14px !important;
+  isolation: isolate;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card > div:last-child {
+  background: var(--dashboard-surface-soft) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-executive-panel {
+  padding: 16px !important;
+}
+
+.dashboard-redesign-v1 .dashboard-executive-panel .dashboard-kpi-surface-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--dashboard-border);
+  background: var(--dashboard-surface-soft);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.dashboard-redesign-v1 .dashboard-quick-action-link {
+  min-height: 58px;
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface-soft) !important;
+  box-shadow: none !important;
+}
+
+.dashboard-redesign-v1 .dashboard-quick-action-link:hover {
+  border-color: rgba(59, 130, 246, 0.32) !important;
+  background: var(--dashboard-surface) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-shell {
+  border-radius: 26px !important;
+  background: var(--dashboard-surface) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-content {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-card {
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface) !important;
+  box-shadow: var(--dashboard-shadow) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-card-manager-section,
+.dashboard-redesign-v1 .dashboard-card-manager-item {
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface-soft) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-card-manager-item {
+  box-shadow: none !important;
+}
+
+.dashboard-redesign-v1 .dashboard-card-manager-item:hover {
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border-strong) !important;
+}
+
+.dashboard-redesign-v1 .react-grid-layout {
+  min-width: 0;
+}
+
+.dashboard-redesign-v1 .react-grid-item.react-grid-placeholder {
+  border-radius: 26px !important;
+  background: rgba(14, 165, 233, 0.12) !important;
+  border: 1px dashed rgba(14, 165, 233, 0.35) !important;
+  opacity: 1 !important;
+}
+
+.dashboard-add-widget-modal {
+  border: 1px solid var(--dashboard-border, rgba(203, 213, 225, 0.72)) !important;
+  border-radius: 30px !important;
+}
+
+.dashboard-add-widget-modal__header,
+.dashboard-add-widget-modal__footer {
+  background: rgba(248, 250, 252, 0.86) !important;
+}
+
+html.dark .dashboard-add-widget-modal__header,
+html.dark .dashboard-add-widget-modal__footer {
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+
+.dashboard-add-widget-card {
+  border: 1px solid rgba(203, 213, 225, 0.72) !important;
+  box-shadow: 0 18px 46px -38px rgba(15, 23, 42, 0.2) !important;
+}
+
+.dashboard-add-widget-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(99, 102, 241, 0.32) !important;
+}
+
+html.dark .dashboard-add-widget-card {
+  border-color: rgba(51, 65, 85, 0.82) !important;
+  box-shadow: 0 22px 60px -46px rgba(2, 6, 23, 0.86) !important;
+}
+
+.dashboard-redesign-v1 :where(button, a, input, select, textarea):focus-visible,
+.dashboard-add-widget-modal :where(button, input):focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.14) !important;
+  border-color: rgba(14, 165, 233, 0.42) !important;
+}
+
+@media (max-width: 1366px) {
+  .dashboard-redesign-v1 {
+    padding-inline: 16px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-hero-panel,
+  .dashboard-redesign-v1 .dashboard-card-manager-panel,
+  .dashboard-redesign-v1 .dashboard-executive-panel {
+    border-radius: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-redesign-v1 {
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-hero-panel,
+  .dashboard-redesign-v1 .dashboard-card-manager-panel,
+  .dashboard-redesign-v1 .dashboard-executive-panel,
+  .dashboard-redesign-v1 .dashboard-spotlight-card,
+  .dashboard-redesign-v1 .dashboard-widget-shell {
+    border-radius: 22px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-spotlight-grid,
+  .dashboard-redesign-v1 .dashboard-executive-grid {
+    gap: 10px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-executive-panel {
+    padding: 12px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-quick-action-link {
+    min-height: 54px;
+  }
+
+  .dashboard-add-widget-modal {
+    width: min(96vw, 760px) !important;
+    border-radius: 24px !important;
+  }
+
+  .dashboard-add-widget-modal__header,
+  .dashboard-add-widget-modal__body,
+  .dashboard-add-widget-modal__footer {
+    padding-inline: 16px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-redesign-v1 *,
+  .dashboard-add-widget-modal * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+  .dashboard-redesign-v1 :where(.dashboard-spotlight-card, .dashboard-widget-shell, .dashboard-executive-panel, .dashboard-quick-action-link):hover,
+  .dashboard-add-widget-card:hover {
+    transform: none !important;
+  }
+}

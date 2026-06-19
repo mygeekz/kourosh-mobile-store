@@ -1,0 +1,113 @@
+/* ===== Collection center fixes quarantine ===== */
+/* This file preserves the original cascade order of legacy runtime overrides. */
+
+/* ===== Source: styles/runtime-overrides/11b-collection-date-selectability-fix.css ===== */
+/* Stage 141 — Collection Center date/delay + text selection fix */
+
+.collection-center-page,
+.collection-center-page * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+.collection-selectable-card {
+  cursor: default !important;
+}
+
+.collection-center-page button,
+.collection-center-page a,
+.collection-center-page input,
+.collection-center-page select,
+.collection-center-page textarea {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.collection-center-page article {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+.collection-center-page ::selection {
+  background: rgba(59, 130, 246, .22) !important;
+  color: inherit !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11c-collection-black-badges-cleanup.css ===== */
+/* Stage 143 — Collection Center black badge cleanup
+   The black pills visible in screenshots are legacy status/mode chips.
+   In light theme they look like broken black blocks, so normalize them.
+*/
+
+.collection-center-page .collection-center-neutral-chip,
+.collection-center-page .collection-center-mode-badge {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: none !important;
+}
+
+.collection-center-page .collection-center-neutral-chip i,
+.collection-center-page .collection-center-mode-badge i {
+  color: rgb(37 99 235) !important;
+}
+
+/* Last-resort scoped cleanup: any old slate/black pill inside collection cards becomes readable. */
+.collection-center-page :where(.collection-center-list-card, .collection-center-kanban-card, .collection-center-hero)
+  :where([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-slate-800"]) {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+}
+
+.collection-center-page :where(.collection-center-list-card, .collection-center-kanban-card, .collection-center-hero)
+  :where([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-slate-800"]) i {
+  color: rgb(37 99 235) !important;
+}
+
+/* Keep actual dark text readable; don't let old white text survive on light chips. */
+.collection-center-page :where(.collection-center-list-card, .collection-center-kanban-card, .collection-center-hero)
+  :where([class*="text-white"]) {
+  color: inherit !important;
+}
+
+/* Action buttons in quick action/history area should stay button-like, not black labels. */
+.collection-center-page .collection-center-list-card button,
+.collection-center-page .collection-center-kanban-card button,
+.collection-center-page aside button {
+  color: rgb(30 41 59);
+}
+
+.collection-center-page :where(button, a).bg-slate-950,
+.collection-center-page :where(button, a).bg-slate-900,
+.collection-center-page :where(button, a).bg-slate-800 {
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+}
+
+/* But non-button pills must not be black. */
+.collection-center-page :where(span, div).bg-slate-950,
+.collection-center-page :where(span, div).bg-slate-900,
+.collection-center-page :where(span, div).bg-slate-800 {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+}
+
+/* Dark mode keeps contrast without pure black blocks. */
+html.dark .collection-center-page .collection-center-neutral-chip,
+html.dark .collection-center-page .collection-center-mode-badge,
+html.dark .collection-center-page :where(.collection-center-list-card, .collection-center-kanban-card, .collection-center-hero)
+  :where([class*="bg-slate-950"], [class*="bg-slate-900"], [class*="bg-slate-800"]),
+html.dark .collection-center-page :where(span, div).bg-slate-950,
+html.dark .collection-center-page :where(span, div).bg-slate-900,
+html.dark .collection-center-page :where(span, div).bg-slate-800 {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .collection-center-page .collection-center-neutral-chip i,
+html.dark .collection-center-page .collection-center-mode-badge i {
+  color: rgb(147 197 253) !important;
+}

@@ -1,0 +1,46 @@
+{
+  "phase": 56,
+  "title": "People Table Detail Manual Selector Consolidation — Pass 1",
+  "changed_files": [
+    "styles/system/people-table-detail-foundation.css"
+  ],
+  "changes": [
+    {
+      "selector": ".partners-page-shell .partners-overview-hero .people-stat-card__meta",
+      "type": "merged_adjacent_blocks",
+      "removed_blocks": 1,
+      "moved_declarations": [
+        "margin-top: .18rem !important",
+        "padding-inline-end: .15rem !important"
+      ]
+    },
+    {
+      "selector": ".partners-table-shell .partner-col-balance",
+      "type": "merged_non_overlapping_block",
+      "removed_blocks": 1,
+      "moved_declarations": [
+        "overflow: hidden !important"
+      ]
+    },
+    {
+      "selector": ".partners-table-shell .partner-col-actions",
+      "type": "merged_non_overlapping_block",
+      "removed_blocks": 1,
+      "moved_declarations": [
+        "overflow: hidden !important"
+      ]
+    }
+  ],
+  "metrics": {
+    "bytes_before": 39313,
+    "bytes_after": 39147,
+    "bytes_delta": -166,
+    "lines_before": 1257,
+    "lines_after": 1252,
+    "lines_delta": -5,
+    "important_before": 582,
+    "important_after": 582,
+    "important_delta": 0
+  },
+  "safety": "Only small duplicate selector families were consolidated. Computed declarations were preserved by moving non-conflicting later declarations into the earlier canonical block. Media queries, dark-mode, active states, JSX and logic were untouched."
+}

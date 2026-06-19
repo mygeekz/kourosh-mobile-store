@@ -1,0 +1,37 @@
+
+/* v78 — Telegram connection guide cleanup:
+   - Guide text is generic, not OpenVPN-only.
+   - Proxy explanation card beside proxy field is removed.
+   - Proxy field uses the row cleanly. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-connection-bundle-v73__proxy,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__proxy {
+  grid-template-columns: 1fr !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-info-v77 {
+  display: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-field-v77 {
+  width: 100% !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__guide .telegram-guide-card__content {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 0.55rem 0.9rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__guide .telegram-guide-card__text {
+  color: rgb(71, 85, 105) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__guide .telegram-guide-card__text {
+  color: rgb(203, 213, 225) !important;
+}
+
+@media (max-width: 900px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__guide .telegram-guide-card__content {
+    grid-template-columns: 1fr !important;
+  }
+}

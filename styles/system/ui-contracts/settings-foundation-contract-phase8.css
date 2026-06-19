@@ -1,0 +1,289 @@
+/* Phase 8 — Settings Foundation Contract
+   Scope-only CSS. This layer normalizes Settings panels without
+   creating another competing redesign system. */
+
+.settings-shell[data-ui-settings-shell="true"] {
+  --settings-surface: rgba(255,255,255,0.96);
+  --settings-surface-soft: rgba(248,250,252,0.88);
+  --settings-border: rgba(226,232,240,0.92);
+  --settings-text: rgb(15,23,42);
+  --settings-muted: rgb(100,116,139);
+  --settings-radius-lg: 28px;
+  --settings-radius-md: 22px;
+  --settings-shadow: 0 18px 46px -38px rgba(15,23,42,0.42);
+  --settings-shadow-hover: 0 24px 60px -44px rgba(15,23,42,0.48);
+  color: var(--settings-text);
+}
+
+.dark .settings-shell[data-ui-settings-shell="true"] {
+  --settings-surface: rgba(15,23,42,0.92);
+  --settings-surface-soft: rgba(2,6,23,0.54);
+  --settings-border: rgba(51,65,85,0.92);
+  --settings-text: rgb(248,250,252);
+  --settings-muted: rgb(148,163,184);
+  --settings-shadow: 0 22px 60px -42px rgba(0,0,0,0.78);
+  --settings-shadow-hover: 0 28px 72px -48px rgba(0,0,0,0.82);
+}
+
+.settings-command-bar[data-ui-settings-header="true"] {
+  border-color: var(--settings-border) !important;
+  background: color-mix(in srgb, var(--settings-surface) 92%, transparent) !important;
+  box-shadow: 0 14px 34px -30px rgba(15,23,42,0.38);
+  z-index: 42;
+}
+
+.settings-command-bar[data-ui-settings-header="true"] > div {
+  min-height: 48px;
+}
+
+.settings-command-bar[data-ui-settings-header="true"] .settings-top-command {
+  min-height: 38px;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+.settings-command-bar[data-ui-settings-header="true"] [data-ui-button="true"] i,
+.settings-save-footer[data-ui-settings-save-footer="true"] [data-ui-button="true"] i {
+  font-size: 0.88rem;
+}
+
+.settings-mobile-tabs-shell[data-ui-settings-mobile-tabs="true"] {
+  scrollbar-width: none;
+}
+.settings-mobile-tabs-shell[data-ui-settings-mobile-tabs="true"]::-webkit-scrollbar { display: none; }
+
+.settings-mobile-tab[data-ui-settings-tab],
+.settings-tab-item {
+  min-height: 42px;
+  border-radius: 16px !important;
+  isolation: isolate;
+}
+
+.settings-mobile-tab[data-ui-settings-tab] {
+  white-space: nowrap;
+  box-shadow: none !important;
+}
+
+.settings-sidebar[data-ui-settings-sidebar="true"] {
+  border: 1px solid var(--settings-border);
+  border-radius: var(--settings-radius-lg);
+  background: var(--settings-surface);
+  box-shadow: var(--settings-shadow);
+  padding: 10px;
+  overflow: hidden;
+}
+
+.settings-sidebar[data-ui-settings-sidebar="true"] .settings-tab-item {
+  border-color: transparent;
+  background: transparent;
+}
+
+.settings-sidebar[data-ui-settings-sidebar="true"] .settings-tab-item:hover {
+  background: rgba(15,23,42,0.035);
+  border-color: rgba(15,23,42,0.08);
+}
+
+.dark .settings-sidebar[data-ui-settings-sidebar="true"] .settings-tab-item:hover {
+  background: rgba(248,250,252,0.055);
+  border-color: rgba(148,163,184,0.16);
+}
+
+.settings-tab-row,
+.settings-command-bar[data-ui-settings-header="true"] .flex,
+.settings-panel-root .flex {
+  min-width: 0;
+}
+
+.settings-tab-row > .settings-tab-icon,
+.settings-section-icon,
+.settings-hero-card span[class*="h-11"],
+.settings-hero-card span[class*="h-12"] {
+  place-items: center;
+  line-height: 1;
+}
+
+.settings-workspace[data-ui-settings-workspace="true"] {
+  border: 1px solid var(--settings-border);
+  border-radius: 32px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--settings-surface) 92%, transparent), color-mix(in srgb, var(--settings-surface-soft) 96%, transparent));
+  box-shadow: var(--settings-shadow);
+}
+
+.settings-panel-frame[data-ui-settings-panel-frame="true"] {
+  min-height: 520px;
+}
+
+.settings-panel-root[data-ui-settings-panel] {
+  min-width: 0;
+}
+
+.settings-panel-root[data-ui-settings-panel] > section,
+.settings-panel-root[data-ui-settings-panel] > div,
+.settings-section-card,
+.settings-data-card,
+.settings-pricing-log-shell,
+.settings-hero-card {
+  border-color: var(--settings-border) !important;
+  background-color: var(--settings-surface) !important;
+  box-shadow: var(--settings-shadow) !important;
+}
+
+.settings-section-card,
+.settings-panel-root[data-ui-settings-panel] > section,
+.settings-hero-card {
+  border-radius: var(--settings-radius-lg) !important;
+}
+
+.settings-panel-root[data-ui-settings-panel] h1,
+.settings-panel-root[data-ui-settings-panel] h2,
+.settings-panel-root[data-ui-settings-panel] h3,
+.settings-panel-root[data-ui-settings-panel] h4,
+.settings-command-bar[data-ui-settings-header="true"] .font-extrabold,
+.settings-command-bar[data-ui-settings-header="true"] .font-black {
+  letter-spacing: -0.015em;
+}
+
+.settings-panel-root[data-ui-settings-panel] p,
+.settings-panel-root[data-ui-settings-panel] .app-subtle,
+.settings-panel-root[data-ui-settings-panel] [class*="text-slate-500"],
+.settings-panel-root[data-ui-settings-panel] [class*="text-gray-500"] {
+  line-height: 1.9;
+}
+
+.settings-panel-root[data-ui-settings-panel] .line-clamp-1,
+.settings-attention-card .line-clamp-1,
+.settings-section-card .line-clamp-1 {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: initial !important;
+  overflow: visible !important;
+}
+
+.settings-panel-root[data-ui-settings-panel] input,
+.settings-panel-root[data-ui-settings-panel] select,
+.settings-panel-root[data-ui-settings-panel] textarea,
+.settings-workspace[data-ui-settings-workspace="true"] input,
+.settings-workspace[data-ui-settings-workspace="true"] select,
+.settings-workspace[data-ui-settings-workspace="true"] textarea {
+  border-radius: 16px !important;
+}
+
+.settings-panel-root[data-ui-settings-panel] input:focus,
+.settings-panel-root[data-ui-settings-panel] select:focus,
+.settings-panel-root[data-ui-settings-panel] textarea:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary, #2563eb) 18%, transparent) !important;
+}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-button="true"],
+.settings-workspace[data-ui-settings-workspace="true"] [data-ui-button="true"] {
+  border-radius: 14px !important;
+}
+
+.settings-metric-card,
+.settings-panel-root[data-ui-settings-panel] [class*="grid"] > [class*="rounded-[24px]"],
+.settings-panel-root[data-ui-settings-panel] [class*="grid"] > [class*="rounded-2xl"] {
+  min-width: 0;
+}
+
+.settings-panel-root[data-ui-settings-panel] table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.settings-panel-root[data-ui-settings-panel] th,
+.settings-panel-root[data-ui-settings-panel] td {
+  vertical-align: middle;
+}
+
+.settings-save-footer[data-ui-settings-save-footer="true"] {
+  border-color: var(--settings-border) !important;
+  background: color-mix(in srgb, var(--settings-surface) 90%, transparent) !important;
+  box-shadow: 0 -18px 42px -36px rgba(15,23,42,0.46);
+}
+
+.settings-attention-card[data-ui-settings-card="attention"] {
+  border-radius: 26px !important;
+  box-shadow: var(--settings-shadow) !important;
+}
+
+.settings-attention-card[data-ui-settings-card="attention"]:hover {
+  box-shadow: var(--settings-shadow-hover) !important;
+}
+
+.settings-panel-root[data-ui-settings-panel="modules"] .module-plan-grid > div,
+.settings-panel-root[data-ui-settings-panel="users"] .settings-table-clean,
+.settings-panel-root[data-ui-settings-panel="data"] .settings-backup-list-card,
+.settings-panel-root[data-ui-settings-panel="pricing"] .settings-pricing-log-item {
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.settings-panel-root[data-ui-settings-panel="modules"] .module-plan-grid > div:hover,
+.settings-panel-root[data-ui-settings-panel="pricing"] .settings-pricing-log-item:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--settings-shadow-hover) !important;
+}
+
+.settings-panel-root[data-ui-settings-panel] bdi,
+.settings-panel-root[data-ui-settings-panel] [dir="ltr"] {
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1023px) {
+  .settings-shell[data-ui-settings-shell="true"] {
+    padding-inline: 12px !important;
+  }
+
+  .settings-command-bar[data-ui-settings-header="true"] > div {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-command-bar[data-ui-settings-header="true"] > div > div:last-child {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .settings-command-bar[data-ui-settings-header="true"] > div > div:last-child > :first-child,
+  .settings-command-bar[data-ui-settings-header="true"] > div > div:last-child > :nth-child(2) {
+    grid-column: 1 / -1;
+  }
+
+  .settings-command-bar[data-ui-settings-header="true"] .settings-top-command {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .settings-workspace[data-ui-settings-workspace="true"] {
+    border-radius: 24px;
+  }
+
+  .settings-panel-frame[data-ui-settings-panel-frame="true"] {
+    padding: 16px !important;
+  }
+
+  .settings-panel-root[data-ui-settings-panel] > section,
+  .settings-section-card,
+  .settings-hero-card {
+    border-radius: 24px !important;
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-command-bar[data-ui-settings-header="true"] > div > div:last-child {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-panel-root[data-ui-settings-panel] [data-ui-button="true"],
+  .settings-save-footer[data-ui-settings-save-footer="true"] [data-ui-button="true"] {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .settings-save-footer[data-ui-settings-save-footer="true"] {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}

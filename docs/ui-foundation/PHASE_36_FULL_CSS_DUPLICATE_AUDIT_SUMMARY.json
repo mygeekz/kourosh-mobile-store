@@ -1,0 +1,5468 @@
+{
+  "phase": "36",
+  "title": "Full CSS Duplicate Audit Summary",
+  "generated_at": "2026-05-28",
+  "css_file_count": 152,
+  "total_css_bytes": 1992103,
+  "total_css_lines": 67602,
+  "total_important_count": 13775,
+  "index_css_import_count": 58,
+  "runtime_overrides_direct_import_count": 0,
+  "files_with_exact_duplicates": 5,
+  "total_exact_duplicate_groups_in_files": 51,
+  "total_exact_duplicate_extra_occurrences_in_files": 51,
+  "files_with_repeated_selectors_different_body": 32,
+  "total_repeated_selector_groups_different_body": 437,
+  "cross_file_exact_duplicate_rule_groups_sample_count": 200,
+  "parser_error_files": [],
+  "textual_newline_css_files": [],
+  "brace_balance_issues": [],
+  "missing_css_imports": [],
+  "runtime_overrides_reference_files": [
+    "docs/css-cleanup-audit-stage8.md",
+    "docs/css-exact-duplicate-rules-stage22.json",
+    "docs/css-exact-duplicates-stage11.json",
+    "docs/css-governance-map-stage22.md",
+    "docs/css-map-stage11.md",
+    "docs/css-phone-inventory-table-cleanup-stage9.md",
+    "docs/css-premium-modal-cleanup-stage10.md",
+    "docs/css-stage22-validation.json",
+    "docs/css-stage24-validation.json",
+    "docs/icon-text-layout-contract-stage60.md",
+    "docs/icon-text-layout-followup-stage61.md",
+    "docs/icon-text-layout-followup-stage61-validation.json",
+    "docs/bidi-text-contract-stage62.md",
+    "docs/technical-token-bidi-sweep-stage63.md",
+    "docs/search-input-unification-stage65.md",
+    "docs/search-input-unification-stage65-validation.json",
+    "docs/search-position-hardening-stage66.md",
+    "docs/search-final-stage67-validation.json",
+    "docs/sidebar-search-left-final-stage68.md",
+    "docs/sidebar-search-physical-opposite-stage69.md",
+    "docs/sidebar-search-grid-no-overlap-stage70.md",
+    "docs/sidebar-search-single-surface-stage71.md",
+    "docs/sidebar-search-inner-focus-stage72.md",
+    "docs/sidebar-search-hard-input-reset-stage73.md",
+    "docs/sidebar-search-dom-important-reset-stage75.md",
+    "docs/single-surface-search-system-stage77.md",
+    "docs/cash-sale-select-inner-input-reset-stage78.md",
+    "docs/cash-sale-native-combobox-stage79.md",
+    "docs/cash-sale-combobox-layering-stage80.md",
+    "docs/cash-sale-combobox-portal-stage81.md",
+    "docs/reports-search-and-combobox-affordance-stage82.md",
+    "docs/cash-sale-combobox-rollback-stage83.md",
+    "docs/cash-sale-react-select-stable-fix-stage84.md",
+    "docs/cash-sale-combobox-premium-polish-stage85.md",
+    "docs/cash-sale-react-select-input-capsule-stage86.md",
+    "docs/reports-search-left-stage87.md",
+    "docs/reports-search-grid-left-stage88.md",
+    "docs/reports-search-single-surface-stage89.md",
+    "docs/root-search-single-surface-stage90.md",
+    "docs/date-field-and-realized-profit-stability-stage94.md",
+    "docs/date-and-realized-search-final-stage95.md",
+    "docs/realized-profit-local-search-date-stage96.md",
+    "docs/search-opposite-and-date-no-focus-stage97.md",
+    "docs/search-focus-on-box-stage98.md",
+    "docs/search-final-specificity-stage99.md",
+    "docs/stage104-centralized-select-field-and-spacing.md",
+    "docs/stage105-customers-list-remove-tags.md",
+    "docs/stage106-partner-detail-actions-responsive.md",
+    "docs/stage107-partner-detail-central-layout.md",
+    "docs/stage108-partner-detail-hero-single-column.md",
+    "docs/stage109-partner-detail-customer-parity-clean.md",
+    "docs/stage111-partner-detail-safe-top-actions.md",
+    "docs/stage112-partner-detail-solid-visual-reset.md",
+    "docs/stage113-partner-detail-page-stack-clean.md",
+    "docs/stage114-partner-phone-capital-solid-reset.md",
+    "docs/stage115-phone-capital-hard-solid-reset.md",
+    "docs/stage116-centralized-phone-capital-section.md",
+    "docs/stage117-partner-detail-responsive-system.md",
+    "docs/stage118-partner-detail-100zoom-responsive-fix.md",
+    "docs/stage119-partner-ledger-insight-responsive.md",
+    "docs/stage122-compact-capital-table-100zoom.md",
+    "docs/stage125-partner-capital-progress-final.md",
+    "docs/stage126-capital-progress-and-duplicate-hint-cleanup.md",
+    "docs/stage127-partner-telegram-status-colors.md",
+    "docs/stage130-cashflow-card-icons.md",
+    "docs/stage131-creditors-report-polish.md",
+    "docs/stage132-cashflow-collection-center-fixes.md",
+    "docs/stage134-collection-center-basis-badge.md",
+    "docs/stage135-report-basis-badges.md",
+    "docs/stage136-report-basis-tooltips.md",
+    "docs/stage137-collection-basis-tooltip-jsx-fix.md",
+    "docs/stage141-collection-date-delay-selectability.md",
+    "docs/stage143-collection-black-badges-cleanup.md",
+    "docs/stage144-mobile-sales-tabs-grid.md",
+    "docs/stage145-smart-insight-redesign.md",
+    "docs/stage146-smart-insight-precise-redesign.md",
+    "docs/stage148-partner-payment-ledger-polish.md",
+    "docs/stage149-partner-payment-modal-v2.md",
+    "docs/stage152-central-sidebar-safe-modals.md",
+    "docs/stage153-central-sidebar-safe-overlays.md",
+    "docs/stage155-partner-date-source-tooltip-fix.md",
+    "styles/system/search-input-foundation.css",
+    "styles/system/modal-people-foundation.css",
+    "styles/system/modal-products-foundation.css",
+    "styles/system/modal-partner-foundation.css",
+    "styles/system/telegram-ui-foundation.css",
+    "styles/system/mobile-phones-foundation.css",
+    "styles/system/mobile-sales-tabs-foundation.css",
+    "styles/system/dashboard-smart-widgets-foundation.css",
+    "styles/system/shared-action-buttons-foundation.css",
+    "styles/system/table-actions-foundation.css",
+    "styles/system/finance-tables-foundation.css",
+    "styles/system/partner-capital-table-foundation.css",
+    "styles/system/header-sidebar-navigation-foundation.css",
+    "styles/system/notifications-foundation.css",
+    "styles/system/global-commercial-qa-foundation.css",
+    "styles/system/ui-density-accessibility-foundation.css",
+    "styles/system/cross-module-density-foundation.css",
+    "styles/system/people-status-mobile-foundation.css",
+    "styles/system/partner-capital-status-foundation.css",
+    "styles/system/reports-risk-cashflow-foundation.css",
+    "styles/system/smart-insight-foundation.css",
+    "styles/system/bidi-text-contract-foundation.css",
+    "styles/system/products-services-repairs/products-ui-foundation.css",
+    "styles/system/products-services-repairs/services-inventory-foundation.css",
+    "styles/system/products-services-repairs/repairs-ui-foundation.css",
+    "styles/system/legacy-quarantine/people-list-hero-foundation.css",
+    "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+    "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+    "styles/system/legacy-quarantine/partner-settlement-foundation.css",
+    "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+    "styles/system/legacy-quarantine/select-customer-compat-foundation.css",
+    "styles/system/legacy-quarantine/collection-cleanup-foundation.css",
+    "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+    "styles/system/telegram-runtime/settings-telegram-compact-foundation.css",
+    "styles/system/telegram-runtime/telegram-real-compact-foundation.css",
+    "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+    "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+    "docs/ui-foundation/PHASE_01_SEARCH_INPUT_FOUNDATION.md",
+    "docs/ui-foundation/PHASE_10_DASHBOARD_SMART_WIDGETS_FOUNDATION.md",
+    "docs/ui-foundation/PHASE_12_HEADER_SIDEBAR_NAVIGATION_FOUNDATION.md",
+    "docs/ui-foundation/PHASE_14_PRODUCTS_SERVICES_REPAIRS_FOUNDATION.md",
+    "docs/ui-foundation/PHASE_15_NOTIFICATIONS_SMART_LEGACY_FOUNDATION.md",
+    "docs/ui-foundation/PHASE_16_FINAL_CSS_IMPORT_AUDIT_LEGACY_QUARANTINE.md",
+    "docs/ui-foundation/CSS_IMPORT_AUDIT_SUMMARY.md",
+    "docs/ui-foundation/PHASE_18_FIELD_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_19_TELEGRAM_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_20_REPORTS_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_21_PEOPLE_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_22_INSTALLMENTS_PHONE_EDIT_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_23_PARTNER_PHONE_CAPITAL_RUNTIME_REDUCTION.md",
+    "docs/ui-foundation/PHASE_24_REMOVED_RUNTIME_OVERRIDES_MANIFEST.json",
+    "docs/ui-foundation/PHASE_24_CSS_DEAD_IMPORT_DUPLICATE_SELECTOR_AUDIT.md",
+    "docs/ui-foundation/PHASE_28_PEOPLE_DETAIL_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_29_MOBILE_PHONES_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_31_SETTINGS_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_32_PRODUCTS_SERVICES_REPAIRS_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_33_GLOBAL_FOUNDATION_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_34_MODAL_FOUNDATION_DUPLICATE_SELECTOR_REDUCTION.md",
+    "docs/ui-foundation/PHASE_35_LEGACY_QUARANTINE_DUPLICATE_SELECTOR_REDUCTION.md"
+  ],
+  "top_by_size": [
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14445,
+      "important_count": 978,
+      "rules": 2558,
+      "exact_duplicate_groups": 39,
+      "exact_duplicate_extra_occurrences": 39,
+      "repeated_selector_groups_different_body": 110,
+      "repeated_selector_extra_occurrences": 170,
+      "sha256": "1e087496e1cec59de367086c7e55c751458ec95799cff6e4a7dab8ce0557db95"
+    },
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 180071,
+      "lines": 5809,
+      "important_count": 2095,
+      "rules": 897,
+      "exact_duplicate_groups": 2,
+      "exact_duplicate_extra_occurrences": 2,
+      "repeated_selector_groups_different_body": 84,
+      "repeated_selector_extra_occurrences": 153,
+      "sha256": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd"
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 129397,
+      "lines": 3792,
+      "important_count": 1611,
+      "rules": 542,
+      "exact_duplicate_groups": 8,
+      "exact_duplicate_extra_occurrences": 8,
+      "repeated_selector_groups_different_body": 70,
+      "repeated_selector_extra_occurrences": 189,
+      "sha256": "a07fcfc3facaa8cf446dc6425330f44aa89e97b7427ba5413b145b77df960084"
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "bytes": 68919,
+      "lines": 2070,
+      "important_count": 910,
+      "rules": 176,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 17,
+      "repeated_selector_extra_occurrences": 23,
+      "sha256": "39e909e3b817d5e3e92a848d7d9914987e2c6a3a795ac8e091ff0b209bbe3489"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1628,
+      "important_count": 263,
+      "rules": 320,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 29,
+      "repeated_selector_extra_occurrences": 31,
+      "sha256": "f6970d995d6148c2d0007340d540562606cf555a9a9e173d0490e4c53c95f6ab"
+    },
+    {
+      "file": "styles/pages/reports.css",
+      "bytes": 60790,
+      "lines": 2376,
+      "important_count": 355,
+      "rules": 366,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "c121299d47e33f3bc2e8b6a99027f8e99e5352d45266c4572f8a708378b22590"
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "bytes": 39313,
+      "lines": 1257,
+      "important_count": 582,
+      "rules": 194,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 11,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "2dc25237037cef0f4e1cf65c48cc9d245538b77f3de2533b1fd383a02b977831"
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes": 37827,
+      "lines": 1484,
+      "important_count": 239,
+      "rules": 257,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 22,
+      "repeated_selector_extra_occurrences": 28,
+      "sha256": "9884eb79f67c90d51f865f7d94e7aef278491f67d33acdb2758e75bac80f9d33"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "bytes": 36571,
+      "lines": 1262,
+      "important_count": 328,
+      "rules": 174,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 4,
+      "repeated_selector_extra_occurrences": 4,
+      "sha256": "6e672a34bb61a54633c88012326c02264e09572d7e79055ea65219a65b74a4a9"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+      "bytes": 35491,
+      "lines": 1169,
+      "important_count": 110,
+      "rules": 198,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0a562547b8685a4ef4803d81fda33f91412caec60371c795631c4ab933a749b2"
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "bytes": 34752,
+      "lines": 948,
+      "important_count": 291,
+      "rules": 141,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "9a6c6f44d7b71147ec498c4503eac0ffba7f746d9674e7ae28463c67ee2fbbfb"
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "bytes": 30543,
+      "lines": 1188,
+      "important_count": 531,
+      "rules": 180,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "a36031194905358b3a2034005fe7c4b02d24b1b403efcb79e5f0204a21883813"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "bytes": 28624,
+      "lines": 842,
+      "important_count": 529,
+      "rules": 158,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "2a7d3c10e5575d2362096d395deff73fc781ec44403fe543859cb2356c1fe3c4"
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 957,
+      "important_count": 150,
+      "rules": 153,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 7,
+      "repeated_selector_extra_occurrences": 8,
+      "sha256": "e716ebc7f84d748c9b200244e6a7dfdca348c6ea139865ccd3ed2ac5f3ff7088"
+    },
+    {
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "bytes": 25673,
+      "lines": 993,
+      "important_count": 439,
+      "rules": 147,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "371f6dc78b210b5e95f7d04d3dca765bd78a9b69b3559611a8acc0842df196b2"
+    },
+    {
+      "file": "styles/system/mobile-phones-foundation.css",
+      "bytes": 25483,
+      "lines": 1000,
+      "important_count": 112,
+      "rules": 166,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 10,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "1d092c9caa937a0b2eebfadd5683e4bab87b80fa1060dae81811c914235a787a"
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "bytes": 24179,
+      "lines": 694,
+      "important_count": 289,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "ead7237ee5a1a9a2454aeab40da4cccee6feca058bdbee170b9507ec22d47919"
+    },
+    {
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "bytes": 23813,
+      "lines": 568,
+      "important_count": 206,
+      "rules": 68,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ab84c86f4a8a2a993e4ed2e3fdb8b9e706ad7b465d22880d10d23532013c659d"
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "bytes": 23605,
+      "lines": 802,
+      "important_count": 297,
+      "rules": 109,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 9,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "42d090060d3081b72df2c198cb72af11298983869368d0979111841334108570"
+    },
+    {
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "bytes": 22305,
+      "lines": 770,
+      "important_count": 79,
+      "rules": 112,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "086815d92dbda17cb25d51fbaf413bb8707496114a3cafa17b52a2ec67664905"
+    },
+    {
+      "file": "styles/system/partner-detail-responsive-ledger-foundation.css",
+      "bytes": 18847,
+      "lines": 552,
+      "important_count": 205,
+      "rules": 77,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "d4a543eb488f108f952a05595e2680510454ff28dc7cad3f907a695e1457b3b8"
+    },
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "bytes": 18238,
+      "lines": 745,
+      "important_count": 74,
+      "rules": 117,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "5e59989ddd0cea8544d39bc1a8d22e8a088332c18420e17161ec270d1705af21"
+    },
+    {
+      "file": "styles/system/finance-tables-foundation.css",
+      "bytes": 18018,
+      "lines": 450,
+      "important_count": 180,
+      "rules": 66,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "69ecd14b3a87e717e072725ebf2cb75f9ba768e844e24fe90f517eab025becf2"
+    },
+    {
+      "file": "styles/system/modal-people-foundation.css",
+      "bytes": 17987,
+      "lines": 681,
+      "important_count": 129,
+      "rules": 96,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c56303d1a02cdcae0ff77c575948d2e9d99c18edec2e1b7af297bfdcabb4e4c5"
+    },
+    {
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "bytes": 17815,
+      "lines": 641,
+      "important_count": 168,
+      "rules": 90,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "ba4d366daace4959a05111411e881e8aa187ab2ecc55949f45ea7bfbaf550c07"
+    }
+  ],
+  "top_by_important": [
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 180071,
+      "lines": 5809,
+      "important_count": 2095,
+      "rules": 897,
+      "exact_duplicate_groups": 2,
+      "exact_duplicate_extra_occurrences": 2,
+      "repeated_selector_groups_different_body": 84,
+      "repeated_selector_extra_occurrences": 153,
+      "sha256": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd"
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 129397,
+      "lines": 3792,
+      "important_count": 1611,
+      "rules": 542,
+      "exact_duplicate_groups": 8,
+      "exact_duplicate_extra_occurrences": 8,
+      "repeated_selector_groups_different_body": 70,
+      "repeated_selector_extra_occurrences": 189,
+      "sha256": "a07fcfc3facaa8cf446dc6425330f44aa89e97b7427ba5413b145b77df960084"
+    },
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14445,
+      "important_count": 978,
+      "rules": 2558,
+      "exact_duplicate_groups": 39,
+      "exact_duplicate_extra_occurrences": 39,
+      "repeated_selector_groups_different_body": 110,
+      "repeated_selector_extra_occurrences": 170,
+      "sha256": "1e087496e1cec59de367086c7e55c751458ec95799cff6e4a7dab8ce0557db95"
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "bytes": 68919,
+      "lines": 2070,
+      "important_count": 910,
+      "rules": 176,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 17,
+      "repeated_selector_extra_occurrences": 23,
+      "sha256": "39e909e3b817d5e3e92a848d7d9914987e2c6a3a795ac8e091ff0b209bbe3489"
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "bytes": 39313,
+      "lines": 1257,
+      "important_count": 582,
+      "rules": 194,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 11,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "2dc25237037cef0f4e1cf65c48cc9d245538b77f3de2533b1fd383a02b977831"
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "bytes": 30543,
+      "lines": 1188,
+      "important_count": 531,
+      "rules": 180,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "a36031194905358b3a2034005fe7c4b02d24b1b403efcb79e5f0204a21883813"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "bytes": 28624,
+      "lines": 842,
+      "important_count": 529,
+      "rules": 158,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "2a7d3c10e5575d2362096d395deff73fc781ec44403fe543859cb2356c1fe3c4"
+    },
+    {
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "bytes": 25673,
+      "lines": 993,
+      "important_count": 439,
+      "rules": 147,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "371f6dc78b210b5e95f7d04d3dca765bd78a9b69b3559611a8acc0842df196b2"
+    },
+    {
+      "file": "styles/pages/reports.css",
+      "bytes": 60790,
+      "lines": 2376,
+      "important_count": 355,
+      "rules": 366,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "c121299d47e33f3bc2e8b6a99027f8e99e5352d45266c4572f8a708378b22590"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "bytes": 36571,
+      "lines": 1262,
+      "important_count": 328,
+      "rules": 174,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 4,
+      "repeated_selector_extra_occurrences": 4,
+      "sha256": "6e672a34bb61a54633c88012326c02264e09572d7e79055ea65219a65b74a4a9"
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "bytes": 23605,
+      "lines": 802,
+      "important_count": 297,
+      "rules": 109,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 9,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "42d090060d3081b72df2c198cb72af11298983869368d0979111841334108570"
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "bytes": 34752,
+      "lines": 948,
+      "important_count": 291,
+      "rules": 141,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "9a6c6f44d7b71147ec498c4503eac0ffba7f746d9674e7ae28463c67ee2fbbfb"
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "bytes": 24179,
+      "lines": 694,
+      "important_count": 289,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "ead7237ee5a1a9a2454aeab40da4cccee6feca058bdbee170b9507ec22d47919"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1628,
+      "important_count": 263,
+      "rules": 320,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 29,
+      "repeated_selector_extra_occurrences": 31,
+      "sha256": "f6970d995d6148c2d0007340d540562606cf555a9a9e173d0490e4c53c95f6ab"
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes": 37827,
+      "lines": 1484,
+      "important_count": 239,
+      "rules": 257,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 22,
+      "repeated_selector_extra_occurrences": 28,
+      "sha256": "9884eb79f67c90d51f865f7d94e7aef278491f67d33acdb2758e75bac80f9d33"
+    },
+    {
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "bytes": 23813,
+      "lines": 568,
+      "important_count": 206,
+      "rules": 68,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ab84c86f4a8a2a993e4ed2e3fdb8b9e706ad7b465d22880d10d23532013c659d"
+    },
+    {
+      "file": "styles/system/partner-detail-responsive-ledger-foundation.css",
+      "bytes": 18847,
+      "lines": 552,
+      "important_count": 205,
+      "rules": 77,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "d4a543eb488f108f952a05595e2680510454ff28dc7cad3f907a695e1457b3b8"
+    },
+    {
+      "file": "styles/system/people-runtime/people-commercial-redesign-foundation.css",
+      "bytes": 15123,
+      "lines": 535,
+      "important_count": 187,
+      "rules": 59,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2e15a9dacf6b169dd8c4763a867b9411e98cf05e917da4e09d191eb26911210e"
+    },
+    {
+      "file": "styles/system/finance-tables-foundation.css",
+      "bytes": 18018,
+      "lines": 450,
+      "important_count": 180,
+      "rules": 66,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "69ecd14b3a87e717e072725ebf2cb75f9ba768e844e24fe90f517eab025becf2"
+    },
+    {
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "bytes": 17815,
+      "lines": 641,
+      "important_count": 168,
+      "rules": 90,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "ba4d366daace4959a05111411e881e8aa187ab2ecc55949f45ea7bfbaf550c07"
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 957,
+      "important_count": 150,
+      "rules": 153,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 7,
+      "repeated_selector_extra_occurrences": 8,
+      "sha256": "e716ebc7f84d748c9b200244e6a7dfdca348c6ea139865ccd3ed2ac5f3ff7088"
+    },
+    {
+      "file": "styles/system/shared-action-buttons-foundation.css",
+      "bytes": 11771,
+      "lines": 345,
+      "important_count": 144,
+      "rules": 34,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "59ee08b3ffec0a8f60c1810e296ea1a2a260fb467f5e8d40de0d6baab9a51703"
+    },
+    {
+      "file": "styles/system/reports-filter-kpi-foundation.css",
+      "bytes": 10543,
+      "lines": 340,
+      "important_count": 137,
+      "rules": 41,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "cedca2e98d77e3101d3330224bec11d8332bbc0cfdee31000973934133aeb1fd"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-list-hero-foundation.css",
+      "bytes": 10668,
+      "lines": 408,
+      "important_count": 135,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "a513d2fdde9804765240fad572f347b69bb79b08e92e106b9279d53282efaf16"
+    },
+    {
+      "file": "styles/system/modal-people-foundation.css",
+      "bytes": 17987,
+      "lines": 681,
+      "important_count": 129,
+      "rules": 96,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c56303d1a02cdcae0ff77c575948d2e9d99c18edec2e1b7af297bfdcabb4e4c5"
+    }
+  ],
+  "top_by_exact_duplicate_extra_occurrences": [
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14445,
+      "important_count": 978,
+      "rules": 2558,
+      "exact_duplicate_groups": 39,
+      "exact_duplicate_extra_occurrences": 39,
+      "repeated_selector_groups_different_body": 110,
+      "repeated_selector_extra_occurrences": 170,
+      "sha256": "1e087496e1cec59de367086c7e55c751458ec95799cff6e4a7dab8ce0557db95"
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 129397,
+      "lines": 3792,
+      "important_count": 1611,
+      "rules": 542,
+      "exact_duplicate_groups": 8,
+      "exact_duplicate_extra_occurrences": 8,
+      "repeated_selector_groups_different_body": 70,
+      "repeated_selector_extra_occurrences": 189,
+      "sha256": "a07fcfc3facaa8cf446dc6425330f44aa89e97b7427ba5413b145b77df960084"
+    },
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 180071,
+      "lines": 5809,
+      "important_count": 2095,
+      "rules": 897,
+      "exact_duplicate_groups": 2,
+      "exact_duplicate_extra_occurrences": 2,
+      "repeated_selector_groups_different_body": 84,
+      "repeated_selector_extra_occurrences": 153,
+      "sha256": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1628,
+      "important_count": 263,
+      "rules": 320,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 29,
+      "repeated_selector_extra_occurrences": 31,
+      "sha256": "f6970d995d6148c2d0007340d540562606cf555a9a9e173d0490e4c53c95f6ab"
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 957,
+      "important_count": 150,
+      "rules": 153,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 7,
+      "repeated_selector_extra_occurrences": 8,
+      "sha256": "e716ebc7f84d748c9b200244e6a7dfdca348c6ea139865ccd3ed2ac5f3ff7088"
+    },
+    {
+      "file": "index.css",
+      "bytes": 822,
+      "lines": 40,
+      "important_count": 2,
+      "rules": 3,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1c88c353fb9e076f45e0b76835cff179c95564c02c70f56938e5d1805d7eac08"
+    },
+    {
+      "file": "styles/components/badges.css",
+      "bytes": 7543,
+      "lines": 213,
+      "important_count": 0,
+      "rules": 47,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ee5b6cf61c8c8c5ad34387c6f106fd64e14a96ae33cac9eba988755f712f3a79"
+    },
+    {
+      "file": "styles/components/button-normalization.css",
+      "bytes": 4251,
+      "lines": 96,
+      "important_count": 0,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "146d809ae7c07b03e0940f00d87c110432aeee17186b4f5a19a891043982756e"
+    },
+    {
+      "file": "styles/components/buttons.css",
+      "bytes": 84,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "169a8d0417ca6d71d97911c44ccbfe4734de26d2a17ea2007f8a280ad0b5b5d0"
+    },
+    {
+      "file": "styles/components/cards.css",
+      "bytes": 13892,
+      "lines": 402,
+      "important_count": 2,
+      "rules": 84,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "adb8902df7b5b2e801407536b447d718981aa4fc083b5624b02a0520e7e02c61"
+    },
+    {
+      "file": "styles/components/date-field.css",
+      "bytes": 6130,
+      "lines": 187,
+      "important_count": 107,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bb04b9a004c68bf17c76bcd7844e6dc99ac6af1ff1a07864cb99b8e7fae983b8"
+    },
+    {
+      "file": "styles/components/detail-hero.css",
+      "bytes": 839,
+      "lines": 15,
+      "important_count": 0,
+      "rules": 4,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1b93b3252b995eeb3e928fda22c34f34aadb6f36010c8e90c38e4fd4eaf6dcc9"
+    },
+    {
+      "file": "styles/components/detail.css",
+      "bytes": 2659,
+      "lines": 68,
+      "important_count": 0,
+      "rules": 14,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ed1954cdce5af34f82f8ffecffe6f4502802a59dcf5f8162f5b5f8bb7ce94dfd"
+    },
+    {
+      "file": "styles/components/empty-states.css",
+      "bytes": 1646,
+      "lines": 86,
+      "important_count": 0,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "811bc88831478fa20b39c8369f86e97651d126585c97879d1b7b7b95b2b5232a"
+    },
+    {
+      "file": "styles/components/filters.css",
+      "bytes": 7420,
+      "lines": 366,
+      "important_count": 1,
+      "rules": 62,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "12011c442ee647123396d7e6110a446f91e0a20c82aa29a4bd6090fe482057a7"
+    },
+    {
+      "file": "styles/components/forms.css",
+      "bytes": 11787,
+      "lines": 413,
+      "important_count": 4,
+      "rules": 74,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2f2622ae9c851aa5cb315969e2c1231bb578830f1d9feca9c7091749b8aa2192"
+    },
+    {
+      "file": "styles/components/modals.css",
+      "bytes": 7406,
+      "lines": 294,
+      "important_count": 43,
+      "rules": 43,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "7003678764cd101d044c120d81d55e56f8c1556f528ae2a5b745e5ec439fd8e9"
+    },
+    {
+      "file": "styles/components/search-field.css",
+      "bytes": 4423,
+      "lines": 191,
+      "important_count": 7,
+      "rules": 19,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "13c7dc261c9ceb5114cc4d14e11aa8608f82d7c4be6e95fb824fb5b6a418fd0c"
+    },
+    {
+      "file": "styles/components/select-field.css",
+      "bytes": 3420,
+      "lines": 155,
+      "important_count": 7,
+      "rules": 15,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9978ad83d599c07893d9a2de6af37b47b8090d71210424ddecf7436564551534"
+    },
+    {
+      "file": "styles/components/tables.css",
+      "bytes": 7916,
+      "lines": 190,
+      "important_count": 0,
+      "rules": 28,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9340635e02b00694a6865e645e378bee96512d7633382ac26f70d9672b3167ac"
+    },
+    {
+      "file": "styles/components/toasts.css",
+      "bytes": 2228,
+      "lines": 110,
+      "important_count": 0,
+      "rules": 17,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "842a7b0584a5ae0af5cdb1fa1a7df9457270ea1bf70341a0bb854a54f53ec2bd"
+    },
+    {
+      "file": "styles/components/toolbars.css",
+      "bytes": 6608,
+      "lines": 233,
+      "important_count": 0,
+      "rules": 39,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bc7a5a4d8f07243ca3301f5e69d9a720af43e21b6f3596cb17c325ffdb1b9e9b"
+    },
+    {
+      "file": "styles/components/unified-buttons.css",
+      "bytes": 8596,
+      "lines": 299,
+      "important_count": 94,
+      "rules": 26,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "6c222bc9515fb30e5a45c2f9cfac39cf93d09bbc3137a59afa12850972cd2dfb"
+    },
+    {
+      "file": "styles/components/unified-fields.css",
+      "bytes": 16024,
+      "lines": 523,
+      "important_count": 127,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "7922d4fb9c1cddb9df57b4e2748328497a476141539008ad8a3c45650c8173c4"
+    },
+    {
+      "file": "styles/core/animations.css",
+      "bytes": 4717,
+      "lines": 177,
+      "important_count": 1,
+      "rules": 45,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "5f8700d2c25e0fb783a500dd15b6c0bcfc3246f40b246425afef471acbd5b281"
+    }
+  ],
+  "top_by_repeated_selector_groups_different_body": [
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14445,
+      "important_count": 978,
+      "rules": 2558,
+      "exact_duplicate_groups": 39,
+      "exact_duplicate_extra_occurrences": 39,
+      "repeated_selector_groups_different_body": 110,
+      "repeated_selector_extra_occurrences": 170,
+      "sha256": "1e087496e1cec59de367086c7e55c751458ec95799cff6e4a7dab8ce0557db95"
+    },
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 180071,
+      "lines": 5809,
+      "important_count": 2095,
+      "rules": 897,
+      "exact_duplicate_groups": 2,
+      "exact_duplicate_extra_occurrences": 2,
+      "repeated_selector_groups_different_body": 84,
+      "repeated_selector_extra_occurrences": 153,
+      "sha256": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd"
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 129397,
+      "lines": 3792,
+      "important_count": 1611,
+      "rules": 542,
+      "exact_duplicate_groups": 8,
+      "exact_duplicate_extra_occurrences": 8,
+      "repeated_selector_groups_different_body": 70,
+      "repeated_selector_extra_occurrences": 189,
+      "sha256": "a07fcfc3facaa8cf446dc6425330f44aa89e97b7427ba5413b145b77df960084"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1628,
+      "important_count": 263,
+      "rules": 320,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 29,
+      "repeated_selector_extra_occurrences": 31,
+      "sha256": "f6970d995d6148c2d0007340d540562606cf555a9a9e173d0490e4c53c95f6ab"
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes": 37827,
+      "lines": 1484,
+      "important_count": 239,
+      "rules": 257,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 22,
+      "repeated_selector_extra_occurrences": 28,
+      "sha256": "9884eb79f67c90d51f865f7d94e7aef278491f67d33acdb2758e75bac80f9d33"
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "bytes": 68919,
+      "lines": 2070,
+      "important_count": 910,
+      "rules": 176,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 17,
+      "repeated_selector_extra_occurrences": 23,
+      "sha256": "39e909e3b817d5e3e92a848d7d9914987e2c6a3a795ac8e091ff0b209bbe3489"
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "bytes": 39313,
+      "lines": 1257,
+      "important_count": 582,
+      "rules": 194,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 11,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "2dc25237037cef0f4e1cf65c48cc9d245538b77f3de2533b1fd383a02b977831"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+      "bytes": 16809,
+      "lines": 511,
+      "important_count": 123,
+      "rules": 100,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 10,
+      "repeated_selector_extra_occurrences": 13,
+      "sha256": "84996ebe0c9c7c442a1b70d89bad2e7ea244a73b129f746abef975d0ab8d2aba"
+    },
+    {
+      "file": "styles/system/mobile-phones-foundation.css",
+      "bytes": 25483,
+      "lines": 1000,
+      "important_count": 112,
+      "rules": 166,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 10,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "1d092c9caa937a0b2eebfadd5683e4bab87b80fa1060dae81811c914235a787a"
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "bytes": 23605,
+      "lines": 802,
+      "important_count": 297,
+      "rules": 109,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 9,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "42d090060d3081b72df2c198cb72af11298983869368d0979111841334108570"
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "bytes": 34752,
+      "lines": 948,
+      "important_count": 291,
+      "rules": 141,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "9a6c6f44d7b71147ec498c4503eac0ffba7f746d9674e7ae28463c67ee2fbbfb"
+    },
+    {
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "bytes": 22305,
+      "lines": 770,
+      "important_count": 79,
+      "rules": 112,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "086815d92dbda17cb25d51fbaf413bb8707496114a3cafa17b52a2ec67664905"
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 957,
+      "important_count": 150,
+      "rules": 153,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 7,
+      "repeated_selector_extra_occurrences": 8,
+      "sha256": "e716ebc7f84d748c9b200244e6a7dfdca348c6ea139865ccd3ed2ac5f3ff7088"
+    },
+    {
+      "file": "styles/system/partner-capital-status-foundation.css",
+      "bytes": 6769,
+      "lines": 190,
+      "important_count": 63,
+      "rules": 25,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "73aae406d479573a4b2a6484d52cdeb6406b0c08bd82421aecdb6361c7b5adde"
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "bytes": 24179,
+      "lines": 694,
+      "important_count": 289,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "ead7237ee5a1a9a2454aeab40da4cccee6feca058bdbee170b9507ec22d47919"
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "bytes": 30543,
+      "lines": 1188,
+      "important_count": 531,
+      "rules": 180,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "a36031194905358b3a2034005fe7c4b02d24b1b403efcb79e5f0204a21883813"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "bytes": 36571,
+      "lines": 1262,
+      "important_count": 328,
+      "rules": 174,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 4,
+      "repeated_selector_extra_occurrences": 4,
+      "sha256": "6e672a34bb61a54633c88012326c02264e09572d7e79055ea65219a65b74a4a9"
+    },
+    {
+      "file": "styles/components/unified-fields.css",
+      "bytes": 16024,
+      "lines": 523,
+      "important_count": 127,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "7922d4fb9c1cddb9df57b4e2748328497a476141539008ad8a3c45650c8173c4"
+    },
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "bytes": 18238,
+      "lines": 745,
+      "important_count": 74,
+      "rules": 117,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "5e59989ddd0cea8544d39bc1a8d22e8a088332c18420e17161ec270d1705af21"
+    },
+    {
+      "file": "styles/components/modals.css",
+      "bytes": 7406,
+      "lines": 294,
+      "important_count": 43,
+      "rules": 43,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "7003678764cd101d044c120d81d55e56f8c1556f528ae2a5b745e5ec439fd8e9"
+    },
+    {
+      "file": "styles/pages/partners.css",
+      "bytes": 12754,
+      "lines": 556,
+      "important_count": 32,
+      "rules": 107,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "15289f769c5b750d61de6cb42a4bb9aab4e970aecb530e142fc741829f7d7afd"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "bytes": 28624,
+      "lines": 842,
+      "important_count": 529,
+      "rules": 158,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "2a7d3c10e5575d2362096d395deff73fc781ec44403fe543859cb2356c1fe3c4"
+    },
+    {
+      "file": "styles/system/settings-shell-foundation.css",
+      "bytes": 8193,
+      "lines": 344,
+      "important_count": 35,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "3d2e0f43157f34c651875f234fb203eba7e76187eeb25a0ae18141696bd7aa10"
+    },
+    {
+      "file": "styles/global.css",
+      "bytes": 2927,
+      "lines": 90,
+      "important_count": 11,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "44c4e3dd51a61446ebabbf8b95cf02b418878c7f9f09f7aff494fceafd18f39c"
+    },
+    {
+      "file": "styles/legacy/03d-legacy-premium-tabs-inventory-detail.css",
+      "bytes": 6862,
+      "lines": 336,
+      "important_count": 0,
+      "rules": 68,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "9cf6494ed0d5b160e7f0ce40ce04d14b74592c2657554692e44eb65e6311d8b9"
+    }
+  ],
+  "per_file": [
+    {
+      "file": "index.css",
+      "bytes": 822,
+      "lines": 40,
+      "important_count": 2,
+      "rules": 3,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1c88c353fb9e076f45e0b76835cff179c95564c02c70f56938e5d1805d7eac08"
+    },
+    {
+      "file": "styles/components/badges.css",
+      "bytes": 7543,
+      "lines": 213,
+      "important_count": 0,
+      "rules": 47,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ee5b6cf61c8c8c5ad34387c6f106fd64e14a96ae33cac9eba988755f712f3a79"
+    },
+    {
+      "file": "styles/components/button-normalization.css",
+      "bytes": 4251,
+      "lines": 96,
+      "important_count": 0,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "146d809ae7c07b03e0940f00d87c110432aeee17186b4f5a19a891043982756e"
+    },
+    {
+      "file": "styles/components/buttons.css",
+      "bytes": 84,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "169a8d0417ca6d71d97911c44ccbfe4734de26d2a17ea2007f8a280ad0b5b5d0"
+    },
+    {
+      "file": "styles/components/cards.css",
+      "bytes": 13892,
+      "lines": 402,
+      "important_count": 2,
+      "rules": 84,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "adb8902df7b5b2e801407536b447d718981aa4fc083b5624b02a0520e7e02c61"
+    },
+    {
+      "file": "styles/components/date-field.css",
+      "bytes": 6130,
+      "lines": 187,
+      "important_count": 107,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bb04b9a004c68bf17c76bcd7844e6dc99ac6af1ff1a07864cb99b8e7fae983b8"
+    },
+    {
+      "file": "styles/components/detail-hero.css",
+      "bytes": 839,
+      "lines": 15,
+      "important_count": 0,
+      "rules": 4,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1b93b3252b995eeb3e928fda22c34f34aadb6f36010c8e90c38e4fd4eaf6dcc9"
+    },
+    {
+      "file": "styles/components/detail.css",
+      "bytes": 2659,
+      "lines": 68,
+      "important_count": 0,
+      "rules": 14,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ed1954cdce5af34f82f8ffecffe6f4502802a59dcf5f8162f5b5f8bb7ce94dfd"
+    },
+    {
+      "file": "styles/components/empty-states.css",
+      "bytes": 1646,
+      "lines": 86,
+      "important_count": 0,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "811bc88831478fa20b39c8369f86e97651d126585c97879d1b7b7b95b2b5232a"
+    },
+    {
+      "file": "styles/components/filters.css",
+      "bytes": 7420,
+      "lines": 366,
+      "important_count": 1,
+      "rules": 62,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "12011c442ee647123396d7e6110a446f91e0a20c82aa29a4bd6090fe482057a7"
+    },
+    {
+      "file": "styles/components/forms.css",
+      "bytes": 11787,
+      "lines": 413,
+      "important_count": 4,
+      "rules": 74,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2f2622ae9c851aa5cb315969e2c1231bb578830f1d9feca9c7091749b8aa2192"
+    },
+    {
+      "file": "styles/components/modals.css",
+      "bytes": 7406,
+      "lines": 294,
+      "important_count": 43,
+      "rules": 43,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "7003678764cd101d044c120d81d55e56f8c1556f528ae2a5b745e5ec439fd8e9"
+    },
+    {
+      "file": "styles/components/search-field.css",
+      "bytes": 4423,
+      "lines": 191,
+      "important_count": 7,
+      "rules": 19,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "13c7dc261c9ceb5114cc4d14e11aa8608f82d7c4be6e95fb824fb5b6a418fd0c"
+    },
+    {
+      "file": "styles/components/select-field.css",
+      "bytes": 3420,
+      "lines": 155,
+      "important_count": 7,
+      "rules": 15,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9978ad83d599c07893d9a2de6af37b47b8090d71210424ddecf7436564551534"
+    },
+    {
+      "file": "styles/components/tables.css",
+      "bytes": 7916,
+      "lines": 190,
+      "important_count": 0,
+      "rules": 28,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9340635e02b00694a6865e645e378bee96512d7633382ac26f70d9672b3167ac"
+    },
+    {
+      "file": "styles/components/toasts.css",
+      "bytes": 2228,
+      "lines": 110,
+      "important_count": 0,
+      "rules": 17,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "842a7b0584a5ae0af5cdb1fa1a7df9457270ea1bf70341a0bb854a54f53ec2bd"
+    },
+    {
+      "file": "styles/components/toolbars.css",
+      "bytes": 6608,
+      "lines": 233,
+      "important_count": 0,
+      "rules": 39,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bc7a5a4d8f07243ca3301f5e69d9a720af43e21b6f3596cb17c325ffdb1b9e9b"
+    },
+    {
+      "file": "styles/components/unified-buttons.css",
+      "bytes": 8596,
+      "lines": 299,
+      "important_count": 94,
+      "rules": 26,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "6c222bc9515fb30e5a45c2f9cfac39cf93d09bbc3137a59afa12850972cd2dfb"
+    },
+    {
+      "file": "styles/components/unified-fields.css",
+      "bytes": 16024,
+      "lines": 523,
+      "important_count": 127,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "7922d4fb9c1cddb9df57b4e2748328497a476141539008ad8a3c45650c8173c4"
+    },
+    {
+      "file": "styles/core/animations.css",
+      "bytes": 4717,
+      "lines": 177,
+      "important_count": 1,
+      "rules": 45,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "5f8700d2c25e0fb783a500dd15b6c0bcfc3246f40b246425afef471acbd5b281"
+    },
+    {
+      "file": "styles/core/base.css",
+      "bytes": 86,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "f8b357ab0d41712a8caba090447007d07615bdadf5b05fb3f38c250a24474706"
+    },
+    {
+      "file": "styles/core/tokens.css",
+      "bytes": 92,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c1407048aa3159c689adfa834c535e85eafd4e60efbdb95ddfbf54068ef215f1"
+    },
+    {
+      "file": "styles/core/typography.css",
+      "bytes": 98,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "66c98796466204409215c52afaf352d9fe33f93e88f3068170ab09931b347ad1"
+    },
+    {
+      "file": "styles/core/utilities.css",
+      "bytes": 1735,
+      "lines": 70,
+      "important_count": 0,
+      "rules": 11,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "09094807c9f14cef2be519385b30cbc1cc3369b735543cdfc87630a423f3e793"
+    },
+    {
+      "file": "styles/generated/tailwind-entry.generated.css",
+      "bytes": 414936,
+      "lines": 14445,
+      "important_count": 978,
+      "rules": 2558,
+      "exact_duplicate_groups": 39,
+      "exact_duplicate_extra_occurrences": 39,
+      "repeated_selector_groups_different_body": 110,
+      "repeated_selector_extra_occurrences": 170,
+      "sha256": "1e087496e1cec59de367086c7e55c751458ec95799cff6e4a7dab8ce0557db95"
+    },
+    {
+      "file": "styles/global.css",
+      "bytes": 2927,
+      "lines": 90,
+      "important_count": 11,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "44c4e3dd51a61446ebabbf8b95cf02b418878c7f9f09f7aff494fceafd18f39c"
+    },
+    {
+      "file": "styles/layout/app-shell.css",
+      "bytes": 84,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "169a8d0417ca6d71d97911c44ccbfe4734de26d2a17ea2007f8a280ad0b5b5d0"
+    },
+    {
+      "file": "styles/layout/page-shell.css",
+      "bytes": 84,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "169a8d0417ca6d71d97911c44ccbfe4734de26d2a17ea2007f8a280ad0b5b5d0"
+    },
+    {
+      "file": "styles/layout/print-shells.css",
+      "bytes": 1354,
+      "lines": 55,
+      "important_count": 7,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c26df9afa156bdbfd3c24986047bd3584a0cceb6b2c6d850aab8aab05806b6b1"
+    },
+    {
+      "file": "styles/layout/print.css",
+      "bytes": 3023,
+      "lines": 144,
+      "important_count": 3,
+      "rules": 21,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "39284081538043386844a1f43e74f3813067a46595a61529da1eead818add32c"
+    },
+    {
+      "file": "styles/layout/responsive.css",
+      "bytes": 304,
+      "lines": 17,
+      "important_count": 1,
+      "rules": 2,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "21af98e169d834c874e6d5deb037d470caff0c1c8971753dac04e73c66d2cf28"
+    },
+    {
+      "file": "styles/layout/sidebar-chrome.css",
+      "bytes": 2133,
+      "lines": 39,
+      "important_count": 0,
+      "rules": 11,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "95895b9f025a80c2646e966e35aba6e2c2ddece785e17757b8b922b6bd190f87"
+    },
+    {
+      "file": "styles/layout/sidebar.css",
+      "bytes": 555,
+      "lines": 28,
+      "important_count": 0,
+      "rules": 4,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0b7f70a920b1353a4a5fcad7a19cebed39d32332ed0808c6f3f6f47e7063816b"
+    },
+    {
+      "file": "styles/legacy/01-legacy-app-base-and-loaders.css",
+      "bytes": 10564,
+      "lines": 446,
+      "important_count": 1,
+      "rules": 75,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "7f90fc9d4c9051c4e9afa2d45259ba9dc86ef1cd1b1204b9201b4032be78c7d0"
+    },
+    {
+      "file": "styles/legacy/02a-legacy-reports-kpi-table-foundation.css",
+      "bytes": 962,
+      "lines": 61,
+      "important_count": 0,
+      "rules": 22,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "290ca127da6539f8689efdedebc1b6e4dff454b82fc519a770c85b012a329e93"
+    },
+    {
+      "file": "styles/legacy/02b-legacy-premium-modal-base.css",
+      "bytes": 2231,
+      "lines": 85,
+      "important_count": 2,
+      "rules": 24,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "037c8fcfd10f0a5ce0f28d4e7662aafe8d2e2da3ed14d7ac7f1fb31e8be6f1ec"
+    },
+    {
+      "file": "styles/legacy/02c-legacy-detail-drawer-primitives.css",
+      "bytes": 2122,
+      "lines": 120,
+      "important_count": 0,
+      "rules": 32,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "7fc1ac34e7c171a598b0f1c2503450a4d05518197348c93295a8b407c042f722"
+    },
+    {
+      "file": "styles/legacy/02d-legacy-detail-compact-density.css",
+      "bytes": 935,
+      "lines": 40,
+      "important_count": 0,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "35e31fffc4f8a2a2ac514e1b37549356638d625d0fbac2988ee95730e1c176a6"
+    },
+    {
+      "file": "styles/legacy/02e-legacy-smart-tooltip-transitions.css",
+      "bytes": 1098,
+      "lines": 42,
+      "important_count": 0,
+      "rules": 4,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "b99f28aa338a7aee9126f8f1eb90869df9e263de0c790bf2786c5abb01d36623"
+    },
+    {
+      "file": "styles/legacy/02f-legacy-page-shell-modern.css",
+      "bytes": 1389,
+      "lines": 63,
+      "important_count": 0,
+      "rules": 12,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "fa9ed294aae5cd68330a046ea8ecc587d6a7b7cab39428e1d7c3c466a790795e"
+    },
+    {
+      "file": "styles/legacy/02g-legacy-ux-button-core-loading.css",
+      "bytes": 3886,
+      "lines": 161,
+      "important_count": 1,
+      "rules": 32,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0110afd5e3a89a55fb760386dc334a8b1a9ab49d15623eceb4ecf801c8a61ddf"
+    },
+    {
+      "file": "styles/legacy/02h-legacy-ux-button-motion-presets.css",
+      "bytes": 7406,
+      "lines": 200,
+      "important_count": 0,
+      "rules": 28,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "91c837cb45a5d3cfbf43b9c74326eaaa8712a98c776bfeced825ce83ad89975e"
+    },
+    {
+      "file": "styles/legacy/02i-legacy-people-list-controls-fields.css",
+      "bytes": 4173,
+      "lines": 173,
+      "important_count": 0,
+      "rules": 38,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "7a39060d60801e7505b0985c95e32556b6589b18d921caccfcef958673806386"
+    },
+    {
+      "file": "styles/legacy/02j-legacy-report-toolbar-filters.css",
+      "bytes": 3854,
+      "lines": 176,
+      "important_count": 0,
+      "rules": 38,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "30fc0cc5ba4645c4be26ff75addae30d3cf8d21ccc8b865cbb113b11333af2eb"
+    },
+    {
+      "file": "styles/legacy/02k-legacy-cards-toasts-feedback-loading.css",
+      "bytes": 7713,
+      "lines": 222,
+      "important_count": 2,
+      "rules": 58,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "8886bcf0091a02a81c137f2a3c275c549e6ee7e964f5dc18be0fc27c060ef6a1"
+    },
+    {
+      "file": "styles/legacy/02l-legacy-wizard-table-quicklinks-installments.css",
+      "bytes": 6013,
+      "lines": 190,
+      "important_count": 0,
+      "rules": 87,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "f08eedb94d8bafc00f90b6bfeff4afb5f3af903c1ef53bd193c4b0c9052a7b2f"
+    },
+    {
+      "file": "styles/legacy/02m-legacy-accessibility-focus-transition-base.css",
+      "bytes": 302,
+      "lines": 11,
+      "important_count": 0,
+      "rules": 2,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "21c3ba8c4717be2a0dca791416d5abc6d16a532fc9d76f02e8098fc9bb340770"
+    },
+    {
+      "file": "styles/legacy/02n-legacy-customers-hero-toolbar.css",
+      "bytes": 1724,
+      "lines": 39,
+      "important_count": 0,
+      "rules": 26,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "8fabf1e178d57b8919a443310f3fdfb70cc5faa1357a5bdb765efb96089b8890"
+    },
+    {
+      "file": "styles/legacy/02o-legacy-telegram-link-modal.css",
+      "bytes": 13916,
+      "lines": 370,
+      "important_count": 1,
+      "rules": 87,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "497c3029193536cd263925fe9835fe2e8b156a6818fdbd911defdc5fbca6104c"
+    },
+    {
+      "file": "styles/legacy/02p-legacy-people-action-buttons-chips.css",
+      "bytes": 1124,
+      "lines": 31,
+      "important_count": 0,
+      "rules": 21,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "868d88f54d3e0963dd7bc8d523d4f6cc68bd68e26252b3442b78e95d89cb3bac"
+    },
+    {
+      "file": "styles/legacy/03a-legacy-action-primitives-buttons.css",
+      "bytes": 2327,
+      "lines": 110,
+      "important_count": 0,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "a42b475296441b9fc710a5e19d85e2c3e111750c1bc933cd38f7190a6e9e79d5"
+    },
+    {
+      "file": "styles/legacy/03b-legacy-report-tools-pagination.css",
+      "bytes": 615,
+      "lines": 46,
+      "important_count": 0,
+      "rules": 12,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c30eb1894ea8e139f8607a1a018eafa998b3877f2e0a965c855015c6e77aa2a6"
+    },
+    {
+      "file": "styles/legacy/03c-legacy-form-empty-density.css",
+      "bytes": 2322,
+      "lines": 120,
+      "important_count": 0,
+      "rules": 25,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9b9f7eb302ef471ece104995b86407583a86f4750ea6e79a52af642f6ee0169f"
+    },
+    {
+      "file": "styles/legacy/03d-legacy-premium-tabs-inventory-detail.css",
+      "bytes": 6862,
+      "lines": 336,
+      "important_count": 0,
+      "rules": 68,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "9cf6494ed0d5b160e7f0ce40ce04d14b74592c2657554692e44eb65e6311d8b9"
+    },
+    {
+      "file": "styles/legacy/03e-legacy-sidebar-transparent-cleanup.css",
+      "bytes": 1889,
+      "lines": 67,
+      "important_count": 20,
+      "rules": 10,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "15cf01595bf897314930b12f0007c2092d28b1c322245855c644848fc1ad09d1"
+    },
+    {
+      "file": "styles/legacy/03f-legacy-header-search-password-fixes.css",
+      "bytes": 4077,
+      "lines": 173,
+      "important_count": 39,
+      "rules": 24,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "04eb6077b9884e256d5bb5f7a601cc33297948df7bc0f2f4f93069f5438a8b48"
+    },
+    {
+      "file": "styles/legacy/03g-legacy-dark-tables-loading-progress.css",
+      "bytes": 6764,
+      "lines": 254,
+      "important_count": 0,
+      "rules": 50,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "5a68ac202832d5919a07bc077913aca7c52728e223c51f876b8a72be34647be0"
+    },
+    {
+      "file": "styles/legacy/04a-legacy-repairs-saved-views-inputs.css",
+      "bytes": 1711,
+      "lines": 60,
+      "important_count": 5,
+      "rules": 9,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "417cfcce845a45fee1b92256bb87861226bfb7ee1b7a8bfb77cab767a690a85b"
+    },
+    {
+      "file": "styles/legacy/04b-legacy-premium-data-chart-shell.css",
+      "bytes": 2788,
+      "lines": 119,
+      "important_count": 0,
+      "rules": 37,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "8caed9e428e61fbd6bb93d2a39ad994aa6310d55b088a67ad68c4370d4cba9da"
+    },
+    {
+      "file": "styles/legacy/04c-legacy-motion-focus-accessibility.css",
+      "bytes": 4364,
+      "lines": 159,
+      "important_count": 5,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "608092d39e6ee40d85131cedd743e5b907a39fcd4f48ff4a0ea631935f93479f"
+    },
+    {
+      "file": "styles/legacy/04d-legacy-field-attention-page-actions.css",
+      "bytes": 1710,
+      "lines": 78,
+      "important_count": 2,
+      "rules": 14,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "08a899650238f759c9b1c7d3ed2435cd8a2c4a58db795be3a8f2bc3d8947b020"
+    },
+    {
+      "file": "styles/legacy/05a-legacy-button-icon-baseline.css",
+      "bytes": 1837,
+      "lines": 88,
+      "important_count": 0,
+      "rules": 11,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ffcde2847d8b454865d3a383fac788b8d32fb1218faae9c70b8a8292ef10676f"
+    },
+    {
+      "file": "styles/legacy/05b-legacy-quick-link-cards.css",
+      "bytes": 1495,
+      "lines": 66,
+      "important_count": 0,
+      "rules": 10,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "04d8172e9d771796fabc8f930089580307352bc2c828f8043be1584659f44294"
+    },
+    {
+      "file": "styles/legacy/05c-legacy-unified-button-hardening.css",
+      "bytes": 2437,
+      "lines": 119,
+      "important_count": 0,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "17fd8675fc5cd50a1c524bdf257f56d37bb254ed7594340ffd5f3c5ea7d2db09"
+    },
+    {
+      "file": "styles/legacy/05d-legacy-report-filter-sales-mobile-buttons.css",
+      "bytes": 1378,
+      "lines": 63,
+      "important_count": 0,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "8ff616f5e7b55c53e076806390401a11d41e4640c06e5a23131b37a5e2633763"
+    },
+    {
+      "file": "styles/legacy/06a-legacy-sales-flow-visual-pass.css",
+      "bytes": 2091,
+      "lines": 110,
+      "important_count": 0,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "e88f034cea92d2093ce5fbfc39e83a7574de3b69dd757c479a6ef50dfdff8e10"
+    },
+    {
+      "file": "styles/legacy/06b-legacy-sales-cart-button-borders.css",
+      "bytes": 854,
+      "lines": 45,
+      "important_count": 1,
+      "rules": 8,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "46db1079361ab8e0be22bbd1e813c9fca50231b1d6ff11e3338f8471ee81ae10"
+    },
+    {
+      "file": "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css",
+      "bytes": 580,
+      "lines": 24,
+      "important_count": 2,
+      "rules": 4,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "7eeeacfac15cbd7a77564349f552dcfbcae9b4c386874611db298f673d312448"
+    },
+    {
+      "file": "styles/legacy/06d-legacy-sales-cart-full-page-redesign.css",
+      "bytes": 517,
+      "lines": 14,
+      "important_count": 3,
+      "rules": 3,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "df11e6b9768416681d583b315df245625e40691303a6b89de064319fe3ac1b6d"
+    },
+    {
+      "file": "styles/legacy/07a-legacy-button-stroke-normalization.css",
+      "bytes": 1831,
+      "lines": 65,
+      "important_count": 6,
+      "rules": 6,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "5a5832d07c878f04f4ac8991e164bffc261d86577852cf2da82c6d696acf581f"
+    },
+    {
+      "file": "styles/legacy/07b-legacy-premium-button-unification.css",
+      "bytes": 3181,
+      "lines": 121,
+      "important_count": 24,
+      "rules": 14,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "957db4e45710b580f96f2e94adb6c361f527c01cabda9c6854077b5cfab13a82"
+    },
+    {
+      "file": "styles/legacy/08a-legacy-global-field-system.css",
+      "bytes": 3498,
+      "lines": 121,
+      "important_count": 10,
+      "rules": 15,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "4f09ed9ce68fa60ff91d49825679bc6c976e0cf8361b73d38f51778b4feadbe7"
+    },
+    {
+      "file": "styles/legacy/08b-legacy-global-card-section-system.css",
+      "bytes": 2827,
+      "lines": 88,
+      "important_count": 0,
+      "rules": 10,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "680a2958647c245dcfaaf03e0b60ecb5c75e8bee1a3e68f73559284931974243"
+    },
+    {
+      "file": "styles/legacy/08c-legacy-global-table-row-actions.css",
+      "bytes": 3741,
+      "lines": 151,
+      "important_count": 0,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "4291e6ba97bb4eeedb1f8b80f5d6b637df471b37d46563f4eb539aa37fcc2ff9"
+    },
+    {
+      "file": "styles/legacy/09a-legacy-global-modal-drawer-unification.css",
+      "bytes": 3384,
+      "lines": 151,
+      "important_count": 0,
+      "rules": 15,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "3bcd0f72d82a50185e6fb04db205da713ef9b1399a535157223fd102e149cc9c"
+    },
+    {
+      "file": "styles/legacy/09b-legacy-global-toast-alert-status.css",
+      "bytes": 3453,
+      "lines": 152,
+      "important_count": 7,
+      "rules": 16,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "874dd92e5a2e47208e5177ccce9578fe533f9061f112788b29e30cc36a6fa857"
+    },
+    {
+      "file": "styles/legacy/09c-legacy-global-nav-sidebar-topbar.css",
+      "bytes": 3759,
+      "lines": 151,
+      "important_count": 0,
+      "rules": 12,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "54335906f26dd9dc6d49813797b37a251b95f4708ca0edc60438d2e33ee4991f"
+    },
+    {
+      "file": "styles/legacy/09d-legacy-global-charts-kpi-dashboard.css",
+      "bytes": 3219,
+      "lines": 125,
+      "important_count": 7,
+      "rules": 13,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2e71051d2f0cebd701b5577b2c502ba5f1da8ff76f15605de37d5acb9a9d5ed0"
+    },
+    {
+      "file": "styles/legacy/10a-legacy-final-shell-cohesion.css",
+      "bytes": 905,
+      "lines": 54,
+      "important_count": 0,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0c897d10fad913ab27c2f2119b93f0342c7306491c790235e3386ae6d1123149"
+    },
+    {
+      "file": "styles/legacy/10b-legacy-targeted-ui-qa-cleanup.css",
+      "bytes": 722,
+      "lines": 40,
+      "important_count": 0,
+      "rules": 5,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "d47f8d5952671620af48308c08771d47390186eaff2dbaa338375554d82766b0"
+    },
+    {
+      "file": "styles/legacy/10c-legacy-smart-toast-progress.css",
+      "bytes": 271,
+      "lines": 6,
+      "important_count": 0,
+      "rules": 3,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "5d1a1afa39c862c3f9857dffbea5af987c135a5b3bbada9fffc04fb11f425948"
+    },
+    {
+      "file": "styles/legacy/10d-legacy-telegram-modal-stability-lux.css",
+      "bytes": 1390,
+      "lines": 52,
+      "important_count": 11,
+      "rules": 11,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bd798a0605a2f777155a49c40182211df64f6e9566723fd564e6119b04a88a11"
+    },
+    {
+      "file": "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+      "bytes": 1311,
+      "lines": 40,
+      "important_count": 13,
+      "rules": 5,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "7232c6b2d757e9538149b8903eb8aca362bbc8bc46bddbcd4da8759d4901d793"
+    },
+    {
+      "file": "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+      "bytes": 1805,
+      "lines": 40,
+      "important_count": 8,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "da97295cc26e3dda42b61ce62a120fcf7e7b0150b409149d2ab173e82aef2099"
+    },
+    {
+      "file": "styles/pages/customers-shell.css",
+      "bytes": 982,
+      "lines": 22,
+      "important_count": 0,
+      "rules": 8,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0decdb68ba32e34a1ba3608e0d23e6d12a55634ec2e3a2239362a3e98c6f7107"
+    },
+    {
+      "file": "styles/pages/customers.css",
+      "bytes": 796,
+      "lines": 42,
+      "important_count": 0,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "95a9d0832acf925af6495ed68e62a35a35fd57a26e4623270c3b5121a066b237"
+    },
+    {
+      "file": "styles/pages/dashboard.css",
+      "bytes": 1793,
+      "lines": 83,
+      "important_count": 0,
+      "rules": 17,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "7c2cbc85cdf785ff50dbc14b9f3901bceec35c9354ed3ad6eb43d90fcfa9b5c2"
+    },
+    {
+      "file": "styles/pages/inventory.css",
+      "bytes": 410,
+      "lines": 9,
+      "important_count": 0,
+      "rules": 2,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c7aab5aeceafeb9e535d7dc73881a9879565157a68b0ef50d8e6924134f3c884"
+    },
+    {
+      "file": "styles/pages/mobile-phones.css",
+      "bytes": 208,
+      "lines": 2,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "77a1cdb2f10e5a2458a679e08832c70bff037a3d73aef45184a21dc6f35ddd62"
+    },
+    {
+      "file": "styles/pages/partners.css",
+      "bytes": 12754,
+      "lines": 556,
+      "important_count": 32,
+      "rules": 107,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "15289f769c5b750d61de6cb42a4bb9aab4e970aecb530e142fc741829f7d7afd"
+    },
+    {
+      "file": "styles/pages/purchases.css",
+      "bytes": 207,
+      "lines": 2,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "bd45d99ca7523bd0f11c166955d4211c807eb1cc237a2da29b810974ea94c665"
+    },
+    {
+      "file": "styles/pages/repairs.css",
+      "bytes": 1867,
+      "lines": 37,
+      "important_count": 0,
+      "rules": 9,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "944470993fa0672ebd472a619521849217b0b15b725505273ebcc79edd0c4339"
+    },
+    {
+      "file": "styles/pages/reports.css",
+      "bytes": 60790,
+      "lines": 2376,
+      "important_count": 355,
+      "rules": 366,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "c121299d47e33f3bc2e8b6a99027f8e99e5352d45266c4572f8a708378b22590"
+    },
+    {
+      "file": "styles/pages/settings-overrides.css",
+      "bytes": 454,
+      "lines": 6,
+      "important_count": 0,
+      "rules": 1,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1b3fd92a86dbc77705fccb630f4552d42ba6a1900187b7aa369499a8dd4d7831"
+    },
+    {
+      "file": "styles/pages/settings.css",
+      "bytes": 6335,
+      "lines": 189,
+      "important_count": 0,
+      "rules": 33,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2eb9bafca49a5c0d3e78ee45f6fe3a952a532060e4d1f101c07481fd0c6e7aa2"
+    },
+    {
+      "file": "styles/pages/telegram.css",
+      "bytes": 62348,
+      "lines": 1628,
+      "important_count": 263,
+      "rules": 320,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 29,
+      "repeated_selector_extra_occurrences": 31,
+      "sha256": "f6970d995d6148c2d0007340d540562606cf555a9a9e173d0490e4c53c95f6ab"
+    },
+    {
+      "file": "styles/system/bidi-text-contract-foundation.css",
+      "bytes": 6439,
+      "lines": 269,
+      "important_count": 40,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "cb0c5f855b67cc619039a85530ca464f8ad318047a162547f40e6a17665535dc"
+    },
+    {
+      "file": "styles/system/cross-module-density-foundation.css",
+      "bytes": 3382,
+      "lines": 145,
+      "important_count": 23,
+      "rules": 25,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "283f03f2f9c57c0e8fac8f4f95dc43e109a2f4846eecafe461bec8254f87b2bd"
+    },
+    {
+      "file": "styles/system/dashboard-smart-widgets-foundation.css",
+      "bytes": 34752,
+      "lines": 948,
+      "important_count": 291,
+      "rules": 141,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "9a6c6f44d7b71147ec498c4503eac0ffba7f746d9674e7ae28463c67ee2fbbfb"
+    },
+    {
+      "file": "styles/system/design-tokens.css",
+      "bytes": 3302,
+      "lines": 101,
+      "important_count": 0,
+      "rules": 3,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "47d714552f137fd211c6888180c164a0b53bae43e625c1e3d022c27828081968"
+    },
+    {
+      "file": "styles/system/field-form-contract.css",
+      "bytes": 6690,
+      "lines": 226,
+      "important_count": 51,
+      "rules": 24,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "cd83e1a96f5826d32ad914456ac91b48d45ad5e502498b81d83232d1423c48a8"
+    },
+    {
+      "file": "styles/system/finance-modal-field-polish-foundation.css",
+      "bytes": 2670,
+      "lines": 133,
+      "important_count": 14,
+      "rules": 19,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "6604d147055abd7c11cc18993960baf2b4851cd3d5f8cbb13df62cea9ad6ceed"
+    },
+    {
+      "file": "styles/system/finance-tables-foundation.css",
+      "bytes": 18018,
+      "lines": 450,
+      "important_count": 180,
+      "rules": 66,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "69ecd14b3a87e717e072725ebf2cb75f9ba768e844e24fe90f517eab025becf2"
+    },
+    {
+      "file": "styles/system/global-commercial-qa-foundation.css",
+      "bytes": 9251,
+      "lines": 297,
+      "important_count": 50,
+      "rules": 30,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "65fb1c03b3dfd4d45f8c3bf338773ff6b3d2bb7c7aa7f5c407bdf9542b97ead9"
+    },
+    {
+      "file": "styles/system/header-sidebar-navigation-foundation.css",
+      "bytes": 23605,
+      "lines": 802,
+      "important_count": 297,
+      "rules": 109,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 9,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "42d090060d3081b72df2c198cb72af11298983869368d0979111841334108570"
+    },
+    {
+      "file": "styles/system/installments-runtime/installments-phone-edit-foundation.css",
+      "bytes": 2995,
+      "lines": 74,
+      "important_count": 18,
+      "rules": 11,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "4c203211feb88ead2849276ccc5b45f2ca1241a1d6ad924bbdda36543b3e1805"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/collection-cleanup-foundation.css",
+      "bytes": 4414,
+      "lines": 114,
+      "important_count": 28,
+      "rules": 15,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "8a4d309dce4f224d0d07d79ebe87ca98ec8184463ec25765a136af29ac661894"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+      "bytes": 35491,
+      "lines": 1169,
+      "important_count": 110,
+      "rules": 198,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "0a562547b8685a4ef4803d81fda33f91412caec60371c795631c4ab933a749b2"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+      "bytes": 16809,
+      "lines": 511,
+      "important_count": 123,
+      "rules": 100,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 10,
+      "repeated_selector_extra_occurrences": 13,
+      "sha256": "84996ebe0c9c7c442a1b70d89bad2e7ea244a73b129f746abef975d0ab8d2aba"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/partner-settlement-foundation.css",
+      "bytes": 15706,
+      "lines": 641,
+      "important_count": 4,
+      "rules": 92,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "68dbc5abad6e5a3847928b1a4e6857149f950a9f804efcb8fce550444097d5e1"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+      "bytes": 28624,
+      "lines": 842,
+      "important_count": 529,
+      "rules": 158,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "2a7d3c10e5575d2362096d395deff73fc781ec44403fe543859cb2356c1fe3c4"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+      "bytes": 36571,
+      "lines": 1262,
+      "important_count": 328,
+      "rules": 174,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 4,
+      "repeated_selector_extra_occurrences": 4,
+      "sha256": "6e672a34bb61a54633c88012326c02264e09572d7e79055ea65219a65b74a4a9"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/people-list-hero-foundation.css",
+      "bytes": 10668,
+      "lines": 408,
+      "important_count": 135,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "a513d2fdde9804765240fad572f347b69bb79b08e92e106b9279d53282efaf16"
+    },
+    {
+      "file": "styles/system/legacy-quarantine/select-customer-compat-foundation.css",
+      "bytes": 2467,
+      "lines": 87,
+      "important_count": 22,
+      "rules": 14,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "e7c5c75aa014be0b4bb4ca95f96bc33a823b6f4f63f3f9ef054f1d5fc954d97f"
+    },
+    {
+      "file": "styles/system/message-composer-redesign.css",
+      "bytes": 10284,
+      "lines": 412,
+      "important_count": 64,
+      "rules": 58,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "9a40a255b6f23d0cf77fbcee55a25f04bf434aeb0015368b9d5028637686f6f8"
+    },
+    {
+      "file": "styles/system/mobile-phones-foundation.css",
+      "bytes": 25483,
+      "lines": 1000,
+      "important_count": 112,
+      "rules": 166,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 10,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "1d092c9caa937a0b2eebfadd5683e4bab87b80fa1060dae81811c914235a787a"
+    },
+    {
+      "file": "styles/system/mobile-sales-tabs-foundation.css",
+      "bytes": 1662,
+      "lines": 59,
+      "important_count": 16,
+      "rules": 7,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "4e8fd89115f4694921d1a5eaf427e6162bf2642cdfefaf5dad8b0e39bcf8bb71"
+    },
+    {
+      "file": "styles/system/modal-partner-foundation.css",
+      "bytes": 129397,
+      "lines": 3792,
+      "important_count": 1611,
+      "rules": 542,
+      "exact_duplicate_groups": 8,
+      "exact_duplicate_extra_occurrences": 8,
+      "repeated_selector_groups_different_body": 70,
+      "repeated_selector_extra_occurrences": 189,
+      "sha256": "a07fcfc3facaa8cf446dc6425330f44aa89e97b7427ba5413b145b77df960084"
+    },
+    {
+      "file": "styles/system/modal-people-foundation.css",
+      "bytes": 17987,
+      "lines": 681,
+      "important_count": 129,
+      "rules": 96,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "c56303d1a02cdcae0ff77c575948d2e9d99c18edec2e1b7af297bfdcabb4e4c5"
+    },
+    {
+      "file": "styles/system/modal-products-foundation.css",
+      "bytes": 37827,
+      "lines": 1484,
+      "important_count": 239,
+      "rules": 257,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 22,
+      "repeated_selector_extra_occurrences": 28,
+      "sha256": "9884eb79f67c90d51f865f7d94e7aef278491f67d33acdb2758e75bac80f9d33"
+    },
+    {
+      "file": "styles/system/notifications-foundation.css",
+      "bytes": 8973,
+      "lines": 361,
+      "important_count": 57,
+      "rules": 56,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "56d63e24d665d3f47ff7c882d6528a9921b2227f0101e82ed19a84439a0db5fe"
+    },
+    {
+      "file": "styles/system/partner-capital-status-foundation.css",
+      "bytes": 6769,
+      "lines": 190,
+      "important_count": 63,
+      "rules": 25,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "73aae406d479573a4b2a6484d52cdeb6406b0c08bd82421aecdb6361c7b5adde"
+    },
+    {
+      "file": "styles/system/partner-capital-table-foundation.css",
+      "bytes": 23813,
+      "lines": 568,
+      "important_count": 206,
+      "rules": 68,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ab84c86f4a8a2a993e4ed2e3fdb8b9e706ad7b465d22880d10d23532013c659d"
+    },
+    {
+      "file": "styles/system/partner-detail-responsive-ledger-foundation.css",
+      "bytes": 18847,
+      "lines": 552,
+      "important_count": 205,
+      "rules": 77,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "d4a543eb488f108f952a05595e2680510454ff28dc7cad3f907a695e1457b3b8"
+    },
+    {
+      "file": "styles/system/partner-detail-visual-foundation.css",
+      "bytes": 24179,
+      "lines": 694,
+      "important_count": 289,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "ead7237ee5a1a9a2454aeab40da4cccee6feca058bdbee170b9507ec22d47919"
+    },
+    {
+      "file": "styles/system/partner-runtime/partner-phone-capital-solid-reset-foundation.css",
+      "bytes": 7748,
+      "lines": 250,
+      "important_count": 122,
+      "rules": 31,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "e95e411ded1df69440f74ed48f0cb318fb54189b2bcf9a202f934d3cfe3403ea"
+    },
+    {
+      "file": "styles/system/people-ledger-contract.css",
+      "bytes": 4055,
+      "lines": 123,
+      "important_count": 40,
+      "rules": 18,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "52b20ead98d89a6881cd19de978b80b3d3591b446fe42bf705f176cd6977dc85"
+    },
+    {
+      "file": "styles/system/people-runtime/people-commercial-redesign-foundation.css",
+      "bytes": 15123,
+      "lines": 535,
+      "important_count": 187,
+      "rules": 59,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "2e15a9dacf6b169dd8c4763a867b9411e98cf05e917da4e09d191eb26911210e"
+    },
+    {
+      "file": "styles/system/people-status-mobile-foundation.css",
+      "bytes": 8079,
+      "lines": 322,
+      "important_count": 38,
+      "rules": 41,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "905b3b68253f45c1592ead1b585307dc685ae2b1becae66067dde11e1e68927a"
+    },
+    {
+      "file": "styles/system/people-table-detail-foundation.css",
+      "bytes": 39313,
+      "lines": 1257,
+      "important_count": 582,
+      "rules": 194,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 11,
+      "repeated_selector_extra_occurrences": 11,
+      "sha256": "2dc25237037cef0f4e1cf65c48cc9d245538b77f3de2533b1fd383a02b977831"
+    },
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "bytes": 18238,
+      "lines": 745,
+      "important_count": 74,
+      "rules": 117,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 3,
+      "repeated_selector_extra_occurrences": 3,
+      "sha256": "5e59989ddd0cea8544d39bc1a8d22e8a088332c18420e17161ec270d1705af21"
+    },
+    {
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "bytes": 17815,
+      "lines": 641,
+      "important_count": 168,
+      "rules": 90,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "ba4d366daace4959a05111411e881e8aa187ab2ecc55949f45ea7bfbaf550c07"
+    },
+    {
+      "file": "styles/system/products-services-repairs/services-inventory-foundation.css",
+      "bytes": 12518,
+      "lines": 495,
+      "important_count": 114,
+      "rules": 70,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "3c4909ba60da88feccf2b2f351ad5ceed6bffd4bbfb1af27036021d8124f8267"
+    },
+    {
+      "file": "styles/system/reports-filter-kpi-foundation.css",
+      "bytes": 10543,
+      "lines": 340,
+      "important_count": 137,
+      "rules": 41,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "cedca2e98d77e3101d3330224bec11d8332bbc0cfdee31000973934133aeb1fd"
+    },
+    {
+      "file": "styles/system/reports-risk-cashflow-foundation.css",
+      "bytes": 30543,
+      "lines": 1188,
+      "important_count": 531,
+      "rules": 180,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 5,
+      "repeated_selector_extra_occurrences": 5,
+      "sha256": "a36031194905358b3a2034005fe7c4b02d24b1b403efcb79e5f0204a21883813"
+    },
+    {
+      "file": "styles/system/reports-runtime/reports-apple-minimal-foundation.css",
+      "bytes": 8647,
+      "lines": 267,
+      "important_count": 32,
+      "rules": 44,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "b670eeda2d5f8a2d353d2f8b86333916d17dee08dfa9bf9598ae50d54160b9e5"
+    },
+    {
+      "file": "styles/system/reports-shell-foundation.css",
+      "bytes": 5213,
+      "lines": 226,
+      "important_count": 17,
+      "rules": 28,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "6c414847d8c75d809e68550c291834236cd54d75856ea8c5e8fc0d6e8b9b61fe"
+    },
+    {
+      "file": "styles/system/search-input-foundation.css",
+      "bytes": 68919,
+      "lines": 2070,
+      "important_count": 910,
+      "rules": 176,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 17,
+      "repeated_selector_extra_occurrences": 23,
+      "sha256": "39e909e3b817d5e3e92a848d7d9914987e2c6a3a795ac8e091ff0b209bbe3489"
+    },
+    {
+      "file": "styles/system/settings-modules-smart-foundation.css",
+      "bytes": 15563,
+      "lines": 499,
+      "important_count": 118,
+      "rules": 79,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "afbb4322300c5ed467b5fc92e5ba4bca6e62ff6aad378b1b3ffe07a0d074e45e"
+    },
+    {
+      "file": "styles/system/settings-shell-foundation.css",
+      "bytes": 8193,
+      "lines": 344,
+      "important_count": 35,
+      "rules": 63,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 2,
+      "repeated_selector_extra_occurrences": 2,
+      "sha256": "3d2e0f43157f34c651875f234fb203eba7e76187eeb25a0ae18141696bd7aa10"
+    },
+    {
+      "file": "styles/system/shared-action-buttons-foundation.css",
+      "bytes": 11771,
+      "lines": 345,
+      "important_count": 144,
+      "rules": 34,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "59ee08b3ffec0a8f60c1810e296ea1a2a260fb467f5e8d40de0d6baab9a51703"
+    },
+    {
+      "file": "styles/system/smart-insight-foundation.css",
+      "bytes": 10345,
+      "lines": 342,
+      "important_count": 89,
+      "rules": 51,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 1,
+      "repeated_selector_extra_occurrences": 1,
+      "sha256": "9961195bc03252621379f06dc101343656db3d0340fd9c9e390b64af11f8caac"
+    },
+    {
+      "file": "styles/system/table-actions-foundation.css",
+      "bytes": 9343,
+      "lines": 273,
+      "important_count": 52,
+      "rules": 26,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "1b5b64163c4521907603d0723170351ec25ef260156c3794a0481df5b8f73c07"
+    },
+    {
+      "file": "styles/system/telegram-logs-redesign.css",
+      "bytes": 4676,
+      "lines": 210,
+      "important_count": 5,
+      "rules": 33,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "27e686869118c682078867a43fc979518f4a3fe9e06c51a4e7af9a3503313abb"
+    },
+    {
+      "file": "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+      "bytes": 25673,
+      "lines": 993,
+      "important_count": 439,
+      "rules": 147,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "371f6dc78b210b5e95f7d04d3dca765bd78a9b69b3559611a8acc0842df196b2"
+    },
+    {
+      "file": "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+      "bytes": 22305,
+      "lines": 770,
+      "important_count": 79,
+      "rules": 112,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 8,
+      "repeated_selector_extra_occurrences": 9,
+      "sha256": "086815d92dbda17cb25d51fbaf413bb8707496114a3cafa17b52a2ec67664905"
+    },
+    {
+      "file": "styles/system/telegram-runtime/settings-telegram-compact-foundation.css",
+      "bytes": 8976,
+      "lines": 239,
+      "important_count": 90,
+      "rules": 32,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "05dc925fc85ac7be14f231064b578ebedcc492e47a481fde1c197a0bc802e4ff"
+    },
+    {
+      "file": "styles/system/telegram-runtime/telegram-real-compact-foundation.css",
+      "bytes": 6783,
+      "lines": 272,
+      "important_count": 78,
+      "rules": 39,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "cbd9d6a1daf8dae110bfb5e7fae00d1190721b5cd6130089875f087b166bc667"
+    },
+    {
+      "file": "styles/system/telegram-ui-foundation.css",
+      "bytes": 180071,
+      "lines": 5809,
+      "important_count": 2095,
+      "rules": 897,
+      "exact_duplicate_groups": 2,
+      "exact_duplicate_extra_occurrences": 2,
+      "repeated_selector_groups_different_body": 84,
+      "repeated_selector_extra_occurrences": 153,
+      "sha256": "24280b8909903d9633d0eb115b936384d6bf84988cf344b429ec838cf56b54dd"
+    },
+    {
+      "file": "styles/system/ui-density-accessibility-foundation.css",
+      "bytes": 26015,
+      "lines": 957,
+      "important_count": 150,
+      "rules": 153,
+      "exact_duplicate_groups": 1,
+      "exact_duplicate_extra_occurrences": 1,
+      "repeated_selector_groups_different_body": 7,
+      "repeated_selector_extra_occurrences": 8,
+      "sha256": "e716ebc7f84d748c9b200244e6a7dfdca348c6ea139865ccd3ed2ac5f3ff7088"
+    },
+    {
+      "file": "styles/themes.css",
+      "bytes": 2383,
+      "lines": 75,
+      "important_count": 0,
+      "rules": 6,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "ddbc2d0925963cd79bec7c99bf84c4ca781867593258a71c1cfaa86161620bfa"
+    },
+    {
+      "file": "styles/vendors/overrides.css",
+      "bytes": 84,
+      "lines": 1,
+      "important_count": 0,
+      "rules": 0,
+      "exact_duplicate_groups": 0,
+      "exact_duplicate_extra_occurrences": 0,
+      "repeated_selector_groups_different_body": 0,
+      "repeated_selector_extra_occurrences": 0,
+      "sha256": "169a8d0417ca6d71d97911c44ccbfe4734de26d2a17ea2007f8a280ad0b5b5d0"
+    }
+  ],
+  "cross_file_exact_duplicate_rules_sample": [
+    {
+      "context": "",
+      "selector": ".installment-form-page .installment-clean-select, .installment-form-page select.installment-clean-select",
+      "body_hash": "ad9cb56484ebb147",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--model, .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--imei, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--supplier, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--status",
+      "body_hash": "8cebc0cc42e31785",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": ".phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > *",
+      "body_hash": "7f42a85f3be10122",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > *, .phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid > *",
+      "body_hash": "70a6af6a38f4fa56",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid",
+      "body_hash": "62b0828741c03d5e",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": ".phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid, .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid",
+      "body_hash": "a3d51f502f0c9ba7",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__field--notes",
+      "body_hash": "7f42a85f3be10122",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid",
+      "body_hash": "a3d51f502f0c9ba7",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-edit-vertical-form",
+      "body_hash": "036e4dc76d4ced0e",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-identity-block--edit .phone-identity-block__grid > *, .phone-finance-block--edit .phone-finance-block__grid > *, .phone-operations-block--edit .phone-operations-block__grid > *",
+      "body_hash": "82bd83f482f7b049",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".phone-identity-block--edit .phone-identity-block__grid, .phone-finance-block--edit .phone-finance-block__grid, .phone-operations-block--edit .phone-operations-block__grid",
+      "body_hash": "a3d51f502f0c9ba7",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+        "styles/system/installments-runtime/installments-phone-edit-foundation.css"
+      ],
+      "file_count": 4,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer components",
+      "selector": ".dark .customers-hero-mini",
+      "body_hash": "6569075d5363a0d5",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/02c-legacy-detail-drawer-primitives.css",
+        "styles/pages/customers-shell.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer components",
+      "selector": ".dark .detail-hero-card__icon",
+      "body_hash": "6569075d5363a0d5",
+      "files": [
+        "styles/components/detail-hero.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/settings.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton",
+      "body_hash": "95977a7d8ed941d6",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton--info",
+      "body_hash": "70e11db29af5c774",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton--neutral",
+      "body_hash": "95977a7d8ed941d6",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton--success",
+      "body_hash": "4c3d3eb49d2eb445",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton--violet",
+      "body_hash": "d27d7bfe59e50fe0",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton--warning",
+      "body_hash": "b15b98ea1beb0ef9",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell",
+      "body_hash": "3e3a1bbf4d39a833",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell--info",
+      "body_hash": "8cee0639f5a1e2be",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell--success",
+      "body_hash": "4f0a80b8a3e549e5",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell--violet",
+      "body_hash": "49670b7733bfd281",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell--warning",
+      "body_hash": "6d05c36ecf953472",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".dark .ui-skeleton-shell::before",
+      "body_hash": "af2885fc35dd47b8",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer components",
+      "selector": ".empty-state-modern",
+      "body_hash": "e3b0c44298fc1c14",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/02k-legacy-cards-toasts-feedback-loading.css",
+        "styles/legacy/03c-legacy-form-empty-density.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities",
+      "selector": ".no-scrollbar",
+      "body_hash": "5f6d7a40bd3d9cbe",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities",
+      "selector": ".no-scrollbar::-webkit-scrollbar",
+      "body_hash": "6e22c58a7a6a60cb",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities",
+      "selector": ".shiny-text",
+      "body_hash": "b84516ecf945d18d",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".text-gradient-animated",
+      "body_hash": "04a910d4f0208428",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton",
+      "body_hash": "fe60dc0569023220",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton--info",
+      "body_hash": "451a83c03f1af17c",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton--neutral",
+      "body_hash": "fe60dc0569023220",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton--success",
+      "body_hash": "a8049598f5030857",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton--violet",
+      "body_hash": "17588de8deae3c88",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton--warning",
+      "body_hash": "e6f8e03f42539032",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell",
+      "body_hash": "38276d58cd6499e4",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell--info",
+      "body_hash": "63aaf0c37e0407bd",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell--success",
+      "body_hash": "28abdb62cbabfeb0",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell--violet",
+      "body_hash": "036e678ec0267093",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell--warning",
+      "body_hash": "83df7d3af9054161",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".ui-skeleton-shell::before",
+      "body_hash": "6b2f13e619d2aee6",
+      "files": [
+        "styles/core/animations.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities",
+      "selector": ".vp-letter",
+      "body_hash": "0cade984be1260eb",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities",
+      "selector": ".vp-wrapper",
+      "body_hash": "292b1b672a413b2e",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities | @keyframes shine",
+      "selector": "0%",
+      "body_hash": "c15564b7f85aa0fd",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@keyframes gradient-shift",
+      "selector": "0%",
+      "body_hash": "784ead385ba48f85",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer utilities | @keyframes shine",
+      "selector": "100%",
+      "body_hash": "717eaa3d8ade8efa",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@keyframes gradient-shift",
+      "selector": "100%",
+      "body_hash": "784ead385ba48f85",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "@keyframes gradient-shift",
+      "selector": "50%",
+      "body_hash": "8e2510b542984842",
+      "files": [
+        "styles/core/utilities.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/01-legacy-app-base-and-loaders.css"
+      ],
+      "file_count": 3,
+      "occurrences": 4
+    },
+    {
+      "context": "",
+      "selector": ".installment-form-page .installment-clean-select, .installment-form-page select.installment-clean-select",
+      "body_hash": "309a3e7d124bff75",
+      "files": [
+        "styles/components/unified-fields.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-btn:active:not(:disabled):not([aria-disabled=\"true\"]), .ux-btn--native:active:not(:disabled):not([aria-disabled=\"true\"]), a.ux-btn:active, .people-action-btn:active, .partners-action-btn:active, .inventory-table-action-btn:active, .ledger-action-btn:active",
+      "body_hash": "17f0b37e76c751ee",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-btn:hover:not(:disabled):not([aria-disabled=\"true\"]):not([data-loading=\"true\"]), .ux-btn--native:hover:not(:disabled):not([aria-disabled=\"true\"]):not([data-loading=\"true\"]), a.ux-btn:hover, .people-action-btn:hover, .partners-action-btn:hover, .inventory-table-action-btn:hover, .ledger-action-btn:hover",
+      "body_hash": "14030259f94b522e",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-btn[disabled], .ux-btn:disabled, .ux-btn[aria-disabled=\"true\"], .ux-btn--native:disabled, button[data-ux-enhanced=\"true\"]:disabled, button[data-ux-enhanced=\"true\"][aria-disabled=\"true\"]",
+      "body_hash": "be8b4689591f6a9f",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-btn__content, .ux-btn__label, .ux-btn__label-main",
+      "body_hash": "94824f7230eb00ad",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-btn__icon i, .ux-btn__icon svg, .ux-btn__spinner i, .ux-btn__spinner svg, .ux-btn--native[data-ux-icon-glyph]::before, button[data-ux-enhanced=\"true\"][data-ux-icon-glyph]::before, .people-action-btn i, .partners-action-btn i, .inventory-table-action-btn i, .ledger-action-btn i",
+      "body_hash": "e8a4c42190e1d89b",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": ".ux-table-row-actions, .inventory-table-row-actions, .installment-table-actions, .installment-card-actions, .ledger-actions-row, .customer-ledger-actions, .partner-ledger-actions, .people-row-actions, .partners-actions",
+      "body_hash": "148d677cd5198388",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": "html[data-button-icon-side=\"end\"] .ux-btn__content, html[data-button-icon-side=\"end\"] .ux-btn--native, html[data-button-icon-side=\"end\"] button[data-ux-enhanced=\"true\"]",
+      "body_hash": "87cf4bb946091dc2",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "",
+      "selector": "html[data-button-icon-side=\"start\"] .ux-btn__content, html[data-button-icon-side=\"start\"] .ux-btn--native, html[data-button-icon-side=\"start\"] button[data-ux-enhanced=\"true\"]",
+      "body_hash": "cc86be1fec4f2b7b",
+      "files": [
+        "styles/components/unified-buttons.css",
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/system/shared-action-buttons-foundation.css"
+      ],
+      "file_count": 3,
+      "occurrences": 3
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head",
+      "body_hash": "abc76c3a394f799f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 4
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div .overflow-x-auto, #partner-ledger-section + div .overflow-x-auto, #customer-history-section + div .overflow-x-auto, #partner-history-section + div .overflow-x-auto",
+      "body_hash": "cefb7519c78012d5",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div table, #partner-ledger-section + div table, #customer-history-section + div table, #partner-history-section + div table",
+      "body_hash": "259c1157bcd2af90",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div tbody td, #partner-ledger-section + div tbody td, #customer-history-section + div tbody td, #partner-history-section + div tbody td",
+      "body_hash": "93e6595800c056b5",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div tbody tr, #partner-ledger-section + div tbody tr, #customer-history-section + div tbody tr, #partner-history-section + div tbody tr",
+      "body_hash": "247517d5cadcbb38",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div tbody tr:hover, #partner-ledger-section + div tbody tr:hover, #customer-history-section + div tbody tr:hover, #partner-history-section + div tbody tr:hover",
+      "body_hash": "da43d62a47a6b7ad",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div thead th, #partner-ledger-section + div thead th, #customer-history-section + div thead th, #partner-history-section + div thead th",
+      "body_hash": "f570ad2b7b65dd82",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@layer components",
+      "selector": "#customer-ledger-section + div, #partner-ledger-section + div, #customer-history-section + div, #partner-history-section + div",
+      "body_hash": "1712cdd3334cf1a0",
+      "files": [
+        "styles/components/detail.css",
+        "styles/generated/tailwind-entry.generated.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#sale-step-items .ux-btn, #sale-step-cart .ux-btn, #sale-step-checkout .ux-btn, .sales-toolbar-btn.ux-btn",
+      "body_hash": "902f8ef472f3aa8b",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#sale-step-items button:not(.ux-btn), #sale-step-cart button:not(.ux-btn), #sale-step-checkout button:not(.ux-btn)",
+      "body_hash": "c44008f7e87fa376",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form",
+      "body_hash": "25b73bdb7041fecf",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form",
+      "body_hash": "00c24ff25abbb032",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form #tg-anchor-bot-core",
+      "body_hash": "e87c3d6f5ea9118f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .app-subtle, #telegram-settings-form :where(p, .tg-card__hint, .tg-studio-card__desc, .sms-studio-card__subtitle)",
+      "body_hash": "34ff7895d4959e60",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .gap-4",
+      "body_hash": "cb03378ff5457158",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .gap-5",
+      "body_hash": "8e14d982ca7158e1",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .gap-6",
+      "body_hash": "016d36981039a493",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .h-3.overflow-hidden.rounded-full > div, #telegram-settings-form .h-2\\.5.overflow-hidden.rounded-full > div, #telegram-settings-form .h-2.overflow-hidden.rounded-full > div",
+      "body_hash": "7746c7da4cede634",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .h-3.overflow-hidden.rounded-full > div, #telegram-settings-form .h-2\\.5.overflow-hidden.rounded-full > div, #telegram-settings-form .h-2.overflow-hidden.rounded-full > div",
+      "body_hash": "68ad6b62533de361",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .h-3.overflow-hidden.rounded-full, #telegram-settings-form .h-2\\.5.overflow-hidden.rounded-full, #telegram-settings-form .h-2.overflow-hidden.rounded-full",
+      "body_hash": "7ac9a8faac53921e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .h-3.overflow-hidden.rounded-full, #telegram-settings-form .h-2\\.5.overflow-hidden.rounded-full, #telegram-settings-form .h-2.overflow-hidden.rounded-full",
+      "body_hash": "c53ceecc34669004",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .inline-flex.h-11.w-11, #telegram-settings-form .inline-flex.w-12.h-12, #telegram-settings-form .inline-flex.h-12.w-12, #telegram-settings-form .tg-studio-card__icon, #telegram-settings-form .sms-studio-card__icon",
+      "body_hash": "c8135fe64e51cb9b",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .inline-flex.rounded-full, #telegram-settings-form .inline-flex.rounded-2xl, #telegram-settings-form .tg-chip, #telegram-settings-form .tg-studio-card__status, #telegram-settings-form .sms-studio-card__status, #telegram-settings-form .tg-studio-card__action-pill",
+      "body_hash": "96b4f403aa59ebdf",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .p-6, #telegram-settings-form .p-5, #telegram-settings-form .p-4",
+      "body_hash": "33928f27f43ce082",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .premium-form-section > div, #telegram-settings-form [id^=\"tg-anchor-\"] > div, #telegram-settings-form .tg-card, #telegram-settings-form .tg-studio-card, #telegram-settings-form [id^=\"tg-item-\"], #telegram-settings-form [id^=\"tg-audience-\"]",
+      "body_hash": "8bbdc91fdc21eec9",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .premium-form-section, #telegram-settings-form > [id^=\"tg-anchor-\"], #telegram-settings-form #tg-anchor-otp, #telegram-settings-form #tg-anchor-notifications",
+      "body_hash": "bd0a9b469b89067c",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .rounded-\\[30px\\], #telegram-settings-form .rounded-\\[28px\\], #telegram-settings-form .rounded-3xl, #telegram-settings-form .rounded-\\[24px\\]",
+      "body_hash": "e2f5661617d09c22",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .space-y-5 > :not([hidden]) ~ :not([hidden])",
+      "body_hash": "2b1986ddee892cc9",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .space-y-6 > :not([hidden]) ~ :not([hidden])",
+      "body_hash": "5cb224782394ae69",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-card-head",
+      "body_hash": "23fb46cfb8c814c1",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-card-head > div",
+      "body_hash": "d529e1f5d1cf9dc4",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-card-head > span",
+      "body_hash": "11219152c619c59b",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-card-head small",
+      "body_hash": "eb6adaf4069f2639",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-card-head strong",
+      "body_hash": "b42e3d340a269349",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide",
+      "body_hash": "1fc48f4f0dd17b6a",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide",
+      "body_hash": "5a1fdff064de70e4",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-guide",
+      "body_hash": "43eb55eaeab56cad",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head",
+      "body_hash": "13287f7b841a58a7",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head",
+      "body_hash": "5b914ac89a21cd73",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head .flex",
+      "body_hash": "37ab52c9d67ae001",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head .ux-btn, #telegram-settings-form .telegram-chatid-guide__head a",
+      "body_hash": "3a85f1aee722dd46",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head .ux-btn, #telegram-settings-form .telegram-chatid-guide__head a",
+      "body_hash": "984e056ff8535162",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head p",
+      "body_hash": "742e32bbc7b74fbd",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head p",
+      "body_hash": "0341ff0266949e1e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head strong",
+      "body_hash": "b0e63184ea44caf0",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__head strong",
+      "body_hash": "aa927dac07f47da6",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__hint",
+      "body_hash": "86bb509744ba83c9",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__hint",
+      "body_hash": "858c6447a7359624",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps",
+      "body_hash": "2b029ba6141bf917",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps",
+      "body_hash": "2fcc2fdf7c05e826",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 1024px)",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps",
+      "body_hash": "abc76c3a394f799f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps li",
+      "body_hash": "f58f69136ca31ed1",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps li",
+      "body_hash": "9680ab356fe8e459",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps li span",
+      "body_hash": "ecd160309a896c43",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-guide__steps li span",
+      "body_hash": "0340c50bb1e7ce39",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker",
+      "body_hash": "243610197173b20c",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker",
+      "body_hash": "e43e3838169018d6",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-picker",
+      "body_hash": "abc76c3a394f799f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker > input",
+      "body_hash": "98585736f3a55450",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker > input",
+      "body_hash": "d529e1f5d1cf9dc4",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn",
+      "body_hash": "e268e291b8408798",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn",
+      "body_hash": "229d23de56b15838",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn",
+      "body_hash": "1103d9b881daa4ce",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn",
+      "body_hash": "53b5c7d71e9e8f90",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__content",
+      "body_hash": "e198ee7905ce7bd8",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__content",
+      "body_hash": "fad34a58c97e01d3",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-picker__btn .ux-btn__icon",
+      "body_hash": "1b6a921e44631aeb",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results",
+      "body_hash": "ee43c13391d1e590",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results button",
+      "body_hash": "836b8ecbba56126b",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results button.is-active",
+      "body_hash": "254328a4e4df8510",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results button:hover",
+      "body_hash": "cf9478716667ef59",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results small",
+      "body_hash": "2364937a581e4f9f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results__meta",
+      "body_hash": "ec719368d026266e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-chatid-results__title",
+      "body_hash": "b16e88f63ad5ed6e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-actions",
+      "body_hash": "b99f7656843b5b44",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 1024px)",
+      "selector": "#telegram-settings-form .telegram-executive-actions",
+      "body_hash": "2ca7b0e7d766f428",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-card",
+      "body_hash": "497600159d56d0e3",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-executive-card",
+      "body_hash": "01d606c157c2b973",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-copy",
+      "body_hash": "d529e1f5d1cf9dc4",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-copy h2",
+      "body_hash": "28f89fafc79ef927",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-copy p",
+      "body_hash": "fc91a289bc847878",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-form",
+      "body_hash": "91f83b440acfb3ce",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-grid",
+      "body_hash": "c030b28344f20f6e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 1024px)",
+      "selector": "#telegram-settings-form .telegram-executive-grid, #telegram-settings-form .telegram-executive-form, #telegram-settings-form .telegram-chatid-guide__steps",
+      "body_hash": "abc76c3a394f799f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-hero",
+      "body_hash": "e5adbed527615059",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 1024px)",
+      "selector": "#telegram-settings-form .telegram-executive-hero",
+      "body_hash": "abc76c3a394f799f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-kicker",
+      "body_hash": "574fa815b93a8e36",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-executive-shell",
+      "body_hash": "83014fcc7fd77ffe",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-executive-shell, #telegram-settings-form .telegram-chatid-guide",
+      "body_hash": "01f8d047641aebac",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-field--wide",
+      "body_hash": "ce2a0497b4a1b270",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-mode-toggle",
+      "body_hash": "49dfa2a58483ab48",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-mode-toggle button",
+      "body_hash": "a200a88f90b91909",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-mode-toggle button.is-active",
+      "body_hash": "75ff777c7fd33c7e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-monitor-actions, #telegram-settings-form .telegram-monitor-v2-actions, #telegram-settings-form .telegram-monitor-v2-actions-grid",
+      "body_hash": "0a4f6ac3164337f5",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-monitor-actions, #telegram-settings-form .telegram-monitor-v2-actions, #telegram-settings-form .telegram-monitor-v2-actions-grid",
+      "body_hash": "26396873314990e2",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-monitor-head, #telegram-settings-form .telegram-monitor-v2-head",
+      "body_hash": "bfc50654fb946791",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-state",
+      "body_hash": "a315a8267ed9c66b",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "@media (max-width: 767px)",
+      "selector": "#telegram-settings-form .telegram-state",
+      "body_hash": "37ab52c9d67ae001",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-state.is-idle",
+      "body_hash": "9ec6baed29eb071d",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-state.is-info",
+      "body_hash": "16a5d09475e17843",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-state.is-ok",
+      "body_hash": "c5c722bae67280fe",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .telegram-state.is-risk",
+      "body_hash": "bc74a77c99f1617c",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-2xl",
+      "body_hash": "100ea66de4757433",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-2xl",
+      "body_hash": "d6ab0acb632dfd2e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-3xl",
+      "body_hash": "37a8a6ca0572ff41",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-3xl",
+      "body_hash": "9da4f4a53d38eac1",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-lg",
+      "body_hash": "c5058e7d3ffa6262",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-lg",
+      "body_hash": "a6e8e57c08d905db",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-xl",
+      "body_hash": "0a7547de5e6ef71c",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .text-xl",
+      "body_hash": "3d6979b56c1b2185",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-check-row",
+      "body_hash": "39157d5f900b37c9",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-check-row__body",
+      "body_hash": "56fb14ff167cacc7",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-check-row__icon",
+      "body_hash": "9fc643fec2557956",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-check-row__icon i",
+      "body_hash": "1b01d94f9df96f4e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-queue-btn",
+      "body_hash": "33c9f3dc2b010785",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-queue-panel",
+      "body_hash": "7148e00f32da9c6d",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-queue-panel",
+      "body_hash": "0158a01e76ff315a",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-queue-toolbar",
+      "body_hash": "000e7df16f37db1f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card",
+      "body_hash": "8d108828d4a12064",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card .ux-btn__content",
+      "body_hash": "7f48f7449d2b76b0",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__body",
+      "body_hash": "6c1b09ef641f8c78",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__head",
+      "body_hash": "ecc3e9408aa68224",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__hint",
+      "body_hash": "6082648e9ca9ffeb",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__icon",
+      "body_hash": "b8976e36e081b57f",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__icon i",
+      "body_hash": "d62a873bf75c199c",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__icon.is-done",
+      "body_hash": "8806be80c0d7d921",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__inner",
+      "body_hash": "f98809bca68fda14",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__status",
+      "body_hash": "c9ddd36184f5154e",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-card__title",
+      "body_hash": "0d2d14d0f382cf01",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-row__content",
+      "body_hash": "602d84953779bb45",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-row__content .tg-apple-mini-status",
+      "body_hash": "b53115512d259c23",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-apple-setup-row__main",
+      "body_hash": "db9b384cbd1bb391",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-studio-card",
+      "body_hash": "33928f27f43ce082",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-studio-card__desc, #telegram-settings-form .sms-studio-card__subtitle",
+      "body_hash": "c9ebcb3eb54491a7",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form .tg-studio-card__title",
+      "body_hash": "b159f9b8e8eb7696",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.inline-flex.h-11.w-11, .inline-flex.h-12.w-12, .tg-studio-card__icon, .sms-studio-card__icon, .tg-apple-setup-row__icon, .tg-apple-setup-card__icon)",
+      "body_hash": "25e1159818343f09",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.inline-flex.rounded-full, .inline-flex.rounded-2xl, .tg-chip, .tg-studio-card__status, .sms-studio-card__status, .tg-studio-card__action-pill)",
+      "body_hash": "7b5efe51a9ace2aa",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.premium-form-section, [id^=\"tg-anchor-\"], .tg-card, .tg-studio-card, [id^=\"tg-item-\"])",
+      "body_hash": "8cf1c14d08556c10",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.rounded-2xl, .rounded-3xl, .rounded-\\[24px\\], .rounded-\\[28px\\], .rounded-\\[30px\\], .rounded-\\[32px\\])",
+      "body_hash": "3e8bbf928106d633",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn)",
+      "body_hash": "fa19b9cba0ca5d53",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary",
+      "body_hash": "1325bfd3f10a10dc",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    },
+    {
+      "context": "",
+      "selector": "#telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__icon, #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__spinner, #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__label-main, #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__label, #telegram-settings-form :where(.telegram-chatid-picker__btn, .telegram-monitor-v2-btn, .tg-apple-queue-btn, .tg-apple-setup-row, .tg-apple-setup-card, .tg-apple-check-row, .ux-btn).ux-btn-primary .ux-btn__content",
+      "body_hash": "971196f4cabbbacf",
+      "files": [
+        "styles/generated/tailwind-entry.generated.css",
+        "styles/pages/telegram.css"
+      ],
+      "file_count": 2,
+      "occurrences": 2
+    }
+  ]
+}

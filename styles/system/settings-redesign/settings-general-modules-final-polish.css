@@ -1,0 +1,251 @@
+
+/* Phase 87 — Settings General / Modules Final Polish
+   Scoped to Settings root only. No business logic or layout state is changed. */
+
+.settings-shell.settings-redesign-v1 {
+  --settings-surface: rgba(255,255,255,.94);
+  --settings-surface-muted: rgba(248,250,252,.86);
+  --settings-border: rgba(148,163,184,.24);
+  --settings-border-strong: rgba(99,102,241,.24);
+  --settings-text: rgb(15,23,42);
+  --settings-muted: rgb(100,116,139);
+  --settings-radius-xl: 28px;
+  --settings-radius-lg: 22px;
+  --settings-shadow: 0 26px 70px -54px rgba(15,23,42,.42);
+  --settings-shadow-soft: 0 18px 44px -38px rgba(15,23,42,.32);
+  color: var(--settings-text);
+}
+
+.dark .settings-shell.settings-redesign-v1 {
+  --settings-surface: rgba(15,23,42,.90);
+  --settings-surface-muted: rgba(2,6,23,.54);
+  --settings-border: rgba(51,65,85,.78);
+  --settings-border-strong: rgba(129,140,248,.30);
+  --settings-text: rgb(248,250,252);
+  --settings-muted: rgb(148,163,184);
+  --settings-shadow: 0 28px 76px -58px rgba(0,0,0,.86);
+  --settings-shadow-soft: 0 18px 48px -42px rgba(0,0,0,.72);
+}
+
+.settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+  top: 0;
+  border-radius: 0 0 26px 26px;
+  border-color: var(--settings-border) !important;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.96), rgba(248,250,252,.88)) !important;
+  box-shadow: 0 20px 54px -46px rgba(15,23,42,.36);
+}
+
+.dark .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.96), rgba(2,6,23,.88)) !important;
+  box-shadow: 0 22px 58px -46px rgba(0,0,0,.72);
+}
+
+.settings-shell.settings-redesign-v1 > .sticky:first-of-type .h-10.w-10 {
+  border: 1px solid rgba(99,102,241,.18);
+  background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(14,165,233,.10)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.dark .settings-shell.settings-redesign-v1 > .sticky:first-of-type .h-10.w-10 {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.settings-shell.settings-redesign-v1 .settings-mobile-tab {
+  min-height: 42px;
+  border-color: var(--settings-border) !important;
+  box-shadow: 0 14px 32px -28px rgba(15,23,42,.34);
+  white-space: nowrap;
+}
+
+.settings-shell.settings-redesign-v1 .settings-mobile-tab:focus-visible,
+.settings-shell.settings-redesign-v1 .settings-tab-item:focus-visible,
+.settings-shell.settings-redesign-v1 :is(button, a, summary, input, select, textarea):focus-visible {
+  outline: 3px solid rgba(59,130,246,.20) !important;
+  outline-offset: 3px !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-sidebar {
+  border-radius: var(--settings-radius-xl);
+  border: 1px solid var(--settings-border);
+  background:
+    linear-gradient(180deg, var(--settings-surface), var(--settings-surface-muted));
+  box-shadow: var(--settings-shadow-soft);
+  padding: 10px;
+  overflow: hidden;
+}
+
+.settings-shell.settings-redesign-v1 .settings-sidebar::before {
+  content: '';
+  display: block;
+  height: 3px;
+  margin: -10px -10px 10px;
+  background: linear-gradient(90deg, rgba(99,102,241,.62), rgba(14,165,233,.42), rgba(16,185,129,.32));
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-item {
+  min-height: 54px;
+  border-radius: 18px !important;
+  border-color: transparent !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-item[data-active="true"] {
+  background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(14,165,233,.08)) !important;
+  border-color: var(--settings-border-strong) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.70), 0 16px 34px -30px rgba(79,70,229,.42);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-tab-item[data-active="true"] {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 16px 38px -34px rgba(99,102,241,.60);
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-icon {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-tab-icon {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.settings-shell.settings-redesign-v1 .settings-workspace {
+  border-radius: var(--settings-radius-xl);
+  border: 1px solid var(--settings-border);
+  background:
+    linear-gradient(180deg, var(--settings-surface), var(--settings-surface-muted));
+  box-shadow: var(--settings-shadow);
+  padding: clamp(14px, 1.5vw, 22px);
+}
+
+.settings-shell.settings-redesign-v1 .settings-workspace > *:first-child {
+  margin-top: 0 !important;
+}
+
+.settings-shell.settings-redesign-v1 :is(.settings-modules-panel, .settings-smart-brain-panel) {
+  position: relative;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel .module-hero-card,
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-header {
+  border-radius: 30px !important;
+  border: 1px solid var(--settings-border) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(99,102,241,.12), transparent 34%),
+    linear-gradient(135deg, rgba(255,255,255,.96), rgba(248,250,252,.88)) !important;
+  box-shadow: var(--settings-shadow-soft) !important;
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-modules-panel .module-hero-card,
+.dark .settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-header {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(129,140,248,.18), transparent 35%),
+    linear-gradient(135deg, rgba(15,23,42,.96), rgba(2,6,23,.82)) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel :is(.module-runtime-card, .module-plan-card, .module-feature-card, .module-child-feature-card),
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-signal-card, .smart-ai-guide) {
+  border-radius: 22px !important;
+  border-color: var(--settings-border) !important;
+  background: var(--settings-surface) !important;
+  box-shadow: 0 18px 42px -38px rgba(15,23,42,.28) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel :is(.module-plan-card, .module-feature-card, .module-child-feature-card):hover,
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-signal-card):hover {
+  transform: translateY(-1px);
+  border-color: var(--settings-border-strong) !important;
+  box-shadow: 0 22px 52px -42px rgba(15,23,42,.36) !important;
+}
+
+.settings-shell.settings-redesign-v1 .module-status-chip,
+.settings-shell.settings-redesign-v1 .smart-ai-status-chip,
+.settings-shell.settings-redesign-v1 .smart-ai-progress-track {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.64);
+}
+
+.settings-shell.settings-redesign-v1 :is(input, select, textarea):not(.telegram-template-textarea):not(.header-search-input):not(.ux-sidebar-search__input) {
+  min-height: 42px;
+  border-radius: 16px;
+}
+
+.settings-shell.settings-redesign-v1 textarea:not(.telegram-template-textarea) {
+  line-height: 1.9;
+}
+
+.settings-shell.settings-redesign-v1 :is(code, pre, [dir="ltr"], .mono, .font-mono) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1366px) {
+  .settings-shell.settings-redesign-v1 {
+    padding-inline: 12px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+    border-radius: 0 0 22px 22px;
+  }
+  .settings-shell.settings-redesign-v1 > .grid {
+    gap: 14px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-shell.settings-redesign-v1 {
+    padding-inline: 10px !important;
+  }
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type .max-w-7xl {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type .max-w-7xl > .flex:last-child {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    padding: 12px;
+    border-radius: 22px;
+  }
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-runtime-grid,
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-plan-grid,
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-feature-grid,
+  .settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+    margin-inline: -10px !important;
+    padding-inline: 10px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-mobile-tab {
+    min-height: 38px;
+    padding-inline: 10px !important;
+    font-size: 12px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    border-radius: 18px;
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-shell.settings-redesign-v1 * {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .settings-shell.settings-redesign-v1 :is(.module-plan-card, .module-feature-card, .module-child-feature-card, .smart-ai-card, .smart-ai-signal-card):hover {
+    transform: none !important;
+  }
+}

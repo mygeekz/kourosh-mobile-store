@@ -1,0 +1,118 @@
+/* Phase 27: unified button system hardening */
+.ux-btn,
+.ux-btn--native,
+.page-shell-actions > button,
+.page-shell-actions > a,
+.modal-actions > button,
+.modal-actions > a,
+.report-filter-button {
+  position: relative;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ux-btn,
+.ux-btn--native {
+  min-height: 44px;
+  padding-inline: 1rem;
+  padding-block: 0.625rem;
+}
+
+.ux-btn-sm,
+.ux-btn--native.ux-btn-sm {
+  min-height: 40px;
+  padding-inline: 0.9rem;
+  padding-block: 0.5rem;
+}
+
+.ux-btn-xs,
+.ux-btn--native.ux-btn-xs {
+  min-height: 36px;
+  padding-inline: 0.75rem;
+  padding-block: 0.4rem;
+}
+
+.ux-btn-lg,
+.ux-btn--native.ux-btn-lg {
+  min-height: 46px;
+  padding-inline: 1.1rem;
+  padding-block: 0.72rem;
+}
+
+.ux-btn__content,
+.ux-btn__label,
+.ux-btn__label-main {
+  line-height: 1.25;
+}
+
+.ux-btn__label-main {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before {
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.ux-btn:hover .ux-btn__icon,
+.ux-btn:hover .ux-btn__spinner,
+.ux-btn--native:hover[data-ux-icon-glyph]::before {
+  transform: scale(1.03);
+}
+
+.ux-btn:active,
+.ux-btn--native:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.ux-btn[disabled],
+.ux-btn--native[disabled],
+.ux-btn[aria-disabled='true'],
+.ux-btn--native[aria-disabled='true'] {
+  box-shadow: none;
+  filter: saturate(0.9);
+}
+
+.ux-btn-secondary,
+.ux-btn-ghost,
+.ux-btn--native.ux-btn-secondary,
+.ux-btn--native.ux-btn-ghost {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+}
+
+.dark .ux-btn-secondary,
+.dark .ux-btn-ghost,
+.dark .ux-btn--native.ux-btn-secondary,
+.dark .ux-btn--native.ux-btn-ghost {
+  background-image: linear-gradient(180deg, rgba(30,41,59,0.98), rgba(15,23,42,0.96));
+}
+
+.ux-btn-secondary .ux-btn__label-main,
+.ux-btn-ghost .ux-btn__label-main,
+.ux-btn--native.ux-btn-secondary,
+.ux-btn--native.ux-btn-ghost {
+  color: inherit;
+}
+
+.ux-btn-warning {
+  color: rgb(120 53 15);
+}
+
+.dark .ux-btn-warning {
+  color: rgb(255 251 235);
+}
+
+.ux-btn-warning .ux-btn__icon,
+.ux-btn--native.ux-btn-warning[data-ux-icon-glyph]::before {
+  background: rgba(255,255,255,0.22);
+}
+
+.dark .ux-btn-warning .ux-btn__icon,
+.dark .ux-btn--native.ux-btn-warning[data-ux-icon-glyph]::before {
+  background: rgba(255,255,255,0.14);
+}
+

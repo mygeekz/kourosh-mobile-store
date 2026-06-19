@@ -1,0 +1,494 @@
+/* Auto-generated UI Foundation.
+   Scope: controlled consolidation for Products / Services / Repairs UI.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+/* ===== Source: styles/runtime-overrides/02d-services-inventory-polish.css ===== */
+/* ===== SERVICES APPLE COMMERCIAL DESIGN ===== */
+.services-apple-page {
+  padding-inline: 8px !important;
+  text-align: right !important;
+}
+
+.services-apple-hero,
+.services-apple-panel {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.dark .services-apple-hero,
+.dark .services-apple-panel {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.services-apple-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.services-apple-hero__title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.services-apple-hero__icon,
+.services-apple-stat-card__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 12px;
+  background: rgb(248 250 252);
+  color: rgb(51 65 85);
+}
+
+.dark .services-apple-hero__icon,
+.dark .services-apple-stat-card__icon {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+.services-apple-hero__icon i,
+.services-apple-stat-card__icon i,
+.service-quick-sell i {
+  width: 16px !important;
+  min-width: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+.services-apple-hero h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  line-height: 1.6;
+  color: rgb(15 23 42);
+}
+
+.dark .services-apple-hero h1 { color: rgb(241 245 249); }
+
+.services-apple-hero p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 650;
+  color: rgb(100 116 139);
+}
+
+.dark .services-apple-hero p { color: rgb(148 163 184); }
+
+.services-apple-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.services-apple-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 16px;
+  background: #fff;
+  padding: 10px;
+  box-shadow: none;
+}
+
+.dark .services-apple-stat-card {
+  border-color: rgb(30 41 59);
+  background: rgb(2 6 23);
+}
+
+.services-apple-stat-card__body {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+  flex: 1;
+}
+
+.services-apple-stat-card__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 950;
+  color: rgb(15 23 42);
+}
+
+.dark .services-apple-stat-card__label { color: rgb(241 245 249); }
+
+.services-apple-stat-card__hint {
+  font-size: 10px;
+  font-weight: 750;
+  color: rgb(100 116 139);
+}
+
+.dark .services-apple-stat-card__hint { color: rgb(148 163 184); }
+
+.services-apple-stat-card__value {
+  direction: rtl;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 950;
+  color: rgb(15 23 42);
+}
+
+.dark .services-apple-stat-card__value { color: rgb(241 245 249); }
+
+.services-page table {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .services-page table {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.services-page thead {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .services-page thead {
+  background: rgb(15 23 42) !important;
+}
+
+.services-page th {
+  padding: 9px 10px !important;
+  text-align: right !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  color: rgb(100 116 139) !important;
+  border-bottom: 1px solid rgb(226 232 240) !important;
+}
+
+.dark .services-page th {
+  color: rgb(203 213 225) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.services-page td {
+  padding: 9px 10px !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  border-bottom: 1px solid rgb(241 245 249) !important;
+}
+
+.dark .services-page td {
+  border-color: rgb(30 41 59) !important;
+}
+
+.services-page button,
+.services-page a,
+.service-quick-sell button {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.services-page button:hover,
+.services-page a:hover,
+.service-quick-sell button:hover {
+  transform: none !important;
+}
+
+.services-page :where(button),
+.service-quick-sell :where(button) {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.services-page input,
+.services-page textarea,
+.services-page select {
+  min-height: 40px !important;
+  border-radius: 12px !important;
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+  text-align: right !important;
+}
+
+.dark .services-page input,
+.dark .services-page textarea,
+.dark .services-page select {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.services-apple-modal-head {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 999px;
+  background: rgb(248 250 252);
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 950;
+  color: rgb(51 65 85);
+}
+
+.dark .services-apple-modal-head {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+.service-quick-sell__card {
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .service-quick-sell__card {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.service-quick-sell__card:hover {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .service-quick-sell__card:hover {
+  background: rgb(15 23 42) !important;
+}
+
+@media (max-width: 768px) {
+  .services-apple-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .services-apple-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .services-apple-page {
+    padding-inline: 6px !important;
+  }
+}
+
+
+/* ===== INVENTORY PRODUCTS APPLE POLISH ===== */
+.inventory-apple-stat,
+.inventory-pastel-card {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .inventory-apple-stat,
+.dark .inventory-pastel-card {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.inventory-apple-stat [class*="bg-"],
+.inventory-pastel-card [class*="bg-"] {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .inventory-apple-stat [class*="bg-"],
+.dark .inventory-pastel-card [class*="bg-"] {
+  background: rgb(15 23 42) !important;
+}
+
+.inventory-apple-stat [class*="text-amber"],
+.inventory-apple-stat [class*="text-emerald"],
+.inventory-apple-stat [class*="text-green"],
+.inventory-apple-stat [class*="text-red"],
+.inventory-apple-stat [class*="text-rose"],
+.inventory-apple-stat [class*="text-blue"],
+.inventory-apple-stat [class*="text-indigo"],
+.inventory-apple-stat [class*="text-purple"],
+.inventory-pastel-card [class*="text-amber"],
+.inventory-pastel-card [class*="text-emerald"],
+.inventory-pastel-card [class*="text-green"],
+.inventory-pastel-card [class*="text-red"],
+.inventory-pastel-card [class*="text-rose"],
+.inventory-pastel-card [class*="text-blue"],
+.inventory-pastel-card [class*="text-indigo"],
+.inventory-pastel-card [class*="text-purple"] {
+  color: rgb(51 65 85) !important;
+}
+
+.dark .inventory-apple-stat [class*="text-amber"],
+.dark .inventory-apple-stat [class*="text-emerald"],
+.dark .inventory-apple-stat [class*="text-green"],
+.dark .inventory-apple-stat [class*="text-red"],
+.dark .inventory-apple-stat [class*="text-rose"],
+.dark .inventory-apple-stat [class*="text-blue"],
+.dark .inventory-apple-stat [class*="text-indigo"],
+.dark .inventory-apple-stat [class*="text-purple"],
+.dark .inventory-pastel-card [class*="text-amber"],
+.dark .inventory-pastel-card [class*="text-emerald"],
+.dark .inventory-pastel-card [class*="text-green"],
+.dark .inventory-pastel-card [class*="text-red"],
+.dark .inventory-pastel-card [class*="text-rose"],
+.dark .inventory-pastel-card [class*="text-blue"],
+.dark .inventory-pastel-card [class*="text-indigo"],
+.dark .inventory-pastel-card [class*="text-purple"] {
+  color: rgb(226 232 240) !important;
+}
+
+.inventory-apple-stat .h-2.w-2,
+.inventory-pastel-card .h-2.w-2 {
+  background: rgb(148 163 184) !important;
+}
+
+.inventory-apple-stat [class*="place-items-center"],
+.inventory-pastel-card [class*="place-items-center"] {
+  border-color: rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+.dark .inventory-apple-stat [class*="place-items-center"],
+.dark .inventory-pastel-card [class*="place-items-center"] {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.inventory-apple-stat i,
+.inventory-pastel-card i {
+  width: 16px !important;
+  min-width: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: currentColor !important;
+}
+
+/* Product list table headers: strict right alignment / no centered labels. */
+#products-print-area table th,
+#products-print-area table th > div {
+  text-align: right !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+#products-print-area table th {
+  direction: rtl !important;
+}
+
+#products-print-area table th > div {
+  display: flex !important;
+}
+
+/* ===== Contract: Services and inventory operational surfaces ===== */
+.services-apple-page,
+.inventory-page {
+  --service-surface: rgb(255 255 255);
+  --service-surface-muted: rgb(248 250 252);
+  --service-border: rgba(226, 232, 240, 0.92);
+  --service-text: rgb(15 23 42);
+  --service-muted: rgb(100 116 139);
+  --service-radius: 18px;
+}
+
+.dark .services-apple-page,
+.dark .inventory-page {
+  --service-surface: rgb(2 6 23);
+  --service-surface-muted: rgb(15 23 42);
+  --service-border: rgba(51, 65, 85, 0.86);
+  --service-text: rgb(241 245 249);
+  --service-muted: rgb(148 163 184);
+}
+
+.services-apple-page :where(.services-apple-hero, .services-apple-panel, .services-apple-stat-card, .app-card),
+.inventory-page :where(.app-card, .ux-form-shell, .inventory-card) {
+  border-color: var(--service-border) !important;
+  background: var(--service-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.services-apple-page :where(input, textarea, select),
+.inventory-page :where(input, textarea, select) {
+  min-height: 40px !important;
+  border-radius: 12px !important;
+  border-color: var(--service-border) !important;
+  background: var(--service-surface) !important;
+  color: var(--service-text) !important;
+  box-shadow: none !important;
+  text-align: right;
+}
+
+.services-apple-page :where(table) {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.services-apple-page :where(th, td) {
+  vertical-align: middle !important;
+}
+
+.services-apple-page :where(td:first-child, th:first-child) {
+  padding-inline-start: 14px !important;
+}
+
+.services-apple-page :where(td:last-child, th:last-child) {
+  padding-inline-end: 14px !important;
+}
+
+.services-apple-page :where(button, a),
+.inventory-page :where(button, a) {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.services-apple-stat-card__value,
+.services-apple-page :where(.tabular-nums, [data-numeric]) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+  .services-apple-hero,
+  .services-apple-panel > :where(.flex, .items-center),
+  .inventory-page :where(.items-center.justify-between) {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .services-apple-stats {
+    grid-template-columns: 1fr !important;
+  }
+
+  .services-apple-panel :where(.overflow-x-auto) {
+    -webkit-overflow-scrolling: touch;
+  }
+}

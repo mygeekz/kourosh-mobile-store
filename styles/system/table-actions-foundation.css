@@ -1,0 +1,272 @@
+/* Phase 11 — Global table action foundation.
+   Preserves the existing unified table action system and adds overflow-safe table action contracts. */
+
+/* ===== Source: styles/runtime-overrides/08a-unified-table-actions.css ===== */
+/* Unified table actions, late customer/partner toolbar and finance modal polish.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== v50 unified table action system =====
+   Scope: Products / Customers / Partners / Reports table actions.
+   Purpose: one compact, centered, touch-safe action language without adding duplicate actions.
+*/
+:root {
+  --table-action-size: 2.05rem;
+  --table-action-radius: .82rem;
+  --table-action-gap: .32rem;
+  --table-action-icon: .95rem;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .people-action-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .partners-action-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn,
+  .report-page table td button,
+  .report-page table td a[class*="btn"],
+  .reports-layout-executive .report-page table td .ux-btn,
+  .reports-layout-executive .report-page table td button,
+  .reports-layout-executive .report-page table td a[class*="btn"]
+) {
+  min-height: var(--table-action-size) !important;
+  height: auto !important;
+  border-radius: var(--table-action-radius) !important;
+  font-size: 10.5px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .34rem !important;
+  white-space: nowrap !important;
+  box-shadow: 0 8px 18px -18px rgba(15, 23, 42, .22) !important;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, background-color .14s ease, color .14s ease !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .report-page table td .ux-btn.ux-icon-btn,
+  .report-page table td button:has(> i:only-child),
+  .report-page table td a[class*="btn"]:has(> i:only-child)
+) {
+  width: var(--table-action-size) !important;
+  min-width: var(--table-action-size) !important;
+  padding-inline: 0 !important;
+}
+
+:where(
+  .people-table-shell td:last-child .people-action-btn,
+  .partners-table-shell td:last-child .partners-action-btn
+) {
+  padding-inline: .72rem !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .people-action-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .partners-action-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn,
+  .report-page table td button,
+  .report-page table td a[class*="btn"]
+):hover {
+  transform: translateY(-.5px) !important;
+  box-shadow: 0 11px 22px -19px rgba(15, 23, 42, .26) !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .people-action-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .partners-action-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn,
+  .report-page table td button,
+  .report-page table td a[class*="btn"]
+):active {
+  transform: translateY(0) !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .people-action-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .partners-action-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn,
+  .report-page table td button,
+  .report-page table td a[class*="btn"]
+) :where(i, svg, .ux-btn__icon, .people-detail-eye-btn__icon) {
+  width: var(--table-action-icon) !important;
+  min-width: var(--table-action-icon) !important;
+  height: var(--table-action-icon) !important;
+  min-height: var(--table-action-icon) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  flex: 0 0 var(--table-action-icon) !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn
+) :where(.ux-btn__content, .btn__content) {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .32rem !important;
+}
+
+:where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn
+) :where(.ux-btn__label, .ux-btn__label-main) {
+  display: none !important;
+}
+
+:where(
+  .product-table-actions,
+  .product-management-row-actions,
+  .people-table-shell td:last-child > .flex,
+  .partners-table-shell .partners-actions,
+  .report-page table td:has(.ux-btn),
+  .report-page table td:has(button),
+  .report-page table td:has(a[class*="btn"])
+) {
+  align-items: center !important;
+}
+
+.product-table-actions,
+.product-management-row-actions,
+.people-table-shell td:last-child > .flex,
+.partners-table-shell .partners-actions {
+  gap: var(--table-action-gap) !important;
+  flex-wrap: nowrap !important;
+}
+
+.people-table-shell td:last-child,
+.partners-table-shell td:last-child,
+.product-list-table td:last-child,
+.product-management-table td:last-child {
+  white-space: nowrap !important;
+}
+
+/* Keep the main people/partner action columns readable but not oversized. */
+.people-table-shell td:last-child .people-action-btn,
+.partners-table-shell td:last-child .partners-action-btn {
+  min-height: 2.15rem !important;
+  padding-inline: .78rem !important;
+  border-radius: .9rem !important;
+}
+
+.people-table-shell td:last-child .people-action-btn span:not(.people-detail-eye-btn__icon),
+.partners-table-shell td:last-child .partners-action-btn span {
+  line-height: 1 !important;
+}
+
+/* Report tables: actions inside dense tables should not break row height. */
+.report-page table td .ux-btn,
+.report-page table td button,
+.report-page table td a[class*="btn"] {
+  max-height: 2.15rem;
+}
+
+html.dark :where(
+  .product-row-action-btn,
+  .inventory-table-action-btn,
+  .product-management-row-btn,
+  .people-table-shell td:last-child .people-action-btn,
+  .people-table-shell td:last-child .ux-btn,
+  .partners-table-shell td:last-child .partners-action-btn,
+  .partners-table-shell td:last-child .ux-btn,
+  .report-page table td .ux-btn,
+  .report-page table td button,
+  .report-page table td a[class*="btn"]
+) {
+  box-shadow: 0 10px 20px -20px rgba(2, 6, 23, .62) !important;
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --table-action-size: 1.95rem;
+    --table-action-gap: .24rem;
+    --table-action-icon: .9rem;
+  }
+
+  .people-table-shell td:last-child .people-action-btn,
+  .partners-table-shell td:last-child .partners-action-btn {
+    padding-inline: .62rem !important;
+    font-size: 10px !important;
+  }
+}
+
+
+@media (max-width: 900px) {
+  :root {
+    --table-action-size: 1.9rem;
+    --table-action-gap: .22rem;
+  }
+
+  .people-table-shell td:last-child .people-action-btn,
+  .partners-table-shell td:last-child .partners-action-btn {
+    min-width: var(--table-action-size) !important;
+    width: var(--table-action-size) !important;
+    padding-inline: 0 !important;
+  }
+
+  .people-table-shell td:last-child .people-action-btn :where(.ux-btn__label, .ux-btn__label-main),
+  .people-table-shell td:last-child .people-action-btn:not(.people-detail-eye-btn) > :not(i):not(svg):not(.ux-btn__icon):not(.people-detail-eye-btn__icon),
+  .partners-table-shell td:last-child .partners-action-btn :where(.ux-btn__label, .ux-btn__label-main),
+  .partners-table-shell td:last-child .partners-action-btn > span:not(.ux-btn__icon) {
+    display: none !important;
+  }
+}
+
+
+/* ===== Phase 11 contract additions ===== */
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) td:last-child,
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) th:last-child {
+  text-align: center;
+}
+
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) td:last-child > :where(div, span) {
+  min-width: 0;
+}
+
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) :where(td, th) {
+  vertical-align: middle;
+}
+
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) :where(.table-actions, .row-actions, .actions-cell, .action-buttons, .people-table-actions, .partner-table-actions) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--table-action-gap, .32rem);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) :where([dir="ltr"], .ltr, .imei-value, .system-id-value, .identifier-value) {
+  unicode-bidi: plaintext;
+}

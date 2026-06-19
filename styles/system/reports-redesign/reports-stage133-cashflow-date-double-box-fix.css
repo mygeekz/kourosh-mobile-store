@@ -1,0 +1,41 @@
+/* Stage 133 — Cashflow date double-box fix
+   Root-cause fix: ShamsiDatePicker inputClassName styles the control wrapper, not the inner input.
+   Keep the wrapper fully transparent and let only the inner input render the visible field surface. */
+
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control.cashflow-date-input,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control:hover,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control:focus,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control:focus-within,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control:active {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date .app-date-field__control {
+  overflow: visible !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]) {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border: 1px solid rgba(203, 213, 225, .90) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .26) !important;
+}
+
+.dark .cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]) {
+  border-color: rgba(51, 65, 85, .9) !important;
+  background: rgba(15, 23, 42, .82) !important;
+  color: #f8fafc !important;
+}

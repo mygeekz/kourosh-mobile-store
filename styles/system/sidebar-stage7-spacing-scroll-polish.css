@@ -1,0 +1,704 @@
+/* Stage 7 — Sidebar spacing, scroll and mobile polish
+   هدف: سایدبار خلوت، خوانا و قابل اسکرول باشد؛ متن‌ها بریده نشوند و آیتم‌ها روی موبایل نفس بکشند. */
+
+.app-sidebar {
+  --sidebar-item-h: 42px;
+  --sidebar-subitem-h: 36px;
+  --sidebar-row-gap: 0.28rem;
+  --sidebar-subrow-gap: 0.18rem;
+  --sidebar-side-pad: 0.6rem;
+  --sidebar-icon-slot: 34px;
+  --sidebar-chevron-slot: 18px;
+  --sidebar-desktop-w: 372px;
+  --sidebar-nav-bottom-safe: 0.75rem;
+}
+
+/* خود Drawer نباید افقی اسکرول بگیرد؛ همه چیز باید داخل ستون منو جمع شود. */
+.app-sidebar,
+.app-sidebar * {
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .app-sidebar:not([data-sidebar-collapsed="true"]) {
+    width: var(--sidebar-pill-w, var(--sidebar-desktop-w)) !important;
+    min-width: var(--sidebar-pill-w, var(--sidebar-desktop-w)) !important;
+    max-width: var(--sidebar-pill-w, var(--sidebar-desktop-w)) !important;
+  }
+}
+
+.app-sidebar nav[data-ui-navigation-region="main"] {
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-block: 0.65rem var(--sidebar-nav-bottom-safe) !important;
+}
+
+.app-sidebar nav[data-ui-navigation-region="main"]::-webkit-scrollbar,
+.app-sidebar .ux-stable-popover *::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-sidebar nav[data-ui-navigation-region="main"]::-webkit-scrollbar-thumb,
+.app-sidebar .ux-stable-popover *::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.42);
+}
+
+html.dark .app-sidebar nav[data-ui-navigation-region="main"]::-webkit-scrollbar-thumb,
+html.dark .app-sidebar .ux-stable-popover *::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.72);
+}
+
+.app-sidebar .ux-sidebar-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--sidebar-row-gap) !important;
+  padding-inline: var(--sidebar-side-pad) 0.5rem !important;
+  padding-block: 0.1rem 0.45rem !important;
+}
+
+.app-sidebar .ux-sidebar-list > li {
+  min-width: 0 !important;
+}
+
+/* Row geometry: grid باعث می‌شود آیکن، متن و فلش هیچ‌وقت روی هم نیفتند. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  display: grid !important;
+  grid-template-columns: var(--sidebar-icon-slot) minmax(0, 1fr) var(--sidebar-chevron-slot) !important;
+  column-gap: 0.52rem !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: var(--sidebar-item-h) !important;
+  padding: 0.36rem 0.48rem !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  transform: translateZ(0);
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] {
+  min-height: var(--sidebar-subitem-h) !important;
+  padding-block: 0.28rem !important;
+  padding-inline-start: 0.42rem !important;
+  padding-inline-end: 0.5rem !important;
+  column-gap: 0.44rem !important;
+  border-radius: 13px !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+  grid-column: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  margin: 0 !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .icon-bubble {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border-radius: 10px !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+  grid-column: 2 !important;
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+  display: block !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  line-height: 1.42 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="0"] .ux-mixed-text {
+  font-size: 11.5px !important;
+  font-weight: 820 !important;
+  letter-spacing: -0.012em !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+  font-size: 10.5px !important;
+  font-weight: 720 !important;
+  line-height: 1.45 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-angle-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-left,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-right {
+  grid-column: 3 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  width: var(--sidebar-chevron-slot) !important;
+  min-width: var(--sidebar-chevron-slot) !important;
+  margin: 0 !important;
+  opacity: 0.62 !important;
+}
+
+/* زیرمنوها فشرده اما خوانا؛ با خط راهنمای خیلی سبک برای تشخیص شاخه. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row + ul,
+.app-sidebar .ux-sidebar-list li > ul {
+  margin-top: 0.18rem !important;
+  margin-inline-start: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0.58rem !important;
+  border-inline-end: 1px solid rgba(203, 213, 225, 0.52);
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--sidebar-subrow-gap) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row + ul,
+html.dark .app-sidebar .ux-sidebar-list li > ul {
+  border-inline-end-color: rgba(51, 65, 85, 0.72);
+}
+
+/* Hover باید ظریف بماند و باعث پرش بصری نشود. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:hover {
+  transform: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  overflow: hidden !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] > span:last-child {
+  right: 6px !important;
+  height: 18px !important;
+}
+
+/* حالت collapsed: فقط آیکن، بدون wrap و بدون تغییر عرض. */
+.app-sidebar[data-sidebar-collapsed="true"] {
+  --sidebar-item-h: 42px;
+  --sidebar-side-pad: 0.5rem;
+}
+
+.app-sidebar[data-sidebar-collapsed="true"] .ux-sidebar-list .sidebar-nav-row {
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0.35rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.app-sidebar[data-sidebar-collapsed="true"] .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+  margin: 0 auto !important;
+}
+
+/* جستجو و علاقه‌مندی‌ها با منوی اصلی هم‌ریتم شوند. */
+.app-sidebar [data-ui-field-kind="sidebar-search"] {
+  margin-inline: 0 !important;
+  min-height: var(--sidebar-search-h) !important;
+}
+
+.app-sidebar .sidebar-brand-bar {
+  flex-shrink: 0 !important;
+}
+
+.app-sidebar .sidebar-support-shell {
+  flex-shrink: 0 !important;
+  padding: 0.55rem 0.6rem !important;
+}
+
+
+@media (min-width: 768px) {
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row {
+    grid-template-columns: 34px minmax(0, 1fr) 18px !important;
+    column-gap: 0.46rem !important;
+    padding-inline: 0.52rem 0.44rem !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"],
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] {
+    grid-template-columns: 28px minmax(0, 1fr) 16px !important;
+    column-gap: 0.4rem !important;
+    padding-inline-start: 0.42rem !important;
+    padding-inline-end: 0.42rem !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="0"] .ux-mixed-text,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: none !important;
+  }
+}
+
+/* موبایل: عرض امن‌تر، لمس راحت‌تر، اسکرول نرم‌تر. */
+@media (max-width: 767px) {
+  .app-sidebar {
+    --sidebar-item-h: 46px;
+    --sidebar-subitem-h: 39px;
+    --sidebar-row-gap: 0.32rem;
+    --sidebar-side-pad: 0.72rem;
+    width: min(88vw, 342px) !important;
+    max-width: min(88vw, 342px) !important;
+  }
+
+  .app-sidebar nav[data-ui-navigation-region="main"] {
+    padding-top: 0.7rem !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row {
+    grid-template-columns: 36px minmax(0, 1fr) 20px !important;
+    column-gap: 0.58rem !important;
+    padding-inline: 0.56rem !important;
+    border-radius: 17px !important;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2),
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .icon-bubble,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .icon-bubble {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="0"] .ux-mixed-text {
+    font-size: 12px !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+    font-size: 11px !important;
+  }
+}
+
+
+/* Stage 10 hotfix — فقط رفع سه‌نقطه شدن متن‌های سایدبار بر پایه نسخه ۷/۱۰.
+   مشکل از ellipsis داخل ستون متن بود، نه از ساختار گزارش‌ها یا هدر. */
+@media (min-width: 768px) {
+  .app-sidebar:not([data-sidebar-collapsed="true"]) {
+    width: var(--sidebar-pill-w, 372px) !important;
+    min-width: var(--sidebar-pill-w, 372px) !important;
+    max-width: var(--sidebar-pill-w, 372px) !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row {
+    grid-template-columns: 32px minmax(0, 1fr) 16px !important;
+    column-gap: 0.42rem !important;
+    overflow: visible !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"],
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] {
+    grid-template-columns: 25px minmax(0, 1fr) 14px !important;
+    column-gap: 0.36rem !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    white-space: nowrap !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="0"] .ux-mixed-text {
+    font-size: 11.5px !important;
+  }
+
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+  .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+    font-size: 10.75px !important;
+  }
+}
+
+/* Stage 12 — precise sidebar active-state + vertical alignment fix
+   مبنا: نسخه ۷/۱۱. فقط رفتار active والد/زیرمنو و تراز متن کنار آیکن اصلاح می‌شود. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: rgb(30 41 59) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  color: rgb(226 232 240) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: currentColor !important;
+}
+
+/* باکس active فقط روی row واقعی صفحه بماند، مخصوصاً زیرمنوی انتخاب‌شده. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: var(--sidebar-active-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+  box-shadow: var(--sidebar-active-shadow) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: var(--sidebar-active-icon-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+}
+
+/* هم‌ترازی عنوان با آیکن: متن دیگر بالاتر از مرکز آیکن نمی‌ایستد. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+  align-self: center !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 100% !important;
+  line-height: 1 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.15 !important;
+  transform: translateY(1px) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+  transform: translateY(0.5px) !important;
+}
+
+/* Stage 13 — Sidebar color polish + final icon/label vertical alignment
+   مبنا: stage11/12. فقط رنگ hover/active و هم‌راستایی متن کنار آیکن اصلاح می‌شود. */
+.app-sidebar {
+  --sidebar-row-hover-bg: rgba(248, 250, 252, 0.86);
+  --sidebar-row-hover-border: rgba(203, 213, 225, 0.72);
+  --sidebar-row-hover-fg: rgb(15 23 42);
+  --sidebar-row-active-bg: rgba(255, 255, 255, 0.98);
+  --sidebar-row-active-border: rgba(148, 163, 184, 0.66);
+  --sidebar-row-active-fg: rgb(15 23 42);
+  --sidebar-row-active-icon-bg: rgba(241, 245, 249, 0.96);
+  --sidebar-row-active-shadow: 0 14px 30px -26px rgba(15, 23, 42, 0.36);
+  --sidebar-row-active-indicator: rgb(88 80 236);
+}
+
+html.dark .app-sidebar {
+  --sidebar-row-hover-bg: rgba(30, 41, 59, 0.52);
+  --sidebar-row-hover-border: rgba(71, 85, 105, 0.76);
+  --sidebar-row-hover-fg: rgb(241 245 249);
+  --sidebar-row-active-bg: rgba(15, 23, 42, 0.94);
+  --sidebar-row-active-border: rgba(100, 116, 139, 0.74);
+  --sidebar-row-active-fg: rgb(248 250 252);
+  --sidebar-row-active-icon-bg: rgba(30, 41, 59, 0.98);
+  --sidebar-row-active-shadow: none;
+  --sidebar-row-active-indicator: rgb(167 139 250);
+}
+
+/* والد باز فقط شاخه را باز نگه می‌دارد؛ هایلایت کامل نمی‌گیرد. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: rgb(51 65 85) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  color: rgb(203 213 225) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble {
+  background: rgba(248, 250, 252, 0.72) !important;
+  border-color: rgba(226, 232, 240, 0.84) !important;
+  color: currentColor !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble {
+  background: rgba(30, 41, 59, 0.48) !important;
+  border-color: rgba(51, 65, 85, 0.7) !important;
+}
+
+/* Hover ظریف و بدون پرش بصری. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:not([data-sidebar-active="true"]):hover {
+  background: var(--sidebar-row-hover-bg) !important;
+  border-color: var(--sidebar-row-hover-border) !important;
+  color: var(--sidebar-row-hover-fg) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:not([data-sidebar-active="true"]):hover .icon-bubble {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: var(--sidebar-row-hover-border) !important;
+  color: var(--sidebar-row-hover-fg) !important;
+  transform: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row:not([data-sidebar-active="true"]):hover .icon-bubble {
+  background: rgba(15, 23, 42, 0.82) !important;
+}
+
+/* Active فقط برای route واقعی؛ باکس تمیز و مینیمال. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: var(--sidebar-row-active-bg) !important;
+  border-color: var(--sidebar-row-active-border) !important;
+  color: var(--sidebar-row-active-fg) !important;
+  box-shadow: var(--sidebar-row-active-shadow) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: var(--sidebar-row-active-icon-bg) !important;
+  border-color: var(--sidebar-row-active-border) !important;
+  color: var(--sidebar-row-active-fg) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] > span:last-child {
+  background: var(--sidebar-row-active-indicator) !important;
+  opacity: 1 !important;
+}
+
+/* هم‌راستایی نهایی آیکن و عنوان: متن دقیقاً وسط خانه آیکن بنشیند. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  align-items: center !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+  align-self: center !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2) {
+  align-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  line-height: 1 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 1em !important;
+  line-height: 1.18 !important;
+  transform: translateY(0.5px) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .ux-mixed-text,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .ux-mixed-text {
+  line-height: 1.18 !important;
+  transform: translateY(0.5px) !important;
+}
+
+/* افکت حرکت متن روی hover حذف شد تا تراز دیداری خراب نشود. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:hover .ux-mixed-text {
+  transform: translateY(0.5px) !important;
+}
+
+/* Stage 14 — screenshot-driven sidebar fix
+   فقط سایدبار: رفع تراز عمودی آیکن/عنوان، حذف فاصله‌های اضافه، و تمیزکردن active/hover. */
+@media (min-width: 768px) {
+  .app-sidebar:not([data-sidebar-collapsed="true"]) {
+    width: var(--sidebar-pill-w, 372px) !important;
+    min-width: var(--sidebar-pill-w, 372px) !important;
+    max-width: var(--sidebar-pill-w, 372px) !important;
+  }
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) 16px !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  column-gap: 8px !important;
+  line-height: 1 !important;
+  padding: 6px 8px !important;
+  overflow: visible !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] {
+  grid-template-columns: 26px minmax(0, 1fr) 14px !important;
+  column-gap: 7px !important;
+  padding: 5px 7px !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble i,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble svg {
+  display: block !important;
+  line-height: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > .icon-bubble + span,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > span:nth-child(2),
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .sidebar-label-cell {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .ux-mixed-text {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
+  height: 1.2em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:hover .ux-mixed-text,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row:focus-visible .ux-mixed-text {
+  transform: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .sidebar-chevron,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-angle-down,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-left,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row > i.fa-chevron-right {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  width: 14px !important;
+  min-width: 14px !important;
+  height: 14px !important;
+  margin: 0 !important;
+  line-height: 14px !important;
+  text-align: center !important;
+}
+
+/* والد باز فقط نشان می‌دهد شاخه باز است؛ باکس active فقط برای route واقعی بماند. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(148, 163, 184, 0.68) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 14px 30px -26px rgba(15, 23, 42, 0.36) !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: rgba(15, 23, 42, 0.94) !important;
+  border-color: rgba(100, 116, 139, 0.74) !important;
+  color: rgb(248 250 252) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(241, 245, 249, 0.96) !important;
+  border-color: rgba(148, 163, 184, 0.68) !important;
+  color: currentColor !important;
+  transform: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(30, 41, 59, 0.98) !important;
+}
+
+/* badge روی آیکن جمع بماند و متن/آیکن را از تراز خارج نکند. */
+.app-sidebar .ux-sidebar-list .sidebar-nav-row .icon-bubble > span.absolute {
+  line-height: 1 !important;
+  min-height: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  padding: 0 4px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: translate(-1px, -1px) !important;
+}

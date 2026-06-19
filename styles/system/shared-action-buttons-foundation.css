@@ -1,0 +1,344 @@
+/* Phase 11 — Shared action/button primitive foundation.
+   Preserves previous shared primitive cascade while adding a small semantic contract. */
+
+/* ===== Source: styles/runtime-overrides/01a7-shared-primitives-button-system.css ===== */
+/* Phase 104: shared People UI primitives - modal/filter/header/icon consistency */
+.modal-premium-badge,
+.detail-severity-badge,
+.people-shared-icon,
+.people-filter-chip .ux-btn__icon,
+.partners-filter-chip .ux-btn__icon,
+.customers-filter-chip .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  min-width: 2.25rem !important;
+  min-height: 2.25rem !important;
+  flex: 0 0 2.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+}
+
+.people-filter-chip .ux-btn__icon,
+.partners-filter-chip .ux-btn__icon,
+.customers-filter-chip .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon {
+  width: 1.35rem !important;
+  height: 1.35rem !important;
+  min-width: 1.35rem !important;
+  min-height: 1.35rem !important;
+  flex-basis: 1.35rem !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, .06) !important;
+  color: currentColor !important;
+}
+
+.dark .people-filter-chip .ux-btn__icon,
+.dark .partners-filter-chip .ux-btn__icon,
+.dark .customers-filter-chip .ux-btn__icon,
+.dark .ledger-action-btn .ux-btn__icon {
+  background: rgba(255,255,255,.08) !important;
+}
+
+.people-filter-chip .ux-btn__icon i,
+.partners-filter-chip .ux-btn__icon i,
+.customers-filter-chip .ux-btn__icon i,
+.ledger-action-btn .ux-btn__icon i,
+.modal-premium-badge i,
+.detail-severity-badge i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  line-height: 1 !important;
+  font-size: 12px !important;
+  transform: none !important;
+}
+
+.modal-premium-badge i,
+.detail-severity-badge i { font-size: 15px !important; }
+
+.people-filter-chip--unified,
+.people-filter-chip,
+.partners-filter-chip,
+.customers-filter-chip {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: .45rem .9rem !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  white-space: nowrap !important;
+}
+
+.people-filter-chip .ux-btn__content,
+.partners-filter-chip .ux-btn__content,
+.customers-filter-chip .ux-btn__content,
+.ledger-action-btn .ux-btn__content {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  min-height: 0 !important;
+}
+
+.people-ledger-timeline-index,
+.people-ledger-timeline-index-fallback {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 2.5rem !important;
+}
+.people-ledger-timeline-index__number,
+.people-ledger-timeline-index > span:first-child,
+.people-ledger-timeline-index-fallback > span:first-child {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 10px 24px -18px rgba(15,23,42,.35) !important;
+}
+.dark .people-ledger-timeline-index__number,
+.dark .people-ledger-timeline-index > span:first-child,
+.dark .people-ledger-timeline-index-fallback > span:first-child {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(30 41 59) !important;
+  color: rgb(241 245 249) !important;
+}
+.people-ledger-timeline-index__line,
+.people-ledger-timeline-index > span:nth-child(2),
+.people-ledger-timeline-index-fallback > span:nth-child(2) {
+  margin-top: .5rem !important;
+  width: 1px !important;
+  height: 2rem !important;
+  background: rgb(226 232 240) !important;
+}
+.dark .people-ledger-timeline-index__line,
+.dark .people-ledger-timeline-index > span:nth-child(2),
+.dark .people-ledger-timeline-index-fallback > span:nth-child(2) {
+  background: rgb(51 65 85) !important;
+}
+
+.people-detail-eye-btn,
+.people-detail-eye-btn.ux-btn,
+.people-detail-action-btn,
+.people-list-action-btn {
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: .45rem .75rem !important;
+  border-radius: 14px !important;
+  align-items: center !important;
+}
+.people-detail-eye-btn .ux-btn__icon,
+.people-detail-action-btn .ux-btn__icon,
+.people-list-action-btn .ux-btn__icon {
+  width: 1.45rem !important;
+  height: 1.45rem !important;
+  min-width: 1.45rem !important;
+  min-height: 1.45rem !important;
+  flex-basis: 1.45rem !important;
+  border-radius: 10px !important;
+  background: rgba(15,23,42,.06) !important;
+}
+.dark .people-detail-eye-btn .ux-btn__icon,
+.dark .people-detail-action-btn .ux-btn__icon,
+.dark .people-list-action-btn .ux-btn__icon {
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* Phase 105 late override — global button system must win over legacy/page CSS. */
+.ux-btn,
+.ux-btn--native,
+a.ux-btn,
+.people-action-btn,
+.partners-action-btn,
+.people-primary-btn,
+.people-secondary-btn,
+.premium-submit-btn,
+.premium-cancel-btn,
+.inventory-inline-add,
+.inventory-table-action-btn,
+.ledger-action-btn,
+.ux-pagination-btn,
+.report-filter-button,
+button[data-ux-enhanced='true'] {
+  min-height: var(--ux-btn-h, 44px) !important;
+  border-radius: var(--ux-btn-radius, var(--btn-radius, 18px)) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--ux-btn-gap, .55rem) !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+}
+.ux-btn__content,
+.ux-btn__label,
+.ux-btn__label-main {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.ux-btn__content { gap: var(--ux-btn-gap, .55rem) !important; width: 100% !important; }
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before,
+.people-detail-eye-btn__icon,
+.people-action-btn > i,
+.partners-action-btn > i,
+.inventory-table-action-btn > i,
+.ledger-action-btn > i {
+  width: var(--ux-btn-icon, 30px) !important;
+  height: var(--ux-btn-icon, 30px) !important;
+  min-width: var(--ux-btn-icon, 30px) !important;
+  min-height: var(--ux-btn-icon, 30px) !important;
+  flex: 0 0 var(--ux-btn-icon, 30px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+.ux-btn-sm .ux-btn__icon,
+.ux-btn-sm .ux-btn__spinner,
+.ux-btn-sm.ux-btn--native[data-ux-icon-glyph]::before,
+.people-action-btn-tight .ux-btn__icon,
+.inventory-table-action-btn .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon,
+.ledger-action-btn > i {
+  width: var(--ux-btn-icon-sm, 26px) !important;
+  height: var(--ux-btn-icon-sm, 26px) !important;
+  min-width: var(--ux-btn-icon-sm, 26px) !important;
+  min-height: var(--ux-btn-icon-sm, 26px) !important;
+  flex-basis: var(--ux-btn-icon-sm, 26px) !important;
+}
+.ux-btn-xs .ux-btn__icon,
+.ux-btn-xs .ux-btn__spinner,
+.ux-btn-xs.ux-btn--native[data-ux-icon-glyph]::before,
+.ledger-action-btn.ux-btn-xs .ux-btn__icon,
+.inventory-table-action-btn.ux-btn-xs .ux-btn__icon {
+  width: var(--ux-btn-icon-xs, 22px) !important;
+  height: var(--ux-btn-icon-xs, 22px) !important;
+  min-width: var(--ux-btn-icon-xs, 22px) !important;
+  min-height: var(--ux-btn-icon-xs, 22px) !important;
+  flex-basis: var(--ux-btn-icon-xs, 22px) !important;
+}
+.ux-btn__icon i,
+.ux-btn__icon svg,
+.ux-btn__spinner i,
+.ux-btn__spinner svg,
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before,
+.people-action-btn i,
+.partners-action-btn i,
+.inventory-table-action-btn i,
+.ledger-action-btn i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before {
+  content: attr(data-ux-icon-glyph) !important;
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900 !important;
+}
+.ux-table-row-actions,
+.inventory-table-row-actions,
+.installment-table-actions,
+.installment-card-actions,
+.ledger-actions-row,
+.customer-ledger-actions,
+.partner-ledger-actions,
+.people-row-actions,
+.partners-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: .45rem !important;
+}
+.ux-btn:hover:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+.ux-btn--native:hover:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+a.ux-btn:hover,
+.people-action-btn:hover,
+.partners-action-btn:hover,
+.inventory-table-action-btn:hover,
+.ledger-action-btn:hover { transform: translateY(-2px) !important; }
+.ux-btn:active:not(:disabled):not([aria-disabled='true']),
+.ux-btn--native:active:not(:disabled):not([aria-disabled='true']),
+a.ux-btn:active,
+.people-action-btn:active,
+.partners-action-btn:active,
+.inventory-table-action-btn:active,
+.ledger-action-btn:active { transform: translateY(0) scale(.99) !important; }
+.ux-btn[disabled],
+.ux-btn:disabled,
+.ux-btn[aria-disabled='true'],
+.ux-btn--native:disabled,
+button[data-ux-enhanced='true']:disabled,
+button[data-ux-enhanced='true'][aria-disabled='true'] {
+  cursor: not-allowed !important;
+  opacity: .58 !important;
+  filter: saturate(.8) !important;
+  transform: none !important;
+}
+html[data-button-icon-side='end'] .ux-btn__content,
+html[data-button-icon-side='end'] .ux-btn--native,
+html[data-button-icon-side='end'] button[data-ux-enhanced='true'] { flex-direction: row-reverse !important; }
+html[data-button-icon-side='start'] .ux-btn__content,
+html[data-button-icon-side='start'] .ux-btn--native,
+html[data-button-icon-side='start'] button[data-ux-enhanced='true'] { flex-direction: row !important; }
+
+
+/* ===== Phase 11 contract additions ===== */
+:root {
+  --kourosh-action-min-height: 2.25rem;
+  --kourosh-action-radius: 0.95rem;
+  --kourosh-action-gap: 0.45rem;
+  --kourosh-action-icon-size: 1.05rem;
+}
+
+:where(.ux-btn, .people-action-btn, .partners-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) {
+  min-width: 0;
+  vertical-align: middle;
+}
+
+:where(.ux-btn, .people-action-btn, .partners-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) > :where(svg, i, .ux-btn__icon, .button-icon) {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+:where(.ux-btn, .people-action-btn, .partners-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) > :where(span, strong, small) {
+  min-width: 0;
+}
+
+:where(.people-table-shell, .partners-table-shell, .product-list-table, .finance-table, .report-page table) :where(.ux-btn, button, a[class*="btn"]) {
+  white-space: nowrap;
+}

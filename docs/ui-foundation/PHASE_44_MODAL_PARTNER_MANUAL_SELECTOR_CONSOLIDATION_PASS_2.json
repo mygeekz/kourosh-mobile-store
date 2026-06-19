@@ -1,0 +1,704 @@
+{
+  "phase": 44,
+  "title": "Modal Partner Manual Selector Consolidation — Pass 2",
+  "changed_files": [
+    "styles/system/modal-partner-foundation.css"
+  ],
+  "stats": {
+    "removals": [
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 2225
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "padding",
+        "line": 2226
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "border-radius",
+        "line": 2227
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "gap",
+        "line": 2228
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "width",
+        "line": 2232
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "height",
+        "line": 2233
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "min-width",
+        "line": 2234
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "border-radius",
+        "line": 2235
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "font-size",
+        "line": 2239
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "line-height",
+        "line": 2240
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "font-size",
+        "line": 2244
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "line-height",
+        "line": 2245
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "width",
+        "line": 2249
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "height",
+        "line": 2250
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "min-width",
+        "line": 2251
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 2474
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 2608
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "border-radius",
+        "line": 2609
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 2826
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "padding",
+        "line": 2827
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "border-radius",
+        "line": 2828
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "gap",
+        "line": 2829
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "width",
+        "line": 2833
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "height",
+        "line": 2834
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "min-width",
+        "line": 2835
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "border-radius",
+        "line": 2836
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i",
+        "prop": "font-size",
+        "line": 2840
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "font-size",
+        "line": 2844
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "line-height",
+        "line": 2845
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "font-size",
+        "line": 2849
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "line-height",
+        "line": 2850
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "width",
+        "line": 2854
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "height",
+        "line": 2855
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "min-width",
+        "line": 2856
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i",
+        "prop": "font-size",
+        "line": 2860
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 3017
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "max-height",
+        "line": 3018
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "padding",
+        "line": 3019
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "border-radius",
+        "line": 3020
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "gap",
+        "line": 3021
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "width",
+        "line": 3026
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "height",
+        "line": 3027
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "min-width",
+        "line": 3028
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+        "prop": "border-radius",
+        "line": 3029
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i",
+        "prop": "font-size",
+        "line": 3033
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "font-size",
+        "line": 3041
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "line-height",
+        "line": 3042
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "white-space",
+        "line": 3044
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "overflow",
+        "line": 3045
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "text-overflow",
+        "line": 3046
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "font-size",
+        "line": 3050
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "line-height",
+        "line": 3051
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "white-space",
+        "line": 3053
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "overflow",
+        "line": 3054
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "text-overflow",
+        "line": 3055
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "width",
+        "line": 3059
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "height",
+        "line": 3060
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+        "prop": "min-width",
+        "line": 3061
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i",
+        "prop": "font-size",
+        "line": 3066
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "min-height",
+        "line": 3257
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+        "prop": "max-height",
+        "line": 3258
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "font-size",
+        "line": 3276
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+        "prop": "line-height",
+        "line": 3277
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "font-size",
+        "line": 3284
+      },
+      {
+        "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+        "prop": "line-height",
+        "line": 3285
+      }
+    ],
+    "removed_declarations": 65,
+    "removed_blocks": 16,
+    "selectors": {
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card": 18,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon": 12,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong": 11,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small": 11,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check": 9,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i": 2,
+      ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i": 2
+    },
+    "lines_before": 3754,
+    "lines_after": 3657
+  },
+  "qa": {
+    "css_files": 152,
+    "index_css_imports": 58,
+    "runtime_imports": [],
+    "missing_imports": [],
+    "css_parse_errors_count": 0,
+    "css_parse_errors_sample": [],
+    "literal_backslash_n_files": [],
+    "brace_issues": [],
+    "modal_partner_bytes": 124940,
+    "modal_partner_lines": 3657,
+    "modal_partner_important_count": 1527,
+    "phase44": {
+      "removals": [
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 2225
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "padding",
+          "line": 2226
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "border-radius",
+          "line": 2227
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "gap",
+          "line": 2228
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "width",
+          "line": 2232
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "height",
+          "line": 2233
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "min-width",
+          "line": 2234
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "border-radius",
+          "line": 2235
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "font-size",
+          "line": 2239
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "line-height",
+          "line": 2240
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "font-size",
+          "line": 2244
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "line-height",
+          "line": 2245
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "width",
+          "line": 2249
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "height",
+          "line": 2250
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "min-width",
+          "line": 2251
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 2474
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 2608
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "border-radius",
+          "line": 2609
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 2826
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "padding",
+          "line": 2827
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "border-radius",
+          "line": 2828
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "gap",
+          "line": 2829
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "width",
+          "line": 2833
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "height",
+          "line": 2834
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "min-width",
+          "line": 2835
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "border-radius",
+          "line": 2836
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i",
+          "prop": "font-size",
+          "line": 2840
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "font-size",
+          "line": 2844
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "line-height",
+          "line": 2845
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "font-size",
+          "line": 2849
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "line-height",
+          "line": 2850
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "width",
+          "line": 2854
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "height",
+          "line": 2855
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "min-width",
+          "line": 2856
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i",
+          "prop": "font-size",
+          "line": 2860
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 3017
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "max-height",
+          "line": 3018
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "padding",
+          "line": 3019
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "border-radius",
+          "line": 3020
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "gap",
+          "line": 3021
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "width",
+          "line": 3026
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "height",
+          "line": 3027
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "min-width",
+          "line": 3028
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon",
+          "prop": "border-radius",
+          "line": 3029
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i",
+          "prop": "font-size",
+          "line": 3033
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "font-size",
+          "line": 3041
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "line-height",
+          "line": 3042
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "white-space",
+          "line": 3044
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "overflow",
+          "line": 3045
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "text-overflow",
+          "line": 3046
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "font-size",
+          "line": 3050
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "line-height",
+          "line": 3051
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "white-space",
+          "line": 3053
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "overflow",
+          "line": 3054
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "text-overflow",
+          "line": 3055
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "width",
+          "line": 3059
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "height",
+          "line": 3060
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check",
+          "prop": "min-width",
+          "line": 3061
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i",
+          "prop": "font-size",
+          "line": 3066
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "min-height",
+          "line": 3257
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card",
+          "prop": "max-height",
+          "line": 3258
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "font-size",
+          "line": 3276
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong",
+          "prop": "line-height",
+          "line": 3277
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "font-size",
+          "line": 3284
+        },
+        {
+          "selector": ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small",
+          "prop": "line-height",
+          "line": 3285
+        }
+      ],
+      "removed_declarations": 65,
+      "removed_blocks": 16,
+      "selectors": {
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card": 18,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon": 12,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong": 11,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small": 11,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check": 9,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i": 2,
+        ".partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i": 2
+      },
+      "lines_before": 3754,
+      "lines_after": 3657
+    }
+  }
+}

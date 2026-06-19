@@ -1,0 +1,71 @@
+/* Stage 70 — Compare sales filter hard right alignment
+   Scope: /reports/periodic-comparison only.
+   Fixes the previous no-op: later responsive rules were stretching the rows and leaving the right side empty. */
+
+.compare-sales-executive-page .compare-sales-filter-panel {
+  direction: rtl !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--primary,
+.compare-sales-executive-page .compare-sales-filter-row--secondary {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  direction: rtl !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  padding-inline: 0 !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: initial !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--primary {
+  column-gap: 10px !important;
+  row-gap: 8px !important;
+  min-height: 0 !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--secondary {
+  column-gap: 7px !important;
+  row-gap: 6px !important;
+  padding-top: 4px !important;
+  margin-top: 2px !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-presets,
+.compare-sales-executive-page .compare-sales-date-presets .report-date-presets__chips,
+.compare-sales-executive-page .report-date-presets,
+.compare-sales-executive-page .report-date-presets__chips {
+  grid-column: auto !important;
+  width: auto !important;
+  max-width: none !important;
+  justify-content: flex-start !important;
+  margin: 0 !important;
+}
+
+.compare-sales-executive-page .compare-sales-refresh-button {
+  margin: 0 !important;
+  align-self: flex-end !important;
+  width: fit-content !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--secondary::before {
+  content: none !important;
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .compare-sales-executive-page .compare-sales-filter-row--primary,
+  .compare-sales-executive-page .compare-sales-filter-row--secondary {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}

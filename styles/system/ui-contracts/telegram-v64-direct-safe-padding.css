@@ -1,0 +1,178 @@
+
+/* v64 — Direct safe-padding fix for Telegram edge-to-edge sections.
+   Verified JSX targets:
+   - #tg-anchor-quick-check.telegram-quick-check-v64
+   - .telegram-guide-card-v64
+   This is NOT a guessed global selector. */
+
+/* Quick check/send section shell */
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-quick-check.telegram-quick-check-v64 {
+  width: 100% !important;
+  margin-top: 1.1rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-quick-check.telegram-quick-check-v64 > * {
+  border-radius: 28px !important;
+  overflow: hidden !important;
+}
+
+/* FormSection inner structure: give the section a true safe zone */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 [class*="premium-form-section"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section {
+  padding: 1.15rem !important;
+  border-radius: 28px !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, 0.20) !important;
+}
+
+/* If FormSection renders an internal header + content, separate them */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section > :first-child,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section > :first-child {
+  margin-bottom: 0.95rem !important;
+  padding-bottom: 0.8rem !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+}
+
+/* Main layout inside quick-check */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__grid {
+  gap: 1rem !important;
+  align-items: stretch !important;
+  padding: 0.15rem !important;
+}
+
+/* Field/card wrapper safe zone */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field {
+  min-width: 0 !important;
+}
+
+/* The ModalField in quick-check must not touch its own border */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field [data-ui-field="true"] {
+  padding: 0.95rem 1rem !important;
+  border-radius: 22px !important;
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  background: rgba(248, 250, 252, 0.62) !important;
+  overflow: visible !important;
+}
+
+/* In case ModalField's root is not .modal-field, target descendants directly */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field-label {
+  margin-bottom: 0.62rem !important;
+  padding-inline: 0.08rem !important;
+  line-height: 1.65 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field select {
+  min-height: 2.65rem !important;
+  border-radius: 16px !important;
+  padding-inline: 0.95rem !important;
+}
+
+/* Helper/hint rows inside the field */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field-feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-error {
+  margin-top: 0.55rem !important;
+  padding-inline: 0.1rem !important;
+  line-height: 1.85 !important;
+}
+
+/* Action button column should have its own breathing room */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action {
+  min-width: 0 !important;
+  align-items: stretch !important;
+  padding: 0.15rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action .premium-submit-btn,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action button {
+  min-height: 3rem !important;
+  border-radius: 18px !important;
+  padding-inline: 1rem !important;
+}
+
+/* Guide card below/near setup fields — direct safe-padding */
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64 {
+  width: 100% !important;
+  margin-top: 1.15rem !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, 0.20) !important;
+  overflow: hidden !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64__inner {
+  padding: 1.1rem 1.15rem !important;
+  gap: 0.9rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64 .telegram-guide-card__icon {
+  margin-top: 0 !important;
+  flex: 0 0 2.5rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64 .telegram-guide-card__content {
+  min-width: 0 !important;
+  padding-inline: 0.1rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64 .telegram-guide-card__text {
+  margin: 0.25rem 0 0 !important;
+  line-height: 1.9 !important;
+}
+
+/* Hard fallback: direct anchors in Telegram settings should not have edge-to-edge children */
+#telegram-settings-form.telegram-redesign-v1 div[id^="tg-anchor-"] > .premium-form-section,
+#telegram-settings-form.telegram-redesign-v1 div[id^="tg-anchor-"] > section,
+#telegram-settings-form.telegram-redesign-v1 div[id^="tg-anchor-"] > div[class*="rounded"] {
+  box-sizing: border-box !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__grid {
+    gap: 0.85rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64__inner {
+    padding: 0.85rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field [data-ui-field="true"] {
+    padding: 0.8rem !important;
+  }
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-guide-card-v64 {
+  background: rgba(15, 23, 42, 0.78) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field [data-ui-field="true"] {
+  background: rgba(2, 6, 23, 0.22) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}

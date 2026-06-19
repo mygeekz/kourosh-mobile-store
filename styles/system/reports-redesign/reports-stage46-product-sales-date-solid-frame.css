@@ -1,0 +1,145 @@
+/* Stage 46 — Product sales date solid frame
+   Scope: /reports/product-sales only.
+   Fixes the incomplete/cut date field frame by drawing one independent frame layer.
+*/
+
+.product-sales-executive-page .product-sales-date-field {
+  position: relative !important;
+  flex: 0 0 11.9rem !important;
+  width: 11.9rem !important;
+  min-width: 11.9rem !important;
+  max-width: 11.9rem !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: .36rem .86rem .42rem !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  isolation: isolate !important;
+  box-sizing: border-box !important;
+}
+
+/* Draw the visible box as a single full frame so the top/bottom border cannot be clipped by nested date picker layers. */
+.product-sales-executive-page .product-sales-date-field::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  pointer-events: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  height: 13px !important;
+  min-height: 13px !important;
+  padding: 0 !important;
+  margin: 0 0 .08rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__label {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #64748b !important;
+  font-size: .63rem !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__body,
+.product-sales-executive-page .product-sales-date-field [data-ui-report-filter-body],
+.product-sales-executive-page .product-sales-date-field .app-date-field,
+.product-sales-executive-page .product-sales-date-field .app-date-field__control,
+.product-sales-executive-page .product-sales-date-field .app-date-field__control.report-simple-date-input,
+.product-sales-executive-page .product-sales-date-field .report-simple-date-input {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .app-date-field__input,
+.product-sales-executive-page .product-sales-date-field input,
+.product-sales-executive-page .product-sales-date-field input[data-app-date-input] {
+  width: 100% !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  color: #0f172a !important;
+  font-size: .86rem !important;
+  font-weight: 900 !important;
+  line-height: 24px !important;
+  text-align: center !important;
+}
+
+/* Keep the field group comfortably separated from date presets, but avoid clipping the frame. */
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+.product-sales-executive-page .report-date-presets,
+.product-sales-executive-page .report-date-presets__chips {
+  margin-left: 1.8rem !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-presets,
+  .product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+  .product-sales-executive-page .report-date-presets,
+  .product-sales-executive-page .report-date-presets__chips {
+    margin-left: 0 !important;
+  }
+
+  .product-sales-executive-page .product-sales-date-field {
+    flex: 1 1 10.8rem !important;
+    width: auto !important;
+    min-width: 10.8rem !important;
+    max-width: none !important;
+  }
+}

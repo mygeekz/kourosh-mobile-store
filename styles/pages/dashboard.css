@@ -1,0 +1,83 @@
+/* ===== Customizable Dashboard (react-grid-layout) ===== */
+.rtl-dashboard {
+  direction: rtl;
+}
+
+.rtl-dashboard .react-grid-layout {
+  direction: ltr;
+}
+
+.rtl-dashboard .react-grid-item {
+  transition: transform 200ms ease, width 200ms ease, height 200ms ease;
+}
+
+.rtl-dashboard .react-grid-item.react-grid-placeholder {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px dashed rgba(99, 102, 241, 0.5);
+  border-radius: 1rem;
+}
+
+.rtl-dashboard .react-resizable-handle {
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));
+}
+
+.rtl-dashboard .react-resizable-handle:hover {
+  opacity: 1;
+}
+
+/* Make resize handle a bit easier to grab on touch */
+@media (pointer: coarse) {
+  .rtl-dashboard .react-resizable-handle {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* Simple line-clamp utilities (no tailwind plugin needed) */
+.line-clamp-1,
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.line-clamp-1 { -webkit-line-clamp: 1; }
+.line-clamp-2 { -webkit-line-clamp: 2; }
+
+/* Swapy (drag-to-swap) styling */
+[data-swapy-highlighted] {
+  outline: 2px dashed rgba(99, 102, 241, 0.35);
+  outline-offset: 6px;
+  border-radius: 24px;
+}
+[data-swapy-dragging] {
+  transform: scale(1.02);
+  box-shadow: 0 20px 70px rgba(0,0,0,0.18);
+  border-radius: 24px;
+}
+
+/* Improve Swapy dragging */
+[data-swapy-handle] {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: grab;
+}
+[data-swapy-dragging] [data-swapy-handle] {
+  cursor: grabbing;
+}
+
+/* smoother grid transitions */
+.react-grid-item {
+  transition: transform 220ms ease, width 220ms ease, height 220ms ease;
+}
+
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 50;
+}
+
+.react-grid-placeholder {
+  border-radius: 16px;
+  opacity: 0.18;
+}

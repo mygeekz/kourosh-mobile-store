@@ -1,0 +1,222 @@
+
+/* v128 — Partner ledger: keep v125 layout, add meaningful icons + colored action */
+.partner-ledger-v128 {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v128__register-action {
+  min-height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: 1px solid rgba(37, 99, 235, .16) !important;
+  border-radius: 15px !important;
+  background: linear-gradient(135deg, #0ea5e9, #2563eb) !important;
+  color: #fff !important;
+  padding: 0 16px !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  box-shadow: 0 18px 36px -24px rgba(37, 99, 235, .86) !important;
+  cursor: pointer !important;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
+  white-space: nowrap !important;
+}
+
+.partner-ledger-v128__register-action:hover {
+  transform: translateY(-1px) !important;
+  filter: saturate(1.05) !important;
+  box-shadow: 0 22px 42px -25px rgba(37, 99, 235, .95) !important;
+}
+
+.partner-ledger-v128__register-action:focus,
+.partner-ledger-v128__register-action:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, .13), 0 18px 36px -24px rgba(37, 99, 235, .86) !important;
+}
+
+.partner-ledger-v128__stat-card {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.partner-ledger-v128__stat-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.partner-ledger-v128__box-icon {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+  background: #fff !important;
+  color: #64748b !important;
+  font-size: 16px !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .35) !important;
+}
+
+.partner-ledger-v128__box-icon.is-emerald {
+  border-color: rgba(167, 243, 208, .96) !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.partner-ledger-v128__box-icon.is-sky {
+  border-color: rgba(186, 230, 253, .96) !important;
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+}
+
+.partner-ledger-v128__box-icon.is-violet {
+  border-color: rgba(221, 214, 254, .96) !important;
+  background: #f5f3ff !important;
+  color: #7c3aed !important;
+}
+
+.partner-ledger-v128__box-icon.is-rose {
+  border-color: rgba(254, 205, 211, .96) !important;
+  background: #fff1f2 !important;
+  color: #e11d48 !important;
+}
+
+.partner-ledger-v128__quick-item {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+}
+
+.partner-ledger-v128__quick-item .partner-ledger-v128__box-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  font-size: 15px !important;
+}
+
+.partner-ledger-v128__mini-box {
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+.partner-ledger-v128__mini-copy {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-wrap: anywhere !important;
+  font-weight: 850 !important;
+}
+
+.partner-ledger-v128__mini-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  border: 1px solid currentColor !important;
+  font-size: 13px !important;
+  opacity: .92 !important;
+}
+
+.partner-ledger-v128__mini-icon.is-emerald {
+  color: #059669 !important;
+  background: rgba(16, 185, 129, .08) !important;
+}
+
+.partner-ledger-v128__mini-icon.is-rose {
+  color: #e11d48 !important;
+  background: rgba(225, 29, 72, .07) !important;
+}
+
+.partner-ledger-v128__mini-icon.is-slate {
+  color: #64748b !important;
+  background: rgba(100, 116, 139, .08) !important;
+}
+
+.partner-ledger-v128 .partner-ledger-quick-summary > .text-\[13px\]::before {
+  content: "\f15c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 8px;
+  border-radius: 13px;
+  border: 1px solid rgba(186, 230, 253, .96);
+  background: #f0f9ff;
+  color: #0284c7;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.partner-ledger-v128 .partner-ledger-insight-grid > div:first-child > div:first-child > div:first-child > .text-\[13px\]::before {
+  content: "\f03a";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 8px;
+  border-radius: 13px;
+  border: 1px solid rgba(221, 214, 254, .96);
+  background: #f5f3ff;
+  color: #7c3aed;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.dark .partner-ledger-v128__box-icon {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .95) !important;
+}
+
+.dark .partner-ledger-v128__box-icon.is-emerald {
+  border-color: rgba(6, 95, 70, .75) !important;
+  background: rgba(6, 78, 59, .30) !important;
+  color: #6ee7b7 !important;
+}
+
+.dark .partner-ledger-v128__box-icon.is-sky {
+  border-color: rgba(14, 116, 144, .65) !important;
+  background: rgba(12, 74, 110, .28) !important;
+  color: #7dd3fc !important;
+}
+
+.dark .partner-ledger-v128__box-icon.is-violet {
+  border-color: rgba(109, 40, 217, .60) !important;
+  background: rgba(76, 29, 149, .28) !important;
+  color: #c4b5fd !important;
+}
+
+.dark .partner-ledger-v128__box-icon.is-rose {
+  border-color: rgba(159, 18, 57, .65) !important;
+  background: rgba(136, 19, 55, .26) !important;
+  color: #fda4af !important;
+}
+
+@media (max-width: 760px) {
+  .partner-ledger-v128__register-action {
+    width: 100% !important;
+  }
+
+  .partner-ledger-v128__stat-head {
+    align-items: center !important;
+  }
+
+  .partner-ledger-v128__mini-box {
+    min-height: 44px !important;
+  }
+}

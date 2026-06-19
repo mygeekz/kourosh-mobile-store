@@ -1,0 +1,1187 @@
+/* Auto-generated UI Foundation: reports debtors/creditors/cashflow/collection visual polish.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zu-reports-debtors-cashflow-polish.css ===== */
+
+/* Stage 128 — Debtors + Cashflow report polish */
+
+/* Debtors */
+.debtors-report-page {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+.debtors-report-hero {
+  background-image: none !important;
+  isolation: isolate !important;
+}
+
+.debtors-report-hero .fa-triangle-exclamation {
+  color: rgb(225 29 72) !important;
+}
+
+.debtors-kpi-card {
+  min-width: 0 !important;
+  background: #fff !important;
+}
+
+.debtors-kpi-card .text-2xl {
+  font-size: clamp(1.25rem, 1.7vw, 1.65rem) !important;
+  line-height: 1.55 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.debtors-local-search {
+  direction: ltr !important;
+}
+
+.debtors-local-search__input {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 1rem !important;
+  padding-left: 2.75rem !important;
+}
+
+.debtors-table-scroll {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
+.debtors-table {
+  min-width: 820px !important;
+  table-layout: fixed !important;
+}
+
+.debtors-table th,
+.debtors-table td {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.debtors-table td:nth-child(1) { width: 30% !important; }
+.debtors-table td:nth-child(2) { width: 20% !important; }
+.debtors-table td:nth-child(3) { width: 30% !important; }
+.debtors-table td:nth-child(4) { width: 20% !important; }
+
+@media (max-width: 900px) {
+  .debtors-report-hero {
+    padding: 1rem !important;
+  }
+
+  .debtors-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .debtors-table th,
+  .debtors-table td {
+    padding-inline: .75rem !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .debtors-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Cashflow */
+.cashflow-filter-panel {
+  margin-bottom: 1rem !important;
+  background: #fff !important;
+  overflow: visible !important;
+}
+
+.cashflow-filter-panel__head {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: .75rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.cashflow-filter-panel__icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.cashflow-filter-panel__head h3 {
+  margin: 0 !important;
+  color: rgb(15 23 42) !important;
+  font-size: 1.1rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.cashflow-filter-panel__head p {
+  margin: .2rem 0 0 !important;
+  color: rgb(71 85 105) !important;
+  font-size: .8rem !important;
+  font-weight: 650 !important;
+  line-height: 1.8 !important;
+}
+
+.cashflow-filter-panel__body {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.55fr) repeat(3, minmax(160px, .75fr)) auto !important;
+  gap: .75rem !important;
+  align-items: end !important;
+}
+
+.cashflow-preset-chips {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.cashflow-filter-field {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.cashflow-select-field {
+  width: 100% !important;
+  height: 52px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  padding-inline: .85rem !important;
+  font-weight: 850 !important;
+  outline: 0 !important;
+}
+
+.cashflow-refresh-button {
+  height: 52px !important;
+  min-width: 132px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  font-size: .82rem !important;
+  font-weight: 900 !important;
+}
+
+.cashflow-kpi-card,
+.cashflow-chart-card {
+  background: #fff !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.cashflow-chart-card .recharts-wrapper,
+.cashflow-chart-card svg {
+  direction: ltr !important;
+}
+
+@media (max-width: 1280px) {
+  .cashflow-filter-panel__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .cashflow-preset-chips {
+    grid-column: 1 / -1 !important;
+  }
+
+  .cashflow-refresh-button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .cashflow-filter-panel {
+    padding: 1rem !important;
+    border-radius: 22px !important;
+  }
+
+  .cashflow-filter-panel__body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cashflow-refresh-button {
+    min-width: 0 !important;
+  }
+}
+
+html.dark .debtors-kpi-card,
+html.dark .debtors-table-card,
+html.dark .cashflow-filter-panel,
+html.dark .cashflow-kpi-card,
+html.dark .cashflow-chart-card {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .cashflow-filter-panel__icon,
+html.dark .cashflow-select-field {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .cashflow-filter-panel__head h3 {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .cashflow-filter-panel__head p {
+  color: rgb(203 213 225) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zv-cashflow-risk-cumulative-charts.css ===== */
+
+/* Stage 129 — Cashflow risk cards + cumulative charts */
+
+.cashflow-risk-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.cashflow-risk-card {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  gap: .75rem !important;
+  align-items: start !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 22px !important;
+  padding: 1rem !important;
+  box-shadow: 0 16px 36px -34px rgba(15,23,42,.26) !important;
+}
+
+.cashflow-risk-card__icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.cashflow-risk-card__label {
+  color: rgb(100 116 139) !important;
+  font-size: .75rem !important;
+  font-weight: 850 !important;
+}
+
+.cashflow-risk-card__value {
+  margin-top: .25rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: 1.15rem !important;
+  font-weight: 950 !important;
+  line-height: 1.6 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.cashflow-risk-card p {
+  margin: .25rem 0 0 !important;
+  color: rgb(71 85 105) !important;
+  font-size: .75rem !important;
+  font-weight: 650 !important;
+  line-height: 1.75 !important;
+}
+
+.cashflow-risk-card--success .cashflow-risk-card__icon {
+  background: rgb(240 253 244) !important;
+  border-color: rgb(187 247 208) !important;
+  color: rgb(22 163 74) !important;
+}
+
+.cashflow-risk-card--warning .cashflow-risk-card__icon {
+  background: rgb(255 251 235) !important;
+  border-color: rgb(253 230 138) !important;
+  color: rgb(217 119 6) !important;
+}
+
+.cashflow-risk-card--danger .cashflow-risk-card__icon {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(254 205 211) !important;
+  color: rgb(225 29 72) !important;
+}
+
+.cashflow-chart-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+@media (max-width: 1100px) {
+  .cashflow-risk-grid,
+  .cashflow-chart-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html.dark .cashflow-risk-card {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .cashflow-risk-card__icon {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .cashflow-risk-card__value {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .cashflow-risk-card__label,
+html.dark .cashflow-risk-card p {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .cashflow-risk-card--success .cashflow-risk-card__icon {
+  background: rgba(20, 83, 45, .42) !important;
+  border-color: rgba(74, 222, 128, .38) !important;
+  color: rgb(187 247 208) !important;
+}
+
+html.dark .cashflow-risk-card--warning .cashflow-risk-card__icon {
+  background: rgba(120, 53, 15, .42) !important;
+  border-color: rgba(251, 191, 36, .38) !important;
+  color: rgb(253 230 138) !important;
+}
+
+html.dark .cashflow-risk-card--danger .cashflow-risk-card__icon {
+  background: rgba(127, 29, 29, .40) !important;
+  border-color: rgba(251, 113, 133, .40) !important;
+  color: rgb(254 205 211) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zw-cashflow-card-icons.css ===== */
+
+/* Stage 130 — Cashflow icons for every KPI/risk card */
+
+.cashflow-kpi-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 46px !important;
+  align-items: center !important;
+  gap: .85rem !important;
+  min-width: 0 !important;
+}
+
+.cashflow-card-icon,
+.cashflow-risk-card__icon {
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  border-radius: 18px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  font-size: 1rem !important;
+  opacity: 1 !important;
+}
+
+.cashflow-card-icon i,
+.cashflow-risk-card__icon i {
+  display: inline-block !important;
+  color: currentColor !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+}
+
+.cashflow-kpi-card--inflow .cashflow-card-icon {
+  background: rgb(240 253 244) !important;
+  border-color: rgb(187 247 208) !important;
+  color: rgb(22 163 74) !important;
+}
+
+.cashflow-kpi-card--outflow .cashflow-card-icon {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(254 205 211) !important;
+  color: rgb(225 29 72) !important;
+}
+
+.cashflow-kpi-card--net .cashflow-card-icon,
+.cashflow-risk-card__icon--neutral {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.cashflow-risk-card__icon--success {
+  background: rgb(240 253 244) !important;
+  border-color: rgb(187 247 208) !important;
+  color: rgb(22 163 74) !important;
+}
+
+.cashflow-risk-card__icon--warning {
+  background: rgb(255 251 235) !important;
+  border-color: rgb(253 230 138) !important;
+  color: rgb(217 119 6) !important;
+}
+
+.cashflow-risk-card__icon--danger {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(254 205 211) !important;
+  color: rgb(225 29 72) !important;
+}
+
+@media (max-width: 680px) {
+  .cashflow-kpi-card {
+    grid-template-columns: minmax(0, 1fr) 42px !important;
+  }
+
+  .cashflow-card-icon,
+  .cashflow-risk-card__icon {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    border-radius: 16px !important;
+  }
+}
+
+html.dark .cashflow-card-icon,
+html.dark .cashflow-risk-card__icon {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .cashflow-kpi-card--inflow .cashflow-card-icon,
+html.dark .cashflow-risk-card__icon--success {
+  background: rgba(20, 83, 45, .42) !important;
+  border-color: rgba(74, 222, 128, .38) !important;
+  color: rgb(187 247 208) !important;
+}
+
+html.dark .cashflow-kpi-card--outflow .cashflow-card-icon,
+html.dark .cashflow-risk-card__icon--danger {
+  background: rgba(127, 29, 29, .40) !important;
+  border-color: rgba(251, 113, 133, .40) !important;
+  color: rgb(254 205 211) !important;
+}
+
+html.dark .cashflow-kpi-card--net .cashflow-card-icon,
+html.dark .cashflow-risk-card__icon--neutral {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .cashflow-risk-card__icon--warning {
+  background: rgba(120, 53, 15, .42) !important;
+  border-color: rgba(251, 191, 36, .38) !important;
+  color: rgb(253 230 138) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zx-creditors-report-polish.css ===== */
+
+/* Stage 131 — Creditors report header/search/icon polish */
+
+.creditors-report-page {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+.creditors-report-hero {
+  background: #fff !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.creditors-report-hero__head {
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  border-bottom: 1px solid rgb(226 232 240) !important;
+}
+
+.creditors-report-hero__icon {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.creditors-report-title {
+  color: rgb(15 23 42) !important;
+}
+
+.creditors-report-subtitle {
+  color: rgb(71 85 105) !important;
+  line-height: 1.8 !important;
+}
+
+.creditors-report-tools {
+  min-width: 0 !important;
+}
+
+.creditors-local-search {
+  direction: ltr !important;
+  min-width: 0 !important;
+}
+
+.creditors-local-search__input {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 1rem !important;
+  padding-left: 2.75rem !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+}
+
+.creditors-local-filter-pill {
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  padding-inline: .75rem !important;
+  font-size: .75rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+.creditors-refresh-button {
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+  border: 1px solid rgb(15 23 42) !important;
+}
+
+.creditors-kpi-card {
+  min-width: 0 !important;
+  background: #fff !important;
+}
+
+.creditors-kpi-card .text-xl {
+  overflow-wrap: anywhere !important;
+  line-height: 1.55 !important;
+}
+
+.creditors-avatar,
+.creditors-rank-avatar {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.creditors-detail-button {
+  background: rgb(239 246 255) !important;
+  color: rgb(29 78 216) !important;
+  border: 1px solid rgb(191 219 254) !important;
+}
+
+.creditors-detail-button:hover {
+  background: rgb(219 234 254) !important;
+}
+
+.creditors-top-card,
+.creditors-table-card {
+  background: #fff !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.creditors-top-card .bg-slate-50\/70,
+.creditors-table-card .bg-slate-50\/70,
+.creditors-table thead {
+  background: rgb(248 250 252) !important;
+}
+
+.creditors-table-scroll {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
+.creditors-table {
+  min-width: 760px !important;
+  table-layout: fixed !important;
+}
+
+.creditors-table th,
+.creditors-table td {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.creditors-table td:nth-child(1) { width: 32% !important; }
+.creditors-table td:nth-child(2) { width: 18% !important; }
+.creditors-table td:nth-child(3) { width: 32% !important; }
+.creditors-table td:nth-child(4) { width: 18% !important; }
+
+.creditors-table td .min-w-\[260px\],
+.creditors-table td .min-w-\[220px\] {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .creditors-report-hero__head,
+  .creditors-kpi-grid {
+    padding: 1rem !important;
+  }
+
+  .creditors-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .creditors-table th,
+  .creditors-table td {
+    padding-inline: .75rem !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .creditors-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .creditors-local-filter-pill {
+    display: none !important;
+  }
+}
+
+html.dark .creditors-report-hero,
+html.dark .creditors-report-hero__head,
+html.dark .creditors-kpi-card,
+html.dark .creditors-top-card,
+html.dark .creditors-table-card {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .creditors-report-title {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .creditors-report-subtitle {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .creditors-report-hero__icon,
+html.dark .creditors-avatar,
+html.dark .creditors-rank-avatar,
+html.dark .creditors-detail-button {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .creditors-local-search__input,
+html.dark .creditors-local-filter-pill {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(248 250 252) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zy-cashflow-collection-center-fixes.css ===== */
+
+/* Stage 132 — Cashflow KPI overflow + Collection Center redesign/fallback UI */
+
+/* Cashflow KPI overflow fix */
+.cashflow-kpi-card {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.cashflow-kpi-card > div:not(.cashflow-card-icon) {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.cashflow-kpi-value {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  font-size: clamp(1.25rem, 2.1vw, 1.7rem) !important;
+  line-height: 1.45 !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  white-space: normal !important;
+  direction: rtl !important;
+}
+
+@media (max-width: 1280px) {
+  .cashflow-kpi-card {
+    grid-template-columns: minmax(0, 1fr) 42px !important;
+    padding: .95rem !important;
+  }
+
+  .cashflow-kpi-value {
+    font-size: clamp(1.1rem, 2vw, 1.45rem) !important;
+  }
+}
+
+/* Collection Center redesign */
+.collection-center-page {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+.collection-center-hero {
+  background: #fff !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.collection-center-hero__head {
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+}
+
+.collection-center-eyebrow {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(226 232 240) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.collection-center-title {
+  color: rgb(15 23 42) !important;
+}
+
+.collection-center-subtitle {
+  color: rgb(71 85 105) !important;
+  line-height: 1.85 !important;
+}
+
+.collection-center-kpi {
+  background: #fff !important;
+  border-color: rgb(226 232 240) !important;
+  box-shadow: 0 14px 30px -30px rgba(15,23,42,.22) !important;
+  min-width: 0 !important;
+}
+
+.collection-center-kpi__label {
+  color: rgb(100 116 139) !important;
+}
+
+.collection-center-kpi__icon {
+  color: rgb(37 99 235) !important;
+}
+
+.collection-center-kpi__value {
+  color: rgb(15 23 42) !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.45 !important;
+}
+
+.collection-center-kpi__hint {
+  color: rgb(100 116 139) !important;
+}
+
+.collection-center-filter-grid {
+  align-items: start !important;
+}
+
+.collection-center-search {
+  direction: ltr !important;
+  overflow: visible !important;
+}
+
+.collection-center-search input {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 1rem !important;
+  padding-left: 3rem !important;
+}
+
+.collection-center-empty {
+  background: rgb(255 251 235) !important;
+  border-color: rgb(253 230 138) !important;
+}
+
+@media (max-width: 1180px) {
+  .collection-center-hero__head .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .collection-center-filter-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .collection-center-hero__head {
+    padding: 1rem !important;
+  }
+
+  .collection-center-hero__head .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html.dark .collection-center-hero,
+html.dark .collection-center-hero__head,
+html.dark .collection-center-kpi {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .collection-center-eyebrow {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .collection-center-title,
+html.dark .collection-center-kpi__value {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .collection-center-subtitle,
+html.dark .collection-center-kpi__label,
+html.dark .collection-center-kpi__hint {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .collection-center-empty {
+  background: rgba(120, 53, 15, .42) !important;
+  border-color: rgba(251, 191, 36, .38) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zz-collection-center-basis-badge.css ===== */
+
+/* Stage 134 — Collection Center basis badge + top-export text cleanup */
+
+.collection-center-basis-badge {
+  margin-top: .8rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  color: rgb(29 78 216) !important;
+  padding: .42rem .75rem !important;
+  font-size: .74rem !important;
+  font-weight: 900 !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.collection-center-basis-badge i {
+  color: rgb(37 99 235) !important;
+  font-size: .78rem !important;
+}
+
+/* Guard: if legacy markup leaves an empty export/action chip, hide blank controls. */
+.collection-center-page :where(button, a, span):empty {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .collection-center-basis-badge {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 18px !important;
+  }
+}
+
+html.dark .collection-center-basis-badge {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .collection-center-basis-badge i {
+  color: rgb(147 197 253) !important;
+}
+
+
+/* Stage 137 — Tooltip behavior for collection basis badge */
+.collection-center-basis-badge {
+  position: relative !important;
+  cursor: help !important;
+  outline: none !important;
+}
+
+.collection-center-basis-badge:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .22) !important;
+}
+
+.collection-center-basis-badge__hint {
+  position: absolute !important;
+  right: 0 !important;
+  top: calc(100% + .55rem) !important;
+  z-index: 90 !important;
+  width: min(420px, calc(100vw - 2rem)) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+  padding: .75rem .9rem !important;
+  font-size: .74rem !important;
+  font-weight: 750 !important;
+  line-height: 1.9 !important;
+  text-align: right !important;
+  white-space: normal !important;
+  box-shadow: 0 18px 44px -28px rgba(15, 23, 42, .55) !important;
+  opacity: 0 !important;
+  transform: translateY(-4px) !important;
+  pointer-events: none !important;
+  transition: opacity .16s ease, transform .16s ease !important;
+}
+
+.collection-center-basis-badge:hover .collection-center-basis-badge__hint,
+.collection-center-basis-badge:focus .collection-center-basis-badge__hint,
+.collection-center-basis-badge:focus-within .collection-center-basis-badge__hint {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.collection-center-basis-badge__hint::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -.38rem !important;
+  right: 1.2rem !important;
+  width: .7rem !important;
+  height: .7rem !important;
+  background: rgb(15 23 42) !important;
+  transform: rotate(45deg) !important;
+  border-left: 1px solid rgb(226 232 240) !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+}
+
+@media (max-width: 640px) {
+  .collection-center-basis-badge__hint {
+    right: 50% !important;
+    transform: translate(50%, -4px) !important;
+    width: min(360px, calc(100vw - 1rem)) !important;
+  }
+
+  .collection-center-basis-badge:hover .collection-center-basis-badge__hint,
+  .collection-center-basis-badge:focus .collection-center-basis-badge__hint,
+  .collection-center-basis-badge:focus-within .collection-center-basis-badge__hint {
+    transform: translate(50%, 0) !important;
+  }
+
+  .collection-center-basis-badge__hint::before {
+    right: 50% !important;
+    margin-right: -.35rem !important;
+  }
+}
+
+html.dark .collection-center-basis-badge__hint {
+  background: rgb(248 250 252) !important;
+  color: rgb(15 23 42) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+html.dark .collection-center-basis-badge__hint::before {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+
+/* Stage 138 — one tooltip only, viewport-safe */
+.collection-center-basis-badge__hint {
+  right: auto !important;
+  left: 0 !important;
+  max-width: min(420px, calc(100vw - 2rem)) !important;
+  z-index: 120 !important;
+}
+
+.collection-center-basis-badge__hint::before {
+  right: auto !important;
+  left: 1.2rem !important;
+}
+
+.collection-center-page [title] {
+  pointer-events: auto !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/11a-report-basis-badges.css ===== */
+
+/* Stage 135 — Report basis badges
+   Adds clear calculation/display-basis badges to sensitive reports.
+*/
+
+.report-basis-badge {
+  margin-top: .75rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  color: rgb(29 78 216) !important;
+  padding: .42rem .75rem !important;
+  font-size: .74rem !important;
+  font-weight: 900 !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.report-basis-badge i {
+  color: rgb(37 99 235) !important;
+  font-size: .78rem !important;
+}
+
+.report-basis-badge--realized-profit {
+  border-color: rgb(167 243 208) !important;
+  background: rgb(236 253 245) !important;
+  color: rgb(4 120 87) !important;
+}
+
+.report-basis-badge--realized-profit i {
+  color: rgb(5 150 105) !important;
+}
+
+.report-basis-badge--cashflow {
+  border-color: rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  color: rgb(29 78 216) !important;
+}
+
+@media (max-width: 640px) {
+  .report-basis-badge {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 18px !important;
+  }
+}
+
+html.dark .report-basis-badge {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .report-basis-badge i {
+  color: rgb(147 197 253) !important;
+}
+
+html.dark .report-basis-badge--realized-profit {
+  background: rgba(6, 78, 59, .38) !important;
+  border-color: rgba(52, 211, 153, .35) !important;
+  color: rgb(167 243 208) !important;
+}
+
+html.dark .report-basis-badge--realized-profit i {
+  color: rgb(110 231 183) !important;
+}
+
+
+/* Stage 136 — Tooltip behavior for report basis badges */
+.report-basis-badge {
+  position: relative !important;
+  cursor: help !important;
+  outline: none !important;
+}
+
+.report-basis-badge:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .22) !important;
+}
+
+.report-basis-badge__hint {
+  position: absolute !important;
+  right: 0 !important;
+  top: calc(100% + .55rem) !important;
+  z-index: 80 !important;
+  width: min(360px, calc(100vw - 2rem)) !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+  padding: .7rem .85rem !important;
+  font-size: .74rem !important;
+  font-weight: 750 !important;
+  line-height: 1.9 !important;
+  text-align: right !important;
+  white-space: normal !important;
+  box-shadow: 0 18px 44px -28px rgba(15, 23, 42, .55) !important;
+  opacity: 0 !important;
+  transform: translateY(-4px) !important;
+  pointer-events: none !important;
+  transition: opacity .16s ease, transform .16s ease !important;
+}
+
+.report-basis-badge:hover .report-basis-badge__hint,
+.report-basis-badge:focus .report-basis-badge__hint,
+.report-basis-badge:focus-within .report-basis-badge__hint {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.report-basis-badge__hint::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -.38rem !important;
+  right: 1.2rem !important;
+  width: .7rem !important;
+  height: .7rem !important;
+  background: rgb(15 23 42) !important;
+  transform: rotate(45deg) !important;
+  border-left: 1px solid rgb(226 232 240) !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+}
+
+@media (max-width: 640px) {
+  .report-basis-badge__hint {
+    right: 50% !important;
+    transform: translate(50%, -4px) !important;
+    width: min(340px, calc(100vw - 1rem)) !important;
+  }
+
+  .report-basis-badge:hover .report-basis-badge__hint,
+  .report-basis-badge:focus .report-basis-badge__hint,
+  .report-basis-badge:focus-within .report-basis-badge__hint {
+    transform: translate(50%, 0) !important;
+  }
+
+  .report-basis-badge__hint::before {
+    right: 50% !important;
+    margin-right: -.35rem !important;
+  }
+}
+
+html.dark .report-basis-badge__hint {
+  background: rgb(248 250 252) !important;
+  color: rgb(15 23 42) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+html.dark .report-basis-badge__hint::before {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.cashflow-report,
+.debtors-report,
+.creditors-report,
+.collection-center,
+.report-basis-badge {
+  min-width: 0;
+}
+
+.report-basis-badge,
+.collection-basis-badge {
+  white-space: nowrap;
+}

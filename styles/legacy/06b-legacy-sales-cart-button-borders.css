@@ -1,0 +1,44 @@
+/* Phase 32: sales cart refinement and softer button borders */
+.sales-select-shell .css-13cymwt-control,
+.sales-select-shell .css-t3ipsp-control {
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.18) !important;
+}
+
+.ux-btn,
+.ux-btn--native {
+  border-color: transparent;
+}
+
+.ux-btn-secondary,
+.ux-btn-ghost {
+  border-color: rgba(226, 232, 240, 0.96);
+}
+
+.dark .ux-btn-secondary,
+.dark .ux-btn-ghost {
+  border-color: rgba(71, 85, 105, 0.82);
+}
+
+.ux-btn-primary,
+.ux-btn-success,
+.ux-btn-warning,
+.ux-btn-danger {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .ux-btn-primary,
+.dark .ux-btn-success,
+.dark .ux-btn-warning,
+.dark .ux-btn-danger {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.sales-toolbar-btn.ux-btn {
+  border-color: rgba(226, 232, 240, 0.96);
+}
+
+.dark .sales-toolbar-btn.ux-btn {
+  border-color: rgba(71, 85, 105, 0.82);
+}
+
+

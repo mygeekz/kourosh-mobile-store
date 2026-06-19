@@ -1,0 +1,257 @@
+/* Phase 85 — Products / Services / Repairs Redesign Pass 2
+   Operational browser polish for products, services and repairs. Scoped only. */
+.products-services-redesign-v1 {
+  --ops-action-blue: rgba(14, 165, 233, 0.14);
+  --ops-action-blue-text: rgb(2, 132, 199);
+  --ops-action-green: rgba(16, 185, 129, 0.14);
+  --ops-action-green-text: rgb(5, 150, 105);
+  --ops-action-amber: rgba(245, 158, 11, 0.16);
+  --ops-action-amber-text: rgb(180, 83, 9);
+  --ops-action-red: rgba(239, 68, 68, 0.13);
+  --ops-action-red-text: rgb(220, 38, 38);
+}
+.dark .products-services-redesign-v1,
+html.dark .products-services-redesign-v1 {
+  --ops-action-blue: rgba(56, 189, 248, 0.13);
+  --ops-action-blue-text: rgb(125, 211, 252);
+  --ops-action-green: rgba(52, 211, 153, 0.13);
+  --ops-action-green-text: rgb(110, 231, 183);
+  --ops-action-amber: rgba(251, 191, 36, 0.14);
+  --ops-action-amber-text: rgb(252, 211, 77);
+  --ops-action-red: rgba(248, 113, 113, 0.13);
+  --ops-action-red-text: rgb(252, 165, 165);
+}
+
+/* Product inventory browser */
+.products-redesign-v1 #products-print-area {
+  overflow: hidden !important;
+  border-radius: 24px !important;
+}
+.products-redesign-v1 #products-print-area > .product-list-table,
+.products-redesign-v1 .product-list-table {
+  background: transparent !important;
+}
+.products-redesign-v1 .product-list-table thead th {
+  background: rgba(248, 250, 252, 0.94) !important;
+  border-bottom: 1px solid var(--ops-border) !important;
+  font-size: 11px !important;
+}
+.dark .products-redesign-v1 .product-list-table thead th,
+html.dark .products-redesign-v1 .product-list-table thead th {
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+.products-redesign-v1 .product-list-table tbody {
+  background: transparent !important;
+}
+.products-redesign-v1 .product-list-table tbody tr {
+  transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
+}
+.products-redesign-v1 .product-list-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.045) !important;
+}
+.dark .products-redesign-v1 .product-list-table tbody tr:hover,
+html.dark .products-redesign-v1 .product-list-table tbody tr:hover {
+  background: rgba(56, 189, 248, 0.07) !important;
+}
+.products-redesign-v1 .product-list-table td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.13) !important;
+}
+.products-redesign-v1 .product-list-table :is(.font-mono, [dir="ltr"], code) {
+  display: inline-block;
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+.products-redesign-v1 .product-list-table :is(button, a, .ux-btn, .app-button),
+.services-redesign-v1 table :is(button, a, .ux-btn, .app-button),
+.repairs-redesign-v1 table :is(button, a, .ux-btn, .app-button),
+.repairs-redesign-v1 .repair-mobile-card :is(button, a, .ux-btn, .app-button) {
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  min-height: 34px !important;
+  box-shadow: none !important;
+}
+.products-redesign-v1 .product-list-table :is(button, a, .ux-btn, .app-button):hover,
+.services-redesign-v1 table :is(button, a, .ux-btn, .app-button):hover,
+.repairs-redesign-v1 :is(table, .repair-mobile-card) :is(button, a, .ux-btn, .app-button):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.075) !important;
+}
+.products-redesign-v1 .product-list-table :is(.text-green-600, .text-green-500),
+.repairs-redesign-v1 :is(.text-green-600, .text-green-500) { color: var(--ops-action-green-text) !important; }
+.products-redesign-v1 .product-list-table :is(.text-blue-600, .text-blue-500),
+.repairs-redesign-v1 :is(.text-blue-600, .text-blue-500) { color: var(--ops-action-blue-text) !important; }
+.products-redesign-v1 .product-list-table :is(.text-red-600, .text-red-500),
+.repairs-redesign-v1 :is(.text-red-600, .text-red-500) { color: var(--ops-action-red-text) !important; }
+
+/* Product mobile cards */
+.products-redesign-v1 .md\:hidden > .rounded-2xl.border.border-slate-200\/80.bg-white,
+.products-redesign-v1 .md\:hidden > div > .rounded-2xl.border.border-slate-200\/80.bg-white {
+  border-color: var(--ops-border) !important;
+  background: var(--ops-surface) !important;
+  box-shadow: var(--ops-shadow-soft) !important;
+  border-radius: 22px !important;
+  position: relative;
+  overflow: hidden;
+}
+.products-redesign-v1 .md\:hidden > .rounded-2xl.border.border-slate-200\/80.bg-white::before,
+.products-redesign-v1 .md\:hidden > div > .rounded-2xl.border.border-slate-200\/80.bg-white::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  width: 4px;
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.85), rgba(16, 185, 129, 0.65));
+}
+
+/* Services browser */
+.services-redesign-v1 .services-apple-panel .overflow-x-auto,
+.repairs-redesign-v1 #repairs-print-area,
+.repairs-redesign-v1 .hidden.md\:block.overflow-x-auto {
+  border: 1px solid var(--ops-border) !important;
+  border-radius: 22px !important;
+  background: var(--ops-surface) !important;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045) !important;
+  overflow: auto !important;
+}
+.services-redesign-v1 table thead th,
+.repairs-redesign-v1 .repairs-premium-table thead th {
+  background: rgba(248, 250, 252, 0.94) !important;
+  border-bottom: 1px solid var(--ops-border) !important;
+  color: var(--ops-muted) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.04em !important;
+  white-space: nowrap !important;
+}
+.dark .services-redesign-v1 table thead th,
+html.dark .services-redesign-v1 table thead th,
+.dark .repairs-redesign-v1 .repairs-premium-table thead th,
+html.dark .repairs-redesign-v1 .repairs-premium-table thead th {
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+.services-redesign-v1 table tbody tr,
+.repairs-redesign-v1 .repairs-premium-table tbody tr {
+  transition: background-color 160ms ease, transform 160ms ease !important;
+}
+.services-redesign-v1 table tbody tr:hover,
+.repairs-redesign-v1 .repairs-premium-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.045) !important;
+}
+.dark .services-redesign-v1 table tbody tr:hover,
+html.dark .services-redesign-v1 table tbody tr:hover,
+.dark .repairs-redesign-v1 .repairs-premium-table tbody tr:hover,
+html.dark .repairs-redesign-v1 .repairs-premium-table tbody tr:hover {
+  background: rgba(56, 189, 248, 0.07) !important;
+}
+.services-redesign-v1 table td,
+.repairs-redesign-v1 .repairs-premium-table td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12) !important;
+}
+
+/* Repair actions and status */
+.repairs-redesign-v1 .repair-status-pill {
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  min-height: 26px !important;
+  padding-inline: 0.68rem !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34) !important;
+  white-space: nowrap !important;
+}
+.repairs-redesign-v1 :is(.repairs-link-btn, .repairs-link-btn-success) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  min-height: 34px !important;
+  padding: 0.45rem 0.72rem !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
+  text-decoration: none !important;
+  font-weight: 850 !important;
+  font-size: 12px !important;
+}
+.repairs-redesign-v1 .repairs-link-btn {
+  color: var(--ops-action-blue-text) !important;
+  background: var(--ops-action-blue) !important;
+}
+.repairs-redesign-v1 .repairs-link-btn-success {
+  color: var(--ops-action-green-text) !important;
+  background: var(--ops-action-green) !important;
+}
+.repairs-redesign-v1 :is(.repairs-link-btn, .repairs-link-btn-success):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Repair mobile and board cards */
+.repairs-redesign-v1 .repair-mobile-card,
+.repairs-redesign-v1 .repairs-apple-board-column,
+.repairs-redesign-v1 .repairs-apple-board-column .group.rounded-2xl {
+  border-color: var(--ops-border) !important;
+  background: var(--ops-surface) !important;
+  box-shadow: var(--ops-shadow-soft) !important;
+  border-radius: 22px !important;
+}
+.repairs-redesign-v1 .repair-mobile-card {
+  position: relative;
+  overflow: hidden;
+}
+.repairs-redesign-v1 .repair-mobile-card::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  width: 4px;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.82), rgba(14, 165, 233, 0.72));
+}
+.repairs-redesign-v1 .repair-mobile-card > * {
+  position: relative;
+}
+.repairs-redesign-v1 .repairs-apple-board-column__head {
+  background: rgba(248, 250, 252, 0.86) !important;
+  border-color: var(--ops-border) !important;
+}
+.dark .repairs-redesign-v1 .repairs-apple-board-column__head,
+html.dark .repairs-redesign-v1 .repairs-apple-board-column__head {
+  background: rgba(15, 23, 42, 0.78) !important;
+}
+.repairs-redesign-v1 .repairs-apple-board-column select {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 1280px) {
+  .products-redesign-v1 .product-list-table :is(button, a, .ux-btn, .app-button),
+  .repairs-redesign-v1 .repairs-premium-table :is(button, a, .ux-btn, .app-button) {
+    padding-inline: 0.55rem !important;
+    font-size: 11px !important;
+  }
+  .products-redesign-v1 .product-list-table th,
+  .products-redesign-v1 .product-list-table td,
+  .services-redesign-v1 table th,
+  .services-redesign-v1 table td,
+  .repairs-redesign-v1 .repairs-premium-table th,
+  .repairs-redesign-v1 .repairs-premium-table td {
+    padding-inline: 0.7rem !important;
+  }
+}
+@media (max-width: 768px) {
+  .products-services-redesign-v1 :is(.repairs-link-btn, .repairs-link-btn-success) {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .repairs-redesign-v1 .repair-mobile-card .flex.items-center.justify-end.gap-2 {
+    justify-content: stretch !important;
+    flex-wrap: wrap !important;
+  }
+  .repairs-redesign-v1 .repairs-apple-board-column {
+    border-radius: 18px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .products-services-redesign-v1 :is(.product-list-table tbody tr, .repairs-link-btn, .repairs-link-btn-success, .repair-mobile-card, .repairs-apple-board-column .group) {
+    transform: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

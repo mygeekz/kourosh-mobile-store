@@ -1,0 +1,37 @@
+/* Phase 7: extracted Repairs domain styles from legacy monolith */
+
+@layer components {
+  .repairs-premium-table thead {
+    @apply bg-slate-100/90 dark:bg-slate-900/95;
+  }
+  .repairs-premium-table thead th {
+    @apply text-slate-700 dark:text-slate-200;
+  }
+  .repairs-premium-table tbody tr:nth-child(odd) {
+    @apply bg-white dark:bg-slate-950/60;
+  }
+  .repairs-premium-table tbody tr:nth-child(even) {
+    @apply bg-slate-50/80 dark:bg-slate-900/60;
+  }
+  .repairs-premium-table tbody tr:hover {
+    @apply bg-slate-100/70 dark:bg-slate-900/90;
+  }
+  .repair-detail-editor-shell {
+    @apply rounded-[26px] border border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.99),rgba(248,250,252,0.95))] p-6 shadow-[0_18px_42px_-34px_rgba(15,23,42,0.16)] dark:border-slate-800 dark:bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(2,6,23,0.92))];
+  }
+  .repair-detail-softbox {
+    @apply rounded-[22px] border border-slate-200/80 bg-slate-50/90 p-4 text-sm shadow-[0_14px_32px_-28px_rgba(15,23,42,0.18)] dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-100;
+  }
+}
+
+.repairs-link-btn {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-secondary ux-btn-xs no-underline;
+    isolation: isolate;
+  }
+
+  .repairs-link-btn-success {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-success ux-btn-xs no-underline;
+    isolation: isolate;
+  }

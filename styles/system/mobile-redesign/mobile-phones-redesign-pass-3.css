@@ -1,0 +1,267 @@
+/* Phase 80 — Mobile Phones Redesign Final Polish / QA Pass
+   Scope-only polish. No business logic is affected. */
+
+.mobile-phones-redesign-v1 {
+  --phone-polish-surface: rgba(255, 255, 255, 0.94);
+  --phone-polish-surface-soft: rgba(248, 250, 252, 0.82);
+  --phone-polish-border: rgba(148, 163, 184, 0.22);
+  --phone-polish-border-strong: rgba(100, 116, 139, 0.28);
+  --phone-polish-text: rgb(15, 23, 42);
+  --phone-polish-muted: rgb(100, 116, 139);
+  --phone-polish-shadow: 0 20px 52px -42px rgba(15, 23, 42, 0.34);
+  --phone-polish-ring: 0 0 0 4px color-mix(in srgb, var(--brand, #2563eb) 18%, transparent);
+}
+
+.dark .mobile-phones-redesign-v1,
+.mobile-phones-redesign-v1.dark {
+  --phone-polish-surface: rgba(15, 23, 42, 0.82);
+  --phone-polish-surface-soft: rgba(2, 6, 23, 0.46);
+  --phone-polish-border: rgba(71, 85, 105, 0.42);
+  --phone-polish-border-strong: rgba(100, 116, 139, 0.5);
+  --phone-polish-text: rgb(248, 250, 252);
+  --phone-polish-muted: rgb(148, 163, 184);
+  --phone-polish-shadow: 0 22px 58px -44px rgba(0, 0, 0, 0.72);
+}
+
+.mobile-phones-redesign-v1 :where(button, input, select, textarea, [role="button"]):focus-visible {
+  outline: none !important;
+  box-shadow: var(--phone-polish-ring) !important;
+}
+
+.mobile-phones-redesign-v1 :where(input, select, textarea)::placeholder {
+  color: rgb(148, 163, 184) !important;
+  opacity: 1 !important;
+}
+
+.dark .mobile-phones-redesign-v1 :where(input, select, textarea)::placeholder {
+  color: rgb(100, 116, 139) !important;
+}
+
+.mobile-phones-redesign-v1 :where(input[dir="ltr"], .phone-card-spec-pill--numeric, .phone-list-shell__table [dir="ltr"], .phone-card-surface [dir="ltr"]) {
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+.mobile-phones-redesign-v1 .phone-identity-block,
+.mobile-phones-redesign-v1 .phone-finance-block,
+.mobile-phones-redesign-v1 .phone-operations-block,
+.mobile-phones-redesign-v1 .phone-list-shell__controlbar,
+.mobile-phones-redesign-v1 .phone-list-shell__table,
+.mobile-phones-redesign-v1 .phone-list-apple-head,
+.mobile-phones-redesign-v1 .phone-register-submitbar {
+  border-color: var(--phone-polish-border) !important;
+  box-shadow: var(--phone-polish-shadow) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-identity-block:hover,
+.mobile-phones-redesign-v1 .phone-finance-block:hover,
+.mobile-phones-redesign-v1 .phone-operations-block:hover,
+.mobile-phones-redesign-v1 .phone-card-surface:hover {
+  border-color: color-mix(in srgb, var(--brand, #2563eb) 22%, var(--phone-polish-border-strong)) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-addable-autocomplete__menu,
+.mobile-phones-redesign-v1 .phone-list-apple-head__search,
+.mobile-phones-redesign-v1 .phone-list-shell__table,
+.mobile-phones-redesign-v1 .phone-card-surface {
+  isolation: isolate;
+}
+
+.mobile-phones-redesign-v1 .phone-addable-autocomplete__menu {
+  border-color: var(--phone-polish-border-strong) !important;
+  box-shadow: 0 28px 72px -36px rgba(15, 23, 42, 0.42) !important;
+  max-height: min(360px, 50vh) !important;
+  overscroll-behavior: contain;
+}
+
+.dark .mobile-phones-redesign-v1 .phone-addable-autocomplete__menu {
+  box-shadow: 0 30px 78px -34px rgba(0, 0, 0, 0.8) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-addable-autocomplete__option {
+  min-height: 42px;
+  display: flex !important;
+  align-items: center;
+}
+
+.mobile-phones-redesign-v1 .phone-register-submitbar {
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--phone-polish-surface) 92%, transparent) !important;
+}
+
+.mobile-phones-redesign-v1 .phone-register-submitbar__submit,
+.mobile-phones-redesign-v1 .phone-register-submitbar__reset {
+  min-height: 42px;
+  justify-content: center;
+}
+
+.mobile-phones-redesign-v1 .phone-list-apple-head__search-input {
+  min-height: 44px;
+  text-overflow: ellipsis;
+}
+
+.mobile-phones-redesign-v1 .phone-list-apple-head__count {
+  white-space: nowrap;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand, #2563eb) 34%, rgba(148, 163, 184, 0.55)) transparent;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table::-webkit-scrollbar,
+.mobile-phones-redesign-v1 .phone-addable-autocomplete__menu::-webkit-scrollbar,
+.mobile-phones-redesign-v1 textarea::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table::-webkit-scrollbar-thumb,
+.mobile-phones-redesign-v1 .phone-addable-autocomplete__menu::-webkit-scrollbar-thumb,
+.mobile-phones-redesign-v1 textarea::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand, #2563eb) 36%, rgba(148, 163, 184, 0.58));
+  background-clip: padding-box;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table :where(th, td) {
+  vertical-align: middle;
+}
+
+.mobile-phones-redesign-v1 .phone-list-shell__table :where(td, th):first-child {
+  border-inline-start: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-card-surface {
+  transform: translateZ(0);
+}
+
+.mobile-phones-redesign-v1 .phone-card-surface :where(.ux-btn, button) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-phones-redesign-v1 .phone-card-spec-pill__value,
+.mobile-phones-redesign-v1 .phone-card-supplier span:last-child,
+.mobile-phones-redesign-v1 .phone-list-shell__table td {
+  min-width: 0;
+}
+
+.mobile-phones-redesign-v1 .phone-card-actions .ux-btn,
+.mobile-phones-redesign-v1 .phone-list-shell__table .ux-btn {
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-phones-redesign-v1 .phone-card-actions .ux-btn:disabled,
+.mobile-phones-redesign-v1 .phone-list-shell__table .ux-btn:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.8);
+}
+
+@media (max-width: 1366px) {
+  .mobile-phones-redesign-v1 {
+    padding-inline: 0.875rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-apple-head__controls {
+    gap: 0.75rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-actions {
+    gap: 0.45rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .mobile-phones-redesign-v1 .phone-register-submitbar {
+    bottom: 0.5rem !important;
+    border-radius: 20px !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-shell__content {
+    padding-inline: 1rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-footer {
+    align-items: stretch !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-actions {
+    width: 100%;
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-phones-redesign-v1 {
+    padding-inline: 0.75rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-identity-block,
+  .mobile-phones-redesign-v1 .phone-finance-block,
+  .mobile-phones-redesign-v1 .phone-operations-block,
+  .mobile-phones-redesign-v1 .phone-list-shell__controlbar,
+  .mobile-phones-redesign-v1 .phone-list-apple-head,
+  .mobile-phones-redesign-v1 .phone-register-submitbar {
+    border-radius: 20px !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-apple-head__controls,
+  .mobile-phones-redesign-v1 .phone-list-apple-head__actions,
+  .mobile-phones-redesign-v1 .phone-list-apple-head__search {
+    width: 100% !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-list-apple-head__actions {
+    justify-content: space-between !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-surface {
+    border-radius: 20px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .mobile-phones-redesign-v1 .phone-register-submitbar {
+    padding: 0.875rem !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-register-submitbar > div:last-child,
+  .mobile-phones-redesign-v1 .phone-register-submitbar__submit,
+  .mobile-phones-redesign-v1 .phone-register-submitbar__reset {
+    width: 100% !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-actions .ux-btn {
+    min-width: 2.35rem;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-footer {
+    padding: 0.875rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-phones-redesign-v1 *,
+  .mobile-phones-redesign-v1 *::before,
+  .mobile-phones-redesign-v1 *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .mobile-phones-redesign-v1 .phone-card-surface:hover,
+  .mobile-phones-redesign-v1 .phone-identity-block:hover,
+  .mobile-phones-redesign-v1 .phone-finance-block:hover,
+  .mobile-phones-redesign-v1 .phone-operations-block:hover {
+    transform: none !important;
+  }
+}

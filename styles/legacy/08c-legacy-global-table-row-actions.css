@@ -1,0 +1,150 @@
+/* Phase 46: global table + row action unification */
+:root {
+  --ux-table-radius-unified: 22px;
+  --ux-table-border-light: rgba(226, 232, 240, 0.92);
+  --ux-table-border-dark: rgba(51, 65, 85, 0.88);
+  --ux-table-bg-light: rgba(255, 255, 255, 0.94);
+  --ux-table-bg-dark: rgba(2, 6, 23, 0.82);
+  --ux-table-head-light: rgba(248, 250, 252, 0.94);
+  --ux-table-head-dark: rgba(15, 23, 42, 0.9);
+  --ux-table-row-hover-light: rgba(248, 250, 252, 0.86);
+  --ux-table-row-hover-dark: rgba(15, 23, 42, 0.72);
+  --ux-row-action-size: 34px;
+  --ux-row-action-radius: 14px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.ux-table-shell,
+.table-shell,
+[class*="table-shell"] {
+  border-color: var(--ux-table-border-light);
+  background: var(--ux-table-bg-light);
+  border-radius: var(--ux-table-radius-unified);
+  box-shadow: 0 18px 44px -34px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+}
+
+.dark .ux-table-shell,
+.dark .table-shell,
+.dark [class*="table-shell"] {
+  border-color: var(--ux-table-border-dark);
+  background: var(--ux-table-bg-dark);
+  box-shadow: 0 24px 52px -36px rgba(2, 6, 23, 0.58);
+}
+
+.ux-table-shell table thead th,
+.table-shell table thead th,
+table thead th {
+  background: var(--ux-table-head-light);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgb(100 116 139);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.dark .ux-table-shell table thead th,
+.dark .table-shell table thead th,
+.dark table thead th {
+  background: var(--ux-table-head-dark);
+  color: rgb(148 163 184);
+  border-bottom-color: rgba(51, 65, 85, 0.88);
+}
+
+.ux-table-shell table tbody tr,
+.table-shell table tbody tr,
+table tbody tr {
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.ux-table-shell table tbody tr:hover,
+.table-shell table tbody tr:hover,
+table tbody tr:hover {
+  background: var(--ux-table-row-hover-light);
+}
+
+.dark .ux-table-shell table tbody tr:hover,
+.dark .table-shell table tbody tr:hover,
+.dark table tbody tr:hover {
+  background: var(--ux-table-row-hover-dark);
+}
+
+.ux-table-shell table td,
+.table-shell table td,
+table td {
+  font-size: 13px;
+  line-height: 1.65;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.92);
+}
+
+.dark .ux-table-shell table td,
+.dark .table-shell table td,
+.dark table td {
+  border-bottom-color: rgba(15, 23, 42, 0.92);
+}
+
+.ux-row-action,
+.table-row-action,
+[class*="row-action"] {
+  width: var(--ux-row-action-size);
+  height: var(--ux-row-action-size);
+  min-width: var(--ux-row-action-size);
+  border-radius: var(--ux-row-action-radius);
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 12px 24px -20px rgba(15, 23, 42, 0.16);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.ux-row-action:hover,
+.table-row-action:hover,
+[class*="row-action"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px -20px rgba(15, 23, 42, 0.20);
+}
+
+.dark .ux-row-action,
+.dark .table-row-action,
+.dark [class*="row-action"] {
+  border-color: rgba(71, 85, 105, 0.72);
+  background: rgba(15, 23, 42, 0.88);
+  box-shadow: 0 14px 28px -22px rgba(2, 6, 23, 0.56);
+}
+
+.ux-row-action i,
+.table-row-action i,
+[class*="row-action"] i {
+  font-size: 12px;
+}
+
+@media (max-width: 767px) {
+  .ux-table-shell table thead th,
+  .table-shell table thead th,
+  table thead th {
+    font-size: 10px;
+  }
+
+  .ux-table-shell table td,
+  .table-shell table td,
+  table td {
+    font-size: 12px;
+  }
+
+  .ux-row-action,
+  .table-row-action,
+  [class*="row-action"] {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 12px;
+  }
+}
+
+

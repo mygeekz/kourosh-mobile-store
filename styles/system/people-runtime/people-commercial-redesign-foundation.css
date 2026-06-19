@@ -1,0 +1,534 @@
+/* ===== PEOPLE / CUSTOMERS / PARTNERS APPLE COMMERCIAL REDESIGN =====
+   Scope: Customers, Partners, CustomerDetail, PartnerDetail. Logic/API untouched. */
+
+/* Global people spacing */
+.people-merged-page,
+.people-page-shell,
+.detail-page-shell {
+  text-align: right !important;
+}
+
+.people-page-shell,
+.detail-page-shell {
+  padding-inline: 10px !important;
+}
+
+/* Apple surfaces: no noisy gradients, no heavy shadows */
+.people-hero-panel,
+.customers-hero-panel,
+.partners-hero,
+.detail-hero-card,
+.people-panel-card,
+.people-stat-card,
+.partners-stat-card,
+#customer-ledger-section + div,
+#partner-ledger-section + div,
+#customer-history-section + div,
+#partner-history-section + div {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.dark .people-hero-panel,
+.dark .customers-hero-panel,
+.dark .partners-hero,
+.dark .detail-hero-card,
+.dark .people-panel-card,
+.dark .people-stat-card,
+.dark .partners-stat-card,
+.dark #customer-ledger-section + div,
+.dark #partner-ledger-section + div,
+.dark #customer-history-section + div,
+.dark #partner-history-section + div {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+}
+
+/* Compact hero layout */
+.people-hero-panel,
+.customers-hero-panel,
+.partners-hero {
+  padding: 12px !important;
+  gap: 12px !important;
+}
+
+.people-unified-hero__top,
+.partners-hero__title-row,
+.customers-hero-title-row {
+  gap: 10px !important;
+}
+
+.customers-hero-title,
+.partners-hero__title,
+.detail-hero-card h1,
+.detail-hero-card__title {
+  font-size: 18px !important;
+  line-height: 1.8 !important;
+  font-weight: 950 !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .customers-hero-title,
+.dark .partners-hero__title,
+.dark .detail-hero-card h1,
+.dark .detail-hero-card__title {
+  color: rgb(241 245 249) !important;
+}
+
+.customers-hero-subtitle,
+.partners-hero__subtitle,
+.detail-hero-card__subtitle,
+.people-section-subtitle {
+  max-width: 60rem !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+  color: rgb(100 116 139) !important;
+}
+
+.dark .customers-hero-subtitle,
+.dark .partners-hero__subtitle,
+.dark .detail-hero-card__subtitle,
+.dark .people-section-subtitle {
+  color: rgb(148 163 184) !important;
+}
+
+/* Top nav as Apple segmented control */
+.people-top-nav,
+.people-top-nav--large {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  min-height: 36px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 999px !important;
+  background: rgb(248 250 252) !important;
+  padding: 3px !important;
+}
+
+.dark .people-top-nav,
+.dark .people-top-nav--large {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+}
+
+.people-top-nav__item {
+  display: inline-flex !important;
+  min-height: 28px !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border-radius: 999px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  color: rgb(100 116 139) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.people-top-nav__item.is-active,
+.people-top-nav__item:hover {
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .people-top-nav__item {
+  color: rgb(148 163 184) !important;
+}
+
+.dark .people-top-nav__item.is-active,
+.dark .people-top-nav__item:hover {
+  background: rgb(30 41 59) !important;
+  color: #fff !important;
+}
+
+/* Icons: aligned and visible */
+.people-top-nav__item i,
+.people-stat-card i,
+.partners-stat-card i,
+.detail-hero-card__icon i,
+.people-chip i,
+[class*="balance"] i,
+.people-filter-chip i,
+.partners-filter-chip i {
+  width: 16px !important;
+  min-width: 16px !important;
+  height: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+}
+
+/* Detail avatars/icons */
+.detail-hero-card__icon,
+.customer-detail-hero .detail-hero-card__icon,
+.partner-detail-hero__top .detail-hero-card__icon {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 14px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+.dark .detail-hero-card__icon,
+.dark .customer-detail-hero .detail-hero-card__icon,
+.dark .partner-detail-hero__top .detail-hero-card__icon {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+/* Stats / KPI cards */
+.people-stats-grid {
+  gap: 8px !important;
+}
+
+.people-stat-card,
+.partners-stat-card,
+.customers-hero-mini,
+.partners-hero-mini {
+  min-height: 72px !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .people-stat-card,
+.dark .partners-stat-card,
+.dark .customers-hero-mini,
+.dark .partners-hero-mini {
+  background: rgb(2 6 23) !important;
+}
+
+.people-stat-card__label,
+.partners-hero-mini__label {
+  font-size: 10px !important;
+  font-weight: 950 !important;
+  color: rgb(100 116 139) !important;
+}
+
+.dark .people-stat-card__label,
+.dark .partners-hero-mini__label {
+  color: rgb(148 163 184) !important;
+}
+
+.people-stat-card__value,
+.partners-hero-mini__value {
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+  font-weight: 950 !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .people-stat-card__value,
+.dark .partners-hero-mini__value {
+  color: rgb(241 245 249) !important;
+}
+
+/* Filters and toolbar */
+.people-filter-chip,
+.partners-filter-chip {
+  min-height: 32px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 999px !important;
+  background: #fff !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.people-filter-chip.is-active,
+.partners-filter-chip.is-active {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(15 23 42) !important;
+  color: #fff !important;
+}
+
+.dark .people-filter-chip,
+.dark .partners-filter-chip {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(203 213 225) !important;
+}
+
+.dark .people-filter-chip.is-active,
+.dark .partners-filter-chip.is-active {
+  background: rgb(241 245 249) !important;
+  border-color: rgb(241 245 249) !important;
+  color: rgb(2 6 23) !important;
+}
+
+/* Buttons */
+.people-page-shell button,
+.people-page-shell a,
+.detail-page-shell button,
+.detail-page-shell a {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.people-page-shell button:hover,
+.people-page-shell a:hover,
+.detail-page-shell button:hover,
+.detail-page-shell a:hover {
+  transform: none !important;
+}
+
+.people-page-shell :where(button),
+.detail-page-shell :where(button),
+.people-page-shell :where(a[class*="btn"], a[class*="button"]),
+.detail-page-shell :where(a[class*="btn"], a[class*="button"]) {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+/* Tables and ledgers */
+.people-ledger-table,
+.people-page-shell table,
+.detail-page-shell table,
+#customer-ledger-section + div table,
+#partner-ledger-section + div table,
+#customer-history-section + div table,
+#partner-history-section + div table {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.dark .people-ledger-table,
+.dark .people-page-shell table,
+.dark .detail-page-shell table,
+.dark #customer-ledger-section + div table,
+.dark #partner-ledger-section + div table,
+.dark #customer-history-section + div table,
+.dark #partner-history-section + div table {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.people-ledger-table thead th,
+.people-page-shell thead th,
+.detail-page-shell thead th,
+#customer-ledger-section + div thead th,
+#partner-ledger-section + div thead th,
+#customer-history-section + div thead th,
+#partner-history-section + div thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1 !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(100 116 139) !important;
+  padding: 9px 10px !important;
+  text-align: right !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  border-bottom: 1px solid rgb(226 232 240) !important;
+}
+
+.dark .people-ledger-table thead th,
+.dark .people-page-shell thead th,
+.dark .detail-page-shell thead th,
+.dark #customer-ledger-section + div thead th,
+.dark #partner-ledger-section + div thead th,
+.dark #customer-history-section + div thead th,
+.dark #partner-history-section + div thead th {
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.people-ledger-table tbody td,
+.people-page-shell tbody td,
+.detail-page-shell tbody td,
+#customer-ledger-section + div tbody td,
+#partner-ledger-section + div tbody td,
+#customer-history-section + div tbody td,
+#partner-history-section + div tbody td {
+  padding: 9px 10px !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  border-bottom: 1px solid rgb(241 245 249) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.dark .people-ledger-table tbody td,
+.dark .people-page-shell tbody td,
+.dark .detail-page-shell tbody td,
+.dark #customer-ledger-section + div tbody td,
+.dark #partner-ledger-section + div tbody td,
+.dark #customer-history-section + div tbody td,
+.dark #partner-history-section + div tbody td {
+  border-color: rgb(30 41 59) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.people-ledger-table tbody tr:hover,
+.people-page-shell tbody tr:hover,
+.detail-page-shell tbody tr:hover {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .people-ledger-table tbody tr:hover,
+.dark .people-page-shell tbody tr:hover,
+.dark .detail-page-shell tbody tr:hover {
+  background: rgb(15 23 42) !important;
+}
+
+/* Chips / balance badges: calm Apple, warning only for real risk */
+.people-chip,
+.people-chip-neutral,
+.people-chip-success,
+.people-chip-danger,
+.people-chip-warning,
+.people-page-shell :where(span.rounded-full),
+.detail-page-shell :where(span.rounded-full) {
+  min-height: 24px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 999px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  padding: 0 8px !important;
+  box-shadow: none !important;
+  gap: 5px !important;
+}
+
+.dark .people-chip,
+.dark .people-chip-neutral,
+.dark .people-chip-success,
+.dark .people-chip-danger,
+.dark .people-chip-warning,
+.dark .people-page-shell :where(span.rounded-full),
+.dark .detail-page-shell :where(span.rounded-full) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+/* Risk/debt chips retain subtle signal only */
+.detail-page-shell :where(.text-rose-700, .text-red-600, .text-rose-600),
+.people-page-shell :where(.text-rose-700, .text-red-600, .text-rose-600) {
+  color: rgb(190 18 60) !important;
+}
+
+.detail-page-shell :where(.text-emerald-700, .text-green-700),
+.people-page-shell :where(.text-emerald-700, .text-green-700) {
+  color: rgb(4 120 87) !important;
+}
+
+/* Forms and transaction modals */
+.people-page-shell :where(input, textarea, select),
+.detail-page-shell :where(input, textarea, select) {
+  min-height: 40px !important;
+  border-radius: 12px !important;
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+  text-align: right !important;
+}
+
+.dark .people-page-shell :where(input, textarea, select),
+.dark .detail-page-shell :where(input, textarea, select) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(241 245 249) !important;
+}
+
+/* Modal inner blocks */
+.detail-page-shell .premium-modal-stack > div,
+.people-page-shell .premium-modal-stack > div,
+.detail-page-shell :where(.rounded-2xl.border),
+.people-page-shell :where(.rounded-2xl.border) {
+  box-shadow: none !important;
+}
+
+/* Neutralize colorful block backgrounds but keep status text */
+.people-page-shell :where([class*="bg-rose"], [class*="bg-red"], [class*="bg-amber"], [class*="bg-orange"], [class*="bg-emerald"], [class*="bg-green"], [class*="bg-sky"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-violet"], [class*="bg-purple"]),
+.detail-page-shell :where([class*="bg-rose"], [class*="bg-red"], [class*="bg-amber"], [class*="bg-orange"], [class*="bg-emerald"], [class*="bg-green"], [class*="bg-sky"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-violet"], [class*="bg-purple"]) {
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+}
+
+.dark .people-page-shell :where([class*="bg-rose"], [class*="bg-red"], [class*="bg-amber"], [class*="bg-orange"], [class*="bg-emerald"], [class*="bg-green"], [class*="bg-sky"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-violet"], [class*="bg-purple"]),
+.dark .detail-page-shell :where([class*="bg-rose"], [class*="bg-red"], [class*="bg-amber"], [class*="bg-orange"], [class*="bg-emerald"], [class*="bg-green"], [class*="bg-sky"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-violet"], [class*="bg-purple"]) {
+  background: rgb(15 23 42) !important;
+}
+
+/* Detail sections */
+.people-section-title {
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+  font-weight: 950 !important;
+}
+
+#customer-ledger-section,
+#partner-ledger-section,
+#customer-history-section,
+#partner-history-section {
+  scroll-margin-top: 120px;
+}
+
+/* Telegram conversation inside customer detail: cleaner commercial */
+.detail-page-shell [class*="h-[420px]"] {
+  border-radius: 16px !important;
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .detail-page-shell [class*="h-[420px]"] {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+@media (max-width: 768px) {
+  .people-page-shell,
+  .detail-page-shell {
+    padding-inline: 6px !important;
+  }
+
+  .people-hero-panel,
+  .customers-hero-panel,
+  .partners-hero,
+  .detail-hero-card {
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .people-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .people-top-nav,
+  .people-top-nav--large {
+    width: 100% !important;
+  }
+
+  .people-top-nav__item {
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+}
+
+

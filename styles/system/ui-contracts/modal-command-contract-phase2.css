@@ -1,0 +1,153 @@
+/* Phase 2 UI contract: migrate legacy modal command areas into the same Button/ModalActions language.
+   No @apply here: this layer must stay safe for Tailwind/PostCSS. */
+
+:root {
+  --app-command-border: rgba(148, 163, 184, 0.28);
+  --app-command-bg: rgba(255, 255, 255, 0.92);
+  --app-command-muted-bg: rgba(248, 250, 252, 0.92);
+}
+
+.dark {
+  --app-command-border: rgba(51, 65, 85, 0.82);
+  --app-command-bg: rgba(15, 23, 42, 0.78);
+  --app-command-muted-bg: rgba(2, 6, 23, 0.56);
+}
+
+/* Any legacy footer inside a Modal should visually behave like ModalActions. */
+.app-modal .premium-sticky-footer,
+.app-modal .modal-actions,
+.app-modal .confirm-dialog-actions,
+.app-modal [class*="border-t"][class*="justify-end"] {
+  border-top-color: rgba(148, 163, 184, 0.22) !important;
+}
+
+.app-modal .modal-actions,
+.app-modal .premium-modal-actions,
+.confirm-dialog-surface .modal-actions {
+  position: relative;
+}
+
+/* Normalize legacy raw <button class="ux-btn ..."> used in older modals and operational footers. */
+.app-modal button.ux-btn,
+.confirm-dialog-surface button.ux-btn,
+.app-modal .ux-btn {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+}
+
+.app-modal .ux-btn > i,
+.confirm-dialog-surface .ux-btn > i,
+.app-modal .ux-btn__icon > i {
+  flex: 0 0 auto !important;
+  width: 16px !important;
+  min-width: 16px !important;
+  text-align: center !important;
+  margin: 0 !important;
+}
+
+.app-modal .ux-btn span,
+.confirm-dialog-surface .ux-btn span {
+  min-width: 0;
+}
+
+/* Command rows: mobile full width, desktop compact and right aligned in RTL. */
+.app-modal-command-row,
+.app-modal .premium-sticky-footer,
+.app-modal .confirm-dialog-actions .app-modal-command-row {
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  direction: rtl !important;
+}
+
+.app-modal .premium-sticky-footer:not(.modal-actions) {
+  margin-top: 18px !important;
+  padding-top: 14px !important;
+}
+
+.app-modal .modal-actions .app-command-button,
+.confirm-dialog-surface .modal-actions .app-command-button {
+  box-shadow: none !important;
+}
+
+.app-modal .modal-actions .app-command-button--cancel,
+.confirm-dialog-surface .modal-actions .app-command-button--cancel {
+  background: var(--app-command-muted-bg) !important;
+  border: 1px solid var(--app-command-border) !important;
+}
+
+/* Compact confirmations should never look like a full operational page. */
+.confirm-dialog-surface,
+.app-modal.app-modal--compact {
+  overflow: hidden !important;
+}
+
+.app-modal.app-modal--compact p,
+.confirm-dialog-surface p {
+  overflow-wrap: anywhere;
+}
+
+.app-modal.app-modal--compact .modal-actions,
+.confirm-dialog-surface .modal-actions {
+  margin-top: 16px !important;
+}
+
+/* Avoid text clipping in important modal copy; only explicit filename/code chips may truncate. */
+.app-modal .app-modal-confirm-card,
+.app-modal .detail-severity-panel,
+.app-modal .rounded-\[18px\],
+.app-modal .rounded-\[20px\],
+.app-modal .rounded-\[22px\] {
+  min-width: 0;
+}
+
+.app-modal .app-modal-confirm-card p,
+.app-modal .detail-severity-panel p,
+.app-modal .detail-severity-panel li,
+.app-modal li,
+.confirm-dialog-surface p {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  line-height: 1.9 !important;
+}
+
+/* Modal close button is now a command too, but must stay square. */
+.app-modal .modal-close-btn,
+.confirm-dialog-surface .modal-close-btn {
+  aspect-ratio: 1 / 1;
+  box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+  .app-modal-command-row,
+  .app-modal .premium-sticky-footer,
+  .app-modal .confirm-dialog-actions .app-modal-command-row {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+
+  .app-modal button.ux-btn,
+  .confirm-dialog-surface button.ux-btn,
+  .app-modal .app-command-button,
+  .confirm-dialog-surface .app-command-button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .app-modal .modal-close-btn,
+  .confirm-dialog-surface .modal-close-btn,
+  .app-modal .app-command-button--icon-only {
+    width: 38px !important;
+    min-width: 38px !important;
+    align-self: flex-start;
+  }
+}

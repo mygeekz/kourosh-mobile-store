@@ -1,0 +1,154 @@
+/* Centralized Select Field
+   Contract:
+   - wrapper is layout-only
+   - select itself is the only visible box
+   - leading icon is physical-left
+   - chevron is physical-right
+   - select text is RTL/right aligned
+*/
+
+.app-select-field {
+  position: relative;
+  display: block;
+  min-width: 0;
+  direction: ltr;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.app-select-field__select,
+.app-select-field__select:hover,
+.app-select-field__select:focus,
+.app-select-field__select:focus-visible,
+.app-select-field__select:active {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, .96);
+  background: #fff;
+  color: rgb(30 41 59);
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif;
+  font-weight: 800;
+  direction: rtl;
+  text-align: right;
+  outline: 0;
+  box-shadow: 0 12px 24px -22px rgba(15,23,42,.24);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+  cursor: pointer;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-color: transparent;
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+.app-select-field__select:focus,
+.app-select-field__select:focus-visible {
+  border-color: rgba(125, 211, 252, .95);
+  box-shadow: 0 0 0 2px rgba(14,165,233,.10), 0 12px 24px -22px rgba(15,23,42,.24);
+}
+
+.app-select-field__icon {
+  position: absolute;
+  left: 1rem;
+  right: auto;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  color: rgb(100 116 139);
+}
+
+.app-select-field__icon i {
+  display: block;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.app-select-field__chevron {
+  position: absolute;
+  right: .95rem;
+  left: auto;
+  top: 0;
+  bottom: 0;
+  width: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  color: rgb(148 163 184);
+}
+
+.app-select-field__chevron i {
+  display: block;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.app-select-field--sm .app-select-field__select {
+  height: 40px;
+  min-height: 40px;
+  line-height: 40px;
+  padding-left: 3rem;
+  padding-right: 2.75rem;
+  font-size: .8rem;
+}
+
+.app-select-field--md .app-select-field__select {
+  height: 44px;
+  min-height: 44px;
+  line-height: 44px;
+  padding-left: 3.15rem;
+  padding-right: 2.85rem;
+  font-size: .85rem;
+}
+
+.app-select-field--lg .app-select-field__select {
+  height: 48px;
+  min-height: 48px;
+  line-height: 48px;
+  padding-left: 3.25rem;
+  padding-right: 3rem;
+  font-size: .88rem;
+}
+
+/* Legacy neutralization for migrated select controls. */
+.people-customers-shell .app-select-field,
+.partners-page-shell .app-select-field,
+.report-page .app-select-field {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.people-customers-shell .app-select-field:focus-within,
+.partners-page-shell .app-select-field:focus-within,
+.report-page .app-select-field:focus-within {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-select-field__select {
+  border-color: rgba(51,65,85,.92);
+  background: rgb(2 6 23);
+  color: rgb(248 250 252);
+}
+
+html.dark .app-select-field__icon {
+  color: rgb(125 211 252);
+}
+
+html.dark .app-select-field__chevron {
+  color: rgb(148 163 184);
+}

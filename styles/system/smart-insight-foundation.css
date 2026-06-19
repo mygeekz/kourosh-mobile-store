@@ -1,0 +1,341 @@
+/* Auto-generated UI Foundation: Smart Insight UI redesign consolidation.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/11e-smart-insight-redesign.css ===== */
+
+/* Stage 145 — Smart Insight Center redesign
+   Fixes:
+   - black buttons/badges in smart brain
+   - excessive empty space in main decision section
+   - makes smart cards compact and readable
+*/
+
+.smart-insight-page {
+  max-width: 100% !important;
+  overflow-x: clip !important;
+}
+
+/* Neutralize old black status/impact chips inside the Smart Brain only. */
+.smart-insight-page .smart-neutral-chip,
+.smart-insight-page :where(span, div):where(.bg-slate-950, .bg-slate-900, .bg-slate-800):not(button):not(a),
+.smart-insight-page :where([class*="bg-slate-950"], [class*="bg-slate-900"]):not(button):not(a) {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: none !important;
+}
+
+.smart-insight-page .smart-neutral-chip i,
+.smart-insight-page :where(span, div):where(.bg-slate-950, .bg-slate-900, .bg-slate-800):not(button):not(a) i {
+  color: rgb(37 99 235) !important;
+}
+
+/* Replace heavy black action links with Apple-minimal blue buttons. */
+.smart-insight-page .smart-action-link,
+.smart-insight-page a.bg-slate-950,
+.smart-insight-page a.bg-slate-900 {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: none !important;
+}
+
+.smart-insight-page .smart-action-link:hover,
+.smart-insight-page a.bg-slate-950:hover,
+.smart-insight-page a.bg-slate-900:hover {
+  background: rgb(219 234 254) !important;
+}
+
+/* Keep explicit colored action buttons expressive, but avoid black. */
+.smart-insight-page button.bg-slate-950,
+.smart-insight-page button.bg-slate-900 {
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+}
+
+/* Main decision / command area: reduce the huge empty vertical space. */
+.smart-insight-page section:has(.fa-brain),
+.smart-insight-page section:has(.fa-lightbulb),
+.smart-insight-page section:has(.fa-wand-magic-sparkles) {
+  min-height: 0 !important;
+}
+
+.smart-insight-page :where(section) > :where(.grid) {
+  min-height: 0 !important;
+}
+
+/* The screenshot's main smart insight block had a large empty middle.
+   These rules make inner panels compact without changing data logic. */
+.smart-insight-page :where(.rounded-\[28px\], .rounded-\[32px\]) {
+  min-height: 0 !important;
+}
+
+.smart-insight-page :where(.min-h-\[420px\], .min-h-\[360px\], .min-h-\[320px\]) {
+  min-height: 0 !important;
+}
+
+.smart-insight-page :where(.p-8, .p-7, .p-6) {
+  padding: clamp(1rem, 1.4vw, 1.35rem) !important;
+}
+
+.smart-insight-page :where(.gap-8, .gap-7, .gap-6) {
+  gap: clamp(.75rem, 1.2vw, 1.1rem) !important;
+}
+
+/* Command cards: make right-side score card less empty. */
+.smart-insight-page :where(article, section, div):has(> .text-7xl),
+.smart-insight-page :where(article, section, div):has(> .text-6xl) {
+  align-content: start !important;
+  justify-content: start !important;
+  min-height: 0 !important;
+}
+
+.smart-insight-page :where(.text-7xl, .text-6xl) {
+  font-size: clamp(2.5rem, 4vw, 4.1rem) !important;
+  line-height: 1.05 !important;
+}
+
+/* Decision recommendation list: compact cards, readable actions. */
+.smart-insight-page .smart-decision-list,
+.smart-insight-page :where(.rounded-\[24px\], .rounded-3xl) {
+  min-width: 0 !important;
+}
+
+.smart-insight-page :where(button, a) {
+  white-space: normal !important;
+}
+
+/* Auto pricing cards black confidence pills */
+.smart-insight-page :where(.rounded-2xl):has(> .text-\[11px\]) {
+  overflow: hidden !important;
+}
+
+/* If a legacy black small square remains inside pricing cards, normalize it. */
+.smart-insight-page :where(.rounded-\[24px\], article) :where(.bg-slate-950, .bg-slate-900):not(button):not(a) {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+}
+
+/* Layout for the large empty insight block: more balanced columns. */
+@media (min-width: 1024px) {
+  .smart-insight-page :where(.grid):has(.text-7xl),
+  .smart-insight-page :where(.grid):has(.text-6xl) {
+    grid-template-columns: minmax(220px, .8fr) minmax(0, 1.2fr) minmax(260px, .9fr) !important;
+    align-items: stretch !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .smart-insight-page :where(.text-7xl, .text-6xl) {
+    font-size: 2.6rem !important;
+  }
+
+  .smart-insight-page :where(.p-8, .p-7, .p-6) {
+    padding: 1rem !important;
+  }
+}
+
+/* Dark mode */
+html.dark .smart-insight-page .smart-neutral-chip,
+html.dark .smart-insight-page :where(span, div):where(.bg-slate-950, .bg-slate-900, .bg-slate-800):not(button):not(a),
+html.dark .smart-insight-page :where([class*="bg-slate-950"], [class*="bg-slate-900"]):not(button):not(a) {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .smart-insight-page .smart-action-link,
+html.dark .smart-insight-page a.bg-slate-950,
+html.dark .smart-insight-page a.bg-slate-900 {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/11f-smart-insight-precise-redesign.css ===== */
+
+/* Stage 146 — Precise Smart Insight redesign
+   Directly fixes the two reported screenshots:
+   1) black buttons/chips inside Smart Brain cards
+   2) empty command/decision area and missing/black icon
+*/
+
+.smart-executive-redesign {
+  padding: 1rem !important;
+}
+
+.smart-executive-redesign .smart-command-card,
+.smart-executive-redesign .smart-next-decision-card {
+  min-height: 0 !important;
+  background: #fff !important;
+  border-color: rgb(226 232 240) !important;
+  backdrop-filter: none !important;
+}
+
+.smart-command-icon {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.smart-command-icon i {
+  color: rgb(37 99 235) !important;
+  font-size: 1.05rem !important;
+}
+
+.smart-command-card .text-5xl {
+  font-size: clamp(2.35rem, 3.4vw, 3.25rem) !important;
+}
+
+.smart-command-progress {
+  background: linear-gradient(90deg, rgb(37 99 235), rgb(16 185 129)) !important;
+}
+
+.smart-status-chip,
+.smart-priority-chip,
+.smart-mini-chip {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: none !important;
+}
+
+.smart-next-decision-card {
+  display: grid !important;
+  align-content: start !important;
+}
+
+.smart-next-decision-grid {
+  align-items: start !important;
+}
+
+.smart-next-actions-card {
+  max-height: none !important;
+  align-self: start !important;
+  background: rgb(248 250 252) !important;
+}
+
+.smart-next-actions-card .space-y-2 {
+  display: grid !important;
+  gap: .55rem !important;
+}
+
+.smart-next-actions-card .rounded-2xl {
+  padding: .65rem !important;
+}
+
+.smart-next-decision-card h3 {
+  max-width: 760px !important;
+}
+
+.smart-next-decision-card p {
+  max-width: 820px !important;
+}
+
+/* Neutralize remaining old black non-button pills directly in the smart report */
+.pages-smart-insight-placeholder,
+.smart-insight-page :where(span, div).bg-slate-950,
+.smart-insight-page :where(span, div).bg-slate-900,
+.smart-executive-redesign :where(span, div).bg-slate-950,
+.smart-executive-redesign :where(span, div).bg-slate-900 {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+}
+
+.smart-action-link,
+.smart-insight-page a.bg-slate-950,
+.smart-insight-page a.bg-slate-900,
+.smart-executive-redesign a.bg-slate-950,
+.smart-executive-redesign a.bg-slate-900 {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: none !important;
+}
+
+.smart-action-link:hover,
+.smart-insight-page a.bg-slate-950:hover,
+.smart-insight-page a.bg-slate-900:hover,
+.smart-executive-redesign a.bg-slate-950:hover,
+.smart-executive-redesign a.bg-slate-900:hover {
+  background: rgb(219 234 254) !important;
+}
+
+/* Keep primary buttons readable but avoid accidental black blocks */
+.smart-insight-page button.bg-slate-950,
+.smart-insight-page button.bg-slate-900 {
+  background: rgb(30 64 175) !important;
+  color: #fff !important;
+}
+
+/* Broader fallback: this page still had many old bg-slate-950 labels outside the executive section. */
+main :where(section):has([class*="SMART INSIGHT ENGINE"]) {
+  min-height: 0 !important;
+}
+
+@media (min-width: 1024px) {
+  .smart-executive-redesign > .grid {
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr) !important;
+  }
+
+  .smart-next-decision-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .smart-executive-redesign {
+    padding: .85rem !important;
+  }
+
+  .smart-executive-redesign .smart-command-card,
+  .smart-executive-redesign .smart-next-decision-card {
+    padding: .9rem !important;
+  }
+}
+
+/* Dark mode */
+html.dark .smart-executive-redesign .smart-command-card,
+html.dark .smart-executive-redesign .smart-next-decision-card {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .smart-command-icon,
+html.dark .smart-status-chip,
+html.dark .smart-priority-chip,
+html.dark .smart-mini-chip,
+html.dark .smart-insight-page :where(span, div).bg-slate-950,
+html.dark .smart-insight-page :where(span, div).bg-slate-900,
+html.dark .smart-executive-redesign :where(span, div).bg-slate-950,
+html.dark .smart-executive-redesign :where(span, div).bg-slate-900,
+html.dark .smart-action-link,
+html.dark .smart-insight-page a.bg-slate-950,
+html.dark .smart-insight-page a.bg-slate-900 {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .smart-command-icon i {
+  color: rgb(147 197 253) !important;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.smart-insight-panel,
+.smart-insight-card,
+.smart-insight-shell,
+.smart-insight-grid {
+  min-width: 0;
+}
+
+.smart-insight-card,
+.smart-insight-panel {
+  overflow-wrap: anywhere;
+}

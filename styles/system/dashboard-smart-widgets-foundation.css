@@ -1,0 +1,996 @@
+/* ==========================================================================
+   Kourosh UI Foundation — Dashboard / Smart Widgets phase 10
+   --------------------------------------------------------------------------
+   Purpose:
+   - Consolidates the dashboard/root panel hotfix chain into one controlled
+     cascade point while preserving the original order from index.tsx.
+   - Adds a small, scoped dashboard contract for widget shells, card manager,
+     quick actions, react-grid-layout handles, and the add-widget modal.
+   - Scope: Dashboard page, dashboard widgets, smart clock widget, widget
+     management panel, add-widget modal, and existing mixed root panel fixes.
+   - No API, layout persistence, widget registry, sales/inventory data,
+     calculations, database, or dashboard logic changes.
+   ========================================================================== */
+
+/* ===== Source: styles/runtime-overrides/03e-sidebar-settings-dashboard-root-fixes.css — Dashboard/sidebar/settings root fixes ===== */
+/* ===== ROOT FIX: Apple Minimal Sidebar Active State v2 ===== */
+:root {
+  --sidebar-active-bg: rgba(248,250,252,0.96);
+  --sidebar-active-border: rgba(203,213,225,0.92);
+  --sidebar-active-fg: rgb(15 23 42);
+  --sidebar-active-fg-dark: rgb(241 245 249);
+  --sidebar-active-icon-bg: rgba(241,245,249,0.98);
+  --sidebar-active-indicator: rgb(51 65 85);
+  --sidebar-active-shadow: none;
+  --sidebar-open-bg: rgba(248,250,252,0.82);
+  --sidebar-open-border: rgba(226,232,240,0.92);
+}
+
+html.dark {
+  --sidebar-active-bg: rgba(15,23,42,0.92);
+  --sidebar-active-border: rgba(71,85,105,0.88);
+  --sidebar-active-fg: rgb(241 245 249);
+  --sidebar-active-fg-dark: rgb(241 245 249);
+  --sidebar-active-icon-bg: rgba(30,41,59,0.96);
+  --sidebar-active-indicator: rgb(148 163 184);
+  --sidebar-active-shadow: none;
+  --sidebar-open-bg: rgba(30,41,59,0.48);
+  --sidebar-open-border: rgba(51,65,85,0.72);
+}
+
+/* Reset legacy/global nav active rules. The black block came from legacy [class*=sidebar] [aria-current=page]. */
+.app-sidebar :where(.sidebar-nav-link[aria-current="page"], .ux-sidebar-list a[aria-current="page"], .ux-sidebar-list button[aria-current="page"]) {
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.app-sidebar :where(.sidebar-nav-link[aria-current="page"], .ux-sidebar-list a[aria-current="page"], .ux-sidebar-list button[aria-current="page"])::before,
+.ux-sidebar-list :where(a[aria-current="page"], button[aria-current="page"])::before,
+[class*="sidebar"] :where(a[aria-current="page"], button[aria-current="page"])::before {
+  display: none !important;
+  content: none !important;
+  background: transparent !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: var(--sidebar-active-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+  box-shadow: var(--sidebar-active-shadow) !important;
+  transform: translateY(-1px);
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: var(--sidebar-open-bg) !important;
+  border-color: var(--sidebar-open-border) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  color: rgb(226 232 240) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: var(--sidebar-active-icon-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] > span:last-child {
+  background: var(--sidebar-active-indicator) !important;
+}
+
+/* Favorite shortcut active state: keep it aligned with the sidebar active surface, never black. */
+.app-sidebar ul a[aria-current="page"]:not(.sidebar-nav-link) {
+  background: var(--sidebar-active-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+  box-shadow: var(--sidebar-active-shadow) !important;
+}
+
+html.dark .app-sidebar ul a[aria-current="page"]:not(.sidebar-nav-link) {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+/* Settings sidebar uses the same neutral active grammar. */
+.settings-sidebar .settings-tab-item[data-active='true'],
+.settings-sidebar button.settings-tab-item[data-active='true'] {
+  background: var(--sidebar-active-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+  box-shadow: var(--sidebar-active-shadow) !important;
+}
+
+html.dark .settings-sidebar .settings-tab-item[data-active='true'],
+html.dark .settings-sidebar button.settings-tab-item[data-active='true'] {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+.settings-sidebar .settings-tab-item[data-active='true'] .settings-tab-icon {
+  background: var(--sidebar-active-icon-bg) !important;
+  border-color: var(--sidebar-active-border) !important;
+  color: var(--sidebar-active-fg) !important;
+}
+
+html.dark .settings-sidebar .settings-tab-item[data-active='true'] .settings-tab-icon {
+  color: var(--sidebar-active-fg-dark) !important;
+}
+
+/* Dark-mode explicit values: override inline CSS custom properties from StyleContext. */
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: linear-gradient(180deg, rgba(30,41,59,0.78), rgba(15,23,42,0.72)) !important;
+  border-color: rgba(71,85,105,0.88) !important;
+  color: rgb(241 245 249) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 12px 28px -24px rgba(2,6,23,.82) !important;
+}
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] {
+  background: rgba(30,41,59,0.48) !important;
+  border-color: rgba(51,65,85,0.72) !important;
+  color: rgb(226 232 240) !important;
+}
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble,
+html.dark .settings-sidebar .settings-tab-item[data-active='true'] .settings-tab-icon {
+  background: rgba(51,65,85,0.82) !important;
+  border-color: rgba(71,85,105,0.88) !important;
+  color: rgb(241 245 249) !important;
+}
+html.dark .app-sidebar ul a[aria-current="page"]:not(.sidebar-nav-link),
+html.dark .settings-sidebar .settings-tab-item[data-active='true'],
+html.dark .settings-sidebar button.settings-tab-item[data-active='true'] {
+  background: linear-gradient(180deg, rgba(30,41,59,0.78), rgba(15,23,42,0.72)) !important;
+  border-color: rgba(71,85,105,0.88) !important;
+  color: rgb(241 245 249) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 12px 28px -24px rgba(2,6,23,.82) !important;
+}
+
+
+/* ===== SIDEBAR ACTIVE/SUPPORT ROOT FIX v3 =====
+   No gradient overlays in the sidebar. The previous fix used gradient active surfaces;
+   on some browsers/backdrop layers it created top-to-bottom fading, especially on the
+   support phone button. Keep sidebar states as solid Apple-minimal surfaces. */
+.app-sidebar {
+  isolation: isolate !important;
+}
+
+.app-sidebar :where(a, button)::before,
+.app-sidebar :where(a, button)::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+.app-sidebar :where(.sidebar-nav-link[aria-current="page"], .ux-sidebar-list a[aria-current="page"], .ux-sidebar-list button[aria-current="page"]) {
+  background: transparent !important;
+  background-image: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row {
+  background-image: none !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: rgba(248,250,252,.96) !important;
+  background-image: none !important;
+  border-color: rgba(203,213,225,.95) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] {
+  background: rgba(15,23,42,.92) !important;
+  background-image: none !important;
+  border-color: rgba(51,65,85,.88) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(241,245,249,.98) !important;
+  background-image: none !important;
+  border-color: rgba(203,213,225,.95) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"] .icon-bubble {
+  background: rgba(30,41,59,.96) !important;
+  background-image: none !important;
+  border-color: rgba(71,85,105,.88) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.app-sidebar .sidebar-support-shell,
+.app-sidebar .sidebar-support-card,
+.app-sidebar .sidebar-support-link {
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.app-sidebar .sidebar-support-card {
+  border: 1px solid rgba(226,232,240,.92) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  padding: 8px !important;
+}
+
+html.dark .app-sidebar .sidebar-support-card {
+  border-color: rgba(51,65,85,.88) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.app-sidebar .sidebar-support-link {
+  min-height: 36px !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(203,213,225,.95) !important;
+  border-radius: 14px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(30 41 59) !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.2 !important;
+  transform: none !important;
+}
+
+.app-sidebar .sidebar-support-link:hover {
+  background: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+  transform: none !important;
+}
+
+html.dark .app-sidebar .sidebar-support-link {
+  border-color: rgba(71,85,105,.88) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+html.dark .app-sidebar .sidebar-support-link:hover {
+  background: rgb(30 41 59) !important;
+  color: rgb(248 250 252) !important;
+}
+
+/* ===== SETTINGS DATA MANAGEMENT ROOT FIX =====
+   Backup/Data Management used gradient and semi-transparent glass surfaces.
+   On Chromium + backdrop layers this appeared as a top-to-bottom fade over the whole panel.
+   Keep this tab fully solid and isolate every decorative layer. */
+.settings-shell .settings-data-panel,
+.settings-shell .settings-data-root-card,
+.settings-shell .settings-data-card {
+  position: relative !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.settings-shell .settings-data-root-card,
+.settings-shell .settings-data-card {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  box-shadow: none !important;
+}
+
+html.dark .settings-shell .settings-data-root-card,
+html.dark .settings-shell .settings-data-card {
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.settings-shell .settings-data-panel :where(.bg-gradient-to-br, .bg-gradient-to-l, .bg-gradient-to-r, [class*="radial-gradient"], [class*="linear-gradient"]) {
+  background-image: none !important;
+}
+
+.settings-shell .settings-data-panel :where([class*="from-white"], [class*="via-white"], [class*="to-slate"], [class*="dark:from-"], [class*="dark:via-"], [class*="dark:to-"]) {
+  background-image: none !important;
+}
+
+.settings-shell .settings-data-panel :where(.backdrop-blur, .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-lg, .backdrop-blur-xl) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.settings-shell .settings-data-panel :where(.settings-data-root-card, .settings-data-card) > .pointer-events-none.absolute,
+.settings-shell .settings-data-panel :where(.settings-data-root-card, .settings-data-card)::before,
+.settings-shell .settings-data-panel :where(.settings-data-root-card, .settings-data-card)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.settings-shell .settings-data-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+}
+
+html.dark .settings-shell .settings-data-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  color: rgb(241 245 249) !important;
+  opacity: 1 !important;
+}
+
+.settings-shell .settings-data-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .settings-shell .settings-data-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(148 163 184) !important;
+}
+
+.settings-shell .settings-data-panel :where(button, .ux-btn) {
+  min-height: 36px !important;
+}
+
+/* ===== DASHBOARD CARD MANAGER ROOT FADE FIX =====
+   When Dashboard > Card Management is opened, decorative gradients/blurred layers from
+   the hero and manager panels must stay inside their own surfaces. Keep the manager
+   workspace solid so the page does not look faded from top to bottom. */
+.dashboard-page.dashboard-solid-mode,
+.dashboard-page.dashboard-solid-mode .dashboard-hero-panel,
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel,
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-section {
+  position: relative !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-hero-panel,
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel {
+  overflow: hidden !important;
+  background: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-hero-panel,
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel {
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-section {
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-section {
+  background: rgb(15 23 42) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+/* Disable escaped decorative layers only inside dashboard manager/hero surfaces. */
+.dashboard-page.dashboard-solid-mode :where(.dashboard-hero-panel, .dashboard-card-manager-panel) > .pointer-events-none.absolute,
+.dashboard-page.dashboard-solid-mode :where(.dashboard-hero-panel, .dashboard-card-manager-panel)::before,
+.dashboard-page.dashboard-solid-mode :where(.dashboard-hero-panel, .dashboard-card-manager-panel)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(
+  .bg-gradient-to-br,
+  .bg-gradient-to-l,
+  .bg-gradient-to-r,
+  [class*="radial-gradient"],
+  [class*="linear-gradient"]
+) {
+  background-image: none !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl
+) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Keep cards inside manager solid/readable; avoid glass-on-glass fading. */
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.bg-white\/80, .bg-white\/85, .bg-white\/88, .bg-white\/90, .bg-white\/95) {
+  background-color: #fff !important;
+}
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.bg-slate-50\/70, .bg-slate-50\/80, .bg-slate-50\/85, .bg-slate-50\/90) {
+  background-color: rgb(248 250 252) !important;
+}
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.dark\:bg-slate-950\/70, .dark\:bg-slate-950\/78, .dark\:bg-slate-950\/80, .dark\:bg-slate-950\/95) {
+  background-color: rgb(2 6 23) !important;
+}
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.dark\:bg-slate-900\/70, .dark\:bg-slate-900\/80) {
+  background-color: rgb(15 23 42) !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+}
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  color: rgb(241 245 249) !important;
+  opacity: 1 !important;
+}
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(100 116 139) !important;
+}
+html.dark .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(148 163 184) !important;
+}
+
+
+/* ===== Source: styles/runtime-overrides/03f-stable-panels-dashboard-clock.css — Stable panels, dashboard card manager, dashboard clock ===== */
+/* ===== GLOBAL STABLE PANEL STANDARD =====
+   Root UI/UX rule for popovers, modals, sheets, dashboard card-management and settings workspaces:
+   surfaces must be solid, isolated and readable. Decorative blur/gradient layers are allowed only
+   when explicitly contained; escaped absolute layers are disabled on operational panels. */
+.ux-stable-panel,
+.ux-stable-floating-panel,
+.ux-stable-modal-panel,
+.modal-surface,
+.command-palette-panel,
+.dashboard-card-manager-panel,
+.settings-data-root-card,
+.settings-data-card {
+  position: relative !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-image: none !important;
+}
+
+.ux-stable-panel,
+.ux-stable-floating-panel,
+.ux-stable-modal-panel,
+.command-palette-panel,
+.modal-surface {
+  background-color: #fff !important;
+  border-color: rgb(226 232 240) !important;
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .ux-stable-panel,
+html.dark .ux-stable-floating-panel,
+html.dark .ux-stable-modal-panel,
+html.dark .command-palette-panel,
+html.dark .modal-surface {
+  background-color: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.ux-stable-floating-panel,
+.ux-stable-popover {
+  box-shadow: 0 18px 50px -32px rgba(15, 23, 42, .34) !important;
+}
+
+.ux-stable-modal-panel,
+.modal-surface {
+  box-shadow: 0 28px 80px -42px rgba(15, 23, 42, .42) !important;
+}
+
+.ux-overlay-backdrop {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Disable the exact class of escaped decoration that caused top-to-bottom fading. */
+.ux-stable-panel > .pointer-events-none.absolute,
+.ux-stable-modal-panel > .pointer-events-none.absolute,
+.ux-stable-floating-panel > .pointer-events-none.absolute,
+.modal-surface > .pointer-events-none.absolute,
+.command-palette-panel > .pointer-events-none.absolute,
+.dashboard-card-manager-panel > .pointer-events-none.absolute,
+.dashboard-hero-panel > .pointer-events-none.absolute,
+.settings-data-root-card > .pointer-events-none.absolute,
+.settings-data-card > .pointer-events-none.absolute,
+.ux-stable-panel::before,
+.ux-stable-panel::after,
+.ux-stable-modal-panel::before,
+.ux-stable-modal-panel::after,
+.ux-stable-floating-panel::before,
+.ux-stable-floating-panel::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Keep operational controls compact and touch-safe; avoid the oversized-button regression. */
+.ux-stable-panel :where(button:not(.ux-btn-lg), .ux-btn:not(.ux-btn-lg)),
+.dashboard-card-manager-panel :where(button:not(.ux-btn-lg), .ux-btn:not(.ux-btn-lg)),
+.settings-data-panel :where(button:not(.ux-btn-lg), .ux-btn:not(.ux-btn-lg)) {
+  min-height: 34px;
+}
+
+.ux-stable-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold),
+.ux-stable-floating-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold),
+.ux-stable-modal-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  opacity: 1 !important;
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .ux-stable-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold),
+html.dark .ux-stable-floating-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold),
+html.dark .ux-stable-modal-panel :where(h1, h2, h3, h4, .font-black, .font-bold, .font-semibold) {
+  color: rgb(241 245 249) !important;
+}
+
+.ux-stable-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400),
+.ux-stable-floating-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400),
+.ux-stable-modal-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .ux-stable-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400),
+html.dark .ux-stable-floating-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400),
+html.dark .ux-stable-modal-panel :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: rgb(148 163 184) !important;
+}
+
+/* Dashboard widget edit mode: the handle stays solid; no nested glass-on-glass while dragging/resizing. */
+.dashboard-page.dashboard-solid-mode .react-grid-item .dash-drag-handle {
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .dashboard-page.dashboard-solid-mode .react-grid-item .dash-drag-handle {
+  background: rgb(15 23 42) !important;
+  background-image: none !important;
+}
+
+/* ===== Apple Minimal polish — Backup, Dashboard Clock, Card Manager ===== */
+.settings-data-panel .backup-scheduler-shell,
+.settings-data-panel .backup-auto-card,
+.settings-data-panel .settings-data-card {
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 14px 36px -30px rgba(15, 23, 42, .20) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .settings-data-panel .backup-scheduler-shell,
+html.dark .settings-data-panel .backup-auto-card,
+html.dark .settings-data-panel .settings-data-card {
+  background-color: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.settings-data-panel .backup-scheduler-shell :where([class*="bg-emerald-"], [class*="bg-indigo-"], [class*="bg-amber-"], [class*="bg-sky-"]) {
+  background-color: rgb(248 250 252) !important;
+  background-image: none !important;
+}
+
+html.dark .settings-data-panel .backup-scheduler-shell :where([class*="bg-emerald-"], [class*="bg-indigo-"], [class*="bg-amber-"], [class*="bg-sky-"]) {
+  background-color: rgb(15 23 42) !important;
+}
+
+.settings-data-panel .backup-scheduler-shell :where([class*="text-emerald-"], [class*="text-indigo-"], [class*="text-amber-"], [class*="text-sky-"]) {
+  color: rgb(51 65 85) !important;
+}
+
+html.dark .settings-data-panel .backup-scheduler-shell :where([class*="text-emerald-"], [class*="text-indigo-"], [class*="text-amber-"], [class*="text-sky-"]) {
+  color: rgb(203 213 225) !important;
+}
+
+.backup-auto-toggle {
+  cursor: pointer;
+  min-height: 38px !important;
+  user-select: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.84), 0 10px 24px -22px rgba(15,23,42,.24) !important;
+}
+.backup-auto-switch {
+  position: relative;
+  display: inline-flex;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgb(203 213 225);
+  background: rgb(226 232 240);
+  transition: background .18s ease, border-color .18s ease;
+}
+.backup-auto-switch > span {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 4px 10px -5px rgba(15,23,42,.45);
+  transition: transform .18s ease;
+}
+.backup-auto-toggle.is-on .backup-auto-switch {
+  background: rgb(15 23 42);
+  border-color: rgb(15 23 42);
+}
+.backup-auto-toggle.is-on .backup-auto-switch > span {
+  transform: translateX(-16px);
+}
+html.dark .backup-auto-switch {
+  background: rgb(51 65 85);
+  border-color: rgb(71 85 105);
+}
+html.dark .backup-auto-toggle.is-on .backup-auto-switch {
+  background: rgb(241 245 249);
+  border-color: rgb(241 245 249);
+}
+html.dark .backup-auto-toggle.is-on .backup-auto-switch > span {
+  background: rgb(15 23 42);
+}
+
+.dashboard-hero-panel--solid,
+.dashboard-card-manager-panel,
+.dashboard-card-manager-section {
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .dashboard-hero-panel--solid,
+html.dark .dashboard-card-manager-panel,
+html.dark .dashboard-card-manager-section {
+  background-color: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.dashboard-hero-panel--solid > .dashboard-hero-decor,
+.dashboard-card-manager-panel > .dashboard-card-manager-decor,
+.dashboard-card-manager-panel > .pointer-events-none.absolute,
+.dashboard-hero-panel--solid > .pointer-events-none.absolute {
+  display: none !important;
+}
+
+.dashboard-clock-card {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  box-shadow: 0 18px 46px -34px rgba(15, 23, 42, .20) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.dark .dashboard-clock-card {
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+.dashboard-clock-card .dashboard-clock-ambient-layer,
+.dashboard-clock-card > .pointer-events-none.absolute {
+  display: none !important;
+}
+.dashboard-clock-card :where([class*="backdrop-blur"]) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.dashboard-clock-card :where([class*="bg-[linear-gradient"], [class*="bg-[radial-gradient"]) {
+  background-image: none !important;
+  background-color: rgb(248 250 252) !important;
+}
+html.dark .dashboard-clock-card :where([class*="bg-[linear-gradient"], [class*="bg-[radial-gradient"]) {
+  background-color: rgb(15 23 42) !important;
+}
+.dashboard-clock-card :where(.shadow-\[0_28px_78px_-42px_rgba\(76\,29\,149\,0\.35\)\], .shadow-\[0_20px_58px_-36px_rgba\(15\,23\,42\,0\.26\)\]) {
+  box-shadow: none !important;
+}
+.dashboard-clock-card :where(a, button) {
+  min-height: 32px !important;
+}
+.dashboard-card-manager-panel :where(button) {
+  min-height: 32px !important;
+}
+
+
+/* ===== Dashboard card-manager active box hard solid fix =====
+   The "active cards" workspace must never inherit decorative gradients or faded overlays.
+   Keep both manager columns and each widget row as solid executive surfaces. */
+.dashboard-card-manager-surface,
+.dashboard-card-manager-filters,
+.dashboard-card-manager-active,
+.dashboard-card-manager-hidden,
+.dashboard-card-manager-list,
+.dashboard-card-manager-item {
+  position: relative !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.dashboard-card-manager-active,
+.dashboard-card-manager-hidden,
+.dashboard-card-manager-filters {
+  background: #f8fafc !important;
+  border-color: rgb(226 232 240 / 0.95) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 12px 30px -28px rgba(15,23,42,.12) !important;
+}
+
+html.dark .dashboard-card-manager-active,
+html.dark .dashboard-card-manager-hidden,
+html.dark .dashboard-card-manager-filters {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59 / 0.95) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 14px 32px -28px rgba(2,6,23,.48) !important;
+}
+
+.dashboard-card-manager-active::before,
+.dashboard-card-manager-active::after,
+.dashboard-card-manager-hidden::before,
+.dashboard-card-manager-hidden::after,
+.dashboard-card-manager-filters::before,
+.dashboard-card-manager-filters::after,
+.dashboard-card-manager-item::before,
+.dashboard-card-manager-item::after {
+  content: none !important;
+  display: none !important;
+}
+
+.dashboard-card-manager-active .dashboard-card-manager-list,
+.dashboard-card-manager-hidden .dashboard-card-manager-list {
+  background: transparent !important;
+}
+
+.dashboard-card-manager-item {
+  background: #ffffff !important;
+  border-color: rgb(226 232 240 / 0.92) !important;
+  box-shadow: 0 10px 24px -24px rgba(15,23,42,.12) !important;
+}
+
+html.dark .dashboard-card-manager-item {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59 / 0.92) !important;
+  box-shadow: 0 12px 26px -24px rgba(2,6,23,.45) !important;
+}
+
+.dashboard-card-manager-active :where([class*="bg-gradient"], [class*="radial-gradient"], [class*="linear-gradient"]),
+.dashboard-card-manager-hidden :where([class*="bg-gradient"], [class*="radial-gradient"], [class*="linear-gradient"]),
+.dashboard-card-manager-item :where([class*="bg-gradient"], [class*="radial-gradient"], [class*="linear-gradient"]) {
+  background-image: none !important;
+}
+
+.dashboard-card-manager-active :where(.bg-white\/80, .bg-white\/85, .bg-white\/90, .bg-slate-50\/80, .bg-slate-50\/90),
+.dashboard-card-manager-hidden :where(.bg-white\/80, .bg-white\/85, .bg-white\/90, .bg-slate-50\/80, .bg-slate-50\/90) {
+  background-color: transparent !important;
+}
+
+.dashboard-card-manager-active :where(button, label, input, select),
+.dashboard-card-manager-hidden :where(button, label, input, select) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+
+
+
+/* ===== Phase 10 scoped Dashboard Smart Widget contract ===== */
+:root {
+  --dashboard-surface: #ffffff;
+  --dashboard-surface-muted: rgb(248 250 252);
+  --dashboard-border: rgb(226 232 240);
+  --dashboard-text: rgb(15 23 42);
+  --dashboard-text-muted: rgb(100 116 139);
+  --dashboard-radius-xl: 24px;
+  --dashboard-radius-2xl: 28px;
+  --dashboard-shadow-soft: 0 18px 45px -36px rgba(15, 23, 42, 0.26);
+  --dashboard-shadow-hover: 0 24px 62px -40px rgba(15, 23, 42, 0.30);
+}
+
+html.dark {
+  --dashboard-surface: rgb(2 6 23);
+  --dashboard-surface-muted: rgb(15 23 42);
+  --dashboard-border: rgb(30 41 59);
+  --dashboard-text: rgb(241 245 249);
+  --dashboard-text-muted: rgb(148 163 184);
+  --dashboard-shadow-soft: none;
+  --dashboard-shadow-hover: none;
+}
+
+.dashboard-page.dashboard-solid-mode {
+  color: var(--dashboard-text);
+}
+
+.dashboard-page.dashboard-solid-mode .react-grid-layout {
+  min-height: 160px;
+}
+
+.dashboard-page.dashboard-solid-mode .react-grid-item {
+  will-change: transform, width, height;
+}
+
+.dashboard-page.dashboard-solid-mode .react-grid-placeholder {
+  border: 1px dashed rgba(71, 85, 105, 0.34) !important;
+  background: rgba(148, 163, 184, 0.14) !important;
+  border-radius: var(--dashboard-radius-xl) !important;
+  opacity: 1 !important;
+}
+
+.dashboard-widget-shell,
+.dashboard-clock-card {
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border) !important;
+  color: var(--dashboard-text) !important;
+  box-shadow: var(--dashboard-shadow-soft) !important;
+}
+
+.dashboard-widget-shell:hover,
+.dashboard-clock-card:hover {
+  box-shadow: var(--dashboard-shadow-hover) !important;
+}
+
+.dashboard-widget-shell > .dashboard-widget-content {
+  min-width: 0;
+  min-height: 0;
+}
+
+.dashboard-widget-shell .dash-drag-handle {
+  min-height: 52px;
+  background: var(--dashboard-surface-muted) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+.dashboard-widget-shell :where(.premium-stat-card, .premium-data-panel, .premium-chart-stage),
+.dashboard-clock-card :where(.premium-stat-card, .premium-data-panel, .premium-chart-stage) {
+  border-color: var(--dashboard-border) !important;
+}
+
+.dashboard-page.dashboard-solid-mode :where(.dashboard-card-manager-section, .dashboard-card-manager-item) {
+  box-shadow: none !important;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-item {
+  min-width: 0;
+}
+
+.dashboard-page.dashboard-solid-mode .dashboard-card-manager-item :where(button, a) {
+  white-space: nowrap;
+}
+
+.dashboard-quick-action-link {
+  min-height: 52px;
+  box-shadow: none !important;
+}
+
+.dashboard-add-widget-modal {
+  max-height: min(86vh, 860px);
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-add-widget-modal__header,
+.dashboard-add-widget-modal__footer {
+  flex: 0 0 auto;
+}
+
+.dashboard-add-widget-modal__body {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.dashboard-add-widget-card {
+  min-width: 0;
+}
+
+.dashboard-add-widget-card :where(button) {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .dashboard-page.dashboard-solid-mode {
+    padding-inline: 0.75rem !important;
+  }
+
+  .dashboard-page.dashboard-solid-mode .dashboard-hero-panel,
+  .dashboard-page.dashboard-solid-mode .dashboard-card-manager-panel,
+  .dashboard-widget-shell,
+  .dashboard-clock-card {
+    border-radius: 22px !important;
+  }
+
+  .dashboard-widget-shell .dash-drag-handle {
+    gap: 0.5rem;
+    padding-inline: 0.65rem !important;
+  }
+
+  .dashboard-add-widget-modal {
+    width: min(96vw, 720px) !important;
+    max-height: 88vh;
+    border-radius: 24px !important;
+  }
+
+  .dashboard-add-widget-modal__header,
+  .dashboard-add-widget-modal__body,
+  .dashboard-add-widget-modal__footer {
+    padding-inline: 1rem !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-add-widget-modal__footer {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .dashboard-add-widget-modal__footer button {
+    width: 100%;
+  }
+}
+
+/* ===== Smart Clock readability hardening =====
+   Prevent the redesigned clock from inheriting faded / disabled-looking opacity
+   from global dashboard polish layers. Keep Apple-minimal surfaces readable. */
+.dashboard-smart-clock-card,
+.dashboard-smart-clock-card * {
+  filter: none !important;
+}
+
+.dashboard-smart-clock-card {
+  opacity: 1 !important;
+  background-color: #fff !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+html.dark .dashboard-smart-clock-card {
+  background-color: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.dashboard-smart-clock-card :where(p, h3, div, span, button) {
+  opacity: 1 !important;
+}
+
+.dashboard-smart-clock-card :where(.text-slate-300, .text-slate-400, .text-slate-500) {
+  color: rgb(71 85 105) !important;
+}
+
+html.dark .dashboard-smart-clock-card :where(.text-slate-300, .text-slate-400, .text-slate-500) {
+  color: rgb(203 213 225) !important;
+}
+
+.dashboard-smart-clock-card[data-dashboard-clock-mode='cinematic'] {
+  background-color: #fff !important;
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .dashboard-smart-clock-card[data-dashboard-clock-mode='cinematic'] {
+  background-color: rgb(2 6 23) !important;
+  color: rgb(248 250 252) !important;
+}
+
+.dashboard-smart-clock-card[data-dashboard-clock-mode='cinematic'] :where(.text-white) {
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .dashboard-smart-clock-card[data-dashboard-clock-mode='cinematic'] :where(.text-white) {
+  color: rgb(248 250 252) !important;
+}

@@ -1,0 +1,149 @@
+/* Stage 31 - Financial Overview KPI card hard reset
+   Root fix: stop using the shared premium-stat-card surface for this page's executive KPI tiles.
+   The Financial Overview metrics now use fo-metric-card, which has no shimmer, glow, overlay, or inner text surface. */
+
+.financial-overview-redesign-v1 .fo-metric-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 82px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  border-radius: 18px;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: hidden;
+  padding: 13px 14px;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card,
+.financial-overview-redesign-v1 .fo-metric-card *,
+.financial-overview-redesign-v1 .fo-metric-card *::before,
+.financial-overview-redesign-v1 .fo-metric-card *::after {
+  filter: none !important;
+  backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card::before,
+.financial-overview-redesign-v1 .fo-metric-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  text-align: right;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__label,
+.financial-overview-redesign-v1 .fo-metric-card__value,
+.financial-overview-redesign-v1 .fo-metric-card__hint {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  padding: 0 !important;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__label {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.65;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__value {
+  color: #0f172a;
+  font-size: clamp(16px, 1.24vw, 19px);
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__hint {
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 750;
+  line-height: 1.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  place-items: center;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 13px;
+  background: #f8fafc;
+  box-shadow: none !important;
+  font-size: 13px;
+}
+
+.financial-overview-redesign-v1 .fo-metric-card__value--neutral { color: #0f172a; }
+.financial-overview-redesign-v1 .fo-metric-card__value--good { color: #047857; }
+.financial-overview-redesign-v1 .fo-metric-card__value--warn { color: #b45309; }
+.financial-overview-redesign-v1 .fo-metric-card__value--bad { color: #be123c; }
+.financial-overview-redesign-v1 .fo-metric-card__value--info { color: #0369a1; }
+
+.financial-overview-redesign-v1 .fo-metric-card__icon--neutral { color: #334155; }
+.financial-overview-redesign-v1 .fo-metric-card__icon--good { color: #059669; background: #ecfdf5; border-color: rgba(16,185,129,.18); }
+.financial-overview-redesign-v1 .fo-metric-card__icon--warn { color: #d97706; background: #fffbeb; border-color: rgba(245,158,11,.2); }
+.financial-overview-redesign-v1 .fo-metric-card__icon--bad { color: #e11d48; background: #fff1f2; border-color: rgba(244,63,94,.18); }
+.financial-overview-redesign-v1 .fo-metric-card__icon--info { color: #2563eb; background: #eff6ff; border-color: rgba(59,130,246,.18); }
+
+.dark .financial-overview-redesign-v1 .fo-metric-card {
+  border-color: rgba(51, 65, 85, 0.82);
+  background: rgba(15, 23, 42, 0.86) !important;
+}
+
+.dark .financial-overview-redesign-v1 .fo-metric-card__label,
+.dark .financial-overview-redesign-v1 .fo-metric-card__hint {
+  color: #94a3b8;
+}
+
+.dark .financial-overview-redesign-v1 .fo-metric-card__value--neutral {
+  color: #f8fafc;
+}
+
+.dark .financial-overview-redesign-v1 .fo-metric-card__icon {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(2, 6, 23, 0.7);
+}
+
+/* Defensive: older premium-stat cards may still appear in modals or fallback states; keep them plain too. */
+.financial-overview-redesign-v1 :where(.premium-stat-card, [data-ui-surface="kpi-card"]) {
+  background-image: none !important;
+}
+
+@media (max-width: 640px) {
+  .financial-overview-redesign-v1 .fo-metric-card {
+    min-height: 78px;
+    padding: 12px;
+  }
+}

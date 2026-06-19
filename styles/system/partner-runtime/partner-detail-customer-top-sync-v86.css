@@ -1,0 +1,123 @@
+
+/* v86 — Structural sync: PartnerDetail top mirrors finalized CustomerDetail top.
+   Scope: hero + top overview only. Partner-specific sections remain below. */
+
+.partner-detail-customer-parity-v86 {
+  overflow: hidden !important;
+  border-radius: 28px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.partner-detail-customer-parity-v86 .detail-hero-card__head {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, .08), transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.96)) !important;
+  padding: 24px !important;
+}
+
+.partner-overview-hero-top-v86 {
+  align-items: flex-start !important;
+  min-width: 0 !important;
+}
+
+.partner-overview-identity-v86 {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+.partner-hero-chip-row-v86 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-hero-chip-row-v86 > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-actions-customer-parity-v86 {
+  min-width: 0 !important;
+  max-width: 48% !important;
+  justify-content: flex-end !important;
+  align-self: flex-start !important;
+}
+
+.partner-detail-actions-customer-parity-v86 :where(button, .ux-btn, .people-action-btn) {
+  min-height: 34px !important;
+  height: 34px !important;
+  border-radius: 13px !important;
+  padding-inline: 12px !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.partner-overview-dashboard-v86 {
+  margin-top: 18px !important;
+}
+
+.partner-overview-dashboard-grid-v86 {
+  align-items: stretch !important;
+}
+
+.partner-overview-card-v86 {
+  min-width: 0 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.partner-overview-card-v86 * {
+  min-width: 0;
+}
+
+/* Remove older partner-only action reflow visuals when this structural sync exists */
+.partner-detail-customer-parity-v86 .partner-detail-safe-actions-v85,
+.partner-detail-customer-parity-v86 .partner-detail-actions-v82 {
+  display: none !important;
+}
+
+/* Keep subsequent partner sections cleanly separated */
+.partner-detail-customer-parity-v86 + .partner-phone-capital-section {
+  margin-top: 20px !important;
+}
+
+/* Responsive: exactly like customer top — actions go full width below identity. */
+@media (max-width: 1024px) {
+  .partner-detail-actions-customer-parity-v86 {
+    max-width: 100% !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  .partner-detail-actions-customer-parity-v86 :where(button, .ux-btn, .people-action-btn) {
+    flex: 1 1 calc(50% - 8px) !important;
+  }
+
+  .partner-overview-dashboard-grid-v86 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-detail-customer-parity-v86 .detail-hero-card__head {
+    padding: 16px !important;
+  }
+
+  .partner-detail-actions-customer-parity-v86 :where(button, .ux-btn, .people-action-btn) {
+    flex-basis: 100% !important;
+  }
+}
+
+.dark .partner-detail-customer-parity-v86 {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.dark .partner-detail-customer-parity-v86 .detail-hero-card__head {
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, .12), transparent 36%),
+    linear-gradient(180deg, rgba(15,23,42,.99), rgba(2,6,23,.96)) !important;
+}

@@ -1,0 +1,45 @@
+/* Stage 111 — Partner report tabs flush-right alignment
+   Keep tabs horizontal/responsive, but make the tab group start from the true RTL edge. */
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  direction: rtl !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  margin-inline-start: 0 !important; /* RTL right edge */
+  margin-inline-end: auto !important;  /* push remaining space to left */
+  align-self: flex-start !important;
+  justify-content: flex-start !important;
+  justify-items: start !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 8px !important;
+  padding-block: 8px !important;
+  box-sizing: border-box !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button:first-child {
+  margin-inline-start: 0 !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button {
+  flex: 0 0 auto !important;
+}
+
+@media (min-width: 1180px) {
+  .partner-performance-executive-page .partner-report-tabs-shell {
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: auto !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-report-tabs-shell {
+    width: 100% !important;
+    margin-inline: 0 !important;
+    padding-inline: 7px !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+  }
+}

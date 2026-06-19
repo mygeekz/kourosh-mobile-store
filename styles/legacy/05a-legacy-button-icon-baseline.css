@@ -1,0 +1,87 @@
+/* Phase 26: button and quick-link refinement */
+.ux-btn {
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  white-space: nowrap;
+}
+
+.ux-btn__content {
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.ux-btn__label {
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.ux-btn__label-main {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before {
+  width: 1.9rem;
+  height: 1.9rem;
+  min-width: 1.9rem;
+  border-radius: 9999px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.20);
+  color: currentColor;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.20);
+}
+
+.ux-btn-secondary .ux-btn__icon,
+.ux-btn-ghost .ux-btn__icon,
+.ux-btn--native.ux-btn-secondary[data-ux-icon-glyph]::before,
+.ux-btn--native.ux-btn-ghost[data-ux-icon-glyph]::before {
+  background: rgba(15, 23, 42, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.dark .ux-btn-secondary .ux-btn__icon,
+.dark .ux-btn-ghost .ux-btn__icon,
+.dark .ux-btn--native.ux-btn-secondary[data-ux-icon-glyph]::before,
+.dark .ux-btn--native.ux-btn-ghost[data-ux-icon-glyph]::before {
+  background: rgba(148, 163, 184, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ux-btn-primary,
+.ux-btn-success,
+.ux-btn-warning,
+.ux-btn-danger {
+  color: rgb(255 255 255);
+}
+
+.ux-btn-primary i,
+.ux-btn-primary svg,
+.ux-btn-success i,
+.ux-btn-success svg,
+.ux-btn-warning i,
+.ux-btn-warning svg,
+.ux-btn-danger i,
+.ux-btn-danger svg {
+  color: currentColor;
+}
+
+.ux-btn-secondary,
+.ux-btn-ghost {
+  color: rgb(15 23 42);
+  border-color: rgba(203, 213, 225, 0.92);
+}
+
+.dark .ux-btn-secondary,
+.dark .ux-btn-ghost {
+  color: rgb(241 245 249);
+  border-color: rgba(71, 85, 105, 0.92);
+}
+

@@ -1,0 +1,411 @@
+/* Phase 04 — Telegram Message Composer Redesign
+   Scope: only MessageComposerModal visual layout. No behavioral contract changes. */
+
+.message-composer-apple {
+  --composer-surface: rgba(255, 255, 255, 0.94);
+  --composer-surface-muted: rgba(248, 250, 252, 0.96);
+  --composer-border: rgba(226, 232, 240, 0.92);
+  --composer-ink: rgb(15, 23, 42);
+  --composer-muted: rgb(100, 116, 139);
+  --composer-soft: rgb(241, 245, 249);
+  --composer-radius-lg: 28px;
+  --composer-radius-md: 20px;
+  --composer-shadow: 0 22px 58px -44px rgba(15, 23, 42, 0.42);
+}
+
+.dark .message-composer-apple {
+  --composer-surface: rgba(15, 23, 42, 0.92);
+  --composer-surface-muted: rgba(2, 6, 23, 0.48);
+  --composer-border: rgba(51, 65, 85, 0.86);
+  --composer-ink: rgb(248, 250, 252);
+  --composer-muted: rgb(148, 163, 184);
+  --composer-soft: rgba(30, 41, 59, 0.84);
+  --composer-shadow: 0 26px 70px -48px rgba(0, 0, 0, 0.76);
+}
+
+.message-composer-apple .product-modal-apple-shell {
+  gap: 1rem !important;
+}
+
+.message-composer-hero {
+  border: 1px solid var(--composer-border) !important;
+  background: var(--composer-surface) !important;
+  box-shadow: var(--composer-shadow) !important;
+  overflow: hidden;
+}
+
+.message-composer-hero__top {
+  align-items: flex-start !important;
+  gap: 1rem !important;
+}
+
+.message-composer-hero__copy {
+  max-width: 680px;
+}
+
+.message-composer-badge {
+  width: fit-content;
+  border: 1px solid var(--composer-border) !important;
+  background: var(--composer-surface-muted) !important;
+  color: var(--composer-ink) !important;
+}
+
+.message-composer-apple-summary {
+  min-width: 260px;
+  border: 1px solid var(--composer-border) !important;
+  background: var(--composer-surface-muted) !important;
+  border-radius: 22px !important;
+  padding: .72rem !important;
+}
+
+.message-composer-apple-summary .product-modal-apple-summary__item {
+  min-width: 0;
+}
+
+.message-composer-apple-summary .product-modal-apple-summary__item strong {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message-composer-readiness {
+  margin-top: 1rem;
+  display: grid;
+  gap: .72rem;
+  border-top: 1px solid var(--composer-border);
+  padding-top: .95rem;
+}
+
+.message-composer-readiness__bar {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--composer-soft);
+}
+
+.message-composer-readiness__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--composer-ink);
+  transition: width .22s ease;
+}
+
+.dark .message-composer-readiness__bar span {
+  background: rgb(248, 250, 252);
+}
+
+.message-composer-readiness__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.message-composer-readiness__items span {
+  display: inline-flex;
+  align-items: center;
+  gap: .36rem;
+  min-height: 28px;
+  border: 1px solid var(--composer-border);
+  border-radius: 999px;
+  background: var(--composer-surface-muted);
+  color: var(--composer-muted);
+  font-size: .73rem;
+  font-weight: 800;
+  padding: .28rem .62rem;
+}
+
+.message-composer-readiness__items span.is-done {
+  color: var(--composer-ink);
+  background: var(--composer-surface);
+}
+
+.message-composer-readiness__items span.is-done i {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--composer-ink);
+  color: var(--composer-surface);
+  font-size: .62rem;
+}
+
+.dark .message-composer-readiness__items span.is-done i {
+  background: rgb(248, 250, 252);
+  color: rgb(15, 23, 42);
+}
+
+.message-composer-apple-grid {
+  grid-template-columns: minmax(300px, .9fr) minmax(380px, 1.1fr) !important;
+  align-items: stretch !important;
+  gap: 1rem !important;
+}
+
+.message-composer-apple .product-modal-apple-section {
+  border: 1px solid var(--composer-border) !important;
+  background: var(--composer-surface) !important;
+  border-radius: var(--composer-radius-lg) !important;
+  box-shadow: var(--composer-shadow) !important;
+}
+
+.message-composer-apple .product-modal-apple-section__head {
+  align-items: center !important;
+  border-bottom: 1px solid var(--composer-border);
+  margin-bottom: .95rem;
+  padding-bottom: .9rem;
+}
+
+.message-composer-apple .product-modal-apple-section__head h4 {
+  letter-spacing: -.01em;
+}
+
+.message-composer-apple .product-modal-apple-section__head p {
+  color: var(--composer-muted) !important;
+}
+
+.message-composer-segment {
+  background: var(--composer-surface-muted) !important;
+  border: 1px solid var(--composer-border) !important;
+  padding: .34rem !important;
+  border-radius: 24px !important;
+}
+
+.message-composer-segment .apple-choice-toggle {
+  min-height: 46px;
+  border-radius: 18px !important;
+  justify-content: center;
+}
+
+.message-composer-channel-grid {
+  gap: .65rem !important;
+}
+
+.message-composer-channel.apple-choice-toggle {
+  min-height: 64px !important;
+  border-radius: 22px !important;
+  box-shadow: none !important;
+}
+
+.message-composer-channel.apple-choice-toggle.is-active,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"] {
+  border-color: var(--composer-ink) !important;
+  background: var(--composer-surface) !important;
+  box-shadow: inset 0 0 0 1px var(--composer-ink), var(--composer-shadow) !important;
+}
+
+.message-composer-channel.apple-choice-toggle.is-active::after,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"]::after {
+  inset-inline-start: .78rem !important;
+}
+
+.message-composer-mini-actions {
+  border-radius: 20px !important;
+  background: var(--composer-surface-muted) !important;
+  border-color: var(--composer-border) !important;
+}
+
+.message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 168px !important;
+  border-radius: 22px !important;
+  font-size: .9rem !important;
+  line-height: 2 !important;
+  background: var(--composer-surface-muted) !important;
+}
+
+.message-composer-templates {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .52rem !important;
+  margin-bottom: .95rem !important;
+}
+
+.message-composer-templates button {
+  justify-content: flex-start !important;
+  min-height: 42px !important;
+  border-radius: 16px !important;
+  background: var(--composer-surface-muted) !important;
+  border: 1px solid var(--composer-border) !important;
+  color: var(--composer-ink) !important;
+  box-shadow: none !important;
+}
+
+.message-composer-templates button i {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 10px;
+  background: var(--composer-soft);
+  color: var(--composer-ink);
+  font-size: .76rem;
+}
+
+.message-composer-templates button:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--composer-ink) 34%, var(--composer-border)) !important;
+}
+
+.message-composer-chatbox {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.message-composer-preview__head {
+  margin-bottom: .68rem;
+}
+
+.message-composer-chatbox__surface {
+  overflow: hidden;
+  border: 1px solid var(--composer-border);
+  border-radius: 28px;
+  background: var(--composer-surface-muted);
+}
+
+.message-composer-chatbox__header {
+  display: flex;
+  align-items: center;
+  gap: .72rem;
+  border-bottom: 1px solid var(--composer-border);
+  background: var(--composer-surface);
+  padding: .85rem .95rem;
+}
+
+.message-composer-chatbox__avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 16px;
+  background: var(--composer-ink);
+  color: var(--composer-surface);
+}
+
+.dark .message-composer-chatbox__avatar {
+  background: rgb(248, 250, 252);
+  color: rgb(15, 23, 42);
+}
+
+.message-composer-chatbox__header div {
+  display: grid;
+  gap: .08rem;
+  min-width: 0;
+  text-align: right;
+}
+
+.message-composer-chatbox__header strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--composer-ink);
+  font-size: .9rem;
+  font-weight: 900;
+}
+
+.message-composer-chatbox__header small {
+  color: var(--composer-muted);
+  font-size: .74rem;
+  font-weight: 750;
+}
+
+.message-composer-chatbox__header em {
+  margin-inline-start: auto;
+  border: 1px solid var(--composer-border);
+  border-radius: 999px;
+  background: var(--composer-surface-muted);
+  color: var(--composer-muted);
+  font-size: .7rem;
+  font-style: normal;
+  font-weight: 850;
+  padding: .28rem .58rem;
+  white-space: nowrap;
+}
+
+.message-composer-chatbox__body {
+  display: flex;
+  justify-content: flex-start;
+  min-height: 176px;
+  padding: 1rem;
+}
+
+.message-composer-chatbox__bubble {
+  max-width: min(92%, 560px);
+  min-width: 180px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border: 1px solid var(--composer-border);
+  border-radius: 24px 24px 8px 24px;
+  background: var(--composer-surface);
+  color: var(--composer-ink);
+  box-shadow: var(--composer-shadow);
+  line-height: 2;
+  padding: .92rem 1rem;
+  text-align: right;
+}
+
+.message-composer-chatbox__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .72rem;
+  border-top: 1px solid var(--composer-border);
+  color: var(--composer-muted);
+  font-size: .72rem;
+  font-weight: 800;
+  padding: .68rem .95rem;
+}
+
+.message-composer-chatbox__footer span {
+  display: inline-flex;
+  align-items: center;
+  gap: .36rem;
+}
+
+.message-composer-actions {
+  border: 1px solid var(--composer-border) !important;
+  border-radius: 26px !important;
+  background: var(--composer-surface) !important;
+  box-shadow: var(--composer-shadow) !important;
+}
+
+@media (max-width: 980px) {
+  .message-composer-apple-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .message-composer-apple-summary {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .message-composer-hero__top,
+  .message-composer-preview__head,
+  .message-composer-chatbox__header,
+  .message-composer-chatbox__footer {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .message-composer-chatbox__header em {
+    margin-inline-start: 0;
+  }
+
+  .message-composer-templates {
+    grid-template-columns: 1fr !important;
+  }
+
+  .message-composer-readiness__items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .message-composer-readiness__items span {
+    justify-content: center;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "phase": 58,
+  "title": "Mobile Phones Manual Selector Consolidation — Pass 1",
+  "target_file": "styles/system/mobile-phones-foundation.css",
+  "changed_selectors": [
+    ".phone-addable-autocomplete",
+    ".phone-addable-autocomplete__menu"
+  ],
+  "method": "Moved z-index/menu positioning declarations into the later canonical blocks and removed earlier scattered blocks; no JSX/API/business logic changed.",
+  "blocks_removed": 2,
+  "declarations_preserved": 4,
+  "lines_after": 994,
+  "important_after": 112,
+  "bytes_after": 25411,
+  "qa": {
+    "css_files": 152,
+    "textual_newline_issues": [],
+    "brace_balance_issues": [],
+    "css_import_count": 58,
+    "missing_css_imports": [],
+    "runtime_override_imports": []
+  }
+}

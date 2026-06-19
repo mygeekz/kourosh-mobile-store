@@ -1,0 +1,180 @@
+
+/* v83 — PartnerDetail responsive breakpoint fix.
+   Symptom: layout is correct at browser zoom 80%, broken at 100%.
+   Cause: viewport breakpoint says desktop, but actual content width is smaller because
+   of app sidebar / detail panel / browser chrome. Force the partner hero to collapse
+   earlier and cap every overflowing child. */
+
+/* Hard contain the detail page horizontally */
+.partner-detail-responsive-root,
+.partner-detail-apple,
+.partner-detail-apple *,
+.partner-detail-responsive-root * {
+  box-sizing: border-box !important;
+}
+
+.partner-detail-responsive-root,
+.partner-detail-apple {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: hidden !important;
+}
+
+/* Root cards and sections should never be wider than their parent */
+.partner-detail-hero-clean,
+.detail-hero-card.partner-detail-hero-clean,
+.partner-detail-section-shell,
+.partner-phone-capital-section,
+.partner-customer-sync-actions,
+.partner-customer-sync-extra-grid,
+.partner-customer-sync-ledger,
+.partner-customer-sync-telegram {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  overflow-x: hidden !important;
+}
+
+/* The action grid is the first thing that breaks at normal zoom.
+   Keep it inside the hero and prevent old CSS from pushing it left. */
+.partner-detail-actions-v82,
+.partner-detail-actions--customer-parity,
+.partner-detail-actions {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  inset: auto !important;
+  transform: none !important;
+  margin-inline: 0 !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Content-width breakpoint: collapse earlier than viewport breakpoint.
+   1500px is intentional because the app has fixed sidebars and the actual
+   content column is much narrower than the browser viewport. */
+@media (max-width: 1500px) {
+  .partner-detail-hero-clean .partner-detail-hero__top,
+  .partner-detail-hero-clean .partner-detail-hero__top--v82,
+  .partner-detail-apple .partner-detail-hero__top,
+  .partner-detail-apple .partner-detail-hero__top--v82,
+  .partner-detail-responsive-root .partner-detail-hero__top,
+  .partner-detail-responsive-root .partner-detail-hero__top--v82 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "main"
+      "actions" !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .partner-detail-hero-main-v82,
+  .partner-detail-hero-clean .partner-detail-hero__top > :first-child,
+  .partner-detail-apple .partner-detail-hero__top > :first-child,
+  .partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+    grid-area: main !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-area: actions !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    justify-self: stretch !important;
+    align-self: stretch !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .partner-detail-actions-v82 :where(button, .ux-btn, .people-action-btn),
+  .partner-detail-hero-clean :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn),
+  .partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn),
+  .partner-detail-responsive-root :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn) {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding-inline: 8px !important;
+    border-radius: 13px !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+  }
+}
+
+/* At common laptop / sidebar widths use 2 columns for action buttons. */
+@media (max-width: 1180px) {
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 520px) {
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Long chips in the hero must wrap instead of expanding the card. */
+.partner-detail-hero-clean :where(.people-chip, .partner-telegram-status-chip, [class*="rounded-full"]),
+.partner-detail-apple :where(.people-chip, .partner-telegram-status-chip, [class*="rounded-full"]) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+}
+
+/* The account summary line under the hero contains long chips; make it safe. */
+.partner-detail-account-focus > div,
+.detail-account-focus.partner-detail-account-focus > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+}
+
+.partner-detail-account-focus .people-chip {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}

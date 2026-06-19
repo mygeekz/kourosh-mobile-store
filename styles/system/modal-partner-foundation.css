@@ -1,0 +1,3765 @@
+/* UI Foundation Phase 02: consolidated modal cascade.
+   Source order is intentionally preserved.
+   Do not reorder chunks without visual regression testing. */
+
+/* ===== Source: styles/runtime-overrides/11g-horizontal-payment-modals.css ===== */
+/* Stage 147 — Horizontal payment modals
+   Targets:
+   1) Partner ledger modal: ثبت پرداخت/دریافت به همکار
+   2) Installment payment modal: ثبت پرداخت اقساط
+*/
+
+/* Partner payment modal */
+.partner-payment-modal {
+  display: grid !important;
+  grid-template-columns: minmax(280px, .85fr) minmax(0, 1.35fr) !important;
+  gap: 1rem !important;
+  align-items: start !important;
+}
+
+.partner-payment-modal .people-finance-modal__side,
+.partner-payment-modal .people-finance-modal__main {
+  min-width: 0 !important;
+}
+
+.partner-payment-modal .people-finance-modal__grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .75fr) !important;
+  gap: .85rem !important;
+  align-items: start !important;
+}
+
+.partner-payment-modal .people-ledger-type-grid {
+  display: grid !important;
+  gap: .75rem !important;
+}
+
+.partner-payment-modal .people-ledger-type-card,
+.partner-payment-modal .people-finance-modal__summary,
+.partner-payment-modal .people-finance-modal__main,
+.partner-payment-modal .people-finance-modal__side > div {
+  border-radius: 24px !important;
+}
+
+.partner-payment-modal .people-ledger-type-card__icon,
+.partner-payment-modal .people-finance-modal__balance-icon {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  border-radius: 16px !important;
+}
+
+.partner-payment-modal .people-note-template-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+  margin-top: .65rem !important;
+}
+
+.partner-payment-modal .people-note-template {
+  min-height: 36px !important;
+  border-radius: 14px !important;
+  padding-inline: .75rem !important;
+}
+
+/* Installment payment modal */
+.installment-payment-modal {
+  display: grid !important;
+  grid-template-columns: minmax(300px, .95fr) minmax(0, 1.25fr) !important;
+  gap: 1rem !important;
+  align-items: start !important;
+  direction: rtl !important;
+}
+
+.installment-payment-modal__summary,
+.installment-payment-modal__main {
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 28px !important;
+  padding: 1rem !important;
+  min-width: 0 !important;
+  box-shadow: 0 20px 48px -42px rgba(15, 23, 42, .28) !important;
+}
+
+.installment-payment-modal__summary {
+  background: linear-gradient(180deg, #ffffff, #f8fafc) !important;
+}
+
+.installment-payment-modal__summary-head,
+.installment-payment-modal__form-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: .75rem !important;
+}
+
+.installment-payment-modal__summary-icon,
+.installment-payment-modal__form-head > span {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.installment-payment-modal__eyebrow {
+  font-size: 10px !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+  color: rgb(100 116 139) !important;
+}
+
+.installment-payment-modal h3 {
+  margin-top: .18rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.installment-payment-modal p {
+  margin-top: .25rem !important;
+  color: rgb(71 85 105) !important;
+  font-size: .74rem !important;
+  font-weight: 650 !important;
+  line-height: 1.85 !important;
+}
+
+.installment-payment-modal__status-chip,
+.installment-payment-modal__after-chip {
+  margin-top: .85rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  border-radius: 999px !important;
+  padding: .38rem .7rem !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+.installment-payment-modal__after-chip strong {
+  color: rgb(15 23 42) !important;
+  white-space: nowrap !important;
+}
+
+.installment-payment-modal__metric-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: .65rem !important;
+  margin-top: 1rem !important;
+}
+
+.installment-payment-modal__metric {
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  padding: .75rem !important;
+  min-width: 0 !important;
+}
+
+.installment-payment-modal__metric span,
+.installment-payment-modal__field label,
+.installment-payment-modal__section-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: .42rem !important;
+  color: rgb(100 116 139) !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+  line-height: 1.6 !important;
+}
+
+.installment-payment-modal__metric span i,
+.installment-payment-modal__field label i,
+.installment-payment-modal__section-title i {
+  color: rgb(37 99 235) !important;
+}
+
+.installment-payment-modal__metric strong {
+  display: block !important;
+  margin-top: .38rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: .92rem !important;
+  font-weight: 950 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.installment-payment-modal__metric--success {
+  border-color: rgb(187 247 208) !important;
+  background: rgb(240 253 244) !important;
+}
+
+.installment-payment-modal__metric--success span,
+.installment-payment-modal__metric--success span i,
+.installment-payment-modal__metric--success strong {
+  color: rgb(21 128 61) !important;
+}
+
+.installment-payment-modal__metric--warning {
+  border-color: rgb(253 230 138) !important;
+  background: rgb(255 251 235) !important;
+}
+
+.installment-payment-modal__metric--warning span,
+.installment-payment-modal__metric--warning span i,
+.installment-payment-modal__metric--warning strong {
+  color: rgb(180 83 9) !important;
+}
+
+.installment-payment-modal__history {
+  margin-top: 1rem !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 22px !important;
+  padding: .85rem !important;
+}
+
+.installment-payment-modal__section-title {
+  justify-content: space-between !important;
+}
+
+.installment-payment-modal__section-title small {
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  border-radius: 999px !important;
+  padding: .2rem .55rem !important;
+  color: rgb(71 85 105) !important;
+}
+
+.installment-payment-modal__history-list {
+  margin-top: .65rem !important;
+  max-height: 220px !important;
+  overflow: auto !important;
+  display: grid !important;
+  gap: .5rem !important;
+}
+
+.installment-payment-modal__history-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: .75rem !important;
+  align-items: start !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  border-radius: 16px !important;
+  padding: .65rem !important;
+}
+
+.installment-payment-modal__history-amount {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .45rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: .75rem !important;
+  font-weight: 950 !important;
+}
+
+.installment-payment-modal__history-note {
+  margin-top: .25rem !important;
+  color: rgb(100 116 139) !important;
+  font-size: .72rem !important;
+  font-weight: 650 !important;
+}
+
+.installment-payment-modal__history-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: .35rem !important;
+}
+
+.installment-payment-modal__empty {
+  border: 1px dashed rgb(203 213 225) !important;
+  background: rgb(248 250 252) !important;
+  border-radius: 16px !important;
+  padding: .9rem !important;
+  text-align: center !important;
+  color: rgb(100 116 139) !important;
+  font-size: .76rem !important;
+  font-weight: 800 !important;
+}
+
+.installment-payment-modal__fields {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .7fr) !important;
+  gap: .85rem !important;
+  margin-top: 1rem !important;
+}
+
+.installment-payment-modal__field {
+  min-width: 0 !important;
+}
+
+.installment-payment-modal__field--wide {
+  grid-column: 1 / -1 !important;
+}
+
+.installment-payment-modal__actions {
+  margin-top: 1rem !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: .75rem !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+  padding-top: 1rem !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-payment-modal,
+  .installment-payment-modal {
+    grid-template-columns: 1fr !important;
+  }
+
+  .installment-payment-modal__metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .partner-payment-modal .people-finance-modal__grid,
+  .installment-payment-modal__fields,
+  .installment-payment-modal__metric-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .installment-payment-modal__actions {
+    flex-direction: column-reverse !important;
+  }
+}
+
+/* Dark mode */
+html.dark .installment-payment-modal__summary,
+html.dark .installment-payment-modal__main,
+html.dark .installment-payment-modal__history,
+html.dark .installment-payment-modal__metric {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .installment-payment-modal__summary {
+  background: linear-gradient(180deg, rgb(15 23 42), rgb(2 6 23)) !important;
+}
+
+html.dark .installment-payment-modal__summary-icon,
+html.dark .installment-payment-modal__form-head > span {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .installment-payment-modal h3,
+html.dark .installment-payment-modal__metric strong,
+html.dark .installment-payment-modal__after-chip strong,
+html.dark .installment-payment-modal__history-amount {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .installment-payment-modal p,
+html.dark .installment-payment-modal__eyebrow,
+html.dark .installment-payment-modal__field label,
+html.dark .installment-payment-modal__metric span,
+html.dark .installment-payment-modal__history-note {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .installment-payment-modal__history-item,
+html.dark .installment-payment-modal__empty,
+html.dark .installment-payment-modal__status-chip,
+html.dark .installment-payment-modal__after-chip,
+html.dark .installment-payment-modal__section-title small {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11h-partner-payment-modal-ledger-polish.css ===== */
+/* Stage 148 — Partner payment modal emphasis + ledger table polish */
+
+/* Payment/receipt modal: make the two important decisions explicit */
+.partner-payment-modal__decision-pane {
+  display: grid !important;
+  gap: 1rem !important;
+}
+
+.partner-payment-modal__type-grid {
+  order: 1 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: .8rem !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card {
+  min-height: 86px !important;
+  padding: 1rem !important;
+  border-width: 2px !important;
+  background: #fff !important;
+  box-shadow: 0 18px 42px -36px rgba(15, 23, 42, .28) !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card.is-active {
+  border-color: rgb(37 99 235) !important;
+  background: rgb(239 246 255) !important;
+  box-shadow: 0 20px 48px -36px rgba(37, 99, 235, .42) !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card__icon {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 18px !important;
+  background: rgb(248 250 252) !important;
+  border: 1px solid rgb(226 232 240) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card.is-active .people-ledger-type-card__icon {
+  background: rgb(37 99 235) !important;
+  border-color: rgb(37 99 235) !important;
+  color: #fff !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card__copy strong {
+  font-size: .98rem !important;
+  line-height: 1.8 !important;
+  color: rgb(15 23 42) !important;
+}
+
+.partner-payment-modal__type-grid .people-ledger-type-card__copy small {
+  font-size: .75rem !important;
+  line-height: 1.8 !important;
+}
+
+.partner-payment-modal__balance-hero {
+  order: 0 !important;
+  border: 2px solid rgb(226 232 240) !important;
+  background: linear-gradient(180deg, #fff, #f8fafc) !important;
+  padding: 1rem !important;
+}
+
+.partner-payment-modal__balance-hero .people-finance-modal__title {
+  font-size: 1.1rem !important;
+}
+
+.partner-payment-modal__balance-hero .people-finance-modal__balance {
+  margin-top: .85rem !important;
+  border: 1px solid rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  border-radius: 22px !important;
+  padding: .85rem !important;
+}
+
+.partner-payment-modal__balance-hero .people-finance-modal__balance-icon {
+  background: rgb(37 99 235) !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+
+.partner-payment-modal__balance-hero .people-finance-modal__balance-copy span {
+  color: rgb(29 78 216) !important;
+  font-weight: 900 !important;
+}
+
+.partner-payment-modal__balance-hero .people-finance-modal__balance-copy strong {
+  font-size: 1.1rem !important;
+  color: rgb(15 23 42) !important;
+}
+
+.partner-payment-modal .people-finance-modal__side > .rounded-\[24px\] {
+  order: -1 !important;
+  border-color: rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+}
+
+/* System ID alignment */
+.partner-system-id-block--right,
+.partner-system-id-block--right * {
+  text-align: right !important;
+}
+
+/* Ledger action buttons equal size */
+.partner-ledger-actions-equal,
+.partner-ledger-card-actions {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(82px, 1fr)) !important;
+  gap: .5rem !important;
+  width: 100% !important;
+  max-width: 17rem !important;
+}
+
+.partner-ledger-actions-equal .finance-table-action,
+.partner-ledger-card-actions button {
+  width: 100% !important;
+  min-width: 82px !important;
+  justify-content: center !important;
+  min-height: 38px !important;
+  padding-inline: .7rem !important;
+}
+
+.partner-ledger-card-actions button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  border-radius: 16px !important;
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal__type-grid .people-ledger-type-card,
+html.dark .partner-payment-modal__balance-hero {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-payment-modal__type-grid .people-ledger-type-card.is-active,
+html.dark .partner-payment-modal__balance-hero .people-finance-modal__balance {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .42) !important;
+}
+
+html.dark .partner-payment-modal__type-grid .people-ledger-type-card__copy strong,
+html.dark .partner-payment-modal__balance-hero .people-finance-modal__balance-copy strong {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .partner-payment-modal__type-grid .people-ledger-type-card__icon {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11i-partner-payment-modal-v2.css ===== */
+/* Stage 149 — Partner payment modal V2
+   Requested layout:
+   - Remove stage/info box.
+   - Account card on top-right.
+   - Payment/receipt type cards on top-left.
+   - Amount/date on the right.
+   - Description and actions opposite/below it.
+   - Add balance-after-preview.
+*/
+
+.partner-payment-modal--v2 {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1rem !important;
+  align-items: start !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__top {
+  display: grid !important;
+  grid-template-columns: minmax(320px, .95fr) minmax(0, 1.05fr) !important;
+  gap: 1rem !important;
+  align-items: stretch !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__account-card,
+.partner-payment-modal--v2 .partner-payment-modal__type-panel,
+.partner-payment-modal--v2 .partner-payment-modal__entry-right,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left {
+  min-width: 0 !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 28px !important;
+  padding: 1rem !important;
+  box-shadow: 0 20px 48px -42px rgba(15, 23, 42, .28) !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__account-card {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-panel {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head {
+  display: flex !important;
+  align-items: center !important;
+  gap: .75rem !important;
+  margin-bottom: .85rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head > span {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(191 219 254) !important;
+  background: rgb(239 246 255) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head strong {
+  color: rgb(15 23 42) !important;
+  font-size: .95rem !important;
+  font-weight: 950 !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .75rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-grid .people-ledger-type-card {
+  min-height: 112px !important;
+  align-content: start !important;
+  padding: 1rem !important;
+}
+
+.partner-payment-modal--v2 .people-ledger-type-card__icon {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 18px !important;
+}
+
+.partner-payment-modal--v2 .people-ledger-type-card__copy strong {
+  font-size: .98rem !important;
+  line-height: 1.8 !important;
+}
+
+.partner-payment-modal--v2 .people-ledger-type-card__copy small {
+  font-size: .74rem !important;
+  line-height: 1.75 !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__account-card .people-finance-modal__hint {
+  display: none !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__balance-hero .people-finance-modal__balance {
+  margin-top: .9rem !important;
+  border-radius: 22px !important;
+}
+
+.partner-payment-modal__preview-balance {
+  margin-top: .8rem !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: .5rem !important;
+  align-items: center !important;
+  border: 1px solid rgb(167 243 208) !important;
+  background: rgb(236 253 245) !important;
+  border-radius: 20px !important;
+  padding: .75rem .85rem !important;
+}
+
+.partner-payment-modal__preview-balance span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  color: rgb(4 120 87) !important;
+  font-size: .75rem !important;
+  font-weight: 900 !important;
+}
+
+.partner-payment-modal__preview-balance strong {
+  color: rgb(6 95 70) !important;
+  font-size: .92rem !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry {
+  display: grid !important;
+  grid-template-columns: minmax(300px, .78fr) minmax(0, 1.22fr) !important;
+  gap: 1rem !important;
+  align-items: start !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__errors {
+  grid-column: 1 / -1 !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry-right {
+  grid-column: 1 !important;
+  display: grid !important;
+  gap: .9rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry-left {
+  grid-column: 2 !important;
+  display: grid !important;
+  gap: .85rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry-left textarea {
+  min-height: 146px !important;
+}
+
+.partner-payment-modal--v2 .people-note-template-row {
+  margin-top: .65rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+}
+
+.partner-payment-modal--v2 .people-note-template {
+  min-height: 36px !important;
+  border-radius: 14px !important;
+  padding-inline: .75rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry-left .premium-sticky-footer,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left .modal-actions,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left [class*="ModalActions"] {
+  margin-top: .3rem !important;
+}
+
+@media (max-width: 1080px) {
+  .partner-payment-modal--v2 .partner-payment-modal__top,
+  .partner-payment-modal--v2 .partner-payment-modal__entry {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-payment-modal--v2 .partner-payment-modal__account-card,
+  .partner-payment-modal--v2 .partner-payment-modal__type-panel,
+  .partner-payment-modal--v2 .partner-payment-modal__entry-right,
+  .partner-payment-modal--v2 .partner-payment-modal__entry-left {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-payment-modal--v2 .partner-payment-modal__type-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-payment-modal__preview-balance {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--v2 .partner-payment-modal__account-card,
+html.dark .partner-payment-modal--v2 .partner-payment-modal__type-panel,
+html.dark .partner-payment-modal--v2 .partner-payment-modal__entry-right,
+html.dark .partner-payment-modal--v2 .partner-payment-modal__entry-left {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-payment-modal--v2 .partner-payment-modal__type-panel-head > span {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .partner-payment-modal--v2 .partner-payment-modal__type-panel-head strong {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .partner-payment-modal__preview-balance {
+  background: rgba(6, 78, 59, .35) !important;
+  border-color: rgba(52, 211, 153, .35) !important;
+}
+
+html.dark .partner-payment-modal__preview-balance span,
+html.dark .partner-payment-modal__preview-balance strong {
+  color: rgb(167 243 208) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11j-partner-payment-modal-ledger-refine.css ===== */
+/* Stage 150 — Partner payment modal compact polish + ledger table refinement */
+
+.partner-payment-modal--v2,
+.partner-payment-modal--v2 .partner-payment-modal__top,
+.partner-payment-modal--v2 .partner-payment-modal__entry { gap: .75rem !important; }
+
+.partner-payment-modal--v2 .partner-payment-modal__account-card,
+.partner-payment-modal--v2 .partner-payment-modal__type-panel,
+.partner-payment-modal--v2 .partner-payment-modal__entry-right,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left {
+  border-radius: 22px !important;
+  padding: .78rem !important;
+  box-shadow: 0 16px 38px -36px rgba(15,23,42,.28) !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head { gap: .55rem !important; margin-bottom: .55rem !important; }
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head > span {
+  width: 36px !important; height: 36px !important; min-width: 36px !important; border-radius: 13px !important;
+}
+.partner-payment-modal--v2 .partner-payment-modal__type-panel-head strong { font-size: .83rem !important; line-height: 1.55 !important; }
+.partner-payment-modal--v2 .partner-payment-modal__type-grid { gap: .55rem !important; }
+.partner-payment-modal--v2 .partner-payment-modal__type-grid .people-ledger-type-card {
+  min-height: 78px !important; border-radius: 18px !important; padding: .65rem !important; gap: .5rem !important;
+}
+.partner-payment-modal--v2 .people-ledger-type-card__icon { width: 38px !important; height: 38px !important; min-width: 38px !important; border-radius: 14px !important; }
+.partner-payment-modal--v2 .people-ledger-type-card__copy { min-width: 0 !important; }
+.partner-payment-modal--v2 .people-ledger-type-card__copy strong { font-size: .83rem !important; line-height: 1.55 !important; }
+.partner-payment-modal--v2 .people-ledger-type-card__copy small { font-size: .66rem !important; line-height: 1.55 !important; }
+.partner-payment-modal--v2 .people-ledger-type-card__check { width: 24px !important; height: 24px !important; min-width: 24px !important; }
+
+.partner-payment-modal--v2 .people-finance-modal__eyebrow { font-size: .62rem !important; letter-spacing: .08em !important; }
+.partner-payment-modal--v2 .people-finance-modal__title { font-size: .96rem !important; line-height: 1.6 !important; }
+.partner-payment-modal--v2 .people-finance-modal__balance { margin-top: .55rem !important; border-radius: 18px !important; padding: .65rem !important; gap: .55rem !important; }
+.partner-payment-modal--v2 .people-finance-modal__balance-icon { width: 38px !important; height: 38px !important; min-width: 38px !important; border-radius: 14px !important; }
+.partner-payment-modal--v2 .people-finance-modal__balance-copy span { font-size: .68rem !important; }
+.partner-payment-modal--v2 .people-finance-modal__balance-copy strong { font-size: .95rem !important; line-height: 1.55 !important; }
+.partner-payment-modal--v2 .people-finance-modal__balance-copy small { font-size: .64rem !important; }
+
+.partner-payment-modal--v2 .partner-payment-modal__entry-right,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left { gap: .62rem !important; }
+.partner-payment-modal--v2 .people-amount-chip-row,
+.partner-payment-modal--v2 .people-note-template-row { gap: .38rem !important; margin-top: .5rem !important; }
+.partner-payment-modal--v2 .people-amount-chip,
+.partner-payment-modal--v2 .people-note-template { min-height: 32px !important; border-radius: 12px !important; padding-inline: .62rem !important; font-size: .68rem !important; }
+.partner-payment-modal--v2 .partner-payment-modal__entry-left textarea { min-height: 118px !important; }
+
+/* Colored balance preview */
+.partner-payment-modal__preview-balance { margin-top: .55rem !important; border-radius: 16px !important; padding: .55rem .68rem !important; gap: .4rem !important; }
+.partner-payment-modal__preview-balance span { gap: .35rem !important; font-size: .68rem !important; line-height: 1.5 !important; }
+.partner-payment-modal__preview-balance strong { font-size: .8rem !important; line-height: 1.5 !important; }
+.partner-payment-modal__preview-balance--settled,
+.partner-payment-modal__preview-balance--ok { background: rgb(236 253 245) !important; border-color: rgb(167 243 208) !important; }
+.partner-payment-modal__preview-balance--settled span,
+.partner-payment-modal__preview-balance--settled strong,
+.partner-payment-modal__preview-balance--ok span,
+.partner-payment-modal__preview-balance--ok strong { color: rgb(4 120 87) !important; }
+.partner-payment-modal__preview-balance--warning { background: rgb(255 251 235) !important; border-color: rgb(253 230 138) !important; }
+.partner-payment-modal__preview-balance--warning span,
+.partner-payment-modal__preview-balance--warning strong { color: rgb(180 83 9) !important; }
+.partner-payment-modal__preview-balance--danger { background: rgb(255 241 242) !important; border-color: rgb(254 205 211) !important; }
+.partner-payment-modal__preview-balance--danger span,
+.partner-payment-modal__preview-balance--danger strong { color: rgb(190 18 60) !important; }
+
+/* Ledger transaction table */
+.partner-ledger-table { min-width: 940px !important; }
+.partner-ledger-table th,
+.partner-ledger-table td { padding-inline: .55rem !important; }
+.partner-ledger-table th:nth-child(5),
+.partner-ledger-table th:nth-child(6),
+.partner-ledger-table td:nth-child(5),
+.partner-ledger-table td:nth-child(6) { width: 7rem !important; }
+.partner-ledger-table th:nth-child(7),
+.partner-ledger-table td:nth-child(7) { width: 8rem !important; }
+.partner-ledger-table th:nth-child(8),
+.partner-ledger-table td:nth-child(8) { width: 19rem !important; }
+.partner-ledger-table td:nth-child(5) span,
+.partner-ledger-table td:nth-child(6) span,
+.partner-ledger-table td:nth-child(7) span {
+  min-width: 0 !important; width: 100% !important; padding-inline: .55rem !important; font-size: .76rem !important; white-space: normal !important; line-height: 1.55 !important;
+}
+.partner-system-id-block--right {
+  max-width: 100% !important;
+}
+
+.partner-ledger-actions-equal,
+.partner-ledger-card-actions {
+  grid-template-columns: repeat(3, minmax(92px, 1fr)) !important;
+  max-width: 19rem !important;
+  gap: .55rem !important;
+}
+.partner-ledger-actions-equal .finance-table-action,
+.partner-ledger-card-actions button {
+  min-height: 44px !important;
+  min-width: 92px !important;
+  border-radius: 16px !important;
+  font-size: .76rem !important;
+  font-weight: 900 !important;
+  padding-inline: .8rem !important;
+  justify-content: center !important;
+}
+.partner-ledger-actions-equal .finance-table-action i,
+.partner-ledger-card-actions button i { font-size: .86rem !important; }
+
+html.dark .partner-payment-modal__preview-balance--settled,
+html.dark .partner-payment-modal__preview-balance--ok {
+  background: rgba(6,78,59,.35) !important; border-color: rgba(52,211,153,.35) !important;
+}
+html.dark .partner-payment-modal__preview-balance--settled span,
+html.dark .partner-payment-modal__preview-balance--settled strong,
+html.dark .partner-payment-modal__preview-balance--ok span,
+html.dark .partner-payment-modal__preview-balance--ok strong { color: rgb(167 243 208) !important; }
+html.dark .partner-payment-modal__preview-balance--warning {
+  background: rgba(120,53,15,.42) !important; border-color: rgba(251,191,36,.38) !important;
+}
+html.dark .partner-payment-modal__preview-balance--warning span,
+html.dark .partner-payment-modal__preview-balance--warning strong { color: rgb(253 230 138) !important; }
+html.dark .partner-payment-modal__preview-balance--danger {
+  background: rgba(127,29,29,.40) !important; border-color: rgba(251,113,133,.40) !important;
+}
+html.dark .partner-payment-modal__preview-balance--danger span,
+html.dark .partner-payment-modal__preview-balance--danger strong { color: rgb(254 205 211) !important; }
+
+/* ===== Source: styles/runtime-overrides/11k-partner-modal-sidebar-date-fix.css ===== */
+/* Stage 151 — Partner payment modal sidebar-safe layout + date cell fix */
+
+/* Keep modal away from right sidebar and make it visually flow left instead of hiding under sidebar. */
+.partner-payment-modal--safe-left {
+  max-width: min(980px, calc(100vw - 8.5rem)) !important;
+  width: 100% !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 1rem !important;
+}
+
+.partner-payment-modal--safe-left .partner-payment-modal__top {
+  grid-template-columns: minmax(280px, .88fr) minmax(0, 1.12fr) !important;
+}
+
+.partner-payment-modal--safe-left .partner-payment-modal__entry {
+  grid-template-columns: minmax(270px, .72fr) minmax(0, 1.28fr) !important;
+}
+
+/* Make current balance and preview balance one visual family. */
+.partner-balance-card {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .65rem !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  border-radius: 18px !important;
+}
+
+.partner-balance-card .people-finance-modal__balance-icon,
+.partner-balance-card > span:first-child {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 15px !important;
+  margin: 0 !important;
+}
+
+.partner-balance-card .people-finance-modal__balance-copy,
+.partner-balance-card strong,
+.partner-balance-card span {
+  min-width: 0 !important;
+}
+
+.partner-balance-card .people-finance-modal__balance-copy strong,
+.partner-balance-card--preview strong {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.55 !important;
+  font-size: .88rem !important;
+}
+
+.partner-balance-card .people-finance-modal__balance-copy span,
+.partner-balance-card--preview span {
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+  line-height: 1.5 !important;
+}
+
+.partner-balance-card--preview {
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+}
+
+.partner-balance-card--preview > span:first-child {
+  background: rgb(239 246 255) !important;
+  border: 1px solid rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.partner-balance-card--preview > span:first-child i {
+  color: currentColor !important;
+}
+
+.partner-balance-card--preview strong {
+  grid-column: 2 !important;
+}
+
+.partner-balance-card--current {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+}
+
+.partner-balance-card--current .people-finance-modal__balance-icon {
+  background: rgb(37 99 235) !important;
+  color: #fff !important;
+}
+
+/* Prevent balance number from colliding with icon. */
+.partner-payment-modal--v2 .people-finance-modal__balance-copy {
+  padding-inline-start: .1rem !important;
+  overflow: hidden !important;
+}
+
+/* Tighter modal cards after making width safe. */
+.partner-payment-modal--safe-left .partner-payment-modal__account-card,
+.partner-payment-modal--safe-left .partner-payment-modal__type-panel,
+.partner-payment-modal--safe-left .partner-payment-modal__entry-right,
+.partner-payment-modal--safe-left .partner-payment-modal__entry-left {
+  padding: .72rem !important;
+}
+
+/* Fix truncated date/source cells in partner capital table / transaction ledger cards. */
+.partner-detail-page :where(td, .partner-ledger-table td, .partner-capital-table td) :where(.rounded-2xl, .rounded-3xl):has(.fa-calendar),
+.partner-detail-page :where(td, .partner-ledger-table td, .partner-capital-table td) :where(.rounded-2xl, .rounded-3xl):has(.fa-file-invoice),
+.partner-detail-page :where(td, .partner-ledger-table td, .partner-capital-table td) :where(.rounded-2xl, .rounded-3xl):has(.fa-external-link-alt) {
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  line-height: 1.65 !important;
+  padding-inline: .65rem !important;
+  gap: .4rem !important;
+}
+
+.partner-detail-page :where(td, .partner-ledger-table td, .partner-capital-table td) :where(.rounded-2xl, .rounded-3xl) span {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  text-overflow: clip !important;
+}
+
+/* Specific date/source column in phone capital status table seen in screenshot. */
+.partner-detail-page table td:nth-child(2),
+.partner-detail-page table th:nth-child(2) {
+  min-width: 150px !important;
+}
+
+.partner-detail-page table td:nth-child(2) .inline-flex {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  min-width: 0 !important;
+}
+
+/* Action buttons remain larger/equal without forcing the table to overflow too much. */
+.partner-ledger-actions-equal,
+.partner-ledger-card-actions {
+  max-width: 18rem !important;
+}
+
+.partner-ledger-actions-equal .finance-table-action,
+.partner-ledger-card-actions button {
+  min-height: 42px !important;
+}
+
+/* Fallback if parent Modal supports normal class width but not viewport. */
+@media (max-width: 1080px) {
+  .partner-payment-modal--safe-left {
+    max-width: calc(100vw - 2rem) !important;
+    margin-inline: auto !important;
+    transform: none !important;
+  }
+
+  .partner-payment-modal--safe-left .partner-payment-modal__top,
+  .partner-payment-modal--safe-left .partner-payment-modal__entry {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html.dark .partner-balance-card--current,
+html.dark .partner-balance-card--preview > span:first-child {
+  background: rgba(30,64,175,.34) !important;
+  border-color: rgba(96,165,250,.36) !important;
+  color: rgb(191 219 254) !important;
+}
+
+html.dark .partner-balance-card--current .people-finance-modal__balance-icon {
+  background: rgb(37 99 235) !important;
+  color: #fff !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11l-central-sidebar-safe-modals.css ===== */
+/* Stage 152 — Central sidebar-safe modal sizing
+   Centralizes large modal layout so wide modals do not slide under the right sidebar.
+   Applies automatically to Modal components with wide widthClass values such as max-w-5xl/6xl/7xl.
+*/
+
+:root {
+  --kourosh-modal-sidebar-reserve: clamp(3.5rem, 8vw, 8.5rem);
+  --kourosh-modal-edge-gap: 1rem;
+}
+
+.modal-shell-sidebar-safe {
+  max-width: min(var(--modal-max-width, 96vw), calc(100vw - 2rem)) !important;
+  overflow: hidden !important;
+}
+
+.modal-shell-sidebar-safe--large {
+  width: min(100%, calc(100vw - var(--kourosh-modal-sidebar-reserve) - var(--kourosh-modal-edge-gap))) !important;
+  max-width: min(var(--modal-max-width, 1080px), calc(100vw - var(--kourosh-modal-sidebar-reserve) - var(--kourosh-modal-edge-gap))) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: var(--kourosh-modal-edge-gap) !important;
+}
+
+/* Convert Tailwind width classes into CSS variable max-width, then clamp centrally. */
+.modal-shell-sidebar-safe--large.max-w-4xl { --modal-max-width: 896px; }
+.modal-shell-sidebar-safe--large.max-w-5xl { --modal-max-width: 1024px; }
+.modal-shell-sidebar-safe--large.max-w-6xl { --modal-max-width: 1152px; }
+.modal-shell-sidebar-safe--large.max-w-7xl { --modal-max-width: 1280px; }
+
+.modal-shell-sidebar-safe .modal-body-premium {
+  min-width: 0 !important;
+}
+
+/* When sidebar is likely collapsed or screen is smaller, center normally. */
+@media (max-width: 1080px) {
+  .modal-shell-sidebar-safe--large {
+    width: calc(100vw - 1rem) !important;
+    max-width: calc(100vw - 1rem) !important;
+    margin-inline: auto !important;
+  }
+}
+
+/* Full-width mobile modal behavior stays intact. */
+@media (max-width: 768px) {
+  .modal-shell-sidebar-safe,
+  .modal-shell-sidebar-safe--large {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+  }
+}
+
+/* If a modal has a known form grid, prevent internal grid from expanding beyond safe modal width. */
+.modal-shell-sidebar-safe--large :where(form, section, div) {
+  min-width: 0;
+}
+
+.modal-shell-sidebar-safe--large :where(.grid) {
+  min-width: 0 !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11m-central-sidebar-safe-overlays.css ===== */
+/* Stage 153 — Central sidebar-safe drawers/dropdowns/popovers
+   Complements Stage 152 modal safety.
+   Goal: large overlays should stay inside the visible working area and not slide under the right sidebar.
+*/
+
+:root {
+  --kourosh-overlay-sidebar-reserve: clamp(3.5rem, 8vw, 8.5rem);
+  --kourosh-overlay-edge-gap: 1rem;
+  --kourosh-overlay-safe-width: calc(100vw - var(--kourosh-overlay-sidebar-reserve) - var(--kourosh-overlay-edge-gap));
+}
+
+/* Common large drawer / command / dropdown / popover surfaces used across the app. */
+:where(
+  .premium-drawer-panel,
+  .drawer-panel,
+  .drawer-surface,
+  .command-palette,
+  .command-palette-panel,
+  .quick-search-panel,
+  .global-search-panel,
+  .smart-tooltip-panel,
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .notification-panel,
+  .alerts-panel,
+  .reminders-panel
+) {
+  max-width: min(100%, calc(100vw - 1rem)) !important;
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Large fixed/absolute overlays should reserve the sidebar area. */
+:where(
+  .command-palette,
+  .command-palette-panel,
+  .quick-search-panel,
+  .global-search-panel,
+  .notification-panel,
+  .alerts-panel,
+  .reminders-panel
+) {
+  width: min(640px, var(--kourosh-overlay-safe-width)) !important;
+  max-width: var(--kourosh-overlay-safe-width) !important;
+  inset-inline-end: var(--kourosh-overlay-edge-gap) !important;
+  inset-inline-start: auto !important;
+}
+
+/* Dropdowns/popovers that open near the right edge should not exceed the working area. */
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu
+) {
+  max-width: min(420px, var(--kourosh-overlay-safe-width)) !important;
+}
+
+/* If a panel uses Tailwind max widths, centralize clamping. */
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .command-palette,
+  .quick-search-panel,
+  .global-search-panel
+).max-w-4xl,
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .command-palette,
+  .quick-search-panel,
+  .global-search-panel
+).max-w-5xl,
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .command-palette,
+  .quick-search-panel,
+  .global-search-panel
+).max-w-6xl,
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .command-palette,
+  .quick-search-panel,
+  .global-search-panel
+).max-w-7xl {
+  max-width: var(--kourosh-overlay-safe-width) !important;
+}
+
+/* Drawer-like right panels: keep them visible and sized safely. */
+:where(.drawer-panel, .drawer-surface, .premium-drawer-panel):not(.modal-shell-premium) {
+  max-width: min(520px, var(--kourosh-overlay-safe-width)) !important;
+}
+
+/* Avoid text/icon overlap inside overlay controls. */
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .notification-panel,
+  .alerts-panel,
+  .reminders-panel
+) :where(button, a, .ux-btn, .menu-item, .dropdown-item) {
+  min-width: 0 !important;
+  gap: .5rem !important;
+  white-space: normal !important;
+}
+
+:where(
+  .dropdown-panel,
+  .dropdown-menu,
+  .popover-panel,
+  .ux-dropdown,
+  .ux-popover,
+  .floating-panel,
+  .floating-menu,
+  .notification-panel,
+  .alerts-panel,
+  .reminders-panel
+) :where(i, svg) {
+  flex: 0 0 auto !important;
+}
+
+/* On smaller screens/sidebar collapsed: use normal viewport-safe width. */
+@media (max-width: 1080px) {
+  :root {
+    --kourosh-overlay-sidebar-reserve: 0rem;
+    --kourosh-overlay-edge-gap: .5rem;
+  }
+
+  :where(
+    .command-palette,
+    .command-palette-panel,
+    .quick-search-panel,
+    .global-search-panel,
+    .notification-panel,
+    .alerts-panel,
+    .reminders-panel
+  ) {
+    width: min(640px, calc(100vw - 1rem)) !important;
+    max-width: calc(100vw - 1rem) !important;
+    inset-inline-end: .5rem !important;
+  }
+
+  :where(.drawer-panel, .drawer-surface, .premium-drawer-panel):not(.modal-shell-premium) {
+    max-width: calc(100vw - 1rem) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :where(
+    .command-palette,
+    .command-palette-panel,
+    .quick-search-panel,
+    .global-search-panel,
+    .notification-panel,
+    .alerts-panel,
+    .reminders-panel,
+    .dropdown-panel,
+    .dropdown-menu,
+    .popover-panel,
+    .ux-dropdown,
+    .ux-popover,
+    .floating-panel,
+    .floating-menu
+  ) {
+    width: calc(100vw - .75rem) !important;
+    max-width: calc(100vw - .75rem) !important;
+    inset-inline: .375rem !important;
+  }
+}
+
+/* Guard against horizontal scroll caused by oversized overlays. */
+body:has(
+  :where(
+    .command-palette,
+    .command-palette-panel,
+    .quick-search-panel,
+    .global-search-panel,
+    .notification-panel,
+    .alerts-panel,
+    .reminders-panel,
+    .drawer-panel,
+    .drawer-surface
+  )
+) {
+  overflow-x: clip;
+}
+
+/* ===== Source: styles/runtime-overrides/11n-partner-ledger-modal-final-polish.css ===== */
+/* Stage 154 — Partner ledger/modal final polish
+   Fixes screenshots:
+   - bad balance pill wrapping
+   - system ID alignment
+   - modal still touching/going under sidebar
+   - inconsistent current/after balance cards
+   - date/source chips truncating
+*/
+
+/* Safer modal placement: move wide partner modal left inside working area. */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--v2),
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--safe-left) {
+  width: min(960px, calc(100vw - 13rem)) !important;
+  max-width: min(960px, calc(100vw - 13rem)) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 2.25rem !important;
+}
+
+.partner-payment-modal--safe-left {
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  transform: none !important;
+}
+
+/* Modal grid: avoid the right column pushing under sidebar. */
+.partner-payment-modal--v2 .partner-payment-modal__top {
+  grid-template-columns: minmax(250px, .82fr) minmax(0, 1fr) !important;
+  gap: .65rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__entry {
+  grid-template-columns: minmax(250px, .7fr) minmax(0, 1.1fr) !important;
+  gap: .65rem !important;
+}
+
+.partner-payment-modal--v2 .partner-payment-modal__account-card,
+.partner-payment-modal--v2 .partner-payment-modal__type-panel,
+.partner-payment-modal--v2 .partner-payment-modal__entry-right,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left {
+  padding: .68rem !important;
+}
+
+/* Current/after balance cards: one family, no icon/text collision. */
+.partner-payment-modal--v2 .partner-balance-card {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  gap: .55rem !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  padding: .6rem !important;
+  border-radius: 17px !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card .people-finance-modal__balance-icon,
+.partner-payment-modal--v2 .partner-balance-card > span:first-child {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-radius: 14px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card .people-finance-modal__balance-copy {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card .people-finance-modal__balance-copy strong,
+.partner-payment-modal--v2 .partner-balance-card--preview strong {
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: keep-all !important;
+  line-height: 1.45 !important;
+  font-size: .78rem !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card .people-finance-modal__balance-copy span,
+.partner-payment-modal--v2 .partner-balance-card--preview span {
+  font-size: .63rem !important;
+  line-height: 1.35 !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card .people-finance-modal__balance-copy small {
+  font-size: .62rem !important;
+  line-height: 1.35 !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card--preview {
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card--preview > span:first-child {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+}
+
+.partner-payment-modal--v2 .partner-balance-card--preview strong {
+  grid-column: 2 !important;
+}
+
+/* Ledger system ID: force right side of its area. */
+.partner-system-id-block--right {
+  margin-inline-start: auto !important;
+  margin-inline-end: 0 !important;
+  justify-self: end !important;
+  align-self: start !important;
+  align-items: flex-end !important;
+  text-align: right !important;
+}
+
+.partner-system-id-block--right .partner-system-id-value {
+  width: 100% !important;
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+}
+
+/* In grouped row header, keep meta row distributed and system id at the right. */
+.partner-detail-page .ledger-group-header,
+.partner-detail-page [class*="ledger-group"] {
+  min-width: 0 !important;
+}
+
+.partner-detail-page .partner-system-id-block {
+  flex: 0 0 auto !important;
+}
+
+/* Balance column: prevent ugly multi-line number blocks. */
+.partner-ledger-balance-pill,
+.partner-ledger-table td:nth-child(7) span,
+.partner-detail-page table td:nth-child(7) span {
+  min-width: 8.4rem !important;
+  width: auto !important;
+  max-width: 9.6rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: .55rem .65rem !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  line-height: 1.55 !important;
+  text-align: center !important;
+  border-radius: 18px !important;
+  font-size: .74rem !important;
+}
+
+/* Debit/credit can remain compact. */
+.partner-ledger-table td:nth-child(5) span,
+.partner-ledger-table td:nth-child(6) span {
+  min-width: 6.4rem !important;
+  max-width: 7.4rem !important;
+  font-size: .74rem !important;
+  padding-inline: .48rem !important;
+}
+
+/* Give operation buttons enough room. */
+.partner-ledger-table th:nth-child(8),
+.partner-ledger-table td:nth-child(8) {
+  width: 20rem !important;
+}
+
+.partner-ledger-actions-equal,
+.partner-ledger-card-actions {
+  max-width: 20rem !important;
+  grid-template-columns: repeat(3, minmax(96px, 1fr)) !important;
+}
+
+.partner-ledger-actions-equal .finance-table-action,
+.partner-ledger-card-actions button {
+  min-width: 96px !important;
+  min-height: 44px !important;
+}
+
+/* Date/source chips: no truncation, but keep compact. */
+.partner-date-source-chip,
+.partner-detail-page :where(td) .partner-date-source-chip,
+.partner-detail-page table td:nth-child(2) .inline-flex,
+.partner-detail-page table td:nth-child(2) button,
+.partner-detail-page table td:nth-child(2) a {
+  min-width: 9.5rem !important;
+  max-width: 12.5rem !important;
+  width: auto !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.55 !important;
+  gap: .35rem !important;
+  padding: .5rem .65rem !important;
+  text-align: center !important;
+}
+
+.partner-date-source-chip span,
+.partner-date-source-chip strong,
+.partner-detail-page table td:nth-child(2) .inline-flex span,
+.partner-detail-page table td:nth-child(2) .inline-flex strong {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Capital status table: prevent source/date field from becoming dots. */
+.partner-detail-page table td:nth-child(2) {
+  min-width: 11rem !important;
+}
+
+.partner-detail-page table td:nth-child(2) i,
+.partner-date-source-chip i {
+  flex: 0 0 auto !important;
+}
+
+/* Keep phone/status columns from stealing all space. */
+.partner-detail-page table td:nth-child(1),
+.partner-detail-page table th:nth-child(1) {
+  min-width: 12rem !important;
+}
+
+.partner-detail-page table td:nth-child(3),
+.partner-detail-page table th:nth-child(3) {
+  min-width: 10rem !important;
+}
+
+/* Modal action buttons in partner payment stay readable after narrowing. */
+.partner-payment-modal--v2 .partner-payment-modal__entry-left .premium-sticky-footer,
+.partner-payment-modal--v2 .partner-payment-modal__entry-left [class*="modal-actions"],
+.partner-payment-modal--v2 .partner-payment-modal__entry-left [class*="ModalActions"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .6rem !important;
+}
+
+@media (max-width: 1180px) {
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--v2),
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--safe-left) {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    margin-inline: auto !important;
+  }
+
+  .partner-payment-modal--v2 .partner-payment-modal__top,
+  .partner-payment-modal--v2 .partner-payment-modal__entry {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .partner-ledger-actions-equal,
+  .partner-ledger-card-actions {
+    grid-template-columns: repeat(3, minmax(44px, 1fr)) !important;
+  }
+
+  .partner-ledger-actions-equal .finance-table-action,
+  .partner-ledger-card-actions button {
+    min-width: 44px !important;
+  }
+}
+
+html.dark .partner-payment-modal--v2 .partner-balance-card--current {
+  background: rgba(30,64,175,.34) !important;
+  border-color: rgba(96,165,250,.36) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11o-partner-date-source-tooltip-fix.css ===== */
+/* Stage 155 — Partner date/source chip final fix
+   Exact screenshot issue:
+   - date/source chip had both native title tooltip and custom UX tooltip
+   - inner span used hidden + truncate, so text was incomplete
+*/
+
+.partner-detail-page .partner-date-source-chip,
+.partner-date-source-chip--no-tooltip {
+  min-width: 11rem !important;
+  max-width: 15.5rem !important;
+  width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: 1.55 !important;
+  justify-content: center !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: .35rem !important;
+  padding: .52rem .7rem !important;
+  cursor: default !important;
+}
+
+.partner-date-source-chip--no-tooltip::before,
+.partner-date-source-chip--no-tooltip::after,
+.partner-detail-page .partner-date-source-chip::before,
+.partner-detail-page .partner-date-source-chip::after {
+  display: none !important;
+  content: none !important;
+}
+
+.partner-date-source-chip__label,
+.partner-date-source-chip__sub,
+.partner-date-source-chip span {
+  display: inline !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  line-height: 1.55 !important;
+}
+
+.partner-date-source-chip__sub {
+  color: rgb(37 99 235) !important;
+  opacity: .78 !important;
+}
+
+/* Override Tailwind utilities that were baked into spans in this column. */
+.partner-detail-page .partner-date-source-chip .truncate,
+.partner-detail-page .partner-date-source-chip .hidden,
+.partner-date-source-chip--no-tooltip .truncate,
+.partner-date-source-chip--no-tooltip .hidden {
+  display: inline !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+/* Disable the app's custom tooltip layer only for these source/date chips. */
+.partner-detail-page .partner-date-source-chip[data-ux-title],
+.partner-detail-page .partner-date-source-chip--no-tooltip[data-ux-title] {
+  pointer-events: auto !important;
+}
+
+.partner-detail-page .partner-date-source-chip[data-ux-title]::after,
+.partner-detail-page .partner-date-source-chip--no-tooltip[data-ux-title]::after {
+  display: none !important;
+}
+
+/* Table column should give the chip enough real room. */
+.partner-detail-page table td:nth-child(2),
+.partner-detail-page table th:nth-child(2) {
+  min-width: 13rem !important;
+  width: 13rem !important;
+}
+
+.partner-detail-page table td:nth-child(2) > *,
+.partner-detail-page table td:nth-child(2) button,
+.partner-detail-page table td:nth-child(2) a {
+  max-width: 100% !important;
+}
+
+/* Keep action column workable after making date/source wider. */
+.partner-detail-page table td:last-child,
+.partner-detail-page table th:last-child {
+  min-width: 11rem !important;
+}
+
+/* The black tooltip from browser cannot be styled, so native title is removed in JSX.
+   This CSS is a guard for any remaining project tooltip visuals on this chip. */
+.partner-date-source-chip--no-tooltip:hover {
+  z-index: auto !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11p-partner-payment-modal-final-layout.css ===== */
+/* Stage 156 — Partner payment modal final layout
+   Fixes the remaining screenshot issue:
+   - account card was cramped
+   - current/after balance cards had icon/text collision
+   - modal still felt too wide near sidebar
+*/
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--final) {
+  width: min(860px, calc(100vw - 14rem)) !important;
+  max-width: min(860px, calc(100vw - 14rem)) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 2.5rem !important;
+}
+
+.partner-payment-modal--final {
+  max-width: 100% !important;
+  gap: .65rem !important;
+}
+
+/* Top row: account summary on right, transaction type on left.
+   Keep both compact, but account balance cards stack vertically. */
+.partner-payment-modal--final .partner-payment-modal__top {
+  display: grid !important;
+  grid-template-columns: minmax(260px, .92fr) minmax(0, 1.08fr) !important;
+  gap: .65rem !important;
+  align-items: stretch !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__account-card,
+.partner-payment-modal--final .partner-payment-modal__type-panel,
+.partner-payment-modal--final .partner-payment-modal__entry-right,
+.partner-payment-modal--final .partner-payment-modal__entry-left {
+  border-radius: 22px !important;
+  padding: .68rem !important;
+  min-width: 0 !important;
+}
+
+/* Account card must be vertical and readable, not two squeezed cards. */
+.partner-payment-modal--final .partner-payment-modal__account-card {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-content: start !important;
+  gap: .55rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__account-card > .min-w-0 {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .5rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  grid-column: 1 / -1 !important;
+  font-size: .6rem !important;
+  letter-spacing: .06em !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__account-card .people-finance-modal__title {
+  grid-column: 1 / -1 !important;
+  font-size: .98rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Unified balance cards: icon on right, copy/number on left in RTL-safe grid. */
+.partner-payment-modal--final .partner-balance-card,
+.partner-payment-modal--final .people-finance-modal__balance,
+.partner-payment-modal--final .partner-payment-modal__preview-balance {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .58rem !important;
+  border-radius: 17px !important;
+  padding: .58rem .65rem !important;
+  min-height: 62px !important;
+  overflow: hidden !important;
+}
+
+.partner-payment-modal--final .partner-balance-card .people-finance-modal__balance-icon,
+.partner-payment-modal--final .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.partner-payment-modal--final .people-finance-modal__balance-copy {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__preview-balance > span:first-child {
+  font-size: 0 !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__preview-balance > span:first-child i {
+  font-size: .95rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__preview-balance > span:not(:first-child),
+.partner-payment-modal--final .partner-payment-modal__preview-balance strong {
+  grid-column: 2 !important;
+}
+
+.partner-payment-modal--final .people-finance-modal__balance-copy span,
+.partner-payment-modal--final .partner-payment-modal__preview-balance span:not(:first-child) {
+  display: block !important;
+  color: rgb(100 116 139) !important;
+  font-size: .64rem !important;
+  font-weight: 900 !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+}
+
+.partner-payment-modal--final .people-finance-modal__balance-copy strong,
+.partner-payment-modal--final .partner-payment-modal__preview-balance strong {
+  display: block !important;
+  margin-top: .12rem !important;
+  max-width: 100% !important;
+  color: rgb(15 23 42) !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: keep-all !important;
+}
+
+.partner-payment-modal--final .people-finance-modal__balance-copy small {
+  display: block !important;
+  margin-top: .08rem !important;
+  font-size: .6rem !important;
+  line-height: 1.35 !important;
+  color: rgb(100 116 139) !important;
+}
+
+/* Type panel stays compact but readable. */
+.partner-payment-modal--final .partner-payment-modal__type-panel-head {
+  margin-bottom: .5rem !important;
+  gap: .5rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__type-panel-head > span {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 12px !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__type-panel-head strong {
+  font-size: .82rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__type-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .5rem !important;
+}
+
+.partner-payment-modal--final .people-ledger-type-card {
+  min-height: 76px !important;
+  padding: .6rem !important;
+  border-radius: 17px !important;
+  gap: .45rem !important;
+}
+
+.partner-payment-modal--final .people-ledger-type-card__icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 13px !important;
+}
+
+.partner-payment-modal--final .people-ledger-type-card__copy strong {
+  font-size: .8rem !important;
+  line-height: 1.45 !important;
+}
+
+.partner-payment-modal--final .people-ledger-type-card__copy small {
+  font-size: .62rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Entry row: right fields and description fit in same modal width. */
+.partner-payment-modal--final .partner-payment-modal__entry {
+  display: grid !important;
+  grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr) !important;
+  gap: .65rem !important;
+  align-items: start !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__entry-right,
+.partner-payment-modal--final .partner-payment-modal__entry-left {
+  display: grid !important;
+  gap: .55rem !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__entry-left textarea {
+  min-height: 106px !important;
+}
+
+.partner-payment-modal--final .people-amount-chip-row,
+.partner-payment-modal--final .people-note-template-row {
+  gap: .34rem !important;
+  margin-top: .45rem !important;
+}
+
+.partner-payment-modal--final .people-amount-chip,
+.partner-payment-modal--final .people-note-template {
+  min-height: 30px !important;
+  border-radius: 11px !important;
+  padding-inline: .55rem !important;
+  font-size: .64rem !important;
+}
+
+.partner-payment-modal--final input,
+.partner-payment-modal--final textarea,
+.partner-payment-modal--final .date-picker-input,
+.partner-payment-modal--final [class*="date"] input {
+  min-height: 44px !important;
+}
+
+/* Modal actions should stay below description and not stretch awkwardly. */
+.partner-payment-modal--final .partner-payment-modal__entry-left :where(.premium-sticky-footer, .modal-actions, [class*="ModalActions"]) {
+  margin-top: .15rem !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: .55rem !important;
+  flex-wrap: wrap !important;
+}
+
+.partner-payment-modal--final .partner-payment-modal__entry-left :where(button) {
+  min-height: 40px !important;
+}
+
+/* If sidebar is present, never let this modal expand underneath it. */
+@media (min-width: 1181px) {
+  .partner-payment-modal--final {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--final) {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    margin-inline: auto !important;
+  }
+
+  .partner-payment-modal--final .partner-payment-modal__top,
+  .partner-payment-modal--final .partner-payment-modal__entry {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .partner-payment-modal--final .partner-payment-modal__type-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--final .people-finance-modal__balance-copy strong,
+html.dark .partner-payment-modal--final .partner-payment-modal__preview-balance strong {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .partner-payment-modal--final .people-finance-modal__balance-copy span,
+html.dark .partner-payment-modal--final .people-finance-modal__balance-copy small {
+  color: rgb(203 213 225) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11q-partner-payment-modal-horizontal-redesign.css ===== */
+/* Stage 157 — Partner payment modal horizontal no-scroll redesign
+   User requirement:
+   - No internal modal scroll.
+   - Horizontal layout.
+   - Top right: account/balance.
+   - Top left: payment/receipt selector.
+   - Bottom right: amount/date.
+   - Bottom left: description + actions.
+*/
+
+/* Make the modal surface wide enough but still sidebar-safe. */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+  width: min(1040px, calc(100vw - 15.5rem)) !important;
+  max-width: min(1040px, calc(100vw - 15.5rem)) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 2rem !important;
+  max-height: calc(100vh - 5.25rem) !important;
+}
+
+/* Disable internal modal body scrolling for this specific modal. */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll),
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-body-premium,
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .premium-drawer-panel {
+  overflow: visible !important;
+}
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-body-premium {
+  max-height: none !important;
+  padding: .85rem !important;
+}
+
+/* Main modal form: a real 2x2 horizontal grid, no tall side column. */
+.partner-payment-modal--horizontal-no-scroll {
+  display: grid !important;
+  grid-template-columns: minmax(300px, .92fr) minmax(0, 1.08fr) !important;
+  grid-template-areas:
+    "account type"
+    "fields desc" !important;
+  gap: .7rem !important;
+  align-items: stretch !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__top,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry {
+  display: contents !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  grid-area: type !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right {
+  grid-area: fields !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  grid-area: desc !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__errors {
+  grid-column: 1 / -1 !important;
+  grid-row: 1 !important;
+}
+
+/* Compact card system */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  min-width: 0 !important;
+  border-radius: 22px !important;
+  padding: .72rem !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  box-shadow: 0 16px 38px -36px rgba(15,23,42,.26) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .5rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  grid-column: 1 / -1 !important;
+  font-size: .6rem !important;
+  letter-spacing: .05em !important;
+  line-height: 1.2 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  grid-column: 1 / -1 !important;
+  font-size: .95rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Shared balance cards: stack cleanly, not squeezed. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  width: 100% !important;
+  display: grid !important;
+  overflow: hidden !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  font-size: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i {
+  font-size: .92rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy {
+  min-width: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  display: block !important;
+  font-weight: 900 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  grid-column: 2 !important;
+  display: block !important;
+  font-weight: 950 !important;
+  white-space: normal !important;
+  word-break: keep-all !important;
+}
+
+/* Type selector card: remove the huge blank space. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  display: grid !important;
+  grid-template-rows: auto 1fr !important;
+  align-content: start !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  margin-bottom: .48rem !important;
+  gap: .48rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .5rem !important;
+}
+
+
+
+
+
+
+/* Amount/date fields */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: .55rem !important;
+  align-content: start !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right input,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right [class*="date"] input,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right .date-picker-input {
+  min-height: 42px !important;
+}
+
+/* Description/action area */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  display: grid !important;
+  grid-template-rows: auto auto !important;
+  gap: .5rem !important;
+  align-content: start !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left textarea {
+  min-height: 94px !important;
+  max-height: 110px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-amount-chip-row,
+.partner-payment-modal--horizontal-no-scroll .people-note-template-row {
+  gap: .32rem !important;
+  margin-top: .4rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-amount-chip,
+.partner-payment-modal--horizontal-no-scroll .people-note-template {
+  min-height: 28px !important;
+  border-radius: 10px !important;
+  padding-inline: .5rem !important;
+  font-size: .62rem !important;
+}
+
+/* Buttons must sit under description, no vertical overflow. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left :where(.premium-sticky-footer, .modal-actions, [class*="ModalActions"]) {
+  margin-top: .1rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+  justify-content: flex-start !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left :where(button) {
+  min-height: 38px !important;
+}
+
+/* Header inside modal is compact */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-header-premium {
+  padding-block: .65rem !important;
+}
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-title-premium {
+  font-size: .95rem !important;
+}
+
+/* Responsive fallback: only stack when there is no room. */
+@media (max-width: 1180px) {
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .partner-payment-modal--horizontal-no-scroll {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "account"
+      "type"
+      "fields"
+      "desc" !important;
+  }
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  color: rgb(248 250 252) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11r-partner-payment-modal-layout-correction.css ===== */
+/* Stage 158 — Partner payment modal layout correction
+   Exact requested layout:
+   - Current balance and after-transaction balance side-by-side.
+   - Date above amount.
+   - Date/amount on the left.
+   - Description on the right.
+*/
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+  width: min(1060px, calc(100vw - 15rem)) !important;
+  max-width: min(1060px, calc(100vw - 15rem)) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 2rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, .9fr) !important;
+  grid-template-areas:
+    "type account"
+    "fields desc" !important;
+  gap: .75rem !important;
+}
+
+/* Top-right account card. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  grid-area: account !important;
+}
+
+/* Top-left transaction type. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  grid-area: type !important;
+}
+
+/* Bottom-left date/amount. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right {
+  grid-area: fields !important;
+}
+
+/* Bottom-right description/actions. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  grid-area: desc !important;
+}
+
+/* Account card: put current balance and after-transaction balance next to each other. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-areas: "head head"
+    "current preview" !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  grid-area: head !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__balance {
+  grid-area: current !important;
+  margin-top: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .partner-payment-modal__preview-balance {
+  grid-area: preview !important;
+  margin-top: 0 !important;
+}
+
+/* Balance cards: compact side-by-side version. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  gap: .45rem !important;
+  align-items: center !important;
+}
+
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  font-size: .6rem !important;
+  line-height: 1.25 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  line-height: 1.35 !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Date/amount panel: vertical order, date is first through JSX + CSS. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: .55rem !important;
+  align-content: start !important;
+}
+
+/* Description panel on the right: more room and clean actions. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  display: grid !important;
+  gap: .52rem !important;
+  align-content: start !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left textarea {
+  min-height: 104px !important;
+  max-height: 118px !important;
+}
+
+/* Transaction type cards should fill top-left nicely. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  min-height: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+}
+
+
+/* Keep the modal from scrolling internally. */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-body-premium {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Responsive fallback only when truly needed. */
+@media (max-width: 1180px) {
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+    width: calc(100vw - 2rem) !important;
+    max-width: calc(100vw - 2rem) !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .partner-payment-modal--horizontal-no-scroll {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "account"
+      "type"
+      "fields"
+      "desc" !important;
+  }
+
+  .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "head"
+      "current"
+      "preview" !important;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/11s-partner-payment-modal-executive-polish.css ===== */
+/* Stage 159 — Executive polish for Partner Payment Modal
+   Goal: keep the horizontal layout, but make it feel lighter, clearer and more premium.
+*/
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+  width: min(1040px, calc(100vw - 15rem)) !important;
+  max-width: min(1040px, calc(100vw - 15rem)) !important;
+}
+
+/* One calmer canvas */
+.partner-payment-modal--horizontal-no-scroll {
+  gap: .8rem !important;
+  align-items: stretch !important;
+}
+
+/* Softer cards: fewer heavy borders, more hierarchy */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgba(255,255,255,.96) !important;
+  border-radius: 24px !important;
+  padding: .82rem !important;
+  box-shadow: 0 18px 46px -42px rgba(15, 23, 42, .32) !important;
+}
+
+/* Account card becomes a compact summary, not the main visual noise */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  background: linear-gradient(180deg, #fff, #f8fafc) !important;
+  grid-template-rows: auto auto !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  padding-bottom: .15rem !important;
+  border-bottom: 1px solid rgb(241 245 249) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  color: rgb(100 116 139) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  font-size: 1.02rem !important;
+  color: rgb(15 23 42) !important;
+}
+
+/* Balance cards: less chunky, clearer numbers */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  min-height: 64px !important;
+  padding: .58rem .62rem !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  background: rgb(255 247 247) !important;
+  border-color: rgb(254 205 211) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 14px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  font-size: .82rem !important;
+  letter-spacing: -.01em !important;
+}
+
+/* Transaction type: make the chosen action obvious, but less bulky */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  background: linear-gradient(180deg, #ffffff, #fbfdff) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  margin-bottom: .65rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card {
+  background: #fff !important;
+  border: 1px solid rgb(226 232 240) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card.is-active {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(37 99 235) !important;
+  box-shadow: inset 0 0 0 1px rgb(37 99 235), 0 14px 34px -30px rgba(37,99,235,.6) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon {
+  background: rgb(248 250 252) !important;
+  border: 1px solid rgb(226 232 240) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card.is-active .people-ledger-type-card__icon {
+  background: rgb(37 99 235) !important;
+  border-color: rgb(37 99 235) !important;
+  color: #fff !important;
+}
+
+/* Form fields: lighter, less empty */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  background: #fff !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll label,
+.partner-payment-modal--horizontal-no-scroll .people-finance-field label,
+.partner-payment-modal--horizontal-no-scroll .modal-field-label {
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  color: rgb(51 65 85) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll input,
+.partner-payment-modal--horizontal-no-scroll textarea,
+.partner-payment-modal--horizontal-no-scroll .date-picker-input,
+.partner-payment-modal--horizontal-no-scroll [class*="date"] input {
+  border-radius: 18px !important;
+  border-color: rgb(203 213 225) !important;
+  background: rgb(248 250 252) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll input:focus,
+.partner-payment-modal--horizontal-no-scroll textarea:focus {
+  background: #fff !important;
+  border-color: rgb(96 165 250) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.14) !important;
+}
+
+/* Chips should help, not clutter */
+.partner-payment-modal--horizontal-no-scroll .people-amount-chip,
+.partner-payment-modal--horizontal-no-scroll .people-note-template {
+  background: #fff !important;
+  border: 1px solid rgb(226 232 240) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-amount-chip:hover,
+.partner-payment-modal--horizontal-no-scroll .people-note-template:hover {
+  border-color: rgb(147 197 253) !important;
+  color: rgb(37 99 235) !important;
+}
+
+/* Description is important, but not visually louder than the action */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left textarea {
+  min-height: 96px !important;
+  max-height: 104px !important;
+}
+
+/* Action area: make submit clearly primary */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left :where(.premium-sticky-footer, .modal-actions, [class*="ModalActions"]) {
+  padding-top: .15rem !important;
+  border-top: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left :where(button[type="submit"], .btn-success, [class*="success"]) {
+  min-width: 12rem !important;
+}
+
+/* Make cancel lighter */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left :where(button):not([type="submit"]) {
+  opacity: .92 !important;
+}
+
+/* Prevent accidental modal body scrollbars from visual noise */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-body-premium {
+  scrollbar-width: none !important;
+}
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-body-premium::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll input,
+html.dark .partner-payment-modal--horizontal-no-scroll textarea {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(51 65 85) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll .people-ledger-type-card {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll .people-ledger-type-card.is-active {
+  background: rgba(30, 64, 175, .34) !important;
+  border-color: rgba(96, 165, 250, .5) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11t-partner-payment-modal-compact-top.css ===== */
+/* Stage 160 — Compact top cards in Partner Payment Modal
+   Requested:
+   Make the four top boxes smaller so the whole modal height becomes lower.
+*/
+
+.partner-payment-modal--horizontal-no-scroll {
+  gap: .62rem !important;
+}
+
+/* Top row card compression */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  padding: .58rem !important;
+  border-radius: 20px !important;
+  min-height: 0 !important;
+}
+
+/* Account header smaller */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  padding-bottom: .08rem !important;
+  gap: .22rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  font-size: .55rem !important;
+  line-height: 1.15 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  font-size: .88rem !important;
+  line-height: 1.28 !important;
+}
+
+/* Current/after balance cards: lower height */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  min-height: 50px !important;
+  padding: .42rem .48rem !important;
+  border-radius: 15px !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  gap: .38rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  border-radius: 11px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon i,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i {
+  font-size: .78rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  font-size: .55rem !important;
+  line-height: 1.15 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  font-size: .72rem !important;
+  line-height: 1.22 !important;
+}
+
+/* Type selector header smaller */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  margin-bottom: .38rem !important;
+  gap: .38rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span i {
+  font-size: .78rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head .people-finance-modal__eyebrow {
+  font-size: .55rem !important;
+  line-height: 1.1 !important;
+}
+
+/* Payment/receipt boxes smaller */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-grid {
+  gap: .42rem !important;
+}
+
+
+
+
+
+
+
+
+/* Slightly reduce top row total footprint */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  align-content: start !important;
+}
+
+/* Lower modal header height too, only for this modal */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-header-premium {
+  padding-block: .48rem !important;
+}
+
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) .modal-title-premium {
+  font-size: .9rem !important;
+  line-height: 1.35 !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11u-partner-payment-modal-top-micro.css ===== */
+/* Stage 161 — Partner payment modal top micro layout
+   Final compact pass for the 4 top boxes:
+   - current balance
+   - after-transaction balance
+   - payment type
+   - receipt type
+*/
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  padding: .48rem !important;
+  border-radius: 18px !important;
+}
+
+/* Account title area should not consume height */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  gap: .42rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  padding-bottom: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  font-size: .5rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  font-size: .82rem !important;
+  line-height: 1.12 !important;
+  margin: 0 !important;
+}
+
+/* Balance cards: true compact metric cards */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  min-height: 42px !important;
+  max-height: 46px !important;
+  padding: .34rem .42rem !important;
+  border-radius: 13px !important;
+  grid-template-columns: 26px minmax(0, 1fr) !important;
+  gap: .34rem !important;
+  align-items: center !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 9px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon i,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i {
+  font-size: .68rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  min-width: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  font-size: .48rem !important;
+  line-height: 1.05 !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  font-size: .64rem !important;
+  line-height: 1.12 !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  direction: rtl !important;
+  max-width: 100% !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy small {
+  margin: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Make after-balance label visible as text, not icon-only confusion */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  grid-column: 2 !important;
+}
+
+/* Type selector heading: compact */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  gap: .34rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  margin-bottom: .28rem !important;
+  gap: .32rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  border-radius: 8px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span i {
+  font-size: .62rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head .people-finance-modal__eyebrow {
+  font-size: .48rem !important;
+  line-height: 1 !important;
+}
+
+/* Payment/receipt boxes: lower and better aligned */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-grid {
+  gap: .36rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card {
+  align-items: center !important;
+}
+
+
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy {
+  min-width: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong {
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small {
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check {
+  border-radius: 999px !important;
+}
+
+
+/* Reduce top row footprint in the 2x2 grid */
+.partner-payment-modal--horizontal-no-scroll {
+  row-gap: .55rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__top {
+  gap: .55rem !important;
+}
+
+/* Keep bottom form close enough after top compression */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-right,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__entry-left {
+  padding-top: .62rem !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11v-partner-payment-balance-priority.css ===== */
+/* Stage 162 — Partner payment modal balance priority
+   User request:
+   - Balance before/after cards should become the prominent boxes.
+   - Payment/receipt selector boxes should become smaller.
+   - Both balance cards must use the same icon family and clear title/text.
+*/
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  padding: .62rem !important;
+  border-radius: 20px !important;
+}
+
+/* Make account header compact so balance cards can be the focus. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: .5rem !important;
+  padding-bottom: .15rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  font-size: .52rem !important;
+  line-height: 1 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  font-size: .82rem !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+}
+
+/* Balance cards become the larger, primary top cards. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  min-height: 66px !important;
+  max-height: none !important;
+  padding: .62rem .68rem !important;
+  border-radius: 17px !important;
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  gap: .55rem !important;
+  align-items: center !important;
+}
+
+/* Same icon family: wallet/check/receipt style, same size and treatment. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-radius: 14px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Current balance icon */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon {
+  background: rgb(37 99 235) !important;
+  color: #fff !important;
+  border: 1px solid rgb(37 99 235) !important;
+}
+
+/* After transaction icon: same family/color system, not a different visual language. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  background: rgb(37 99 235) !important;
+  color: #fff !important;
+  border: 1px solid rgb(37 99 235) !important;
+  font-size: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i::before {
+  content: "\f53a" !important; /* fa-receipt style glyph in FontAwesome */
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon i,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i {
+  font-size: .86rem !important;
+  color: currentColor !important;
+}
+
+/* Clear title + number in both balance boxes. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  display: block !important;
+  font-size: .62rem !important;
+  font-weight: 950 !important;
+  line-height: 1.25 !important;
+  margin: 0 0 .1rem 0 !important;
+  color: rgb(71 85 105) !important;
+  white-space: nowrap !important;
+}
+
+/* Force clear label text for after-transaction card even if source span is icon-only. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before {
+  content: "مانده بعد از تراکنش" !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: block !important;
+  font-size: .62rem !important;
+  font-weight: 950 !important;
+  line-height: 1.25 !important;
+  color: rgb(71 85 105) !important;
+  white-space: nowrap !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  display: block !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  color: rgb(15 23 42) !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy small {
+  font-size: .55rem !important;
+  line-height: 1.15 !important;
+  margin-top: .08rem !important;
+  color: rgb(100 116 139) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+/* If preview is warning/danger/ok, keep subtle semantic border but same icon system. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance--ok,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance--settled {
+  background: rgb(240 253 244) !important;
+  border-color: rgb(187 247 208) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance--warning {
+  background: rgb(255 251 235) !important;
+  border-color: rgb(253 230 138) !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance--danger {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(254 205 211) !important;
+}
+
+/* Payment/receipt selector boxes become smaller and secondary. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  padding: .48rem !important;
+  border-radius: 18px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  margin-bottom: .28rem !important;
+  gap: .3rem !important;
+}
+
+/* Shrink the two action selection boxes */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-grid {
+  gap: .34rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card {
+  padding: .32rem .36rem !important;
+  border-radius: 12px !important;
+  gap: .3rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  border-radius: 8px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__icon i {
+  font-size: .6rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check {
+  width: 15px !important;
+  height: 15px !important;
+  min-width: 15px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check i {
+  font-size: .5rem !important;
+}
+
+/* Top row balance should now visually dominate, but not increase total modal height too much. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  min-height: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel {
+  align-content: start !important;
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  background: rgba(30,64,175,.24) !important;
+  border-color: rgba(96,165,250,.34) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before,
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child),
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy small {
+  color: rgb(203 213 225) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11w-partner-payment-modal-fine-tune.css ===== */
+/* Stage 163 — Partner payment modal fine tune */
+
+/* Center the modal better while preserving sidebar safety. */
+.modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+  width: min(1040px, calc(100vw - 13rem)) !important;
+  max-width: min(1040px, calc(100vw - 13rem)) !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: auto !important;
+  transform: translateX(-1.25rem) !important;
+}
+
+@media (max-width: 1180px) {
+  .modal-shell-sidebar-safe--large:has(.partner-payment-modal--horizontal-no-scroll) {
+    transform: none !important;
+    margin-inline: auto !important;
+  }
+}
+
+/* Account tag + partner name should read as one header unit. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: .55rem !important;
+  padding-bottom: .18rem !important;
+  min-width: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  border-radius: 999px !important;
+  padding: .2rem .48rem !important;
+  font-size: .55rem !important;
+  line-height: 1 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  flex: 0 1 auto !important;
+  margin: 0 !important;
+  font-size: .9rem !important;
+  line-height: 1.2 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+/* Current and after balance cards: identical layout. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 38px !important;
+  grid-template-rows: auto auto !important;
+  align-items: center !important;
+  column-gap: .55rem !important;
+  row-gap: .08rem !important;
+  min-height: 66px !important;
+  padding: .6rem .68rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 2 !important;
+  grid-row: 1 / 3 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  border-radius: 14px !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Current card text area. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy {
+  display: grid !important;
+  grid-template-rows: auto auto !important;
+  grid-row: 1 / 3 !important;
+  min-width: 0 !important;
+  align-content: center !important;
+  text-align: right !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span {
+  display: block !important;
+  grid-row: 1 !important;
+  font-size: .62rem !important;
+  font-weight: 950 !important;
+  line-height: 1.25 !important;
+  color: rgb(71 85 105) !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong {
+  display: block !important;
+  grid-row: 2 !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  color: rgb(15 23 42) !important;
+  overflow-wrap: anywhere !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy small {
+  display: none !important;
+}
+
+/* Preview card title/number must match current card layout. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before {
+  content: "مانده بعد از تراکنش" !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: end !important;
+  justify-self: stretch !important;
+  text-align: right !important;
+  font-size: .62rem !important;
+  font-weight: 950 !important;
+  line-height: 1.25 !important;
+  color: rgb(71 85 105) !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+  align-self: start !important;
+  justify-self: stretch !important;
+  text-align: right !important;
+  font-size: .86rem !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance span:not(:first-child) {
+  display: none !important;
+}
+
+/* Transaction type heading spacing. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  display: grid !important;
+  grid-template-columns: 24px minmax(0, 1fr) !important;
+  column-gap: .38rem !important;
+  row-gap: .16rem !important;
+  align-items: center !important;
+  margin-bottom: .42rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head > span {
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head .people-finance-modal__eyebrow {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  justify-self: start !important;
+  margin-bottom: .08rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head strong {
+  justify-self: stretch !important;
+  font-size: .76rem !important;
+  line-height: 1.25 !important;
+}
+
+/* Slightly larger payment/receipt card text. */
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card {
+  min-height: 50px !important;
+  max-height: 56px !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy strong {
+  font-size: .68rem !important;
+  line-height: 1.18 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__copy small {
+  font-size: .5rem !important;
+  line-height: 1.12 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .people-ledger-type-card__check {
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+/* Dark mode */
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+html.dark .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before {
+  color: rgb(203 213 225) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11x-partner-payment-modal-final-tune.css ===== */
+/* Stage 164 — Partner payment modal final requested tune
+   User requested:
+   - Remove repeated partner name from account card.
+   - Move both balance icons to the left.
+   - Center after-transaction icon inside its blue square.
+   - Add spacing between transaction tag and heading text.
+*/
+
+/* Remove partner name inside account card; title already exists in modal header. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__title {
+  display: none !important;
+}
+
+/* Account header now only shows the tag cleanly. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card > .min-w-0 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0 !important;
+  padding-bottom: .25rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card .people-finance-modal__eyebrow {
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+/* Balance cards: icon must be physical-left for both cards. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  direction: ltr !important;
+}
+
+/* Keep text RTL while icon stays physical-left. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Icons on physical-left, centered vertically. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  align-self: center !important;
+  justify-self: center !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Text/number on the right side of icon. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy {
+  grid-column: 2 !important;
+  grid-row: 1 / 3 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+/* Fix after-transaction icon not centered inside blue square. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child i::before {
+  display: block !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Normalize current balance icon too. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon i {
+  display: inline-grid !important;
+  place-items: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+
+/* Transaction type heading spacing:
+   The main text should not stick to the "نوع تراکنش" tag. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head {
+  display: grid !important;
+  grid-template-columns: 24px minmax(0, 1fr) !important;
+  column-gap: .46rem !important;
+  row-gap: .22rem !important;
+  align-items: center !important;
+  margin-bottom: .48rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head .people-finance-modal__eyebrow {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: inline-flex !important;
+  width: fit-content !important;
+  margin-bottom: .16rem !important;
+  padding: .18rem .42rem !important;
+}
+
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__type-panel-head strong {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+  display: block !important;
+  margin-top: .12rem !important;
+  padding-inline-start: .02rem !important;
+}
+
+/* Since account title is removed, make balance row use the freed space elegantly. */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__account-card {
+  align-content: start !important;
+}
+
+/* ===== Source: styles/runtime-overrides/11y-partner-payment-balance-nowrap.css ===== */
+/* Stage 165 — Partner payment balance amount nowrap
+   Fix:
+   Keep the amount and تومان in one line inside current/after balance cards.
+*/
+
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  column-gap: .5rem !important;
+}
+
+/* Text block stays on the right side and has enough inline room. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  min-width: 0 !important;
+  text-align: right !important;
+  justify-self: stretch !important;
+}
+
+/* Current balance amount */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  font-size: clamp(.68rem, .78vw, .82rem) !important;
+  letter-spacing: -.015em !important;
+}
+
+/* After transaction amount */
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  font-size: clamp(.68rem, .78vw, .82rem) !important;
+  letter-spacing: -.015em !important;
+}
+
+/* Keep titles compact and single-line. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy span,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance::before {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Icon still physical-left and centered. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-icon,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance > span:first-child {
+  grid-column: 1 !important;
+  justify-self: center !important;
+  align-self: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+}
+
+/* Give the balance pair a little more horizontal space by reducing inner padding. */
+.partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance,
+.partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance {
+  padding-inline: .52rem !important;
+}
+
+@media (max-width: 980px) {
+  .partner-payment-modal--horizontal-no-scroll .people-finance-modal__balance-copy strong,
+  .partner-payment-modal--horizontal-no-scroll .partner-payment-modal__preview-balance strong {
+    font-size: .68rem !important;
+  }
+}
+
+/* Stage 444 - Search page icon alignment + solid payment modal + tooltip top-layer reinforcement */
+
+/* Search Results: icon always left, RTL input text, stat boxes with related icons */
+.search-results-search-shell {
+  direction: ltr !important;
+  position: relative !important;
+}
+
+.search-results-search-shell__icon {
+  left: 1rem !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  color: rgb(71 85 105) !important;
+}
+
+.search-results-search-shell__input {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-left: 3.15rem !important;
+  padding-right: 1rem !important;
+  height: 3.5rem !important;
+  min-height: 3.5rem !important;
+  line-height: 1.5 !important;
+}
+
+.search-results-stat-card {
+  display: grid !important;
+  grid-template-columns: 2.35rem minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .7rem !important;
+  text-align: right !important;
+  min-height: 5.35rem !important;
+}
+
+.search-results-stat-card__icon {
+  display: inline-grid !important;
+  width: 2.35rem !important;
+  height: 2.35rem !important;
+  place-items: center !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  background: #fff !important;
+  color: rgb(71 85 105) !important;
+}
+
+.search-results-stat-card__body {
+  min-width: 0 !important;
+}
+
+html.dark .search-results-stat-card__icon,
+.dark .search-results-stat-card__icon {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background: rgba(15, 23, 42, .92) !important;
+  color: rgb(203 213 225) !important;
+}
+
+/* Payment modal: enforce solid Apple-base surfaces; remove transparent/gradient/glass bleed. */
+.installment-payment-modal-shell-v444 {
+  background-color: rgba(15, 23, 42, .42) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+}
+
+.installment-payment-modal-shell-v444 .modal-surface,
+.installment-payment-modal-shell-v444 .app-modal,
+.installment-payment-modal-shell-v444 [role="dialog"],
+.installment-payment-modal-shell-v444 .modal-shell-premium,
+.installment-payment-modal-shell-v444 .premium-drawer-panel {
+  background: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  box-shadow: 0 38px 96px -46px rgba(15, 23, 42, .38), 0 18px 36px -28px rgba(15, 23, 42, .20) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate !important;
+}
+
+.installment-payment-modal-shell-v444 .modal-surface::before,
+.installment-payment-modal-shell-v444 .modal-surface::after,
+.installment-payment-modal-shell-v444 .app-modal::before,
+.installment-payment-modal-shell-v444 .app-modal::after,
+.installment-payment-modal-shell-v444 .modal-shell-premium::before,
+.installment-payment-modal-shell-v444 .modal-shell-premium::after,
+.installment-payment-modal-shell-v444 .premium-drawer-panel::before,
+.installment-payment-modal-shell-v444 .premium-drawer-panel::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal {
+  position: relative !important;
+  z-index: 1 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  border-radius: 28px !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.installment-payment-modal-shell-v444 .installment-payment-modal__main,
+.installment-payment-modal-shell-v444 .installment-payment-modal__history,
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric,
+.installment-payment-modal-shell-v444 .installment-payment-modal__field input,
+.installment-payment-modal-shell-v444 .installment-payment-modal__empty,
+.installment-payment-modal-shell-v444 .installment-payment-modal__after-chip,
+.installment-payment-modal-shell-v444 .installment-payment-modal__status-chip {
+  background-image: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.installment-payment-modal-shell-v444 .installment-payment-modal__main {
+  background: #ffffff !important;
+  border: 1px solid rgb(226 232 240) !important;
+  box-shadow: none !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric--success {
+  background: #f0fdf4 !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__metric--warning {
+  background: #fffbeb !important;
+}
+
+.installment-payment-modal-shell-v444 .installment-payment-modal__actions {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+html.dark .installment-payment-modal-shell-v444,
+.dark .installment-payment-modal-shell-v444 {
+  background-color: rgba(2, 6, 23, .76) !important;
+}
+
+html.dark .installment-payment-modal-shell-v444 .modal-surface,
+.dark .installment-payment-modal-shell-v444 .modal-surface,
+html.dark .installment-payment-modal-shell-v444 .app-modal,
+.dark .installment-payment-modal-shell-v444 .app-modal,
+html.dark .installment-payment-modal-shell-v444 [role="dialog"],
+.dark .installment-payment-modal-shell-v444 [role="dialog"],
+html.dark .installment-payment-modal-shell-v444 .modal-shell-premium,
+.dark .installment-payment-modal-shell-v444 .modal-shell-premium,
+html.dark .installment-payment-modal-shell-v444 .premium-drawer-panel,
+.dark .installment-payment-modal-shell-v444 .premium-drawer-panel,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal__summary,
+html.dark .installment-payment-modal-shell-v444 .installment-payment-modal__main,
+.dark .installment-payment-modal-shell-v444 .installment-payment-modal__main {
+  background: #0f172a !important;
+  background-image: none !important;
+  border-color: rgba(51, 65, 85, .86) !important;
+}
+
+/* Tooltip top-layer reinforcement: body portal must stay above every menu/popover/modal. */
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"],
+.smart-tooltip-layer,
+.smart-tooltip-bubble {
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  pointer-events: none !important;
+}
+
+.header-smart-popover,
+[data-ui-header-quick-panel],
+[data-ui-header-menu],
+[data-ui-dropdown],
+[role="menu"],
+.modal-surface,
+.app-modal,
+.app-modal-backdrop {
+  z-index: 9000 !important;
+}
+
+.smart-tooltip-layer[data-tooltip-layer-root="body-portal"] {
+  position: fixed !important;
+}

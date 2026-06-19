@@ -1,0 +1,117 @@
+/* Phase 17 — Core Design Tokens
+   Purpose: centralize visual decisions before removing legacy overrides.
+   Scope: custom properties only. No selector reset, no visual takeover.
+*/
+:root {
+  /* Surfaces */
+  --ds-surface-page: rgb(248 250 252);
+  --ds-surface-card: rgba(255, 255, 255, 0.96);
+  --ds-surface-card-muted: rgba(248, 250, 252, 0.92);
+  --ds-surface-elevated: rgba(255, 255, 255, 0.98);
+
+  /* Text */
+  --ds-text-primary: rgb(15 23 42);
+  --ds-text-secondary: rgb(71 85 105);
+  --ds-text-muted: rgb(100 116 139);
+  --ds-text-inverted: rgb(248 250 252);
+
+  /* Border / focus */
+  --ds-border-subtle: rgba(226, 232, 240, 0.94);
+  --ds-border-strong: rgba(203, 213, 225, 0.96);
+  --ds-focus-ring: rgba(14, 165, 233, 0.18);
+  --ds-focus-border: rgba(14, 165, 233, 0.58);
+  --ds-danger: rgb(225 29 72);
+  --ds-danger-soft: rgba(244, 63, 94, 0.13);
+
+  /* Radius */
+  --ds-radius-xs: 10px;
+  --ds-radius-sm: 14px;
+  --ds-radius-md: 18px;
+  --ds-radius-lg: 22px;
+  --ds-radius-xl: 28px;
+
+  /* Shadows: restrained Apple-minimal scale */
+  --ds-shadow-control: 0 12px 28px -24px rgba(15, 23, 42, 0.34), inset 0 1px 0 rgba(255,255,255,0.70);
+  --ds-shadow-card: 0 18px 48px -38px rgba(15, 23, 42, 0.42), inset 0 1px 0 rgba(255,255,255,0.78);
+  --ds-shadow-popover: 0 24px 70px -42px rgba(15, 23, 42, 0.50);
+
+  /* Controls */
+  --ds-control-height-sm: 40px;
+  --ds-control-height-md: 46px;
+  --ds-control-height-lg: 52px;
+  --ds-control-radius: var(--ds-radius-md);
+  --ds-control-padding-x: 1rem;
+  --ds-control-icon-size: 34px;
+  --ds-control-icon-offset: 0.55rem;
+  --ds-control-icon-gap: 0.70rem;
+  --ds-control-font-size: 13px;
+  --ds-control-font-weight: 650;
+  --ds-control-bg: var(--ds-surface-card);
+  --ds-control-fg: var(--ds-text-primary);
+  --ds-control-muted: var(--ds-text-muted);
+  --ds-control-border: var(--ds-border-strong);
+  --ds-control-shadow: var(--ds-shadow-control);
+
+  /* Layout */
+  --ds-page-gap: 1rem;
+  --ds-card-padding: 1rem;
+  --ds-z-sticky: 40;
+  --ds-z-popover: 80;
+  --ds-z-modal: 120;
+}
+
+.dark,
+html.dark,
+[data-theme='dark'] {
+  --ds-surface-page: rgb(2 6 23);
+  --ds-surface-card: rgba(15, 23, 42, 0.90);
+  --ds-surface-card-muted: rgba(15, 23, 42, 0.72);
+  --ds-surface-elevated: rgba(15, 23, 42, 0.96);
+
+  --ds-text-primary: rgb(248 250 252);
+  --ds-text-secondary: rgb(203 213 225);
+  --ds-text-muted: rgb(148 163 184);
+  --ds-text-inverted: rgb(15 23 42);
+
+  --ds-border-subtle: rgba(51, 65, 85, 0.82);
+  --ds-border-strong: rgba(71, 85, 105, 0.82);
+  --ds-focus-ring: rgba(56, 189, 248, 0.16);
+  --ds-focus-border: rgba(56, 189, 248, 0.50);
+  --ds-danger-soft: rgba(244, 63, 94, 0.16);
+
+  --ds-shadow-control: 0 14px 34px -28px rgba(2, 6, 23, 0.92), inset 0 1px 0 rgba(255,255,255,0.05);
+  --ds-shadow-card: 0 22px 60px -42px rgba(2, 6, 23, 0.96), inset 0 1px 0 rgba(255,255,255,0.06);
+  --ds-shadow-popover: 0 28px 78px -42px rgba(2, 6, 23, 0.96);
+
+  --ds-control-bg: var(--ds-surface-card);
+  --ds-control-fg: var(--ds-text-primary);
+  --ds-control-muted: var(--ds-text-muted);
+  --ds-control-border: var(--ds-border-strong);
+  --ds-control-shadow: var(--ds-shadow-control);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ds-page-gap: 0.75rem;
+    --ds-card-padding: 0.875rem;
+    --ds-control-height-md: 44px;
+    --ds-control-height-lg: 48px;
+  }
+}
+
+/* === Stage 253 — Global app layout tokens for modal/sidebar safe area ===
+   Single source of truth for fixed RTL sidebar width used by report modals.
+*/
+:root {
+  --app-sidebar-width: 280px;
+  --app-modal-safe-gap: 14px;
+  --app-modal-content-max-width: calc(100vw - var(--app-sidebar-width) - (var(--app-modal-safe-gap) * 2));
+}
+
+@media (max-width: 1080px) {
+  :root {
+    --app-sidebar-width: 0px;
+    --app-modal-safe-gap: 10px;
+    --app-modal-content-max-width: calc(100vw - (var(--app-modal-safe-gap) * 2));
+  }
+}

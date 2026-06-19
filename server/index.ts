@@ -1,0 +1,19556 @@
+// ==========================================
+// server/index.ts
+// اپ API فروشگاه (نسخه پاک‌سازی‌شده + داکیومنت)
+// ==========================================
+/**
+ * ساختار کلی فایل:
+ *  1) Imports و پیکربندی پایه
+ *  2) Helperهای عمومی (Jalali, token, summary/total محاسبه)
+// *  3) احراز هویت (Public routes: login + barcode)
+// *  4) Middleware احراز هویت
+ *  5) داشبورد
+ *  6) محصولات و دسته‌بندی
+ *  7) گوشی‌ها
+ *  8) فروش/فاکتورها (sellable-items, sales, sales-orders)
+// *     - GET /api/sales-orders , GET /api/sales  ← لیست یکپارچه
+// *     - POST /api/sales-orders                  ← ثبت فاکتور جدید
+// *     - GET /api/sales-orders/:id               ← دیتای چاپ فاکتور (با fallback)
+// *     - (سازگاری قدیمی) POST /api/sales        ← فروش تکی قدیم
+ *  9) مشتریان
+ * 10) همکاران/تأمین‌کنندگان
+ * 11) گزارش‌ها (Summary/Top/Phone/Compare)
+ * 12) تنظیمات + آپلود لوگو + بکاپ/ریستور
+ * 13) کاربران و نقش‌ها
+ * 14) فروش اقساطی + تراکنش قسط + وضعیت چک
+ * 15) تحلیل هوشمند
+ * 16) پیامک رویدادی
+ * 17) مرکز تعمیرات
+ * 18) خدمات (Services) + آپلود فایل عمومی
+ * 19) 404 و Error Handler + راه‌اندازی سرور و Shutdown
+ */
+import express, { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+import fetch from 'node-fetch';
+import { SocksProxyAgent } from 'socks-proxy-agent';
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import moment from 'jalali-moment';
+import multer, { FileFilterCallback } from 'multer';
+import fs from 'fs';
+import path, { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import bcryptjs from 'bcryptjs';
+import crypto from 'crypto';
+import dns from 'dns';
+import os from 'os';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+import bwipjs from 'bwip-js';
+import upload from './upload';
+import cors from 'cors';
+import cron from 'node-cron';
+import { startDailyBackupJob, createDbBackup, listBackups, getBackupPath, deleteBackup, pruneBackups, checkRestoreBackup } from './backup';
+import { createCommercialModuleGuard } from './commercialModuleFlags';
+import { buildFinancialAudit } from './reportFinancialAudit';
+import { APP_MESSAGES, cleanAppMessage } from '../shared/messages';
+// --- اتصال به دیتابیس و توابع دامنه (همان قبلی‌ها) -------------------------
+import {
+  addProductToDb,
+  getAllProductsFromDb,
+  updateProductInDb,
+  deleteProductFromDb,
+  addCategoryToDb,
+  getAllCategoriesFromDb,
+  updateCategoryInDb,
+  deleteCategoryFromDb,
+  addPhoneEntryToDb,
+  updatePhoneEntryInDb,
+  deletePhoneEntryFromDb,
+  getAllPhoneEntriesFromDb,
+  listPhoneInventoryEventsFromDb,
+  getPhoneInventoryChangeReportFromDb,
+  searchPhoneInventoryEventsFromDb,
+  getPhoneInventoryEnterpriseReportFromDb,
+  getPhoneInventoryDashboardReportFromDb,
+  getAllPhoneModelsFromDb,
+  addPhoneModelToDb,
+  getAllPhoneColorsFromDb,
+  addPhoneColorToDb,
+  getSellableItemsFromDb,
+  getAllSalesTransactionsFromDb,
+  recordSaleTransactionInDb,
+  getDbInstance,
+  DB_PATH,
+  closeDbConnection,
+  addCustomerToDb,
+  getAllCustomersWithBalanceFromDb,
+  getCustomerByIdFromDb,
+  updateCustomerInDb,
+  updateCustomerTagsInDb,
+  deleteCustomerFromDb,
+  addCustomerLedgerEntryToDb,
+  getLedgerForCustomerFromDb,
+  getCustomerLedgerInsightsFromDb,
+  addCustomerFollowupToDb,
+  listCustomerFollowupsFromDb,
+  closeCustomerFollowupInDb,
+  updateCustomerFollowupInDb,
+  setCustomerRiskOverrideInDb,
+  dismissNotificationForUserInDb,
+  listDismissedNotificationIdsForUserFromDb,
+  addExpenseToDb,
+  listExpensesFromDb,
+  updateExpenseInDb,
+  deleteExpenseFromDb,
+  getExpensesSummaryFromDb,
+  addRecurringExpenseToDb,
+  listRecurringExpensesFromDb,
+  updateRecurringExpenseInDb,
+  deleteRecurringExpenseFromDb,
+  getRecurringExpenseByIdFromDb,
+  advanceRecurringExpenseNextRunDateInDb,
+  markRecurringExpenseRunInDb,
+  upsertDebtSnapshotInDb,
+  recordInventoryInDb,
+  computeFifoCogsForProduct,
+  getInventoryFifoAgingForAllProducts,
+  getMonthlyProfitByProductFifo,
+  createInventoryAdjustmentInDb,
+  getInventoryAgingBucketsFromDb,
+  getRealProfitPerProductFifo,
+  listSalesProfitRowsFifo,
+  listDebtSnapshotsFromDb,
+  addAuditLogEntry,
+  addPartnerToDb,
+  getAllPartnersWithBalanceFromDb,
+  getPartnerByIdFromDb,
+  updatePartnerInDb,
+  deletePartnerFromDb,
+  addPartnerLedgerEntryToDb,
+  getLedgerForPartnerFromDb,
+  getPurchasedItemsFromPartnerDb,
+  getSalesSummaryAndProfit,
+  getDebtorsList,
+  getCreditorsList,
+  getTopCustomersBySales,
+  getTopSuppliersByPurchaseValue,
+  getPhoneSalesReport,
+  getPhoneSalesDateBounds,
+  getPhoneInstallmentSalesReport,
+  getPhoneInstallmentSalesDateBounds,
+  getInvoiceDataById,
+  getAllSettingsAsObject,
+  updateMultipleSettings,
+  updateSetting,
+  getAllRoles,
+  addUserToDb,
+  updateUserInDb,
+  deleteUserFromDb,
+  getAllUsersWithRoles,
+  findUserByUsername,
+  getAsync,
+  runAsync,
+  allAsync,
+  getDashboardKPIs,
+  getDashboardSalesChartData,
+  getDashboardRecentActivities,
+  getRepairFinancialSummary,
+  getUserDashboardLayoutFromDb,
+  upsertUserDashboardLayoutInDb,
+  deleteUserDashboardLayoutFromDb,
+  addInstallmentSaleToDb,
+  getAllInstallmentSalesFromDb,
+  getInstallmentSaleByIdFromDb,
+  updateInstallmentPaymentStatusInDb,
+  updateCheckStatusInDb,
+  addCheckRecoveryPaymentToDb,
+  getInstallmentPaymentDetailsForSms,
+  getInstallmentSaleDetailsForSms,
+  getInstallmentCheckDetailsForSms,
+  deleteInstallmentSaleFromDb,
+  getSalesOrderProfitSnapshotFromDb,
+  getInstallmentSaleProfitSnapshotFromDb,
+  getPendingInstallmentPaymentsWithCustomer,
+  getPendingInstallmentChecksWithCustomer,
+  updateCustomerLedgerEntryInDb,
+  deleteCustomerLedgerEntryFromDb,
+  updatePartnerLedgerEntryInDb,
+  deletePartnerLedgerEntryFromDb,
+  changePasswordInDb,
+  resetUserPasswordInDb,
+  updateAvatarPathInDb,
+  createRepairInDb,
+  getAllRepairsFromDb,
+  getRepairByIdFromDb,
+  updateRepairInDb,
+  finalizeRepairInDb,
+  addPartToRepairInDb,
+  deletePartFromRepairInDb,
+  getRepairDetailsForSms,
+  getOverdueInstallmentsFromDb,
+  getRepairsReadyForPickupFromDb,
+  ProductPayload,
+  UpdateProductPayload,
+  PhoneEntryPayload,
+  PhoneEntryUpdatePayload,
+  SaleDataPayload,
+  CustomerPayload,
+  LedgerEntryPayload,
+  PartnerPayload,
+  SettingItem,
+  fromShamsiStringToISO,
+  InstallmentSalePayload,
+  CheckStatus,
+  UserUpdatePayload,
+  ChangePasswordPayload,
+  NewRepairData,
+  FinalizeRepairPayload,
+  Service,
+  getAllServicesFromDb,
+  addServiceToDb,
+  updateServiceInDb,
+  deleteServiceFromDb,
+  addInstallmentTransactionToDb,
+  updateInstallmentTransactionInDb,
+  deleteInstallmentTransactionFromDb,
+  getProfitPerSaleMapFromDb,
+  getInvoiceDataForSaleIds,
+  listReportSavedFilters,
+  createOrReplaceReportSavedFilter,
+  deleteReportSavedFilter,
+  getInventoryTurnoverReport,
+  getDeadStockReport,
+  getAbcReport,
+  getAgingReceivablesReport,
+  getCashflowReport,
+  // Telegram link (Model A)
+  normalizeIranPhone,
+  upsertTelegramLinkRequest,
+  getLegacyPartnerCandidatesFromDb,
+  listStorePartnersFromDb,
+  createStorePartnerFromDb,
+  updateStorePartnerFromDb,
+  listProfitShareProfilesFromDb,
+  createProfitShareProfileFromDb,
+  listOwnershipProfilesFromDb,
+  createOwnershipProfileFromDb,
+  bootstrapStoreOwnershipCoreFromDb,
+  saveStoreOwnershipConfigurationFromDb,
+  getStoreOwnershipCoverageFromDb,
+  previewStoreOwnershipBackfillFromDb,
+  applyStoreOwnershipBackfillFromDb,
+  listStoreOwnershipReviewQueueFromDb,
+  assignStoreOwnershipReviewItemsFromDb,
+  getPartnerProfitReportFromDb,
+  getPartnerAccessoriesReportFromDb,
+  getPartnerPhonesReportFromDb,
+  getPartnerSettlementReportFromDb,
+  listPartnerSettlementTransactionsFromDb,
+  createPartnerSettlementTransactionFromDb,
+  cancelPartnerSettlementTransactionFromDb,
+  getPendingTelegramLinkRequestByChatId,
+  bumpTelegramLinkRequestAttempt,
+  markTelegramLinkRequestVerified,
+  linkCustomerTelegramByPhone,
+  linkPartnerTelegramByPhone,
+  unlinkPartnerTelegram,
+  getLinkedPartnerByChatId,
+  // Telegram link (QR Tokens)
+  createTelegramLinkToken,
+  getTelegramLinkTokenByPlainToken,
+  getPendingTelegramLinkTokenByChatId,
+  markTelegramLinkTokenStatus,
+  linkCustomerTelegramById
+} from './database';
+// P0 Imports
+import {
+  adjustProductStockInDb,
+  createPurchaseReceiptInDb,
+  getAllPurchasesFromDb,
+  getPurchaseByIdFromDb,
+  createStockCountInDb,
+  getAllStockCountsFromDb,
+  getStockCountByIdFromDb,
+  upsertStockCountItemInDb,
+  completeStockCountInDb,
+} from './database';
+import {
+  createSalesOrder,
+  getSalesOrderForInvoice,
+  getAllSalesOrdersFromDb,
+  getSalesOrderItemsForOrders,
+  deleteSalesOrder,
+  cancelSalesOrder,
+  createSalesReturn,
+  getSalesReturnsForOrder,
+} from './salesOrders';
+import { analyzeProfitability, analyzeInventoryVelocity, generatePurchaseSuggestions } from './analysis';
+// Import SMS sending functions for all supported providers
+import {
+  sendMeliPayamakPatternSms,
+  sendKavenegarPatternSms,
+  sendSmsIrPatternSms,
+  sendIppanelPatternSms,
+  sendPatternSms, // backwards compatible alias for MeliPayamak
+} from './smsService';
+import { getTelegramBotInfo, sendTelegramMessage, sendTelegramMessages, sendTelegramPhoto, sendTelegramDocument, parseChatIdList, setTelegramProxy, setTelegramBotCommands, setTelegramDefaultMenuButton, deleteTelegramBotCommands, callTelegramBotApi } from './telegramService';
+import { ActionItem, SalesOrderPayload, InstallmentSalePayload } from '../types';
+// Import audit logging and reporting helpers
+import {
+  addAuditLog,
+  getAuditLogs,
+  getRfmReport,
+  getCohortReport,
+} from './database';
+// Validators
+import { validateSalesOrderPayload, validateInstallmentSalePayload } from './validators';
+// =====================================================
+// 1) پیکربندی پایه
+// =====================================================
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+// =====================================================
+// DB Migrations (auto-run *.sql in server/migrations)
+// =====================================================
+const execDb = (db: any, sql: string) =>
+  new Promise<void>((resolve, reject) => db.exec(sql, (err: any) => (err ? reject(err) : resolve())));
+const runDb = (db: any, sql: string, params: any[] = []) =>
+  new Promise<void>((resolve, reject) => db.run(sql, params, (err: any) => (err ? reject(err) : resolve())));
+const getDb = <T = any>(db: any, sql: string, params: any[] = []) =>
+  new Promise<T | undefined>((resolve, reject) => db.get(sql, params, (err: any, row: any) => (err ? reject(err) : resolve(row))));
+function splitSqlStatements(sql: string): string[] {
+  // Safer splitter:
+  // - ignores semicolons inside single/double-quoted strings
+  // - strips line comments (--) and block comments (/* */)
+  const stmts: string[] = [];
+  let cur = '';
+  let i = 0;
+  let inSingle = false;
+  let inDouble = false;
+  let inLineComment = false;
+  let inBlockComment = false;
+  const push = () => {
+    const s = cur.trim();
+    if (s) stmts.push(s.endsWith(';') ? s : s + ';');
+    cur = '';
+  };
+  while (i < sql.length) {
+    const ch = sql[i];
+    const next = i + 1 < sql.length ? sql[i + 1] : '';
+    // End line comment
+    if (inLineComment) {
+      if (ch === '\n') {
+        inLineComment = false;
+        cur += '\n';
+      }
+      i++;
+      continue;
+    }
+    // End block comment
+    if (inBlockComment) {
+      if (ch === '*' && next === '/') {
+        inBlockComment = false;
+        i += 2;
+        continue;
+      }
+      i++;
+      continue;
+    }
+    // Start comments (only if not inside strings)
+    if (!inSingle && !inDouble) {
+      if (ch === '-' && next === '-') {
+        inLineComment = true;
+        i += 2;
+        continue;
+      }
+      if (ch === '/' && next === '*') {
+        inBlockComment = true;
+        i += 2;
+        continue;
+      }
+    }
+    // Toggle strings
+    if (!inDouble && ch === "'" ) {
+      // handle escaped single quote '' inside single-quoted strings
+      if (inSingle && next === "'") {
+        cur += "''";
+        i += 2;
+        continue;
+      }
+      inSingle = !inSingle;
+      cur += ch;
+      i++;
+      continue;
+    }
+    if (!inSingle && ch === '"') {
+      inDouble = !inDouble;
+      cur += ch;
+      i++;
+      continue;
+    }
+    // Statement boundary
+    if (!inSingle && !inDouble && ch === ';') {
+      cur += ';';
+      push();
+      i++;
+      continue;
+    }
+    cur += ch;
+    i++;
+  }
+  push();
+  return stmts;
+}
+function isIgnorableMigrationError(stmt: string, err: any): boolean {
+  const msg = String(err?.message || err || '').toLowerCase();
+  // 1) SQLite: ALTER TABLE ... ADD COLUMN X -> duplicate column name: X
+  if (msg.includes('duplicate column name') && /alter\s+table\s+\w+\s+add\s+column/i.test(stmt)) return true;
+  // 2) Some sqlite builds report "already exists" on ADD COLUMN
+  if (msg.includes('already exists') && /alter\s+table\s+\w+\s+add\s+column/i.test(stmt)) return true;
+  // 3) DB variants: column name differences between legacy schemas.
+  // If an index targets a column that doesn't exist in this DB, skip it
+  // (we prefer the server to start; you can add a follow-up migration later).
+  if (msg.includes('no such column') && /create\s+(unique\s+)?index/i.test(stmt)) return true;
+  return false;
+}
+async function runPendingMigrations(db: any) {
+  const migrationsDir = join(__dirname, 'migrations');
+  if (!fs.existsSync(migrationsDir)) return;
+  await execDb(db, `
+    CREATE TABLE IF NOT EXISTS schema_migrations (
+      id TEXT PRIMARY KEY,
+      appliedAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+  const files = fs
+    .readdirSync(migrationsDir)
+    .filter((f) => f.toLowerCase().endsWith('.sql'))
+    .sort((a, b) => a.localeCompare(b, 'en'));
+  for (const file of files) {
+    const already = await getDb(db, 'SELECT id FROM schema_migrations WHERE id = ? LIMIT 1', [file]);
+    if (already) continue;
+    const fullPath = join(migrationsDir, file);
+    const sql = fs.readFileSync(fullPath, 'utf8');
+    // Safety: skip empty files
+    if (!sql.trim()) {
+      await runDb(db, 'INSERT INTO schema_migrations (id) VALUES (?)', [file]);
+      continue;
+    }
+    console.log(`[migrations] applying ${file} ...`);
+    await execDb(db, 'BEGIN');
+    try {
+      const stmts = splitSqlStatements(sql);
+      for (const stmt of stmts) {
+        try {
+          await execDb(db, stmt);
+        } catch (err) {
+          if (isIgnorableMigrationError(stmt, err)) {
+            console.warn(`[migrations] skipped (already applied): ${file} :: ${stmt.slice(0, 80)}...`);
+            continue;
+          }
+          throw err;
+        }
+      }
+      await runDb(db, 'INSERT INTO schema_migrations (id) VALUES (?)', [file]);
+      await execDb(db, 'COMMIT');
+      console.log(`[migrations] applied ${file}`);
+    } catch (e) {
+      await execDb(db, 'ROLLBACK');
+      console.error(`[migrations] failed ${file}`, e);
+      throw e;
+    }
+  }
+}
+// Prefer IPv4 first to avoid undici fetch failures on networks with broken IPv6
+dns.setDefaultResultOrder('ipv4first');
+const app = express();
+// Daily DB backup job (started after DB init using settings)
+// ------------------------------
+// Auth middleware (session-based)
+// ------------------------------
+const requireAuth = (req: any, res: any, next: any) => {
+  try {
+    const authHeader = req.headers?.authorization as string | undefined;
+    const token =
+      (authHeader && authHeader.startsWith("Bearer ") ? authHeader.slice(7) : undefined) ||
+      (req.headers?.["x-session-token"] as string | undefined) ||
+      (req.query?.token as string | undefined);
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+    const session = (activeSessions as any)[token];
+    if (!session) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+    if (session.expires && Date.now() > session.expires) {
+      delete (activeSessions as any)[token];
+      return res.status(401).json({ success: false, message: "Session expired" });
+    }
+    req.user = {
+      id: session.userId,
+      username: session.username,
+      roleName: session.roleName,
+      avatarUrl: session.avatarUrl
+    };
+    return next();
+  } catch (e) {
+    return next(e);
+  }
+};
+const port = 3001;
+// ─────────────────────────────────────────────────────────
+// CORS configuration
+//
+// Trust proxy headers (e.g., X-Forwarded-For) so that req.ip resolves to the client IP
+app.set('trust proxy', true);
+app.use(cors({
+  origin: [
+    /^https?:\/\/localhost:5173$/,
+    /^https?:\/\/127\.0\.0\.1:5173$/,
+    // Allow any 192.168.x.x:5173 for local network checking over HTTP or HTTPS
+    /^https?:\/\/192\.168\.\d{1,3}\.\d{1,3}:5173$/,
+  ],
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
+// Always respond to OPTIONS to satisfy CORS preflight; do not rate‑limit OPTIONS
+app.options('*', cors());
+app.use(express.json());
+const isBcryptHash = (value: unknown): value is string => {
+  return typeof value === 'string' && /^\$2[aby]?\$\d{2}\$/.test(value);
+};
+const verifyPasswordFlexible = async (plainPassword: string, storedPassword: unknown) => {
+  if (typeof storedPassword !== 'string' || !storedPassword) return false;
+  if (isBcryptHash(storedPassword)) {
+    return bcryptjs.compare(plainPassword, storedPassword);
+  }
+  return plainPassword === storedPassword;
+};
+// ===============================
+// AUTH: LOGIN (CLEAN & SAFE)
+// ===============================
+app.post('/api/login', async (req, res, next) => {
+  try {
+    await getDbInstance();
+    // Accept multiple payload shapes from frontend
+    const rawUsername =
+      req.body?.username ??
+      req.body?.userName ??
+      req.body?.email ??
+      req.body?.user ??
+      null;
+    const rawPassword = req.body?.password ?? req.body?.pass ?? null;
+    const username = typeof rawUsername === 'string' ? rawUsername.trim() : '';
+    const password = typeof rawPassword === 'string' ? rawPassword : '';
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: 'نام کاربری و کلمه عبور الزامی هستند.' });
+    }
+    // DEV bootstrap: only create the default admin if it does not exist.
+    // Do not overwrite the password on every login attempt because older DB files,
+    // file locks or readonly environments can turn that write into a 500.
+    const isDev = process.env.NODE_ENV !== 'production';
+    const allowBootstrap = isDev && process.env.ALLOW_DEFAULT_ADMIN_BOOTSTRAP !== 'false';
+    if (allowBootstrap && username === 'admin' && password === 'password123') {
+      try {
+        await runAsync('INSERT OR IGNORE INTO roles (name) VALUES (?)', ['Admin']);
+        const adminRole = await getAsync('SELECT id FROM roles WHERE name = ?', ['Admin']);
+        const adminUser = await findUserByUsername('admin');
+        if (!adminUser && adminRole?.id) {
+          const hashed = await bcryptjs.hash('password123', 10);
+          await runAsync(
+            'INSERT INTO users (username, passwordHash, roleId) VALUES (?, ?, ?)',
+            ['admin', hashed, adminRole.id]
+          );
+        }
+      } catch (bootstrapError) {
+        console.warn('[login] default admin bootstrap skipped:', bootstrapError);
+      }
+    }
+    const user = await findUserByUsername(username);
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'نام کاربری یا کلمه عبور نامعتبر است.' });
+    }
+    const passwordHash = typeof user.passwordHash === 'string' ? user.passwordHash : '';
+    if (!passwordHash) {
+      console.error('[login] User record has no password/passwordHash:', { userId: user.id, username: user.username });
+      return res.status(500).json({
+        success: false,
+        message: 'اطلاعات کاربر ناقص است. رمز عبور این کاربر را از تنظیمات کاربران بازنشانی کنید.',
+      });
+    }
+    const isMatch = await verifyPasswordFlexible(password, passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'نام کاربری یا کلمه عبور نامعتبر است.' });
+    }
+    const token = generateToken();
+    const avatarUrl = user.avatarPath ? `/uploads/avatars/${user.avatarPath}` : null;
+    await runAsync("UPDATE users SET lastLoginAt = strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc') WHERE id = ?", [user.id]);
+    activeSessions[token] = {
+      userId: user.id,
+      username: user.username,
+      roleName: user.roleName,
+      firstName: user.firstName ?? null,
+      lastName: user.lastName ?? null,
+      avatarUrl,
+      expires: Date.now() + SESSION_DURATION_MS,
+    };
+    return res.json({
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        roleName: user.roleName,
+        firstName: user.firstName ?? null,
+        lastName: user.lastName ?? null,
+        lastLogin: new Date().toISOString(),
+        dateAdded: user.dateAdded,
+        avatarUrl,
+      },
+    });
+  } catch (err) {
+    console.error('[login] unexpected error', err);
+    next(err);
+  }
+});
+// Apply auth to all routes except public endpoints
+app.use((req, res, next) => {
+  const p = req.path || "";
+  // Public endpoints:
+  if (
+    p === "/api/login" ||
+    p === "/api/auth/login" ||
+    p === "/api/auth/register" ||
+    p.startsWith("/uploads") ||
+    p.startsWith("/public") ||
+    p === "/health" ||
+    p.startsWith("/barcode") ||
+    p.startsWith("/api/barcode")
+  ) {
+    return next();
+  }
+  return requireAuth(req as any, res as any, next as any);
+});
+import { dashboardRouter } from "./dashboard";
+app.use(createCommercialModuleGuard(getAllSettingsAsObject));
+app.use("/dashboard", dashboardRouter);
+// =====================================================
+//  Rate limiting middleware
+//
+// The simple in‑memory rate limiter below was causing too many 429 responses in development
+// because it counted every request (including preflight OPTIONS, HMR/SSE connections and
+// asset loads). To provide a smoother developer experience, we now:
+//   - Enable rate limiting only in production (process.env.NODE_ENV === 'production')
+//   - Skip counting preflight OPTIONS requests, HMR/SSE streams, and static asset paths
+//   - Use IP and logged‑in user id to build the rate bucket key
+//   - Allow a generous number of requests per window (tunable below)
+//
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_MAX = 300; // Maximum allowed requests per window
+type RateBucket = { count: number; resetAt: number };
+const rateBuckets = new Map<string, RateBucket>();
+app.use((req, res, next) => {
+  // Only enforce rate limits in production
+  if (process.env.NODE_ENV !== 'production') return next();
+  // Skip OPTIONS (CORS preflight) and HMR/SSE and static asset requests
+  const isSkippable =
+    req.method === 'OPTIONS' ||
+    req.headers.accept?.includes('text/event-stream') ||
+    req.path.startsWith('/@') ||
+    req.path.startsWith('/assets') ||
+    req.path.startsWith('/static') ||
+    req.path.startsWith('/uploads') ||
+    req.path.startsWith('/health') ||
+    req.path === '/';
+  if (isSkippable) return next();
+  // Determine IP and user id (if authenticated) to build a unique key
+  const forwardedFor = req.headers['x-forwarded-for'] as string | undefined;
+  const ip = forwardedFor?.split(',')[0]?.trim() || req.socket.remoteAddress || req.ip || 'unknown';
+  // @ts-ignore user may be attached by authenticateToken middleware
+  const userId = req.user?.id ? `|u${req.user.id}` : '|anon';
+  const key = `${ip}${userId}`;
+  const now = Date.now();
+  let bucket = rateBuckets.get(key);
+  if (!bucket || now > bucket.resetAt) {
+    // create a new window
+    bucket = { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS };
+  }
+  bucket.count++;
+  rateBuckets.set(key, bucket);
+  if (bucket.count > RATE_LIMIT_MAX) {
+    const retryAfter = Math.ceil((bucket.resetAt - now) / 1000);
+    res.setHeader('Retry-After', retryAfter.toString());
+    return res.status(429).json({ success: false, message: 'تعداد درخواست‌ها زیاد است؛ چند لحظه بعد دوباره تلاش کنید.' });
+  }
+  next();
+});
+const uploadsDir = join(__dirname, '..', 'uploads');
+const localCertDir = join(__dirname, '..', 'certs');
+const localCurrentKeyPath = join(localCertDir, 'current-key.pem');
+const localCurrentCertPath = join(localCertDir, 'current-cert.pem');
+const localCurrentPfxPath = join(localCertDir, 'current-cert.pfx');
+const localHostsScriptPath = join(localCertDir, 'setup-local-hosts.bat');
+const localMacHostsScriptPath = join(localCertDir, 'setup-local-hosts.command');
+const localPfxPassphrase = process.env.LOCAL_CERT_PFX_PASSPHRASE || process.env.VITE_LOCAL_CERT_PFX_PASSPHRASE || 'kourosh-local-dev';
+const execFileAsync = promisify(execFile);
+const LOCAL_DOMAIN_SUFFIX_WHITELIST = new Set(['localhost', 'home.arpa', 'internal', 'lan']);
+
+const normalizeLocalHostname = (value: unknown) => {
+  const raw = String(value || '').trim().toLowerCase();
+  const cleaned = raw.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  return cleaned;
+};
+
+const normalizeLocalSuffix = (value: unknown) => {
+  const raw = String(value || '').trim().toLowerCase();
+  const cleaned = raw.replace(/^\.+/, '').replace(/\.+$/, '');
+  if (!cleaned) return 'localhost';
+  if (LOCAL_DOMAIN_SUFFIX_WHITELIST.has(cleaned)) return cleaned;
+  return 'localhost';
+};
+
+const buildLocalDomain = (hostname: unknown, suffix: unknown) => {
+  const host = normalizeLocalHostname(hostname);
+  const suf = normalizeLocalSuffix(suffix);
+  return host ? `${host}.${suf}` : '';
+};
+
+const isLoopbackLocalDomain = (suffix: unknown) => normalizeLocalSuffix(suffix) === 'localhost';
+
+const getLocalDomainHostIp = (suffix: unknown) => {
+  if (isLoopbackLocalDomain(suffix)) return '127.0.0.1';
+  return getPreferredLocalIPv4();
+};
+
+const isValidIPv4 = (value: string) => /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/.test(value);
+
+const getPreferredLocalIPv4 = () => {
+  const explicit = String(process.env.LOCAL_HOSTS_IP || process.env.VITE_LOCAL_HOSTS_IP || '').trim();
+  if (isValidIPv4(explicit)) return explicit;
+
+  const nets = os.networkInterfaces();
+  for (const entries of Object.values(nets)) {
+    for (const entry of entries || []) {
+      if (!entry || entry.family !== 'IPv4' || entry.internal) continue;
+      const address = String(entry.address || '').trim();
+      if (!address || address.startsWith('169.254.')) continue;
+      if (isValidIPv4(address)) return address;
+    }
+  }
+  return '127.0.0.1';
+};
+
+
+const buildWindowsHostsSetupBatch = (domain: string, ip: string) => {
+  const safeDomain = domain.replace(/[^a-z0-9.-]/gi, '');
+  const safeIp = isValidIPv4(ip) ? ip : '127.0.0.1';
+  return `@echo off
+setlocal EnableExtensions EnableDelayedExpansion
+title Kourosh Local Domain Setup
+
+set "HOST=${safeDomain}"
+set "IP=${safeIp}"
+set "HOSTS=%SystemRoot%\\System32\\drivers\\etc\\hosts"
+
+net session >nul 2>&1
+if not "%errorlevel%"=="0" (
+  echo Requesting Administrator privileges...
+  powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
+  exit /b
+)
+
+if not exist "%HOSTS%" (
+  echo Hosts file was not found.
+  pause
+  exit /b 1
+)
+
+set "TMP=%TEMP%\hosts-%RANDOM%.tmp"
+break > "%TMP%"
+for /f "usebackq delims=" %%L in ("%HOSTS%") do (
+  set "LINE=%%L"
+  echo(!LINE! | findstr /I /C:" %HOST%" /C:"%HOST%" >nul
+  if errorlevel 1 (
+    >> "%TMP%" echo(!LINE!
+  )
+)
+
+>> "%TMP%" echo %IP% %HOST%
+copy /Y "%TMP%" "%HOSTS%" >nul
+del "%TMP%" >nul 2>&1
+ipconfig /flushdns >nul
+
+echo.
+echo ======================================
+echo Domain configured successfully:
+echo https://%HOST%
+echo Hosts entry:
+echo %IP% %HOST%
+echo ======================================
+pause
+`;
+};
+
+const buildMacHostsSetupCommand = (domain: string, ip: string) => {
+  const safeDomain = domain.replace(/[^a-z0-9.-]/gi, '');
+  const safeIp = isValidIPv4(ip) ? ip : '127.0.0.1';
+  return `#!/usr/bin/env bash
+set -euo pipefail
+
+HOST="${safeDomain}"
+IP="${safeIp}"
+HOSTS="/etc/hosts"
+BACKUP="/etc/hosts.kourosh-backup-$(date +%Y%m%d-%H%M%S)"
+
+if [[ -z "$HOST" ]]; then
+  echo "Invalid host name."
+  exit 1
+fi
+
+if [[ ! -f "$HOSTS" ]]; then
+  echo "Hosts file was not found: $HOSTS"
+  exit 1
+fi
+
+echo "Kourosh Local Domain Setup - macOS"
+echo "Domain: $HOST"
+echo "IP: $IP"
+echo
+
+echo "Administrator password may be required to update /etc/hosts."
+sudo cp "$HOSTS" "$BACKUP"
+TMP_FILE="$(mktemp)"
+awk -v host="$HOST" '
+  BEGIN { changed = 0 }
+  $0 ~ "(^|[[:space:]])" host "([[:space:]]|$)" { changed = 1; next }
+  { print }
+  END { }
+' "$HOSTS" > "$TMP_FILE"
+printf "%s %s\n" "$IP" "$HOST" >> "$TMP_FILE"
+sudo cp "$TMP_FILE" "$HOSTS"
+rm -f "$TMP_FILE"
+
+sudo dscacheutil -flushcache >/dev/null 2>&1 || true
+sudo killall -HUP mDNSResponder >/dev/null 2>&1 || true
+
+echo
+echo "======================================"
+echo "Domain configured successfully:"
+echo "http://$HOST"
+echo "Hosts entry:"
+echo "$IP $HOST"
+echo "Backup: $BACKUP"
+echo "======================================"
+read -r -p "Press Enter to close..." _
+`;
+};
+
+
+
+const generateLocalCertificate = async (domain: string, serverIp: string) => {
+  if (!domain) throw new Error('نام دامنه محلی معتبر نیست.');
+  if (String(process.env.KOUROSH_DEV_PROXY || process.env.VITE_DISABLE_HTTPS || '').trim() === '1') {
+    await fs.promises.mkdir(localCertDir, { recursive: true });
+    return {
+      keyPath: '',
+      certPath: '',
+      pfxPath: '',
+      configPath: '',
+      mode: 'proxy-http' as const,
+    };
+  }
+  await fs.promises.mkdir(localCertDir, { recursive: true });
+  const keyPath = localCurrentKeyPath;
+  const certPath = localCurrentCertPath;
+  const pfxPath = localCurrentPfxPath;
+  const cerPath = join(localCertDir, 'current-cert.cer');
+  const configPath = join(localCertDir, 'openssl-local.cnf');
+  const psScriptPath = join(localCertDir, 'generate-local-cert.ps1');
+  const safeServerIp = isValidIPv4(serverIp) ? serverIp : '';
+  const altNameLines = [
+    `DNS.1 = ${domain}`,
+    ...(safeServerIp ? [`IP.1 = ${safeServerIp}`] : []),
+  ].join('\n');
+  const config = `[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+CN = ${domain}
+
+[v3_req]
+subjectAltName = @alt_names
+extendedKeyUsage = serverAuth
+keyUsage = digitalSignature, keyEncipherment
+
+[alt_names]
+${altNameLines}
+`;
+  const psScript = `param(
+  [Parameter(Mandatory = $true)][string]$Domain,
+  [Parameter(Mandatory = $true)][string]$PfxPath,
+  [Parameter(Mandatory = $true)][string]$CerPath,
+  [string]$ServerIp = '',
+  [string]$PfxPassword = '${localPfxPassphrase}'
+)
+$ErrorActionPreference = 'Stop'
+Import-Module PKI -ErrorAction SilentlyContinue | Out-Null
+$san = "DNS=$Domain"
+if ($ServerIp) { $san += "&IPAddress=$ServerIp" }
+$securePwd = ConvertTo-SecureString -String $PfxPassword -Force -AsPlainText
+$cert = New-SelfSignedCertificate -Type Custom -Subject "CN=$Domain" -FriendlyName "Kourosh Local Dev $Domain" -KeyExportPolicy Exportable -KeyAlgorithm RSA -KeyLength 2048 -HashAlgorithm sha256 -CertStoreLocation 'Cert:\CurrentUser\My' -TextExtension @("2.5.29.17={text}$san","2.5.29.37={text}1.3.6.1.5.5.7.3.1")
+Export-PfxCertificate -Cert ("Cert:\CurrentUser\My\$($cert.Thumbprint)") -FilePath $PfxPath -Password $securePwd | Out-Null
+Export-Certificate -Cert ("Cert:\CurrentUser\My\$($cert.Thumbprint)") -FilePath $CerPath | Out-Null
+try {
+  Import-Certificate -FilePath $CerPath -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
+} catch {
+  # If trust import fails, keep the cert files; the UI can still guide the user.
+}
+Remove-Item ("Cert:\CurrentUser\My\$($cert.Thumbprint)") -Force -ErrorAction SilentlyContinue
+`;
+  await fs.promises.writeFile(configPath, config, 'utf8');
+  await fs.promises.writeFile(psScriptPath, psScript, 'utf8');
+
+  const runPowerShellFallback = async () => {
+    const ps = process.env.SYSTEMROOT
+      ? path.join(process.env.SYSTEMROOT, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe')
+      : 'powershell';
+    await execFileAsync(ps, [
+      '-NoProfile',
+      '-ExecutionPolicy', 'Bypass',
+      '-File', psScriptPath,
+      '-Domain', domain,
+      '-PfxPath', pfxPath,
+      '-CerPath', cerPath,
+      ...(safeServerIp ? ['-ServerIp', safeServerIp] : []),
+      '-PfxPassword', localPfxPassphrase,
+    ]);
+    try { await fs.promises.unlink(keyPath); } catch {}
+    try { await fs.promises.unlink(certPath); } catch {}
+    return { pfxPath, cerPath, configPath, mode: 'windows-pfx' as const };
+  };
+
+  const runOpenSslFallback = async () => {
+    await execFileAsync('openssl', [
+      'req',
+      '-x509',
+      '-nodes',
+      '-newkey', 'rsa:2048',
+      '-sha256',
+      '-days', '825',
+      '-keyout', keyPath,
+      '-out', certPath,
+      '-config', configPath,
+      '-extensions', 'v3_req',
+      '-subj', `/CN=${domain}`,
+    ]);
+    try { await fs.promises.unlink(pfxPath); } catch {}
+    try { await fs.promises.unlink(cerPath); } catch {}
+    return { keyPath, certPath, configPath, mode: 'openssl' as const };
+  };
+
+  if (process.platform === 'win32') {
+    try {
+      return await runPowerShellFallback();
+    } catch (psError: any) {
+      try {
+        return await runOpenSslFallback();
+      } catch (opensslError: any) {
+        const pserr = String(psError?.message || psError?.stderr || psError || '').trim();
+        const opener = String(opensslError?.message || opensslError?.stderr || opensslError || '').trim();
+        const message = [
+          'ساخت certificate محلی با خطا در عملیات مواجه شد.',
+          pserr ? `PowerShell: ${pserr}` : '',
+          opener ? `OpenSSL: ${opener}` : '',
+        ].filter(Boolean).join(' ');
+        const err = new Error(message);
+        (err as any).cause = psError;
+        throw err;
+      }
+    }
+  }
+
+  try {
+    return await runOpenSslFallback();
+  } catch (opensslError: any) {
+    const opener = String(opensslError?.message || opensslError?.stderr || opensslError || '').trim();
+    const err = new Error(opener || 'ساخت certificate محلی با خطا در عملیات مواجه شد.');
+    (err as any).cause = opensslError;
+    throw err;
+  }
+};
+
+
+const avatarsDir = join(uploadsDir, 'avatars');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+if (!fs.existsSync(avatarsDir)) fs.mkdirSync(avatarsDir, { recursive: true });
+app.use('/uploads', express.static(uploadsDir));
+// =====================================================
+// 2) Helperهای عمومی
+//    - تاریخ شمسی → ISO
+//    - فرمت مبلغ برای SMS
+//    - احراز هویت سشن
+//    - Helperهای پایدار برای خلاصه آیتم‌ها و مبلغ کل فاکتور
+// =====================================================
+// === Unified search (FTS5) ===
+const normDigits = (s: string) =>
+  s.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+const normalizeQuery = (q: string) =>
+  normDigits(q)
+    .replace(/[ي]/g, 'ی')
+    .replace(/[ك]/g, 'ک')
+    .replace(/[ـ"']/g, ' ') // tatweel & quotes
+    .trim();
+	
+const faNum = (v: any) => Number(v ?? 0).toLocaleString('fa-IR');
+const toPrefixQuery = (q: string) =>
+  normalizeQuery(q)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(t => t.replace(/[^\p{L}\p{N}_-]/gu, ''))
+    .filter(Boolean)
+    .map(t => (t.endsWith('*') ? t : t + '*'))
+    .join(' ');
+
+const escapeSearchHtml = (value: unknown) => String(value ?? '')
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+const sanitizeFtsHighlight = (value: unknown) => {
+  const raw = String(value ?? '');
+  const open = '__KOUROSH_MARK_OPEN__';
+  const close = '__KOUROSH_MARK_CLOSE__';
+  return escapeSearchHtml(raw.replace(/<mark>/g, open).replace(/<\/mark>/g, close))
+    .replace(new RegExp(open, 'g'), '<mark>')
+    .replace(new RegExp(close, 'g'), '</mark>');
+};
+
+const highlightSearchPlainText = (value: unknown, rawQuery: string) => {
+  let escaped = escapeSearchHtml(value);
+  const tokens = normalizeQuery(rawQuery).split(/\s+/).filter(Boolean).sort((a, b) => b.length - a.length).slice(0, 8);
+  for (const token of tokens) {
+    const safe = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (!safe) continue;
+    escaped = escaped.replace(new RegExp(safe, 'gi'), (match) => `<mark>${match}</mark>`);
+  }
+  return escaped;
+};
+
+const makeSearchSnippet = (value: unknown, rawQuery: string, maxLen = 140) => {
+  const text = String(value ?? '').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  const tokens = normalizeQuery(rawQuery).split(/\s+/).filter(Boolean);
+  const normalizedText = normalizeQuery(text);
+  let idx = -1;
+  for (const token of tokens) {
+    idx = normalizedText.indexOf(token);
+    if (idx >= 0) break;
+  }
+  const start = idx > 35 ? Math.max(0, idx - 35) : 0;
+  const slice = text.slice(start, start + maxLen);
+  return `${start > 0 ? '… ' : ''}${slice}${start + maxLen < text.length ? ' …' : ''}`;
+};
+
+const stripSearchHtml = (value: unknown) => String(value ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const normalizeSearchRankText = (value: unknown) => normalizeQuery(stripSearchHtml(value)).toLowerCase();
+const searchQueryTokens = (rawQuery: string) => normalizeSearchRankText(rawQuery).split(/\s+/).filter(Boolean).slice(0, 8);
+
+const buildSearchRankMeta = (args: {
+  domain: string;
+  rawQuery: string;
+  title?: unknown;
+  subtitle?: unknown;
+  snippet?: unknown;
+  ftsScore?: unknown;
+}) => {
+  const query = normalizeSearchRankText(args.rawQuery);
+  const tokens = searchQueryTokens(args.rawQuery);
+  const title = normalizeSearchRankText(args.title);
+  const subtitle = normalizeSearchRankText(args.subtitle);
+  const snippet = normalizeSearchRankText(args.snippet);
+  const haystack = [title, subtitle, snippet].filter(Boolean).join(' ');
+  const phraseInTitle = Boolean(query && title.includes(query));
+  const phraseInSubtitle = Boolean(query && subtitle.includes(query));
+  const phraseInSnippet = Boolean(query && snippet.includes(query));
+  const exactTitle = Boolean(query && title === query);
+  const allTokensTitle = tokens.length > 0 && tokens.every((t) => title.includes(t));
+  const allTokensSnippet = tokens.length > 0 && tokens.every((t) => snippet.includes(t));
+  const allTokensAny = tokens.length > 0 && tokens.every((t) => haystack.includes(t));
+  const sourceBase = args.domain === 'phone'
+    ? 'مدل/مشخصات گوشی'
+    : args.domain === 'product'
+      ? 'نام/مشخصات کالا'
+      : args.domain === 'service'
+        ? 'نام/توضیح خدمت'
+        : args.domain === 'customer'
+          ? 'پرونده/تراکنش مشتری'
+          : args.domain === 'partner'
+            ? 'پرونده/دفتر همکار'
+            : args.domain === 'invoice'
+              ? 'فاکتور/اقلام'
+              : args.domain === 'installment'
+                ? 'فروش اقساطی/شرح'
+                : args.domain === 'repair'
+                  ? 'تعمیرات/شرح'
+                  : 'جستجو';
+
+  let rank = 20;
+  let matchSource = sourceBase;
+  let matchReason = 'تطابق عمومی در جستجوی سراسری';
+
+  if (exactTitle && (args.domain === 'phone' || args.domain === 'product' || args.domain === 'service')) {
+    rank = 120;
+    matchSource = args.domain === 'phone' ? 'مدل دقیق گوشی' : args.domain === 'product' ? 'نام دقیق کالا' : 'نام دقیق خدمت';
+    matchReason = `عبارت «${stripSearchHtml(args.rawQuery)}» دقیقاً با ${matchSource} تطابق دارد.`;
+  } else if (phraseInTitle && (args.domain === 'phone' || args.domain === 'product' || args.domain === 'service')) {
+    rank = 105;
+    matchSource = args.domain === 'phone' ? 'مدل گوشی' : args.domain === 'product' ? 'نام کالا' : 'نام خدمت';
+    matchReason = `عبارت جستجو در ${matchSource} پیدا شد.`;
+  } else if (phraseInSnippet) {
+    rank = 88;
+    matchSource = args.domain === 'customer' ? 'توضیح/تراکنش مشتری' : args.domain === 'partner' ? 'دفتر/توضیح همکار' : args.domain === 'invoice' ? 'توضیحات یا اقلام فاکتور' : args.domain === 'repair' ? 'شرح تعمیرات' : args.domain === 'installment' ? 'شرح فروش اقساطی' : 'توضیحات/یادداشت';
+    matchReason = `عبارت جستجو داخل ${matchSource} پیدا شد.`;
+  } else if (phraseInTitle) {
+    rank = 78;
+    matchSource = sourceBase;
+    matchReason = `عبارت جستجو در عنوان ${sourceBase} پیدا شد.`;
+  } else if (phraseInSubtitle) {
+    rank = 68;
+    matchSource = 'اطلاعات تکمیلی';
+    matchReason = 'عبارت جستجو در اطلاعات تکمیلی نتیجه پیدا شد.';
+  } else if (allTokensTitle) {
+    rank = 62;
+    matchSource = sourceBase;
+    matchReason = 'همه کلمات جستجو در عنوان نتیجه وجود دارد.';
+  } else if (allTokensSnippet) {
+    rank = 56;
+    matchSource = 'توضیحات/یادداشت';
+    matchReason = 'همه کلمات جستجو در توضیحات یا یادداشت پیدا شد.';
+  } else if (allTokensAny) {
+    rank = 44;
+    matchSource = 'تطابق ترکیبی';
+    matchReason = 'کلمات جستجو در چند بخش مختلف نتیجه پیدا شد.';
+  } else if (Number.isFinite(Number(args.ftsScore))) {
+    rank = Math.max(25, Math.round(42 - Number(args.ftsScore || 0)));
+    matchSource = 'ایندکس جستجو';
+    matchReason = 'نتیجه از ایندکس جستجوی سریع پیدا شد.';
+  }
+
+  return { rankScore: Math.max(1, Math.min(140, rank)), matchSource, matchReason };
+};
+// از اینجا به بعد همه‌ی روترها پشت authenticateToken هستند (app.use(authenticateToken))
+app.get('/api/search', async (req, res, next) => {
+  try {
+    const rawQ = String(req.query.q || '').slice(0, 100);
+    const limit = Math.min(parseInt(String(req.query.limit || '20'), 10) || 20, 50);
+    if (!rawQ) return res.json({ items: [] });
+    // مطمئن شو search_index ساخته شده
+    const hasFts = await getAsync("SELECT name FROM sqlite_master WHERE type='table' AND name='search_index'");
+    if (!hasFts) {
+      return res.status(501).json({ success: false, message: 'FTS5 فعال نیست یا search_index ساخته نشده.' });
+    }
+    const q = toPrefixQuery(rawQ);
+    if (!q) return res.json({ items: [] });
+    const rows = await allAsync(
+      `
+      SELECT 
+        rowid,
+        domain,
+        entity_id as entityId,
+        highlight(search_index, 2, '<mark>','</mark>') AS titleHL,
+        snippet(search_index, 3, '<mark>','</mark>', ' … ', 8) AS snippet,
+        bm25(search_index) AS score
+      FROM search_index
+      WHERE search_index MATCH ?
+      ORDER BY score ASC
+      LIMIT ?;
+      `,
+      [q, limit]
+    );
+    const seenSearchItems = new Set(rows.map((r: any) => `${r.domain}:${r.entityId}`));
+    const addSupplementalRows = (list: any[]) => {
+      for (const item of list || []) {
+        const key = `${item.domain}:${item.entityId}`;
+        if (seenSearchItems.has(key)) continue;
+        seenSearchItems.add(key);
+        rows.push({
+          rowid: 0,
+          domain: item.domain,
+          entityId: Number(item.entityId),
+          titleHL: highlightSearchPlainText(item.title || '', rawQ),
+          snippet: highlightSearchPlainText(makeSearchSnippet(item.content || item.extra || item.title || '', rawQ), rawQ),
+          score: 999,
+        });
+      }
+    };
+
+    const normalizedLikeValue = normalizeQuery(rawQ);
+    const like = `%${normalizedLikeValue}%`;
+    const rawLike = `%${rawQ.trim()}%`;
+    const lowerLike = `%${rawQ.trim().toLowerCase()}%`;
+
+    // اولویت ویژه: توضیحات و اقلام فروش نقدی (فاکتورهای فروش) حتی اگر FTS پر شده باشد
+    // تا در جستجوی سراسری، متن‌های یادداشت/شرح فروش نقدی از قلم نیفتند.
+    const prioritizedInvoiceMatches = await allAsync(`
+      SELECT 'invoice' AS domain, i.id AS entityId, TRIM(COALESCE(i.invoiceNumber,'') || ' فاکتور #' || i.id) AS title,
+             TRIM(COALESCE(c.fullName,'') || ' ' || COALESCE(i.notes,'') || ' ' || COALESCE((SELECT group_concat(description, ' • ') FROM invoice_items WHERE invoiceId = i.id),'')) AS content,
+             TRIM(COALESCE(i.invoiceNumber,'') || ' ' || COALESCE(i.notes,'')) AS extra
+      FROM invoices i
+      LEFT JOIN customers c ON c.id = i.customerId
+      WHERE COALESCE(i.notes,'') LIKE ?
+         OR COALESCE(i.notes,'') LIKE ?
+         OR COALESCE(i.invoiceNumber,'') LIKE ?
+         OR COALESCE(i.invoiceNumber,'') LIKE ?
+         OR COALESCE(c.fullName,'') LIKE ?
+         OR COALESCE(c.fullName,'') LIKE ?
+         OR COALESCE((SELECT group_concat(description, ' • ') FROM invoice_items WHERE invoiceId = i.id),'') LIKE ?
+         OR COALESCE((SELECT group_concat(description, ' • ') FROM invoice_items WHERE invoiceId = i.id),'') LIKE ?
+      ORDER BY i.id DESC
+      LIMIT ?`, [like, rawLike, like, rawLike, like, rawLike, like, rawLike, Math.min(Math.max(limit, 20), 30)]).catch(() => []);
+    addSupplementalRows(prioritizedInvoiceMatches as any[]);
+
+    // نسل اصلی فروش نقدی/اعتباری پروژه داخل sales_orders ذخیره می‌شود؛
+    // برای همین علاوه بر invoices، خود فاکتورهای فروش و اقلامشان هم باید جستجو شوند.
+    const prioritizedSalesOrderMatches = await allAsync(`
+      SELECT 'invoice' AS domain, so.id AS entityId, TRIM('فاکتور فروش #' || so.id) AS title,
+             TRIM(COALESCE(c.fullName,'') || ' ' || COALESCE(so.notes,'') || ' ' || COALESCE(so.paymentMethod,'') || ' ' || COALESCE(so.transactionDate,'') || ' ' || COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'')) AS content,
+             TRIM(CAST(so.id AS TEXT) || ' ' || COALESCE(so.notes,'') || ' ' || COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'')) AS extra
+      FROM sales_orders so
+      LEFT JOIN customers c ON c.id = so.customerId
+      WHERE COALESCE(so.notes,'') LIKE ?
+         OR COALESCE(so.notes,'') LIKE ?
+         OR CAST(so.id AS TEXT) LIKE ?
+         OR COALESCE(c.fullName,'') LIKE ?
+         OR COALESCE(c.fullName,'') LIKE ?
+         OR COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'') LIKE ?
+         OR COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'') LIKE ?
+      ORDER BY so.id DESC
+      LIMIT ?`, [like, rawLike, rawLike, like, rawLike, like, rawLike, Math.min(Math.max(limit, 20), 30)]).catch(() => []);
+    addSupplementalRows(prioritizedSalesOrderMatches as any[]);
+
+    if (rows.length < limit || prioritizedInvoiceMatches.length > 0 || prioritizedSalesOrderMatches.length > 0) {
+      const remaining = Math.max(0, limit - rows.length);
+      const supplementalTasks = [
+        allAsync(`
+          SELECT 'customer' AS domain, id AS entityId, fullName AS title,
+                 TRIM(COALESCE(address,'') || ' ' || COALESCE(notes,'') || ' ' || COALESCE(tags,'')) AS content,
+                 COALESCE(phoneNumber,'') AS extra
+          FROM customers
+          WHERE COALESCE(fullName,'') LIKE ? OR COALESCE(phoneNumber,'') LIKE ? OR COALESCE(address,'') LIKE ? OR COALESCE(notes,'') LIKE ? OR COALESCE(tags,'') LIKE ?
+          LIMIT ?`, [like, like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'partner' AS domain, id AS entityId, partnerName AS title,
+                 TRIM(COALESCE(partnerType,'') || ' ' || COALESCE(contactPerson,'') || ' ' || COALESCE(address,'') || ' ' || COALESCE(notes,'')) AS content,
+                 TRIM(COALESCE(phoneNumber,'') || ' ' || COALESCE(email,'')) AS extra
+          FROM partners
+          WHERE COALESCE(partnerName,'') LIKE ? OR COALESCE(partnerType,'') LIKE ? OR COALESCE(contactPerson,'') LIKE ? OR COALESCE(phoneNumber,'') LIKE ? OR COALESCE(email,'') LIKE ? OR COALESCE(address,'') LIKE ? OR COALESCE(notes,'') LIKE ?
+          LIMIT ?`, [like, like, like, like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'customer' AS domain, cl.customerId AS entityId, c.fullName AS title,
+                 TRIM('تراکنش مشتری • ' || COALESCE(cl.transactionDate,'') || ' • ' || COALESCE(cl.description,'')) AS content,
+                 TRIM(COALESCE(c.phoneNumber,'') || ' ' || CAST(COALESCE(cl.debit,0) AS TEXT) || ' ' || CAST(COALESCE(cl.credit,0) AS TEXT)) AS extra
+          FROM customer_ledger cl
+          LEFT JOIN customers c ON c.id = cl.customerId
+          WHERE COALESCE(cl.description,'') LIKE ? OR COALESCE(cl.transactionDate,'') LIKE ? OR COALESCE(c.fullName,'') LIKE ? OR COALESCE(c.phoneNumber,'') LIKE ?
+          ORDER BY cl.id DESC
+          LIMIT ?`, [like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'partner' AS domain, pl.partnerId AS entityId, p.partnerName AS title,
+                 TRIM('دفتر همکار • ' || COALESCE(pl.transactionDate,'') || ' • ' || COALESCE(pl.description,'')) AS content,
+                 TRIM(COALESCE(p.phoneNumber,'') || ' ' || CAST(COALESCE(pl.debit,0) AS TEXT) || ' ' || CAST(COALESCE(pl.credit,0) AS TEXT)) AS extra
+          FROM partner_ledger pl
+          LEFT JOIN partners p ON p.id = pl.partnerId
+          WHERE COALESCE(pl.description,'') LIKE ? OR COALESCE(pl.transactionDate,'') LIKE ? OR COALESCE(p.partnerName,'') LIKE ? OR COALESCE(p.phoneNumber,'') LIKE ?
+          ORDER BY pl.id DESC
+          LIMIT ?`, [like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'product' AS domain, p.id AS entityId, p.name AS title,
+                 TRIM(COALESCE(p.name,'') || ' ' || COALESCE(c.name,'') || ' ' || COALESCE(s.partnerName,'')) AS content,
+                 TRIM(COALESCE(p.sku,'') || ' ' || COALESCE(p.barcode,'')) AS extra
+          FROM products p
+          LEFT JOIN categories c ON c.id = p.categoryId
+          LEFT JOIN partners s ON s.id = p.supplierId
+          WHERE COALESCE(p.name,'') LIKE ? OR LOWER(COALESCE(p.name,'')) LIKE ? OR COALESCE(c.name,'') LIKE ? OR COALESCE(s.partnerName,'') LIKE ? OR COALESCE(p.sku,'') LIKE ? OR LOWER(COALESCE(p.sku,'')) LIKE ? OR COALESCE(p.barcode,'') LIKE ?
+          LIMIT ?`, [rawLike, lowerLike, like, like, rawLike, lowerLike, rawLike, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'phone' AS domain, ph.id AS entityId, ph.model AS title,
+                 TRIM(COALESCE(ph.model,'') || ' ' || COALESCE(ph.color,'') || ' ' || COALESCE(ph.storage,'') || ' ' || COALESCE(ph.ram,'') || ' ' || COALESCE(ph.condition,'') || ' ' || COALESCE(ph.status,'') || ' ' || COALESCE(ph.notes,'') || ' ' || COALESCE(s.partnerName,'')) AS content,
+                 TRIM(COALESCE(ph.imei,'') || ' ' || COALESCE(ph.sellerName,'') || ' ' || COALESCE(ph.buyerName,'')) AS extra
+          FROM phones ph
+          LEFT JOIN partners s ON s.id = ph.supplierId
+          WHERE COALESCE(ph.model,'') LIKE ? OR LOWER(COALESCE(ph.model,'')) LIKE ? OR COALESCE(ph.imei,'') LIKE ? OR COALESCE(ph.color,'') LIKE ? OR COALESCE(ph.storage,'') LIKE ? OR COALESCE(ph.ram,'') LIKE ? OR COALESCE(ph.notes,'') LIKE ? OR COALESCE(s.partnerName,'') LIKE ?
+          LIMIT ?`, [rawLike, lowerLike, rawLike, like, like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'service' AS domain, id AS entityId, name AS title, COALESCE(description,'') AS content, CAST(COALESCE(price,0) AS TEXT) AS extra
+          FROM services
+          WHERE COALESCE(name,'') LIKE ? OR COALESCE(description,'') LIKE ?
+          LIMIT ?`, [like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'invoice' AS domain, i.id AS entityId, TRIM(COALESCE(i.invoiceNumber,'') || ' فاکتور #' || i.id) AS title,
+                 TRIM(COALESCE(c.fullName,'') || ' ' || COALESCE(i.notes,'') || ' ' || COALESCE((SELECT group_concat(description, ' • ') FROM invoice_items WHERE invoiceId = i.id),'')) AS content,
+                 COALESCE(i.invoiceNumber,'') AS extra
+          FROM invoices i LEFT JOIN customers c ON c.id = i.customerId
+          WHERE COALESCE(i.invoiceNumber,'') LIKE ? OR COALESCE(i.notes,'') LIKE ? OR COALESCE(c.fullName,'') LIKE ? OR COALESCE((SELECT group_concat(description, ' • ') FROM invoice_items WHERE invoiceId = i.id),'') LIKE ?
+          LIMIT ?`, [rawLike, like, like, like, Math.max(remaining, 8)]).catch(() => []),
+        allAsync(`
+          SELECT 'invoice' AS domain, so.id AS entityId, TRIM('فاکتور فروش #' || so.id) AS title,
+                 TRIM(COALESCE(c.fullName,'') || ' ' || COALESCE(so.notes,'') || ' ' || COALESCE(so.paymentMethod,'') || ' ' || COALESCE(so.transactionDate,'') || ' ' || COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'')) AS content,
+                 TRIM(CAST(so.id AS TEXT) || ' ' || COALESCE(so.notes,'')) AS extra
+          FROM sales_orders so LEFT JOIN customers c ON c.id = so.customerId
+          WHERE CAST(so.id AS TEXT) LIKE ? OR COALESCE(so.notes,'') LIKE ? OR COALESCE(so.notes,'') LIKE ? OR COALESCE(c.fullName,'') LIKE ? OR COALESCE(c.fullName,'') LIKE ? OR COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'') LIKE ? OR COALESCE((SELECT group_concat(description, ' • ') FROM sales_order_items WHERE orderId = so.id),'') LIKE ?
+          LIMIT ?`, [rawLike, like, rawLike, like, rawLike, like, rawLike, Math.max(remaining, 8)]).catch(() => []),
+        allAsync(`
+          SELECT 'repair' AS domain, r.id AS entityId, TRIM('تعمیر #' || r.id || ' ' || COALESCE(r.deviceModel,'')) AS title,
+                 TRIM(COALESCE(c.fullName,'') || ' ' || COALESCE(r.problemDescription,'') || ' ' || COALESCE(r.technicianNotes,'')) AS content,
+                 COALESCE(r.serialNumber,'') AS extra
+          FROM repairs r LEFT JOIN customers c ON c.id = r.customerId
+          WHERE COALESCE(r.deviceModel,'') LIKE ? OR COALESCE(r.problemDescription,'') LIKE ? OR COALESCE(r.technicianNotes,'') LIKE ? OR COALESCE(r.serialNumber,'') LIKE ? OR COALESCE(c.fullName,'') LIKE ?
+          LIMIT ?`, [like, like, like, like, like, remaining]).catch(() => []),
+        allAsync(`
+          SELECT 'installment' AS domain, ins.id AS entityId, TRIM('فروش اقساطی #' || ins.id || ' ' || COALESCE(c.fullName,'')) AS title,
+                 TRIM(COALESCE(ins.itemsSummary,'') || ' ' || COALESCE(ins.notes,'') || ' ' || COALESCE((SELECT imei FROM phones WHERE id = ins.phoneId),'')) AS content,
+                 COALESCE((SELECT imei FROM phones WHERE id = ins.phoneId),'') AS extra
+          FROM installment_sales ins LEFT JOIN customers c ON c.id = ins.customerId
+          WHERE COALESCE(c.fullName,'') LIKE ? OR COALESCE(ins.itemsSummary,'') LIKE ? OR COALESCE(ins.notes,'') LIKE ? OR COALESCE((SELECT imei FROM phones WHERE id = ins.phoneId),'') LIKE ?
+          LIMIT ?`, [like, like, like, like, remaining]).catch(() => []),
+      ];
+      const supplementalGroups = await Promise.all(supplementalTasks);
+      for (const group of supplementalGroups) {
+        addSupplementalRows(group as any[]);
+      }
+    }
+
+    rows.forEach((r: any) => {
+      r.titleHL = sanitizeFtsHighlight(r.titleHL || '');
+      r.snippet = sanitizeFtsHighlight(r.snippet || '');
+    });
+
+    // گروه‌بندی id ها برای گرفتن دیتای خلاصه هر دامنه
+	    const ids = {
+	      product: [] as number[],
+	      phone: [] as number[],
+	      customer: [] as number[],
+      partner: [] as number[],
+	      service: [] as number[],
+	      invoice: [] as number[],
+	      repair: [] as number[],
+	      installment: [] as number[],
+	    };
+    rows.forEach((r: any) => {
+      if (ids[r.domain as keyof typeof ids]) ids[r.domain as keyof typeof ids].push(r.entityId);
+    });
+    const inClause = (arr: number[]) => arr.map(() => '?').join(',');
+	    const [prodRows, phoneRows, custRows, partnerRows, servRows, invRows, repRows, insRows] = await Promise.all([
+      ids.product.length ? allAsync(
+        `SELECT id, name, sellingPrice FROM products WHERE id IN (${inClause(ids.product)})`, ids.product
+      ) : Promise.resolve([]),
+      ids.phone.length ? allAsync(
+        `SELECT id, model, storage, ram, color, imei, status, salePrice FROM phones WHERE id IN (${inClause(ids.phone)})`, ids.phone
+      ) : Promise.resolve([]),
+      ids.customer.length ? allAsync(
+        `SELECT id, fullName, phoneNumber FROM customers WHERE id IN (${inClause(ids.customer)})`, ids.customer
+      ) : Promise.resolve([]),
+      ids.partner.length ? allAsync(
+        `SELECT id, partnerName, partnerType, phoneNumber FROM partners WHERE id IN (${inClause(ids.partner)})`, ids.partner
+      ) : Promise.resolve([]),
+      ids.service.length ? allAsync(
+        `SELECT id, name, price FROM services WHERE id IN (${inClause(ids.service)})`, ids.service
+	      ) : Promise.resolve([]),
+	      ids.invoice.length ? allAsync(
+	        `SELECT i.id, i.invoiceNumber, i.date, i.grandTotal, i.customerId, c.fullName AS customerName
+	         FROM invoices i LEFT JOIN customers c ON c.id = i.customerId
+	         WHERE i.id IN (${inClause(ids.invoice)})
+	         UNION ALL
+	         SELECT so.id, ('فروش-' || so.id) AS invoiceNumber, so.transactionDate AS date, so.grandTotal, so.customerId, c.fullName AS customerName
+	         FROM sales_orders so LEFT JOIN customers c ON c.id = so.customerId
+	         WHERE so.id IN (${inClause(ids.invoice)})`, [...ids.invoice, ...ids.invoice]
+	      ) : Promise.resolve([]),
+	      ids.repair.length ? allAsync(
+	        `SELECT r.id, r.deviceModel, r.status, r.dateReceived, r.dateCompleted, r.estimatedCost, r.finalCost, r.customerId, c.fullName AS customerName
+	         FROM repairs r LEFT JOIN customers c ON c.id = r.customerId
+	         WHERE r.id IN (${inClause(ids.repair)})`, ids.repair
+	      ) : Promise.resolve([]),
+	      ids.installment.length ? allAsync(
+	        `SELECT ins.id, ins.actualSalePrice, ins.downPayment, ins.numberOfInstallments, ins.installmentAmount, ins.installmentsStartDate, ins.saleType, ins.dateCreated,
+	                ins.customerId, c.fullName AS customerName
+	         FROM installment_sales ins LEFT JOIN customers c ON c.id = ins.customerId
+	         WHERE ins.id IN (${inClause(ids.installment)})`, ids.installment
+	      ) : Promise.resolve([]),
+    ]);
+    const byId = (arr: any[], key='id') => Object.fromEntries(arr.map((x:any)=>[x[key], x]));
+	    const pMap = byId(prodRows);
+	    const phMap = byId(phoneRows);
+	    const cMap = byId(custRows);
+	    const partnerMap = byId(partnerRows);
+	    const sMap = byId(servRows);
+	    const iMap = byId(invRows);
+	    const rMap = byId(repRows);
+	    const insMap = byId(insRows);
+    const items = rows.map((r: any) => {
+      const base = {
+        id: r.entityId,
+        domain: r.domain,
+        ftsScore: r.score,
+        score: r.score,
+        titleHL: r.titleHL,
+        snippet: r.snippet
+      };
+      let item: any;
+      switch (r.domain) {
+        case 'product': {
+          const d = pMap[r.entityId] || {};
+          item = { ...base, title: d.name, subtitle: d.sellingPrice != null ? `قیمت فروش: ${Number(d.sellingPrice).toLocaleString('fa-IR')} تومان` : undefined }; break;
+        }
+        case 'phone': {
+          const d = phMap[r.entityId] || {};
+          const sub = [d.color, d.storage, d.ram, d.status].filter(Boolean).join(' • ');
+          item = { ...base, title: d.model, subtitle: `IMEI: ${d.imei}` + (sub? ` | ${sub}`:''), price: d.salePrice }; break;
+        }
+        case 'customer': {
+          const d = cMap[r.entityId] || {};
+          item = { ...base, title: d.fullName, subtitle: d.phoneNumber }; break;
+        }
+        case 'partner': {
+          const d = partnerMap[r.entityId] || {};
+          const sub = [d.partnerType, d.phoneNumber].filter(Boolean).join(' • ');
+          item = { ...base, title: d.partnerName, subtitle: sub }; break;
+        }
+        case 'service': {
+          const d = sMap[r.entityId] || {};
+          item = { ...base, title: d.name, subtitle: d.price != null ? `${Number(d.price).toLocaleString('fa-IR')} تومان` : undefined }; break;
+        }
+	        case 'invoice': {
+	          const d = iMap[r.entityId] || {};
+	          const dt = d.date ? String(d.date).slice(0, 10) : '';
+	          const sub = [d.customerName, dt && `تاریخ: ${dt}`, d.grandTotal != null && `جمع: ${faNum(d.grandTotal)} تومان`].filter(Boolean).join(' • ');
+	          item = { ...base, title: d.invoiceNumber ? `فاکتور ${d.invoiceNumber}` : `خرید #${d.id}`, subtitle: sub }; break;
+	        }
+	        case 'repair': {
+	          const d = rMap[r.entityId] || {};
+	          const sub = [d.customerName, d.deviceModel, d.status && `وضعیت: ${d.status}`].filter(Boolean).join(' • ');
+	          item = { ...base, title: `تعمیر #${d.id}`, subtitle: sub }; break;
+	        }
+	        case 'installment': {
+	          const d = insMap[r.entityId] || {};
+	          const sub = [d.customerName, d.actualSalePrice != null && `مبلغ: ${faNum(d.actualSalePrice)} تومان`, d.saleType && `نوع: ${d.saleType}`].filter(Boolean).join(' • ');
+	          item = { ...base, title: `اقساط #${d.id}`, subtitle: sub }; break;
+	        }
+        default:
+          item = base; break;
+      }
+      const rankMeta = buildSearchRankMeta({
+        domain: item.domain,
+        rawQuery: rawQ,
+        title: item.title || item.titleHL,
+        subtitle: item.subtitle,
+        snippet: item.snippet,
+        ftsScore: item.ftsScore,
+      });
+      return { ...item, score: rankMeta.rankScore, rankScore: rankMeta.rankScore, matchSource: rankMeta.matchSource, matchReason: rankMeta.matchReason };
+    }).sort((a: any, b: any) => Number(b.rankScore || b.score || 0) - Number(a.rankScore || a.score || 0));
+    res.json({ items: items.slice(0, limit) });
+  } catch (e) {
+    next(e);
+  }
+});
+const shamsiToISOForAPI = (shamsiDateString?: string, endOfDay: boolean = false): string | undefined => {
+  if (!shamsiDateString || typeof shamsiDateString !== 'string') return undefined;
+  try {
+    const m = moment(shamsiDateString.trim(), 'jYYYY/jMM/jDD', true);
+    if (!m.isValid()) return undefined;
+    return (endOfDay ? m.endOf('day') : m.startOf('day')).toISOString();
+  } catch {
+    return undefined;
+  }
+};
+const formatPriceForSms = (price: number): string => {
+  const n = Number(price || 0);
+  const toman = Number.isFinite(n) ? Math.round(n / REPORT_CURRENCY_CONTRACT.moneyDivisor) : 0;
+  return toman.toLocaleString('fa-IR');
+};
+
+const REPORT_CURRENCY_CONTRACT = {
+  currencyBase: 'IRR',
+  displayCurrency: 'تومان',
+  moneyDivisor: 10,
+} as const;
+const formatReportMoneyText = (value: any): string => {
+  const n = Number(value || 0);
+  const toman = Number.isFinite(n) ? Math.round(n / REPORT_CURRENCY_CONTRACT.moneyDivisor) : 0;
+  return `${toman.toLocaleString('fa-IR')} ${REPORT_CURRENCY_CONTRACT.displayCurrency}`;
+};
+// --- سشن در حافظه ---
+interface ActiveSession {
+  userId: number;
+  username: string;
+  roleName: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  avatarUrl?: string | null;
+  expires: number;
+}
+const activeSessions: Record<string, ActiveSession> = {};
+const generateToken = () => crypto.randomBytes(32).toString('hex');
+const SESSION_DURATION_MS = 24 * 60 * 60 * 1000; // 24h
+declare global {
+  namespace Express {
+    interface Request {
+      user?: { id: number; username: string; roleName: string; firstName?: string | null; lastName?: string | null; avatarUrl?: string | null };
+    }
+  }
+}
+const CHECK_STATUSES_OPTIONS_SERVER: CheckStatus[] = [
+  'نزد فروشنده',
+  'در جریان وصول',
+  'نقد شد',
+  'برگشت خورد',
+  'به مشتری برگشت داده شده',
+];
+// --- Middleware احراز هویت/نقش ---
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = (req.headers['authorization'] || '').split(' ')[1];
+  if (!token) return res.status(401).json({ success: false, message: 'توکن دسترسی ارائه نشده است.' });
+  const session = activeSessions[token];
+  if (!session || session.expires < Date.now()) {
+    if (session) delete activeSessions[token];
+    return res.status(403).json({ success: false, message: 'توکن نامعتبر یا منقضی شده است.' });
+  }
+  session.expires = Date.now() + SESSION_DURATION_MS;
+  req.user = { id: session.userId, username: session.username, roleName: session.roleName, firstName: session.firstName, lastName: session.lastName, avatarUrl: session.avatarUrl };
+  next();
+};
+const authorizeRole = (allowed: string[]) => (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user || !req.user.roleName || !allowed.includes(req.user.roleName)) {
+    return res.status(403).json({ success: false, message: `عدم دسترسی مجاز. شما نقش مورد نیاز (${allowed.join(' یا ')}) را ندارید.` });
+  }
+  next();
+};
+// --- Helperهای پایدار برای خلاصه آیتم‌ها و مبلغ کل (فقط یکبار تعریف) ---
+type AnyRow = Record<string, any>;
+/** عددمحور خواندنِ امن یک کلید از میان چند نام‌محتمل */
+const readNum = (o: AnyRow, keys: string[], def = 0) => {
+  for (const k of keys) {
+    const v = Number(o?.[k]);
+    if (Number.isFinite(v)) return v;
+  }
+  return def;
+};
+/** از آبجکت فاکتور (یا ساختارهای جایگزین) آرایه آیتم‌ها را پیدا می‌کند */
+const getItemsFromInvoice = (inv: any): any[] => {
+  if (!inv) return [];
+  const candidates = [
+    inv.items, inv.orderItems, inv.lines, inv.details, inv.itemsData,
+    inv.items_list, inv.invoiceItems, inv.rows
+  ].filter(Array.isArray);
+  if (candidates.length) return candidates[0];
+  if (inv.itemsByType && typeof inv.itemsByType === 'object') {
+    return Object.values(inv.itemsByType).flat().filter(Boolean) as any[];
+  }
+  return [];
+};
+/** نام آیتم را از مسیرهای مختلف استخراج می‌کند (Product/Service/Phone/…) */
+const nameFromItem = (it: any): string => {
+  const direct =
+    it?.itemName ?? it?.name ?? it?.title ?? it?.productName ??
+    it?.serviceName ?? it?.model ?? it?.description ?? it?.label;
+  if (direct && String(direct).trim()) return String(direct).trim();
+  const nested =
+    it?.product?.name ?? it?.product?.title ??
+    it?.service?.name ?? it?.service?.title ??
+    it?.phone?.model ?? it?.device?.model ?? it?.goods?.name;
+  if (nested && String(nested).trim()) return String(nested).trim();
+  return 'کالا';
+};
+/** خلاصه کوتاهِ 1–2 آیتم اول + تعداد باقی‌مانده */
+const summarize = (items: any[]) => {
+  const parts = items.slice(0, 2).map(it => {
+    const qty = readNum(it, ['quantity','qty','count','quantitySold','qty_sold'], 1);
+    return `${nameFromItem(it)} × ${qty}`;
+  });
+  const more = Math.max(items.length - 2, 0);
+  return parts.join('، ') + (more ? ` و ${more} قلم دیگر` : '');
+};
+/** محاسبه مبلغ کل فاکتور: اول از فیلدهای Top-Level، بعد جمع خطوط */
+const computeTotal = (inv: any, items: any[]): number => {
+  const top = readNum(inv, ['grandTotal','total','totalAmount','finalAmount','sum','invoiceTotal']);
+  if (top) return top;
+  let s = 0;
+  for (const it of items) {
+    const qty  = readNum(it, ['quantity','qty','count','quantitySold','qty_sold'], 1);
+    const line = readNum(it, ['totalPrice','lineTotal','total','line_total','sum'], NaN);
+    if (Number.isFinite(line)) { s += line; continue; }
+    const unit = readNum(it, ['unitPrice','unit_price','price','salePrice','unitSalePrice'], 0);
+    s += unit * qty;
+  }
+  return s;
+};
+/** محاسبه سود فاکتور از روی خطوط (در صورت نیاز) */
+const calcInvoiceProfit = (items: AnyRow[]): number => {
+  if (!Array.isArray(items) || !items.length) return 0;
+  let revenue = 0;
+  let cost    = 0;
+  for (const it of items) {
+    const qty      = readNum(it, ['quantity','qty','count','quantitySold','qty_sold'], 1);
+    const unitSale = readNum(it, ['unitPrice','unit_price','price','salePrice','unitSalePrice']);
+    const lineSale = readNum(it, ['totalPrice','lineTotal','total','line_total','sum'], unitSale * qty);
+    const unitCost = readNum(it, ['purchasePrice','buyPrice','cost','purchase_price','unitCost','unit_cost'], 0);
+    revenue += lineSale;
+    cost    += unitCost * qty;
+  }
+  return revenue - cost;
+};
+/** از دیتابیس، داده خطوط چند فاکتور را می‌گیرد و یک Map سود برمی‌گرداند (در صورت نبودِ جدول آماده) */
+const buildProfitMapFromInvoices = async (saleIds: number[]) => {
+  const map = new Map<number, number>();
+  if (!saleIds.length) return map;
+  const raw = await getInvoiceDataForSaleIds(saleIds);
+  if (!Array.isArray(raw) || !raw.length) return map;
+  // حالت 1: هر عنصر خودش items دارد
+  if ('items' in raw[0] || 'orderItems' in raw[0]) {
+    for (const inv of raw as any[]) {
+      const sid   = Number(inv.saleId ?? inv.sale_id ?? inv.id);
+      const items = getItemsFromInvoice(inv);
+      map.set(sid, calcInvoiceProfit(items));
+    }
+  } else {
+    // حالت 2: ردیف‌های فِلت → گروه‌بندی براساس saleId
+    const bySale: Record<number, any[]> = {};
+    for (const row of raw as any[]) {
+      const sid = Number(row.saleId ?? row.sale_id ?? row.id);
+      (bySale[sid] ||= []).push(row);
+    }
+    Object.entries(bySale).forEach(([sid, items]) => {
+      map.set(Number(sid), calcInvoiceProfit(items as any[]));
+    });
+  }
+  return map;
+};
+// یک Sanitizer ساده برای ورودی‌های شمسی
+const sanitizeJalali = (input: unknown): string =>
+  String(input ?? '').trim().replace(/[^0-9\u06F0-\u06F9/]/g, '');
+// =====================================================
+// 3) مسیرهای عمومی (بدون احراز هویت): Login + Barcode
+// =====================================================
+// بارکد محصول
+app.get('/api/barcode/product/:id', async (req, res) => {
+  try {
+    const product = await getAsync('SELECT id FROM products WHERE id = ?', [req.params.id]);
+    if (!product) return res.status(404).send('Product not found');
+    const text = `product-${product.id}`;
+    bwipjs.toBuffer({ bcid: 'code128', text, scale: 3, height: 10, includetext: false, textxalign: 'center' },
+      (err, png) => err ? res.status(500).send('Error generating barcode') : (res.writeHead(200, { 'Content-Type': 'image/png' }), res.end(png)));
+  } catch { res.status(500).send('Server error'); }
+});
+// بارکد گوشی
+app.get('/api/barcode/phone/:id', async (req, res) => {
+  try {
+    const phone = await getAsync('SELECT id FROM phones WHERE id = ?', [req.params.id]);
+    if (!phone) return res.status(404).send('Phone not found');
+    const text = `phone-${phone.id}`;
+    bwipjs.toBuffer({ bcid: 'code128', text, scale: 3, height: 10, includetext: false, textxalign: 'center' },
+      (err, png) => err ? res.status(500).send('Error generating barcode') : (res.writeHead(200, { 'Content-Type': 'image/png' }), res.end(png)));
+  } catch { res.status(500).send('Server error'); }
+});
+// =====================================================
+// [جدید] مسیر دریافت اطلاعات برای چاپ گروهی لیبل‌ها
+// =====================================================
+app.post('/api/labels/data', async (req, res, next) => {
+  try {
+    const db = await getDbInstance();
+    if (!db) {
+      return next(new Error('DB connection failed'));
+    }
+    // ۱. خواندن لیست ID ها از body درخواست
+    const { ids } = req.body;
+    console.log('[Server] Received request for label data with IDs:', ids); // لاگ برای اشکال‌زدایی
+    if (!Array.isArray(ids) || ids.length === 0) {
+      console.log('[Server] Error: No IDs provided in request body.');
+      return res.status(400).json({ success: false, message: 'No IDs provided' });
+    }
+    // ۲. آماده‌سازی کوئری برای جلوگیری از SQL Injection
+    const previews = ids.map(() => '?').join(',');
+    // ۳. دریافت اطلاعات محصولات بر اساس ID های دریافتی
+    // توجه: نام ستون‌ها (sku, sellingPrice) باید با ساختار جدول products شما مطابقت داشته باشد.
+    const items = await db.all(
+      `SELECT id, name, sku, sellingPrice FROM products WHERE id IN (${previews})`,
+      ids
+    );
+    
+    // ۴. فرمت کردن داده‌ها برای ارسال به فرانت‌اند
+    const responseData = items.map(item => ({
+        id: item.id,
+        name: item.name || 'محصول بدون نام',
+        price: item.sellingPrice || 0,
+        code: item.sku || `product-${item.id}`, // استفاده از SKU یا ID به عنوان کد بارکد
+        quantity: 1 // مقدار پیش‌فرض تعداد برای هر برچسب
+    }));
+    console.log(`[Server] Found ${responseData.length} items. Sending data to client.`);
+    res.json({ success: true, data: responseData });
+  } catch (e) {
+    console.error('[Server] Error in /api/labels/data endpoint:', e);
+    next(e);
+  }
+});
+const barcodeCache = new Map<string, Buffer>();
+function cacheKey(text: string, q: any) {
+  const scale = Number(q.scale ?? 3);
+  const height = Number(q.height ?? 12);
+  const human = String(q.human ?? '1');
+  return `${text}|${scale}|${height}|${human}`;
+}
+async function sendCode128Cached(res: Response, text: string, q: any = {}) {
+  const key = cacheKey(text, q);
+  const cached = barcodeCache.get(key);
+  if (cached) { res.type('png').send(cached); return; }
+  const scale  = Math.max(1, Math.min(8, Number(q.scale ?? 3)));
+  const height = Math.max(8, Math.min(30, Number(q.height ?? 12)));
+  const human  = !['0','false','no'].includes(String(q.human ?? '1').toLowerCase());
+  const png = await bwipjs.toBuffer({ bcid:'code128', text, scale, height, includetext:human, textxalign:'center' });
+  barcodeCache.set(key, png);
+  res.type('png').send(png);
+}
+// =====================================================
+// 4) از اینجا به بعد نیازمند احراز هویت
+// =====================================================
+app.use(authenticateToken);
+// خروج از حساب
+app.post('/api/logout', (req, res) => {
+  const token = (req.headers['authorization'] || '').split(' ')[1];
+  if (token && activeSessions[token]) delete activeSessions[token];
+  res.json({ success: true, message: 'خروج با موفقیت انجام شد.' });
+});
+// کاربر جاری
+app.get('/api/me', async (req, res, next) => {
+  try {
+    if (!req.user) return res.status(404).json({ success: false, message: 'کاربر یافت نشد.' });
+    const row: any = await getAsync(`SELECT u.id, u.username, u.firstName, u.lastName, u.dateAdded, u.lastLoginAt, u.avatarPath, r.name as roleName
+      FROM users u
+      LEFT JOIN roles r ON r.id = u.roleId
+      WHERE u.id = ?`, [req.user.id]);
+    if (!row) return res.status(404).json({ success: false, message: 'کاربر یافت نشد.' });
+    return res.json({ success: true, user: {
+      id: row.id,
+      username: row.username,
+      roleName: row.roleName || req.user.roleName,
+      firstName: row.firstName ?? null,
+      lastName: row.lastName ?? null,
+      lastLogin: row.lastLoginAt ?? null,
+      dateAdded: row.dateAdded,
+      avatarUrl: row.avatarPath ? `/uploads/avatars/${row.avatarPath}` : null,
+    } });
+  } catch (e) { next(e); }
+});
+
+app.put('/api/me/profile', async (req, res, next) => {
+  try {
+    if (!req.user) return res.status(401).json({ success: false, message: 'Unauthenticated' });
+    const firstName = typeof req.body?.firstName === 'string' ? req.body.firstName.trim() : '';
+    const lastName = typeof req.body?.lastName === 'string' ? req.body.lastName.trim() : '';
+    const updated: any = await updateUserInDb(req.user.id, { firstName: firstName || null, lastName: lastName || null });
+    const token = (req.headers['authorization'] || '').split(' ')[1];
+    if (token && activeSessions[token]) {
+      activeSessions[token].firstName = updated.firstName ?? null;
+      activeSessions[token].lastName = updated.lastName ?? null;
+    }
+    return res.json({ success: true, message: 'اطلاعات پروفایل ذخیره شد.', user: {
+      id: updated.id,
+      username: updated.username,
+      roleName: updated.roleName,
+      firstName: updated.firstName ?? null,
+      lastName: updated.lastName ?? null,
+      lastLogin: updated.lastLoginAt ?? null,
+      dateAdded: updated.dateAdded,
+      avatarUrl: updated.avatarPath ? `/uploads/avatars/${updated.avatarPath}` : null,
+    } });
+  } catch (e) { next(e); }
+});
+// تغییر رمز
+app.post('/api/me/change-password', async (req, res, next) => {
+  try {
+    if (!req.user) return res.status(401).json({ success: false, message: 'Unauthenticated' });
+    const { oldPassword, newPassword } = req.body as ChangePasswordPayload;
+    if (!oldPassword || !newPassword || newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'اطلاعات ارائه‌شده برای تغییر رمز عبور نامعتبر است.' });
+    }
+    await changePasswordInDb(req.user.id, { oldPassword, newPassword });
+    res.json({ success: true, message: 'کلمه عبور با موفقیت تغییر کرد.' });
+  } catch (e) { next(e); }
+});
+// آپلود آواتار
+const avatarStorage = multer.diskStorage({
+  destination: (_, __, cb) => cb(null, avatarsDir),
+  filename: (req, file, cb) => cb(null, `avatar-${req.user!.id}-${Date.now()}-${Math.round(Math.random()*1e9)}${path.extname(file.originalname)}`)
+});
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (_req, file: any, cb: FileFilterCallback) => {
+    const ok = /jpeg|jpg|png|gif|webp/.test(file.mimetype) && /jpeg|jpg|png|gif|webp/.test(path.extname(file.originalname).toLowerCase());
+    ok ? cb(null, true) : cb(new Error('فرمت فایل آواتار نامعتبر است.'));
+  }
+});
+app.post('/api/me/upload-avatar', avatarUpload.single('avatar'), async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: 'هیچ فایلی برای آپلود انتخاب نشده است.' });
+    if (!req.user)  return res.status(401).json({ success: false, message: 'Unauthenticated' });
+    const existed = await getAsync('SELECT avatarPath FROM users WHERE id = ?', [req.user.id]);
+    if (existed?.avatarPath) {
+      fs.unlink(join(avatarsDir, existed.avatarPath), () => {});
+    }
+    const updated = await updateAvatarPathInDb(req.user.id, req.file.filename);
+    const token = (req.headers['authorization'] || '').split(' ')[1];
+    if (token && activeSessions[token]) activeSessions[token].avatarUrl = `/uploads/avatars/${updated.avatarPath}`;
+    res.json({ success: true, message: 'آواتار با موفقیت آپلود شد.', data: { avatarUrl: `/uploads/avatars/${updated.avatarPath}` } });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 5) داشبورد
+// =====================================================
+// ---- Fallback chart builder: aggregate from legacy + new orders (via invoices) ----
+type PeriodKey = 'weekly' | 'monthly' | 'yearly';
+const DATE_KEYS_ROW = [
+  'transactionDate', 'saleDate', 'date', 'createdAt', 'created_at', 'date_added',
+  'timestamp', 'invoiceDate', 'orderDate', 'dateTime', 'datetime'
+];
+const DATE_KEYS_INV = [
+  'transactionDate', 'date', 'orderDate', 'invoiceDate', 'createdAt', 'created_at', 'timestamp'
+];
+// === NEW: Date normalizers for strict string-key comparison ===
+type DateKeyFmt = 'YYYY-MM' | 'YYYY-MM-DD';
+/** تبدیل ورودی (ISO / جلالی / عدد یونیکس / YYYY/MM/DD) به کلید روز/ماهِ استاندارد */
+const normalizeDateKey = (input: any, fmt: DateKeyFmt): string | undefined => {
+  if (input == null) return undefined;
+  // اعداد فارسی → انگلیسی و حذف فاصله اضافی
+  const s = toEnDigits(String(input)).trim();
+  // 1) ISO یا میلادی‌های رایج
+  const mi = moment(s, [moment.ISO_8601, 'YYYY-MM-DD', 'YYYY/M/D', 'YYYY/MM/DD'], true);
+  if (mi.isValid()) return mi.format(fmt);
+  // 2) فرمت‌های جلالی
+  const mj = moment(s, ['jYYYY/jM/jD','jYYYY/jMM/jDD','jYYYY-jM-jD','jYYYY-jMM-jDD'], true);
+  if (mj.isValid()) return mj.format(fmt);
+  // 3) یونیکس میلی‌ثانیه/ثانیه
+  const mu = moment(Number(s));
+  if (mu.isValid()) return mu.format(fmt);
+  return undefined;
+};
+/** از هر آبجکت (فاکتور یا ردیف خلاصه)، اولین کلید تاریخ معتبر را به key استاندارد تبدیل می‌کند */
+const extractAnyDateKey = (obj: any, fmt: DateKeyFmt): string | undefined => {
+  if (!obj) return undefined;
+  // اول از کلیدهای شناخته‌شده
+  for (const k of [...DATE_KEYS_INV, ...DATE_KEYS_ROW]) {
+    const key = normalizeDateKey((obj as any)[k], fmt);
+    if (key) return key;
+  }
+  // محض احتیاط: هر فیلدی که اسمش بوی تاریخ/زمان بده
+  try {
+    for (const [k, v] of Object.entries(obj)) {
+      if (!/date|time|created/i.test(k) || v == null) continue;
+      const key = normalizeDateKey(v, fmt);
+      if (key) return key;
+    }
+  } catch {}
+  return undefined;
+};
+// --- helpers for amounts (digits/fa, commas, currency words) ---
+// ارقام فارسی/عربی-indic → لاتین
+const toEnDigits = (input: any): string => {
+  const s = String(input ?? '');
+  const fa = '۰۱۲۳۴۵۶۷۸۹';
+  const ar = '٠١٢٣٤٥٦٧٨٩';
+  return s
+    .replace(/[۰-۹]/g, d => String(fa.indexOf(d)))
+    .replace(/[٠-٩]/g, d => String(ar.indexOf(d)));
+};
+// پارس هوشمند تاریخ (ISO/میلادی/جلالی/Epoch ثانیه/میلی‌ثانیه)
+const parseSmartMoment = (raw: any): moment.Moment | null => {
+  if (raw == null) return null;
+  // نرمال‌سازی: ارقام لاتین، حذف کاراکترهای نامرئی، یکنواخت‌سازی جداکننده‌ها
+  let s0 = toEnDigits(String(raw).trim())
+    .replace(/[\u200e\u200f]/g, '') // LRM/RLM
+    .replace(/[._]/g, '/')
+    .replace(/\s+/g, ' ');
+  // Epoch: فقط اگر کاملاً عددی و 10 یا 13 رقمی است
+  if (/^\d{10,13}$/.test(s0)) {
+    const ms = s0.length === 10 ? Number(s0) * 1000 : Number(s0);
+    const mu = moment(ms);
+    return mu.isValid() ? mu : null;
+  }
+  // ISO سخت‌گیرانه (شامل 2025-09-29T12:34:56Z و ...)
+  const mIso = moment(s0, moment.ISO_8601, true);
+  if (mIso.isValid()) return mIso;
+  // قالب‌های رایج میلادی (روزانه/ماهیانه، با و بی‌ساعت)
+  const gFormats = [
+    'YYYY-MM-DD', 'YYYY/M/D', 'YYYY/MM/DD', 'YYYY-M-D',
+    'YYYY-MM-DD HH:mm', 'YYYY-MM-DD HH:mm:ss',
+    'YYYY/MM/DD HH:mm', 'YYYY/MM/DD HH:mm:ss',
+    'YYYY-MM', 'YYYY/MM'
+  ];
+  for (const f of gFormats) {
+    const m = moment(s0, f, true);
+    if (m.isValid()) return m;
+  }
+  // قالب‌های جلالی (روزانه/ماهیانه، با و بی‌ساعت)
+  const jFormats = [
+    'jYYYY/jMM/jDD', 'jYYYY-jMM-jDD', 'jYYYY/jM/jD', 'jYYYY-jM-jD',
+    'jYYYY/jMM jHH:mm', 'jYYYY/jMM/jDD HH:mm', 'jYYYY/jMM/jDD HH:mm:ss',
+    'jYYYY/jMM', 'jYYYY-jMM'
+  ];
+  for (const f of jFormats) {
+    const m = moment(s0, f, true);
+    if (m.isValid()) return m;
+  }
+  // آخرین تلاش منعطف
+  const mLoose = moment(s0);
+  return mLoose.isValid() ? mLoose : null;
+};
+// نرمال‌سازی مبلغ (پشتیبانی از منفی، اعشار فارسی/انگلیسی، جداکننده‌های هزارگان، پرانتزی)
+const toAmount = (v: any): number => {
+  if (v == null) return 0;
+  if (typeof v === 'number') return Number.isFinite(v) ? v : 0;
+  let s = toEnDigits(String(v)).trim();
+  // منفیِ پرانتزی: (1234) → -1234
+  let negative = false;
+  const paren = /^\s*\((.*)\)\s*$/.exec(s);
+  if (paren) { negative = true; s = paren[1]; }
+  // حذف واحد پول و متن‌های اضافه
+  s = s.replace(/(تومان|ريال|ریال|IRR|USD|TL| تومان| ریال)/gi, '');
+  // یکسان‌سازی اعشار فارسی → '.'
+  s = s.replace(/\u066B/g, '.'); // '٫'
+  // اگر نقطه وجود ندارد و فقط یک کاما داریم، همان را اعشار فرض کن؛
+  // در غیر اینصورت، کاماها جداکنندهٔ هزارگان هستند و حذف می‌شوند.
+  const hasDot = s.includes('.');
+  const commaCount = (s.match(/,/g) || []).length;
+  if (!hasDot && commaCount === 1) {
+    s = s.replace(',', '.');
+  }
+  // حذف همهٔ جداکننده‌های هزارگان: کاما، «٬» U+066C، فاصلهٔ باریک/غیرشکست، اسپیس
+  s = s.replace(/[,\u066C\u2009\u00A0\u202F\s]/g, '');
+  // فقط ارقام، یک نقطهٔ اعشار و یک منفی ابتدای رشته را نگه دار
+  s = s.replace(/[^0-9\.\-]/g, '');
+  s = s.replace(/(?!^)-/g, ''); // منفی‌های اضافی حذف
+  // اگر چند نقطه بود، فقط اولی را نگه داریم
+  const firstDot = s.indexOf('.');
+  if (firstDot !== -1) {
+    s = s.slice(0, firstDot + 1) + s.slice(firstDot + 1).replace(/\./g, '');
+  }
+  let n = Number(s || '0');
+  if (!Number.isFinite(n)) n = 0;
+  if (negative) n = -Math.abs(n);
+  return n;
+};
+// تاریخ از رکورد خلاصه (transactions/sales_orders)
+const pickDate = (row: any): moment.Moment | null => {
+  for (const k of DATE_KEYS_ROW) {
+    const v = row?.[k];
+    if (v == null) continue;
+    const m = parseSmartMoment(v);
+    if (m) return m;
+  }
+  return null;
+};
+// تاریخ از خودِ آبجکت فاکتور
+const pickInvoiceMoment = (inv: any): moment.Moment | null => {
+  // 1) کلیدهای شناخته‌شده
+  for (const k of DATE_KEYS_INV) {
+    const v = inv?.[k];
+    if (v == null) continue;
+    const m = parseSmartMoment(v);
+    if (m) return m;
+  }
+  // 2) ساختارهای رایج جدید: invoiceMetadata.{transactionDate|date}
+  {
+    const md = inv?.invoiceMetadata?.transactionDate ?? inv?.invoiceMetadata?.date;
+    const m = parseSmartMoment(md);
+    if (m) return m;
+  }
+  // 3) جست‌وجوی سبک روی کلیدهای مشکوک (date|time|created|timestamp) در سطح اول
+  try {
+    for (const [k, v] of Object.entries(inv || {})) {
+      if (!/date|time|created|timestamp/i.test(k) || v == null) continue;
+      const m = parseSmartMoment(v);
+      if (m) return m;
+    }
+  } catch {}
+  return null;
+};
+const pickAmountTopLevel = (obj: any): number => {
+  const keys = ['grandTotal','grand_total','total','totalAmount','finalAmount','sum','invoiceTotal','subtotal'];
+  for (const k of keys) {
+    const n = toAmount(obj?.[k]);
+    if (Number.isFinite(n) && n !== 0) return n;
+  }
+  return 0;
+};
+const sumFromItems = (inv: any): number => {
+  const container =
+    inv?.items || inv?.orderItems || inv?.lines || inv?.details || inv?.invoiceItems || [];
+  if (!Array.isArray(container) || container.length === 0) return 0;
+  const qtyKeys = ['qty','quantity','count','amount'];
+  const priceKeys = ['total','lineTotal','finalAmount','amount','totalPrice','price','unitPrice','subtotal'];
+  const pickQty = (row: any) => {
+    for (const k of qtyKeys) {
+      const n = toAmount(row?.[k]);
+      if (n) return n;
+    }
+    return 1;
+  };
+  const pickPrice = (row: any) => {
+    for (const k of priceKeys) {
+      const n = toAmount(row?.[k]);
+      if (n) return n;
+    }
+    return 0;
+  };
+  // اگر خودِ سطر «total» دارد، از همان استفاده می‌کنیم؛
+  // در غیر اینصورت price * qty.
+  let sum = 0;
+  for (const it of container) {
+    const rowTotal = toAmount(it?.total) || toAmount(it?.lineTotal) || 0;
+    if (rowTotal) { sum += rowTotal; continue; }
+    const q = pickQty(it);
+    const p = pickPrice(it);
+    sum += (p && q) ? (p * (q || 1)) : 0;
+  }
+  return sum;
+};
+const buildBuckets = (period: PeriodKey) => {
+  const now = moment().locale('en');
+  if (period === 'weekly') {
+    const start = now.clone().startOf('day').subtract(6, 'days');
+    const buckets: { key: string; label: string }[] = [];
+    for (let i = 0; i < 7; i++) {
+      const d = start.clone().add(i, 'days');
+      buckets.push({ key: d.locale('en').format('YYYY-MM-DD'), label: d.locale('fa').format('jMM/jDD') });
+    }
+    return { buckets, start, end: now.clone().endOf('day'), fmt: 'YYYY-MM-DD' as const };
+  }
+  if (period === 'monthly') {
+    const start = now.clone().startOf('day').subtract(29, 'days');
+    const buckets: { key: string; label: string }[] = [];
+    for (let i = 0; i < 30; i++) {
+      const d = start.clone().add(i, 'days');
+      buckets.push({ key: d.locale('en').format('YYYY-MM-DD'), label: d.locale('fa').format('jMM/jDD') });
+    }
+    return { buckets, start, end: now.clone().endOf('day'), fmt: 'YYYY-MM-DD' as const };
+  }
+  // yearly
+  const start = now.clone().startOf('month').subtract(11, 'months');
+  const buckets: { key: string; label: string }[] = [];
+  for (let i = 0; i < 12; i++) {
+    const d = start.clone().add(i, 'months');
+    buckets.push({ key: d.locale('en').format('YYYY-MM'), label: d.locale('fa').format('jYYYY jMMM') });
+  }
+  return { buckets, start, end: now.clone().endOf('month'), fmt: 'YYYY-MM' as const };
+};
+const buildSalesChartDataFallback = async (period: PeriodKey) => {
+  const { buckets, fmt } = buildBuckets(period);
+  const map = new Map<string, number>();
+  for (const b of buckets) map.set(b.key, 0);
+  // منابع داده
+  let legacy: any[] = [];
+  let modern: any[] = [];
+  try { legacy = await getAllSalesTransactionsFromDb(); } catch (e) { console.warn('[fallback] legacy err', e); }
+  try { modern = await getAllSalesOrdersFromDb(); } catch (e) { console.warn('[fallback] modern err', e); }
+  // ادغام رکوردهای خلاصه بر اساس شناسهٔ فاکتور (رکورد جدید ارجح است)
+  const byId = new Map<number, any>();
+  for (const r of [...legacy, ...modern]) {
+    const sid = Number(r?.id ?? r?.saleId ?? r?.sale_id ?? r?.orderId ?? r?.invoiceId);
+    if (!sid) continue;
+    byId.set(sid, { ...(byId.get(sid) || {}), ...r });
+  }
+  const ids = Array.from(byId.keys());
+  // برای دیباگ: اولین و آخرین کلیدهای باکت‌ها
+  const firstBucketKey = buckets[0]?.key;
+  const lastBucketKey  = buckets[buckets.length - 1]?.key;
+  console.log('[dash-summary] bucket window:', { fmt, firstBucketKey, lastBucketKey });
+  let used = 0, skippedNoDate = 0, skippedRange = 0;
+  const debugAdds: any[] = [];
+  for (const id of ids) {
+    // تلاش برای یافتن آبجکت فاکتور: اول ساختار جدید، بعد قدیمی
+    let inv: any = null;
+    try { inv = await getSalesOrderForInvoice(id); } catch {}
+    if (!inv) { try { inv = await getInvoiceDataById(id); } catch {} }
+    if (!inv) { skippedNoDate++; continue; }
+    // تاریخ فاکتور را انتخاب کن (از خود فاکتور، و در صورت لزوم از ردیف خلاصه)
+    const m = pickInvoiceMoment(inv) || pickDate(byId.get(id));
+    if (!m) { skippedNoDate++; continue; }
+    // کلید تاریخ مطابق fmt و با ارقام انگلیسی تا با کلیدهای باکت یکی شود
+    const key = toEnDigits(m.clone().locale('en').format(fmt));
+    if (!map.has(key)) { skippedRange++; continue; }
+    // مبلغ فاکتور: اول فیلدهای top-level، در غیراینصورت جمع خطوط
+    let total = pickAmountTopLevel(inv);
+    if (!total) total = sumFromItems(inv);
+    const prev = map.get(key) || 0;
+    const next = prev + (Number(total) || 0);
+    map.set(key, next);
+    used++;
+    if (debugAdds.length < 8) {
+      debugAdds.push({ id, key, add: Number(total) || 0, newSum: next });
+    }
+  }
+  if (debugAdds.length) console.log('[dash-summary] fallback adds sample:', debugAdds);
+  console.log('[dash-summary] fallback stats → used=', used, 'noDate=', skippedNoDate, 'notInBuckets=', skippedRange);
+  // خروجی نهایی برای چارت
+  return buckets.map(b => ({ name: b.label, sales: map.get(b.key) || 0 }));
+};
+// ---- روت داشبورد با فالبک امن ----
+app.get('/api/dashboard/summary', async (req, res, next) => {
+  try {
+    const period = (req.query.period as string) || 'monthly';
+    const [kpis, salesChartDataRaw, recentActivities] = await Promise.all([
+      getDashboardKPIs(),
+      getDashboardSalesChartData(period),
+      getDashboardRecentActivities(),
+    ]);
+    console.log('[dash-summary] period=', period);
+    let salesChartData: any[] = Array.isArray(salesChartDataRaw) ? salesChartDataRaw : [];
+    if (!Array.isArray(salesChartData) || salesChartData.length === 0) {
+      console.warn('[dash-summary] salesChartData empty → using fallback aggregator (invoices)');
+      const safePeriod: PeriodKey = (['weekly','monthly','yearly'] as PeriodKey[]).includes(period as any)
+        ? (period as PeriodKey) : 'monthly';
+      salesChartData = await buildSalesChartDataFallback(safePeriod);
+      console.log('[dash-summary] fallback sample=', salesChartData.slice(0, 3));
+    } else {
+      if (Array.isArray(salesChartDataRaw)) {
+        console.log('[dash-summary] sample rows:', salesChartDataRaw.slice(0, 3));
+      } else if (salesChartDataRaw && typeof salesChartDataRaw === 'object') {
+        console.log('[dash-summary] sample entries:', Object.entries(salesChartDataRaw).slice(0, 3));
+      }
+    }
+    res.json({ success: true, data: { kpis, salesChartData, recentActivities } });
+  } catch (e) { next(e as any); }
+});
+// ===================== Dashboard Layout (per-user) =====================
+app.get('/api/dashboard/layout', requireAuth, async (req: any, res: any) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const layouts = await getUserDashboardLayoutFromDb(userId);
+    return res.json({ success: true, data: layouts ? { layouts } : null });
+  } catch (error: any) {
+    console.error('Error fetching dashboard layout:', error);
+    return res.status(500).json({ success: false, message: 'خطا در دریافت چیدمان داشبورد' });
+  }
+});
+app.put('/api/dashboard/layout', requireAuth, async (req: any, res: any) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const body = req.body ?? {};
+    const layouts = body.layouts ?? body;
+    await upsertUserDashboardLayoutInDb(userId, layouts);
+    return res.json({ success: true });
+  } catch (error: any) {
+    console.error('Error saving dashboard layout:', error);
+    const msg = typeof error?.message === 'string' ? error.message : 'خطا در ذخیره چیدمان داشبورد';
+    return res.status(500).json({ success: false, message: msg });
+  }
+});
+app.delete('/api/dashboard/layout', requireAuth, async (req: any, res: any) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    await deleteUserDashboardLayoutFromDb(userId);
+    return res.json({ success: true });
+  } catch (error: any) {
+    console.error('Error deleting dashboard layout:', error);
+    return res.status(500).json({ success: false, message: 'خطا در حذف چیدمان داشبورد' });
+  }
+});
+app.get('/api/dashboard/action-center', async (_req, res, next) => {
+  try {
+    const actionItems: ActionItem[] = [];
+    // پیشنهاد خرید / کمبود موجودی
+    try {
+      const suggestions = await generatePurchaseSuggestions();
+      (suggestions || []).forEach(item => {
+        actionItems.push({
+          id: `stock-alert-${item.itemId}`,
+          type: 'StockAlert',
+          priority: 'High',
+          title: `موجودی کم: ${item.itemName ?? 'کالا'}`,
+          description: `موجودی فعلی: ${faNum(item.currentStock)}. موجودی برای ${faNum(item.daysOfStockLeft)} روز آینده کافیست.`,
+          actionText: 'بررسی پیشنهاد خرید',
+          actionLink: '/reports/analysis/suggestions',
+        });
+      });
+    } catch (e) {
+      console.warn('generatePurchaseSuggestions failed:', e);
+    }
+    // اقساط معوق
+    try {
+      const allUnpaid = await getOverdueInstallmentsFromDb();
+      const overdue = (allUnpaid || [])
+        .filter(p => {
+          const j = moment(p?.dueDate, 'jYYYY/jMM/jDD', true);
+          const m = j.isValid() ? j : moment(p?.dueDate);
+          return m.isBefore(moment(), 'day');
+        })
+        .slice(0, 5);
+      overdue.forEach(item => {
+        actionItems.push({
+          id: `overdue-payment-${item.id}`,
+          type: 'OverdueInstallment',
+          priority: 'High',
+          title: `قسط معوق: ${item.customerFullName ?? ''}`,
+          description: `قسط به مبلغ ${faNum(item.amountDue)} تومان با سررسید ${item.dueDate} پرداخت نشده است.`,
+          actionText: 'مشاهده پرونده',
+          actionLink: `/installment-sales/${item.saleId}`,
+        });
+      });
+    } catch (e) {
+      console.warn('getOverdueInstallmentsFromDb failed:', e);
+    }
+    // تعمیرات آماده تحویل
+    try {
+      const ready = ((await getRepairsReadyForPickupFromDb()) || []).slice(0, 5);
+      ready.forEach(item => {
+        actionItems.push({
+          id: `repair-ready-${item.id}`,
+          type: 'RepairReady',
+          priority: 'Medium',
+          title: `تعمیر آماده تحویل: ${item.deviceModel ?? ''}`,
+          description: `دستگاه آقای/خانم ${item.customerFullName ?? ''} به مبلغ نهایی ${faNum(item.finalCost)} تومان آماده تحویل است.`,
+          actionText: 'مشاهده جزئیات',
+          actionLink: `/repairs/${item.id}`,
+        });
+      });
+    } catch (e) {
+      console.warn('getRepairsReadyForPickupFromDb failed:', e);
+    }
+    res.json({ success: true, data: actionItems });
+  } catch (e) {
+    next(e);
+  }
+});
+// =====================================================
+// Notification Center
+// این مسیر، اقساط و چک‌هایی را که ۷ روز، ۳ روز یا همان روز سررسیدشان باقی مانده
+// اعلام می‌کند و برای نمایش در بخش «نوتیفیکیشن‌ها» کاربرد دارد. همچنین اطلاعات
+// لازم برای ارسال SMS را شامل می‌شود.
+// =====================================================
+app.get('/api/notifications', authorizeRole(['Admin', 'Manager', 'Salesperson']), async (_req, res, next) => {
+  try {
+    /**
+     * Unified notification list that contains both action-center items (stock alerts, overdue installments,
+     * repair ready notifications) and due reminders for installments and checks. Each notification has a
+     * `type` to indicate its category, a `title` and `description` for display, and optional fields for
+     * further actions such as SMS triggering or navigation. The client can group notifications by `type` and
+     * render an appropriate icon for each category.
+     */
+    let unified: any[] = [];
+    // ============ Action Center Items ============
+    // Suggestions / Low stock alerts
+    try {
+      const suggestions = await generatePurchaseSuggestions();
+      (suggestions || []).forEach(item => {
+        unified.push({
+          id: `stock-alert-${item.itemId}`,
+          type: 'StockAlert',
+          title: `موجودی کم: ${item.itemName ?? 'کالا'}`,
+          description: `موجودی فعلی: ${faNum(item.currentStock)}. موجودی برای ${faNum(item.daysOfStockLeft)} روز آینده کافیست.`,
+          priority: 'High',
+          actionText: 'بررسی پیشنهاد خرید',
+          actionLink: '/reports/analysis/suggestions'
+        });
+// Dismiss a notification for current user
+app.post('/api/notifications/:notificationId/dismiss', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const nid = String(req.params.notificationId || '');
+    if (!req.user?.id) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    await dismissNotificationForUserInDb(req.user.id, nid);
+    try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'notification', null, `Dismiss notification: ${nid}`); } catch {}
+    
+    // Filter dismissed notifications for current user
+    try {
+      if (req.user?.id) {
+        const dismissedIds = await listDismissedNotificationIdsForUserFromDb(req.user.id);
+        if (dismissedIds?.length) {
+          const setIds = new Set(dismissedIds);
+          unified = (unified || []).filter((n: any) => !setIds.has(String(n.id)));
+        }
+      }
+    } catch {}
+    // ============ Recurring Expenses Due ============
+    try {
+      const todayIsoDate = moment().format('YYYY-MM-DD');
+      const dueRows = await allAsync(
+        `SELECT id, title, category, amount, nextRunDate, vendor
+           FROM recurring_expenses
+          WHERE isActive = 1
+            AND nextRunDate <= ?
+          ORDER BY nextRunDate ASC, amount DESC
+          LIMIT 50`,
+        [todayIsoDate]
+      );
+      (dueRows || []).forEach((r: any) => {
+        const isOverdue = String(r.nextRunDate) < todayIsoDate;
+        unified.push({
+          id: `recurring-expense-${r.id}-${r.nextRunDate}`,
+          type: 'RecurringExpenseDue',
+          title: isOverdue ? `هزینه تکرارشونده عقب‌افتاده: ${r.title}` : `هزینه تکرارشونده سررسید: ${r.title}`,
+          description: `تاریخ: ${r.nextRunDate} • مبلغ: ${(Number(r.amount||0)).toLocaleString('fa-IR')}` + (r.vendor ? ` • طرف حساب: ${r.vendor}` : ''),
+          priority: isOverdue ? 'High' : 'Medium',
+          actionText: 'باز کردن هزینه‌ها',
+          actionLink: '/expenses',
+          meta: { amount: Number(r.amount||0), dueDate: r.nextRunDate, recurringExpenseId: Number(r.id) } as any,
+        });
+      });
+    } catch {}
+    // ============ Negative Margin Alerts (FIFO) ============
+    try {
+      const recent = await allAsync(
+        `SELECT itemId, itemName, SUM(quantity) as qty, SUM(totalPrice) as revenue
+           FROM sales_transactions
+          WHERE itemType = 'inventory'
+            AND transactionDate >= ?
+          GROUP BY itemId, itemName`,
+        [moment().subtract(30, 'days').toDate().toISOString()]
+      );
+      for (const r of recent || []) {
+        const pid = Number(r.itemId);
+        const qty = Number(r.qty || 0);
+        const revenue = Number(r.revenue || 0);
+        const fifo = await computeFifoCogsForProduct(pid, qty);
+        const profit = revenue - Number(fifo.cogs || 0);
+        if (revenue > 0 && profit < 0) {
+          unified.push({
+            id: `neg-margin-${pid}-${moment().format('YYYY-MM-DD')}`,
+            type: 'NegativeMarginAlert',
+            title: `هشدار سود منفی: ${String(r.itemName)}`,
+            description: `۳۰ روز اخیر • درآمد: ${revenue.toLocaleString('fa-IR')} • سود: ${profit.toLocaleString('fa-IR')}`,
+            priority: 'High',
+            actionText: 'گزارش سود محصولات',
+            actionLink: '/reports/product-margins',
+            meta: { productId: pid, revenue, profit } as any,
+          });
+        }
+      }
+    } catch {}
+res.json({ success: true });
+  } catch (e) { next(e); }
+});
+      });
+    } catch (e) {
+      console.warn('generatePurchaseSuggestions failed:', e);
+    }
+    // Overdue installments (past due date)
+    try {
+      const allUnpaid = await getOverdueInstallmentsFromDb();
+      const overdue = (allUnpaid || [])
+        .filter(p => {
+          const j = moment(p?.dueDate, 'jYYYY/jMM/jDD', true);
+          const m = j.isValid() ? j : moment(p?.dueDate);
+          return m.isBefore(moment(), 'day');
+        })
+        .slice(0, 5);
+      overdue.forEach(item => {
+        unified.push({
+          id: `overdue-payment-${item.id}`,
+          type: 'OverdueInstallment',
+          title: `قسط معوق: ${item.customerFullName ?? ''}`,
+          description: `قسط به مبلغ ${faNum(item.amountDue)} تومان با سررسید ${item.dueDate} پرداخت نشده است.`,
+          priority: 'High',
+          actionText: 'مشاهده پرونده',
+          actionLink: `/installment-sales/${item.saleId}`,
+          // Enable reminder actions on the client
+          targetId: item.id,
+          eventType: 'INSTALLMENT_REMINDER',
+          meta: {
+            customer: item.customerFullName ?? undefined,
+            dueDate: item.dueDate ?? undefined,
+            amount: item.amountDue ?? undefined,
+          }
+        });
+      });
+    } catch (e) {
+      console.warn('getOverdueInstallmentsFromDb failed:', e);
+    }
+    // Repair ready notifications
+    try {
+      const ready = ((await getRepairsReadyForPickupFromDb()) || []).slice(0, 5);
+      ready.forEach(item => {
+        unified.push({
+          id: `repair-ready-${item.id}`,
+          type: 'RepairReady',
+          title: `تعمیر آماده تحویل: ${item.deviceModel ?? ''}`,
+          description: `دستگاه آقای/خانم ${item.customerFullName ?? ''} به مبلغ نهایی ${faNum(item.finalCost)} تومان آماده تحویل است.`,
+          priority: 'Medium',
+          actionText: 'مشاهده جزئیات',
+          actionLink: `/repairs/${item.id}`
+        });
+      });
+    } catch (e) {
+      console.warn('getRepairsReadyForPickupFromDb failed:', e);
+    }
+    // ============ Due Reminders for Installments & Checks ============
+    try {
+      // Fetch all unpaid installment payments and pending checks with customer info
+      const payments = await getPendingInstallmentPaymentsWithCustomer();
+      const checks = await getPendingInstallmentChecksWithCustomer();
+      const today = moment().startOf('day');
+      // Helper for Persian numbers
+      const faNumLocal = (v: any) => Number(v ?? 0).toLocaleString('fa-IR');
+      // Iterate payments (installment dues)
+      for (const p of payments || []) {
+        const due = moment(p.dueDate, 'jYYYY/jMM/jDD', true);
+        const diff = due.diff(today, 'days');
+        // Only consider future or same-day reminders; skip overdue
+        if (diff === 7 || diff === 3 || diff === 0) {
+          const daysRemaining = diff;
+          let eventType: string;
+          if (diff === 7) eventType = 'INSTALLMENT_DUE_7';
+          else if (diff === 3) eventType = 'INSTALLMENT_DUE_3';
+          else eventType = 'INSTALLMENT_DUE_TODAY';
+          const title = diff === 0
+            ? 'امروز موعد پرداخت قسط'
+            : `${faNumLocal(diff)} روز مانده به پرداخت قسط`;
+          const description = `قسط به مبلغ ${faNumLocal(p.amountDue)} تومان برای ${p.customerFullName ?? ''} در تاریخ ${p.dueDate} سررسید دارد.`;
+          unified.push({
+            id: `installment-${p.paymentId}-${diff}`,
+            type: 'InstallmentDue',
+            daysRemaining,
+            title,
+            description,
+            targetId: p.paymentId,
+            eventType
+          });
+        }
+      }
+      // Iterate checks (check dues)
+      for (const c of checks || []) {
+        const due = moment(c.dueDate, 'jYYYY/jMM/jDD', true);
+        const diff = due.diff(today, 'days');
+        if (diff === 7 || diff === 3 || diff === 0) {
+          const daysRemaining = diff;
+          let eventType: string;
+          if (diff === 7) eventType = 'CHECK_DUE_7';
+          else if (diff === 3) eventType = 'CHECK_DUE_3';
+          else eventType = 'CHECK_DUE_TODAY';
+          const title = diff === 0
+            ? 'امروز موعد چک'
+            : `${faNumLocal(diff)} روز مانده به موعد چک`;
+          const description = `چک شماره ${c.checkNumber ?? ''} متعلق به ${c.customerFullName ?? ''} به مبلغ ${faNumLocal(c.amount)} تومان در تاریخ ${c.dueDate} سررسید دارد.`;
+          unified.push({
+            id: `check-${c.checkId}-${diff}`,
+            type: 'CheckDue',
+            daysRemaining,
+            title,
+            description,
+            targetId: c.checkId,
+            eventType
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('build due notifications failed:', e);
+    }
+    // Sort unified list: group by category and then by recency
+    // We'll put high priority categories first: OverdueInstallment, InstallmentDue (0 days), CheckDue (0 days), RepairReady, StockAlert, StagnantStock, InstallmentDue (3 & 7 days), CheckDue (3 & 7 days).
+    unified.sort((a, b) => {
+      // Helper to assign numeric weight per type
+      const weight = (item: any) => {
+        switch (item.type) {
+          case 'OverdueInstallment': return 0;
+          case 'InstallmentDue': return item.daysRemaining === 0 ? 1 : item.daysRemaining === 3 ? 2 : 3;
+          case 'CheckDue': return item.daysRemaining === 0 ? 4 : item.daysRemaining === 3 ? 5 : 6;
+          case 'RepairReady': return 7;
+          case 'StockAlert': return 8;
+          case 'StagnantStock': return 9;
+          default: return 10;
+        }
+      };
+      const wA = weight(a);
+      const wB = weight(b);
+      return wA - wB;
+    });
+    
+    // ============ Customer Followups Due ============
+    try {
+      const todayIso = moment().startOf('day').toISOString();
+      const dueFollowups = await allAsync(
+        `SELECT cf.id, cf.customerId, cf.note, cf.nextFollowupDate, c.fullName
+           FROM customer_followups cf
+           JOIN customers c ON c.id = cf.customerId
+          WHERE cf.status='open'
+            AND cf.nextFollowupDate IS NOT NULL
+            AND cf.nextFollowupDate <= ?
+          ORDER BY cf.nextFollowupDate ASC
+          LIMIT 50`,
+        [todayIso]
+      );
+      (dueFollowups || []).forEach((f: any) => {
+        unified.push({
+          id: `customer-followup-${f.id}`,
+          type: 'CustomerFollowup',
+          title: `پیگیری مشتری: ${f.fullName ?? 'مشتری'}`,
+          description: `موعد پیگیری رسیده است. ${f.note ? '(' + f.note + ')' : ''}`,
+          priority: 'Medium',
+          actionText: 'باز کردن مشتری',
+          actionTo: `/customers/${f.customerId}`,
+        });
+      });
+    } catch {}
+    // ============ Smart Installment Alerts ============
+    // هدف: هشدار هوشمند اقساط (نه فقط تقویم) با تجمیع مشتری و اولویت‌بندی
+    try {
+      const todayJ = moment().locale('fa').format('jYYYY/jMM/jDD');
+      const soonJ = moment().add(3, 'day').locale('fa').format('jYYYY/jMM/jDD'); // ۳ روز آینده
+      // Overdue installments grouped by customer
+      const overdueByCustomer = await allAsync(
+        `SELECT s.customerId,
+                c.fullName AS customerName,
+                c.phone AS customerPhone,
+                COUNT(*) AS overdueCount,
+                MIN(ip.dueDate) AS earliestDueDate
+           FROM installment_payments ip
+           JOIN installment_sales s ON s.id = ip.saleId
+           JOIN customers c ON c.id = s.customerId
+          WHERE ip.status != 'پرداخت شده'
+            AND ip.dueDate < ?
+          GROUP BY s.customerId
+          ORDER BY overdueCount DESC, earliestDueDate ASC
+          LIMIT 50`,
+        [todayJ]
+      );
+      (overdueByCustomer || []).forEach((r: any) => {
+        const overdueCount = Number(r.overdueCount || 0);
+        const priority = overdueCount >= 3 ? 'High' : overdueCount >= 1 ? 'Medium' : 'Low';
+        unified.push({
+          id: `smart-installment-overdue-${r.customerId}`,
+          type: 'SmartInstallmentAlert',
+          meta: { customer: r.customerName, customerId: Number(r.customerId), customerPhone: r.customerPhone },
+          title: `اقساط عقب‌افتاده: ${r.customerName ?? 'مشتری'}`,
+          description: `تعداد اقساط عقب‌افتاده: ${overdueCount.toLocaleString('fa-IR')} • قدیمی‌ترین سررسید: ${r.earliestDueDate || '—'}`,
+          priority,
+          actionText: 'باز کردن مشتری',
+          actionLink: `/customers/${r.customerId}`,
+        });
+      });
+      // Upcoming installments in next 3 days grouped by customer
+      const upcomingByCustomer = await allAsync(
+        `SELECT s.customerId,
+                c.fullName AS customerName,
+                c.phone AS customerPhone,
+                COUNT(*) AS dueSoonCount,
+                MIN(ip.dueDate) AS nearestDueDate
+           FROM installment_payments ip
+           JOIN installment_sales s ON s.id = ip.saleId
+           JOIN customers c ON c.id = s.customerId
+          WHERE ip.status != 'پرداخت شده'
+            AND ip.dueDate >= ?
+            AND ip.dueDate <= ?
+          GROUP BY s.customerId
+          ORDER BY nearestDueDate ASC, dueSoonCount DESC
+          LIMIT 50`,
+        [todayJ, soonJ]
+      );
+      (upcomingByCustomer || []).forEach((r: any) => {
+        const cnt = Number(r.dueSoonCount || 0);
+        // if customer already overdue, skip (to avoid duplicates); overdue alerts already higher signal
+        const alreadyOverdue = (overdueByCustomer || []).some((o: any) => Number(o.customerId) === Number(r.customerId));
+        if (alreadyOverdue) return;
+        unified.push({
+          id: `smart-installment-upcoming-${r.customerId}`,
+          type: 'SmartInstallmentAlert',
+          meta: { customer: r.customerName, customerId: Number(r.customerId), customerPhone: r.customerPhone },
+          title: `اقساط نزدیک سررسید: ${r.customerName ?? 'مشتری'}`,
+          description: `تا ۳ روز آینده: ${cnt.toLocaleString('fa-IR')} قسط • نزدیک‌ترین سررسید: ${r.nearestDueDate || '—'}`,
+          priority: cnt >= 2 ? 'Medium' : 'Low',
+          actionText: 'باز کردن مشتری',
+          actionLink: `/customers/${r.customerId}`,
+        });
+      });
+      // Smart checks alerts (overdue + due soon) grouped by customer (optional but useful)
+      const overdueChecks = await allAsync(
+        `SELECT s.customerId,
+                c.fullName AS customerName,
+                c.phone AS customerPhone,
+                COUNT(*) AS overdueCount,
+                MIN(ic.dueDate) AS earliestDueDate
+           FROM installment_checks ic
+           JOIN installment_sales s ON s.id = ic.saleId
+           JOIN customers c ON c.id = s.customerId
+          WHERE ic.status NOT IN ('نقد شد', 'به مشتری برگشت داده شده')
+            AND ic.dueDate < ?
+          GROUP BY s.customerId
+          ORDER BY overdueCount DESC, earliestDueDate ASC
+          LIMIT 50`,
+        [todayJ]
+      );
+      (overdueChecks || []).forEach((r: any) => {
+        const overdueCount = Number(r.overdueCount || 0);
+        const priority = overdueCount >= 2 ? 'High' : 'Medium';
+        unified.push({
+          id: `smart-check-overdue-${r.customerId}`,
+          type: 'SmartCheckAlert',
+          meta: { customer: r.customerName, customerId: Number(r.customerId), customerPhone: r.customerPhone },
+          title: `چک عقب‌افتاده: ${r.customerName ?? 'مشتری'}`,
+          description: `تعداد چک عقب‌افتاده: ${overdueCount.toLocaleString('fa-IR')} • قدیمی‌ترین سررسید: ${r.earliestDueDate || '—'}`,
+          priority,
+          actionText: 'باز کردن مشتری',
+          actionLink: `/customers/${r.customerId}`,
+        });
+      });
+      const upcomingChecks = await allAsync(
+        `SELECT s.customerId,
+                c.fullName AS customerName,
+                c.phone AS customerPhone,
+                COUNT(*) AS dueSoonCount,
+                MIN(ic.dueDate) AS nearestDueDate
+           FROM installment_checks ic
+           JOIN installment_sales s ON s.id = ic.saleId
+           JOIN customers c ON c.id = s.customerId
+          WHERE ic.status NOT IN ('نقد شد', 'به مشتری برگشت داده شده')
+            AND ic.dueDate >= ?
+            AND ic.dueDate <= ?
+          GROUP BY s.customerId
+          ORDER BY nearestDueDate ASC, dueSoonCount DESC
+          LIMIT 50`,
+        [todayJ, soonJ]
+      );
+      (upcomingChecks || []).forEach((r: any) => {
+        const cnt = Number(r.dueSoonCount || 0);
+        const alreadyOverdue = (overdueChecks || []).some((o: any) => Number(o.customerId) === Number(r.customerId));
+        if (alreadyOverdue) return;
+        unified.push({
+          id: `smart-check-upcoming-${r.customerId}`,
+          type: 'SmartCheckAlert',
+          meta: { customer: r.customerName, customerId: Number(r.customerId), customerPhone: r.customerPhone },
+          title: `چک نزدیک سررسید: ${r.customerName ?? 'مشتری'}`,
+          description: `تا ۳ روز آینده: ${cnt.toLocaleString('fa-IR')} چک • نزدیک‌ترین سررسید: ${r.nearestDueDate || '—'}`,
+          priority: cnt >= 2 ? 'Medium' : 'Low',
+          actionText: 'باز کردن مشتری',
+          actionLink: `/customers/${r.customerId}`,
+        });
+      });
+    } catch {}
+res.json({ success: true, data: unified });
+  } catch (e) {
+    next(e);
+  }
+});
+// =====================================================
+// 6) محصولات و دسته‌بندی
+// =====================================================
+app.post('/api/products', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const result = await addProductToDb(req.body as ProductPayload);
+    // Log creation in audit log. Ignore errors.
+    if (req.user) {
+      await addAuditLog(
+        req.user.id,
+        req.user.username,
+        req.user.roleName,
+        'create',
+        'product',
+        result?.id || null,
+        `افزودن محصول ${result?.name ?? ''}`
+      );
+    }
+    res.status(201).json({ success: true, data: result });
+  }
+  catch (e) { next(e); }
+});
+app.get('/api/products', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllProductsFromDb() }); }
+  catch (e) { next(e); }
+});
+app.put('/api/products/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const result = await updateProductInDb(id, req.body as UpdateProductPayload);
+    // Log update
+    if (req.user) {
+      await addAuditLog(
+        req.user.id,
+        req.user.username,
+        req.user.roleName,
+        'update',
+        'product',
+        id,
+        `ویرایش محصول ${id}`
+      );
+    }
+    res.json({ success: true, data: result });
+  }
+  catch (e) { next(e); }
+});
+// P0: Manual inventory adjustment for a product
+app.post('/api/products/:id/adjust-stock', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const productId = Number(req.params.id);
+    if (!productId) return res.status(400).json({ success:false, message:'شناسه محصول نامعتبر است.' });
+    const delta = Number(req.body?.delta);
+    if (!Number.isFinite(delta) || delta === 0) return res.status(400).json({ success:false, message:'delta نامعتبر است.' });
+    // @ts-ignore
+    const userId = req.user?.id;
+    const result = await adjustProductStockInDb(productId, {
+      delta,
+      reason: req.body?.reason,
+      notes: req.body?.notes,
+      createdByUserId: userId || null,
+    });
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'product', productId, `اصلاح موجودی محصول #${productId} (delta=${delta})`); } catch {}
+    }
+    return res.json({ success:true, data: result });
+  } catch (e) { next(e); }
+});
+app.delete('/api/products/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const ok = await deleteProductFromDb(id);
+    if (ok) {
+      // Log deletion
+      if (req.user) {
+        await addAuditLog(
+          req.user.id,
+          req.user.username,
+          req.user.roleName,
+          'delete',
+          'product',
+          id,
+          `حذف محصول ${id}`
+        );
+      }
+      res.json({ success: true, message: 'محصول با موفقیت حذف شد.' });
+    } else {
+      res.status(404).json({ success: false, message: 'محصول برای حذف یافت نشد.' });
+    }
+  } catch (e) { next(e); }
+});
+// =====================================================
+// P0: Purchases (stock-in receipts from suppliers)
+// =====================================================
+app.post('/api/purchases', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // @ts-ignore
+    const userId = req.user?.id;
+    const payload = { ...(req.body || {}), createdByUserId: userId || null };
+    const data = await createPurchaseReceiptInDb(payload);
+    // A
+    // Inventory ledger IN (FIFO layers)
+    try {
+      const items = (data as any)?.items || [];
+      for (const it of items) {
+        if (it?.productId && it?.quantity) {
+          const unitCost = Number(it?.unitCost || it?.price || 0);
+          await recordInventoryInDb({
+            productId: Number(it.productId),
+            entryType: 'in',
+            quantity: Number(it.quantity),
+            unitCost,
+            refType: 'purchase',
+            refId: Number((data as any)?.id),
+            entryDate: String((data as any)?.purchaseDate || new Date().toISOString()),
+          });
+        }
+      }
+    } catch {}
+    // Auto expense for inventory purchase (to make financial report real)
+    try {
+      const totalCost = Number((data as any)?.totalCost || 0);
+      if (totalCost > 0) {
+        let vendor: string | null = null;
+        const supplierId = (data as any)?.supplierId;
+        if (supplierId) {
+          try {
+            const sp = await getAsync(`SELECT name FROM partners WHERE id = ?`, [Number(supplierId)]);
+            vendor = sp?.name ? String(sp.name) : null;
+          } catch {}
+        }
+        const actor = req.user ? { userId: req.user.id, username: req.user.username } : undefined;
+        await addExpenseToDb(
+          {
+            expenseDate: String((data as any)?.purchaseDate || new Date().toISOString()),
+            category: 'inventory',
+            title: `خرید کالا (رسید #${(data as any)?.id ?? ''})`,
+            amount: totalCost,
+            vendor,
+            notes: (data as any)?.invoiceNumber ? `فاکتور: ${(data as any).invoiceNumber}` : null,
+          } as any,
+          actor as any
+        );
+      }
+    } catch {}
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'purchase', data?.id || null, `ثبت رسید خرید #${data?.id ?? ''}`); } catch {}
+    }
+    return res.status(201).json({ success:true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/purchases', authorizeRole(['Admin','Manager','Warehouse']), async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const rows = await getAllPurchasesFromDb();
+    return res.json({ success:true, data: rows });
+  } catch (e) { next(e); }
+});
+app.get('/api/purchases/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    const row = await getPurchaseByIdFromDb(id);
+    if (!row) return res.status(404).json({ success:false, message:'رسید خرید یافت نشد.' });
+    return res.json({ success:true, data: row });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// P0: Stock Count (inventory counting)
+// =====================================================
+app.post('/api/stock-counts', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // @ts-ignore
+    const userId = req.user?.id;
+    const sc = await createStockCountInDb({ title: req.body?.title, notes: req.body?.notes, createdByUserId: userId || null });
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'stock_count', sc?.id || null, `ایجاد انبارگردانی #${sc?.id ?? ''}`); } catch {}
+    }
+    return res.status(201).json({ success:true, data: sc });
+  } catch (e) { next(e); }
+});
+app.get('/api/stock-counts', authorizeRole(['Admin','Manager','Warehouse']), async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const rows = await getAllStockCountsFromDb();
+    return res.json({ success:true, data: rows });
+  } catch (e) { next(e); }
+});
+app.get('/api/stock-counts/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    const sc = await getStockCountByIdFromDb(id);
+    if (!sc) return res.status(404).json({ success:false, message:'انبارگردانی یافت نشد.' });
+    return res.json({ success:true, data: sc });
+  } catch (e) { next(e); }
+});
+app.post('/api/stock-counts/:id/items', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    const productId = Number(req.body?.productId);
+    const countedQty = Number(req.body?.countedQty);
+    if (!productId || !Number.isFinite(countedQty)) return res.status(400).json({ success:false, message:'پارامترها نامعتبر است.' });
+    await upsertStockCountItemInDb(id, productId, countedQty);
+    return res.json({ success:true });
+  } catch (e) { next(e); }
+});
+app.post('/api/stock-counts/:id/complete', authorizeRole(['Admin','Manager','Warehouse']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    // @ts-ignore
+    const userId = req.user?.id;
+    const sc = await completeStockCountInDb(id, userId || null);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'stock_count', id, `اتمام انبارگردانی #${id}`); } catch {}
+    }
+    return res.json({ success:true, data: sc });
+  } catch (e) { next(e); }
+});
+// دسته‌بندی
+app.post('/api/categories', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const name = (req.body?.name || '').trim();
+    if (!name) return res.status(400).json({ success: false, message: 'نام دسته‌بندی الزامی است.' });
+    res.status(201).json({ success: true, data: await addCategoryToDb(name) });
+  } catch (e) { next(e); }
+});
+app.get('/api/categories', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllCategoriesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.put('/api/categories/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const name = (req.body?.name || '').trim();
+    if (!name) return res.status(400).json({ success: false, message: 'نام دسته‌بندی الزامی است.' });
+    res.json({ success: true, data: await updateCategoryInDb(+req.params.id, name) });
+  } catch (e) { next(e); }
+});
+app.delete('/api/categories/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const ok = await deleteCategoryFromDb(+req.params.id);
+    ok ? res.json({ success: true, message: 'دسته‌بندی با موفقیت حذف شد.' })
+       : res.status(404).json({ success: false, message: 'دسته‌بندی برای حذف یافت نشد.' });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 7) گوشی‌ها
+// =====================================================
+app.post('/api/phones', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const p = req.body as PhoneEntryPayload;
+    if (!p.imei || !p.model || p.purchasePrice == null)
+      return res.status(400).json({ success: false, message: 'فیلدهای مدل، IMEI و قیمت خرید الزامی هستند.' });
+    const actor = req.user ? { userId: req.user.id, username: req.user.username, displayName: [req.user.firstName, req.user.lastName].filter(Boolean).join(' ').trim() || req.user.username } : undefined;
+    res.status(201).json({ success: true, data: await addPhoneEntryToDb(p, actor) });
+  } catch (e) { next(e); }
+});
+app.get('/api/phones', async (req, res, next) => {
+  try {
+    const phoneId = req.query.id ? parseInt(String(req.query.id), 10) : undefined;
+    res.json({ success: true, data: await getAllPhoneEntriesFromDb(null, req.query.status as string, phoneId) });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/phones/history-report', async (req, res, next) => {
+  try {
+    const days = req.query.days ? parseInt(String(req.query.days), 10) : 30;
+    const startDate = req.query.startDate ? String(req.query.startDate) : undefined;
+    const endDate = req.query.endDate ? String(req.query.endDate) : undefined;
+    res.json({ success: true, data: await getPhoneInventoryChangeReportFromDb({ days, startDate, endDate }) });
+  } catch (e) { next(e); }
+});
+app.get('/api/phones/history-analytics', async (req, res, next) => {
+  try {
+    const days = req.query.days ? parseInt(String(req.query.days), 10) : 30;
+    const startDate = req.query.startDate ? String(req.query.startDate) : undefined;
+    const endDate = req.query.endDate ? String(req.query.endDate) : undefined;
+    res.json({ success: true, data: await getPhoneInventoryEnterpriseReportFromDb({ days, startDate, endDate }) });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/phones/dashboard-report', async (req, res, next) => {
+  try {
+    const days = req.query.days ? parseInt(String(req.query.days), 10) : 30;
+    const startDate = req.query.startDate ? String(req.query.startDate) : undefined;
+    const endDate = req.query.endDate ? String(req.query.endDate) : undefined;
+    res.json({ success: true, data: await getPhoneInventoryDashboardReportFromDb({ days, startDate, endDate }) });
+  } catch (e) { next(e); }
+});
+app.get('/api/phones/history-explorer', async (req, res, next) => {
+  try {
+    const days = req.query.days ? parseInt(String(req.query.days), 10) : 30;
+    const startDate = req.query.startDate ? String(req.query.startDate) : undefined;
+    const endDate = req.query.endDate ? String(req.query.endDate) : undefined;
+    const q = req.query.q ? String(req.query.q) : '';
+    const eventClass = req.query.eventClass ? String(req.query.eventClass) : 'all';
+    const model = req.query.model ? String(req.query.model) : 'all';
+    const limit = req.query.limit ? parseInt(String(req.query.limit), 10) : 120;
+    res.json({ success: true, data: await searchPhoneInventoryEventsFromDb({ days, startDate, endDate, q, eventClass, model, limit }) });
+  } catch (e) { next(e); }
+});
+app.get('/api/phones/:id/history', async (req, res, next) => {
+  try {
+    res.json({ success: true, data: await listPhoneInventoryEventsFromDb(+req.params.id) });
+  } catch (e) { next(e); }
+});
+app.put('/api/phones/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try { const actor = req.user ? { userId: req.user.id, username: req.user.username, displayName: [req.user.firstName, req.user.lastName].filter(Boolean).join(' ').trim() || req.user.username } : undefined; res.json({ success: true, data: await updatePhoneEntryInDb(+req.params.id, req.body as PhoneEntryUpdatePayload, actor), message: 'گوشی با موفقیت ویرایش شد.' }); }
+  catch (e) { next(e); }
+});
+app.delete('/api/phones/:id', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const actor = req.user ? { userId: req.user.id, username: req.user.username, displayName: [req.user.firstName, req.user.lastName].filter(Boolean).join(' ').trim() || req.user.username } : undefined;
+    const ok = await deletePhoneEntryFromDb(+req.params.id, actor);
+    ok ? res.json({ success: true, message: 'گوشی با موفقیت حذف شد.' })
+       : res.status(404).json({ success: false, message: 'گوشی برای حذف یافت نشد.' });
+  } catch (e) { next(e); }
+});
+// --- لیست مدل‌ها/رنگ‌ها برای فرم ثبت گوشی (ذخیرهٔ پایدار) ---
+app.get('/api/phone-models', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllPhoneModelsFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/phone-models', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const name = String(req.body?.name || '').trim();
+    if (!name) return res.status(400).json({ success: false, message: 'نام مدل الزامی است.' });
+    const data = await addPhoneModelToDb(name);
+    res.status(201).json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/phone-colors', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllPhoneColorsFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/phone-colors', authorizeRole(['Admin','Manager','Warehouse']), async (req, res, next) => {
+  try {
+    const name = String(req.body?.name || '').trim();
+    if (!name) return res.status(400).json({ success: false, message: 'نام رنگ الزامی است.' });
+    const data = await addPhoneColorToDb(name);
+    res.status(201).json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 8) فروش/فاکتورها
+//    - آیتم‌های قابل فروش
+//    - لیست فاکتورها (یکپارچه)
+//    - ثبت سفارش جدید
+//    - نمایش فاکتور (با fallback)
+//    - سازگاری با فروش تکی قدیمی
+// =====================================================
+app.get('/api/sellable-items', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getSellableItemsFromDb() }); }
+  catch (e) { next(e); }
+});
+// --- تابع مشترک لیست فاکتورها ---
+const listSalesHandler = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    // A) منبع قدیمی (transactions قدیمی) + منبع جدید (sales_orders)
+    const legacyRows: any[] = await getAllSalesTransactionsFromDb();
+    let newRows: any[] = [];
+    try { newRows = await getAllSalesOrdersFromDb(); } catch { newRows = []; }
+    // B) ادغام رکوردها بر اساس شناسه (ردیف جدید ارجح است)
+    const byId = new Map<number, any>();
+    for (const r of [...legacyRows, ...newRows]) {
+      const sid = Number(r.id ?? r.saleId ?? r.sale_id);
+      if (!sid) continue;
+      byId.set(sid, { ...byId.get(sid), ...r });
+    }
+    const ids = Array.from(byId.keys()).sort((a, b) => b - a);
+    // C) نقشه سود (از DB؛ در صورت عدم‌دسترس، از خطوط فاکتور محاسبه می‌کنیم)
+    let profitMap = new Map<number, number>();
+    try {
+      profitMap = await getProfitPerSaleMapFromDb(ids);
+    } catch {
+      profitMap = await buildProfitMapFromInvoices(ids);
+    }
+    // D) ساخت خروجی نهایی با شرح/مبلغ درست
+    const rows: any[] = [];
+    for (const id of ids) {
+      const base = byId.get(id) || {};
+      let description: string = base.itemName ?? base.description ?? '';
+      let grandTotal: number | null = Number(base.grandTotal ?? base.total);
+      if (!Number.isFinite(grandTotal)) grandTotal = null;
+      // تلاش ۱: فاکتور جدید
+      let invoice: any = null;
+      try { invoice = await getSalesOrderForInvoice(id); } catch {}
+      // تلاش ۲: فاکتور قدیم
+      if (!invoice) { try { invoice = await getInvoiceDataById(id); } catch {} }
+      if (invoice) {
+        if (Array.isArray(invoice.lineItems)) {
+          const items = invoice.lineItems;
+          if (!description) description = summarize(items);
+          if (grandTotal == null) {
+            const fin = invoice.financialSummary;
+            const gt = Number(fin?.grandTotal ?? NaN);
+            if (Number.isFinite(gt)) grandTotal = gt;
+          }
+        } else {
+          const items = getItemsFromInvoice(invoice);
+          if (!description) description = summarize(items);
+          if (grandTotal == null) grandTotal = computeTotal(invoice, items);
+        }
+      }
+      const customerName =
+        base.customerFullName ?? base.customerName ?? base.fullName ??
+        (base.customerId ? 'مشتری' : 'مهمان');
+      rows.push({
+        ...base,
+        id,
+        description: description || '—',
+        grandTotal,
+        profit: profitMap.get(id) ?? 0,
+        customerName,
+        customerFullName: customerName,
+      });
+    }
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+};
+app.get('/api/sales-orders', authorizeRole(['Admin','Manager','Salesperson']), listSalesHandler);  // مسیر جدید
+app.get('/api/sales',        authorizeRole(['Admin','Manager','Salesperson']), listSalesHandler);  // برای سازگاری با نسخه قدیمی
+
+
+type SalesAdvisorSeverity = 'critical' | 'warning' | 'info' | 'success';
+
+type SalesAdvisorInsight = {
+  id: string;
+  title: string;
+  summary: string;
+  severity: SalesAdvisorSeverity;
+  confidence: number;
+  icon?: string;
+  reasons?: string[];
+  metrics?: Array<{ label: string; value: string }>;
+  actionLabel?: string;
+  actionTo?: string;
+};
+
+const salesAdvisorNum = (value: any) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+};
+
+const salesAdvisorClamp = (value: number, min = 0, max = 100) => Math.max(min, Math.min(max, Math.round(value)));
+
+const salesAdvisorMoney = (value: number) => `${salesAdvisorNum(value).toLocaleString('fa-IR')} تومان`;
+
+const calculateSalesAdvisorConfidence = (params: {
+  dataQuality: number;
+  evidenceCount: number;
+  uncertaintyPenalty?: number;
+  severity?: SalesAdvisorSeverity;
+  customerResolved?: boolean;
+  hasRealCostBasis?: boolean;
+  customerTrustScore?: number | null;
+  customerTrustConfidence?: number | null;
+}) => {
+  const severityBonus: Record<SalesAdvisorSeverity, number> = {
+    critical: 8,
+    warning: 6,
+    info: 2,
+    success: 4,
+  };
+  const evidenceScore = Math.min(22, Math.max(0, params.evidenceCount) * 5);
+  const costBonus = params.hasRealCostBasis ? 8 : 0;
+  const customerBaseBonus = params.customerResolved ? 5 : 0;
+  const trustScore = typeof params.customerTrustScore === 'number' ? params.customerTrustScore : null;
+  const trustConfidence = typeof params.customerTrustConfidence === 'number' ? params.customerTrustConfidence : null;
+  const customerTrustAdjustment = trustScore == null
+    ? 0
+    : trustScore >= 85 ? 10
+      : trustScore >= 70 ? 6
+        : trustScore >= 55 ? 2
+          : trustScore >= 40 ? -6
+            : -14;
+  const trustUncertaintyPenalty = trustConfidence == null ? 0 : Math.max(0, 70 - trustConfidence) * 0.12;
+  const raw = 30 + params.dataQuality * 0.35 + evidenceScore + costBonus + customerBaseBonus + customerTrustAdjustment + severityBonus[params.severity || 'info'] - (params.uncertaintyPenalty || 0) - trustUncertaintyPenalty;
+  return salesAdvisorClamp(raw, 30, 98);
+};
+
+
+type CustomerSalesTrustProfile = {
+  customerId: number;
+  score: number;
+  confidence: number;
+  tier: 'excellent' | 'good' | 'medium' | 'risky' | 'unknown';
+  tierLabel: string;
+  purchaseCount: number;
+  totalPurchaseAmount: number;
+  creditSalesCount: number;
+  installmentSalesCount: number;
+  installmentObligationCount: number;
+  onTimePaymentCount: number;
+  latePaymentCount: number;
+  overdueUnpaidCount: number;
+  returnedCheckCount: number;
+  currentBalance: number;
+  suggestedCreditLimit: number;
+  remainingSuggestedCredit: number;
+  lastPurchaseDate?: string | null;
+  reasons: string[];
+};
+
+const salesAdvisorParseDate = (value: any): moment.Moment | null => {
+  const raw = String(value || '').trim();
+  if (!raw) return null;
+  const formats = ['jYYYY/jMM/jDD', 'jYYYY-MM-DD', 'YYYY-MM-DD', 'YYYY/MM/DD'];
+  for (const format of formats) {
+    const parsed = moment(raw, format, true);
+    if (parsed.isValid()) return parsed;
+  }
+  try {
+    const parsed = moment.from(raw, 'fa', 'YYYY/MM/DD');
+    if (parsed.isValid()) return parsed;
+  } catch {}
+  const fallback = moment(raw);
+  return fallback.isValid() ? fallback : null;
+};
+
+const salesAdvisorDaysFromNowAbs = (dateValue: any) => {
+  const parsed = salesAdvisorParseDate(dateValue);
+  if (!parsed) return null;
+  return Math.abs(moment().startOf('day').diff(parsed.startOf('day'), 'days'));
+};
+
+const getCustomerSalesTrustProfileFromDb = async (customerId: number, customer: any | null): Promise<CustomerSalesTrustProfile | null> => {
+  if (!customerId) return null;
+
+  const salesOrders = await allAsync(
+    `SELECT id, paymentMethod, grandTotal, transactionDate
+       FROM sales_orders
+      WHERE customerId = ?
+      ORDER BY transactionDate DESC, id DESC`,
+    [customerId]
+  ).catch(() => [] as any[]);
+
+  const installmentSales = await allAsync(
+    `SELECT id, actualSalePrice, downPayment, numberOfInstallments, saleDate, dateCreated
+       FROM installment_sales
+      WHERE customerId = ?
+      ORDER BY COALESCE(saleDate, dateCreated) DESC, id DESC`,
+    [customerId]
+  ).catch(() => [] as any[]);
+
+  const installmentPayments = await allAsync(
+    `SELECT p.id, p.saleId, p.dueDate, p.paymentDate, p.status, p.amountDue
+       FROM installment_payments p
+       INNER JOIN installment_sales s ON s.id = p.saleId
+      WHERE s.customerId = ?`,
+    [customerId]
+  ).catch(() => [] as any[]);
+
+  const installmentChecks = await allAsync(
+    `SELECT c.id, c.saleId, c.dueDate, c.status, c.amount
+       FROM installment_checks c
+       INNER JOIN installment_sales s ON s.id = c.saleId
+      WHERE s.customerId = ?`,
+    [customerId]
+  ).catch(() => [] as any[]);
+
+  const salesTotal = salesOrders.reduce((sum: number, row: any) => sum + Math.max(0, salesAdvisorNum(row.grandTotal)), 0);
+  const installmentTotal = installmentSales.reduce((sum: number, row: any) => sum + Math.max(0, salesAdvisorNum(row.actualSalePrice)), 0);
+  const totalPurchaseAmount = salesTotal + installmentTotal;
+  const purchaseCount = salesOrders.length + installmentSales.length;
+  const creditSalesCount = salesOrders.filter((row: any) => String(row.paymentMethod || '').toLowerCase() === 'credit').length;
+  const currentBalance = salesAdvisorNum(customer?.currentBalance);
+
+  const today = moment().startOf('day');
+  let onTimePaymentCount = 0;
+  let latePaymentCount = 0;
+  let overdueUnpaidCount = 0;
+
+  installmentPayments.forEach((payment: any) => {
+    const status = String(payment.status || '');
+    const due = salesAdvisorParseDate(payment.dueDate);
+    const paid = salesAdvisorParseDate(payment.paymentDate);
+    const isPaid = /پرداخت شده/.test(status) || Boolean(paid);
+    const isExplicitLate = /دیرکرد/.test(status);
+
+    if (isPaid && due && paid) {
+      if (paid.startOf('day').isAfter(due.startOf('day'))) latePaymentCount += 1;
+      else onTimePaymentCount += 1;
+      return;
+    }
+    if (isExplicitLate) {
+      latePaymentCount += 1;
+      return;
+    }
+    if (!isPaid && due && due.startOf('day').isBefore(today)) {
+      overdueUnpaidCount += 1;
+    }
+  });
+
+  let returnedCheckCount = 0;
+  installmentChecks.forEach((check: any) => {
+    const status = String(check.status || '');
+    const due = salesAdvisorParseDate(check.dueDate);
+    const isReturned = /برگشت/.test(status);
+    const isCashed = /نقد شد|وصول/.test(status);
+    if (isReturned) returnedCheckCount += 1;
+    else if (!isCashed && due && due.startOf('day').isBefore(today)) overdueUnpaidCount += 1;
+  });
+
+  const installmentObligationCount = installmentPayments.length + installmentChecks.length;
+  const lastDates = [
+    ...salesOrders.map((row: any) => row.transactionDate),
+    ...installmentSales.map((row: any) => row.saleDate || row.dateCreated),
+  ].filter(Boolean);
+  const lastPurchaseDate = lastDates[0] || null;
+  const lastPurchaseAgeDays = lastPurchaseDate ? salesAdvisorDaysFromNowAbs(lastPurchaseDate) : null;
+
+  let score = purchaseCount > 0 ? 50 : 42;
+  if (totalPurchaseAmount > 0) {
+    score += Math.min(18, Math.log10(totalPurchaseAmount / 1_000_000 + 1) * 8);
+  }
+  score += Math.min(12, purchaseCount * 2.5);
+
+  if (lastPurchaseAgeDays != null) {
+    if (lastPurchaseAgeDays <= 60) score += 8;
+    else if (lastPurchaseAgeDays <= 180) score += 4;
+    else if (lastPurchaseAgeDays > 365) score -= 5;
+  }
+
+  if (installmentObligationCount > 0) {
+    const goodRatio = onTimePaymentCount / Math.max(1, installmentObligationCount);
+    const badRatio = (latePaymentCount + overdueUnpaidCount + returnedCheckCount) / Math.max(1, installmentObligationCount);
+    score += goodRatio * 24;
+    score -= badRatio * 34;
+    if (onTimePaymentCount === installmentObligationCount && installmentObligationCount >= 2) score += 8;
+  } else if (creditSalesCount > 0 || installmentSales.length > 0) {
+    score += 3;
+  }
+
+  if (currentBalance > 0) {
+    const balancePressure = currentBalance / Math.max(5_000_000, totalPurchaseAmount || 5_000_000);
+    score -= Math.min(20, balancePressure * 28);
+  }
+
+  if (returnedCheckCount > 0) score -= Math.min(18, returnedCheckCount * 7);
+  if (overdueUnpaidCount > 0) score -= Math.min(22, overdueUnpaidCount * 6);
+  if (latePaymentCount > 0) score -= Math.min(18, latePaymentCount * 4);
+
+  const finalScore = salesAdvisorClamp(score, 5, 95);
+  const confidence = salesAdvisorClamp(
+    25 +
+      Math.min(28, purchaseCount * 5) +
+      Math.min(27, installmentObligationCount * 3) +
+      (lastPurchaseDate ? 5 : 0) +
+      (Number.isFinite(currentBalance) ? 5 : 0) -
+      (purchaseCount === 0 ? 8 : 0),
+    20,
+    95
+  );
+
+  const tier =
+    purchaseCount === 0 ? 'unknown'
+      : finalScore >= 82 ? 'excellent'
+        : finalScore >= 68 ? 'good'
+          : finalScore >= 50 ? 'medium'
+            : 'risky';
+
+  const tierLabel =
+    tier === 'excellent' ? 'بسیار قابل اعتماد'
+      : tier === 'good' ? 'قابل اعتماد'
+        : tier === 'medium' ? 'نیازمند احتیاط'
+          : tier === 'risky' ? 'پرریسک'
+            : 'بدون سابقه کافی';
+
+  const avgPurchaseValue = purchaseCount > 0 ? totalPurchaseAmount / purchaseCount : 0;
+  const behaviorFactor =
+    tier === 'excellent' ? 1.35
+      : tier === 'good' ? 1.05
+        : tier === 'medium' ? 0.65
+          : tier === 'risky' ? 0.25
+            : 0.15;
+  const historyBase = Math.max(avgPurchaseValue * 1.2, totalPurchaseAmount * 0.22);
+  const rawSuggestedLimit = purchaseCount > 0 ? historyBase * behaviorFactor : 0;
+  const latePenaltyFactor = Math.max(0.35, 1 - ((latePaymentCount * 0.08) + (overdueUnpaidCount * 0.13) + (returnedCheckCount * 0.18)));
+  const suggestedCreditLimit = salesAdvisorClamp(rawSuggestedLimit * latePenaltyFactor, 0, 500_000_000);
+  const remainingSuggestedCredit = Math.max(0, suggestedCreditLimit - Math.max(0, currentBalance));
+
+  const reasons: string[] = [];
+  if (purchaseCount > 0) reasons.push(`سابقه ${purchaseCount.toLocaleString('fa-IR')} خرید برای این مشتری پیدا شد.`);
+  else reasons.push('سابقه خرید کافی برای این مشتری پیدا نشد.');
+  if (installmentObligationCount > 0) reasons.push(`${onTimePaymentCount.toLocaleString('fa-IR')} تعهد به‌موقع، ${latePaymentCount.toLocaleString('fa-IR')} دیرکرد و ${overdueUnpaidCount.toLocaleString('fa-IR')} سررسید باز/معوق در سوابق اقساط و چک دیده شد.`);
+  if (returnedCheckCount > 0) reasons.push(`${returnedCheckCount.toLocaleString('fa-IR')} چک برگشتی در سوابق مشتری ثبت شده است.`);
+  if (currentBalance > 0) reasons.push(`مانده فعلی مشتری ${salesAdvisorMoney(currentBalance)} است و روی اعتماد اعتباری اثر منفی دارد.`);
+  if (lastPurchaseAgeDays != null) reasons.push(`آخرین خرید ثبت‌شده حدود ${lastPurchaseAgeDays.toLocaleString('fa-IR')} روز با امروز فاصله دارد.`);
+
+  return {
+    customerId,
+    score: finalScore,
+    confidence,
+    tier,
+    tierLabel,
+    purchaseCount,
+    totalPurchaseAmount,
+    creditSalesCount,
+    installmentSalesCount: installmentSales.length,
+    installmentObligationCount,
+    onTimePaymentCount,
+    latePaymentCount,
+    overdueUnpaidCount,
+    returnedCheckCount,
+    currentBalance,
+    suggestedCreditLimit,
+    remainingSuggestedCredit,
+    lastPurchaseDate,
+    reasons,
+  };
+};
+
+
+
+const buildSalesAdvisorAnalysis = (payload: any, customer: any | null, customerTrustProfile?: CustomerSalesTrustProfile | null) => {
+  const rawItems = Array.isArray(payload?.items) ? payload.items : [];
+  const items = rawItems.map((item: any, index: number) => {
+    const quantity = Math.max(1, salesAdvisorNum(item.quantity));
+    const unitPrice = Math.max(0, salesAdvisorNum(item.unitPrice));
+    const lineGross = unitPrice * quantity;
+    const discount = Math.min(Math.max(0, salesAdvisorNum(item.discountPerItem ?? item.discount)), lineGross);
+    const buyPrice = Math.max(0, salesAdvisorNum(item.buyPrice ?? item.currentPurchasePrice ?? item.purchasePrice));
+    const stockRaw = item.stock;
+    const stock = stockRaw === Infinity || stockRaw === 'Infinity' ? Infinity : salesAdvisorNum(stockRaw);
+    const itemType = String(item.itemType || item.type || '').toLowerCase();
+    return {
+      id: String(item.cartItemId || item.itemId || index),
+      itemId: salesAdvisorNum(item.itemId || item.id),
+      itemType,
+      name: String(item.name || item.description || `قلم ${index + 1}`),
+      quantity,
+      unitPrice,
+      lineGross,
+      discount,
+      buyPrice,
+      lineNet: Math.max(0, lineGross - discount),
+      stock,
+      hasCostBasis: buyPrice > 0 || itemType === 'service',
+    };
+  });
+
+  const paymentMethod = String(payload?.paymentMethod || 'cash') === 'credit' ? 'credit' : 'cash';
+  const subtotal = items.reduce((sum: number, item: any) => sum + item.lineGross, 0);
+  const itemsDiscount = items.reduce((sum: number, item: any) => sum + item.discount, 0);
+  const afterRowDiscounts = Math.max(0, subtotal - itemsDiscount);
+  const globalDiscount = Math.min(Math.max(0, salesAdvisorNum(payload?.discount ?? payload?.globalDiscount)), afterRowDiscounts);
+  const grandTotal = Math.max(0, afterRowDiscounts - globalDiscount);
+  const totalDiscount = itemsDiscount + globalDiscount;
+  const totalDiscountRate = subtotal > 0 ? (totalDiscount / subtotal) * 100 : 0;
+  const costKnownCount = items.filter((item: any) => item.hasCostBasis).length;
+  const priceKnownCount = items.filter((item: any) => item.unitPrice > 0).length;
+  const dataQuality = salesAdvisorClamp(
+    (items.length ? 25 : 0) +
+    (items.length ? (priceKnownCount / items.length) * 25 : 0) +
+    (items.length ? (costKnownCount / items.length) * 25 : 0) +
+    (paymentMethod === 'credit' ? (customer ? 15 : 0) : 15) +
+    (subtotal > 0 ? 10 : 0),
+    0,
+    100
+  );
+  const hasRealCostBasis = items.length > 0 && costKnownCount === items.length;
+  const customerBalance = salesAdvisorNum(customer?.currentBalance);
+  const customerTrustScore = customerTrustProfile?.score ?? null;
+  const customerTrustConfidence = customerTrustProfile?.confidence ?? null;
+  const insights: SalesAdvisorInsight[] = [];
+  const addInsight = (insight: Omit<SalesAdvisorInsight, 'confidence'> & { evidenceCount?: number; uncertaintyPenalty?: number; customerResolved?: boolean; hasRealCostBasis?: boolean }) => {
+    insights.push({
+      ...insight,
+      confidence: calculateSalesAdvisorConfidence({
+        dataQuality,
+        evidenceCount: insight.evidenceCount ?? 1,
+        uncertaintyPenalty: insight.uncertaintyPenalty,
+        severity: insight.severity,
+        customerResolved: insight.customerResolved ?? Boolean(customer),
+        hasRealCostBasis: insight.hasRealCostBasis ?? hasRealCostBasis,
+        customerTrustScore,
+        customerTrustConfidence,
+      }),
+    });
+  };
+
+  if (items.length === 0) {
+    addInsight({
+      id: 'empty-cart-guidance',
+      title: 'در انتظار انتخاب قلم فروش',
+      summary: 'پس از انتخاب کالا یا خدمت، تحلیل سود، تخفیف، موجودی و ریسک مشتری از سمت سرور محاسبه می‌شود.',
+      severity: 'info',
+      icon: 'fa-solid fa-cart-shopping',
+      reasons: ['سرور برای تحلیل دقیق به حداقل یک ردیف فروش نیاز دارد.', 'عدد اعتماد تا قبل از دریافت داده کامل، قطعی نمایش داده نمی‌شود.'],
+      evidenceCount: 0,
+      uncertaintyPenalty: 8,
+      hasRealCostBasis: false,
+      customerResolved: false,
+    });
+    return { insights, meta: { dataQuality, confidence: insights[0]?.confidence || null, learningStatus: 'empty' } };
+  }
+
+  if (paymentMethod === 'credit' && !customer) {
+    addInsight({
+      id: 'credit-without-customer',
+      title: 'فروش اعتباری بدون مشتری انتخاب شده',
+      summary: 'برای فروش اعتباری باید مشتری از دیتابیس انتخاب شود تا مانده حساب و پیگیری وصول قابل اتکا باشد.',
+      severity: 'critical',
+      icon: 'fa-solid fa-user-lock',
+      reasons: ['پرداخت اعتباری انتخاب شده است.', 'شناسه مشتری معتبر در دیتابیس برای این فاکتور پیدا نشد.'],
+      metrics: [{ label: 'نوع پرداخت', value: 'اعتباری' }, { label: 'وضعیت مشتری', value: 'انتخاب نشده' }],
+      evidenceCount: 2,
+      uncertaintyPenalty: 4,
+      customerResolved: false,
+    });
+  }
+
+  if (customer && customerTrustProfile) {
+    const score = customerTrustProfile.score;
+    const trustSeverity: SalesAdvisorSeverity = score < 42 ? 'critical' : score < 58 ? 'warning' : score < 72 ? 'info' : 'success';
+    const trustSummary =
+      customerTrustProfile.tier === 'unknown'
+        ? 'این مشتری سابقه خرید کافی ندارد؛ برای فروش اعتباری بهتر است سقف اعتبار محافظه‌کارانه تعیین شود.'
+        : `ارزش اعتباری این مشتری ${score.toLocaleString('fa-IR')} از ۱۰۰ است و در سطح «${customerTrustProfile.tierLabel}» قرار می‌گیرد.`;
+
+    addInsight({
+      id: 'customer-credit-trust-profile',
+      title: 'ارزش اعتباری مشتری بر اساس سوابق خرید',
+      summary: trustSummary,
+      severity: trustSeverity,
+      icon: score >= 72 ? 'fa-solid fa-user-check' : score >= 58 ? 'fa-solid fa-user-clock' : 'fa-solid fa-triangle-exclamation',
+      reasons: customerTrustProfile.reasons,
+      metrics: [
+        { label: 'امتیاز مشتری', value: `${score.toLocaleString('fa-IR')} از ۱۰۰` },
+        { label: 'سطح اعتماد', value: customerTrustProfile.tierLabel },
+        { label: 'حجم خرید قبلی', value: salesAdvisorMoney(customerTrustProfile.totalPurchaseAmount) },
+        { label: 'تعداد خریدها', value: customerTrustProfile.purchaseCount.toLocaleString('fa-IR') },
+        { label: 'دیرکرد/معوق', value: `${(customerTrustProfile.latePaymentCount + customerTrustProfile.overdueUnpaidCount).toLocaleString('fa-IR')} مورد` },
+        { label: 'چک برگشتی', value: customerTrustProfile.returnedCheckCount.toLocaleString('fa-IR') },
+      ],
+      actionLabel: 'دیدن پرونده مشتری',
+      actionTo: `/customers/${Number(customer.id)}`,
+      evidenceCount: Math.max(2, Math.min(8, customerTrustProfile.purchaseCount + customerTrustProfile.installmentObligationCount)),
+      uncertaintyPenalty: Math.max(0, 70 - customerTrustProfile.confidence) * 0.12,
+      customerResolved: true,
+    });
+  }
+
+  if (paymentMethod === 'credit' && customer && customerTrustProfile) {
+    const suggestedLimit = customerTrustProfile.suggestedCreditLimit;
+    const projectedCreditExposure = Math.max(0, customerTrustProfile.currentBalance) + grandTotal;
+    const limitUsageRate = suggestedLimit > 0 ? (projectedCreditExposure / suggestedLimit) * 100 : 100;
+    const hasNoSafeLimit = suggestedLimit <= 0;
+    const exceedsLimit = projectedCreditExposure > suggestedLimit;
+    const limitSeverity: SalesAdvisorSeverity =
+      hasNoSafeLimit || limitUsageRate >= 140 ? 'critical'
+        : exceedsLimit || limitUsageRate >= 100 ? 'warning'
+          : limitUsageRate >= 75 ? 'info'
+            : 'success';
+
+    addInsight({
+      id: 'customer-suggested-credit-limit',
+      title: 'سقف اعتبار پیشنهادی برای این مشتری',
+      summary: hasNoSafeLimit
+        ? 'به‌دلیل نبود سابقه کافی یا ریسک بالای سوابق، فروش اعتباری بدون تأیید مدیر توصیه نمی‌شود.'
+        : exceedsLimit
+          ? `مبلغ این فروش، مانده مشتری را از سقف اعتبار پیشنهادی ${salesAdvisorMoney(suggestedLimit)} عبور می‌دهد.`
+          : `برای این مشتری سقف اعتبار پیشنهادی ${salesAdvisorMoney(suggestedLimit)} است و پس از این فاکتور حدود ${salesAdvisorMoney(Math.max(0, suggestedLimit - projectedCreditExposure))} ظرفیت باقی می‌ماند.`,
+      severity: limitSeverity,
+      icon: limitSeverity === 'success' ? 'fa-solid fa-credit-card' : limitSeverity === 'info' ? 'fa-solid fa-gauge-high' : 'fa-solid fa-triangle-exclamation',
+      reasons: [
+        'سقف اعتبار از امتیاز مشتری، حجم خرید قبلی، رفتار پرداخت اقساط، چک‌های برگشتی و مانده فعلی محاسبه شد.',
+        `امتیاز اعتباری مشتری ${customerTrustProfile.score.toLocaleString('fa-IR')} از ۱۰۰ است.`,
+        `مصرف اعتبار پس از این فاکتور حدود ${limitUsageRate.toFixed(1).replace('.', '٫')}٪ می‌شود.`,
+      ],
+      metrics: [
+        { label: 'سقف پیشنهادی', value: salesAdvisorMoney(suggestedLimit) },
+        { label: 'مانده فعلی', value: salesAdvisorMoney(customerTrustProfile.currentBalance) },
+        { label: 'مبلغ فاکتور', value: salesAdvisorMoney(grandTotal) },
+        { label: 'تعهد پس از ثبت', value: salesAdvisorMoney(projectedCreditExposure) },
+        { label: 'ظرفیت باقی‌مانده', value: salesAdvisorMoney(Math.max(0, suggestedLimit - projectedCreditExposure)) },
+      ],
+      actionLabel: exceedsLimit || hasNoSafeLimit ? 'بررسی پرونده مشتری' : 'دیدن پرونده مشتری',
+      actionTo: `/customers/${Number(customer.id)}`,
+      evidenceCount: Math.max(3, Math.min(8, customerTrustProfile.purchaseCount + customerTrustProfile.installmentObligationCount + 1)),
+      uncertaintyPenalty: Math.max(0, 70 - customerTrustProfile.confidence) * 0.12,
+      customerResolved: true,
+    });
+  }
+
+  if (paymentMethod === 'credit' && customer && customerBalance > 0) {
+    const projected = customerBalance + grandTotal;
+    addInsight({
+      id: 'customer-balance-risk',
+      title: 'مشتری مانده قبلی دارد',
+      summary: `مانده ثبت‌شده مشتری ${salesAdvisorMoney(customerBalance)} است و با این فاکتور به ${salesAdvisorMoney(projected)} می‌رسد.`,
+      severity: projected > 50000000 || (customerTrustScore != null && customerTrustScore < 45) ? 'critical' : 'warning',
+      icon: 'fa-solid fa-user-check',
+      reasons: [
+        'مانده قبلی مشتری از دفتر حساب دیتابیس خوانده شد.',
+        'مبلغ فاکتور جاری به مانده احتمالی مشتری اضافه می‌شود.',
+        ...(customerTrustProfile ? [`امتیاز اعتباری مشتری ${customerTrustProfile.score.toLocaleString('fa-IR')} از ۱۰۰ است.`] : []),
+      ],
+      metrics: [{ label: 'مانده قبلی', value: salesAdvisorMoney(customerBalance) }, { label: 'مبلغ فاکتور', value: salesAdvisorMoney(grandTotal) }, { label: 'مانده پس از ثبت', value: salesAdvisorMoney(projected) }],
+      actionLabel: 'دیدن پرونده مشتری',
+      actionTo: `/customers/${Number(customer.id)}`,
+      evidenceCount: 3,
+      customerResolved: true,
+    });
+  }
+
+  if (subtotal > 0 && totalDiscountRate >= 10) {
+    addInsight({
+      id: 'high-total-discount',
+      title: 'تخفیف کل فاکتور بالاتر از حد معمول است',
+      summary: `جمع تخفیف‌ها حدود ${totalDiscountRate.toFixed(1).replace('.', '٫')}٪ مبلغ ناخالص فاکتور است.`,
+      severity: totalDiscountRate >= 18 ? 'critical' : 'warning',
+      icon: 'fa-solid fa-percent',
+      reasons: ['مبلغ ناخالص، تخفیف ردیفی و تخفیف کل از فاکتور جاری محاسبه شد.', 'تخفیف بالا می‌تواند سود واقعی فروش را کاهش دهد.'],
+      metrics: [{ label: 'مبلغ ناخالص', value: salesAdvisorMoney(subtotal) }, { label: 'کل تخفیف', value: salesAdvisorMoney(totalDiscount) }, { label: 'نرخ تخفیف', value: `${totalDiscountRate.toFixed(1).replace('.', '٫')}٪` }],
+      evidenceCount: 3,
+    });
+  }
+
+  items.forEach((item: any) => {
+    const discountRate = item.lineGross > 0 ? (item.discount / item.lineGross) * 100 : 0;
+    const cost = item.buyPrice * item.quantity;
+    const lineProfit = item.lineNet - cost;
+    const marginRate = item.lineNet > 0 ? (lineProfit / item.lineNet) * 100 : 0;
+
+    if (discountRate >= 12) {
+      addInsight({
+        id: `item-discount-${item.id}`,
+        title: `تخفیف بالای ردیف: ${item.name}`,
+        summary: `تخفیف این ردیف حدود ${discountRate.toFixed(1).replace('.', '٫')}٪ مبلغ خودش است.`,
+        severity: discountRate >= 20 ? 'critical' : 'warning',
+        icon: 'fa-solid fa-tag',
+        reasons: ['تخفیف ردیف از داده همین فاکتور خوانده شد.', 'این تخفیف مستقیماً سود همین قلم را تغییر می‌دهد.'],
+        metrics: [{ label: 'مبلغ ردیف', value: salesAdvisorMoney(item.lineGross) }, { label: 'تخفیف ردیف', value: salesAdvisorMoney(item.discount) }, { label: 'نرخ تخفیف', value: `${discountRate.toFixed(1).replace('.', '٫')}٪` }],
+        evidenceCount: 3,
+      });
+    }
+
+    if (item.buyPrice > 0 && lineProfit < 0) {
+      addInsight({
+        id: `negative-profit-${item.id}`,
+        title: `سود منفی در ردیف: ${item.name}`,
+        summary: `با قیمت خرید ثبت‌شده، این ردیف حدود ${salesAdvisorMoney(Math.abs(lineProfit))} زیان دارد.`,
+        severity: 'critical',
+        icon: 'fa-solid fa-triangle-exclamation',
+        reasons: ['قیمت خرید/مبنای هزینه برای این ردیف موجود است.', 'مبلغ خالص فروش کمتر از بهای تمام‌شده محاسبه شد.'],
+        metrics: [{ label: 'خالص فروش ردیف', value: salesAdvisorMoney(item.lineNet) }, { label: 'بهای تمام‌شده', value: salesAdvisorMoney(cost) }, { label: 'زیان احتمالی', value: salesAdvisorMoney(Math.abs(lineProfit)) }],
+        evidenceCount: 3,
+      });
+    } else if (item.buyPrice > 0 && item.lineNet > 0 && marginRate < 5) {
+      addInsight({
+        id: `low-margin-${item.id}`,
+        title: `حاشیه سود کم: ${item.name}`,
+        summary: `حاشیه سود این ردیف حدود ${marginRate.toFixed(1).replace('.', '٫')}٪ است؛ تخفیف بیشتر توصیه نمی‌شود.`,
+        severity: 'warning',
+        icon: 'fa-solid fa-chart-line',
+        reasons: ['قیمت خرید و قیمت فروش برای این ردیف در دسترس است.', 'حاشیه سود کمتر از ۵٪ برای فروش عادی نیازمند بررسی است.'],
+        metrics: [{ label: 'سود ردیف', value: salesAdvisorMoney(lineProfit) }, { label: 'حاشیه سود', value: `${marginRate.toFixed(1).replace('.', '٫')}٪` }],
+        evidenceCount: 2,
+      });
+    }
+
+    if (item.itemType !== 'service' && Number.isFinite(item.stock) && item.stock <= item.quantity) {
+      addInsight({
+        id: `stock-risk-${item.id}`,
+        title: `موجودی در مرز اتمام: ${item.name}`,
+        summary: 'بعد از ثبت این فاکتور موجودی این قلم صفر یا بسیار پایین می‌شود.',
+        severity: 'info',
+        icon: 'fa-solid fa-box-open',
+        reasons: ['موجودی فعلی و تعداد در فاکتور از داده فروش خوانده شد.', 'برای کالای پرفروش، پیشنهاد خرید یا جایگزینی باید بررسی شود.'],
+        metrics: [{ label: 'موجودی فعلی', value: salesAdvisorNum(item.stock).toLocaleString('fa-IR') }, { label: 'تعداد در فاکتور', value: salesAdvisorNum(item.quantity).toLocaleString('fa-IR') }],
+        actionLabel: 'رفتن به پیشنهاد خرید',
+        actionTo: '/reports/analysis/suggestions',
+        evidenceCount: 2,
+      });
+    }
+  });
+
+  if (insights.every((item) => item.severity !== 'critical' && item.severity !== 'warning')) {
+    addInsight({
+      id: 'healthy-sale-flow',
+      title: 'شرایط فروش سالم به نظر می‌رسد',
+      summary: 'بر اساس داده‌های فعلی فاکتور، هشدار جدی درباره تخفیف، سود یا مشتری دیده نشد.',
+      severity: 'success',
+      icon: 'fa-solid fa-check',
+      reasons: [
+        'تخفیف‌ها در محدوده قابل قبول هستند.',
+        'سود ردیف‌ها منفی نشده و مانده مشتری هشدار جدی ایجاد نکرده است.',
+        ...(customerTrustProfile ? [`ارزش اعتباری مشتری در سطح «${customerTrustProfile.tierLabel}» محاسبه شد.`] : []),
+      ],
+      metrics: [{ label: 'جمع فاکتور', value: salesAdvisorMoney(grandTotal) }, { label: 'تعداد اقلام', value: items.length.toLocaleString('fa-IR') }],
+      evidenceCount: Math.max(2, items.length + costKnownCount),
+      hasRealCostBasis,
+      customerResolved: paymentMethod === 'credit' ? Boolean(customer) : true,
+      uncertaintyPenalty: hasRealCostBasis ? 0 : 10,
+    });
+  }
+
+  const avgConfidence = insights.length ? salesAdvisorClamp(insights.reduce((sum, item) => sum + item.confidence, 0) / insights.length) : null;
+  const learningStatus = items.length === 0 ? 'empty' : dataQuality >= 82 ? 'trusted' : dataQuality >= 60 ? 'learning' : 'empty';
+  return { insights, meta: { dataQuality, confidence: avgConfidence, learningStatus } };
+};
+
+app.post('/api/sales-orders/smart-advisor', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const payload = req.body || {};
+    const customerId = Number(payload.customerId || 0);
+    let customer: any | null = null;
+    if (customerId > 0) {
+      try { customer = await getCustomerByIdFromDb(customerId); } catch { customer = null; }
+    }
+    const customerTrustProfile = customerId > 0 ? await getCustomerSalesTrustProfileFromDb(customerId, customer).catch(() => null) : null;
+    const result = buildSalesAdvisorAnalysis(payload, customer, customerTrustProfile);
+    res.json({ success: true, data: result.insights, meta: { ...result.meta, customerTrustProfile, suggestedCreditLimit: customerTrustProfile?.suggestedCreditLimit ?? null, remainingSuggestedCredit: customerTrustProfile?.remainingSuggestedCredit ?? null } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+app.get('/api/customers/trust-profiles', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const customers = await getAllCustomersWithBalanceFromDb();
+    const rows = await Promise.all((Array.isArray(customers) ? customers : []).map(async (customer: any) => {
+      const customerId = Number(customer?.id || 0);
+      if (!customerId) return null;
+      const profile = await getCustomerSalesTrustProfileFromDb(customerId, customer).catch(() => null);
+      if (!profile) return null;
+      return {
+        customerId,
+        score: profile.score,
+        confidence: profile.confidence,
+        tier: profile.tier,
+        tierLabel: profile.tierLabel,
+        suggestedCreditLimit: profile.suggestedCreditLimit,
+        remainingSuggestedCredit: profile.remainingSuggestedCredit,
+        latePaymentCount: profile.latePaymentCount,
+        overdueUnpaidCount: profile.overdueUnpaidCount,
+        returnedCheckCount: profile.returnedCheckCount,
+        purchaseCount: profile.purchaseCount,
+      };
+    }));
+
+    res.json({ success: true, data: rows.filter(Boolean) });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+app.get('/api/customers/:id/trust-profile', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const customerId = Number(req.params.id);
+    if (!customerId) return res.status(400).json({ success: false, message: 'شناسه مشتری نامعتبر است.' });
+
+    const customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+    if (!customer) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+
+    const trustProfile = await getCustomerSalesTrustProfileFromDb(customerId, customer);
+    return res.json({ success: true, data: trustProfile });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+app.get('/api/customers/:id/trust-profile/history', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const customerId = Number(req.params.id);
+    if (!customerId) return res.status(400).json({ success: false, message: 'شناسه مشتری نامعتبر است.' });
+
+    const customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+    if (!customer) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+
+    const currentProfile = await getCustomerSalesTrustProfileFromDb(customerId, customer);
+
+    const salesOrders = await allAsync(
+      `SELECT id, paymentMethod, grandTotal, transactionDate, dateCreated
+         FROM sales_orders
+        WHERE customerId = ?
+        ORDER BY COALESCE(transactionDate, dateCreated) ASC, id ASC`,
+      [customerId]
+    ).catch(() => [] as any[]);
+
+    const installmentSales = await allAsync(
+      `SELECT id, actualSalePrice, downPayment, saleDate, dateCreated
+         FROM installment_sales
+        WHERE customerId = ?
+        ORDER BY COALESCE(saleDate, dateCreated) ASC, id ASC`,
+      [customerId]
+    ).catch(() => [] as any[]);
+
+    const installmentPayments = await allAsync(
+      `SELECT p.id, p.saleId, p.dueDate, p.paymentDate, p.status, p.amountDue
+         FROM installment_payments p
+         INNER JOIN installment_sales s ON s.id = p.saleId
+        WHERE s.customerId = ?
+        ORDER BY COALESCE(p.paymentDate, p.dueDate) ASC, p.id ASC`,
+      [customerId]
+    ).catch(() => [] as any[]);
+
+    const installmentChecks = await allAsync(
+      `SELECT c.id, c.saleId, c.dueDate, c.status, c.amount
+         FROM installment_checks c
+         INNER JOIN installment_sales s ON s.id = c.saleId
+        WHERE s.customerId = ?
+        ORDER BY c.dueDate ASC, c.id ASC`,
+      [customerId]
+    ).catch(() => [] as any[]);
+
+    const historyEvents: Array<{
+      date: string;
+      type: 'purchase' | 'installment_sale' | 'payment_on_time' | 'payment_late' | 'overdue' | 'returned_check' | 'balance';
+      title: string;
+      description: string;
+      impact: number;
+      amount?: number;
+    }> = [];
+
+    salesOrders.forEach((row: any) => {
+      const date = String(row.transactionDate || row.dateCreated || '').slice(0, 10);
+      if (!date) return;
+      const amount = salesAdvisorNum(row.grandTotal);
+      historyEvents.push({
+        date,
+        type: 'purchase',
+        title: String(row.paymentMethod || '').toLowerCase() === 'credit' ? 'خرید اعتباری ثبت شد' : 'خرید نقدی ثبت شد',
+        description: `فاکتور #${Number(row.id).toLocaleString('fa-IR')} به مبلغ ${salesAdvisorMoney(amount)} در سابقه مشتری ثبت شد.`,
+        impact: Math.min(6, Math.max(1, Math.log10(amount / 1_000_000 + 1) * 2)),
+        amount,
+      });
+    });
+
+    installmentSales.forEach((row: any) => {
+      const date = String(row.saleDate || row.dateCreated || '').slice(0, 10);
+      if (!date) return;
+      const amount = salesAdvisorNum(row.actualSalePrice);
+      historyEvents.push({
+        date,
+        type: 'installment_sale',
+        title: 'فروش اقساطی ثبت شد',
+        description: `فروش اقساطی #${Number(row.id).toLocaleString('fa-IR')} به مبلغ ${salesAdvisorMoney(amount)} به سوابق اعتباری اضافه شد.`,
+        impact: 3,
+        amount,
+      });
+    });
+
+    installmentPayments.forEach((payment: any) => {
+      const status = String(payment.status || '');
+      const due = salesAdvisorParseDate(payment.dueDate);
+      const paid = salesAdvisorParseDate(payment.paymentDate);
+      const eventDate = (paid || due)?.format('YYYY-MM-DD') || String(payment.paymentDate || payment.dueDate || '').slice(0, 10);
+      if (!eventDate) return;
+      const amount = salesAdvisorNum(payment.amountDue);
+      const isPaid = /پرداخت شده/.test(status) || Boolean(paid);
+      const isLate = /دیرکرد/.test(status) || (isPaid && due && paid && paid.startOf('day').isAfter(due.startOf('day')));
+
+      if (isPaid && !isLate) {
+        historyEvents.push({
+          date: eventDate,
+          type: 'payment_on_time',
+          title: 'پرداخت به‌موقع قسط',
+          description: `یک تعهد اقساطی به مبلغ ${salesAdvisorMoney(amount)} به‌موقع پرداخت شد.`,
+          impact: 6,
+          amount,
+        });
+      } else if (isPaid && isLate) {
+        historyEvents.push({
+          date: eventDate,
+          type: 'payment_late',
+          title: 'پرداخت با دیرکرد',
+          description: `یک تعهد اقساطی به مبلغ ${salesAdvisorMoney(amount)} با تأخیر پرداخت شد.`,
+          impact: -7,
+          amount,
+        });
+      } else if (!isPaid && due && due.startOf('day').isBefore(moment().startOf('day'))) {
+        historyEvents.push({
+          date: eventDate,
+          type: 'overdue',
+          title: 'قسط معوق شد',
+          description: `یک تعهد اقساطی به مبلغ ${salesAdvisorMoney(amount)} از سررسید عبور کرده و هنوز بسته نشده است.`,
+          impact: -10,
+          amount,
+        });
+      }
+    });
+
+    installmentChecks.forEach((check: any) => {
+      const status = String(check.status || '');
+      const due = salesAdvisorParseDate(check.dueDate);
+      const eventDate = due?.format('YYYY-MM-DD') || String(check.dueDate || '').slice(0, 10);
+      if (!eventDate) return;
+      const amount = salesAdvisorNum(check.amount);
+      if (/برگشت/.test(status)) {
+        historyEvents.push({
+          date: eventDate,
+          type: 'returned_check',
+          title: 'چک برگشتی ثبت شد',
+          description: `چک به مبلغ ${salesAdvisorMoney(amount)} برگشت خورده و اثر منفی جدی روی اعتماد مشتری دارد.`,
+          impact: -14,
+          amount,
+        });
+      }
+    });
+
+    if (salesAdvisorNum(customer?.currentBalance) > 0) {
+      historyEvents.push({
+        date: moment().format('YYYY-MM-DD'),
+        type: 'balance',
+        title: 'مانده بدهی فعال',
+        description: `مانده فعلی مشتری ${salesAdvisorMoney(salesAdvisorNum(customer?.currentBalance))} است.`,
+        impact: -Math.min(12, Math.max(3, salesAdvisorNum(customer?.currentBalance) / 10_000_000)),
+        amount: salesAdvisorNum(customer?.currentBalance),
+      });
+    }
+
+    const sortedEvents = historyEvents
+      .filter((event) => event.date)
+      .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+
+    let score = 45;
+    const timeline = sortedEvents.map((event) => {
+      score = salesAdvisorClamp(score + event.impact, 5, 95);
+      return {
+        ...event,
+        scoreAfter: Math.round(score),
+        impact: Math.round(event.impact),
+      };
+    });
+
+    const finalTimeline = timeline.length
+      ? timeline.map((event, index, arr) => {
+          if (index !== arr.length - 1) return event;
+          return { ...event, scoreAfter: currentProfile.score };
+        })
+      : [{
+          date: moment().format('YYYY-MM-DD'),
+          type: 'balance',
+          title: 'شروع پایش اعتبار',
+          description: 'هنوز رویداد کافی برای ساخت تاریخچه تغییر امتیاز ثبت نشده است.',
+          impact: 0,
+          scoreAfter: currentProfile.score,
+        }];
+
+    res.json({
+      success: true,
+      data: {
+        currentScore: currentProfile.score,
+        currentTier: currentProfile.tierLabel,
+        timeline: finalTimeline.slice(-18).reverse(),
+        summary: {
+          totalEvents: finalTimeline.length,
+          positiveEvents: finalTimeline.filter((event: any) => Number(event.impact) > 0).length,
+          negativeEvents: finalTimeline.filter((event: any) => Number(event.impact) < 0).length,
+          lastChange: finalTimeline.length ? finalTimeline[finalTimeline.length - 1] : null,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
+app.get('/api/reports/manager-credit-approvals', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const q = req.query || {};
+    const from = String(q.from || q.startDate || '').trim();
+    const to = String(q.to || q.endDate || '').trim();
+    const params: any[] = [];
+    let where = `WHERE so.paymentMethod = 'credit' AND COALESCE(so.notes, '') LIKE ?`;
+    params.push('%[تأیید مدیر برای عبور از سقف اعتبار پیشنهادی]%');
+
+    if (from) {
+      where += ' AND date(so.transactionDate) >= date(?)';
+      params.push(from);
+    }
+    if (to) {
+      where += ' AND date(so.transactionDate) <= date(?)';
+      params.push(to);
+    }
+
+    const rows = await allAsync(
+      `SELECT
+          so.id,
+          so.customerId,
+          COALESCE(c.fullName, c.name, 'مشتری') AS customerName,
+          so.grandTotal,
+          so.subtotal,
+          so.discount,
+          so.transactionDate,
+          so.notes,
+          so.dateCreated
+        FROM sales_orders so
+        LEFT JOIN customers c ON c.id = so.customerId
+        ${where}
+        ORDER BY date(so.transactionDate) DESC, so.id DESC`,
+      params
+    ).catch(() => [] as any[]);
+
+    const enriched = await Promise.all((rows || []).map(async (row: any) => {
+      const customerId = Number(row.customerId || 0);
+      let customer: any | null = null;
+      let trustProfile: CustomerSalesTrustProfile | null = null;
+      if (customerId > 0) {
+        customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+        trustProfile = await getCustomerSalesTrustProfileFromDb(customerId, customer).catch(() => null);
+      }
+      const projectedExposure = Math.max(0, salesAdvisorNum(trustProfile?.currentBalance)) + Math.max(0, salesAdvisorNum(row.grandTotal));
+      return {
+        id: Number(row.id),
+        customerId,
+        customerName: row.customerName || 'مشتری',
+        grandTotal: salesAdvisorNum(row.grandTotal),
+        subtotal: salesAdvisorNum(row.subtotal),
+        discount: salesAdvisorNum(row.discount),
+        transactionDate: row.transactionDate,
+        notes: row.notes || '',
+        suggestedCreditLimit: trustProfile?.suggestedCreditLimit ?? null,
+        remainingSuggestedCredit: trustProfile?.remainingSuggestedCredit ?? null,
+        customerTrustScore: trustProfile?.score ?? null,
+        customerTrustTier: trustProfile?.tierLabel ?? null,
+        projectedExposure,
+        approvalMarker: '[تأیید مدیر برای عبور از سقف اعتبار پیشنهادی]',
+      };
+    }));
+
+    const riskyOnly = ['1', 'true', 'yes'].includes(String(q.riskyOnly || '').toLowerCase());
+    const filteredRows = riskyOnly
+      ? enriched.filter((row: any) =>
+          Number(row.suggestedCreditLimit || 0) <= 0 ||
+          Number(row.projectedExposure || 0) > Number(row.suggestedCreditLimit || 0) ||
+          Number(row.customerTrustScore || 0) < 58
+        )
+      : enriched;
+
+    const totalAmount = filteredRows.reduce((sum: number, row: any) => sum + salesAdvisorNum(row.grandTotal), 0);
+    const overLimitCount = filteredRows.filter((row: any) => Number(row.suggestedCreditLimit || 0) > 0 && Number(row.projectedExposure || 0) > Number(row.suggestedCreditLimit || 0)).length;
+    const noLimitCount = filteredRows.filter((row: any) => Number(row.suggestedCreditLimit || 0) <= 0).length;
+    const averageTrustScore = filteredRows.length
+      ? salesAdvisorClamp(filteredRows.reduce((sum: number, row: any) => sum + salesAdvisorNum(row.customerTrustScore), 0) / filteredRows.length, 0, 100)
+      : null;
+
+    res.json({
+      success: true,
+      data: filteredRows,
+      meta: {
+        totalCount: filteredRows.length,
+        rawTotalCount: enriched.length,
+        riskyOnly,
+        totalAmount,
+        overLimitCount,
+        noLimitCount,
+        averageTrustScore,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+// ---------- C) ایجاد و مشاهده فاکتور ----------
+/** ثبت سفارش جدید (فاکتور جدید) */
+app.post('/api/sales-orders', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const payload = req.body as SalesOrderPayload;
+    const errors = validateSalesOrderPayload(payload);
+    if (errors.length) {
+      return res.status(400).json({ success: false, message: errors.join(' ') });
+    }
+
+    // Guardrail: credit sales above the suggested customer credit limit require Manager/Admin authority.
+    try {
+      const isCreditSale = String((payload as any)?.paymentMethod || '').toLowerCase() === 'credit';
+      const customerId = Number((payload as any)?.customerId || 0);
+      if (isCreditSale && customerId > 0) {
+        const customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+        const trustProfile = await getCustomerSalesTrustProfileFromDb(customerId, customer).catch(() => null);
+        if (trustProfile) {
+          const rawItems = Array.isArray((payload as any)?.items) ? (payload as any).items : [];
+          const subtotal = rawItems.reduce((sum: number, item: any) => {
+            const quantity = Math.max(1, salesAdvisorNum(item?.quantity));
+            const unitPrice = Math.max(0, salesAdvisorNum(item?.unitPrice));
+            return sum + quantity * unitPrice;
+          }, 0);
+          const rowDiscount = rawItems.reduce((sum: number, item: any) => {
+            const quantity = Math.max(1, salesAdvisorNum(item?.quantity));
+            const unitPrice = Math.max(0, salesAdvisorNum(item?.unitPrice));
+            const lineGross = quantity * unitPrice;
+            return sum + Math.min(Math.max(0, salesAdvisorNum(item?.discountPerItem ?? item?.discount)), lineGross);
+          }, 0);
+          const afterRowDiscounts = Math.max(0, subtotal - rowDiscount);
+          const cleanGlobalDiscount = Math.min(Math.max(0, salesAdvisorNum((payload as any)?.discount)), afterRowDiscounts);
+          const projectedGrandTotal = Math.max(0, afterRowDiscounts - cleanGlobalDiscount);
+          const projectedExposure = Math.max(0, trustProfile.currentBalance) + projectedGrandTotal;
+          const suggestedLimit = Math.max(0, trustProfile.suggestedCreditLimit);
+          const requiresManagerApproval = suggestedLimit <= 0 || projectedExposure > suggestedLimit;
+          const roleName = String((req as any)?.user?.roleName || '');
+          const canApproveCreditLimit = ['Admin', 'Manager'].includes(roleName);
+          if (requiresManagerApproval && !canApproveCreditLimit) {
+            return res.status(403).json({
+              success: false,
+              message: 'این فروش از سقف اعتبار پیشنهادی مشتری عبور کرده و نیازمند تأیید مدیر است.',
+              data: {
+                suggestedCreditLimit: suggestedLimit,
+                projectedExposure,
+                customerTrustScore: trustProfile.score,
+                customerTrustTier: trustProfile.tierLabel,
+              },
+            });
+          }
+        }
+      }
+    } catch {}
+
+    const result = await createSalesOrder(payload);
+        // Internal Telegram notification (sales topic) - template-based
+    try {
+      const who = String((req as any)?.user?.username || '').trim() || 'admin';
+      const orderId = Number((result as any)?.orderId || (result as any)?.id || 0);
+      // Fetch full invoice data to ensure totals/customer are present
+      let invoice: any = null;
+      try { invoice = await getSalesOrderForInvoice(orderId); } catch {}
+      const settings = await getAllSettingsAsObject();
+      const baseUrl = String((settings as any).app_base_url || '').trim();
+      const link = baseUrl ? `${baseUrl}/#/sales` : '';
+      const customerName = String(
+        invoice?.customerDetails?.fullName ??
+        invoice?.customerDetails?.name ??
+        (payload as any)?.customerName ??
+        (payload as any)?.customerFullName ??
+        ''
+      ).trim();
+      const grandTotalRaw =
+        invoice?.financialSummary?.grandTotal ??
+        invoice?.financialSummary?.total ??
+        (payload as any)?.financialSummary?.grandTotal ??
+        (payload as any)?.grandTotal ??
+        (payload as any)?.total ??
+        0;
+      const grandTotal = Number(grandTotalRaw) || 0;
+      const tplKey = `telegram_tpl_sales_sales_order_created`;
+      const tpl =
+        String((settings as any)[tplKey] || '').trim() ||
+        `🧾 فاکتور جدید ثبت شد
+شماره: {invoiceNo}
+مشتری: {customerName}
+مبلغ: {total}
+ثبت‌کننده: {who}
+{link}`;
+      const formattedTotal = `${formatPriceForSms(grandTotal)} تومان`;
+      const text = safeReplaceTemplate(tpl, {
+        invoiceNo: orderId ? `#${orderId}` : '-',
+        customerName,
+        total: formattedTotal,
+        amount: formattedTotal,
+        who,
+        link,
+        now: new Date().toISOString(),
+      });
+      await enqueueTelegramToTopicTargets(
+        'sales',
+        'SALES_ORDER_CREATED',
+        text,
+        { entityType: 'sales_order', entityId: orderId || undefined }
+      );
+    } catch {}
+    try { if ((result as any)?.orderId) await sendCustomCustomerNotification('INVOICE_CREATED', Number((result as any).orderId), 'both'); } catch {}
+// Audit: create sales order
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'sales_order', result?.id || null, `ثبت فاکتور فروش #${result?.id ?? ''}`); } catch {}
+    }
+    res.status(201).json({ success: true, message: 'سفارش با موفقیت ثبت شد.', data: result });
+  } catch (e) { next(e); }
+});
+/** حذف فاکتور + برگشت موجودی + اصلاح دفتر مشتری */
+app.delete('/api/sales-orders/:id', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    const result = await deleteSalesOrder(id);
+    if (!result) return res.status(404).json({ success:false, message:'فاکتور یافت نشد.' });
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'delete', 'sales_order', id, `حذف فاکتور فروش #${id}`); } catch {}
+    }
+    res.json({ success:true, message:'فاکتور حذف شد.' });
+  } catch (e) { next(e); }
+});
+// P0: Cancel invoice (soft-cancel) + Returns
+app.post('/api/sales-orders/:id/cancel', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const orderId = Number(req.params.id);
+    if (!orderId) return res.status(400).json({ success: false, message: 'شناسه فاکتور نامعتبر است.' });
+    // @ts-ignore
+    const userId = req.user?.id;
+    const result = await cancelSalesOrder(orderId, { reason: req.body?.reason });
+    if (!result) return res.status(404).json({ success: false, message: 'فاکتور یافت نشد.' });
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'sales_order', orderId, `ابطال فاکتور فروش #${orderId}` + (req.body?.reason ? ` | دلیل: ${req.body.reason}` : '')); } catch {}
+    }
+    // Internal Telegram notification (sales topic) - template-based
+try {
+  const who = String((req as any)?.user?.username || '').trim();
+  const settings = await getAllSettingsAsObject();
+  const baseUrl = String(settings.app_base_url || '').trim();
+  const link = baseUrl ? `${baseUrl}/#/sales` : '';
+  const tplKey = `telegram_tpl_sales_sales_order_cancelled`;
+  const tpl = String((settings as any)[tplKey] || '').trim() || `❌ فاکتور/سفارش لغو شد
+شماره: {invoiceNo}
+ثبت‌کننده: {who}
+{link}`;
+  const text = safeReplaceTemplate(tpl, {
+    invoiceNo: orderId ? `#${orderId}` : '-',
+    who,
+    link,
+    now: new Date().toISOString(),
+  });
+  await enqueueTelegramToTopicTargets('sales', 'SALES_ORDER_CANCELLED', text, { entityType: 'sales_order', entityId: orderId });
+} catch {}
+    return res.json({ success: true, data: result });
+  } catch (err) { next(err); }
+});
+app.get('/api/sales-orders/:id/returns', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const orderId = Number(req.params.id);
+    if (!orderId) return res.status(400).json({ success: false, message: 'شناسه فاکتور نامعتبر است.' });
+    const rows = await getSalesReturnsForOrder(orderId);
+    return res.json({ success: true, data: rows });
+  } catch (err) { next(err); }
+});
+app.post('/api/sales-orders/:id/returns', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const orderId = Number(req.params.id);
+    if (!orderId) return res.status(400).json({ success: false, message: 'شناسه فاکتور نامعتبر است.' });
+    // @ts-ignore
+    const userId = req.user?.id;
+    const payload = { ...(req.body || {}), createdByUserId: userId || null };
+    const row = await createSalesReturn(orderId, payload);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'sales_return', (row?.id || null) as any, `ثبت مرجوعی برای خرید #${orderId} (مرجوعی #${row?.id})`); } catch {}
+    }
+    // Internal Telegram notification (sales topic) - template-based
+try {
+  const who = String((req as any)?.user?.username || '').trim();
+  const settings = await getAllSettingsAsObject();
+  const baseUrl = String(settings.app_base_url || '').trim();
+  const link = baseUrl ? `${baseUrl}/#/sales` : '';
+  const tplKey = `telegram_tpl_sales_sales_order_return_created`;
+  const tpl = String((settings as any)[tplKey] || '').trim() || `↩️ مرجوعی ثبت شد
+شماره: {invoiceNo}
+ثبت‌کننده: {who}
+{link}`;
+  const text = safeReplaceTemplate(tpl, {
+    invoiceNo: orderId ? `#${orderId}` : '-',
+    who,
+    link,
+    now: new Date().toISOString(),
+  });
+  await enqueueTelegramToTopicTargets('sales', 'SALES_ORDER_RETURN_CREATED', text, { entityType: 'sales_return', entityId: (row as any)?.id || undefined });
+} catch {}
+    return res.json({ success: true, data: row });
+  } catch (err) { next(err); }
+});
+/** نمایش فاکتور برای چاپ: اول سفارش‌های جدید، اگر نبود فاکتور قدیمی */
+app.get('/api/sales-orders/:id', authorizeRole(['Admin','Manager','Salesperson']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ success:false, message:'شناسه نامعتبر است.' });
+    }
+    let invoice = await getSalesOrderForInvoice(id);  // ساختار جدید
+    if (!invoice) invoice = await getInvoiceDataById(id); // سازگاری با ساختار قدیم
+    if (!invoice) {
+      return res.status(404).json({ success:false, message:'فاکتور یافت نشد.' });
+    }
+    res.json({ success:true, data: invoice });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/sales-orders/:id/profit-snapshot', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id) || id <= 0) {
+      return res.status(400).json({ success: false, message: 'شناسه نامعتبر است.' });
+    }
+    const data = await getSalesOrderProfitSnapshotFromDb(id);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+/** (قدیمی) فروش تکی — فقط برای سازگاریِ صفحاتی که هنوز از این مسیر استفاده می‌کنند */
+app.post('/api/sales', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const saleData = req.body as SaleDataPayload;
+    const data = await recordSaleTransactionInDb(saleData);
+    // Internal Telegram notification for sales (optional, based on settings)
+    try {
+      const { botToken, chatIds } = await getTelegramTargetsForTopic('sales');
+      if (botToken && chatIds.length) {
+        const p: any = saleData as any;
+        const amount = Number((data as any)?.totalAmount ?? (data as any)?.amount ?? p?.totalAmount ?? p?.amount ?? 0);
+        const customer = String((data as any)?.customerName ?? p?.customerName ?? p?.customerFullName ?? '').trim();
+        const desc = String(p?.itemName ?? p?.description ?? '').trim();
+        const text =
+          `🧾 فروش ثبت شد\n` +
+          (customer ? `مشتری: ${customer}\n` : '') +
+          (desc ? `شرح: ${desc}\n` : '') +
+          `مبلغ: ${formatPriceForSms(amount)} تومان`;
+        await sendTelegramMessages(botToken, chatIds, text);
+      }
+    } catch (e) {}
+    // Inventory ledger OUT (FIFO consumption) - only for inventory sales
+    try {
+      const p = saleData as any;
+      if (p?.itemType === 'inventory' && p?.itemId && p?.quantity) {
+        await recordInventoryInDb({
+          productId: Number(p.itemId),
+          entryType: 'out',
+          quantity: Number(p.quantity),
+          refType: 'sale',
+          refId: Number((data as any)?.id || 0),
+          entryDate: (() => {
+            const d = String((data as any)?.transactionDate || p?.transactionDate || '');
+            const m = moment(d, ['YYYY-MM-DD', 'jYYYY/jMM/jDD', moment.ISO_8601], true);
+            return m.isValid() ? m.toDate().toISOString() : new Date().toISOString();
+          })(),
+        });
+      }
+    } catch {}
+    res.status(201).json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+/** دسترسی مستقیم به داده‌های فاکتور قدیمی: تکی */
+app.get('/api/invoice-data/:saleId(\\d+)', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const saleId = parseInt(req.params.saleId, 10);
+    const data   = await getInvoiceDataById(saleId);
+    if (!data) return res.status(404).json({ success: false, message: 'فاکتور برای این فروش یافت نشد.' });
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+/** دسترسی مستقیم به داده‌های فاکتور قدیمی: چندتایی (۱۲,۱۳,۱۴ → [12,13,14]) */
+app.get('/api/invoice-data/:saleIds', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const ids = String(req.params.saleIds).split(',').map(s => parseInt(s, 10)).filter(Boolean);
+    if (!ids.length) return res.status(400).json({ success: false, message: 'شناسهٔ فروش نامعتبر است.' });
+    const data = await getInvoiceDataForSaleIds(ids);
+    if (!data) return res.status(404).json({ success: false, message: 'فاکتور برای فروش‌های خواسته‌شده یافت نشد.' });
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// Inventory Adjustments (increase/decrease stock with FIFO ledger)
+// =====================================================
+app.post('/api/inventory/adjustments', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const payload = req.body as any;
+    const data = await createInventoryAdjustmentInDb({
+      productId: Number(payload.productId),
+      direction: payload.direction,
+      quantity: Number(payload.quantity),
+      unitCost: payload.unitCost != null ? Number(payload.unitCost) : 0,
+      reason: payload.reason,
+      entryDate: String(payload.entryDate || new Date().toISOString()),
+    });
+    res.status(201).json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 9) مشتریان
+// =====================================================
+app.post('/api/customers', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await addCustomerToDb(req.body as CustomerPayload) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/customers', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllCustomersWithBalanceFromDb() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/customers/:id', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const profile = await getCustomerByIdFromDb(id);
+    if (!profile) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+    const ledger = await getLedgerForCustomerFromDb(id);
+    const followups = await listCustomerFollowupsFromDb(id);
+    const legacyHistory = await getAllSalesTransactionsFromDb(id);
+    const orderHistory = await allAsync(`
+      SELECT 
+        so.id,
+        so.transactionDate,
+        'sales_order' as sourceType,
+        COALESCE(
+          (SELECT GROUP_CONCAT(description, '، ') FROM sales_order_items WHERE orderId = so.id),
+          'فاکتور فروش'
+        ) as itemName,
+        COALESCE(
+          (SELECT GROUP_CONCAT(ph.imei, '، ')
+           FROM sales_order_items soi
+           JOIN phones ph ON soi.itemType = 'phone' AND soi.itemId = ph.id
+           WHERE soi.orderId = so.id AND COALESCE(ph.imei, '') <> ''),
+          ''
+        ) as imei,
+        COALESCE((SELECT SUM(quantity) FROM sales_order_items WHERE orderId = so.id), 1) as quantity,
+        CASE WHEN COALESCE((SELECT SUM(quantity) FROM sales_order_items WHERE orderId = so.id), 0) > 0
+          THEN ROUND(so.grandTotal / (SELECT SUM(quantity) FROM sales_order_items WHERE orderId = so.id), 2)
+          ELSE so.grandTotal END as pricePerItem,
+        COALESCE(so.discount, 0) as discount,
+        so.grandTotal as totalPrice,
+        so.paymentMethod,
+        so.notes
+      FROM sales_orders so
+      WHERE so.customerId = ? AND (so.status IS NULL OR so.status = 'active')
+      ORDER BY so.id DESC`, [id]).catch(() => [] as any[]);
+    const installmentHistory = await allAsync(`
+      SELECT
+        s.id,
+        substr(COALESCE(s.dateCreated, datetime('now')), 1, 10) as transactionDate,
+        'installment_sale' as sourceType,
+        COALESCE(NULLIF(s.itemsSummary, ''), 'فروش اقساطی') as itemName,
+        COALESCE(
+          (SELECT GROUP_CONCAT(ph.imei, '، ')
+           FROM installment_sale_items isi
+           JOIN phones ph ON isi.itemType = 'phone' AND isi.itemId = ph.id
+           WHERE isi.saleId = s.id AND COALESCE(ph.imei, '') <> ''),
+          (SELECT ph.imei FROM phones ph WHERE ph.id = s.phoneId),
+          ''
+        ) as imei,
+        1 as quantity,
+        CAST(s.actualSalePrice as REAL) as pricePerItem,
+        0 as discount,
+        CAST(s.actualSalePrice as REAL) as totalPrice,
+        'installment' as paymentMethod,
+        s.notes
+      FROM installment_sales s
+      WHERE s.customerId = ?
+      ORDER BY s.id DESC`, [id]).catch(() => [] as any[]);
+    const normalizeCustomerPurchase = (row: any) => {
+      const rawName = String(row?.itemName || '').trim();
+      const imeiMatch = rawName.match(/(?:\(|\[|\{|\s|^)IMEI[:：\-\s]*([0-9A-Za-z\-_.]+)(?:\)|\]|\}|\s|$)/i);
+      const parenthesizedImei = rawName.match(/[\(\[\{]\s*([0-9A-Za-z\-_.]{10,20})\s*[\)\]\}]/);
+      const imei = String(row?.imei || row?.identifier || (imeiMatch?.[1] || '') || (parenthesizedImei?.[1] || '')).trim();
+      const cleanName = rawName
+        .replace(/\s*[\(\[\{]?\s*IMEI[:：\-\s]*[0-9A-Za-z\-_.]+\s*[\)\]\}]?/ig, '')
+        .replace(/\s*[\(\[\{]\s*[0-9A-Za-z\-_.]{10,20}\s*[\)\]\}]\s*/g, ' ')
+        .replace(/\s*[-–—|:،,]\s*IMEI[:：\-\s]*[0-9A-Za-z\-_.]+/ig, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+      const method = String(row?.saleType || row?.paymentMethod || '').toLowerCase();
+      const purchaseType = method === 'installment' ? 'installment' : method === 'credit' ? 'credit' : 'cash';
+      const purchaseTypeLabel = purchaseType === 'installment' ? 'اقساطی' : purchaseType === 'credit' ? 'اعتباری' : 'نقدی';
+      return {
+        ...row,
+        itemName: cleanName || rawName || '—',
+        imei,
+        purchaseType,
+        purchaseTypeLabel,
+      };
+    };
+    const purchaseHistory = [...legacyHistory, ...orderHistory, ...installmentHistory]
+      .map(normalizeCustomerPurchase)
+      .sort((a: any, b: any) => String(b.transactionDate || '').localeCompare(String(a.transactionDate || '')) || Number(b.id || 0) - Number(a.id || 0));
+    res.json({ success: true, data: { profile, ledger, followups, purchaseHistory } });
+  } catch (e) { next(e); }
+});
+// Ledger insights (smart debt/credit snapshot)
+app.get('/api/customers/:id/ledger/insights', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const profile = await getCustomerByIdFromDb(id);
+    if (!profile) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+    const insights = await getCustomerLedgerInsightsFromDb(id);
+    res.json({ success: true, data: insights });
+  } catch (e) { next(e); }
+});
+// Customer followups (CRM)
+app.get('/api/customers/:id/followups', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const rows = await listCustomerFollowupsFromDb(id);
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+});
+app.post('/api/customers/:id/followups', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const payload = req.body as any;
+    const user = (req as any).user;
+    const created = await addCustomerFollowupToDb(id, {
+      note: payload?.note,
+      nextFollowupDate: payload?.nextFollowupDate ?? null,
+      createdByUserId: user?.id,
+      createdByUsername: user?.username,
+    });
+    res.status(201).json({ success: true, data: created });
+  } catch (e) { next(e); }
+});
+app.post('/api/customers/:id/followups/:followupId/close', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const followupId = +req.params.followupId;
+    const updated = await closeCustomerFollowupInDb(id, followupId);
+    res.json({ success: true, data: updated });
+  } catch (e) { next(e); }
+});
+app.patch('/api/customers/:id/followups/:followupId', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const followupId = +req.params.followupId;
+    const updated = await updateCustomerFollowupInDb(id, followupId, req.body || {});
+    res.json({ success: true, data: updated });
+  } catch (e) { next(e); }
+});
+// Customer manager notes: dedicated history table
+app.get('/api/customers/:id/manager-notes', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const customerId = Number(req.params.id || 0);
+    if (!customerId) return res.status(400).json({ success: false, message: 'شناسه مشتری نامعتبر است.' });
+
+    const customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+    if (!customer) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+
+    const rows = await allAsync(
+      `SELECT id, customerId, context, note, createdByUserId, createdByUsername, createdByRole, createdAt, updatedAt
+         FROM customer_manager_notes
+        WHERE customerId = ? AND COALESCE(isDeleted, 0) = 0
+        ORDER BY datetime(createdAt) DESC, id DESC
+        LIMIT 50`,
+      [customerId]
+    );
+
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/customers/:id/manager-notes', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const customerId = Number(req.params.id || 0);
+    const context = String(req.body?.context || '').trim().slice(0, 120);
+    const note = String(req.body?.note || '').trim();
+
+    if (!customerId) return res.status(400).json({ success: false, message: 'شناسه مشتری نامعتبر است.' });
+    if (!note) return res.status(400).json({ success: false, message: 'متن یادداشت مدیریتی الزامی است.' });
+
+    const customer = await getCustomerByIdFromDb(customerId).catch(() => null as any);
+    if (!customer) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+
+    const saved = await runAsync(
+      `INSERT INTO customer_manager_notes
+        (customerId, context, note, createdByUserId, createdByUsername, createdByRole)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        customerId,
+        context || 'یادداشت مدیریتی',
+        note,
+        req.user?.id || null,
+        req.user?.username || null,
+        req.user?.roleName || null,
+      ]
+    );
+
+    const row = await getAsync(
+      `SELECT id, customerId, context, note, createdByUserId, createdByUsername, createdByRole, createdAt, updatedAt
+         FROM customer_manager_notes
+        WHERE id = ?`,
+      [saved.lastID]
+    );
+
+    try { addAuditLog(req.user?.id, req.user?.username, req.user?.roleName, 'create', 'customer', customerId, `ثبت یادداشت مدیریتی: ${context || 'یادداشت'}`); } catch {}
+
+    res.status(201).json({ success: true, data: row });
+  } catch (e) { next(e); }
+});
+
+app.delete('/api/customers/:id/manager-notes/:noteId', authorizeRole(['Admin','Manager']), async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const customerId = Number(req.params.id || 0);
+    const noteId = Number(req.params.noteId || 0);
+    if (!customerId || !noteId) return res.status(400).json({ success: false, message: 'شناسه یادداشت نامعتبر است.' });
+
+    const result = await runAsync(
+      `UPDATE customer_manager_notes
+          SET isDeleted = 1, updatedAt = strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')
+        WHERE id = ? AND customerId = ? AND COALESCE(isDeleted, 0) = 0`,
+      [noteId, customerId]
+    );
+
+    if (!result.changes) return res.status(404).json({ success: false, message: 'یادداشت مدیریتی یافت نشد.' });
+    try { addAuditLog(req.user?.id, req.user?.username, req.user?.roleName, 'delete', 'customer', customerId, `حذف یادداشت مدیریتی #${noteId}`); } catch {}
+
+    res.json({ success: true, data: { id: noteId, customerId } });
+  } catch (e) { next(e); }
+});
+
+app.put('/api/customers/:id', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try { res.json({ success: true, data: await updateCustomerInDb(+req.params.id, req.body as CustomerPayload) }); }
+  catch (e) { next(e); }
+});
+// CRM: update tags only
+app.patch('/api/customers/:id/tags', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const tags = Array.isArray(req.body?.tags) ? req.body.tags : [];
+    const updated = await updateCustomerTagsInDb(id, tags);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'customer', id, 'ویرایش تگ‌های مشتری'); } catch {}
+    }
+    res.json({ success: true, data: updated });
+  } catch (e) { next(e); }
+});
+// === Deletion for Customers & Partners ===
+app.delete('/api/customers/:id', authorizeRole(['Admin', 'Manager']), async (req, res, next) => {
+  try {
+    const ok = await deleteCustomerFromDb(+req.params.id);
+    res.json({ success: true, data: ok });
+  } catch (e) { next(e); }
+});
+app.delete('/api/partners/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const ok = await deletePartnerFromDb(+req.params.id);
+    res.json({ success: true, data: ok });
+  } catch (e) { next(e); }
+});
+// === Edit/Delete ledger entries (Customers & Partners) ===
+// POST: افزودن رکورد دفتر مشتری
+app.post(
+  '/api/customers/:id/ledger',
+  authorizeRole(['Admin', 'Manager', 'Salesperson']),
+  async (req, res) => {
+    try {
+      const data = await addCustomerLedgerEntryToDb(
+        +req.params.id,
+        req.body as LedgerEntryPayload
+      );
+      try {
+        await sendCustomCustomerNotification('ACCOUNT_BALANCE_STATUS', +req.params.id, 'both');
+        const desc = String((req.body as any)?.description || '');
+        const debit = Number((req.body as any)?.debit || 0);
+        const credit = Number((req.body as any)?.credit || 0);
+        const m = desc.match(/(?:فاکتور|invoice)\s*#?\s*(\d+)/i);
+        if ((credit > 0 || debit > 0) && /فاکتور|invoice/i.test(desc)) {
+          await sendCustomCustomerNotification('INVOICE_PAYMENT_RECEIVED', +req.params.id, 'both', { customerId: +req.params.id, invoiceNo: m?.[1] || '—', amount: credit || debit });
+        }
+      } catch {}
+      try {
+        if ((req as any).user) {
+          addAuditLog((req as any).user.id, (req as any).user.username, (req as any).user.roleName, 'create', 'customer_ledger', +req.params.id,             `ثبت رکورد دفتر مشتری #${data?.id || '—'}`);
+        }
+      } catch {}
+      res.status(201).json({ success: true, data });
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      if (msg.includes('مبالغ نامعتبر')) {
+        return res.status(400).json({ success: false, message: msg });
+      }
+      if (msg.includes('یافت نشد') || msg.toLowerCase().includes('not found')) {
+        return res.status(404).json({ success: false, message: msg });
+      }
+      console.error('POST /customers ledger error', e);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+);
+// PUT: ویرایش رکورد دفتر مشتری
+app.put(
+  '/api/customers/:id/ledger/:entryId',
+  authorizeRole(['Admin', 'Manager', 'Salesperson']),
+  async (req, res) => {
+    try {
+      const data = await updateCustomerLedgerEntryInDb(
+        +req.params.id,
+        +req.params.entryId,
+        req.body
+      );
+      try { await sendCustomCustomerNotification('ACCOUNT_BALANCE_STATUS', +req.params.id, 'both'); } catch {}
+      try {
+        if ((req as any).user) {
+          addAuditLog((req as any).user.id, (req as any).user.username, (req as any).user.roleName, 'update', 'customer_ledger', +req.params.id,             `ویرایش رکورد دفتر مشتری #${data?.id || +req.params.entryId}`);
+        }
+      } catch {}
+      res.json({ success: true, data });
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      if (msg.includes('رکورد دفتر یافت نشد')) {
+        return res.status(404).json({ success: false, message: msg });
+      }
+      if (msg.includes('عدم تطابق مشتری')) {
+        return res.status(409).json({ success: false, message: msg });
+      }
+      if (msg.includes('مبالغ نامعتبر')) {
+        return res.status(400).json({ success: false, message: msg });
+      }
+      console.error('PUT /customers ledger error', e);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+);
+// DELETE: حذف رکورد دفتر مشتری
+app.delete(
+  '/api/customers/:id/ledger/:entryId',
+  authorizeRole(['Admin', 'Manager']),
+  async (req, res) => {
+    try {
+      const ok = await deleteCustomerLedgerEntryFromDb(
+        +req.params.id,
+        +req.params.entryId
+      );
+      try { await sendCustomCustomerNotification('ACCOUNT_BALANCE_STATUS', +req.params.id, 'both'); } catch {}
+      try {
+        if ((req as any).user) {
+          addAuditLog((req as any).user.id, (req as any).user.username, (req as any).user.roleName, 'delete', 'customer_ledger', +req.params.id,             `حذف رکورد دفتر مشتری #${+req.params.entryId}`);
+        }
+      } catch {}
+      res.json({ success: true, data: ok });
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      if (msg.includes('رکورد دفتر یافت نشد')) {
+        return res.status(404).json({ success: false, message: msg });
+      }
+      if (msg.includes('عدم تطابق مشتری')) {
+        return res.status(409).json({ success: false, message: msg });
+      }
+      console.error('DELETE /customers ledger error', e);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+);
+// PUT: ویرایش رکورد دفتر همکار
+app.put(
+  '/api/partners/:id/ledger/:entryId',
+  authorizeRole(['Admin', 'Salesperson']),
+  async (req, res) => {
+    try {
+      const data = await updatePartnerLedgerEntryInDb(
+        +req.params.id,
+        +req.params.entryId,
+        req.body
+      );
+      res.json({ success: true, data });
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      if (msg.includes('رکورد دفتر یافت نشد')) {
+        return res.status(404).json({ success: false, message: msg });
+      }
+      if (msg.includes('عدم تطابق همکار')) {
+        return res.status(409).json({ success: false, message: msg });
+      }
+      if (msg.includes('مبالغ نامعتبر')) {
+        return res.status(400).json({ success: false, message: msg });
+      }
+      console.error('PUT /partners ledger error', e);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+);
+// DELETE: حذف رکورد دفتر همکار
+app.delete(
+  '/api/partners/:id/ledger/:entryId',
+  authorizeRole(['Admin']),
+  async (req, res) => {
+    try {
+      const ok = await deletePartnerLedgerEntryFromDb(
+        +req.params.id,
+        +req.params.entryId
+      );
+      res.json({ success: true, data: ok });
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      if (msg.includes('رکورد دفتر یافت نشد')) {
+        return res.status(404).json({ success: false, message: msg });
+      }
+      if (msg.includes('عدم تطابق همکار')) {
+        return res.status(409).json({ success: false, message: msg });
+      }
+      console.error('DELETE /partners ledger error', e);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+);
+// =====================================================
+// 10) همکاران/تأمین‌کنندگان
+// =====================================================
+app.post('/api/partners', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await addPartnerToDb(req.body as PartnerPayload) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/partners', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try { res.json({ success: true, data: await getAllPartnersWithBalanceFromDb(req.query.partnerType as string | undefined) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/partners/:id', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    const profile = await getPartnerByIdFromDb(id);
+    if (!profile) return res.status(404).json({ success: false, message: 'همکار یافت نشد.' });
+    const ledger = await getLedgerForPartnerFromDb(id);
+    const normalized = (await getPurchasedItemsFromPartnerDb(id)).map((r: any) => {
+      const qty = Number(r.quantityPurchased ?? r.quantity ?? 0);
+      const unitPrice = Number(r.unitPrice ?? r.purchasePrice ?? 0);
+      const totalPrice = Number(r.totalPrice ?? (qty && unitPrice ? qty * unitPrice : 0));
+      return {
+        ...r,
+        assetKey: `${r.type || 'item'}-${r.id}`,
+        quantityPurchased: qty,
+        quantity: qty,
+        unit: String(r.unit || 'عدد'),
+        purchasePrice: unitPrice,
+        totalPrice,
+        purchaseDate: r.purchaseDate || r.soldAt || null,
+      };
+    });
+
+    const productIds = [...new Set(normalized.filter((r: any) => r.type === 'product').map((r: any) => Number(r.id)).filter((n: number) => Number.isFinite(n) && n > 0))];
+    const phoneIds = [...new Set(normalized.filter((r: any) => r.type === 'phone').map((r: any) => Number(r.id)).filter((n: number) => Number.isFinite(n) && n > 0))];
+
+    const productPricingHistoryById = new Map<number, any[]>();
+    if (productIds.length > 0) {
+      const placeholders = productIds.map(() => '?').join(',');
+      const pricingRows = await allAsync(
+        `SELECT id, productId, oldPrice, newPrice, source, note, createdAt, userId
+           FROM pricing_history
+          WHERE productId IN (${placeholders})
+          ORDER BY productId ASC, datetime(createdAt) ASC, id ASC`,
+        productIds
+      ).catch(() => [] as any[]);
+      for (const row of pricingRows || []) {
+        const pid = Number(row.productId || 0);
+        if (!pid) continue;
+        if (!productPricingHistoryById.has(pid)) productPricingHistoryById.set(pid, []);
+        productPricingHistoryById.get(pid)!.push({ ...row });
+      }
+    }
+
+    const phoneHistoryById = new Map<number, any[]>();
+    for (const phoneId of phoneIds) {
+      const events = await listPhoneInventoryEventsFromDb(phoneId).catch(() => [] as any[]);
+      phoneHistoryById.set(phoneId, Array.isArray(events) ? events : []);
+    }
+
+    const purchaseHistory = normalized.map((row: any) => {
+      const type = String(row.type || 'item').trim();
+      const systemId = type === 'phone'
+        ? `ph${Number(row.id || 0) || '0'}`
+        : type === 'product'
+          ? `p${Number(row.id || 0) || '0'}`
+          : `${type}#${Number(row.id || 0) || '0'}`;
+      const history = row.type === 'product'
+        ? (productPricingHistoryById.get(Number(row.id || 0)) || []).map((evt: any) => ({
+            kind: 'price',
+            title: 'تغییر قیمت کالا',
+            changedAt: evt.createdAt,
+            oldPrice: Number(evt.oldPrice || 0),
+            newPrice: Number(evt.newPrice || 0),
+            source: evt.source || null,
+            note: evt.note || null,
+          }))
+        : row.type === 'phone'
+          ? (phoneHistoryById.get(Number(row.id || 0)) || []).map((evt: any) => ({
+              kind: 'phone_event',
+              title: evt.title || 'رویداد گوشی',
+              changedAt: evt.eventDate || evt.createdAt,
+              oldPurchasePrice: Number(evt.oldPurchasePrice || 0),
+              newPurchasePrice: Number(evt.newPurchasePrice || 0),
+              oldSalePrice: Number(evt.oldSalePrice || 0),
+              newSalePrice: Number(evt.newSalePrice || 0),
+              tone: evt.tone || null,
+              icon: evt.icon || null,
+              description: evt.description || null,
+              metadata: evt.metadata || null,
+            }))
+          : [];
+      return {
+        ...row,
+        systemId,
+        history,
+        historyCount: history.length,
+        lastHistoryAt: history[0]?.changedAt || null,
+      };
+    });
+
+    res.json({ success: true, data: { profile, ledger, purchaseHistory } });
+  } catch (e) { next(e); }
+});
+app.put('/api/partners/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.json({ success: true, data: await updatePartnerInDb(+req.params.id, req.body as PartnerPayload) }); }
+  catch (e) { next(e); }
+});
+
+app.post('/api/partners/:id/ledger', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await addPartnerLedgerEntryToDb(+req.params.id, req.body as LedgerEntryPayload) }); }
+  catch (e) { next(e); }
+});
+// =====================================================
+// 10.5) Store ownership / profit share core
+// =====================================================
+
+app.get('/api/reports/partners/profit', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const fromDate = typeof req.query.fromDate === 'string' ? req.query.fromDate : undefined;
+    const toDate = typeof req.query.toDate === 'string' ? req.query.toDate : undefined;
+    const partnerId = req.query.partnerId != null ? Number(req.query.partnerId) : undefined;
+    const fromDateIso = fromDate ? moment.from(fromDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : undefined;
+    const toDateIso = toDate ? moment.from(toDate, 'fa', 'YYYY/MM/DD').endOf('day').toISOString() : undefined;
+    const data = await getPartnerProfitReportFromDb({ fromDateIso, toDateIso, partnerId });
+    res.json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/reports/partners/accessories', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const partnerId = Number(req.query.partnerId);
+    if (!partnerId) return res.status(400).json({ success: false, message: 'partnerId الزامی است.' });
+    const fromDate = typeof req.query.fromDate === 'string' ? req.query.fromDate : undefined;
+    const toDate = typeof req.query.toDate === 'string' ? req.query.toDate : undefined;
+    const fromDateIso = fromDate ? moment.from(fromDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : undefined;
+    const toDateIso = toDate ? moment.from(toDate, 'fa', 'YYYY/MM/DD').endOf('day').toISOString() : undefined;
+    const data = await getPartnerAccessoriesReportFromDb({ partnerId, fromDateIso, toDateIso });
+    res.json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/reports/partners/phones', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const partnerId = Number(req.query.partnerId);
+    if (!partnerId) return res.status(400).json({ success: false, message: 'partnerId الزامی است.' });
+    const fromDate = typeof req.query.fromDate === 'string' ? req.query.fromDate : undefined;
+    const toDate = typeof req.query.toDate === 'string' ? req.query.toDate : undefined;
+    const fromDateIso = fromDate ? moment.from(fromDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : undefined;
+    const toDateIso = toDate ? moment.from(toDate, 'fa', 'YYYY/MM/DD').endOf('day').toISOString() : undefined;
+    const data = await getPartnerPhonesReportFromDb({ partnerId, fromDateIso, toDateIso });
+    res.json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/reports/partners/settlement', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const fromDate = typeof req.query.fromDate === 'string' ? req.query.fromDate : undefined;
+    const toDate = typeof req.query.toDate === 'string' ? req.query.toDate : undefined;
+    const fromDateIso = fromDate ? moment.from(fromDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : undefined;
+    const toDateIso = toDate ? moment.from(toDate, 'fa', 'YYYY/MM/DD').endOf('day').toISOString() : undefined;
+    const data = await getPartnerSettlementReportFromDb({ fromDateIso, toDateIso });
+    res.json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+app.get('/api/reports/partners/settlement-transactions', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const fromDate = typeof req.query.fromDate === 'string' ? req.query.fromDate : undefined;
+    const toDate = typeof req.query.toDate === 'string' ? req.query.toDate : undefined;
+    const fromDateIso = fromDate ? moment.from(fromDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : undefined;
+    const toDateIso = toDate ? moment.from(toDate, 'fa', 'YYYY/MM/DD').endOf('day').toISOString() : undefined;
+    const data = await listPartnerSettlementTransactionsFromDb({ fromDateIso, toDateIso });
+    res.json({ success: true, data });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/reports/partners/settlement-transactions', authorizeRole(['Admin']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const createdByUserId = (req as any)?.user?.id != null ? Number((req as any).user.id) : null;
+    const settlementDate = typeof req.body?.settlementDate === 'string' ? req.body.settlementDate : '';
+    const settlementDateIso = settlementDate ? moment.from(settlementDate, 'fa', 'YYYY/MM/DD').startOf('day').toISOString() : settlementDate;
+    const data = await createPartnerSettlementTransactionFromDb({ ...(req.body || {}), settlementDate: settlementDateIso, createdByUserId });
+    res.status(201).json({ success: true, data, message: 'ثبت تسویه با موفقیت انجام شد.' });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/reports/partners/settlement-transactions/:id', authorizeRole(['Admin']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await cancelPartnerSettlementTransactionFromDb(Number(req.params.id));
+    res.json({ success: true, message: 'تسویه انتخاب‌شده باطل شد.' });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/store-ownership/legacy-partners', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getLegacyPartnerCandidatesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/store-ownership/store-partners', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await listStorePartnersFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/store-partners', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await createStorePartnerFromDb(req.body || {}) }); }
+  catch (e) { next(e); }
+});
+app.put('/api/store-ownership/store-partners/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.json({ success: true, data: await updateStorePartnerFromDb(Number(req.params.id), req.body || {}) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/store-ownership/profit-share-profiles', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await listProfitShareProfilesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/profit-share-profiles', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await createProfitShareProfileFromDb(req.body || {}) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/store-ownership/ownership-profiles', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await listOwnershipProfilesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/ownership-profiles', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await createOwnershipProfileFromDb(req.body || {}) }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/bootstrap', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const legacyPartnerIds = Array.isArray(req.body?.legacyPartnerIds) ? req.body.legacyPartnerIds.map((value: any) => Number(value)).filter((value: number) => Number.isFinite(value) && value > 0) : [];
+    res.status(201).json({ success: true, data: await bootstrapStoreOwnershipCoreFromDb(legacyPartnerIds) });
+  } catch (e) { next(e); }
+});
+app.put('/api/store-ownership/configuration', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    res.json({ success: true, data: await saveStoreOwnershipConfigurationFromDb(req.body || {}) });
+  } catch (e) { next(e); }
+});
+app.get('/api/store-ownership/coverage', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getStoreOwnershipCoverageFromDb() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/store-ownership/backfill/preview', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await previewStoreOwnershipBackfillFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/backfill/apply', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await applyStoreOwnershipBackfillFromDb() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/store-ownership/review-queue', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await listStoreOwnershipReviewQueueFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/store-ownership/review-queue/assign', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.json({ success: true, data: await assignStoreOwnershipReviewItemsFromDb(req.body || {}) }); }
+  catch (e) { next(e); }
+});
+// =====================================================
+// 11) گزارش‌ها
+// =====================================================
+// نقش‌های مجاز برای گزارش‌ها
+const REPORT_ROLES = ['Admin', 'Manager', 'Salesperson', 'Marketer'];
+app.get('/api/reports/financial-audit', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const fromISO = String(req.query.fromISO || '').slice(0, 10);
+    const toISO = String(req.query.toISO || '').slice(0, 10);
+    const safeFrom = /^\d{4}-\d{2}-\d{2}$/.test(fromISO) ? fromISO : new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
+    const safeTo = /^\d{4}-\d{2}-\d{2}$/.test(toISO) ? toISO : new Date().toISOString().slice(0, 10);
+    const start = safeFrom <= safeTo ? safeFrom : safeTo;
+    const end = safeFrom <= safeTo ? safeTo : safeFrom;
+    const todayJalali = moment().locale("en").format("jYYYY/MM/DD");
+
+    const invoiceRows = await allAsync(`
+      SELECT id, subtotal, discount, tax, grandTotal, transactionDate, paymentMethod, status
+      FROM sales_orders
+      WHERE date(substr(transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(status, 'active') = 'active'
+    `, [start, end]);
+
+    const itemRows = await allAsync(`
+      SELECT soi.id, soi.orderId, soi.itemType, soi.itemId, soi.description, soi.quantity, soi.unitPrice,
+        soi.discountPerItem, soi.totalPrice, COALESCE(soi.buyPrice, 0) AS buyPrice,
+        p.purchasePrice AS productPurchasePrice,
+        ph.purchasePrice AS phonePurchasePrice,
+        ph.currentPurchasePrice AS phoneCurrentPurchasePrice,
+        so.transactionDate
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      LEFT JOIN products p ON soi.itemType = 'inventory' AND p.id = soi.itemId
+      LEFT JOIN phones ph ON soi.itemType = 'phone' AND ph.id = soi.itemId
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(so.status, 'active') = 'active'
+    `, [start, end]);
+
+    const installmentRows = await allAsync(`
+      SELECT ins.id, ins.actualSalePrice, ins.downPayment, ins.numberOfInstallments, ins.installmentAmount, ins.dateCreated,
+        COALESCE((SELECT SUM(amountDue) FROM installment_payments ip WHERE ip.saleId = ins.id AND ip.status = 'پرداخت شده'), 0) AS paidAmount,
+        COALESCE((SELECT SUM(amountDue) FROM installment_payments ip WHERE ip.saleId = ins.id AND ip.status <> 'پرداخت شده' AND ip.dueDate < ?), 0) AS overdueUnpaidAmount
+      FROM installment_sales ins
+      WHERE date(substr(ins.dateCreated, 1, 10)) BETWEEN date(?) AND date(?)
+    `, [todayJalali, start, end]);
+
+    const inventoryRows = await allAsync(`
+      SELECT id, name, purchasePrice, sellingPrice, stock_quantity
+      FROM products
+      WHERE stock_quantity < 0 OR (stock_quantity > 0 AND COALESCE(purchasePrice, 0) <= 0)
+      ORDER BY id DESC
+      LIMIT 500
+    `, []);
+
+    const phoneRows = await allAsync(`
+      SELECT id, model, imei, status, purchasePrice, currentPurchasePrice, saleDate, purchaseDate
+      FROM phones
+      WHERE (COALESCE(purchasePrice, 0) > 0 AND COALESCE(currentPurchasePrice, 0) <= 0)
+        AND status IN ('موجود در انبار', 'مرجوعی', 'مرجوعی اقساطی', 'فروخته شده', 'فروخته شده (قسطی)')
+      ORDER BY id DESC
+      LIMIT 500
+    `, []);
+
+    const partnerLedgerRows = await allAsync(`
+      SELECT id, partnerId, transactionDate, debit, credit, balance, referenceType, referenceId
+      FROM partner_ledger
+      WHERE (COALESCE(debit, 0) > 0 AND COALESCE(credit, 0) > 0)
+      ORDER BY id DESC
+      LIMIT 500
+    `, []);
+
+    const audit = buildFinancialAudit({ invoiceRows, itemRows, installmentRows, inventoryRows, phoneRows, partnerLedgerRows });
+    res.json({ success: true, data: { ...audit, range: { fromISO: start, toISO: end }, sampled: { invoices: invoiceRows.length, items: itemRows.length, installments: installmentRows.length, inventoryChecks: inventoryRows.length, phoneChecks: phoneRows.length, partnerLedgerChecks: partnerLedgerRows.length } } });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/sales-summary', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromDate, toDate } = req.query;
+    if (!fromDate || !toDate) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'بازه زمانی الزامی است.' });
+    }
+    const data = await getSalesSummaryAndProfit(fromDate as string, toDate as string);
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/debtors', authorizeRole(REPORT_ROLES), async (_req, res, next) => {
+  try {
+    const data = await getDebtorsList();
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/creditors', authorizeRole(REPORT_ROLES), async (_req, res, next) => {
+  try {
+    const data = await getCreditorsList();
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/top-customers', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromDate, toDate } = req.query;
+    if (!fromDate || !toDate) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'بازه زمانی الزامی است.' });
+    }
+    const data = await getTopCustomersBySales(fromDate as string, toDate as string);
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/top-suppliers', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromDate, toDate } = req.query;
+    if (!fromDate || !toDate) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'بازه زمانی الزامی است.' });
+    }
+    const f = fromShamsiStringToISO(fromDate as string);
+    const t = fromShamsiStringToISO(toDate as string);
+    if (!f || !t) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    }
+    const data = await getTopSuppliersByPurchaseValue(f, t);
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/phone-sales', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromDate, toDate } = req.query;
+    if (!fromDate || !toDate) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'بازه زمانی الزامی است.' });
+    }
+    const f = fromShamsiStringToISO(fromDate as string);
+    const t = fromShamsiStringToISO(toDate as string);
+    if (!f || !t) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    }
+    const data = await getPhoneSalesReport(f, t);
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/phone-sales/bounds', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const data = await getPhoneSalesDateBounds();
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/reports/phone-installment-sales/bounds', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const data = await getPhoneInstallmentSalesDateBounds();
+    res.json({ success: true, data });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get(
+  '/api/reports/phone-installment-sales',
+  authorizeRole(REPORT_ROLES),
+  async (req, res, next) => {
+    try {
+      const { fromDate, toDate } = req.query;
+      if (!fromDate || !toDate) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'بازه زمانی الزامی است.' });
+      }
+      const f = fromShamsiStringToISO(fromDate as string);
+      const t = fromShamsiStringToISO(toDate as string);
+      if (!f || !t) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+      }
+      const data = await getPhoneInstallmentSalesReport(f, t);
+      res.json({ success: true, data });
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+// --- Mobile sales analytics center (cash + installment + risk + real profit) ---
+const mobileAnalyticsNumber = (value: any) => Number.isFinite(Number(value)) ? Number(value) : 0;
+const mobileAnalyticsRound = (value: any) => Math.round((mobileAnalyticsNumber(value) + Number.EPSILON) * 100) / 100;
+const mobileAnalyticsPct = (part: number, total: number) => total > 0 ? Math.max(0, Math.min(100, (part / total) * 100)) : 0;
+const mobileAnalyticsDateMoment = (value: any) => {
+  const raw = String(value || '').trim();
+  if (!raw) return null;
+  const mJ = moment(raw, ['jYYYY/jMM/jDD', 'jYYYY/j/M/jD'], true);
+  if (mJ.isValid()) return mJ;
+  const m = moment(raw, [moment.ISO_8601, 'YYYY-MM-DD', 'YYYY/MM/DD'], true);
+  return m.isValid() ? m : null;
+};
+const mobileAnalyticsRiskMeta = (score: number) => {
+  const s = Math.max(0, Math.min(100, Math.round(score || 0)));
+  if (s >= 82) return { level: 'critical', label: 'بحرانی', tone: 'rose' };
+  if (s >= 62) return { level: 'high', label: 'پرریسک', tone: 'orange' };
+  if (s >= 38) return { level: 'followup', label: 'قابل پیگیری', tone: 'amber' };
+  return { level: 'low', label: 'کم‌ریسک', tone: 'emerald' };
+};
+
+app.get('/api/reports/mobile-sales-analytics', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.fromDate || req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.toDate || req.query.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+
+    const orderCashRows = await allAsync(`
+      WITH order_item_totals AS (
+        SELECT orderId, SUM(COALESCE(totalPrice, 0)) AS orderBase
+        FROM sales_order_items
+        GROUP BY orderId
+      )
+      SELECT
+        'order' AS source,
+        so.id AS saleId,
+        so.transactionDate AS saleDate,
+        so.paymentMethod AS paymentMethod,
+        c.id AS customerId,
+        c.fullName AS customerName,
+        c.phoneNumber AS customerPhone,
+        ph.id AS phoneId,
+        ph.model AS phoneModel,
+        ph.imei AS imei,
+        COALESCE(soi.quantity, 1) AS quantity,
+        COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+        COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0) AS phoneReferencePrice,
+        COALESCE(soi.unitPrice, 0) AS unitPrice,
+        COALESCE(soi.discountPerItem, 0) AS itemDiscount,
+        COALESCE(so.discount, 0) AS invoiceDiscount,
+        COALESCE(soi.totalPrice, 0) AS lineTotal,
+        CASE
+          WHEN COALESCE(oit.orderBase, 0) > 0 THEN COALESCE(so.discount, 0) * (COALESCE(soi.totalPrice, 0) / COALESCE(oit.orderBase, 1))
+          ELSE 0
+        END AS invoiceDiscountShare
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      JOIN order_item_totals oit ON oit.orderId = so.id
+      JOIN phones ph ON soi.itemType = 'phone' AND soi.itemId = ph.id
+      LEFT JOIN customers c ON c.id = so.customerId
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND (so.status IS NULL OR so.status = 'active')
+    `, [fromISO, toISO]);
+
+    const legacyCashRows = await allAsync(`
+      SELECT
+        'legacy' AS source,
+        st.id AS saleId,
+        st.transactionDate AS saleDate,
+        COALESCE(st.paymentMethod, 'cash') AS paymentMethod,
+        c.id AS customerId,
+        c.fullName AS customerName,
+        c.phoneNumber AS customerPhone,
+        ph.id AS phoneId,
+        ph.model AS phoneModel,
+        ph.imei AS imei,
+        1 AS quantity,
+        COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+        COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(st.buyPrice, 0), ph.purchasePrice, 0) AS phoneReferencePrice,
+        COALESCE(st.totalPrice, 0) AS unitPrice,
+        COALESCE(st.discount, 0) AS itemDiscount,
+        0 AS invoiceDiscount,
+        COALESCE(st.totalPrice, 0) AS lineTotal,
+        0 AS invoiceDiscountShare
+      FROM sales_transactions st
+      JOIN phones ph ON st.itemType = 'phone' AND st.itemId = ph.id
+      LEFT JOIN customers c ON c.id = st.customerId
+      WHERE date(substr(st.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+    `, [fromISO, toISO]);
+
+    const cashRows = [...(orderCashRows as any[]), ...(legacyCashRows as any[])].map((r: any) => {
+      const qty = Math.max(1, mobileAnalyticsNumber(r.quantity || 1));
+      const lineTotal = mobileAnalyticsNumber(r.lineTotal);
+      const invoiceDiscountShare = Math.max(0, mobileAnalyticsNumber(r.invoiceDiscountShare));
+      const netSalePrice = Math.max(0, lineTotal - invoiceDiscountShare);
+      const cost = mobileAnalyticsNumber(r.purchasePrice) * qty;
+      const replacementCost = (mobileAnalyticsNumber(r.phoneReferencePrice) > 0 ? mobileAnalyticsNumber(r.phoneReferencePrice) : mobileAnalyticsNumber(r.purchasePrice)) * qty;
+      const profit = netSalePrice - cost;
+      const realProfit = netSalePrice - replacementCost;
+      return {
+        id: `cash-${r.source}-${r.saleId}-${r.phoneId}-${r.imei || ''}`,
+        source: r.source,
+        saleType: 'cash',
+        saleTypeLabel: 'نقدی',
+        saleId: Number(r.saleId || 0),
+        saleDate: r.saleDate,
+        paymentMethod: r.paymentMethod || 'cash',
+        customerId: r.customerId ? Number(r.customerId) : null,
+        customerName: r.customerName || 'مشتری نقدی/ثبت نشده',
+        customerPhone: r.customerPhone || '',
+        phoneId: r.phoneId ? Number(r.phoneId) : null,
+        phoneModel: r.phoneModel || 'گوشی',
+        imei: r.imei || '',
+        quantity: qty,
+        purchasePrice: mobileAnalyticsRound(mobileAnalyticsNumber(r.purchasePrice) * qty),
+        referencePrice: mobileAnalyticsRound(replacementCost),
+        salePrice: mobileAnalyticsRound(netSalePrice),
+        grossLineTotal: mobileAnalyticsRound(lineTotal),
+        itemDiscount: mobileAnalyticsRound(mobileAnalyticsNumber(r.itemDiscount)),
+        invoiceDiscountShare: mobileAnalyticsRound(invoiceDiscountShare),
+        profit: mobileAnalyticsRound(profit),
+        realProfit: mobileAnalyticsRound(realProfit),
+        replacementDelta: mobileAnalyticsRound(replacementCost - cost),
+        collectionRate: 100,
+        receivedAmount: mobileAnalyticsRound(netSalePrice),
+        outstandingAmount: 0,
+      };
+    });
+
+    const installmentBaseRows = await allAsync(`
+      SELECT
+        isale.id AS saleId,
+        isale.dateCreated AS saleDate,
+        isale.customerId AS customerId,
+        c.fullName AS customerName,
+        c.phoneNumber AS customerPhone,
+        ph.id AS phoneId,
+        ph.model AS phoneModel,
+        ph.imei AS imei,
+        COALESCE(isi.quantity, 1) AS quantity,
+        COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+        COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(isi.buyPrice, 0), ph.purchasePrice, 0) AS phoneReferencePrice,
+        COALESCE(isi.totalPrice, 0) AS itemTotal,
+        COALESCE(isale.actualSalePrice, 0) AS actualSalePrice,
+        COALESCE(isale.downPayment, 0) AS downPayment,
+        COALESCE(isale.numberOfInstallments, 0) AS numberOfInstallments,
+        COALESCE(isale.installmentAmount, 0) AS installmentAmount,
+        isale.installmentsStartDate AS installmentsStartDate,
+        isale.saleType AS saleType,
+        isale.itemsSummary AS itemsSummary,
+        isale.notes AS notes,
+        (SELECT COALESCE(SUM(COALESCE(isi2.totalPrice, 0)), 0) FROM installment_sale_items isi2 WHERE isi2.saleId = isale.id) AS saleItemsBase,
+        (SELECT balance FROM customer_ledger cl WHERE cl.customerId = isale.customerId ORDER BY cl.id DESC LIMIT 1) AS customerBalance
+      FROM installment_sale_items isi
+      JOIN installment_sales isale ON isale.id = isi.saleId
+      LEFT JOIN phones ph ON isi.itemType = 'phone' AND isi.itemId = ph.id
+      LEFT JOIN customers c ON c.id = isale.customerId
+      WHERE isi.itemType = 'phone'
+        AND DATE(isale.dateCreated) BETWEEN ? AND ?
+
+      UNION ALL
+
+      SELECT
+        isale.id AS saleId,
+        isale.dateCreated AS saleDate,
+        isale.customerId AS customerId,
+        c.fullName AS customerName,
+        c.phoneNumber AS customerPhone,
+        ph.id AS phoneId,
+        ph.model AS phoneModel,
+        ph.imei AS imei,
+        1 AS quantity,
+        COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+        COALESCE(NULLIF(ph.currentPurchasePrice, 0), ph.purchasePrice, 0) AS phoneReferencePrice,
+        COALESCE(isale.actualSalePrice, 0) AS itemTotal,
+        COALESCE(isale.actualSalePrice, 0) AS actualSalePrice,
+        COALESCE(isale.downPayment, 0) AS downPayment,
+        COALESCE(isale.numberOfInstallments, 0) AS numberOfInstallments,
+        COALESCE(isale.installmentAmount, 0) AS installmentAmount,
+        isale.installmentsStartDate AS installmentsStartDate,
+        isale.saleType AS saleType,
+        isale.itemsSummary AS itemsSummary,
+        isale.notes AS notes,
+        COALESCE(isale.actualSalePrice, 0) AS saleItemsBase,
+        (SELECT balance FROM customer_ledger cl WHERE cl.customerId = isale.customerId ORDER BY cl.id DESC LIMIT 1) AS customerBalance
+      FROM installment_sales isale
+      JOIN phones ph ON isale.phoneId = ph.id
+      LEFT JOIN customers c ON c.id = isale.customerId
+      WHERE DATE(isale.dateCreated) BETWEEN ? AND ?
+        AND NOT EXISTS (SELECT 1 FROM installment_sale_items isi WHERE isi.saleId = isale.id AND isi.itemType = 'phone')
+    `, [fromISO, toISO, fromISO, toISO]);
+
+    const saleIds = Array.from(new Set((installmentBaseRows as any[]).map((r: any) => Number(r.saleId || 0)).filter(Boolean)));
+    const paymentsBySale = new Map<number, any[]>();
+    const checksBySale = new Map<number, any[]>();
+    if (saleIds.length) {
+      const ph = saleIds.map(() => '?').join(',');
+      const payRows = await allAsync(`SELECT saleId, installmentNumber, dueDate, amountDue, paymentDate, status FROM installment_payments WHERE saleId IN (${ph})`, saleIds);
+      for (const row of payRows as any[]) {
+        const id = Number(row.saleId || 0);
+        const arr = paymentsBySale.get(id) || [];
+        arr.push(row);
+        paymentsBySale.set(id, arr);
+      }
+      const checkRows = await allAsync(`SELECT saleId, checkNumber, bankName, dueDate, amount, status FROM installment_checks WHERE saleId IN (${ph})`, saleIds).catch(() => []);
+      for (const row of checkRows as any[]) {
+        const id = Number(row.saleId || 0);
+        const arr = checksBySale.get(id) || [];
+        arr.push(row);
+        checksBySale.set(id, arr);
+      }
+    }
+
+    const today = moment().startOf('day');
+    const installmentRows = (installmentBaseRows as any[]).map((r: any) => {
+      const saleId = Number(r.saleId || 0);
+      const qty = Math.max(1, mobileAnalyticsNumber(r.quantity || 1));
+      const actualSalePrice = mobileAnalyticsNumber(r.actualSalePrice);
+      const itemTotal = mobileAnalyticsNumber(r.itemTotal) || actualSalePrice;
+      const saleItemsBase = mobileAnalyticsNumber(r.saleItemsBase) || actualSalePrice || itemTotal;
+      const share = actualSalePrice > 0 && saleItemsBase > 0 ? Math.max(0, Math.min(1, itemTotal / saleItemsBase)) : 1;
+      const contractualTotal = actualSalePrice * share;
+      const downPaymentShare = mobileAnalyticsNumber(r.downPayment) * share;
+      const payments = paymentsBySale.get(saleId) || [];
+      const checks = checksBySale.get(saleId) || [];
+      const paidInstallments = payments.filter((p: any) => String(p.status || '').includes('پرداخت شده')).reduce((sum: number, p: any) => sum + mobileAnalyticsNumber(p.amountDue), 0) * share;
+      const paidTotal = Math.min(contractualTotal, downPaymentShare + paidInstallments);
+      const outstanding = Math.max(0, contractualTotal - paidTotal);
+      const collectionRate = mobileAnalyticsPct(paidTotal, contractualTotal);
+      let overdueAmount = 0;
+      let overdueCount = 0;
+      let nextDueDate: string | null = null;
+      let nextDueAmount = 0;
+      for (const p of payments) {
+        const due = mobileAnalyticsDateMoment(p.dueDate);
+        const paid = String(p.status || '').includes('پرداخت شده');
+        if (!paid) {
+          if (due && due.isBefore(today, 'day')) {
+            overdueCount += 1;
+            overdueAmount += mobileAnalyticsNumber(p.amountDue) * share;
+          }
+          const currentNext = mobileAnalyticsDateMoment(nextDueDate);
+          if (due && (!currentNext || due.isBefore(currentNext))) {
+            nextDueDate = p.dueDate;
+            nextDueAmount = mobileAnalyticsNumber(p.amountDue) * share;
+          }
+        }
+      }
+      let overdueChecks = 0;
+      for (const c of checks) {
+        const due = mobileAnalyticsDateMoment(c.dueDate);
+        const st = String(c.status || '');
+        const bad = st.includes('برگشت') || st.includes('برگشتی');
+        const settled = st.includes('پاس') || st.includes('تسویه') || st.includes('پرداخت');
+        if (bad || (due && due.isBefore(today, 'day') && !settled)) overdueChecks += 1;
+      }
+      const nextDueMoment = mobileAnalyticsDateMoment(nextDueDate);
+      const dueInDays = nextDueMoment ? nextDueMoment.diff(today, 'day') : null;
+      const overdueDays = nextDueMoment && nextDueMoment.isBefore(today, 'day') ? Math.abs(nextDueMoment.diff(today, 'day')) : 0;
+      const cost = mobileAnalyticsNumber(r.purchasePrice) * qty;
+      const replacementCost = (mobileAnalyticsNumber(r.phoneReferencePrice) > 0 ? mobileAnalyticsNumber(r.phoneReferencePrice) : mobileAnalyticsNumber(r.purchasePrice)) * qty;
+      const fullProfit = contractualTotal - cost;
+      const realizedProfit = fullProfit * (collectionRate / 100);
+      const unrecognizedProfit = fullProfit - realizedProfit;
+      const downPaymentRate = mobileAnalyticsPct(downPaymentShare, contractualTotal);
+      const reasons: string[] = [];
+      let score = 0;
+      if (collectionRate < 25) { score += 24; reasons.push('درصد وصول کمتر از ۲۵٪ است'); }
+      else if (collectionRate < 50) { score += 16; reasons.push('درصد وصول کمتر از ۵۰٪ است'); }
+      else if (collectionRate < 75) { score += 8; reasons.push('وصول هنوز کامل نیست'); }
+      if (downPaymentRate < 20) { score += 18; reasons.push('پیش‌پرداخت کمتر از ۲۰٪ مبلغ گوشی است'); }
+      else if (downPaymentRate < 35) { score += 10; reasons.push('پیش‌پرداخت پایین‌تر از سطح مطمئن است'); }
+      if (overdueCount > 0) { score += Math.min(28, overdueCount * 10); reasons.push(`${overdueCount.toLocaleString('fa-IR')} قسط عقب‌افتاده دارد`); }
+      if (overdueChecks > 0) { score += 24; reasons.push(`${overdueChecks.toLocaleString('fa-IR')} چک/سررسید پرریسک دارد`); }
+      if (overdueDays > 14) { score += 12; reasons.push('تاخیر بیشتر از دو هفته است'); }
+      if (outstanding > 0 && contractualTotal > 0 && outstanding / contractualTotal > 0.6) { score += 12; reasons.push('بیش از ۶۰٪ مبلغ هنوز وصول نشده'); }
+      if (unrecognizedProfit > 0 && fullProfit > 0 && unrecognizedProfit / Math.max(1, fullProfit) > 0.5) { score += 8; reasons.push('بخش زیادی از سود هنوز وصول نشده'); }
+      if (Number(r.customerBalance || 0) > 0) { score += Math.min(10, Number(r.customerBalance || 0) / 10000000); reasons.push('مشتری مانده حساب باز دارد'); }
+      if (!reasons.length) reasons.push('وصول فعلی این فروش در محدوده قابل قبول است');
+      const meta = mobileAnalyticsRiskMeta(score);
+      const realProfit = contractualTotal - replacementCost;
+      return {
+        id: `installment-${saleId}-${r.phoneId || 'phone'}-${r.imei || ''}`,
+        saleType: 'installment',
+        saleTypeLabel: 'اقساطی',
+        saleId,
+        saleDate: r.saleDate,
+        customerId: Number(r.customerId || 0),
+        customerName: r.customerName || 'مشتری ثبت نشده',
+        customerPhone: r.customerPhone || '',
+        phoneId: r.phoneId ? Number(r.phoneId) : null,
+        phoneModel: r.phoneModel || r.itemsSummary || 'گوشی اقساطی',
+        imei: r.imei || '',
+        quantity: qty,
+        purchasePrice: mobileAnalyticsRound(cost),
+        referencePrice: mobileAnalyticsRound(replacementCost),
+        contractTotal: mobileAnalyticsRound(contractualTotal),
+        actualSalePrice: mobileAnalyticsRound(actualSalePrice),
+        downPayment: mobileAnalyticsRound(downPaymentShare),
+        paidInstallments: mobileAnalyticsRound(paidInstallments),
+        receivedAmount: mobileAnalyticsRound(paidTotal),
+        outstandingAmount: mobileAnalyticsRound(outstanding),
+        collectionRate: mobileAnalyticsRound(collectionRate),
+        downPaymentRate: mobileAnalyticsRound(downPaymentRate),
+        fullProfit: mobileAnalyticsRound(fullProfit),
+        realizedProfit: mobileAnalyticsRound(realizedProfit),
+        unrecognizedProfit: mobileAnalyticsRound(unrecognizedProfit),
+        realProfit: mobileAnalyticsRound(realProfit),
+        replacementDelta: mobileAnalyticsRound(replacementCost - cost),
+        overdueAmount: mobileAnalyticsRound(overdueAmount),
+        overdueCount,
+        overdueChecks,
+        overdueDays,
+        dueInDays,
+        nextDueDate,
+        nextDueAmount: mobileAnalyticsRound(nextDueAmount),
+        saleMode: r.saleType || 'installment',
+        numberOfInstallments: Number(r.numberOfInstallments || 0),
+        customerBalance: mobileAnalyticsRound(Number(r.customerBalance || 0)),
+        riskScore: Math.round(Math.max(0, Math.min(100, score))),
+        riskLevel: meta.level,
+        riskLabel: meta.label,
+        riskTone: meta.tone,
+        riskReasons: reasons,
+      };
+    });
+
+
+    let partnerCapitalRows: any[] = [];
+    let partnerCapitalSummary: any = {
+      partnersCount: 0,
+      totalPhonesHad: 0,
+      totalCashSoldCount: 0,
+      totalInstallmentSoldCount: 0,
+      totalRemainingCount: 0,
+      totalSoldCapitalAtCurrentPrice: 0,
+      totalInventoryCapitalAtCurrentPrice: 0,
+      totalPaidToPartners: 0,
+      totalReceivedFromPartners: 0,
+      totalRemainingCapitalBalance: 0,
+    };
+
+    try {
+      const cashByPhone = new Map<number, any[]>();
+      for (const row of cashRows as any[]) {
+        const id = Number(row.phoneId || 0);
+        if (!id) continue;
+        const arr = cashByPhone.get(id) || [];
+        arr.push(row);
+        cashByPhone.set(id, arr);
+      }
+      const installmentByPhone = new Map<number, any[]>();
+      for (const row of installmentRows as any[]) {
+        const id = Number(row.phoneId || 0);
+        if (!id) continue;
+        const arr = installmentByPhone.get(id) || [];
+        arr.push(row);
+        installmentByPhone.set(id, arr);
+      }
+
+      let partnerPhoneRows: any[] = [];
+      try {
+        partnerPhoneRows = await allAsync(`
+          SELECT
+            sp.id AS storePartnerId,
+            sp.name AS partnerName,
+            sp.colorTag AS colorTag,
+            ph.id AS phoneId,
+            ph.model AS phoneModel,
+            ph.imei AS imei,
+            ph.status AS phoneStatus,
+            COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+            COALESCE(NULLIF(ph.currentPurchasePrice, 0), ph.purchasePrice, 0) AS currentPurchasePrice,
+            COALESCE(opi.sharePercent, 0) AS sharePercent,
+            'store_partner' AS partnerSource
+          FROM phones ph
+          JOIN ownership_profile_items opi ON opi.ownershipProfileId = ph.ownershipProfileId
+          JOIN store_partners sp ON sp.id = opi.storePartnerId
+          WHERE COALESCE(opi.sharePercent, 0) > 0
+        `, []);
+      } catch {
+        partnerPhoneRows = [];
+      }
+
+      if (!partnerPhoneRows.length) {
+        partnerPhoneRows = await allAsync(`
+          SELECT
+            pa.id AS storePartnerId,
+            pa.partnerName AS partnerName,
+            NULL AS colorTag,
+            ph.id AS phoneId,
+            ph.model AS phoneModel,
+            ph.imei AS imei,
+            ph.status AS phoneStatus,
+            COALESCE(ph.purchasePrice, 0) AS purchasePrice,
+            COALESCE(NULLIF(ph.currentPurchasePrice, 0), ph.purchasePrice, 0) AS currentPurchasePrice,
+            100 AS sharePercent,
+            'legacy_supplier' AS partnerSource
+          FROM phones ph
+          JOIN partners pa ON pa.id = ph.supplierId
+          WHERE ph.supplierId IS NOT NULL
+        `, []);
+      }
+
+      let settlementRows: any[] = [];
+      try {
+        settlementRows = await allAsync(`SELECT fromStorePartnerId, destinationKind, toStorePartnerId, amount FROM partner_settlement_transactions WHERE status = 'active'`, []);
+      } catch {
+        settlementRows = [];
+      }
+
+      const txMap = new Map<number, { paidAmount: number; receivedAmount: number; netSettledAmount: number }>();
+      for (const tx of settlementRows as any[]) {
+        const amount = mobileAnalyticsNumber(tx.amount);
+        const fromId = Number(tx.fromStorePartnerId || 0);
+        const toId = Number(tx.toStorePartnerId || 0);
+        if (fromId) {
+          const prev = txMap.get(fromId) || { paidAmount: 0, receivedAmount: 0, netSettledAmount: 0 };
+          prev.paidAmount += amount;
+          prev.netSettledAmount = prev.receivedAmount - prev.paidAmount;
+          txMap.set(fromId, prev);
+        }
+        if (String(tx.destinationKind || 'partner') === 'partner' && toId) {
+          const prev = txMap.get(toId) || { paidAmount: 0, receivedAmount: 0, netSettledAmount: 0 };
+          prev.receivedAmount += amount;
+          prev.netSettledAmount = prev.receivedAmount - prev.paidAmount;
+          txMap.set(toId, prev);
+        }
+      }
+
+      const partnerMap = new Map<number, any>();
+      const ensurePartner = (row: any) => {
+        const id = Number(row.storePartnerId || 0);
+        if (!partnerMap.has(id)) {
+          partnerMap.set(id, {
+            storePartnerId: id,
+            partnerName: row.partnerName || 'شریک/همکار',
+            colorTag: row.colorTag || null,
+            partnerSource: row.partnerSource || 'store_partner',
+            totalPhonesHad: 0,
+            cashSoldCount: 0,
+            installmentSoldCount: 0,
+            remainingCount: 0,
+            soldCount: 0,
+            initialPurchaseCapital: 0,
+            soldCapitalAtCurrentPrice: 0,
+            cashSoldCapitalAtCurrentPrice: 0,
+            installmentSoldCapitalAtCurrentPrice: 0,
+            inventoryCapitalAtCurrentPrice: 0,
+            replacementDeltaCapital: 0,
+            paidSettlementAmount: 0,
+            receivedSettlementAmount: 0,
+            netSettledAmount: 0,
+            remainingCapitalBalance: 0,
+            phones: [],
+          });
+        }
+        return partnerMap.get(id);
+      };
+
+      const seenPartnerPhoneState = new Set<string>();
+      for (const row of partnerPhoneRows as any[]) {
+        const partner = ensurePartner(row);
+        const phoneId = Number(row.phoneId || 0);
+        const sharePercent = Math.max(0, mobileAnalyticsNumber(row.sharePercent));
+        const shareRatio = sharePercent / 100;
+        const purchasePrice = mobileAnalyticsNumber(row.purchasePrice);
+        const currentPurchasePrice = mobileAnalyticsNumber(row.currentPurchasePrice) || purchasePrice;
+        const initialShare = purchasePrice * shareRatio;
+        const currentShare = currentPurchasePrice * shareRatio;
+        const cashSalesForPhone = cashByPhone.get(phoneId) || [];
+        const installmentSalesForPhone = installmentByPhone.get(phoneId) || [];
+        const soldCash = cashSalesForPhone.length > 0;
+        const soldInstallment = installmentSalesForPhone.length > 0;
+        const statusText = String(row.phoneStatus || '');
+        const soldByStatus = statusText.includes('فروخته') || soldCash || soldInstallment;
+        const stateKey = `${partner.storePartnerId}:${phoneId}:${soldCash ? 'cash' : soldInstallment ? 'installment' : soldByStatus ? 'sold' : 'remaining'}`;
+        if (!seenPartnerPhoneState.has(stateKey)) {
+          seenPartnerPhoneState.add(stateKey);
+          partner.totalPhonesHad += 1;
+          partner.initialPurchaseCapital += initialShare;
+          partner.replacementDeltaCapital += currentShare - initialShare;
+          if (soldCash) {
+            partner.cashSoldCount += 1;
+            partner.soldCount += 1;
+            partner.soldCapitalAtCurrentPrice += currentShare;
+            partner.cashSoldCapitalAtCurrentPrice += currentShare;
+          } else if (soldInstallment) {
+            partner.installmentSoldCount += 1;
+            partner.soldCount += 1;
+            partner.soldCapitalAtCurrentPrice += currentShare;
+            partner.installmentSoldCapitalAtCurrentPrice += currentShare;
+          } else if (!soldByStatus) {
+            partner.remainingCount += 1;
+            partner.inventoryCapitalAtCurrentPrice += currentShare;
+          } else {
+            partner.soldCount += 1;
+            partner.soldCapitalAtCurrentPrice += currentShare;
+          }
+        }
+        partner.phones.push({
+          phoneId,
+          phoneModel: row.phoneModel || 'گوشی',
+          imei: row.imei || '',
+          phoneStatus: row.phoneStatus || '',
+          sharePercent,
+          purchasePrice: mobileAnalyticsRound(purchasePrice),
+          currentPurchasePrice: mobileAnalyticsRound(currentPurchasePrice),
+          partnerCapitalAtCurrentPrice: mobileAnalyticsRound(currentShare),
+          saleKind: soldCash ? 'cash' : soldInstallment ? 'installment' : soldByStatus ? 'sold' : 'remaining',
+        });
+      }
+
+      for (const row of partnerMap.values()) {
+        const tx = txMap.get(Number(row.storePartnerId)) || { paidAmount: 0, receivedAmount: 0, netSettledAmount: 0 };
+        row.paidSettlementAmount = mobileAnalyticsRound(tx.paidAmount);
+        row.receivedSettlementAmount = mobileAnalyticsRound(tx.receivedAmount);
+        row.netSettledAmount = mobileAnalyticsRound(tx.netSettledAmount);
+        row.remainingCapitalBalance = mobileAnalyticsRound(row.soldCapitalAtCurrentPrice + row.paidSettlementAmount - row.receivedSettlementAmount);
+        row.initialPurchaseCapital = mobileAnalyticsRound(row.initialPurchaseCapital);
+        row.soldCapitalAtCurrentPrice = mobileAnalyticsRound(row.soldCapitalAtCurrentPrice);
+        row.cashSoldCapitalAtCurrentPrice = mobileAnalyticsRound(row.cashSoldCapitalAtCurrentPrice);
+        row.installmentSoldCapitalAtCurrentPrice = mobileAnalyticsRound(row.installmentSoldCapitalAtCurrentPrice);
+        row.inventoryCapitalAtCurrentPrice = mobileAnalyticsRound(row.inventoryCapitalAtCurrentPrice);
+        row.replacementDeltaCapital = mobileAnalyticsRound(row.replacementDeltaCapital);
+        row.phones = (row.phones || []).slice(0, 20);
+      }
+      partnerCapitalRows = Array.from(partnerMap.values()).sort((a, b) => Math.abs(mobileAnalyticsNumber(b.remainingCapitalBalance)) - Math.abs(mobileAnalyticsNumber(a.remainingCapitalBalance)));
+      partnerCapitalSummary = {
+        partnersCount: partnerCapitalRows.length,
+        totalPhonesHad: partnerCapitalRows.reduce((sum, row) => sum + Number(row.totalPhonesHad || 0), 0),
+        totalCashSoldCount: partnerCapitalRows.reduce((sum, row) => sum + Number(row.cashSoldCount || 0), 0),
+        totalInstallmentSoldCount: partnerCapitalRows.reduce((sum, row) => sum + Number(row.installmentSoldCount || 0), 0),
+        totalRemainingCount: partnerCapitalRows.reduce((sum, row) => sum + Number(row.remainingCount || 0), 0),
+        totalSoldCapitalAtCurrentPrice: mobileAnalyticsRound(partnerCapitalRows.reduce((sum, row) => sum + mobileAnalyticsNumber(row.soldCapitalAtCurrentPrice), 0)),
+        totalInventoryCapitalAtCurrentPrice: mobileAnalyticsRound(partnerCapitalRows.reduce((sum, row) => sum + mobileAnalyticsNumber(row.inventoryCapitalAtCurrentPrice), 0)),
+        totalPaidToPartners: mobileAnalyticsRound(partnerCapitalRows.reduce((sum, row) => sum + mobileAnalyticsNumber(row.paidSettlementAmount), 0)),
+        totalReceivedFromPartners: mobileAnalyticsRound(partnerCapitalRows.reduce((sum, row) => sum + mobileAnalyticsNumber(row.receivedSettlementAmount), 0)),
+        totalRemainingCapitalBalance: mobileAnalyticsRound(partnerCapitalRows.reduce((sum, row) => sum + mobileAnalyticsNumber(row.remainingCapitalBalance), 0)),
+      };
+    } catch (partnerErr) {
+      console.error('mobile-sales partner capital analytics failed:', partnerErr);
+    }
+
+    const sumBy = (rows: any[], key: string) => rows.reduce((sum, row) => sum + mobileAnalyticsNumber(row[key]), 0);
+    const cashSales = sumBy(cashRows, 'salePrice');
+    const instSales = sumBy(installmentRows, 'contractTotal');
+    const instReceived = sumBy(installmentRows, 'receivedAmount');
+    const instOutstanding = sumBy(installmentRows, 'outstandingAmount');
+    const cashProfit = sumBy(cashRows, 'profit');
+    const cashRealProfit = sumBy(cashRows, 'realProfit');
+    const instFullProfit = sumBy(installmentRows, 'fullProfit');
+    const instRealizedProfit = sumBy(installmentRows, 'realizedProfit');
+    const instUnrecognizedProfit = sumBy(installmentRows, 'unrecognizedProfit');
+    const highRiskRows = installmentRows.filter((r: any) => ['critical', 'high'].includes(String(r.riskLevel)));
+    const allRealProfitRows = [
+      ...cashRows.map((r: any) => ({ ...r, fullProfit: r.profit, realizedProfit: r.profit, unrecognizedProfit: 0, riskLabel: '—' })),
+      ...installmentRows,
+    ].sort((a: any, b: any) => Math.abs(mobileAnalyticsNumber(b.replacementDelta)) - Math.abs(mobileAnalyticsNumber(a.replacementDelta))).slice(0, 80);
+
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        summary: {
+          totalPhones: cashRows.length + installmentRows.length,
+          cashCount: cashRows.length,
+          installmentCount: installmentRows.length,
+          totalSales: mobileAnalyticsRound(cashSales + instSales),
+          cashSales: mobileAnalyticsRound(cashSales),
+          installmentSales: mobileAnalyticsRound(instSales),
+          cashProfit: mobileAnalyticsRound(cashProfit),
+          cashRealProfit: mobileAnalyticsRound(cashRealProfit),
+          installmentFullProfit: mobileAnalyticsRound(instFullProfit),
+          installmentRealizedProfit: mobileAnalyticsRound(instRealizedProfit),
+          installmentUnrecognizedProfit: mobileAnalyticsRound(instUnrecognizedProfit),
+          installmentReceived: mobileAnalyticsRound(instReceived),
+          installmentOutstanding: mobileAnalyticsRound(instOutstanding),
+          installmentCollectionRate: mobileAnalyticsRound(mobileAnalyticsPct(instReceived, instSales)),
+          highRiskCount: highRiskRows.length,
+          criticalRiskCount: installmentRows.filter((r: any) => r.riskLevel === 'critical').length,
+          averageDownPaymentRate: mobileAnalyticsRound(installmentRows.length ? installmentRows.reduce((s: number, r: any) => s + mobileAnalyticsNumber(r.downPaymentRate), 0) / installmentRows.length : 0),
+          totalReplacementDelta: mobileAnalyticsRound(sumBy(cashRows, 'replacementDelta') + sumBy(installmentRows, 'replacementDelta')),
+          totalRealProfit: mobileAnalyticsRound(cashRealProfit + sumBy(installmentRows, 'realProfit')),
+        },
+        comparison: {
+          cash: { count: cashRows.length, sales: mobileAnalyticsRound(cashSales), profit: mobileAnalyticsRound(cashProfit), collectionRate: 100 },
+          installment: { count: installmentRows.length, sales: mobileAnalyticsRound(instSales), profit: mobileAnalyticsRound(instFullProfit), realizedProfit: mobileAnalyticsRound(instRealizedProfit), outstanding: mobileAnalyticsRound(instOutstanding), collectionRate: mobileAnalyticsRound(mobileAnalyticsPct(instReceived, instSales)) },
+        },
+        risk: {
+          highRiskCount: highRiskRows.length,
+          rows: installmentRows.sort((a: any, b: any) => mobileAnalyticsNumber(b.riskScore) - mobileAnalyticsNumber(a.riskScore)).slice(0, 100),
+        },
+        partnerCapital: {
+          summary: partnerCapitalSummary,
+          rows: partnerCapitalRows,
+        },
+        cashRows: cashRows.sort((a: any, b: any) => String(b.saleDate || '').localeCompare(String(a.saleDate || ''))),
+        installmentRows: installmentRows.sort((a: any, b: any) => String(b.saleDate || '').localeCompare(String(a.saleDate || ''))),
+        realProfitRows: allRealProfitRows,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.get('/api/reports/compare-sales', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const mFrom = moment(
+      sanitizeJalali((req.query as any)?.fromDate),
+      'jYYYY/jMM/jDD',
+      true
+    );
+    const mTo = moment(
+      sanitizeJalali((req.query as any)?.toDate),
+      'jYYYY/jMM/jDD',
+      true
+    );
+    if (!mFrom.isValid() || !mTo.isValid() || mTo.isBefore(mFrom, 'day')) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    }
+    const baseline = (req.query as any)?.baseline as 'prev' | 'last_year' | undefined;
+    let prevFrom = mFrom.clone();
+    let prevTo = mTo.clone();
+    if (baseline === 'last_year') {
+      // مقایسه با همین بازه در سال قبل (سال شمسی)
+      prevFrom = mFrom.clone().subtract(1, 'jYear');
+      prevTo = mTo.clone().subtract(1, 'jYear');
+    } else {
+      // مقایسه با بازه‌ی قبلی مشابه از لحاظ تعداد روز
+      const days = mTo.diff(mFrom, 'days') + 1; // طول بازه جاری
+      prevTo = mFrom.clone().subtract(1, 'day');
+      prevFrom = prevTo.clone().subtract(days - 1, 'days');
+    }
+    const currentSummary = await getSalesSummaryAndProfit(
+      mFrom.format('jYYYY/jMM/jDD'),
+      mTo.format('jYYYY/jMM/jDD')
+    );
+    const previousSummary = await getSalesSummaryAndProfit(
+      prevFrom.format('jYYYY/jMM/jDD'),
+      prevTo.format('jYYYY/jMM/jDD')
+    );
+    const pickAmount = (obj: any): number => {
+      const keys = ['totalRevenue', 'revenue', 'totalSales', 'salesAmount', 'total', 'sum'];
+      if (!obj) return 0;
+      for (const k of keys) {
+        if (typeof obj?.[k] === 'number') return obj[k];
+      }
+      if (Array.isArray(obj) && obj.length) {
+        for (const k of keys) {
+          if (typeof obj[0]?.[k] === 'number') return obj[0][k];
+        }
+      }
+      return 0;
+    };
+    const currentProfit =
+      typeof (currentSummary as any)?.grossProfit === 'number'
+        ? (currentSummary as any).grossProfit
+        : 0;
+    const previousProfit =
+      typeof (previousSummary as any)?.grossProfit === 'number'
+        ? (previousSummary as any).grossProfit
+        : 0;
+    const profitChange =
+      previousProfit === 0
+        ? null
+        : ((currentProfit - previousProfit) / previousProfit) * 100;
+    const currentAmount = pickAmount(currentSummary);
+    const previousAmount = pickAmount(previousSummary);
+    const percentageChange =
+      previousAmount === 0
+        ? null
+        : ((currentAmount - previousAmount) / previousAmount) * 100;
+    res.json({
+      success: true,
+      data: {
+        currentAmount,
+        previousAmount,
+        percentageChange,
+        currentProfit,
+        previousProfit,
+        profitChange,
+        currentRange: {
+          from: mFrom.format('jYYYY/jMM/jDD'),
+          to: mTo.format('jYYYY/jMM/jDD'),
+        },
+        previousRange: {
+          from: prevFrom.format('jYYYY/jMM/jDD'),
+          to: prevTo.format('jYYYY/jMM/jDD'),
+        },
+        baseline: baseline === 'last_year' ? 'last_year' : 'prev',
+      },
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+// =====================================================
+// 12) تنظیمات + لوگو + بکاپ/ریستور
+// =====================================================
+app.get('/api/module-flags', async (_req, res, next) => {
+  try {
+    const all = await getAllSettingsAsObject();
+    const data = Object.fromEntries(Object.entries(all).filter(([key]) => key.startsWith('feature_')));
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+
+// =====================================================
+// 12) تنظیمات + لوگو + بکاپ/ریستور
+// =====================================================
+app.get('/api/settings', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllSettingsAsObject() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/settings', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const config = req.body || {};
+    const settingsArray: SettingItem[] = Object.keys(config).map(key => ({ key, value: config[key] }));
+    await updateMultipleSettings(settingsArray);
+    res.json({ success: true, message: 'تنظیمات با موفقیت ذخیره شد.' });
+  } catch (e) { next(e); }
+});
+app.post('/api/settings/local-domain/generate-cert', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    const hostname = normalizeLocalHostname((req.body as any)?.hostname ?? settings.local_hostname ?? 'kourosh');
+    const suffix = normalizeLocalSuffix((req.body as any)?.suffix ?? settings.local_domain_suffix ?? 'localhost');
+    const domain = buildLocalDomain(hostname, suffix);
+    if (!hostname) return res.status(400).json({ success: false, message: 'نام میزبان محلی معتبر نیست.' });
+    if (!domain) return res.status(400).json({ success: false, message: 'دامنه محلی معتبر نیست.' });
+
+    const serverIp = getLocalDomainHostIp(suffix);
+    const result = await generateLocalCertificate(domain, serverIp);
+    const hostsLine = `${serverIp} ${domain}`;
+    const hostsScript = buildWindowsHostsSetupBatch(domain, serverIp);
+    const macHostsScript = buildMacHostsSetupCommand(domain, serverIp);
+    await fs.promises.writeFile(localHostsScriptPath, hostsScript, 'utf8');
+    await fs.promises.writeFile(localMacHostsScriptPath, macHostsScript, 'utf8');
+    try { await fs.promises.chmod(localMacHostsScriptPath, 0o755); } catch {}
+
+    await updateMultipleSettings([
+      { key: 'local_hostname', value: hostname },
+      { key: 'local_domain_suffix', value: suffix },
+      { key: 'local_base_url', value: `https://${domain}` },
+      { key: 'local_hosts_ip', value: serverIp },
+      { key: 'local_hosts_line', value: hostsLine },
+    ]);
+
+    res.json({
+      success: true,
+      message: 'گواهی محلی ساخته شد.',
+      data: {
+        hostname,
+        suffix,
+        domain,
+        httpsUrl: `https://${domain}`,
+        certPath: result.certPath,
+        keyPath: result.keyPath,
+        pfxPath: result.pfxPath,
+        mode: result.mode,
+        serverIp,
+        hostsLine,
+        hostsScriptPath: localHostsScriptPath,
+        hostsScriptFileName: `setup-${domain}.bat`,
+        macHostsScriptPath: localMacHostsScriptPath,
+        macHostsScriptFileName: `setup-${domain}.command`,
+      },
+    });
+  } catch (e) {
+    const err = e as any;
+    const msg = String(err?.message || '');
+    if (msg.includes('openssl') || msg.includes('New-SelfSignedCertificate') || msg.includes('PowerShell')) {
+      return res.status(500).json({
+        success: false,
+        message: msg || 'ساخت certificate محلی با خطا در عملیات مواجه شد. OpenSSL یا PowerShell certificate cmdlet در دسترس نیست.',
+      });
+    }
+    next(e);
+  }
+});
+app.get('/api/settings/local-domain/setup-hosts.bat', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    const hostname = normalizeLocalHostname((req.query as any)?.hostname ?? settings.local_hostname ?? 'kourosh');
+    const suffix = normalizeLocalSuffix((req.query as any)?.suffix ?? settings.local_domain_suffix ?? 'localhost');
+    const domain = buildLocalDomain(hostname, suffix);
+    if (!domain) return res.status(400).json({ success: false, message: 'دامنه محلی معتبر نیست.' });
+
+    const serverIp = getLocalDomainHostIp(suffix);
+    const hostsScript = buildWindowsHostsSetupBatch(domain, serverIp);
+    await fs.promises.mkdir(localCertDir, { recursive: true });
+    await fs.promises.writeFile(localHostsScriptPath, hostsScript, 'utf8');
+
+    res.json({
+      success: true,
+      data: {
+        content: hostsScript,
+        fileName: `setup-${domain}.bat`,
+        domain,
+        serverIp,
+      },
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+app.get('/api/settings/local-domain/setup-hosts.command', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    const hostname = normalizeLocalHostname((req.query as any)?.hostname ?? settings.local_hostname ?? 'kourosh');
+    const suffix = normalizeLocalSuffix((req.query as any)?.suffix ?? settings.local_domain_suffix ?? 'localhost');
+    const domain = buildLocalDomain(hostname, suffix);
+    if (!domain) return res.status(400).json({ success: false, message: 'دامنه محلی معتبر نیست.' });
+
+    const serverIp = getLocalDomainHostIp(suffix);
+    const hostsScript = buildMacHostsSetupCommand(domain, serverIp);
+    await fs.promises.mkdir(localCertDir, { recursive: true });
+    await fs.promises.writeFile(localMacHostsScriptPath, hostsScript, 'utf8');
+    try { await fs.promises.chmod(localMacHostsScriptPath, 0o755); } catch {}
+
+    res.json({
+      success: true,
+      data: {
+        content: hostsScript,
+        fileName: `setup-${domain}.command`,
+        domain,
+        serverIp,
+      },
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+// آپلود لوگو
+const logoStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadsDir),
+  filename: (_req, file, cb) => cb(null, `logo${path.extname(file.originalname)}`),
+});
+const logoUpload = multer({
+  storage: logoStorage,
+  limits: { fileSize: 2 * 1024 * 1024 },
+  fileFilter: (_req, file: any, cb: FileFilterCallback) => {
+    const ok = /jpeg|jpg|png|gif|svg\+xml|webp/.test(file.mimetype) && /jpeg|jpg|png|gif|svg|webp/.test(path.extname(file.originalname).toLowerCase());
+    ok ? cb(null, true) : cb(new Error('فرمت فایل لوگو نامعتبر است.'));
+  }
+});
+app.post('/api/settings/upload-logo', authorizeRole(['Admin']), logoUpload.single('logo'), async (req, res, next) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, message: 'هیچ فایلی برای آپلود انتخاب نشده است.' });
+    await updateSetting('store_logo_path', req.file.filename);
+    res.json({ success: true, message: 'لوگو با موفقیت آپلود شد.', data: { filePath: req.file.filename } });
+  } catch (e) { next(e); }
+});
+app.get('/api/settings/backup', authorizeRole(['Admin']), (_req, res) => {
+  res.download(DB_PATH, `kourosh_dashboard_backup_${new Date().toISOString().split('T')[0]}.db`, err => {
+    if (err) res.status(500).json({ success: false, message: 'خطا در دانلود فایل پشتیبان.' });
+  });
+});
+const dbUpload = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: (_req, file: any, cb: FileFilterCallback) => (/\.db$/i.test(file.originalname) ? cb(null, true) : cb(new Error('فایل پشتیبان باید با فرمت .db باشد.')))
+});
+app.post('/api/settings/restore', authorizeRole(['Admin']), dbUpload.single('dbfile'), async (req, res, next) => {
+  if (!req.file) return res.status(400).json({ success: false, message: 'فایل پشتیبان انتخاب نشده است.' });
+  try {
+    await closeDbConnection();
+    fs.writeFileSync(DB_PATH, req.file.buffer);
+    await getDbInstance(true);
+    res.json({ success: true, message: 'پایگاه داده با موفقیت بازیابی شد.' });
+  } catch (e) { next(e); }
+});
+// ---- Advanced Backups (list/create/download/delete/restore/check)
+app.get('/api/backup/list', authorizeRole(['Admin']), (_req, res, next) => {
+  try { res.json({ success: true, data: listBackups() }); } catch (e) { next(e); }
+});
+app.post('/api/backup/create', authorizeRole(['Admin']), async (_req, res, next) => {
+  try {
+    const created = await createDbBackup();
+    const settings = await getAllSettingsAsObject();
+    const keep = Number(settings.backup_retention || 14);
+    pruneBackups(keep);
+    res.json({ success: true, message: 'بکاپ با موفقیت ایجاد شد.', data: created });
+  } catch (e) { next(e); }
+});
+app.get('/api/backup/download/:file', authorizeRole(['Admin']), (req, res, next) => {
+  try {
+    const p = getBackupPath(req.params.file);
+    res.download(p, req.params.file);
+  } catch (e) { next(e); }
+});
+app.delete('/api/backup/:file', authorizeRole(['Admin']), (req, res, next) => {
+  try { deleteBackup(req.params.file); res.json({ success: true, message: 'بکاپ حذف شد.' }); }
+  catch (e) { next(e); }
+});
+app.post('/api/backup/restore', authorizeRole(['Admin']), async (req, res, next) => {
+  const { fileName } = req.body || {};
+  if (!fileName) return res.status(400).json({ success: false, message: 'نام فایل بکاپ مشخص نیست.' });
+  try {
+    const p = getBackupPath(fileName);
+    await closeDbConnection();
+    fs.copyFileSync(p, DB_PATH);
+    await getDbInstance(true);
+    res.json({ success: true, message: 'بازیابی از بکاپ با موفقیت انجام شد. لطفاً برنامه را ریستارت کنید.' });
+  } catch (e) { next(e); }
+});
+app.post('/api/backup/check-restore', authorizeRole(['Admin']), async (req, res, next) => {
+  const { fileName } = req.body || {};
+  if (!fileName) return res.status(400).json({ success: false, message: 'نام فایل بکاپ مشخص نیست.' });
+  try {
+    const result = await checkRestoreBackup(fileName);
+    res.json({ success: true, data: result });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 13) کاربران و نقش‌ها
+// =====================================================
+app.get('/api/roles', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllRoles() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/users', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllUsersWithRoles() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/users', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const { username, password, roleId } = req.body || {};
+    if (!username || !password || !roleId) return res.status(400).json({ success: false, message: 'اطلاعات کاربر ناقص است.' });
+    res.status(201).json({ success: true, data: await addUserToDb(username, password, roleId) });
+  } catch (e) { next(e); }
+});
+app.put('/api/users/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try { res.json({ success: true, data: await updateUserInDb(+req.params.id, req.body as UserUpdatePayload) }); }
+  catch (e) { next(e); }
+});
+app.delete('/api/users/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try { await deleteUserFromDb(+req.params.id); res.json({ success: true, message: 'کاربر با موفقیت حذف شد.' }); }
+  catch (e) { next(e); }
+});
+app.post('/api/users/:id/reset-password', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    const pwd = String(req.body?.password || '');
+    if (pwd.length < 6) return res.status(400).json({ success: false, message: 'کلمه عبور جدید باید حداقل ۶ کاراکتر باشد.' });
+    await resetUserPasswordInDb(+req.params.id, pwd);
+    res.json({ success: true, message: 'کلمه عبور با موفقیت بازنشانی شد.' });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 14) فروش اقساطی
+// =====================================================
+app.post('/api/installment-sales', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const payload = req.body as InstallmentSalePayload;
+    const errors = validateInstallmentSalePayload(payload);
+    if (errors.length) {
+      return res.status(400).json({ success: false, message: errors.join(' ') });
+    }
+    const data = await addInstallmentSaleToDb(payload);
+    try { if (data?.id) await sendCustomCustomerNotification('INSTALLMENT_SALE_CREATED', Number(data.id), 'both'); } catch (notifyErr) { console.warn('installment created notify failed:', notifyErr); }
+    try { if (data?.customerId) await sendCustomCustomerNotification('ACCOUNT_BALANCE_STATUS', Number(data.customerId), 'both'); } catch {}
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'installment_sale', data?.id || null, `ثبت فروش اقساطی #${data?.id ?? ''}`); } catch {}
+    }
+    res.status(201).json({ success: true, data });
+  } catch (e: any) {
+    console.error('POST /api/installment-sales failed:', e?.message || e);
+    return res.status(500).json({ success: false, message: e?.message || 'خطا در ثبت فروش اقساطی.' });
+  }
+});
+app.get('/api/installment-sales', authorizeRole(['Admin','Manager','Salesperson']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllInstallmentSalesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/installment-sales/:id', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const d = await getInstallmentSaleByIdFromDb(+req.params.id);
+    d ? res.json({ success: true, data: d }) : res.status(404).json({ success: false, message: 'فروش اقساطی یافت نشد.' });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/installment-sales/:id/profit-snapshot', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success: false, message: 'شناسه فروش نامعتبر است.' });
+    const data = await getInstallmentSaleProfitSnapshotFromDb(id);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// حذف فروش اقساطی
+// Only Admins can delete an installment sale. This will also remove all related payments and checks and return
+// the associated phone to inventory. The phone status is set to "مرجوعی اقساطی" in the DB layer.
+app.delete('/api/installment-sales/:id', authorizeRole(['Admin']), async (req, res, next) => {
+  try {
+    await deleteInstallmentSaleFromDb(+req.params.id);
+    res.json({ success: true, message: 'فروش اقساطی حذف شد.' });
+  } catch (e) {
+    next(e);
+  }
+});
+app.put('/api/installment-sales/payment/:id', async (req, res, next) => {
+  try { res.json({ success: await updateInstallmentPaymentStatusInDb(+req.params.id, !!req.body?.paid, req.body?.paymentDate), message: 'وضعیت قسط تازه‌سازی شد.' }); }
+  catch (e) { next(e); }
+});
+app.put('/api/installment-sales/check/:id', async (req, res, next) => {
+  try {
+    const status = req.body?.status;
+    if (!CHECK_STATUSES_OPTIONS_SERVER.includes(status)) return res.status(400).json({ success: false, message: 'وضعیت چک نامعتبر است.' });
+    const ok = await updateCheckStatusInDb(+req.params.id, status);
+    try { if (ok && /برگشت/.test(String(status))) await sendCustomCustomerNotification('CHECK_FAILED', +req.params.id, 'both'); } catch {}
+    res.json({ success: ok, message: 'وضعیت چک تازه‌سازی شد.' });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/installment-sales/check/:id/cash-payment', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const { amount, date, notes } = req.body || {};
+    const normalizedAmount = parsePositiveMoneyAmount(amount);
+    if (!normalizedAmount || !date) return res.status(400).json({ success: false, message: 'مبلغ و تاریخ دریافت نقدی الزامی است.' });
+    const isoDate = moment(date, ['jYYYY/jMM/jDD','YYYY/MM/DD','YYYY-MM-DD', moment.ISO_8601], true).locale('en').format('YYYY-MM-DD');
+    if (!moment(isoDate, 'YYYY-MM-DD', true).isValid()) return res.status(400).json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    const x = await addCheckRecoveryPaymentToDb(+req.params.id, normalizedAmount, isoDate, notes);
+    res.status(201).json({ success: true, data: x, message: 'دریافت نقدی بابت چک با موفقیت ثبت شد.' });
+  } catch (e) { next(e); }
+});
+const parsePositiveMoneyAmount = (value: any): number => {
+  const normalized = Number(String(value ?? '').replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString()).replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString()).replace(/[^\d.-]/g, ''));
+  return Number.isFinite(normalized) && normalized > 0 ? normalized : 0;
+};
+
+app.post('/api/installment-sales/payment/:paymentId/transaction', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const { amount, date, notes } = req.body || {};
+    const normalizedAmount = parsePositiveMoneyAmount(amount);
+    if (!normalizedAmount || !date) return res.status(400).json({ success: false, message: 'مبلغ و تاریخ پرداخت الزامی است.' });
+    const isoDate = moment(date, ['jYYYY/jMM/jDD','YYYY/MM/DD','YYYY-MM-DD', moment.ISO_8601], true).locale('en').format('YYYY-MM-DD');
+    if (!moment(isoDate, 'YYYY-MM-DD', true).isValid()) return res.status(400).json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    // Detect "final payment" (when all installments in a sale become fully paid)
+    const paymentRow = await getAsync('SELECT saleId FROM installment_payments WHERE id = ?', [+req.params.paymentId]);
+    const saleIdForFinal = paymentRow?.saleId ? Number(paymentRow.saleId) : null;
+    let unpaidBefore = 0;
+    if (saleIdForFinal) {
+      const r = await getAsync(
+        "SELECT COUNT(1) as cnt FROM installment_payments WHERE saleId = ? AND status != 'پرداخت شده'",
+        [saleIdForFinal]
+      );
+      unpaidBefore = Number(r?.cnt || 0);
+    }
+    const x = await addInstallmentTransactionToDb(+req.params.paymentId, normalizedAmount, isoDate, notes);
+    try { await sendCustomCustomerNotification('INSTALLMENT_PAYMENT_RECEIVED', +req.params.paymentId, 'both', { amount: normalizedAmount }); } catch (notifyErr) { console.warn('installment payment notify failed:', notifyErr); }
+    // Re-check unpaid installments AFTER the transaction; if it transitioned to 0 unpaid, send "INSTALLMENT_COMPLETED" SMS
+    let sms: any = undefined;
+    let finalizedNow = false;
+    let smsAttempted = false;
+    let smsSuccess = false;
+    let smsError: string | undefined = undefined;
+    try {
+      if (saleIdForFinal && unpaidBefore > 0) {
+        const r2 = await getAsync(
+          "SELECT COUNT(1) as cnt FROM installment_payments WHERE saleId = ? AND status != 'پرداخت شده'",
+          [saleIdForFinal]
+        );
+        const unpaidAfter = Number(r2?.cnt || 0);
+        if (unpaidAfter === 0) {
+          finalizedNow = true;
+          try { await sendCustomCustomerNotification('INSTALLMENT_SETTLED', Number(saleIdForFinal), 'both'); } catch {};
+          const settings = await getAllSettingsAsObject();
+          const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+          const s = await getInstallmentSaleDetailsForSms(saleIdForFinal);
+          if (s?.customerPhoneNumber) {
+            const recipientNumber = s.customerPhoneNumber;
+            const tokens = [s.customerFullName, String(s.saleId), formatPriceForSms(s.totalPrice)];
+            // Provider-specific identifiers (pattern-only)
+            const meliBodyId = settings.meli_payamak_installment_completed_pattern_id ? Number(settings.meli_payamak_installment_completed_pattern_id) : undefined;
+            const kavenegarTemplate = settings.kavenegar_installment_completed_template;
+            const smsIrTemplateId = settings.sms_ir_installment_completed_template_id ? Number(settings.sms_ir_installment_completed_template_id) : undefined;
+            const ippanelPatternCode = settings.ippanel_installment_completed_pattern_code;
+            const telegramTemplate = settings.telegram_installment_completed_message;
+            switch (provider) {
+              case 'meli_payamak': {
+                const username = settings.meli_payamak_username;
+                const password = settings.meli_payamak_password;
+                if (username && password && meliBodyId) {
+                  smsAttempted = true;
+                  sms = await sendMeliPayamakPatternSms(recipientNumber, meliBodyId, tokens, username, password);
+                  smsSuccess = !!sms;
+                }
+                break;
+              }
+              case 'kavenegar': {
+                const apiKey = settings.kavenegar_api_key;
+                if (apiKey && kavenegarTemplate) {
+                  smsAttempted = true;
+                  sms = await sendKavenegarPatternSms(recipientNumber, kavenegarTemplate, tokens, apiKey);
+                  smsSuccess = !!sms;
+                }
+                break;
+              }
+              case 'sms_ir': {
+                const apiKey = settings.sms_ir_api_key;
+                if (apiKey && smsIrTemplateId) {
+                  smsAttempted = true;
+                  sms = await sendSmsIrPatternSms(recipientNumber, smsIrTemplateId, tokens, apiKey);
+                  smsSuccess = !!sms;
+                }
+                break;
+              }
+              case 'ippanel': {
+                const tokenAuth = settings.ippanel_token;
+                const fromNumber = settings.ippanel_from_number;
+                if (tokenAuth && fromNumber && ippanelPatternCode) {
+                  smsAttempted = true;
+                  sms = await sendIppanelPatternSms(recipientNumber, ippanelPatternCode, tokens, tokenAuth, fromNumber);
+                  smsSuccess = !!sms;
+                }
+                break;
+              }
+              case 'telegram': {
+                setTelegramProxy((settings as any).telegram_proxy);
+                const botToken = settings.telegram_bot_token;
+                const chatId = settings.telegram_chat_id;
+                if (botToken && chatId && telegramTemplate) {
+                  smsAttempted = true;
+                  const values: Record<string, string> = {
+                    name: tokens[0] ?? '',
+                    saleId: tokens[1] ?? '',
+                    total: tokens[2] ?? '',
+                    amount: tokens[2] ?? '',
+                  };
+                  const text = sanitizeTelegramHtml(
+                    renderTplHtml(
+                      markdownishToHtml(String(telegramTemplate)),
+                      values
+                    )
+                  );
+                  sms = await sendTelegramMessage(botToken, chatId, text, { parseMode: 'HTML' });
+                  smsSuccess = !!(sms && (sms as any).success !== false);
+                }
+                break;
+              }
+              default:
+                break;
+            }
+          }
+        }
+      }
+    } catch (err) {
+      // Never fail the payment request if SMS fails
+      smsError = (err && (err as any).message) ? String((err as any).message) : "SMS_FAILED";
+      console.error('Failed to auto-send INSTALLMENT_COMPLETED SMS:', err);
+    }
+    // Log auto-sent final payment SMS (if attempted)
+    if (smsAttempted && saleIdForFinal) {
+      await insertSmsLog({
+        reqUser: req.user,
+        provider: String((await getAllSettingsAsObject()).sms_provider || 'meli_payamak').toLowerCase(),
+        eventType: 'INSTALLMENT_COMPLETED',
+        entityType: 'installment',
+        entityId: Number(saleIdForFinal),
+        recipient: (sms && (sms as any).to) ? String((sms as any).to) : (await getInstallmentSaleDetailsForSms(saleIdForFinal))?.customerPhoneNumber || '',
+        patternId: undefined,
+        tokens: undefined,
+        success: !!(sms && (sms as any).success),
+        response: sms,
+        error: smsError,
+      });
+    }
+    res.status(201).json({ success: true, data: x, message: 'پرداخت با موفقیت ثبت شد.', finalizedNow, smsAttempted, smsSuccess, smsError, sms });
+  } catch (e) { next(e); }
+});
+// ویرایش پرداخت جزئی
+app.put('/api/installment-sales/payment/transaction/:txId', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const { amount, date, notes } = req.body || {};
+    const normalizedAmount = parsePositiveMoneyAmount(amount);
+    if (!normalizedAmount || !date) return res.status(400).json({ success: false, message: 'مبلغ و تاریخ پرداخت الزامی است.' });
+    const isoDate = moment(date, ['jYYYY/jMM/jDD','YYYY/MM/DD','YYYY-MM-DD', moment.ISO_8601], true).locale('en').format('YYYY-MM-DD');
+    if (!moment(isoDate, 'YYYY-MM-DD', true).isValid()) return res.status(400).json({ success: false, message: 'فرمت تاریخ نامعتبر است.' });
+    const x = await updateInstallmentTransactionInDb(+req.params.txId, normalizedAmount, isoDate, notes);
+    res.json({ success: true, data: x, message: 'پرداخت ویرایش شد.' });
+  } catch (e) { next(e); }
+});
+// حذف پرداخت جزئی
+app.delete('/api/installment-sales/payment/transaction/:txId', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const ok = await deleteInstallmentTransactionFromDb(+req.params.txId);
+    res.json({ success: ok, message: ok ? 'پرداخت حذف شد.' : 'حذفی انجام نشد.' });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 15) تحلیل هوشمند
+// =====================================================
+app.get('/api/analysis/profitability', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await analyzeProfitability() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/analysis/inventory-velocity', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await analyzeInventoryVelocity() }); }
+  catch (e) { next(e); }
+});
+app.get('/api/analysis/purchase-suggestions', authorizeRole(['Admin']), async (_req, res, next) => {
+  try { res.json({ success: true, data: await generatePurchaseSuggestions() }); }
+  catch (e) { next(e); }
+});
+// =====================================================
+// 11.5) RFM and Cohort Reports & Audit Log (Phase 2)
+// The following endpoints serve advanced analytics. Only Admin, Manager and Marketer roles
+// are permitted to access RFM and Cohort reports. Audit logs are visible to Admin and Manager.
+// Returns the RFM analysis for all customers. Each item includes recency (days since last
+// purchase), frequency (number of orders), monetary (total spend), scores (1–3) and the
+// composite RFM code. Use this report to identify valuable customer segments.
+app.get('/api/reports/rfm', authorizeRole(['Admin','Manager','Marketer']), async (_req, res, next) => {
+  try {
+    const items = await getRfmReport();
+    res.json({ success: true, data: items });
+  } catch (e) { next(e); }
+});
+// Cohort analysis groups customers by the month of their first purchase and tracks how many
+// return in subsequent months. The response contains an array of objects where counts[i]
+// represents the number of customers in cohort who purchased again i months after their
+// first purchase. The totals property indicates the size of the cohort. This can be used
+// to visualize retention curves.
+app.get('/api/reports/cohort', authorizeRole(['Admin','Manager','Marketer']), async (_req, res, next) => {
+  try {
+    const items = await getCohortReport();
+    res.json({ success: true, data: items });
+  } catch (e) { next(e); }
+});
+// -------------------------------------------------
+// Financial overview (Phase P1)
+// -------------------------------------------------
+// ------------------------------
+// Expenses (ثبت هزینه‌ها)
+// ------------------------------
+app.get('/api/expenses', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const from = String(req.query.from || '');
+    const to = String(req.query.to || '');
+    const category = String(req.query.category || 'all');
+    const data = await listExpensesFromDb({ from: from || undefined, to: to || undefined, category });
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.post('/api/expenses', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const actor = req.user ? { userId: req.user.id, username: req.user.username } : undefined;
+    const data = await addExpenseToDb(req.body, actor);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'expense', data?.id, 'ثبت هزینه'); } catch {}
+    }
+    res.status(201).json({ success: true, data });
+  } catch (e: any) {
+    const msg = String(e?.message || '');
+    if (msg.includes('خالی') || msg.includes('نامعتبر')) return res.status(400).json({ success: false, message: msg });
+    console.error('POST /api/expenses error', e);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+app.patch('/api/expenses/:id', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const id = +req.params.id;
+    const data = await updateExpenseInDb(id, req.body || {});
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'expense', id, 'ویرایش هزینه'); } catch {}
+    }
+    res.json({ success: true, data });
+  } catch (e: any) {
+    const msg = String(e?.message || '');
+    if (msg.includes('خالی') || msg.includes('نامعتبر')) return res.status(400).json({ success: false, message: msg });
+    console.error('PATCH /api/expenses error', e);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+});
+app.delete('/api/expenses/:id', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    await deleteExpenseFromDb(id);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'delete', 'expense', id, 'حذف هزینه'); } catch {}
+    }
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/expenses-summary', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const from = String(req.query.from || '');
+    const to = String(req.query.to || '');
+    const data = await getExpensesSummaryFromDb({ from: from || undefined, to: to || undefined });
+    res.json({ success: true, data });
+  } catch (e) {
+    console.error('GET /api/reports/expenses-summary fallback', e);
+    res.json({ success: true, data: { total: 0, byCategory: [] } });
+  }
+});
+// ------------------------------
+// Recurring Expenses (هزینه‌های تکرارشونده)
+// ------------------------------
+app.get('/api/recurring-expenses', authorizeRole(['Admin','Manager']), async (_req, res) => {
+  try {
+    const data = await listRecurringExpensesFromDb();
+    res.json({ success: true, data });
+  } catch (e) {
+    console.error('GET /api/recurring-expenses fallback', e);
+    res.json({ success: true, data: [] });
+  }
+});
+app.post('/api/recurring-expenses', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const actor = req.user ? { userId: req.user.id, username: req.user.username } : undefined;
+    const data = await addRecurringExpenseToDb(req.body, actor);
+    if (req.user) { try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'recurring_expense', data?.id, 'ثبت هزینه تکرارشونده'); } catch {} }
+    res.status(201).json({ success: true, data });
+  } catch (e: any) {
+    const msg = String(e?.message || '');
+    if (msg.includes('خالی') || msg.includes('نامعتبر')) return res.status(400).json({ success:false, message: msg });
+    console.error('POST /api/recurring-expenses error', e);
+    res.status(500).json({ success:false, message: 'Internal Server Error' });
+  }
+});
+app.patch('/api/recurring-expenses/:id', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const id = +req.params.id;
+    const data = await updateRecurringExpenseInDb(id, req.body || {});
+    if (req.user) { try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'recurring_expense', id, 'ویرایش هزینه تکرارشونده'); } catch {} }
+    res.json({ success: true, data });
+  } catch (e: any) {
+    const msg = String(e?.message || '');
+    if (msg.includes('خالی') || msg.includes('نامعتبر')) return res.status(400).json({ success:false, message: msg });
+    console.error('PATCH /api/recurring-expenses error', e);
+    res.status(500).json({ success:false, message: 'Internal Server Error' });
+  }
+});
+app.delete('/api/recurring-expenses/:id', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const id = +req.params.id;
+    await deleteRecurringExpenseFromDb(id);
+    if (req.user) { try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'delete', 'recurring_expense', id, 'حذف هزینه تکرارشونده'); } catch {} }
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.post('/api/recurring-expenses/:id/run', authorizeRole(['Admin','Manager']), async (req, res) => {
+  try {
+    const id = +req.params.id;
+    const row: any = await getRecurringExpenseByIdFromDb(id);
+    if (!row) return res.status(404).json({ success:false, message: 'یافت نشد.' });
+    if (Number(row.isActive) !== 1) return res.status(400).json({ success:false, message: 'این مورد غیرفعال است.' });
+
+    // Prevent double run for same month (anti double-click)
+    const runMonth = moment(String(row.nextRunDate)).format('YYYY-MM');
+    const mark = await markRecurringExpenseRunInDb(id, runMonth);
+    if (!mark.inserted) {
+      return res.status(409).json({ success: false, message: 'برای این ماه قبلاً ثبت شده است.' });
+    }
+
+    const actor = req.user ? { userId: req.user.id, username: req.user.username } : undefined;
+    // create expense for this run date (end of that day in UTC ISO)
+    const runIso = moment(String(row.nextRunDate)).endOf('day').toDate().toISOString();
+    const created = await addExpenseToDb(
+      {
+        expenseDate: runIso,
+        category: row.category,
+        title: `${row.title} (تکرارشونده)`,
+        amount: Number(row.amount || 0),
+        vendor: row.vendor ?? null,
+        notes: row.notes ?? null,
+      } as any,
+      actor as any
+    );
+    // advance nextRunDate
+    const dayOfMonth = Math.max(1, Math.min(31, Number(row.dayOfMonth || 1)));
+    const next = moment(String(row.nextRunDate)).add(1, 'month');
+    const dim = next.daysInMonth();
+    next.date(Math.min(dayOfMonth, dim));
+    const nextRunDate = next.format('YYYY-MM-DD');
+    await advanceRecurringExpenseNextRunDateInDb(id, nextRunDate);
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'expense', created?.id, `ثبت هزینه تکرارشونده #${id}`); } catch {}
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'recurring_expense', id, `Advance nextRunDate => ${nextRunDate}`); } catch {}
+    }
+    res.json({ success:true, data: { createdExpense: created, nextRunDate } });
+  } catch (e: any) {
+    console.error('POST /api/recurring-expenses/:id/run error', e);
+    res.status(500).json({ success:false, message: 'Internal Server Error' });
+  }
+});
+// ------------------------------
+// Next-gen Analytics Dashboard
+// ------------------------------
+// Inventory FIFO report (on-hand + aging)
+app.get('/api/reports/inventory-aging-buckets', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const data = await getInventoryAgingBucketsFromDb();
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/sales-profit', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().subtract(30, 'days').startOf('day');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const fromIso = from.toDate().toISOString();
+    const toIso = to.toDate().toISOString();
+    const data = await listSalesProfitRowsFifo(fromIso, toIso);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/inventory-fifo', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const data = await getInventoryFifoAgingForAllProducts();
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// Product margin report (FIFO) for last N months
+// Real profit per product (FIFO) within date range
+// Export: Sales profit rows (FIFO) -> Excel
+app.get('/api/exports/sales-profit.xlsx', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().subtract(30, 'days').startOf('day');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const data = await listSalesProfitRowsFifo(from.toDate().toISOString(), to.toDate().toISOString());
+    const rows = (data || []).map((r: any) => ({
+      'تاریخ': r.date,
+      'محصول': r.name,
+      'تعداد': r.qty,
+      'درآمد': r.revenue,
+      'COGS (FIFO)': r.cogs,
+      'سود': r.profit,
+      'حاشیه (%)': r.marginPct,
+    }));
+    const buf = await jsonToXlsxBuffer(rows, 'SalesProfit');
+    const fileName = `sales_profit_${moment().format('YYYY-MM-DD')}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(buf);
+  } catch (e) { next(e); }
+});
+// Export: Product margins (FIFO, monthsBack) -> Excel
+app.get('/api/exports/product-margins.xlsx', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const monthsBack = Number(req.query.monthsBack || 6);
+    const data = await getMonthlyProfitByProductFifo(monthsBack);
+    const rows = (data || []).map((r: any) => ({
+      'ماه': r.month,
+      'محصول': r.name,
+      'تعداد': r.qty,
+      'درآمد': r.revenue,
+      'COGS (FIFO)': r.cogs,
+      'سود': r.profit,
+      'حاشیه (%)': r.marginPct,
+    }));
+    const buf = await jsonToXlsxBuffer(rows, 'Margins');
+    const fileName = `product_margins_${moment().format('YYYY-MM-DD')}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(buf);
+  } catch (e) { next(e); }
+});
+// Export: Inventory FIFO (aging layers) -> Excel
+app.get('/api/exports/inventory-fifo.xlsx', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const data = await getInventoryFifoAgingForAllProducts();
+    const flat: any[] = [];
+    for (const p of (data || [])) {
+      if (!p.layers || p.layers.length === 0) {
+        flat.push({
+          'محصول': p.name,
+          'موجودی': p.onHandQty,
+          'ارزش موجودی': p.onHandValue,
+          'میانگین قیمت': p.avgCost,
+          'تاریخ لایه': '',
+          'سن (روز)': '',
+          'باقی‌مانده لایه': '',
+          'قیمت خرید لایه': '',
+          'ارزش لایه': '',
+        });
+      } else {
+        for (const l of p.layers) {
+          flat.push({
+            'محصول': p.name,
+            'موجودی': p.onHandQty,
+            'ارزش موجودی': p.onHandValue,
+            'میانگین قیمت': p.avgCost,
+            'تاریخ لایه': l.entryDate,
+            'سن (روز)': l.ageDays,
+            'باقی‌مانده لایه': l.remainingQty,
+            'قیمت خرید لایه': l.unitCost,
+            'ارزش لایه': l.value,
+          });
+        }
+      }
+    }
+    const buf = await jsonToXlsxBuffer(flat, 'InventoryFIFO');
+    const fileName = `inventory_fifo_${moment().format('YYYY-MM-DD')}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(buf);
+  } catch (e) { next(e); }
+});
+// Export: Expenses list -> Excel
+app.get('/api/exports/expenses.xlsx', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().startOf('month');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const category = req.query.category ? String(req.query.category) : undefined;
+    const data = await listExpensesFromDb({ from: from.toDate().toISOString(), to: to.toDate().toISOString(), category });
+    const rows = (data || []).map((r: any) => ({
+      'تاریخ': r.date,
+      'عنوان': r.title,
+      'دسته‌بندی': r.category,
+      'مبلغ': r.amount,
+      'توضیحات': r.description,
+      'تکرارشونده؟': r.isRecurring ? 'بله' : 'خیر',
+    }));
+    const buf = await jsonToXlsxBuffer(rows, 'Expenses');
+    const fileName = `expenses_${moment().format('YYYY-MM-DD')}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(buf);
+  } catch (e) { next(e); }
+});
+// Export: Real profit per product (FIFO) -> Excel
+app.get('/api/exports/product-profit-real.xlsx', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().startOf('month');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const data = await getRealProfitPerProductFifo(from.toDate().toISOString(), to.toDate().toISOString());
+    const rows = (data.items || []).map((r: any) => ({
+      'محصول': r.name,
+      'تعداد فروش': r.qty,
+      'درآمد': r.revenue,
+      'COGS (FIFO)': r.cogs,
+      'سود': r.profit,
+      'قیمت خرید (میانگین)': r.avgBuyPrice,
+      'قیمت فروش (میانگین)': r.avgSellPrice,
+      'سهم از درآمد (%)': r.shareOfRevenue,
+      'حاشیه (%)': r.marginPct,
+    }));
+    const buf = await jsonToXlsxBuffer(rows, 'Profit');
+    const fileName = `product_profit_real_${moment().format('YYYY-MM-DD')}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+    res.send(buf);
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/product-profit-real', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().startOf('month');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const data = await getRealProfitPerProductFifo(from.toDate().toISOString(), to.toDate().toISOString());
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/product-margins', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const monthsBack = Number(req.query.monthsBack || 6);
+    const data = await getMonthlyProfitByProductFifo(monthsBack);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/analytics-dashboard', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  const warn = (section: string, error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error || 'unknown');
+    console.warn(`[analytics-dashboard] ${section} failed:`, message);
+  };
+
+  const safeAll = async <T = any>(section: string, sql: string, params: any[] = []): Promise<T[]> => {
+    try {
+      return (await allAsync(sql, params)) as T[];
+    } catch (error) {
+      warn(section, error);
+      return [];
+    }
+  };
+
+  const safeGet = async <T = any>(section: string, sql: string, params: any[] = []): Promise<T | null> => {
+    try {
+      return (await getAsync(sql, params)) as T;
+    } catch (error) {
+      warn(section, error);
+      return null;
+    }
+  };
+
+  const safeRunPart = async <T>(section: string, fn: () => Promise<T>, fallback: T): Promise<T> => {
+    try {
+      return await fn();
+    } catch (error) {
+      warn(section, error);
+      return fallback;
+    }
+  };
+
+  try {
+    const fromQ = String(req.query.from || '');
+    const toQ = String(req.query.to || '');
+    const from = fromQ ? moment(fromQ) : moment().startOf('jMonth').startOf('day');
+    const to = toQ ? moment(toQ) : moment().endOf('day');
+    const fromIso = from.toDate().toISOString();
+    const toIso = to.toDate().toISOString();
+
+    // Legacy one-shot sales
+    const dailySalesRows = await safeAll<any>(
+      'daily-sales-transactions',
+      `SELECT substr(transactionDate, 1, 10) as day, SUM(totalPrice) as total
+         FROM sales_transactions
+        WHERE transactionDate >= ? AND transactionDate <= ?
+        GROUP BY substr(transactionDate, 1, 10)
+        ORDER BY day ASC`,
+      [fromIso, toIso]
+    );
+
+    // New invoice/order system
+    const dailyOrderRows = await safeAll<any>(
+      'daily-sales-orders',
+      `SELECT substr(transactionDate, 1, 10) as day, SUM(grandTotal) as total
+         FROM sales_orders
+        WHERE transactionDate >= ? AND transactionDate <= ?
+          AND COALESCE(status, 'active') != 'canceled'
+        GROUP BY substr(transactionDate, 1, 10)
+        ORDER BY day ASC`,
+      [fromIso, toIso]
+    );
+
+    const dailyDownRows = await safeAll<any>(
+      'daily-installment-downpayments',
+      `SELECT substr(createdAt, 1, 10) as day, SUM(downPayment) as total
+         FROM installment_sales
+        WHERE createdAt >= ? AND createdAt <= ?
+        GROUP BY substr(createdAt, 1, 10)
+        ORDER BY day ASC`,
+      [fromIso, toIso]
+    );
+
+    const dailyMap: Record<string, number> = {};
+    [...(dailySalesRows || []), ...(dailyOrderRows || []), ...(dailyDownRows || [])].forEach((r: any) => {
+      dailyMap[String(r.day)] = (dailyMap[String(r.day)] || 0) + Number(r.total || 0);
+    });
+
+    const legacyProdRows = await safeAll<any>(
+      'product-sales-transactions',
+      `SELECT itemId, itemName, SUM(quantity) as qty, SUM(totalPrice) as revenue
+         FROM sales_transactions
+        WHERE itemType = 'inventory'
+          AND transactionDate >= ? AND transactionDate <= ?
+        GROUP BY itemId, itemName
+        HAVING SUM(quantity) > 0`,
+      [fromIso, toIso]
+    );
+
+    const orderProdRows = await safeAll<any>(
+      'product-sales-orders',
+      `SELECT soi.itemId as itemId,
+              COALESCE(p.name, soi.description, 'کالا') as itemName,
+              SUM(soi.quantity) as qty,
+              SUM(soi.totalPrice) as revenue
+         FROM sales_order_items soi
+         JOIN sales_orders so ON so.id = soi.orderId
+         LEFT JOIN products p ON p.id = soi.itemId
+        WHERE soi.itemType = 'inventory'
+          AND so.transactionDate >= ? AND so.transactionDate <= ?
+          AND COALESCE(so.status, 'active') != 'canceled'
+        GROUP BY soi.itemId, COALESCE(p.name, soi.description, 'کالا')
+        HAVING SUM(soi.quantity) > 0`,
+      [fromIso, toIso]
+    );
+
+    const productMap: Record<string, any> = {};
+    [...(legacyProdRows || []), ...(orderProdRows || [])].forEach((r: any) => {
+      const id = String(r.itemId);
+      if (!productMap[id]) {
+        productMap[id] = { itemId: Number(r.itemId), itemName: String(r.itemName || 'کالا'), qty: 0, revenue: 0 };
+      }
+      productMap[id].qty += Number(r.qty || 0);
+      productMap[id].revenue += Number(r.revenue || 0);
+    });
+
+    const prodRows = Object.values(productMap).sort((a: any, b: any) => Number(b.revenue || 0) - Number(a.revenue || 0));
+
+    const bestProducts = prodRows
+      .slice(0, 5)
+      .map((r: any) => ({
+        id: Number(r.itemId),
+        name: String(r.itemName || 'کالا'),
+        qty: Number(r.qty || 0),
+        revenue: Number(r.revenue || 0),
+      }));
+
+    const worstProducts = prodRows
+      .filter((r: any) => Number(r.revenue || 0) > 0)
+      .slice(-5)
+      .map((r: any) => ({
+        id: Number(r.itemId),
+        name: String(r.itemName || 'کالا'),
+        qty: Number(r.qty || 0),
+        revenue: Number(r.revenue || 0),
+      }))
+      .reverse();
+
+    await safeRunPart('debt-snapshot-upsert', async () => {
+      const today = moment().format('YYYY-MM-DD');
+      const debtNowRow = await safeGet<any>(
+        'debt-snapshot-current-total',
+        `SELECT SUM(amountDue) as total FROM installment_payments WHERE status != 'پرداخت شده'`,
+        []
+      );
+      const debtNow = Number(debtNowRow?.total || 0);
+      await upsertDebtSnapshotInDb(today, debtNow);
+      return true;
+    }, false);
+
+    const snapFrom = from.clone().format('YYYY-MM-DD');
+    const snapTo = to.clone().format('YYYY-MM-DD');
+
+    const debtDailyTrend = await safeRunPart<any[]>('debt-snapshots-or-derived', async () => {
+      const snaps = await listDebtSnapshotsFromDb(snapFrom, snapTo);
+      const snapshotTrend = (snaps || []).map((r: any) => ({
+        date: String(r.snapshotDate),
+        debt: Number(r.totalDebt || 0),
+        source: 'snapshot',
+      }));
+
+      const positiveSnapshotCount = snapshotTrend.filter((point: any) => Number(point.debt || 0) > 0).length;
+      if (positiveSnapshotCount >= 2) return snapshotTrend;
+
+      // If there is not enough historical snapshot data yet, build an estimated daily trend
+      // from installments and payments. This avoids showing a useless single-point chart
+      // while still using real accounting tables, not fake random values.
+      const paymentRows = await safeAll<any>(
+        'debt-derived-installment-payments',
+        `SELECT id, dueDate, amountDue, status
+           FROM installment_payments
+          WHERE dueDate IS NOT NULL
+          ORDER BY dueDate ASC`,
+        []
+      );
+
+      const txRows = await safeAll<any>(
+        'debt-derived-installment-transactions',
+        `SELECT installment_payment_id as paymentId, amount_paid, payment_date
+           FROM installment_transactions
+          WHERE payment_date IS NOT NULL
+          ORDER BY payment_date ASC`,
+        []
+      );
+
+      if (!paymentRows.length) return snapshotTrend;
+
+      const paidByDayAndPayment: Record<string, Record<string, number>> = {};
+      (txRows || []).forEach((tx: any) => {
+        const paymentId = String(tx.paymentId);
+        const day = moment(tx.payment_date).format('YYYY-MM-DD');
+        if (!paidByDayAndPayment[paymentId]) paidByDayAndPayment[paymentId] = {};
+        paidByDayAndPayment[paymentId][day] = (paidByDayAndPayment[paymentId][day] || 0) + Number(tx.amount_paid || 0);
+      });
+
+      const derivedTrend: any[] = [];
+      const dcur = from.clone().startOf('day');
+      const dend = to.clone().startOf('day');
+      let dguard = 0;
+      while (dcur.isSameOrBefore(dend) && dguard < 370) {
+        const day = dcur.format('YYYY-MM-DD');
+        let totalDebt = 0;
+
+        (paymentRows || []).forEach((payment: any) => {
+          const dueDay = moment(payment.dueDate).format('YYYY-MM-DD');
+          if (dueDay > day) return;
+
+          const paymentId = String(payment.id);
+          const scheduled = Number(payment.amountDue || 0);
+          const paidMap = paidByDayAndPayment[paymentId] || {};
+          const paidUntilDay = Object.entries(paidMap).reduce((sum, [paidDay, amount]) => {
+            return paidDay <= day ? sum + Number(amount || 0) : sum;
+          }, 0);
+
+          const remaining = Math.max(0, scheduled - paidUntilDay);
+          totalDebt += remaining;
+        });
+
+        derivedTrend.push({ date: day, debt: totalDebt, source: 'derived' });
+        dcur.add(1, 'day');
+        dguard += 1;
+      }
+
+      const derivedPositiveCount = derivedTrend.filter((point) => Number(point.debt || 0) > 0).length;
+      return derivedPositiveCount >= 2 ? derivedTrend : snapshotTrend;
+    }, []);
+
+    const costMapRows = await safeAll<any>(
+      'purchase-cost-map',
+      `SELECT productId, SUM(lineTotal) as totalCost, SUM(quantity) as qty
+         FROM purchase_items
+        GROUP BY productId`,
+      []
+    );
+
+    const avgCostById: Record<string, number> = {};
+    (costMapRows || []).forEach((r: any) => {
+      const q = Number(r.qty || 0);
+      const tc = Number(r.totalCost || 0);
+      if (q > 0) avgCostById[String(r.productId)] = tc / q;
+    });
+
+    const productPriceRows = await safeAll<any>('product-fallback-cost', `SELECT id, purchasePrice FROM products`, []);
+    const fallbackCost: Record<string, number> = {};
+    (productPriceRows || []).forEach((r: any) => {
+      fallbackCost[String(r.id)] = Number(r.purchasePrice || 0);
+    });
+
+    const orderProfitRows = await safeAll<any>(
+      'product-profit-sales-orders',
+      `SELECT soi.itemId as itemId,
+              COALESCE(p.name, soi.description, 'کالا') as itemName,
+              SUM(soi.quantity) as qty,
+              SUM(soi.totalPrice) as revenue,
+              SUM(COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0) * soi.quantity) as cogs
+         FROM sales_order_items soi
+         JOIN sales_orders so ON so.id = soi.orderId
+         LEFT JOIN products p ON p.id = soi.itemId
+        WHERE soi.itemType = 'inventory'
+          AND so.transactionDate >= ? AND so.transactionDate <= ?
+          AND COALESCE(so.status, 'active') != 'canceled'
+        GROUP BY soi.itemId, COALESCE(p.name, soi.description, 'کالا')`,
+      [fromIso, toIso]
+    );
+
+    const profitMap: Record<string, any> = {};
+    (prodRows || []).forEach((r: any) => {
+      const id = String(r.itemId);
+      const qty = Number(r.qty || 0);
+      const revenue = Number(r.revenue || 0);
+      const unitCost = Number(avgCostById[id] ?? fallbackCost[id] ?? 0);
+      profitMap[id] = {
+        id: Number(r.itemId),
+        name: String(r.itemName || 'کالا'),
+        qty,
+        revenue,
+        unitCost,
+        cogs: unitCost * qty,
+      };
+    });
+
+    (orderProfitRows || []).forEach((r: any) => {
+      const id = String(r.itemId);
+      if (!profitMap[id]) {
+        profitMap[id] = { id: Number(r.itemId), name: String(r.itemName || 'کالا'), qty: 0, revenue: 0, unitCost: 0, cogs: 0 };
+      }
+      // Replace/strengthen cogs for order rows because sales_order_items keeps buyPrice snapshot.
+      profitMap[id].cogs = Number(r.cogs || profitMap[id].cogs || 0);
+      profitMap[id].unitCost = Number(r.qty || 0) > 0 ? Number(profitMap[id].cogs || 0) / Number(r.qty || 1) : Number(profitMap[id].unitCost || 0);
+    });
+
+    const profitRows = Object.values(profitMap)
+      .map((r: any) => ({
+        ...r,
+        profit: Number(r.revenue || 0) - Number(r.cogs || 0),
+      }))
+      .sort((a: any, b: any) => Number(b.profit || 0) - Number(a.profit || 0));
+
+    const bestProductsByProfit = profitRows.slice(0, 5);
+    const worstProductsByProfit = profitRows.slice(-5).reverse();
+
+    const salesTrend: any[] = [];
+    const cursor = from.clone().startOf('day');
+    const endDay = to.clone().startOf('day');
+    let guard = 0;
+    while (cursor.isSameOrBefore(endDay) && guard < 370) {
+      const d = cursor.format('YYYY-MM-DD');
+      salesTrend.push({ date: d, revenue: Number(dailyMap[d] || 0) });
+      cursor.add(1, 'day');
+      guard += 1;
+    }
+
+    const months: string[] = [];
+    const mcur = moment().startOf('month').subtract(5, 'month');
+    for (let i = 0; i < 6; i++) {
+      months.push(mcur.format('YYYY-MM'));
+      mcur.add(1, 'month');
+    }
+
+    const monthComparison: any[] = [];
+    for (const m of months) {
+      const mStart = moment(m + '-01').startOf('month').toDate().toISOString();
+      const mEnd = moment(m + '-01').endOf('month').toDate().toISOString();
+      const sRow = await safeGet<any>(
+        'month-sales-transactions',
+        `SELECT SUM(totalPrice) as total FROM sales_transactions WHERE transactionDate >= ? AND transactionDate <= ?`,
+        [mStart, mEnd]
+      );
+      const soRow = await safeGet<any>(
+        'month-sales-orders',
+        `SELECT SUM(grandTotal) as total
+           FROM sales_orders
+          WHERE transactionDate >= ? AND transactionDate <= ?
+            AND COALESCE(status, 'active') != 'canceled'`,
+        [mStart, mEnd]
+      );
+      const dRow = await safeGet<any>(
+        'month-downpayments',
+        `SELECT SUM(downPayment) as total FROM installment_sales WHERE createdAt >= ? AND createdAt <= ?`,
+        [mStart, mEnd]
+      );
+      const revenue = Number(sRow?.total || 0) + Number(soRow?.total || 0) + Number(dRow?.total || 0);
+      monthComparison.push({ month: m, revenue });
+    }
+
+    const debtRows = await safeAll<any>(
+      'debt-by-due-month',
+      `SELECT substr(dueDate, 1, 7) as month, SUM(amountDue) as total
+         FROM installment_payments
+        WHERE status != 'پرداخت شده'
+        GROUP BY substr(dueDate, 1, 7)
+        ORDER BY month ASC
+        LIMIT 24`,
+      []
+    );
+
+    const debtByDueMonth = (debtRows || []).map((r: any) => ({
+      month: String(r.month),
+      debt: Number(r.total || 0),
+    }));
+
+    res.json({
+      success: true,
+      data: {
+        range: { from: from.format('YYYY-MM-DD'), to: to.format('YYYY-MM-DD') },
+        salesTrend,
+        debtDailyTrend,
+        debtByDueMonth,
+        debtTrend: debtByDueMonth,
+        monthComparison,
+        bestProductsByProfit,
+        worstProductsByProfit,
+        bestProducts,
+        worstProducts,
+      }
+    });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/financial-overview', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    // Dates are provided as Shamsi (jYYYY/jMM/jDD) for UI consistency.
+    // Defaults: current Shamsi month.
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) {
+      return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+    }
+
+    const financialOverviewWarning = (section: string, error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error || 'unknown');
+      console.warn(`[financial-overview] ${section} failed:`, message);
+    };
+    const safeAll = async <T = any>(section: string, sql: string, params: any[] = []): Promise<T[]> => {
+      try {
+        return (await allAsync(sql, params)) as T[];
+      } catch (error) {
+        financialOverviewWarning(section, error);
+        return [];
+      }
+    };
+    const safeGet = async <T = any>(section: string, sql: string, params: any[] = []): Promise<T | null> => {
+      try {
+        return (await getAsync(sql, params)) as T;
+      } catch (error) {
+        financialOverviewWarning(section, error);
+        return null;
+      }
+    };
+    const safeRunPart = async <T>(section: string, fn: () => Promise<T>, fallback: T): Promise<T> => {
+      try {
+        return await fn();
+      } catch (error) {
+        financialOverviewWarning(section, error);
+        return fallback;
+      }
+    };
+
+    // Aggregate sales from sales_orders (invoice system)
+    const orders = await safeAll<any>(
+      'orders-summary',
+      `SELECT so.id, so.transactionDate, so.subtotal, so.discount, so.tax, so.grandTotal,
+              COALESCE(SUM(soi.discountPerItem), 0) AS itemsDiscount,
+              COALESCE(SUM(CASE
+                WHEN soi.itemType='inventory' THEN COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice,0) * COALESCE(soi.quantity,0)
+                WHEN soi.itemType='phone' THEN COALESCE(NULLIF(ph.currentPurchasePrice,0), NULLIF(soi.buyPrice,0), ph.purchasePrice,0) * COALESCE(soi.quantity,0)
+                ELSE 0 END), 0) AS cogs
+         FROM sales_orders so
+         LEFT JOIN sales_order_items soi ON so.id = soi.orderId
+         LEFT JOIN products p ON soi.itemType='inventory' AND p.id = soi.itemId
+         LEFT JOIN phones ph ON soi.itemType='phone' AND ph.id = soi.itemId
+        WHERE date(so.transactionDate) BETWEEN date(?) AND date(?)
+          AND (so.status IS NULL OR so.status = 'active')
+        GROUP BY so.id
+        ORDER BY so.id DESC`,
+      [fromISO, toISO]
+    );
+
+    // فروش غیرگوشی (اقلام inventory + service) در بازه
+    // این محاسبه از همان موتور گزارش غیرگوشی استفاده می‌کند تا تخفیف ردیفی و سهم تخفیف کلی فاکتور لحاظ شود.
+    const productSalesCollections = await safeRunPart(
+      'product-sales-collections',
+      () => buildProductSalesCollectionsReport(fromISO, toISO),
+      { summary: { contractualTotal: 0 } } as any
+    );
+    const invSalesTotal = Number((productSalesCollections as any)?.summary?.contractualTotal || 0);
+    let ordersCount = 0;
+    let subtotal = 0;
+    let discounts = 0;
+    let netSalesBeforeTax = 0;
+    let taxAmount = 0;
+    let totalSales = 0;
+    let totalCogs = 0;
+    let grossProfit = 0;
+    const productSalesTotal = invSalesTotal; // مجموع فروش غیرگوشی (اقلام inventory + service)
+    for (const o of orders) {
+      ordersCount += 1;
+      const oSubtotal = Number(o.subtotal) || 0;
+      const oGlobalDiscount = Number(o.discount) || 0;
+      const oItemsDiscount = Number(o.itemsDiscount) || 0;
+      const oCogs = Number(o.cogs) || 0;
+      const oGrandTotal = Number(o.grandTotal) || 0;
+      const oNet = Math.max(0, oSubtotal - oGlobalDiscount - oItemsDiscount);
+      const oTax = Math.max(0, oGrandTotal - oNet);
+      const oProfit = oNet - oCogs;
+      subtotal += oSubtotal;
+      discounts += (oGlobalDiscount + oItemsDiscount);
+      netSalesBeforeTax += oNet;
+      taxAmount += oTax;
+      totalSales += oGrandTotal;
+      totalCogs += oCogs;
+      grossProfit += oProfit;
+    }
+
+    // Purchases total cost in range
+    const purchasesRow = await safeGet<any>(
+      'purchases-total',
+      `SELECT COALESCE(SUM(totalCost), 0) AS total FROM purchases
+        WHERE substr(purchaseDate, 1, 10) BETWEEN ? AND ?`,
+      [fromISO, toISO]
+    );
+    const purchasesTotal = Number(purchasesRow?.total) || 0;
+
+    // Refunds (sales_returns) in range
+    const refundsRow = await safeGet<any>(
+      'refunds-total',
+      `SELECT COALESCE(SUM(refundAmount), 0) AS total FROM sales_returns
+        WHERE substr(createdAt, 1, 10) BETWEEN ? AND ?`,
+      [fromISO, toISO]
+    );
+    const refundsTotal = Number(refundsRow?.total) || 0;
+
+    // Inventory value snapshot
+    const invRow = await safeGet<any>(
+      'inventory-products-value',
+      `SELECT COALESCE(SUM(stock_quantity * purchasePrice), 0) AS total FROM products`,
+      []
+    );
+    const phonesRow = await safeGet<any>(
+      'inventory-phones-value',
+      `SELECT COALESCE(SUM(COALESCE(NULLIF(currentPurchasePrice, 0), purchasePrice, 0)), 0) AS total FROM phones
+        WHERE status IN ('موجود در انبار','مرجوعی','مرجوعی اقساطی')`,
+      []
+    );
+    const inventoryValue = (Number(invRow?.total) || 0) + (Number(phonesRow?.total) || 0);
+
+    // Receivables / Payables (current balances)
+    const debtors = await safeRunPart<any[]>('debtors-list', () => getDebtorsList(), []);
+    const creditors = await safeRunPart<any[]>('creditors-list', () => getCreditorsList(), []);
+    const receivables = debtors.reduce((s, d) => s + (Number((d as any).balance) || 0), 0);
+    const payables = creditors.reduce((s, c) => s + (Number((c as any).balance) || 0), 0);
+    const ledgerAudit = {
+      receivablesSource: 'customer_ledger:sum(debit-credit)',
+      payablesSource: 'partner_ledger:sum(credit-debit)',
+      debtorsCount: debtors.length,
+      creditorsCount: creditors.length,
+      generatedAt: new Date().toISOString(),
+    };
+
+    const realizedProfitReport = await safeRunPart<any>(
+      'realized-profit-report',
+      () => buildRealizedProfitRecognitionReport(fromISO, toISO),
+      { summary: { realizedProfit: 0, realizedRevenue: 0, realizedCost: 0, unrecognizedProfit: 0, collectionRate: 0 }, audit: { fallback: true } }
+    );
+    const expensesSummary = await safeRunPart<any>(
+      'expenses-summary',
+      () => getExpensesSummaryFromDb({ from: fromISO, to: toISO }),
+      { total: 0, byCategory: [] }
+    );
+    const totalExpenses = Number(expensesSummary?.total || 0);
+    const realProfit = grossProfit - totalExpenses;
+
+    res.json({
+      success: true,
+      data: {
+        range: { from: fromJ, to: toJ, fromISO, toISO },
+        sales: {
+          ordersCount,
+          subtotal,
+          discounts,
+          netSalesBeforeTax,
+          taxAmount,
+          totalSales,
+          refundsTotal,
+          productSalesTotal,
+        },
+        profit: {
+          grossProfit,
+          cogs: totalCogs,
+          realizedProfit: Number(realizedProfitReport?.summary?.realizedProfit || 0),
+          realizedRevenue: Number(realizedProfitReport?.summary?.realizedRevenue || 0),
+          realizedCost: Number(realizedProfitReport?.summary?.realizedCost || 0),
+          unrecognizedProfit: Number(realizedProfitReport?.summary?.unrecognizedProfit || 0),
+          collectionRate: Number(realizedProfitReport?.summary?.collectionRate || 0),
+          recognitionAudit: realizedProfitReport?.audit || null,
+        },
+        expensesSummary,
+        totalExpenses,
+        realProfit,
+        purchases: { total: purchasesTotal },
+        workingCapital: { receivables, payables, audit: ledgerAudit },
+        inventory: { inventoryValue },
+        top: {
+          debtors: debtors.slice(0, 10),
+          creditors: creditors.slice(0, 10),
+        },
+      },
+    });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Reports: Financial Overview Drill-down (KPI -> invoices)
+// -----------------------------------------------------
+app.get('/api/reports/financial-overview/drilldown', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    const kpi = String(req.query.kpi || 'totalSales');
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+    // Base list of orders in range
+    const orders = await allAsync(
+      `SELECT so.id, so.transactionDate, so.grandTotal, so.subtotal, so.discount, so.tax,
+              c.fullName AS customerName, c.phoneNumber AS customerPhone
+         FROM sales_orders so
+         LEFT JOIN customers c ON c.id = so.customerId
+        WHERE date(so.transactionDate) BETWEEN date(?) AND date(?)
+          AND (so.status IS NULL OR so.status = 'active')
+        ORDER BY date(so.transactionDate) DESC, so.id DESC`,
+      [fromISO, toISO]
+    );
+    if (kpi === 'totalSales') {
+      return res.json({ success: true, data: orders.map((o:any) => ({
+        orderId: o.id,
+        date: o.transactionDate,
+        customerName: o.customerName,
+        customerPhone: o.customerPhone,
+        amount: Number(o.grandTotal) || 0,
+        profit: null,
+      }))});
+    }
+    // Fetch items for those orders
+    const orderIds = orders.map((o:any)=>o.id);
+    if (orderIds.length === 0) return res.json({ success: true, data: [] });
+    const inClause = orderIds.map(()=>'?').join(',');
+    const items = await allAsync(
+      `SELECT *
+         FROM (
+           SELECT
+             so.id AS orderId,
+             'invoice' AS sourceType,
+             so.id AS sourceId,
+             COALESCE(so.discount, 0) AS orderDiscount,
+             soi.itemType,
+             soi.itemId,
+             soi.quantity,
+             soi.unitPrice,
+             ((COALESCE(soi.quantity, 0) * COALESCE(soi.unitPrice, 0)) - COALESCE(soi.discountPerItem, 0)) AS totalPrice,
+             COALESCE(soi.discountPerItem,0) AS discountPerItem
+           FROM sales_order_items soi
+           JOIN sales_orders so ON so.id = soi.orderId
+           WHERE so.id IN (${inClause})
+
+           UNION ALL
+
+           SELECT
+             ins.id AS orderId,
+             'installment' AS sourceType,
+             ins.id AS sourceId,
+             0 AS orderDiscount,
+             isi.itemType,
+             isi.itemId,
+             isi.quantity,
+             isi.unitPrice,
+             COALESCE(isi.totalPrice, 0) AS totalPrice,
+             0 AS discountPerItem
+           FROM installment_sale_items isi
+           JOIN installment_sales ins ON ins.id = isi.saleId
+           WHERE date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) BETWEEN date(?) AND date(?)
+         ) x`,
+      [...orderIds, fromISO, toISO]
+    );
+    const invoiceItems = buildDiscountAwareInvoiceLines((items as any[]).filter((i:any) => String(i.sourceType || 'invoice') === 'invoice'));
+    const normalizedItems = [
+      ...invoiceItems,
+      ...(items as any[]).filter((i:any) => String(i.sourceType || 'invoice') === 'installment'),
+    ];
+
+    // Fetch costs for inventory and phones
+    const invIds = Array.from(new Set(normalizedItems.filter((i:any)=>i.itemType==='inventory').map((i:any)=>i.itemId)));
+    const phoneIds = Array.from(new Set(normalizedItems.filter((i:any)=>i.itemType==='phone').map((i:any)=>i.itemId)));
+    const [invRows, phoneRows] = await Promise.all([
+      invIds.length ? allAsync(`SELECT id, purchasePrice FROM products WHERE id IN (${invIds.map(()=>'?').join(',')})`, invIds) : Promise.resolve([]),
+      phoneIds.length ? allAsync(`SELECT id, COALESCE(NULLIF(currentPurchasePrice, 0), purchasePrice, 0) AS purchasePrice FROM phones WHERE id IN (${phoneIds.map(()=>'?').join(',')})`, phoneIds) : Promise.resolve([]),
+    ]);
+    const invCost = new Map<number, number>(invRows.map((r:any)=>[Number(r.id), Number(r.purchasePrice)||0]));
+    const phoneCost = new Map<number, number>(phoneRows.map((r:any)=>[Number(r.id), Number(r.purchasePrice)||0]));
+    // Aggregate per order
+    const agg = new Map<string, { orderId: number; sourceType: 'invoice' | 'installment'; productSales: number; profit: number }>();
+    for (const it of normalizedItems as any[]) {
+      const oid = Number(it.orderId);
+      const sourceType = (String(it.sourceType || 'invoice') === 'installment' ? 'installment' : 'invoice') as 'invoice' | 'installment';
+      const key = `${sourceType}:${oid}`;
+      const qty = Number(it.quantity)||0;
+      const revenue = Number(it.totalPrice)||0;
+      let cost = 0;
+      if (it.itemType === 'inventory') cost = (invCost.get(Number(it.itemId))||0) * qty;
+      else if (it.itemType === 'phone') cost = (phoneCost.get(Number(it.itemId))||0) * qty;
+      const cur = agg.get(key) || { orderId: oid, sourceType, productSales: 0, profit: 0 };
+      if (it.itemType === 'inventory' || it.itemType === 'service') cur.productSales += revenue;
+      cur.profit += (revenue - cost);
+      agg.set(key, cur);
+    }
+    if (kpi === 'productSalesTotal') {
+      const invoiceRows = orders.map((o:any)=> {
+        const a = agg.get(`invoice:${Number(o.id)}`);
+        return a && a.productSales>0 ? {
+          orderId: o.id,
+          date: o.transactionDate,
+          customerName: o.customerName,
+          customerPhone: o.customerPhone,
+          amount: a.productSales,
+          profit: null,
+          sourceType: 'invoice',
+        } : null;
+      }).filter(Boolean);
+      const installmentRowsRaw = await allAsync(
+        `SELECT ins.id, COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+                c.fullName AS customerName, c.phoneNumber AS customerPhone
+           FROM installment_sales ins
+           LEFT JOIN customers c ON c.id = ins.customerId
+          WHERE date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) BETWEEN date(?) AND date(?)
+          ORDER BY date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) DESC, ins.id DESC`,
+        [fromISO, toISO]
+      );
+      const installmentRows = installmentRowsRaw.map((o:any)=> {
+        const a = agg.get(`installment:${Number(o.id)}`);
+        return a && a.productSales>0 ? {
+          orderId: o.id,
+          date: o.transactionDate,
+          customerName: o.customerName,
+          customerPhone: o.customerPhone,
+          amount: a.productSales,
+          profit: null,
+          sourceType: 'installment',
+        } : null;
+      }).filter(Boolean);
+      return res.json({ success: true, data: [...invoiceRows, ...installmentRows].sort((a:any,b:any)=>String(b.date).localeCompare(String(a.date)) || Number(b.orderId)-Number(a.orderId)) });
+    }
+    if (kpi === 'grossProfit') {
+      const invoiceRows = orders.map((o:any)=> {
+        const a = agg.get(`invoice:${Number(o.id)}`);
+        return a ? {
+          orderId: o.id,
+          date: o.transactionDate,
+          customerName: o.customerName,
+          customerPhone: o.customerPhone,
+          amount: Number(o.grandTotal)||0,
+          profit: a.profit,
+          sourceType: 'invoice',
+        } : null;
+      }).filter(Boolean);
+      const installmentRowsRaw = await allAsync(
+        `SELECT ins.id, COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+                c.fullName AS customerName, c.phoneNumber AS customerPhone,
+                COALESCE(ins.actualSalePrice, 0) AS grandTotal
+           FROM installment_sales ins
+           LEFT JOIN customers c ON c.id = ins.customerId
+          WHERE date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) BETWEEN date(?) AND date(?)
+          ORDER BY date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) DESC, ins.id DESC`,
+        [fromISO, toISO]
+      );
+      const installmentRows = installmentRowsRaw.map((o:any)=> {
+        const a = agg.get(`installment:${Number(o.id)}`);
+        return a ? {
+          orderId: o.id,
+          date: o.transactionDate,
+          customerName: o.customerName,
+          customerPhone: o.customerPhone,
+          amount: Number(o.grandTotal)||0,
+          profit: a.profit,
+          sourceType: 'installment',
+        } : null;
+      }).filter(Boolean);
+      return res.json({ success: true, data: [...invoiceRows, ...installmentRows].sort((a:any,b:any)=>(b.profit||0)-(a.profit||0)) });
+    }
+    return res.status(400).json({ success: false, message: 'kpi نامعتبر است.' });
+  } catch (e) { next(e); }
+});
+// ------------------------------
+// فروش غیرگوشی (لوازم + خدمات) - Summary + Details
+// ------------------------------
+// ------------------------------
+// گزارش پیگیری‌ها (CRM Followups)
+// ------------------------------
+app.get('/api/reports/followups', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const status = String(req.query.status || 'open'); // open|closed|all
+    const from = String(req.query.from || ''); // ISO date (start)
+    const to = String(req.query.to || '');     // ISO date (end)
+    const owner = String(req.query.owner || ''); // createdByUsername contains
+    const dateField = String(req.query.dateField || 'next'); // next|created
+    const allowedStatus = ['open', 'closed', 'all'];
+    if (!allowedStatus.includes(status)) return res.status(400).json({ success: false, message: 'status نامعتبر است.' });
+        const noDue = String(req.query.noDue || '') === '1'; // فقط موارد بدون موعد
+const where: string[] = [];
+    const params: any[] = [];
+    if (status !== 'all') {
+      where.push("cf.status = ?");
+      params.push(status);
+    }
+    if (owner) {
+      where.push("(cf.createdByUsername LIKE ?)");
+      params.push(`%${owner}%`);
+    }
+    if (noDue) {
+      where.push('cf.nextFollowupDate IS NULL');
+    } else if (dateField === 'created') {
+      if (from) { where.push("cf.createdAt >= ?"); params.push(from); }
+      if (to) { where.push("cf.createdAt <= ?"); params.push(to); }
+    } else {
+      // next followup date filter
+      where.push("cf.nextFollowupDate IS NOT NULL");
+      if (from) { where.push("cf.nextFollowupDate >= ?"); params.push(from); }
+      if (to) { where.push("cf.nextFollowupDate <= ?"); params.push(to); }
+    }
+    const whereSql = where.length ? ("WHERE " + where.join(" AND ")) : "";
+    const rows = await allAsync(
+      `SELECT cf.*,
+              c.fullName AS customerName,
+              c.phoneNumber AS customerPhone
+         FROM customer_followups cf
+         JOIN customers c ON c.id = cf.customerId
+         ${whereSql}
+        ORDER BY (CASE WHEN cf.nextFollowupDate IS NULL THEN 1 ELSE 0 END),
+                 cf.nextFollowupDate ASC,
+                 cf.createdAt DESC,
+                 cf.id DESC
+        LIMIT 1000`,
+      params
+    );
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+});
+
+const clamp01 = (v: number) => Math.max(0, Math.min(1, Number(v) || 0));
+const safeReportNumber = (value: any) => (Number.isFinite(Number(value)) ? Number(value) : 0);
+
+/**
+ * پخش دقیق تخفیف کلی فاکتور روی ردیف‌ها.
+ * اول تخفیف همان ردیف از مبلغ ناخالص کم می‌شود؛ سپس تخفیف کلی فاکتور
+ * به نسبت سهم هر ردیف از جمع خالص همه ردیف‌های همان فاکتور توزیع می‌شود.
+ */
+function buildDiscountAwareInvoiceLines(rows: any[]): any[] {
+  const byOrder = new Map<number, any[]>();
+  for (const row of rows || []) {
+    const orderId = Number(row?.orderId || 0);
+    if (!orderId) continue;
+    const quantity = Math.max(0, safeReportNumber(row.quantity));
+    const unitPrice = Math.max(0, safeReportNumber(row.unitPrice));
+    const grossLineTotal = quantity * unitPrice;
+    const itemDiscount = Math.max(0, Math.min(safeReportNumber(row.discountPerItem), grossLineTotal));
+    const fallbackNet = Math.max(0, grossLineTotal - itemDiscount);
+    const storedLineTotal = row.lineTotal != null
+      ? safeReportNumber(row.lineTotal)
+      : row.totalPrice != null
+        ? safeReportNumber(row.totalPrice)
+        : fallbackNet;
+    const netBeforeGlobal = Math.max(0, Math.min(storedLineTotal, fallbackNet));
+    const normalized = {
+      ...row,
+      quantity,
+      unitPrice,
+      discountPerItem: itemDiscount,
+      originalLineTotal: netBeforeGlobal,
+      lineTotalBeforeGlobalDiscount: netBeforeGlobal,
+      lineTotal: netBeforeGlobal,
+      globalDiscountShare: 0,
+      totalDiscountAmount: itemDiscount,
+    };
+    const list = byOrder.get(orderId) || [];
+    list.push(normalized);
+    byOrder.set(orderId, list);
+  }
+
+  const result: any[] = [];
+  for (const lines of byOrder.values()) {
+    const base = lines.reduce((sum, line) => sum + safeReportNumber(line.lineTotalBeforeGlobalDiscount), 0);
+    const orderDiscount = Math.max(0, Math.min(safeReportNumber(lines[0]?.orderDiscount), base));
+    let allocated = 0;
+
+    lines.forEach((line, index) => {
+      let share = 0;
+      if (base > 0 && orderDiscount > 0) {
+        share = index === lines.length - 1
+          ? Math.max(0, orderDiscount - allocated)
+          : orderDiscount * (safeReportNumber(line.lineTotalBeforeGlobalDiscount) / base);
+      }
+      share = Math.max(0, Math.min(share, safeReportNumber(line.lineTotalBeforeGlobalDiscount)));
+      allocated += share;
+      const adjustedLineTotal = Math.max(0, safeReportNumber(line.lineTotalBeforeGlobalDiscount) - share);
+      result.push({
+        ...line,
+        orderDiscount,
+        invoiceDiscountBase: base,
+        globalDiscountShare: share,
+        totalDiscountAmount: safeReportNumber(line.discountPerItem) + share,
+        lineTotal: adjustedLineTotal,
+        totalPrice: adjustedLineTotal,
+      });
+    });
+  }
+
+  return result;
+}
+
+const getProductSalesDocKey = (sourceType: string, orderId: number) => `${sourceType}:${orderId}`;
+
+async function buildProductSalesCollectionsReport(fromISO: string, toISO: string) {
+  const invoiceAllLinesRaw = await allAsync(
+    `SELECT
+        'invoice' AS sourceType,
+        so.id AS orderId,
+        so.customerId,
+        c.fullName AS customerName,
+        so.paymentMethod,
+        so.transactionDate,
+        COALESCE(so.discount, 0) AS orderDiscount,
+        soi.itemType,
+        soi.itemId AS productId,
+        COALESCE(CASE WHEN soi.itemType='service' THEN sv.name WHEN soi.itemType='inventory' THEN p.name ELSE ph.model END, soi.description, '—') AS productName,
+        COALESCE(soi.quantity,0) AS quantity,
+        COALESCE(soi.unitPrice,0) AS unitPrice,
+        COALESCE(soi.discountPerItem,0) AS discountPerItem,
+        ((COALESCE(soi.quantity,0) * COALESCE(soi.unitPrice,0)) - COALESCE(soi.discountPerItem,0)) AS lineTotal,
+        CASE WHEN soi.itemType='inventory' THEN COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice,0) * COALESCE(soi.quantity,0) ELSE 0 END AS lineCost
+      FROM sales_orders so
+      JOIN sales_order_items soi ON so.id = soi.orderId
+      LEFT JOIN products p ON soi.itemType='inventory' AND p.id = soi.itemId
+      LEFT JOIN services sv ON soi.itemType='service' AND sv.id = soi.itemId
+      LEFT JOIN phones ph ON soi.itemType='phone' AND ph.id = soi.itemId
+      LEFT JOIN customers c ON c.id = so.customerId
+     WHERE soi.itemType IN ('inventory','service','phone')
+       AND (so.status IS NULL OR so.status = 'active')
+       AND date(so.transactionDate) BETWEEN date(?) AND date(?)
+     ORDER BY date(so.transactionDate) ASC, so.id ASC, soi.id ASC`,
+    [fromISO, toISO]
+  );
+
+  const invoiceLinesRaw = buildDiscountAwareInvoiceLines(invoiceAllLinesRaw as any[])
+    .filter((row: any) => row.itemType === 'inventory' || row.itemType === 'service');
+
+  const invoiceDocsByOrder = new Map<number, any>();
+  for (const line of invoiceLinesRaw as any[]) {
+    const orderId = Number(line.orderId || 0);
+    if (!orderId) continue;
+    const doc = invoiceDocsByOrder.get(orderId) || {
+      orderId,
+      customerId: line.customerId,
+      paymentMethod: line.paymentMethod,
+      transactionDate: line.transactionDate,
+      nonPhoneTotal: 0,
+      nonPhoneCost: 0,
+    };
+    doc.nonPhoneTotal += Number(line.lineTotal || 0);
+    doc.nonPhoneCost += Number(line.lineCost || 0);
+    invoiceDocsByOrder.set(orderId, doc);
+  }
+  const invoiceDocsRaw = Array.from(invoiceDocsByOrder.values());
+
+  const installmentDocsRaw = await allAsync(
+    `SELECT
+        ins.id AS orderId,
+        ins.customerId,
+        COALESCE(ins.actualSalePrice,0) AS actualSalePrice,
+        COALESCE(ins.downPayment,0) AS downPayment,
+        COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+        COALESCE(SUM(COALESCE(isi.totalPrice,0)),0) AS nonPhoneTotal,
+        COALESCE(SUM(CASE WHEN isi.itemType='inventory' THEN COALESCE(NULLIF(isi.buyPrice,0), p.purchasePrice,0) * COALESCE(isi.quantity,0) ELSE 0 END),0) AS nonPhoneCost
+      FROM installment_sales ins
+      JOIN installment_sale_items isi ON ins.id = isi.saleId
+      LEFT JOIN products p ON isi.itemType='inventory' AND p.id = isi.itemId
+     WHERE isi.itemType IN ('inventory','service')
+       AND date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) BETWEEN date(?) AND date(?)
+     GROUP BY ins.id, ins.customerId, ins.actualSalePrice, ins.downPayment, COALESCE(ins.dateCreated, ins.installmentsStartDate)`,
+    [fromISO, toISO]
+  );
+
+  const installmentLinesRaw = await allAsync(
+    `SELECT
+        'installment' AS sourceType,
+        ins.id AS orderId,
+        ins.customerId,
+        c.fullName AS customerName,
+        'installment' AS paymentMethod,
+        COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+        isi.itemType,
+        isi.itemId AS productId,
+        COALESCE(CASE WHEN isi.itemType='service' THEN sv.name ELSE p.name END, isi.description, '—') AS productName,
+        COALESCE(isi.quantity,0) AS quantity,
+        COALESCE(isi.unitPrice,0) AS unitPrice,
+        0 AS discountPerItem,
+        COALESCE(isi.totalPrice,0) AS lineTotal,
+        CASE WHEN isi.itemType='inventory' THEN COALESCE(NULLIF(isi.buyPrice,0), p.purchasePrice,0) * COALESCE(isi.quantity,0) ELSE 0 END AS lineCost
+      FROM installment_sales ins
+      JOIN installment_sale_items isi ON ins.id = isi.saleId
+      LEFT JOIN products p ON isi.itemType='inventory' AND p.id = isi.itemId
+      LEFT JOIN services sv ON isi.itemType='service' AND sv.id = isi.itemId
+      LEFT JOIN customers c ON c.id = ins.customerId
+     WHERE isi.itemType IN ('inventory','service')
+       AND date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) BETWEEN date(?) AND date(?)
+     ORDER BY date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) ASC, ins.id ASC, isi.id ASC`,
+    [fromISO, toISO]
+  );
+
+  const customerReceipts = await allAsync(
+    `SELECT id, customerId, transactionDate, COALESCE(credit,0) AS amount, description,
+            referenceType, referenceId
+       FROM customer_ledger
+      WHERE customerId IS NOT NULL
+        AND COALESCE(credit,0) > 0
+        AND COALESCE(debit,0) = 0
+        AND date(transactionDate) BETWEEN date(?) AND date(?)
+      ORDER BY datetime(transactionDate) ASC, id ASC`,
+    [fromISO, toISO]
+  );
+
+  const installmentReceiptRows = await allAsync(
+    `SELECT
+        ins.id AS saleId,
+        it.id AS txId,
+        it.payment_date AS paymentDate,
+        COALESCE(it.amount_paid,0) AS amountPaid
+      FROM installment_transactions it
+      JOIN installment_payments ip ON ip.id = it.installment_payment_id
+      JOIN installment_sales ins ON ins.id = ip.saleId
+     WHERE date(it.payment_date) BETWEEN date(?) AND date(?)
+     ORDER BY datetime(it.payment_date) ASC, it.id ASC`,
+    [fromISO, toISO]
+  );
+
+  const docs = new Map<string, any>();
+  const invoiceDocsById = new Map<number, any>();
+  for (const row of invoiceDocsRaw as any[]) {
+    const total = Number(row.nonPhoneTotal || 0);
+    if (total <= 0) continue;
+    const doc = {
+      sourceType: 'invoice',
+      paymentType: String(row.paymentMethod || 'cash').toLowerCase() === 'credit' ? 'credit' : 'cash',
+      orderId: Number(row.orderId),
+      customerId: row.customerId == null ? null : Number(row.customerId),
+      transactionDate: collectionCenterToShamsiDisplay(row.transactionDate) || String(row.transactionDate || ''),
+      contractualTotal: total,
+      contractualCost: Number(row.nonPhoneCost || 0),
+      receivedInRange: String(row.paymentMethod || 'cash').toLowerCase() === 'credit' ? 0 : total,
+      realizedProfitInRange: 0,
+    };
+    docs.set(getProductSalesDocKey('invoice', Number(row.orderId)), doc);
+    invoiceDocsById.set(Number(row.orderId), doc);
+  }
+  for (const row of installmentDocsRaw as any[]) {
+    const total = Number(row.nonPhoneTotal || 0);
+    if (total <= 0) continue;
+    const actualSalePrice = Number(row.actualSalePrice || 0);
+    const downPayment = Number(row.downPayment || 0);
+    const nonPhoneShare = actualSalePrice > 0 ? Math.min(total, downPayment * (total / actualSalePrice)) : Math.min(total, downPayment);
+    const doc = {
+      sourceType: 'installment',
+      paymentType: 'installment',
+      orderId: Number(row.orderId),
+      customerId: row.customerId == null ? null : Number(row.customerId),
+      transactionDate: String(row.transactionDate || ''),
+      contractualTotal: total,
+      contractualCost: Number(row.nonPhoneCost || 0),
+      receivedInRange: Math.max(0, nonPhoneShare),
+      realizedProfitInRange: 0,
+      actualSalePrice,
+    };
+    docs.set(getProductSalesDocKey('installment', Number(row.orderId)), doc);
+  }
+
+  const lines = [...(invoiceLinesRaw as any[]), ...(installmentLinesRaw as any[])].map((row: any, idx: number) => ({
+    rowId: idx + 1,
+    sourceType: String(row.sourceType || 'invoice') === 'installment' ? 'installment' : 'invoice',
+    docKey: getProductSalesDocKey(String(row.sourceType || 'invoice') === 'installment' ? 'installment' : 'invoice', Number(row.orderId)),
+    paymentType: String(row.paymentMethod || 'cash').toLowerCase() === 'installment' ? 'installment' : String(row.paymentMethod || 'cash').toLowerCase() === 'credit' ? 'credit' : 'cash',
+    orderId: Number(row.orderId),
+    customerId: row.customerId == null ? null : Number(row.customerId),
+    customerName: row.customerName == null ? null : String(row.customerName || ''),
+    transactionDate: String(row.transactionDate || ''),
+    itemType: row.itemType === 'service' ? 'service' : 'inventory',
+    productId: Number(row.productId || 0),
+    productName: String(row.productName || '—'),
+    quantity: Number(row.quantity || 0),
+    unitPrice: Number(row.unitPrice || 0),
+    discountPerItem: Number(row.discountPerItem || 0),
+    orderDiscount: Number(row.orderDiscount || 0),
+    invoiceDiscountBase: Number(row.invoiceDiscountBase || row.lineTotalBeforeGlobalDiscount || row.originalLineTotal || row.lineTotal || 0),
+    lineTotalBeforeGlobalDiscount: Number(row.lineTotalBeforeGlobalDiscount || row.originalLineTotal || row.lineTotal || 0),
+    globalDiscountShare: Number(row.globalDiscountShare || 0),
+    totalDiscountAmount: Number(row.totalDiscountAmount ?? row.discountPerItem ?? 0),
+    originalLineTotal: Number(row.originalLineTotal ?? row.lineTotal ?? 0),
+    lineTotal: Number(row.lineTotal || 0),
+    lineCost: Number(row.lineCost || 0),
+    receivedAmount: 0,
+    realizedProfit: 0,
+  }));
+
+  const orderLines = new Map<string, any[]>();
+  for (const line of lines) {
+    const arr = orderLines.get(String(line.docKey)) || [];
+    arr.push(line);
+    orderLines.set(String(line.docKey), arr);
+  }
+
+  let unlinkedCreditReceipts = 0;
+  for (const receipt of customerReceipts as any[]) {
+    const amount = Math.max(0, Number(receipt.amount || 0));
+    const customerId = Number(receipt.customerId || 0);
+    if (!customerId || amount <= 0) continue;
+
+    const refType = String(receipt.referenceType || '').trim().toLowerCase();
+    const refId = Number(receipt.referenceId || 0);
+    const desc = String(receipt.description || '');
+    const parsedInvoiceId = refId > 0 ? refId : Number((desc.match(/(?:فاکتور(?:\s*فروش)?|invoice)\s*(?:شماره|#)?\s*(\d+)/i)?.[1] || 0));
+    const isDirectInvoiceRef = refType === 'sales_order_receipt' || refType === 'sales_order_payment' || (!refType && parsedInvoiceId > 0);
+
+    if (!isDirectInvoiceRef || parsedInvoiceId <= 0) {
+      unlinkedCreditReceipts += amount;
+      continue;
+    }
+
+    const directDoc = invoiceDocsById.get(parsedInvoiceId);
+    if (!directDoc || directDoc.paymentType !== 'credit' || Number(directDoc.customerId || 0) !== customerId) {
+      unlinkedCreditReceipts += amount;
+      continue;
+    }
+
+    const outstanding = Math.max(0, Number(directDoc.contractualTotal || 0) - Number(directDoc.receivedInRange || 0));
+    if (outstanding <= 0) {
+      unlinkedCreditReceipts += amount;
+      continue;
+    }
+
+    const alloc = Math.min(outstanding, amount);
+    directDoc.receivedInRange += alloc;
+    if (amount > alloc) unlinkedCreditReceipts += (amount - alloc);
+  }
+
+  const installmentDocsById = new Map<number, any>();
+  for (const doc of docs.values()) {
+    if (doc.paymentType === 'installment') installmentDocsById.set(Number(doc.orderId), doc);
+  }
+  for (const tx of installmentReceiptRows as any[]) {
+    const doc = installmentDocsById.get(Number(tx.saleId));
+    if (!doc) continue;
+    const actualSalePrice = Number(doc.actualSalePrice || 0);
+    const allocBase = Number(tx.amountPaid || 0);
+    const allocRaw = actualSalePrice > 0 ? allocBase * (Number(doc.contractualTotal || 0) / actualSalePrice) : allocBase;
+    const outstanding = Math.max(0, Number(doc.contractualTotal || 0) - Number(doc.receivedInRange || 0));
+    const alloc = Math.min(outstanding, Math.max(0, allocRaw));
+    doc.receivedInRange += alloc;
+  }
+
+  const summary = {
+    cashSales: 0,
+    creditSales: 0,
+    installmentSales: 0,
+    cashReceived: 0,
+    creditReceived: 0,
+    installmentReceived: 0,
+    contractualTotal: 0,
+    receivedTotal: 0,
+    totalProfit: 0,
+    realizedProfit: 0,
+    unrecognizedProfit: 0,
+    rowsCount: 0,
+    unlinkedCreditReceipts: 0,
+  };
+  summary.unlinkedCreditReceipts = unlinkedCreditReceipts;
+
+  for (const doc of docs.values()) {
+    const total = Number(doc.contractualTotal || 0);
+    const cost = Number(doc.contractualCost || 0);
+    const recognition = calculateCostRecoveryRecognition(total, cost, Number(doc.receivedInRange || 0));
+    const received = recognition.received;
+    const totalProfit = recognition.fullProfit;
+    const realizedProfit = recognition.realizedProfit;
+    const unrecognizedProfit = recognition.unrecognizedProfit;
+    doc.receivedInRange = received;
+    doc.collectionRate = recognition.collectionRate;
+    doc.totalProfit = totalProfit;
+    doc.realizedProfitInRange = realizedProfit;
+    doc.unrecognizedProfit = unrecognizedProfit;
+    summary.contractualTotal += total;
+    summary.receivedTotal += received;
+    summary.totalProfit += totalProfit;
+    summary.realizedProfit += realizedProfit;
+    summary.unrecognizedProfit += unrecognizedProfit;
+    if (doc.paymentType === 'cash') {
+      summary.cashSales += total;
+      summary.cashReceived += received;
+    } else if (doc.paymentType === 'credit') {
+      summary.creditSales += total;
+      summary.creditReceived += received;
+    } else {
+      summary.installmentSales += total;
+      summary.installmentReceived += received;
+    }
+  }
+
+  for (const line of lines) {
+    const doc = docs.get(String(line.docKey));
+    if (!doc) continue;
+    const total = Number(doc.contractualTotal || 0);
+    const docRatio = total > 0 ? clamp01(Number(doc.receivedInRange || 0) / total) : 0;
+    const lineTotal = Number(line.lineTotal || 0);
+    const lineCost = Number(line.lineCost || 0);
+    const receivedAmount = lineTotal * docRatio;
+    const lineRecognition = calculateCostRecoveryRecognition(lineTotal, lineCost, receivedAmount);
+    const fullProfit = lineRecognition.fullProfit;
+    const realizedProfit = lineRecognition.realizedProfit;
+    line.receivedAmount = receivedAmount;
+    line.collectionRate = docRatio * 100;
+    line.fullProfit = fullProfit;
+    line.realizedProfit = realizedProfit;
+    line.unrecognizedProfit = lineRecognition.unrecognizedProfit;
+    line.paymentType = doc.paymentType;
+    summary.rowsCount += 1;
+  }
+
+  const byDayMap = new Map<string, number>();
+  for (const doc of docs.values()) {
+    const day = String(doc.transactionDate || '').slice(0, 10);
+    if (!day) continue;
+    byDayMap.set(day, (byDayMap.get(day) || 0) + Number(doc.receivedInRange || 0));
+  }
+  const byDay = Array.from(byDayMap.entries()).map(([day, total]) => ({ day, total })).sort((a, b) => String(a.day).localeCompare(String(b.day)));
+
+  return {
+    summary,
+    rows: lines.sort((a, b) => String(b.transactionDate).localeCompare(String(a.transactionDate)) || Number(b.orderId) - Number(a.orderId)),
+    docs: Array.from(docs.values()).sort((a, b) => String(b.transactionDate).localeCompare(String(a.transactionDate)) || Number(b.orderId) - Number(a.orderId)),
+    byDay,
+  };
+}
+
+
+type RealizedProfitDoc = {
+  sourceType: 'invoice' | 'installment';
+  paymentType: 'cash' | 'credit' | 'installment';
+  orderId: number;
+  customerId: number | null;
+  customerName?: string | null;
+  transactionDate: string;
+  contractualTotal: number;
+  contractualCost: number;
+  receivedInRange: number;
+  actualSalePrice?: number;
+  primaryItemName?: string;
+  itemsSummary?: string;
+  itemsCount?: number;
+  detailHref?: string;
+  detailLabel?: string;
+  totalProfit?: number;
+  realizedProfit?: number;
+  unrecognizedProfit?: number;
+  collectionRate?: number;
+};
+
+const isDateInRange = (value: any, fromISO: string, toISO: string) => {
+  const d = moment(String(value || '').slice(0, 10));
+  return d.isValid() && !d.isBefore(moment(String(fromISO).slice(0, 10)), 'day') && !d.isAfter(moment(String(toISO).slice(0, 10)), 'day');
+};
+
+const normalizeRealizedProfitReportDate = (value: any): string => {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const shamsi = raw.includes('/') ? fromShamsiStringToISO(raw) : '';
+  const candidates = [shamsi, raw, raw.slice(0, 10)].filter(Boolean);
+  for (const candidate of candidates) {
+    try {
+      const m = moment(candidate, [moment.ISO_8601, 'YYYY-MM-DD', 'YYYY/MM/DD'], true);
+      if (m && typeof m.isValid === 'function' && m.isValid()) return m.format('YYYY-MM-DD');
+    } catch {}
+  }
+  try {
+    const loose = moment(raw);
+    return loose && typeof loose.isValid === 'function' && loose.isValid() ? loose.format('YYYY-MM-DD') : '';
+  } catch {
+    return '';
+  }
+};
+
+const isRealizedProfitReportDateInRange = (value: any, fromDate: string, toDate: string) => {
+  const d = normalizeRealizedProfitReportDate(value);
+  return !!d && !moment(d).isBefore(moment(fromDate), 'day') && !moment(d).isAfter(moment(toDate), 'day');
+};
+
+const isPassedInstallmentCheckStatus = (status: any) => {
+  const s = String(status || '').trim();
+  if (!s) return false;
+  if (/ضمانت|امانت|نزد فروشنده|در جریان|برگشت|عودت|لغو|باطل/.test(s)) return false;
+  return ['نقد شد', 'پاس شده', 'وصول شده', 'تسویه شده'].includes(s) || /پاس|وصول|نقد|تسویه/.test(s);
+};
+
+const calculateCostRecoveryRecognition = (contractualTotal: number, contractualCost: number, receivedAmount: number) => {
+  const total = Math.max(0, Number(contractualTotal || 0));
+  const cost = Math.max(0, Number(contractualCost || 0));
+  const received = Math.min(total, Math.max(0, Number(receivedAmount || 0)));
+  const fullProfit = total - cost;
+  let realizedProfit = 0;
+  if (fullProfit >= 0) {
+    realizedProfit = Math.min(fullProfit, Math.max(0, received - cost));
+  } else {
+    realizedProfit = received >= total ? fullProfit : 0;
+  }
+  const realizedCost = received - realizedProfit;
+  return {
+    received,
+    fullProfit,
+    realizedProfit,
+    realizedCost,
+    unrecognizedProfit: fullProfit - realizedProfit,
+    collectionRate: total > 0 ? (received / total) * 100 : 0,
+  };
+};
+
+async function buildRealizedProfitRecognitionReport(fromISO: string, toISO: string) {
+  const fromDate = moment(String(fromISO)).isValid() ? moment(String(fromISO)).format('YYYY-MM-DD') : moment().startOf('jMonth').format('YYYY-MM-DD');
+  const toDate = moment(String(toISO)).isValid() ? moment(String(toISO)).format('YYYY-MM-DD') : moment().endOf('day').format('YYYY-MM-DD');
+
+  const invoiceRaw = await allAsync(
+    `SELECT
+        'invoice' AS sourceType,
+        so.id AS orderId,
+        so.customerId,
+        c.fullName AS customerName,
+        so.paymentMethod,
+        so.transactionDate,
+        COALESCE(so.discount,0) AS orderDiscount,
+        soi.id AS lineId,
+        soi.itemType,
+        soi.itemId AS productId,
+        COALESCE(CASE WHEN soi.itemType='service' THEN sv.name WHEN soi.itemType='inventory' THEN p.name ELSE ph.model END, soi.description, '—') AS productName,
+        COALESCE(soi.quantity,0) AS quantity,
+        COALESCE(soi.unitPrice,0) AS unitPrice,
+        COALESCE(soi.discountPerItem,0) AS discountPerItem,
+        ((COALESCE(soi.quantity,0) * COALESCE(soi.unitPrice,0)) - COALESCE(soi.discountPerItem,0)) AS lineTotal,
+        CASE
+          WHEN soi.itemType='inventory' THEN COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice,0) * COALESCE(soi.quantity,0)
+          WHEN soi.itemType='phone' THEN COALESCE(NULLIF(ph.currentPurchasePrice,0), NULLIF(soi.buyPrice,0), ph.purchasePrice,0) * COALESCE(soi.quantity,0)
+          ELSE 0
+        END AS lineCost,
+        CASE
+          WHEN soi.itemType='inventory' THEN COALESCE(p.purchasePrice,0) * COALESCE(soi.quantity,0)
+          WHEN soi.itemType='phone' THEN COALESCE(ph.purchasePrice,0) * COALESCE(soi.quantity,0)
+          ELSE 0
+        END AS lineOriginalCost,
+        CASE
+          WHEN soi.itemType='phone' AND COALESCE(NULLIF(ph.currentPurchasePrice,0),0) > 0 THEN 'current_purchase_price'
+          WHEN soi.itemType='phone' AND COALESCE(NULLIF(soi.buyPrice,0),0) > 0 THEN 'sale_item_buy_price'
+          WHEN soi.itemType='phone' THEN 'original_purchase_price'
+          WHEN soi.itemType='inventory' AND COALESCE(NULLIF(soi.buyPrice,0),0) > 0 THEN 'sale_item_buy_price'
+          WHEN soi.itemType='inventory' THEN 'product_purchase_price'
+          ELSE 'not_applicable'
+        END AS costBasisSource
+       FROM sales_orders so
+       JOIN sales_order_items soi ON so.id = soi.orderId
+       LEFT JOIN products p ON soi.itemType='inventory' AND p.id = soi.itemId
+       LEFT JOIN services sv ON soi.itemType='service' AND sv.id = soi.itemId
+       LEFT JOIN phones ph ON soi.itemType='phone' AND ph.id = soi.itemId
+       LEFT JOIN customers c ON c.id = so.customerId
+      WHERE (so.status IS NULL OR so.status = 'active')
+        AND date(so.transactionDate) <= date(?)
+      ORDER BY date(so.transactionDate) ASC, so.id ASC, soi.id ASC`,
+    [toDate]
+  );
+
+  const invoiceLines = buildDiscountAwareInvoiceLines(invoiceRaw as any[]).map((row: any, idx: number) => ({
+    rowId: `invoice-${row.orderId}-${row.lineId || idx}`,
+    sourceType: 'invoice',
+    docKey: getProductSalesDocKey('invoice', Number(row.orderId)),
+    orderId: Number(row.orderId),
+    customerId: row.customerId == null ? null : Number(row.customerId),
+    customerName: row.customerName == null ? null : String(row.customerName || ''),
+    transactionDate: String(row.transactionDate || ''),
+    paymentType: String(row.paymentMethod || 'cash').toLowerCase() === 'credit' ? 'credit' : 'cash',
+    itemType: String(row.itemType || 'inventory'),
+    productId: Number(row.productId || 0),
+    productName: String(row.productName || '—'),
+    quantity: Number(row.quantity || 0),
+    lineTotal: Math.max(0, Number(row.lineTotal || 0)),
+    lineCost: Math.max(0, Number(row.lineCost || 0)),
+    lineOriginalCost: Math.max(0, Number(row.lineOriginalCost || row.lineCost || 0)),
+    costBasisSource: String(row.costBasisSource || ''),
+    receivedAmount: 0,
+    realizedProfit: 0,
+    fullProfit: 0,
+    unrecognizedProfit: 0,
+    collectionRate: 0,
+  }));
+
+  const installmentRaw = await allAsync(
+    `SELECT
+        'installment' AS sourceType,
+        ins.id AS orderId,
+        ins.customerId,
+        c.fullName AS customerName,
+        'installment' AS paymentMethod,
+        COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+        COALESCE(ins.actualSalePrice,0) AS actualSalePrice,
+        COALESCE(ins.downPayment,0) AS downPayment,
+        isi.id AS lineId,
+        isi.itemType,
+        isi.itemId AS productId,
+        COALESCE(CASE WHEN isi.itemType='service' THEN sv.name WHEN isi.itemType='inventory' THEN p.name ELSE ph.model END, isi.description, '—') AS productName,
+        COALESCE(isi.quantity,0) AS quantity,
+        COALESCE(isi.totalPrice,0) AS lineTotal,
+        CASE
+          WHEN isi.itemType='inventory' THEN COALESCE(NULLIF(isi.buyPrice,0), p.purchasePrice,0) * COALESCE(isi.quantity,0)
+          WHEN isi.itemType='phone' THEN COALESCE(NULLIF(ph.currentPurchasePrice,0), NULLIF(isi.buyPrice,0), ph.purchasePrice,0) * COALESCE(isi.quantity,0)
+          ELSE 0
+        END AS lineCost,
+        CASE
+          WHEN isi.itemType='inventory' THEN COALESCE(p.purchasePrice,0) * COALESCE(isi.quantity,0)
+          WHEN isi.itemType='phone' THEN COALESCE(ph.purchasePrice,0) * COALESCE(isi.quantity,0)
+          ELSE 0
+        END AS lineOriginalCost,
+        CASE
+          WHEN isi.itemType='phone' AND COALESCE(NULLIF(ph.currentPurchasePrice,0),0) > 0 THEN 'current_purchase_price'
+          WHEN isi.itemType='phone' AND COALESCE(NULLIF(isi.buyPrice,0),0) > 0 THEN 'sale_item_buy_price'
+          WHEN isi.itemType='phone' THEN 'original_purchase_price'
+          WHEN isi.itemType='inventory' AND COALESCE(NULLIF(isi.buyPrice,0),0) > 0 THEN 'sale_item_buy_price'
+          WHEN isi.itemType='inventory' THEN 'product_purchase_price'
+          ELSE 'not_applicable'
+        END AS costBasisSource
+       FROM installment_sales ins
+       JOIN installment_sale_items isi ON ins.id = isi.saleId
+       LEFT JOIN products p ON isi.itemType='inventory' AND p.id = isi.itemId
+       LEFT JOIN services sv ON isi.itemType='service' AND sv.id = isi.itemId
+       LEFT JOIN phones ph ON isi.itemType='phone' AND ph.id = isi.itemId
+       LEFT JOIN customers c ON c.id = ins.customerId
+      WHERE date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) <= date(?)
+
+      UNION ALL
+
+      SELECT
+        'installment' AS sourceType,
+        ins.id AS orderId,
+        ins.customerId,
+        c.fullName AS customerName,
+        'installment' AS paymentMethod,
+        COALESCE(ins.dateCreated, ins.installmentsStartDate) AS transactionDate,
+        COALESCE(ins.actualSalePrice,0) AS actualSalePrice,
+        COALESCE(ins.downPayment,0) AS downPayment,
+        NULL AS lineId,
+        'phone' AS itemType,
+        ph.id AS productId,
+        COALESCE(ph.model, 'گوشی') AS productName,
+        1 AS quantity,
+        COALESCE(ins.actualSalePrice,0) AS lineTotal,
+        COALESCE(NULLIF(ph.currentPurchasePrice,0), ph.purchasePrice,0) AS lineCost,
+        COALESCE(ph.purchasePrice,0) AS lineOriginalCost,
+        CASE
+          WHEN COALESCE(NULLIF(ph.currentPurchasePrice,0),0) > 0 THEN 'current_purchase_price'
+          ELSE 'original_purchase_price'
+        END AS costBasisSource
+       FROM installment_sales ins
+       JOIN phones ph ON ph.id = ins.phoneId
+       LEFT JOIN customers c ON c.id = ins.customerId
+      WHERE ins.phoneId IS NOT NULL
+        AND date(COALESCE(ins.dateCreated, ins.installmentsStartDate)) <= date(?)
+        AND NOT EXISTS (SELECT 1 FROM installment_sale_items isi2 WHERE isi2.saleId = ins.id)
+      ORDER BY transactionDate ASC, orderId ASC`,
+    [toDate, toDate]
+  );
+
+  const installmentLines = (installmentRaw as any[]).map((row: any, idx: number) => ({
+    rowId: `installment-${row.orderId}-${row.lineId || idx}`,
+    sourceType: 'installment',
+    docKey: getProductSalesDocKey('installment', Number(row.orderId)),
+    orderId: Number(row.orderId),
+    customerId: row.customerId == null ? null : Number(row.customerId),
+    customerName: row.customerName == null ? null : String(row.customerName || ''),
+    transactionDate: String(row.transactionDate || ''),
+    paymentType: 'installment',
+    actualSalePrice: Number(row.actualSalePrice || 0),
+    downPayment: Number(row.downPayment || 0),
+    itemType: String(row.itemType || 'inventory'),
+    productId: Number(row.productId || 0),
+    productName: String(row.productName || '—'),
+    quantity: Number(row.quantity || 0),
+    lineTotal: Math.max(0, Number(row.lineTotal || 0)),
+    lineCost: Math.max(0, Number(row.lineCost || 0)),
+    lineOriginalCost: Math.max(0, Number(row.lineOriginalCost || row.lineCost || 0)),
+    costBasisSource: String(row.costBasisSource || ''),
+    receivedAmount: 0,
+    realizedProfit: 0,
+    fullProfit: 0,
+    unrecognizedProfit: 0,
+    collectionRate: 0,
+  }));
+
+  const lines = [...invoiceLines, ...installmentLines].filter((line: any) => Number(line.lineTotal || 0) > 0 || Number(line.lineCost || 0) > 0);
+  const docs = new Map<string, RealizedProfitDoc>();
+  const docsLines = new Map<string, any[]>();
+
+  for (const line of lines as any[]) {
+    const arr = docsLines.get(line.docKey) || [];
+    arr.push(line);
+    docsLines.set(line.docKey, arr);
+  }
+
+  // Installment accounting note:
+  // For installment sales, the recognized contract value must be the actual sale price,
+  // not a stale line total. Older records may have installment_sale_items.totalPrice
+  // that does not exactly match installment_sales.actualSalePrice. Aligning line totals
+  // prevents wrong remaining profit such as 1M instead of the actual 2M margin.
+  for (const arr of docsLines.values()) {
+    const first = arr[0] || {};
+    if (String(first.sourceType || '') !== 'installment') continue;
+    const actualSalePrice = Math.max(0, Number(first.actualSalePrice || 0));
+    const linesTotal = arr.reduce((sum: number, line: any) => sum + Math.max(0, Number(line.lineTotal || 0)), 0);
+    if (actualSalePrice > 0 && linesTotal > 0 && Math.abs(actualSalePrice - linesTotal) > 1) {
+      const factor = actualSalePrice / linesTotal;
+      for (const line of arr as any[]) {
+        line.lineTotal = Math.max(0, Number(line.lineTotal || 0)) * factor;
+      }
+    }
+  }
+
+  for (const [docKey, arr] of docsLines.entries()) {
+    const first = arr[0];
+    const contractualTotal = arr.reduce((s: number, l: any) => s + Number(l.lineTotal || 0), 0);
+    const contractualCost = arr.reduce((s: number, l: any) => s + Number(l.lineCost || 0), 0);
+    const sourceType = first.sourceType === 'installment' ? 'installment' : 'invoice';
+    const phoneFirst = arr.find((l: any) => String(l.itemType || '') === 'phone');
+    const primaryLine = phoneFirst || arr[0] || {};
+    const cleanItemName = String(primaryLine.productName || '—').trim() || '—';
+    const extraItemsCount = Math.max(0, arr.length - 1);
+    const itemsSummary = extraItemsCount > 0 ? `${cleanItemName} + ${extraItemsCount.toLocaleString('fa-IR')} قلم دیگر` : cleanItemName;
+    const doc: RealizedProfitDoc = {
+      docKey,
+      sourceType,
+      paymentType: first.paymentType === 'installment' ? 'installment' : first.paymentType === 'credit' ? 'credit' : 'cash',
+      orderId: Number(first.orderId || 0),
+      customerId: first.customerId == null ? null : Number(first.customerId),
+      customerName: first.customerName || null,
+      transactionDate: String(first.transactionDate || ''),
+      contractualTotal,
+      contractualCost,
+      receivedInRange: 0,
+      actualSalePrice: Number(first.actualSalePrice || contractualTotal || 0),
+      primaryItemName: cleanItemName,
+      itemsSummary,
+      itemsCount: arr.length,
+      detailHref: sourceType === 'installment' ? `/installment-sales/${Number(first.orderId || 0)}` : `/invoices/${Number(first.orderId || 0)}`,
+      detailLabel: sourceType === 'installment' ? 'مشاهده وضعیت اقساط' : 'مشاهده فاکتور',
+    };
+    if (doc.paymentType === 'cash' && isDateInRange(doc.transactionDate, fromDate, toDate)) {
+      doc.receivedInRange = contractualTotal;
+    }
+    if (doc.paymentType === 'installment' && isDateInRange(doc.transactionDate, fromDate, toDate)) {
+      const actualSalePrice = Number(doc.actualSalePrice || contractualTotal || 0);
+      const downPayment = Math.max(0, Number(first.downPayment || 0));
+      doc.receivedInRange += actualSalePrice > 0 ? downPayment * (contractualTotal / actualSalePrice) : Math.min(downPayment, contractualTotal);
+    }
+    docs.set(docKey, doc);
+  }
+
+  const invoiceDocsById = new Map<number, RealizedProfitDoc>();
+  const installmentDocsById = new Map<number, RealizedProfitDoc>();
+  for (const doc of docs.values()) {
+    if (doc.sourceType === 'invoice') invoiceDocsById.set(doc.orderId, doc);
+    if (doc.sourceType === 'installment') installmentDocsById.set(doc.orderId, doc);
+  }
+
+  const creditReceipts = await allAsync(
+    `SELECT id, customerId, transactionDate, COALESCE(credit,0) AS amount, description, referenceType, referenceId
+       FROM customer_ledger
+      WHERE customerId IS NOT NULL
+        AND COALESCE(credit,0) > 0
+        AND COALESCE(debit,0) = 0
+        AND date(transactionDate) BETWEEN date(?) AND date(?)
+      ORDER BY datetime(transactionDate) ASC, id ASC`,
+    [fromDate, toDate]
+  );
+
+  let unlinkedCreditReceipts = 0;
+  for (const receipt of creditReceipts as any[]) {
+    const amount = Math.max(0, Number(receipt.amount || 0));
+    if (amount <= 0) continue;
+    const refType = String(receipt.referenceType || '').trim().toLowerCase();
+    const refId = Number(receipt.referenceId || 0);
+    const desc = String(receipt.description || '');
+    const parsedInvoiceId = refId > 0 ? refId : Number((desc.match(/(?:فاکتور(?:\s*فروش)?|invoice)\s*(?:شماره|#)?\s*(\d+)/i)?.[1] || 0));
+    const isDirectInvoiceRef = refType === 'sales_order_receipt' || refType === 'sales_order_payment' || (!refType && parsedInvoiceId > 0);
+    const doc = isDirectInvoiceRef ? invoiceDocsById.get(parsedInvoiceId) : null;
+    if (!doc || doc.paymentType !== 'credit' || Number(doc.customerId || 0) !== Number(receipt.customerId || 0)) {
+      unlinkedCreditReceipts += amount;
+      continue;
+    }
+    const outstanding = Math.max(0, Number(doc.contractualTotal || 0) - Number(doc.receivedInRange || 0));
+    const alloc = Math.min(outstanding, amount);
+    doc.receivedInRange += alloc;
+    if (amount > alloc) unlinkedCreditReceipts += amount - alloc;
+  }
+
+  const installmentReceipts = await allAsync(
+    `SELECT ins.id AS saleId, it.id AS txId, it.payment_date AS paymentDate, COALESCE(it.amount_paid,0) AS amountPaid
+       FROM installment_transactions it
+       JOIN installment_payments ip ON ip.id = it.installment_payment_id
+       JOIN installment_sales ins ON ins.id = ip.saleId
+      WHERE date(it.payment_date) BETWEEN date(?) AND date(?)
+      ORDER BY datetime(it.payment_date) ASC, it.id ASC`,
+    [fromDate, toDate]
+  );
+
+  for (const tx of installmentReceipts as any[]) {
+    const doc = installmentDocsById.get(Number(tx.saleId));
+    if (!doc) continue;
+    const actualSalePrice = Number(doc.actualSalePrice || doc.contractualTotal || 0);
+    const raw = Math.max(0, Number(tx.amountPaid || 0));
+    const allocRaw = actualSalePrice > 0 ? raw * (Number(doc.contractualTotal || 0) / actualSalePrice) : raw;
+    const outstanding = Math.max(0, Number(doc.contractualTotal || 0) - Number(doc.receivedInRange || 0));
+    doc.receivedInRange += Math.min(outstanding, allocRaw);
+  }
+
+  const passedChecks = await allAsync(
+    `SELECT saleId, id AS checkId, checkNumber, dueDate, COALESCE(amount,0) AS amount, status
+       FROM installment_checks
+      WHERE COALESCE(amount,0) > 0`,
+    []
+  ).catch(() => []);
+
+  for (const check of passedChecks as any[]) {
+    if (!isPassedInstallmentCheckStatus(check.status)) continue;
+    if (!isRealizedProfitReportDateInRange(check.dueDate, fromDate, toDate)) continue;
+    const doc = installmentDocsById.get(Number(check.saleId));
+    if (!doc) continue;
+    const actualSalePrice = Number(doc.actualSalePrice || doc.contractualTotal || 0);
+    const raw = Math.max(0, Number(check.amount || 0));
+    const allocRaw = actualSalePrice > 0 ? raw * (Number(doc.contractualTotal || 0) / actualSalePrice) : raw;
+    const outstanding = Math.max(0, Number(doc.contractualTotal || 0) - Number(doc.receivedInRange || 0));
+    doc.receivedInRange += Math.min(outstanding, allocRaw);
+  }
+
+  const summary: any = {
+    contractualRevenue: 0,
+    contractualCost: 0,
+    fullProfit: 0,
+    realizedRevenue: 0,
+    realizedCost: 0,
+    realizedProfit: 0,
+    unrecognizedProfit: 0,
+    collectionRate: 0,
+    rowsCount: 0,
+    docsCount: 0,
+    unlinkedCreditReceipts,
+    byPaymentType: {
+      cash: { contractualRevenue: 0, realizedRevenue: 0, realizedProfit: 0, fullProfit: 0 },
+      credit: { contractualRevenue: 0, realizedRevenue: 0, realizedProfit: 0, fullProfit: 0 },
+      installment: { contractualRevenue: 0, realizedRevenue: 0, realizedProfit: 0, fullProfit: 0 },
+    },
+    byItemType: {},
+  };
+
+  for (const doc of docs.values()) {
+    const total = Number(doc.contractualTotal || 0);
+    const cost = Number(doc.contractualCost || 0);
+    const recognition = calculateCostRecoveryRecognition(total, cost, Number(doc.receivedInRange || 0));
+    doc.receivedInRange = recognition.received;
+    doc.collectionRate = recognition.collectionRate;
+    doc.totalProfit = recognition.fullProfit;
+    doc.realizedProfit = recognition.realizedProfit;
+    doc.unrecognizedProfit = recognition.unrecognizedProfit;
+
+    const bucket = summary.byPaymentType[doc.paymentType] || summary.byPaymentType.cash;
+    bucket.contractualRevenue += total;
+    bucket.realizedRevenue += recognition.received;
+    bucket.fullProfit += recognition.fullProfit;
+    bucket.realizedProfit += recognition.realizedProfit;
+
+    summary.contractualRevenue += total;
+    summary.contractualCost += cost;
+    summary.fullProfit += recognition.fullProfit;
+    summary.realizedRevenue += recognition.received;
+    summary.realizedCost += recognition.realizedCost;
+    summary.realizedProfit += recognition.realizedProfit;
+    summary.unrecognizedProfit += recognition.unrecognizedProfit;
+    summary.docsCount += 1;
+  }
+  summary.collectionRate = summary.contractualRevenue > 0 ? (summary.realizedRevenue / summary.contractualRevenue) * 100 : 0;
+
+  for (const [docKey, docLines] of docsLines.entries()) {
+    const doc = docs.get(String(docKey));
+    if (!doc) continue;
+    const ratio = Number(doc.contractualTotal || 0) > 0 ? clamp01(Number(doc.receivedInRange || 0) / Number(doc.contractualTotal || 0)) : 0;
+    const positiveProfitBase = docLines.reduce((sum: number, line: any) => sum + Math.max(0, Number(line.lineTotal || 0) - Number(line.lineCost || 0)), 0);
+    const negativeProfitBase = docLines.reduce((sum: number, line: any) => sum + Math.abs(Math.min(0, Number(line.lineTotal || 0) - Number(line.lineCost || 0))), 0);
+
+    for (const line of docLines as any[]) {
+      const lineTotal = Number(line.lineTotal || 0);
+      const lineCost = Number(line.lineCost || 0);
+      const lineOriginalCost = Number(line.lineOriginalCost || lineCost || 0);
+      const receivedAmount = lineTotal * ratio;
+      const fullProfit = lineTotal - lineCost;
+      const expectedFullProfit = lineTotal - lineOriginalCost;
+      const expectedRecognition = calculateCostRecoveryRecognition(lineTotal, lineOriginalCost, receivedAmount);
+      let realizedProfit = 0;
+      if (Number(doc.realizedProfit || 0) > 0 && positiveProfitBase > 0) {
+        realizedProfit = Number(doc.realizedProfit || 0) * (Math.max(0, fullProfit) / positiveProfitBase);
+      } else if (Number(doc.realizedProfit || 0) < 0 && negativeProfitBase > 0) {
+        realizedProfit = Number(doc.realizedProfit || 0) * (Math.abs(Math.min(0, fullProfit)) / negativeProfitBase);
+      }
+      const realizedCost = receivedAmount - realizedProfit;
+      line.paymentType = doc.paymentType;
+      line.receivedAmount = receivedAmount;
+      line.realizedCost = realizedCost;
+      line.fullProfit = fullProfit;
+      line.expectedFullProfit = expectedFullProfit;
+      line.expectedRealizedProfit = expectedRecognition.realizedProfit;
+      line.costDelta = lineCost - lineOriginalCost;
+      line.realizedProfit = realizedProfit;
+      line.unrecognizedProfit = fullProfit - realizedProfit;
+      line.collectionRate = ratio * 100;
+
+      const itemType = String(line.itemType || 'unknown');
+      summary.byItemType[itemType] = summary.byItemType[itemType] || { contractualRevenue: 0, realizedRevenue: 0, fullProfit: 0, realizedProfit: 0, rowsCount: 0 };
+      summary.byItemType[itemType].contractualRevenue += lineTotal;
+      summary.byItemType[itemType].realizedRevenue += receivedAmount;
+      summary.byItemType[itemType].fullProfit += fullProfit;
+      summary.byItemType[itemType].realizedProfit += realizedProfit;
+      summary.byItemType[itemType].rowsCount += 1;
+      summary.rowsCount += 1;
+    }
+  }
+
+  const byDayMap = new Map<string, any>();
+  for (const doc of docs.values()) {
+    const day = String(doc.transactionDate || '').slice(0, 10);
+    if (!day) continue;
+    const cur = byDayMap.get(day) || { day, contractualRevenue: 0, realizedRevenue: 0, realizedProfit: 0 };
+    cur.contractualRevenue += Number(doc.contractualTotal || 0);
+    cur.realizedRevenue += Number(doc.receivedInRange || 0);
+    cur.realizedProfit += Number(doc.realizedProfit || 0);
+    byDayMap.set(day, cur);
+  }
+
+  return {
+    range: { fromISO: fromDate, toISO: toDate },
+    summary,
+    docs: Array.from(docs.values()).sort((a, b) => String(b.transactionDate).localeCompare(String(a.transactionDate)) || Number(b.orderId) - Number(a.orderId)),
+    rows: (lines as any[]).sort((a, b) => String(b.transactionDate).localeCompare(String(a.transactionDate)) || Number(b.orderId) - Number(a.orderId)),
+    byDay: Array.from(byDayMap.values()).sort((a, b) => String(a.day).localeCompare(String(b.day))),
+    audit: {
+      recognitionBasis: 'cost recovery: profit is recognized only after collections exceed the sale-time/purchase cost basis; cash sales still recognize immediately when fully received',
+      costRecognition: 'cost recovery COGS = collections first recover cost, then remaining collections become realized profit; phone cost fallback uses currentPurchasePrice before original purchasePrice whenever day-of-sale/current purchase price is registered',
+      creditReceiptLink: 'customer_ledger.referenceType/referenceId or invoice number parsed from description',
+      installmentReceiptLink: 'down payment + installment_transactions + passed/non-guarantee installment_checks + check recovery transactions',
+      generatedAt: new Date().toISOString(),
+    },
+  };
+}
+
+app.get('/api/reports/realized-profit', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const rawFrom = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const rawTo = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    const fromISO = rawFrom.includes('/') ? fromShamsiStringToISO(rawFrom) : moment(rawFrom).toDate().toISOString();
+    const toISO = rawTo.includes('/') ? fromShamsiStringToISO(rawTo) : moment(rawTo).toDate().toISOString();
+    if (!fromISO || !toISO || !moment(fromISO).isValid() || !moment(toISO).isValid()) {
+      return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+    }
+    const data = await buildRealizedProfitRecognitionReport(fromISO, toISO);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+
+app.get('/api/reports/product-sales', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+    const report = await buildProductSalesCollectionsReport(fromISO, toISO);
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        currencyBase: REPORT_CURRENCY_CONTRACT.currencyBase,
+        displayCurrency: REPORT_CURRENCY_CONTRACT.displayCurrency,
+        moneyDivisor: REPORT_CURRENCY_CONTRACT.moneyDivisor,
+        total: Number(report.summary.contractualTotal || 0),
+        receivedTotal: Number(report.summary.receivedTotal || 0),
+        realizedProfit: Number(report.summary.realizedProfit || 0),
+        breakdown: {
+          cashSales: Number(report.summary.cashSales || 0),
+          creditSales: Number(report.summary.creditSales || 0),
+          installmentSales: Number(report.summary.installmentSales || 0),
+          cashReceived: Number(report.summary.cashReceived || 0),
+          creditReceived: Number(report.summary.creditReceived || 0),
+          installmentReceived: Number(report.summary.installmentReceived || 0),
+        },
+        byDay: report.byDay,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+const getProductSalesDetailsDiscountAudit = (row: any) => {
+  const itemDiscount = Math.max(0, Number(row?.discountPerItem || 0));
+  const invoiceShare = Math.max(0, Number(row?.globalDiscountShare || 0));
+  const totalDiscount = Math.max(0, Number(row?.totalDiscountAmount ?? (itemDiscount + invoiceShare)));
+  const hasItemDiscount = itemDiscount > 0;
+  const hasInvoiceDiscount = invoiceShare > 0;
+  return { itemDiscount, invoiceShare, totalDiscount, hasItemDiscount, hasInvoiceDiscount, hasAnyDiscount: hasItemDiscount || hasInvoiceDiscount || totalDiscount > 0 };
+};
+
+const matchesProductSalesDetailsQuery = (row: any, query: string) => {
+  const q = String(query || '').trim().toLowerCase();
+  if (!q) return true;
+  const sourceLabel = String(row?.sourceType || 'invoice') === 'installment' ? 'اقساطی' : 'فاکتور';
+  const paymentLabel = row?.paymentType === 'installment' ? 'اقساطی' : row?.paymentType === 'credit' ? 'اعتباری' : 'نقدی';
+  const itemLabel = row?.itemType === 'service' ? 'خدمات' : 'لوازم';
+  return (
+    String(row?.orderId || '').includes(q) ||
+    String(row?.productId || '').includes(q) ||
+    String(row?.productName || '').toLowerCase().includes(q) ||
+    sourceLabel.includes(q) ||
+    paymentLabel.includes(q) ||
+    itemLabel.includes(q)
+  );
+};
+
+const summarizeProductSalesDetailsRows = (rows: any[]) => rows.reduce((acc: any, row: any) => {
+  const audit = getProductSalesDetailsDiscountAudit(row);
+  acc.lineTotal += Number(row?.lineTotal || 0);
+  acc.receivedAmount += Number(row?.receivedAmount || 0);
+  acc.totalProfit += Number(row?.fullProfit ?? (Number(row?.lineTotal || 0) - Number(row?.lineCost || 0)));
+  acc.realizedProfit += Number(row?.realizedProfit || 0);
+  acc.unrecognizedProfit += Number(row?.unrecognizedProfit ?? (Number(row?.fullProfit ?? (Number(row?.lineTotal || 0) - Number(row?.lineCost || 0))) - Number(row?.realizedProfit || 0)));
+  acc.totalDiscountAmount += audit.totalDiscount;
+  acc.itemDiscountAmount += audit.itemDiscount;
+  acc.invoiceDiscountShare += audit.invoiceShare;
+  return acc;
+}, {
+  lineTotal: 0,
+  receivedAmount: 0,
+  totalProfit: 0,
+  realizedProfit: 0,
+  unrecognizedProfit: 0,
+  totalDiscountAmount: 0,
+  itemDiscountAmount: 0,
+  invoiceDiscountShare: 0,
+});
+
+const buildProductSalesDetailsTopProducts = (rows: any[]) => {
+  const map = new Map<string, any>();
+  for (const row of rows) {
+    const itemType = row?.itemType === 'service' ? 'service' : 'inventory';
+    const productId = Number(row?.productId || 0);
+    const key = `${itemType}:${productId}`;
+    const cur = map.get(key) || { itemType, productId, productName: String(row?.productName || '—'), qty: 0, amount: 0 };
+    cur.qty += Number(row?.quantity || 0);
+    cur.amount += Number(row?.receivedAmount ?? row?.lineTotal ?? 0);
+    map.set(key, cur);
+  }
+  return Array.from(map.values()).sort((a: any, b: any) => Number(b.amount || 0) - Number(a.amount || 0)).slice(0, 8);
+};
+
+const PRODUCT_SALES_HEALTH_TOLERANCE = 1;
+const PRODUCT_SALES_HEALTH_ROUNDING_TOLERANCE = 1000;
+const healthAbsDiff = (a: any, b: any) => Math.abs(Number(a || 0) - Number(b || 0));
+const healthSeverityForDiff = (diff: number) => diff > PRODUCT_SALES_HEALTH_ROUNDING_TOLERANCE ? 'error' : 'warning';
+const productSalesHealthSourceLabel = (sourceType: any) => String(sourceType || 'invoice') === 'installment' ? 'اقساطی' : 'فاکتور';
+
+function buildProductSalesCalculationHealth(rows: any[], docs: any[], allRowsForCompleteness?: any[]) {
+  const inputRows = Array.isArray(rows) ? rows : [];
+  const completenessRows = Array.isArray(allRowsForCompleteness) ? allRowsForCompleteness : inputRows;
+  const docMap = new Map<string, any>();
+  for (const doc of docs || []) {
+    const key = getProductSalesDocKey(String(doc?.sourceType || 'invoice'), Number(doc?.orderId || 0));
+    if (key) docMap.set(key, doc);
+  }
+
+  const fullCountByDoc = new Map<string, number>();
+  for (const row of completenessRows) {
+    const key = String(row?.docKey || getProductSalesDocKey(String(row?.sourceType || 'invoice'), Number(row?.orderId || 0)));
+    fullCountByDoc.set(key, (fullCountByDoc.get(key) || 0) + 1);
+  }
+
+  const rowsByDoc = new Map<string, any[]>();
+  for (const row of inputRows) {
+    const key = String(row?.docKey || getProductSalesDocKey(String(row?.sourceType || 'invoice'), Number(row?.orderId || 0)));
+    const list = rowsByDoc.get(key) || [];
+    list.push(row);
+    rowsByDoc.set(key, list);
+  }
+
+  const issues: any[] = [];
+  let checkedDocs = 0;
+  let checkedRows = 0;
+  let skippedPartialDocs = 0;
+  let totalAbsoluteDifference = 0;
+
+  const pushIssue = (issue: any) => {
+    const diff = Math.abs(Number(issue?.difference || 0));
+    totalAbsoluteDifference += diff;
+    issues.push({
+      id: `${issue.type || 'issue'}-${issue.sourceType || 'invoice'}-${issue.orderId || 0}-${issues.length + 1}`,
+      severity: issue.severity || 'warning',
+      type: issue.type || 'unknown',
+      sourceType: issue.sourceType || 'invoice',
+      orderId: Number(issue.orderId || 0),
+      paymentType: issue.paymentType || 'cash',
+      title: issue.title || 'نیاز به بررسی',
+      description: issue.description || '',
+      expectedAmount: Number(issue.expectedAmount || 0),
+      actualAmount: Number(issue.actualAmount || 0),
+      difference: Number(issue.difference || 0),
+      rowsCount: Number(issue.rowsCount || 0),
+      itemDiscountTotal: Number(issue.itemDiscountTotal || 0),
+      invoiceDiscountShareTotal: Number(issue.invoiceDiscountShareTotal || 0),
+      finalLinesTotal: Number(issue.finalLinesTotal || 0),
+      invoiceDiscountBase: Number(issue.invoiceDiscountBase || 0),
+      orderDiscount: Number(issue.orderDiscount || 0),
+      rowIssues: Array.isArray(issue.rowIssues) ? issue.rowIssues.slice(0, 8) : [],
+    });
+  };
+
+  for (const [docKey, groupRows] of rowsByDoc.entries()) {
+    if (!groupRows.length) continue;
+    checkedDocs += 1;
+    checkedRows += groupRows.length;
+    const first = groupRows[0] || {};
+    const doc = docMap.get(docKey);
+    const sourceType = String(first.sourceType || doc?.sourceType || 'invoice') === 'installment' ? 'installment' : 'invoice';
+    const orderId = Number(first.orderId || doc?.orderId || 0);
+    const paymentType = first.paymentType || doc?.paymentType || 'cash';
+    const fullDocRows = Number(fullCountByDoc.get(docKey) || groupRows.length);
+    const isPartialDoc = groupRows.length < fullDocRows;
+    if (isPartialDoc) skippedPartialDocs += 1;
+
+    let beforeGlobalTotal = 0;
+    let finalLinesTotal = 0;
+    let itemDiscountTotal = 0;
+    let invoiceDiscountShareTotal = 0;
+    let maxInvoiceDiscountBase = 0;
+    let orderDiscount = 0;
+    const rowIssues: any[] = [];
+
+    for (const row of groupRows) {
+      const quantity = Math.max(0, Number(row?.quantity || 0));
+      const unitPrice = Math.max(0, Number(row?.unitPrice || 0));
+      const gross = quantity * unitPrice;
+      const itemDiscount = Math.max(0, Number(row?.discountPerItem || 0));
+      const beforeGlobal = Math.max(0, Number(row?.lineTotalBeforeGlobalDiscount ?? row?.originalLineTotal ?? Math.max(0, gross - itemDiscount)));
+      const invoiceShare = Math.max(0, Number(row?.globalDiscountShare || 0));
+      const rowTotalDiscount = Math.max(0, Number(row?.totalDiscountAmount ?? (itemDiscount + invoiceShare)));
+      const finalLine = Math.max(0, Number(row?.lineTotal || 0));
+      const invoiceDiscountBase = Math.max(0, Number(row?.invoiceDiscountBase || 0));
+      orderDiscount = Math.max(orderDiscount, Math.max(0, Number(row?.orderDiscount || 0)));
+      maxInvoiceDiscountBase = Math.max(maxInvoiceDiscountBase, invoiceDiscountBase);
+      beforeGlobalTotal += beforeGlobal;
+      finalLinesTotal += finalLine;
+      itemDiscountTotal += itemDiscount;
+      invoiceDiscountShareTotal += invoiceShare;
+
+      const expectedFinal = Math.max(0, beforeGlobal - invoiceShare);
+      const finalDiff = healthAbsDiff(expectedFinal, finalLine);
+      if (finalDiff > PRODUCT_SALES_HEALTH_TOLERANCE) {
+        rowIssues.push({
+          productId: Number(row?.productId || 0),
+          productName: String(row?.productName || '—'),
+          reason: 'جمع نهایی ردیف با فرمول تخفیف برابر نیست',
+          expectedAmount: expectedFinal,
+          actualAmount: finalLine,
+          difference: finalDiff,
+        });
+      }
+
+      const discountDiff = healthAbsDiff(rowTotalDiscount, itemDiscount + invoiceShare);
+      if (discountDiff > PRODUCT_SALES_HEALTH_TOLERANCE) {
+        rowIssues.push({
+          productId: Number(row?.productId || 0),
+          productName: String(row?.productName || '—'),
+          reason: 'کل تخفیف ردیف با مجموع تخفیف آیتم و سهم فاکتور برابر نیست',
+          expectedAmount: itemDiscount + invoiceShare,
+          actualAmount: rowTotalDiscount,
+          difference: discountDiff,
+        });
+      }
+
+      if (gross > 0 && itemDiscount + invoiceShare > gross + PRODUCT_SALES_HEALTH_TOLERANCE) {
+        rowIssues.push({
+          productId: Number(row?.productId || 0),
+          productName: String(row?.productName || '—'),
+          reason: 'تخفیف ردیف از مبلغ ناخالص بیشتر شده است',
+          expectedAmount: gross,
+          actualAmount: itemDiscount + invoiceShare,
+          difference: (itemDiscount + invoiceShare) - gross,
+        });
+      }
+
+      if (gross > 0 && finalLine <= PRODUCT_SALES_HEALTH_TOLERANCE && (itemDiscount + invoiceShare) >= gross - PRODUCT_SALES_HEALTH_TOLERANCE) {
+        rowIssues.push({
+          productId: Number(row?.productId || 0),
+          productName: String(row?.productName || '—'),
+          reason: 'مبلغ نهایی ردیف بعد از تخفیف صفر شده است؛ اگر عمدی نیست بررسی شود',
+          expectedAmount: gross,
+          actualAmount: finalLine,
+          difference: gross - finalLine,
+        });
+      }
+    }
+
+    if (rowIssues.length) {
+      const maxDiff = rowIssues.reduce((m, item) => Math.max(m, Math.abs(Number(item.difference || 0))), 0);
+      pushIssue({
+        type: 'row_formula',
+        severity: healthSeverityForDiff(maxDiff),
+        sourceType,
+        orderId,
+        paymentType,
+        title: `${productSalesHealthSourceLabel(sourceType)} #${orderId}: مغایرت در فرمول ردیف‌ها`,
+        description: 'یک یا چند قلم با فرمول ناخالص، تخفیف آیتم، سهم تخفیف فاکتور و مبلغ نهایی هم‌خوان نیست.',
+        difference: maxDiff,
+        rowsCount: groupRows.length,
+        itemDiscountTotal,
+        invoiceDiscountShareTotal,
+        finalLinesTotal,
+        invoiceDiscountBase: maxInvoiceDiscountBase,
+        orderDiscount,
+        rowIssues,
+      });
+    }
+
+    const recomputedFinal = Math.max(0, beforeGlobalTotal - invoiceDiscountShareTotal);
+    const recomputeDiff = healthAbsDiff(recomputedFinal, finalLinesTotal);
+    if (recomputeDiff > PRODUCT_SALES_HEALTH_TOLERANCE) {
+      pushIssue({
+        type: 'group_recompute',
+        severity: healthSeverityForDiff(recomputeDiff),
+        sourceType,
+        orderId,
+        paymentType,
+        title: `${productSalesHealthSourceLabel(sourceType)} #${orderId}: جمع ردیف‌ها با تخفیف‌ها نمی‌خواند`,
+        description: 'جمع مبلغ قبل از تخفیف فاکتور منهای سهم تخفیف فاکتور باید با جمع نهایی ردیف‌ها برابر باشد.',
+        expectedAmount: recomputedFinal,
+        actualAmount: finalLinesTotal,
+        difference: recomputeDiff,
+        rowsCount: groupRows.length,
+        itemDiscountTotal,
+        invoiceDiscountShareTotal,
+        finalLinesTotal,
+        invoiceDiscountBase: maxInvoiceDiscountBase,
+        orderDiscount,
+      });
+    }
+
+    if (!isPartialDoc && doc) {
+      const docTotal = Number(doc.contractualTotal || 0);
+      const docDiff = healthAbsDiff(docTotal, finalLinesTotal);
+      if (docDiff > PRODUCT_SALES_HEALTH_TOLERANCE) {
+        pushIssue({
+          type: 'document_total',
+          severity: healthSeverityForDiff(docDiff),
+          sourceType,
+          orderId,
+          paymentType,
+          title: `${productSalesHealthSourceLabel(sourceType)} #${orderId}: جمع ردیف‌ها با مبلغ سند برابر نیست`,
+          description: 'جمع نهایی ردیف‌های غیرگوشی باید با مبلغ غیرگوشی سند در گزارش برابر باشد.',
+          expectedAmount: docTotal,
+          actualAmount: finalLinesTotal,
+          difference: docDiff,
+          rowsCount: groupRows.length,
+          itemDiscountTotal,
+          invoiceDiscountShareTotal,
+          finalLinesTotal,
+          invoiceDiscountBase: maxInvoiceDiscountBase,
+          orderDiscount,
+        });
+      }
+    }
+
+    if (!isPartialDoc && sourceType === 'invoice' && orderDiscount > 0 && maxInvoiceDiscountBase > 0) {
+      const expectedInvoiceShare = orderDiscount * (beforeGlobalTotal / maxInvoiceDiscountBase);
+      const shareDiff = healthAbsDiff(expectedInvoiceShare, invoiceDiscountShareTotal);
+      if (shareDiff > PRODUCT_SALES_HEALTH_TOLERANCE) {
+        pushIssue({
+          type: 'invoice_discount_allocation',
+          severity: healthSeverityForDiff(shareDiff),
+          sourceType,
+          orderId,
+          paymentType,
+          title: `${productSalesHealthSourceLabel(sourceType)} #${orderId}: سهم تخفیف فاکتور درست پخش نشده`,
+          description: 'سهم اقلام غیرگوشی از تخفیف کلی فاکتور باید متناسب با وزن مبلغی آن‌ها نسبت به مبنای تقسیم تخفیف باشد.',
+          expectedAmount: expectedInvoiceShare,
+          actualAmount: invoiceDiscountShareTotal,
+          difference: shareDiff,
+          rowsCount: groupRows.length,
+          itemDiscountTotal,
+          invoiceDiscountShareTotal,
+          finalLinesTotal,
+          invoiceDiscountBase: maxInvoiceDiscountBase,
+          orderDiscount,
+        });
+      }
+    }
+
+    if (orderDiscount > 0 && maxInvoiceDiscountBase <= PRODUCT_SALES_HEALTH_TOLERANCE) {
+      pushIssue({
+        type: 'missing_discount_base',
+        severity: 'error',
+        sourceType,
+        orderId,
+        paymentType,
+        title: `${productSalesHealthSourceLabel(sourceType)} #${orderId}: مبنای تقسیم تخفیف نامعتبر است`,
+        description: 'برای فاکتور تخفیف کلی ثبت شده اما مبنای تقسیم تخفیف صفر یا نامعتبر است.',
+        expectedAmount: orderDiscount,
+        actualAmount: maxInvoiceDiscountBase,
+        difference: orderDiscount,
+        rowsCount: groupRows.length,
+        itemDiscountTotal,
+        invoiceDiscountShareTotal,
+        finalLinesTotal,
+        invoiceDiscountBase: maxInvoiceDiscountBase,
+        orderDiscount,
+      });
+    }
+  }
+
+  const errorCount = issues.filter((item: any) => item.severity === 'error').length;
+  const warningCount = issues.filter((item: any) => item.severity === 'warning').length;
+  const roundingCount = issues.filter((item: any) => item.severity === 'warning' && Math.abs(Number(item.difference || 0)) <= PRODUCT_SALES_HEALTH_ROUNDING_TOLERANCE).length;
+  const status = errorCount > 0 ? 'error' : warningCount > 0 ? 'warning' : 'healthy';
+  const sortedIssues = issues.sort((a: any, b: any) => {
+    const sa = a.severity === 'error' ? 0 : 1;
+    const sb = b.severity === 'error' ? 0 : 1;
+    return sa - sb || Math.abs(Number(b.difference || 0)) - Math.abs(Number(a.difference || 0));
+  });
+
+  return {
+    status,
+    checkedDocs,
+    checkedRows,
+    skippedPartialDocs,
+    issueCount: sortedIssues.length,
+    errorCount,
+    warningCount,
+    roundingCount,
+    totalAbsoluteDifference,
+    issues: sortedIssues.slice(0, 80),
+  };
+}
+
+
+const parseProductSalesRiskDate = (value: any) => {
+  const raw = String(value || '').trim();
+  if (!raw) return null;
+  const jalali = moment(raw, 'jYYYY/jMM/jDD', true);
+  if (jalali.isValid()) return jalali.startOf('day');
+  const iso = moment(raw);
+  return iso.isValid() ? iso.startOf('day') : null;
+};
+
+const productSalesRiskLevelMeta = (score: number) => {
+  if (score >= 70) return { level: 'critical', label: 'بحرانی', weight: 4 };
+  if (score >= 50) return { level: 'urgent', label: 'فوری', weight: 3 };
+  if (score >= 25) return { level: 'followup', label: 'نیازمند پیگیری', weight: 2 };
+  return { level: 'low', label: 'کم‌ریسک', weight: 1 };
+};
+
+async function buildProductSalesCollectionRisk(rows: any[], docs: any[], limit = 80) {
+  const relevantRows = Array.isArray(rows) ? rows : [];
+  const docMap = new Map<string, any>();
+  for (const doc of Array.isArray(docs) ? docs : []) {
+    docMap.set(getProductSalesDocKey(String(doc?.sourceType || 'invoice'), Number(doc?.orderId || 0)), doc);
+  }
+
+  const rowsByDoc = new Map<string, any[]>();
+  for (const row of relevantRows) {
+    const key = getProductSalesDocKey(String(row?.sourceType || 'invoice'), Number(row?.orderId || 0));
+    const arr = rowsByDoc.get(key) || [];
+    arr.push(row);
+    rowsByDoc.set(key, arr);
+  }
+
+  const customerIds = Array.from(new Set([
+    ...Array.from(rowsByDoc.values()).map((list) => Number(list?.[0]?.customerId || 0)),
+    ...Array.from(docMap.values()).map((doc: any) => Number(doc?.customerId || 0)),
+  ].filter((id) => id > 0)));
+
+  const customerMap = new Map<number, any>();
+  const balanceMap = new Map<number, number>();
+  if (customerIds.length) {
+    const placeholders = customerIds.map(() => '?').join(',');
+    try {
+      const customerRows = await allAsync(
+        `SELECT id, fullName, phoneNumber, COALESCE(riskOverride,'') AS riskOverride FROM customers WHERE id IN (${placeholders})`,
+        customerIds
+      );
+      for (const c of customerRows as any[]) customerMap.set(Number(c.id), c);
+    } catch {}
+    try {
+      const balanceRows = await allAsync(
+        `SELECT l.customerId, COALESCE(l.balance, 0) AS balance
+           FROM customer_ledger l
+           JOIN (SELECT customerId, MAX(id) AS id FROM customer_ledger WHERE customerId IN (${placeholders}) GROUP BY customerId) x
+             ON x.id = l.id`,
+        customerIds
+      );
+      for (const b of balanceRows as any[]) balanceMap.set(Number(b.customerId), Number(b.balance || 0));
+    } catch {}
+  }
+
+  const installmentSaleIds = Array.from(new Set(Array.from(rowsByDoc.entries())
+    .filter(([key, list]) => String(list?.[0]?.sourceType || key.split(':')[0]) === 'installment')
+    .map(([key]) => Number(key.split(':')[1] || 0))
+    .filter((id) => id > 0)));
+  const installmentDueMap = new Map<number, any>();
+  const todayJ = moment().locale('fa').format('jYYYY/jMM/jDD');
+  if (installmentSaleIds.length) {
+    const placeholders = installmentSaleIds.map(() => '?').join(',');
+    try {
+      const dueRows = await allAsync(
+        `SELECT saleId,
+                COUNT(*) AS unpaidCount,
+                COALESCE(SUM(CASE WHEN status != 'پرداخت شده' THEN COALESCE(amountDue,0) ELSE 0 END),0) AS unpaidAmount,
+                COALESCE(SUM(CASE WHEN status != 'پرداخت شده' AND dueDate < ? THEN COALESCE(amountDue,0) ELSE 0 END),0) AS overdueAmount,
+                SUM(CASE WHEN status != 'پرداخت شده' AND dueDate < ? THEN 1 ELSE 0 END) AS overdueCount,
+                MIN(CASE WHEN status != 'پرداخت شده' THEN dueDate ELSE NULL END) AS nearestDueDate,
+                MIN(CASE WHEN status != 'پرداخت شده' AND dueDate < ? THEN dueDate ELSE NULL END) AS earliestOverdueDate
+           FROM installment_payments
+          WHERE saleId IN (${placeholders})
+          GROUP BY saleId`,
+        [todayJ, todayJ, todayJ, ...installmentSaleIds]
+      );
+      for (const d of dueRows as any[]) installmentDueMap.set(Number(d.saleId), d);
+    } catch {}
+    try {
+      const checkRows = await allAsync(
+        `SELECT saleId,
+                COALESCE(SUM(CASE WHEN status != 'نقد شد' THEN COALESCE(amount,0) ELSE 0 END),0) AS unpaidCheckAmount,
+                COALESCE(SUM(CASE WHEN status != 'نقد شد' AND dueDate < ? THEN COALESCE(amount,0) ELSE 0 END),0) AS overdueCheckAmount,
+                SUM(CASE WHEN status != 'نقد شد' AND dueDate < ? THEN 1 ELSE 0 END) AS overdueCheckCount,
+                MIN(CASE WHEN status != 'نقد شد' THEN dueDate ELSE NULL END) AS nearestCheckDueDate,
+                MIN(CASE WHEN status != 'نقد شد' AND dueDate < ? THEN dueDate ELSE NULL END) AS earliestCheckOverdueDate
+           FROM installment_checks
+          WHERE saleId IN (${placeholders})
+          GROUP BY saleId`,
+        [todayJ, todayJ, todayJ, ...installmentSaleIds]
+      );
+      for (const ch of checkRows as any[]) {
+        const cur = installmentDueMap.get(Number(ch.saleId)) || { saleId: Number(ch.saleId) };
+        cur.unpaidAmount = Number(cur.unpaidAmount || 0) + Number(ch.unpaidCheckAmount || 0);
+        cur.overdueAmount = Number(cur.overdueAmount || 0) + Number(ch.overdueCheckAmount || 0);
+        cur.overdueCount = Number(cur.overdueCount || 0) + Number(ch.overdueCheckCount || 0);
+        const dates = [cur.nearestDueDate, ch.nearestCheckDueDate].filter(Boolean).sort();
+        const overdueDates = [cur.earliestOverdueDate, ch.earliestCheckOverdueDate].filter(Boolean).sort();
+        cur.nearestDueDate = dates[0] || cur.nearestDueDate || ch.nearestCheckDueDate || null;
+        cur.earliestOverdueDate = overdueDates[0] || cur.earliestOverdueDate || ch.earliestCheckOverdueDate || null;
+        installmentDueMap.set(Number(ch.saleId), cur);
+      }
+    } catch {}
+  }
+
+  const today = moment().startOf('day');
+  const items: any[] = [];
+  for (const [key, groupRows] of rowsByDoc.entries()) {
+    if (!groupRows.length) continue;
+    const first = groupRows[0] || {};
+    const doc = docMap.get(key) || {};
+    const sourceType = String(first.sourceType || doc.sourceType || key.split(':')[0]) === 'installment' ? 'installment' : 'invoice';
+    const paymentType = String(first.paymentType || doc.paymentType || 'cash').toLowerCase() === 'installment' ? 'installment' : String(first.paymentType || doc.paymentType || 'cash').toLowerCase() === 'credit' ? 'credit' : 'cash';
+    const orderId = Number(first.orderId || doc.orderId || key.split(':')[1] || 0);
+    const customerId = Number(first.customerId || doc.customerId || 0);
+    const customer = customerId ? customerMap.get(customerId) : null;
+    const total = groupRows.reduce((sum, row) => sum + Number(row?.lineTotal || 0), 0);
+    const received = groupRows.reduce((sum, row) => sum + Number(row?.receivedAmount || 0), 0);
+    const fullProfit = groupRows.reduce((sum, row) => sum + Number(row?.fullProfit ?? (Number(row?.lineTotal || 0) - Number(row?.lineCost || 0))), 0);
+    const realizedProfit = groupRows.reduce((sum, row) => sum + Number(row?.realizedProfit || 0), 0);
+    const unrecognizedProfit = groupRows.reduce((sum, row) => sum + Number(row?.unrecognizedProfit ?? (Number(row?.fullProfit ?? 0) - Number(row?.realizedProfit || 0))), 0);
+    const totalDiscount = groupRows.reduce((sum, row) => sum + Number(row?.totalDiscountAmount || 0), 0);
+    const collectionRate = total > 0 ? Math.min(100, Math.max(0, (received / total) * 100)) : 0;
+    const outstanding = Math.max(0, total - received);
+    const transactionDate = String(first.transactionDate || doc.transactionDate || '');
+    const txMoment = parseProductSalesRiskDate(transactionDate);
+    const ageDays = txMoment ? Math.max(0, today.diff(txMoment, 'days')) : 0;
+    const due = sourceType === 'installment' ? installmentDueMap.get(orderId) : null;
+    const dueDate = due?.nearestDueDate || null;
+    const dueMoment = parseProductSalesRiskDate(dueDate);
+    const overdueBase = due?.earliestOverdueDate ? parseProductSalesRiskDate(due.earliestOverdueDate) : null;
+    const overdueDays = overdueBase ? Math.max(0, today.diff(overdueBase, 'days')) : (dueMoment && dueMoment.isBefore(today) ? Math.max(0, today.diff(dueMoment, 'days')) : 0);
+    const dueInDays = dueMoment ? dueMoment.diff(today, 'days') : null;
+    const overdueCount = Math.max(0, Number(due?.overdueCount || 0));
+    const overdueAmount = Math.max(0, Number(due?.overdueAmount || 0));
+    const customerBalance = Math.max(0, Number(balanceMap.get(customerId) || 0));
+    const discountRate = total > 0 ? (totalDiscount / (total + totalDiscount)) * 100 : 0;
+    const hasHighDiscountOpen = discountRate >= 12 && outstanding > 0 && collectionRate < 85;
+
+    if (paymentType === 'cash' || outstanding <= 1000) continue;
+
+    let score = paymentType === 'installment' ? 15 : 10;
+    const reasons: string[] = [];
+    if (collectionRate < 30) { score += 30; reasons.push(`درصد وصول پایین است (${collectionRate.toLocaleString('fa-IR', { maximumFractionDigits: 1 })}٪)`); }
+    else if (collectionRate < 60) { score += 18; reasons.push(`درصد وصول متوسط رو به پایین است (${collectionRate.toLocaleString('fa-IR', { maximumFractionDigits: 1 })}٪)`); }
+    else if (collectionRate < 90) { score += 8; reasons.push(`بخشی از مبلغ هنوز وصول نشده است (${collectionRate.toLocaleString('fa-IR', { maximumFractionDigits: 1 })}٪ وصول)`); }
+    if (overdueDays > 30) { score += 30; reasons.push(`${overdueDays.toLocaleString('fa-IR')} روز از سررسید گذشته است`); }
+    else if (overdueDays > 7) { score += 18; reasons.push(`${overdueDays.toLocaleString('fa-IR')} روز تأخیر در سررسید دارد`); }
+    else if (overdueDays > 0) { score += 10; reasons.push('سررسید این سند گذشته است'); }
+    else if (typeof dueInDays === 'number' && dueInDays >= 0 && dueInDays <= 7) { score += 7; reasons.push(`سررسید تا ${dueInDays.toLocaleString('fa-IR')} روز آینده است`); }
+    if (ageDays > 60) { score += 20; reasons.push(`از تاریخ فروش ${ageDays.toLocaleString('fa-IR')} روز گذشته است`); }
+    else if (ageDays > 30) { score += 12; reasons.push(`بیش از ${ageDays.toLocaleString('fa-IR')} روز از فروش گذشته است`); }
+    else if (ageDays > 14) { score += 6; reasons.push('فروش بیشتر از دو هفته باز مانده است'); }
+    if (unrecognizedProfit > 5000000) { score += 18; reasons.push(`سود وصول‌نشده بالاست: ${formatReportMoneyText(unrecognizedProfit)}`); }
+    else if (unrecognizedProfit > 1000000) { score += 10; reasons.push(`سود وصول‌نشده قابل توجه است: ${formatReportMoneyText(unrecognizedProfit)}`); }
+    if (customerBalance > 10000000) { score += 15; reasons.push(`مانده حساب مشتری بالاست: ${formatReportMoneyText(customerBalance)}`); }
+    else if (customerBalance > 3000000) { score += 8; reasons.push(`مشتری مانده حساب باز دارد: ${formatReportMoneyText(customerBalance)}`); }
+    if (overdueCount >= 3) { score += 20; reasons.push(`${overdueCount.toLocaleString('fa-IR')} قسط/چک عقب‌افتاده وجود دارد`); }
+    else if (overdueCount > 0) { score += 10; reasons.push(`${overdueCount.toLocaleString('fa-IR')} مورد سررسید عقب‌افتاده وجود دارد`); }
+    if (overdueAmount > 0) reasons.push(`مبلغ سررسید گذشته: ${formatReportMoneyText(overdueAmount)}`);
+    if (hasHighDiscountOpen) { score += 8; reasons.push(`تخفیف نسبتاً بالا ثبت شده و هنوز کامل وصول نشده است (${discountRate.toLocaleString('fa-IR', { maximumFractionDigits: 1 })}٪)`); }
+    const override = String(customer?.riskOverride || '').toLowerCase();
+    if (override.includes('high') || override.includes('critical') || override.includes('بحرانی')) { score += 12; reasons.push('برای این مشتری سطح ریسک دستی بالا ثبت شده است'); }
+
+    const meta = productSalesRiskLevelMeta(score);
+    if (!reasons.length) reasons.push('مانده باز وجود دارد، اما نشانه بحرانی جدی دیده نشد');
+    items.push({
+      id: key,
+      level: meta.level,
+      label: meta.label,
+      score: Math.min(100, Math.round(score)),
+      sourceType,
+      paymentType,
+      orderId,
+      customerId,
+      customerName: customer?.fullName || 'مشتری ثبت‌نشده',
+      customerPhone: customer?.phoneNumber || '',
+      transactionDate,
+      dueDate,
+      ageDays,
+      dueInDays: typeof dueInDays === 'number' ? dueInDays : null,
+      overdueDays,
+      overdueCount,
+      overdueAmount,
+      contractualTotal: total,
+      receivedAmount: received,
+      outstandingAmount: outstanding,
+      fullProfit,
+      realizedProfit,
+      unrecognizedProfit,
+      collectionRate,
+      customerBalance,
+      discountRate,
+      reasons,
+    });
+  }
+
+  const levelRank: any = { critical: 4, urgent: 3, followup: 2, low: 1 };
+  const sortedItems = items.sort((a, b) => (levelRank[b.level] - levelRank[a.level]) || Number(b.score || 0) - Number(a.score || 0) || Number(b.outstandingAmount || 0) - Number(a.outstandingAmount || 0));
+  const counts = sortedItems.reduce((acc: any, item: any) => {
+    acc[item.level] = (acc[item.level] || 0) + 1;
+    return acc;
+  }, { low: 0, followup: 0, urgent: 0, critical: 0 });
+  const totalOutstanding = sortedItems.reduce((sum, item) => sum + Number(item.outstandingAmount || 0), 0);
+  const totalUnrecognizedProfit = sortedItems.reduce((sum, item) => sum + Number(item.unrecognizedProfit || 0), 0);
+  const highestScore = sortedItems.length ? Math.max(...sortedItems.map((item) => Number(item.score || 0))) : 0;
+  const status = counts.critical > 0 ? 'critical' : counts.urgent > 0 ? 'urgent' : counts.followup > 0 ? 'followup' : 'low';
+
+  return {
+    status,
+    totalDocs: sortedItems.length,
+    counts,
+    totalOutstanding,
+    totalUnrecognizedProfit,
+    highestScore,
+    items: sortedItems.slice(0, Math.max(1, Number(limit || 80))),
+  };
+}
+
+
+const extractCollectionCenterAction = (note: any) => {
+  const match = String(note || '').match(/\[action:([^\]]+)\]/);
+  return match ? String(match[1] || '').trim() : '';
+};
+
+const COLLECTION_KANBAN_STAGE_META: Record<string, { label: string; rank: number }> = {
+  new: { label: 'جدید', rank: 1 },
+  waiting: { label: 'در انتظار پاسخ', rank: 2 },
+  promise: { label: 'قول پرداخت', rank: 3 },
+  today: { label: 'امروز پیگیری شود', rank: 4 },
+  critical: { label: 'بحرانی', rank: 5 },
+  settled: { label: 'تسویه/بسته شد', rank: 0 },
+};
+
+const collectionCenterKanbanMeta = (stage: any) => COLLECTION_KANBAN_STAGE_META[String(stage || 'new')] || COLLECTION_KANBAN_STAGE_META.new;
+
+const extractCollectionCenterKanbanStage = (note: any) => {
+  const action = extractCollectionCenterAction(note);
+  const match = String(action || '').match(/^kanban_(new|waiting|promise|today|critical|settled)$/);
+  return match ? match[1] : '';
+};
+
+const deriveCollectionCenterKanbanStage = (item: any, history: any[], customerHistory: any[]) => {
+  const ownHistory = (Array.isArray(history) ? history : [])
+    .filter((h: any) => h && h.createdAt)
+    .sort((a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf());
+  const explicit = ownHistory.find((h: any) => extractCollectionCenterKanbanStage(h.note));
+  if (explicit) return extractCollectionCenterKanbanStage(explicit.note) || 'new';
+
+  const allHistory = (ownHistory.length ? ownHistory : (Array.isArray(customerHistory) ? customerHistory : []))
+    .filter((h: any) => h && h.createdAt)
+    .sort((a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf());
+  const lastAction = allHistory.map((h: any) => ({ ...h, action: extractCollectionCenterAction(h.note) })).find((h: any) => h.action) || null;
+  const today = moment().startOf('day');
+  const nextFollowup = lastAction?.nextFollowupDate ? moment(lastAction.nextFollowupDate) : null;
+  if (nextFollowup && nextFollowup.isValid() && nextFollowup.isSameOrBefore(today.clone().endOf('day'))) return 'today';
+  if (String(item?.level || '') === 'critical' || item?.automation?.shouldEscalate) return 'critical';
+  if (lastAction?.action === 'promise_payment') return 'promise';
+  if (lastAction?.action === 'reviewed') return 'settled';
+  if (lastAction?.action === 'move_tomorrow') return 'today';
+  if (lastAction?.action === 'call_done' || lastAction?.action === 'message_sent') return 'waiting';
+  if (Number(item?.overdueDays || 0) > 0 || String(item?.level || '') === 'urgent') return 'today';
+  return 'new';
+};
+
+const productSalesCollectionLevelFromScore = (score: number) => productSalesRiskLevelMeta(Math.min(100, Math.max(0, Number(score || 0))));
+
+const buildCollectionCenterAutomation = (item: any, history: any[], customerHistory: any[]) => {
+  const safeHistory = Array.isArray(history) ? history : [];
+  const safeCustomerHistory = Array.isArray(customerHistory) ? customerHistory : [];
+  const allHistory = [...safeHistory, ...safeCustomerHistory]
+    .filter((h: any) => h && h.createdAt)
+    .sort((a: any, b: any) => moment(b.createdAt).valueOf() - moment(a.createdAt).valueOf());
+
+  const actionRows = allHistory.map((h: any) => ({ ...h, action: extractCollectionCenterAction(h.note) })).filter((h: any) => h.action);
+  let unansweredAttempts = 0;
+  for (const h of actionRows) {
+    if (String(h.action || '').startsWith('kanban_')) {
+      if (h.action === 'kanban_promise' || h.action === 'kanban_settled') break;
+      continue;
+    }
+    if (h.action === 'promise_payment' || h.action === 'reviewed') break;
+    if (h.action === 'call_done' || h.action === 'message_sent' || h.action === 'move_tomorrow') unansweredAttempts += 1;
+  }
+
+  const lastAction = actionRows[0] || null;
+  const score = Number(item?.score || 0);
+  const outstanding = Number(item?.outstandingAmount || 0);
+  const collectionRate = Number(item?.collectionRate || 0);
+  const overdueDays = Number(item?.overdueDays || 0);
+  const level = String(item?.level || 'low');
+  const customerName = String(item?.customerName || 'مشتری').trim() || 'مشتری';
+  const phone = String(item?.customerPhone || '').trim();
+  const docTitle = (String(item?.sourceType || 'invoice') === 'installment' ? 'فروش اقساطی' : 'فاکتور') + ' شماره ' + Number(item?.orderId || 0).toLocaleString('fa-IR');
+  const outstandingText = formatReportMoneyText(outstanding);
+
+  const shouldEscalate = unansweredAttempts >= 3 || (unansweredAttempts >= 2 && (level === 'critical' || overdueDays > 14));
+  const escalationBonus = unansweredAttempts >= 4 ? 18 : unansweredAttempts >= 3 ? 12 : unansweredAttempts >= 2 ? 6 : 0;
+  const adjustedScore = Math.min(100, Math.round(score + escalationBonus));
+  const adjustedMeta = productSalesCollectionLevelFromScore(adjustedScore);
+
+  let recommendedAction = 'message_sent';
+  let recommendedActionLabel = 'ارسال پیامک/تلگرام';
+  if (shouldEscalate || level === 'critical') {
+    recommendedAction = 'call_done';
+    recommendedActionLabel = 'تماس فوری';
+  } else if (unansweredAttempts >= 1 || level === 'urgent') {
+    recommendedAction = 'call_done';
+    recommendedActionLabel = 'تماس پیگیری';
+  } else if (collectionRate >= 70 && overdueDays <= 0) {
+    recommendedAction = 'message_sent';
+    recommendedActionLabel = 'یادآوری محترمانه';
+  }
+
+  const nextDays = shouldEscalate ? 0 : level === 'critical' ? 0 : level === 'urgent' ? 1 : level === 'followup' ? 2 : 4;
+  const suggestedNextFollowupDate = moment().add(nextDays, 'day').endOf('day').toISOString();
+  const duePhrase = overdueDays > 0 ? 'با توجه به ' + overdueDays.toLocaleString('fa-IR') + ' روز تأخیر،' : 'طبق وضعیت حساب،';
+  const urgencyPhrase = shouldEscalate ? 'این مورد به دلیل چند پیگیری بی‌پاسخ در اولویت بالاتر قرار گرفته است.' : level === 'critical' ? 'این مورد در وضعیت بحرانی است.' : level === 'urgent' ? 'این مورد نیاز به پیگیری فوری دارد.' : 'این مورد برای پیگیری منظم پیشنهاد شده است.';
+
+  const callScript = 'سلام وقت بخیر، از فروشگاه کوروش تماس می‌گیرم. بابت ' + docTitle + '، مانده حساب شما ' + outstandingText + ' است. ' + duePhrase + ' لطفاً زمان دقیق پرداخت یا واریز مرحله بعد را اعلام بفرمایید تا در پرونده ثبت کنم.';
+  const smsText = 'مشتری گرامی ' + customerName + '، مانده ' + docTitle + ' شما ' + outstandingText + ' است. لطفاً زمان پرداخت را اعلام بفرمایید. فروشگاه کوروش';
+  const telegramText = 'سلام ' + customerName + ' عزیز 🌿\nبرای ' + docTitle + ' مبلغ ' + outstandingText + ' مانده ثبت شده است. لطفاً زمان پرداخت یا هماهنگی بعدی را اعلام بفرمایید.\nفروشگاه کوروش';
+
+  const touchPlan = [
+    shouldEscalate ? 'تماس مستقیم با مشتری و ثبت نتیجه مکالمه' : recommendedAction === 'call_done' ? 'تماس کوتاه و گرفتن زمان پرداخت' : 'ارسال پیام یادآوری محترمانه',
+    collectionRate < 50 ? 'در صورت عدم پاسخ، پیگیری دوباره در همان روز کاری' : 'پیگیری بعدی طبق تاریخ پیشنهادی سیستم',
+    outstanding > 10000000 ? 'در صورت قول پرداخت، مبلغ و تاریخ دقیق در تاریخچه ثبت شود' : 'بعد از وصول، سند به عنوان بررسی‌شده علامت‌گذاری شود',
+  ];
+
+  return {
+    status: shouldEscalate ? 'escalated' : lastAction ? 'watch' : 'ready',
+    label: shouldEscalate ? 'افزایش ریسک خودکار' : lastAction ? 'در چرخه پیگیری' : 'آماده شروع پیگیری',
+    reason: shouldEscalate ? 'بعد از ' + unansweredAttempts.toLocaleString('fa-IR') + ' اقدام بدون نتیجه قطعی، سطح پیگیری باید بالاتر برود.' : urgencyPhrase,
+    unansweredAttempts,
+    escalationBonus,
+    shouldEscalate,
+    adjustedScore,
+    adjustedLevel: adjustedMeta.level,
+    adjustedLabel: adjustedMeta.label,
+    recommendedAction,
+    recommendedActionLabel,
+    suggestedNextFollowupDate,
+    callScript,
+    smsText,
+    telegramText,
+    touchPlan,
+    lastAction: lastAction ? {
+      key: lastAction.action,
+      at: lastAction.createdAt || null,
+      by: lastAction.createdByUsername || '',
+      note: lastAction.note || '',
+    } : null,
+    hasPhone: Boolean(phone),
+  };
+};
+
+const buildCollectionCenterMarker = (sourceType: any, orderId: any) => `[collection:${String(sourceType || 'invoice')}:${Number(orderId || 0)}]`;
+
+const collectionCenterActionMeta = (action: any) => {
+  const key = String(action || 'reviewed').trim();
+  const map: Record<string, { label: string; nextDays: number | null; icon: string }> = {
+    call_done: { label: 'تماس گرفتم', nextDays: 2, icon: 'fa-phone' },
+    message_sent: { label: 'پیامک/تلگرام ارسال شد', nextDays: 1, icon: 'fa-paper-plane' },
+    promise_payment: { label: 'قول پرداخت گرفتیم', nextDays: 3, icon: 'fa-handshake' },
+    move_tomorrow: { label: 'انتقال به فردا', nextDays: 1, icon: 'fa-calendar-plus' },
+    reviewed: { label: 'بررسی شد', nextDays: null, icon: 'fa-check' },
+    kanban_new: { label: 'انتقال به ستون جدید', nextDays: 2, icon: 'fa-sparkles' },
+    kanban_waiting: { label: 'انتقال به در انتظار پاسخ', nextDays: 2, icon: 'fa-hourglass-half' },
+    kanban_promise: { label: 'انتقال به قول پرداخت', nextDays: 3, icon: 'fa-handshake' },
+    kanban_today: { label: 'انتقال به امروز پیگیری شود', nextDays: 0, icon: 'fa-calendar-day' },
+    kanban_critical: { label: 'انتقال به بحرانی', nextDays: 0, icon: 'fa-triangle-exclamation' },
+    kanban_settled: { label: 'انتقال به تسویه/بسته شد', nextDays: null, icon: 'fa-circle-check' },
+  };
+  return map[key] || map.reviewed;
+};
+
+const defaultCollectionCenterNextDate = (action: any, provided?: any) => {
+  const raw = String(provided || '').trim();
+  if (raw) {
+    const j = moment(raw, 'jYYYY/jMM/jDD', true);
+    if (j.isValid()) return j.endOf('day').toISOString();
+    const iso = moment(raw);
+    if (iso.isValid()) return iso.endOf('day').toISOString();
+  }
+  const meta = collectionCenterActionMeta(action);
+  if (meta.nextDays == null) return null;
+  return moment().add(meta.nextDays, 'day').endOf('day').toISOString();
+};
+
+async function enrichCollectionCenterItems(items: any[]) {
+  const safeItems = Array.isArray(items) ? items : [];
+  const customerIds = Array.from(new Set(safeItems.map((item) => Number(item.customerId || 0)).filter((id) => id > 0)));
+  const historyMap = new Map<string, any[]>();
+  const customerHistoryMap = new Map<number, any[]>();
+
+  if (customerIds.length) {
+    const placeholders = customerIds.map(() => '?').join(',');
+    try {
+      const rows = await allAsync(
+        `SELECT cf.id, cf.customerId, cf.createdAt, cf.createdByUsername, cf.note, cf.nextFollowupDate, cf.status,
+                c.fullName AS customerName, c.phoneNumber AS customerPhone
+           FROM customer_followups cf
+           JOIN customers c ON c.id = cf.customerId
+          WHERE cf.customerId IN (${placeholders})
+            AND (cf.note LIKE '%[collection:%' OR cf.note LIKE '%وصول%' OR cf.note LIKE '%پیگیری%')
+          ORDER BY datetime(cf.createdAt) DESC, cf.id DESC
+          LIMIT 800`,
+        customerIds
+      );
+      for (const row of rows as any[]) {
+        const cid = Number(row.customerId || 0);
+        const cArr = customerHistoryMap.get(cid) || [];
+        if (cArr.length < 10) cArr.push(row);
+        customerHistoryMap.set(cid, cArr);
+        const note = String(row.note || '');
+        const markerMatch = note.match(/\[collection:([^:\]]+):(\d+)\]/);
+        if (markerMatch) {
+          const key = getProductSalesDocKey(markerMatch[1], Number(markerMatch[2] || 0));
+          const arr = historyMap.get(key) || [];
+          if (arr.length < 12) arr.push(row);
+          historyMap.set(key, arr);
+        }
+      }
+    } catch {}
+  }
+
+  const todayStart = moment().startOf('day').valueOf();
+  return safeItems.map((item) => {
+    const key = getProductSalesDocKey(String(item.sourceType || 'invoice'), Number(item.orderId || 0));
+    const history = historyMap.get(key) || [];
+    const customerHistory = customerHistoryMap.get(Number(item.customerId || 0)) || [];
+    const last = history[0] || customerHistory[0] || null;
+    const lastTime = last?.createdAt ? moment(last.createdAt).valueOf() : 0;
+    const touchedToday = Boolean(lastTime && lastTime >= todayStart);
+    const automation = buildCollectionCenterAutomation(item, history, customerHistory);
+    const adjustedMeta = automation.shouldEscalate ? productSalesCollectionLevelFromScore(Number(automation.adjustedScore || item.score || 0)) : null;
+    const enrichedBase: any = {
+      ...item,
+      level: adjustedMeta?.level || item.level,
+      label: adjustedMeta?.label || item.label,
+      score: automation.shouldEscalate ? Number(automation.adjustedScore || item.score || 0) : item.score,
+      reasons: automation.shouldEscalate ? [...(item.reasons || []), automation.reason] : (item.reasons || []),
+      automation,
+    };
+    const kanbanStage = deriveCollectionCenterKanbanStage(enrichedBase, history, customerHistory);
+    const kanban = collectionCenterKanbanMeta(kanbanStage);
+    return {
+      ...enrichedBase,
+      marker: buildCollectionCenterMarker(item.sourceType, item.orderId),
+      history,
+      customerHistory,
+      lastActionAt: last?.createdAt || null,
+      lastActionNote: last?.note || '',
+      lastActionBy: last?.createdByUsername || '',
+      nextFollowupDate: last?.nextFollowupDate || null,
+      touchedToday,
+      kanbanStage,
+      kanbanStageLabel: kanban.label,
+    };
+  });
+}
+
+const summarizeCollectionCenter = (items: any[]) => {
+  const counts = { low: 0, followup: 0, urgent: 0, critical: 0, touchedToday: 0, escalated: 0, automationReady: 0 };
+  let totalOutstanding = 0;
+  let totalUnrecognizedProfit = 0;
+  let highestScore = 0;
+  for (const item of items || []) {
+    const level = String(item.level || 'low');
+    if (level === 'low' || level === 'followup' || level === 'urgent' || level === 'critical') counts[level] += 1;
+    if (item.touchedToday) counts.touchedToday += 1;
+    if (item.automation?.shouldEscalate) counts.escalated += 1;
+    if (item.automation?.recommendedAction) counts.automationReady += 1;
+    totalOutstanding += Number(item.outstandingAmount || 0);
+    totalUnrecognizedProfit += Number(item.unrecognizedProfit || 0);
+    highestScore = Math.max(highestScore, Number(item.score || 0));
+  }
+  return {
+    totalItems: items.length,
+    counts,
+    totalOutstanding,
+    totalUnrecognizedProfit,
+    highestScore,
+  };
+};
+
+
+
+// --- Store Intelligence Engine / Smart Insight Center ---
+const SMART_INSIGHT_CURRENCY_BASE = 'IRR';
+const SMART_INSIGHT_DISPLAY_CURRENCY = 'تومان';
+const smartInsightNum = (value: any) => Number.isFinite(Number(value)) ? Number(value) : 0;
+const smartInsightRound = (value: any) => Math.round((smartInsightNum(value) + Number.EPSILON) * 100) / 100;
+const smartInsightMoney = (value: any) => `${Math.round(smartInsightNum(value) / 10).toLocaleString('fa-IR')} ${SMART_INSIGHT_DISPLAY_CURRENCY}`;
+const smartInsightPercent = (value: any) => `${Math.round(smartInsightNum(value)).toLocaleString('fa-IR')}٪`;
+const smartInsightShamsi = (value: any) => {
+  const raw = String(value || '').trim();
+  if (!raw) return '—';
+  const m = moment(raw, [moment.ISO_8601, 'YYYY-MM-DD', 'YYYY/MM/DD'], true);
+  return m.isValid() ? m.locale('fa').format('jYYYY/jMM/jDD') : raw;
+};
+const smartInsightSeverityFromScore = (score: number) => {
+  const s = Math.max(0, Math.min(100, Math.round(score || 0)));
+  if (s >= 82) return 'critical';
+  if (s >= 64) return 'high';
+  if (s >= 42) return 'medium';
+  return 'low';
+};
+const smartInsightSafeRows = async (sql: string, params: any[] = []) => {
+  try { return await allAsync(sql, params); } catch (e: any) { console.error('SmartInsight query failed:', e?.message || e); return []; }
+};
+const smartInsightSafeOne = async (sql: string, params: any[] = []) => {
+  const rows = await smartInsightSafeRows(sql, params);
+  return Array.isArray(rows) && rows.length ? rows[0] : {};
+};
+
+const ensureSmartInsightDecisionMemory = async () => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS smart_insight_decisions (
+      insightId TEXT PRIMARY KEY,
+      type TEXT,
+      title TEXT,
+      severity TEXT,
+      score REAL DEFAULT 0,
+      confidence REAL DEFAULT 0,
+      status TEXT DEFAULT 'open',
+      userDecision TEXT DEFAULT 'pending',
+      outcome TEXT DEFAULT 'unknown',
+      note TEXT,
+      actionLabel TEXT,
+      occurrenceCount INTEGER DEFAULT 0,
+      firstGeneratedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      lastGeneratedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      decidedAt TEXT,
+      outcomeAt TEXT,
+      updatedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS pricing_history (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      productId INTEGER NOT NULL,
+      oldPrice REAL DEFAULT 0,
+      newPrice REAL DEFAULT 0,
+      source TEXT DEFAULT 'ai_brain',
+      note TEXT,
+      createdAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS customer_scores (
+      customerId INTEGER PRIMARY KEY,
+      segment TEXT,
+      riskScore REAL DEFAULT 0,
+      profitScore REAL DEFAULT 0,
+      lastCalculatedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    )
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS profit_engine_snapshots (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      periodFrom TEXT,
+      periodTo TEXT,
+      grossSales REAL DEFAULT 0,
+      realProfit REAL DEFAULT 0,
+      recognizedProfit REAL DEFAULT 0,
+      profitAtRisk REAL DEFAULT 0,
+      marginPct REAL DEFAULT 0,
+      createdAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS ai_feature_impact_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      featureKey TEXT NOT NULL,
+      eventType TEXT NOT NULL,
+      impactAmount REAL DEFAULT 0,
+      success INTEGER DEFAULT 1,
+      errorMessage TEXT,
+      context TEXT,
+      createdAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+  await runAsync(`CREATE INDEX IF NOT EXISTS idx_ai_feature_impact_events_key_date ON ai_feature_impact_events(featureKey, createdAt)`);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS ai_feature_configs (
+      key TEXT PRIMARY KEY,
+      title TEXT,
+      description TEXT,
+      icon TEXT,
+      enabled INTEGER DEFAULT 1,
+      requiresLearning INTEGER DEFAULT 0,
+      minimumProgress INTEGER DEFAULT 40,
+      updatedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS ai_feature_auto_pause_reviews (
+      featureKey TEXT PRIMARY KEY,
+      dismissedAt TEXT,
+      dismissedUntil TEXT,
+      note TEXT,
+      updatedAt TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      userId INTEGER
+    )
+  `);
+};
+
+type AiFeatureDefinition = { key: string; title: string; description: string; icon: string; requiresLearning?: boolean; minimumProgress?: number; defaultEnabled?: boolean };
+const AI_FEATURE_DEFINITIONS: AiFeatureDefinition[] = [
+  { key: 'decision_memory', title: 'حافظه تصمیمات', description: 'ثبت اقدام/رد/نتیجه هر Insight برای یادگیری رفتاری فروشگاه.', icon: 'fa-database', requiresLearning: true, minimumProgress: 25 },
+  { key: 'today_actions', title: 'امروز چه کار کنم؟', description: 'انتخاب سه اقدام مهم روز از بین Insightهای فعال.', icon: 'fa-list-check', requiresLearning: true, minimumProgress: 35 },
+  { key: 'forecast', title: 'پیش‌بینی فروش و خرید', description: 'تحلیل سرعت فروش، سیگنال خرید مجدد و نزدیک‌شدن موجودی به نقطه امن.', icon: 'fa-chart-line', requiresLearning: true, minimumProgress: 45 },
+  { key: 'hidden_profit', title: 'کشف سود پنهان', description: 'کالاهای پرسود کم‌نمایش، باندل‌های طبیعی و فرصت افزایش سود.', icon: 'fa-gem', requiresLearning: true, minimumProgress: 55 },
+  { key: 'audit_radar', title: 'رادار کنترل فاکتور', description: 'تشخیص تخفیف غیرعادی، فروش زیر قیمت خرید، سود منفی و اختلاف جمع اقلام.', icon: 'fa-shield-halved', requiresLearning: false, minimumProgress: 0 },
+  { key: 'customer_intelligence', title: 'شخصیت مشتری', description: 'امتیاز ریسک، سودآوری، تخفیف‌پذیری و وضعیت ریزش مشتری.', icon: 'fa-users-viewfinder', requiresLearning: true, minimumProgress: 50 },
+  { key: 'auto_pricing', title: 'قیمت‌گذاری هوشمند', description: 'پیشنهاد قیمت امن، قیمت بهینه و سناریوی محافظه‌کارانه/تهاجمی.', icon: 'fa-tags', requiresLearning: true, minimumProgress: 60 },
+  { key: 'sales_agent', title: 'دستیار فروش فعال', description: 'ساخت پیام و پیشنهاد اقدام برای فروش، بازگشت مشتری یا پیگیری وصول.', icon: 'fa-headset', requiresLearning: true, minimumProgress: 55 },
+  { key: 'profit_engine', title: 'موتور سود واقعی', description: 'محاسبه سود واقعی، سود شناسایی‌شده و سود در خطر.', icon: 'fa-sack-dollar', requiresLearning: false, minimumProgress: 0 },
+];
+
+const ensureAiFeatureConfigs = async () => {
+  await ensureSmartInsightDecisionMemory();
+  for (const feature of AI_FEATURE_DEFINITIONS) {
+    await runAsync(`
+      INSERT INTO ai_feature_configs (key, title, description, icon, enabled, requiresLearning, minimumProgress, updatedAt)
+      VALUES (?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+      ON CONFLICT(key) DO UPDATE SET
+        title = excluded.title, description = excluded.description, icon = excluded.icon, requiresLearning = excluded.requiresLearning, minimumProgress = excluded.minimumProgress
+    `, [feature.key, feature.title, feature.description, feature.icon, feature.defaultEnabled === false ? 0 : 1, feature.requiresLearning ? 1 : 0, feature.minimumProgress ?? 40]);
+  }
+};
+
+const getAiFeatureRows = async () => {
+  await ensureAiFeatureConfigs();
+  return await smartInsightSafeRows(`SELECT * FROM ai_feature_configs`);
+};
+
+const getAiFeatureEnabledMap = async () => {
+  const rows = await getAiFeatureRows();
+  const map: Record<string, boolean> = {};
+  for (const def of AI_FEATURE_DEFINITIONS) map[def.key] = def.defaultEnabled !== false;
+  for (const row of rows || []) map[String(row.key)] = smartInsightNum(row.enabled) !== 0;
+  return map;
+};
+
+const aiProgressStatus = (progress: number, enabled: boolean, minimum = 40) => {
+  if (!enabled) return { status: 'disabled', statusLabel: 'خاموش' };
+  if (progress < Math.max(1, minimum)) return { status: 'insufficient', statusLabel: 'داده کافی نیست' };
+  if (progress < 70) return { status: 'learning', statusLabel: 'در حال یادگیری' };
+  if (progress < 90) return { status: 'ready', statusLabel: 'آماده فعالیت' };
+  return { status: 'excellent', statusLabel: 'دقیق و بالغ' };
+};
+
+const daysSinceSmartIso = (iso?: any) => {
+  if (!iso) return 9999;
+  const t = new Date(String(iso)).getTime();
+  if (!Number.isFinite(t)) return 9999;
+  return Math.max(0, Math.floor((Date.now() - t) / 86400000));
+};
+
+const calculateAiAutoPauseSignal = (feature: any, impact: any, enabled: boolean, progress: number) => {
+  if (!enabled) {
+    return { level: 'off', shouldSuggestPause: false, title: 'خاموش است', reason: 'این ماژول فعلاً اجرا نمی‌شود و فشاری به سیستم وارد نمی‌کند.', suggestedAction: 'هیچ اقدامی لازم نیست.' };
+  }
+  const usage = smartInsightNum(impact?.usageCount);
+  const errors = smartInsightNum(impact?.errorCount);
+  const positive = smartInsightNum(impact?.positiveCount);
+  const negative = smartInsightNum(impact?.negativeCount);
+  const valueScore = smartInsightNum(impact?.valueScore);
+  const estimatedImpact = smartInsightNum(impact?.estimatedImpact);
+  const lastUsedDays = daysSinceSmartIso(impact?.lastUsedAt);
+  const requiresLearning = !!feature?.requiresLearning;
+  const minProgress = smartInsightNum(feature?.minimumProgress ?? feature?.minimum ?? 40);
+  if (requiresLearning && progress < Math.max(1, minProgress)) {
+    return { level: 'watch', shouldSuggestPause: false, title: 'فعلاً در حال یادگیری', reason: `هنوز به حد شروع ${Math.round(minProgress).toLocaleString('fa-IR')}٪ نرسیده؛ روشن بماند اما خروجی آن قطعی تلقی نشود.`, suggestedAction: 'خاموش‌کردن پیشنهاد نمی‌شود؛ بهتر است داده بیشتری ثبت شود.' };
+  }
+  if (usage >= 3 && (errors >= 3 || errors / Math.max(1, usage) >= 0.35)) {
+    return { level: 'pause', shouldSuggestPause: true, title: 'پیشنهاد توقف موقت', reason: 'نرخ خطا یا شکست این ماژول بالاست و ممکن است فشار/نویز غیرضروری ایجاد کند.', suggestedAction: 'توقف موقت و بررسی تنظیمات/داده‌ها پیشنهاد می‌شود.' };
+  }
+  if (usage >= 4 && negative >= Math.max(2, positive * 2) && valueScore < 45) {
+    return { level: 'pause', shouldSuggestPause: true, title: 'اثر منفی ثبت شده', reason: 'نتیجه‌های منفی این ماژول از نتیجه‌های مثبت بیشتر بوده است.', suggestedAction: 'بهتر است موقتاً خاموش شود تا داده یا منطق آن بازبینی شود.' };
+  }
+  if (usage >= 5 && valueScore < 25 && estimatedImpact <= 0) {
+    return { level: 'pause', shouldSuggestPause: true, title: 'ارزش روشن‌ماندن پایین', reason: 'استفاده کافی ثبت شده اما اثر مثبت قابل قبول دیده نشده است.', suggestedAction: 'خاموش‌کردن موقت می‌تواند سرعت سیستم را بهتر کند.' };
+  }
+  if (usage > 0 && lastUsedDays >= 45 && valueScore < 50) {
+    return { level: 'watch', shouldSuggestPause: false, title: 'مدتی استفاده نشده', reason: `آخرین استفاده حدود ${lastUsedDays.toLocaleString('fa-IR')} روز پیش بوده؛ ممکن است روشن‌ماندن آن ضروری نباشد.`, suggestedAction: 'فعلاً فقط پایش شود؛ خاموش‌کردن دستی اختیاری است.' };
+  }
+  return { level: 'ok', shouldSuggestPause: false, title: 'روشن‌ماندن منطقی است', reason: 'اثر منفی جدی یا خطای پرتکرار ثبت نشده است.', suggestedAction: 'فعال بماند و نتیجه تصمیم‌ها همچنان ثبت شود.' };
+};
+
+const calculateAiFeatureProgress = async (enabledMap?: Record<string, boolean>) => {
+  const enabled = enabledMap || await getAiFeatureEnabledMap();
+  const [ordersRow, customersRow, productRows, pricedRow, costRow, decisionRow, pricingHistoryRow, phonePricingRow, profitSnapshotRow] = await Promise.all([
+    smartInsightSafeOne(`SELECT COUNT(*) AS c, COUNT(DISTINCT transactionDate) AS activeDays FROM sales_orders WHERE COALESCE(status, 'active') = 'active'`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM customers`),
+    smartInsightSafeOne(`SELECT COUNT(DISTINCT itemId) AS c FROM sales_order_items WHERE itemType IN ('inventory','service','phone')`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM products WHERE COALESCE(salePrice, 0) > 0 OR COALESCE(price, 0) > 0`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM sales_order_items WHERE COALESCE(buyPrice, 0) > 0`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c, SUM(CASE WHEN userDecision != 'pending' THEN 1 ELSE 0 END) AS decided FROM smart_insight_decisions`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM pricing_history`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM sales_order_items soi JOIN sales_orders so ON so.id = soi.orderId WHERE soi.itemType = 'phone' AND COALESCE(so.status, 'active') = 'active' AND COALESCE(soi.unitPrice, soi.totalPrice, 0) > 0`),
+    smartInsightSafeOne(`SELECT COUNT(*) AS c FROM profit_engine_snapshots`),
+  ]);
+  const orders = smartInsightNum(ordersRow.c);
+  const activeDays = smartInsightNum(ordersRow.activeDays);
+  const customers = smartInsightNum(customersRow.c);
+  const soldProducts = smartInsightNum(productRows.c);
+  const pricedProducts = smartInsightNum(pricedRow.c);
+  const costLines = smartInsightNum(costRow.c);
+  const decisions = smartInsightNum(decisionRow.c);
+  const decided = smartInsightNum(decisionRow.decided);
+  const pricingHistory = smartInsightNum(pricingHistoryRow.c);
+  const phonePricingSignals = smartInsightNum(phonePricingRow.c);
+  const profitSnapshots = smartInsightNum(profitSnapshotRow.c);
+  const baseSignals = {
+    orders: orders.toLocaleString('fa-IR'), activeDays: activeDays.toLocaleString('fa-IR'), customers: customers.toLocaleString('fa-IR'), soldProducts: soldProducts.toLocaleString('fa-IR'), decisions: decisions.toLocaleString('fa-IR')
+  };
+  const progressMap: Record<string, { progress: number; progressLabel: string; signals: any[] }> = {
+    decision_memory: { progress: Math.min(100, Math.round((decisions / 40) * 100 + (decided / 25) * 35)), progressLabel: `${Math.min(100, Math.round((decisions / 40) * 100 + (decided / 25) * 35)).toLocaleString('fa-IR')}٪ آموزش تصمیمات`, signals: [{ label: 'Insight ثبت‌شده', value: decisions.toLocaleString('fa-IR') }, { label: 'تصمیم واقعی', value: decided.toLocaleString('fa-IR') }] },
+    today_actions: { progress: Math.min(100, Math.round((orders / 80) * 55 + (decisions / 25) * 45)), progressLabel: 'آمادگی اولویت‌بندی روزانه', signals: [{ label: 'فاکتور', value: baseSignals.orders }, { label: 'حافظه', value: baseSignals.decisions }] },
+    forecast: { progress: Math.min(100, Math.round((orders / 180) * 55 + (activeDays / 45) * 25 + (soldProducts / 30) * 20)), progressLabel: 'پوشش داده فروش برای پیش‌بینی', signals: [{ label: 'فاکتور', value: baseSignals.orders }, { label: 'روز فعال', value: baseSignals.activeDays }, { label: 'کالای فروخته‌شده', value: baseSignals.soldProducts }] },
+    hidden_profit: { progress: Math.min(100, Math.round((orders / 160) * 45 + (soldProducts / 35) * 35 + (costLines / 120) * 20)), progressLabel: 'پوشش سود/هم‌خرید', signals: [{ label: 'فاکتور', value: baseSignals.orders }, { label: 'کالا', value: baseSignals.soldProducts }, { label: 'ردیف دارای بهای خرید', value: costLines.toLocaleString('fa-IR') }] },
+    audit_radar: { progress: 100, progressLabel: 'کنترل‌های قطعی بدون آموزش', signals: [{ label: 'فاکتور قابل کنترل', value: baseSignals.orders }, { label: 'ردیف دارای بها', value: costLines.toLocaleString('fa-IR') }] },
+    customer_intelligence: { progress: Math.min(100, Math.round((customers / 50) * 35 + (orders / 140) * 45 + (activeDays / 35) * 20)), progressLabel: 'پوشش رفتار مشتری', signals: [{ label: 'مشتری', value: baseSignals.customers }, { label: 'فاکتور', value: baseSignals.orders }, { label: 'روز فعال', value: baseSignals.activeDays }] },
+    auto_pricing: { progress: Math.min(100, Math.round((orders / 220) * 25 + (soldProducts / 45) * 20 + (pricedProducts / 80) * 15 + ((pricingHistory + phonePricingSignals) / 20) * 40)), progressLabel: 'آمادگی قیمت‌گذاری', signals: [{ label: 'فروش', value: baseSignals.orders }, { label: 'فروش گوشی', value: phonePricingSignals.toLocaleString('fa-IR') }, { label: 'لاگ قیمت', value: (pricingHistory + phonePricingSignals).toLocaleString('fa-IR') }] },
+    sales_agent: { progress: Math.min(100, Math.round((customers / 60) * 35 + (orders / 160) * 35 + (decided / 20) * 30)), progressLabel: 'آمادگی پیشنهاد فروش/وصول', signals: [{ label: 'مشتری', value: baseSignals.customers }, { label: 'فاکتور', value: baseSignals.orders }, { label: 'تصمیم ثبت‌شده', value: decided.toLocaleString('fa-IR') }] },
+    profit_engine: { progress: Math.min(100, Math.round((costLines / Math.max(1, orders * 1.5)) * 70 + (profitSnapshots / 20) * 30)), progressLabel: 'پوشش بهای خرید برای سود واقعی', signals: [{ label: 'ردیف دارای بها', value: costLines.toLocaleString('fa-IR') }, { label: 'Snapshot سود', value: profitSnapshots.toLocaleString('fa-IR') }] },
+  };
+  const impactMap = await calculateAiFeatureImpactSummary();
+  const dismissedRows = await smartInsightSafeRows(`SELECT featureKey, dismissedUntil FROM ai_feature_auto_pause_reviews WHERE dismissedUntil IS NOT NULL AND datetime(dismissedUntil) > datetime('now')`);
+  const dismissedMap: Record<string, string> = {};
+  for (const row of dismissedRows || []) dismissedMap[String(row.featureKey)] = String(row.dismissedUntil || '');
+  return AI_FEATURE_DEFINITIONS.map((def) => {
+    const p = progressMap[def.key] || { progress: 0, progressLabel: 'در حال جمع‌آوری داده', signals: [] };
+    const progress = Math.max(0, Math.min(100, Math.round(p.progress || 0)));
+    const st = aiProgressStatus(progress, enabled[def.key] !== false, def.minimumProgress ?? 40);
+    const impact = impactMap[def.key] || defaultAiFeatureImpact(def.key);
+    const isEnabled = enabled[def.key] !== false;
+    const autoPause = calculateAiAutoPauseSignal(def, impact, isEnabled, progress);
+    if (dismissedMap[def.key] && autoPause?.level === 'pause') {
+      autoPause.level = 'watch';
+      autoPause.shouldSuggestPause = false;
+      autoPause.title = 'پیشنهاد توقف فعلاً پنهان شده';
+      autoPause.suggestedAction = `تا ${new Date(dismissedMap[def.key]).toLocaleDateString('fa-IR')} دوباره هشدار توقف نشان داده نمی‌شود.`;
+    }
+    return { ...def, enabled: isEnabled, requiresLearning: !!def.requiresLearning, minimum: def.minimumProgress ?? 40, progress, ...st, progressLabel: p.progressLabel, signals: p.signals || [], impact, autoPause };
+  });
+};
+const defaultAiFeatureImpact = (featureKey: string) => ({
+  featureKey,
+  usageCount: 0,
+  successCount: 0,
+  errorCount: 0,
+  positiveCount: 0,
+  negativeCount: 0,
+  estimatedImpact: 0,
+  lastUsedAt: null as string | null,
+  valueScore: 0,
+  valueLabel: 'هنوز اثر قابل اندازه‌گیری ندارد',
+  recommendation: 'برای سنجش ارزش، چند تصمیم/اقدام واقعی ثبت کن.',
+});
+
+const insightTypeToAiFeatureKey = (type: any) => {
+  const t = String(type || '').trim();
+  if (t === 'auto_pricing') return 'auto_pricing';
+  if (t === 'ai_sales_agent') return 'sales_agent';
+  if (t === 'real_profit' || t === 'profit_quality' || t === 'hidden_loss') return 'profit_engine';
+  if (t === 'customer_intelligence' || t === 'customer_risk' || t === 'collection_risk') return 'customer_intelligence';
+  if (t === 'invoice_audit' || t === 'discount_anomaly') return 'audit_radar';
+  if (t === 'hidden_profit') return 'hidden_profit';
+  if (t === 'stock_reorder') return 'forecast';
+  if (t === 'daily_summary' || t === 'sales_drop' || t === 'sales_growth') return 'today_actions';
+  return 'decision_memory';
+};
+
+const recordAiFeatureImpactEvent = async (featureKey: string, eventType: string, options: { impactAmount?: number; success?: boolean; errorMessage?: string; context?: any; userId?: any } = {}) => {
+  try {
+    await ensureSmartInsightDecisionMemory();
+    await runAsync(`INSERT INTO ai_feature_impact_events (featureKey, eventType, impactAmount, success, errorMessage, context, userId) VALUES (?, ?, ?, ?, ?, ?, ?)`, [
+      String(featureKey || 'decision_memory'), String(eventType || 'usage'), smartInsightNum(options.impactAmount), options.success === false ? 0 : 1,
+      options.errorMessage ? String(options.errorMessage).slice(0, 500) : null,
+      options.context ? JSON.stringify(options.context).slice(0, 2000) : null,
+      options.userId || null,
+    ]);
+  } catch (_err) {}
+};
+
+const calculateAiFeatureImpactSummary = async () => {
+  await ensureSmartInsightDecisionMemory();
+  const map: Record<string, any> = {};
+  for (const def of AI_FEATURE_DEFINITIONS) map[def.key] = defaultAiFeatureImpact(def.key);
+  const eventRows = await smartInsightSafeRows(`SELECT featureKey, COUNT(*) AS usageCount, SUM(CASE WHEN success = 1 THEN 1 ELSE 0 END) AS successCount, SUM(CASE WHEN success = 0 THEN 1 ELSE 0 END) AS errorCount, COALESCE(SUM(impactAmount), 0) AS estimatedImpact, MAX(createdAt) AS lastUsedAt FROM ai_feature_impact_events GROUP BY featureKey`);
+  for (const row of eventRows || []) {
+    const key = String(row.featureKey || '');
+    if (!map[key]) map[key] = defaultAiFeatureImpact(key);
+    map[key] = { ...map[key], usageCount: smartInsightNum(row.usageCount), successCount: smartInsightNum(row.successCount), errorCount: smartInsightNum(row.errorCount), estimatedImpact: smartInsightRound(row.estimatedImpact), lastUsedAt: row.lastUsedAt || null };
+  }
+  const decisionRows = await smartInsightSafeRows(`SELECT type, COUNT(*) AS c, SUM(CASE WHEN userDecision = 'accepted' THEN 1 ELSE 0 END) AS accepted, SUM(CASE WHEN outcome = 'positive' THEN 1 ELSE 0 END) AS positive, SUM(CASE WHEN outcome = 'negative' THEN 1 ELSE 0 END) AS negative, AVG(COALESCE(score, 0)) AS avgScore, MAX(updatedAt) AS lastUsedAt FROM smart_insight_decisions WHERE userDecision != 'pending' OR outcome != 'unknown' GROUP BY type`);
+  for (const row of decisionRows || []) {
+    const key = insightTypeToAiFeatureKey(row.type);
+    if (!map[key]) map[key] = defaultAiFeatureImpact(key);
+    map[key].usageCount += smartInsightNum(row.c);
+    map[key].successCount += smartInsightNum(row.accepted);
+    map[key].positiveCount += smartInsightNum(row.positive);
+    map[key].negativeCount += smartInsightNum(row.negative);
+    map[key].estimatedImpact += smartInsightRound((smartInsightNum(row.positive) - smartInsightNum(row.negative)) * Math.max(1, smartInsightNum(row.avgScore)) * 10000);
+    map[key].lastUsedAt = map[key].lastUsedAt || row.lastUsedAt || null;
+  }
+  const pricing = await smartInsightSafeOne(`SELECT COUNT(*) AS c, COALESCE(SUM(newPrice - oldPrice), 0) AS delta, MAX(createdAt) AS lastUsedAt FROM pricing_history`);
+  if (pricing) { map.auto_pricing.usageCount += smartInsightNum(pricing.c); map.auto_pricing.successCount += smartInsightNum(pricing.c); map.auto_pricing.estimatedImpact += smartInsightRound(pricing.delta); map.auto_pricing.lastUsedAt = map.auto_pricing.lastUsedAt || pricing.lastUsedAt || null; }
+  const profit = await smartInsightSafeOne(`SELECT COUNT(*) AS c, COALESCE(SUM(realProfit), 0) AS totalProfit, COALESCE(SUM(profitAtRisk), 0) AS risk, MAX(createdAt) AS lastUsedAt FROM profit_engine_snapshots`);
+  if (profit) { map.profit_engine.usageCount += smartInsightNum(profit.c); map.profit_engine.successCount += smartInsightNum(profit.c); map.profit_engine.estimatedImpact += smartInsightRound(smartInsightNum(profit.totalProfit) - Math.max(0, smartInsightNum(profit.risk))); map.profit_engine.lastUsedAt = map.profit_engine.lastUsedAt || profit.lastUsedAt || null; }
+  for (const key of Object.keys(map)) {
+    const item = map[key];
+    const usage = smartInsightNum(item.usageCount);
+    const positive = smartInsightNum(item.positiveCount);
+    const negative = smartInsightNum(item.negativeCount);
+    const errors = smartInsightNum(item.errorCount);
+    const successRatio = usage ? Math.max(0, Math.min(1, smartInsightNum(item.successCount) / usage)) : 0;
+    const outcomeScore = usage ? ((positive - negative) / Math.max(1, positive + negative)) * 35 : 0;
+    const impactScore = Math.max(-20, Math.min(35, smartInsightNum(item.estimatedImpact) / 1000000));
+    const errorPenalty = Math.min(25, errors * 6);
+    const valueScore = Math.max(0, Math.min(100, Math.round((usage ? 35 : 0) + successRatio * 30 + outcomeScore + impactScore - errorPenalty)));
+    item.valueScore = valueScore;
+    item.valueLabel = valueScore >= 75 ? 'ارزش روشن‌ماندن بالا' : valueScore >= 50 ? 'مفید اما نیازمند پایش' : valueScore >= 25 ? 'اثر محدود/در حال یادگیری' : 'هنوز ارزش کافی ثابت نشده';
+    item.recommendation = valueScore >= 75 ? 'روشن بماند؛ اثر عملی یا مالی قابل قبول ثبت شده است.' : valueScore >= 50 ? 'روشن بماند، اما نتیجه تصمیم‌ها را بیشتر ثبت کن.' : usage > 0 ? 'فعلاً به‌صورت محدود نگه دار؛ اگر اثر عملی نداشت خاموشش کن.' : 'برای قضاوت هنوز داده کافی ثبت نشده است.';
+    item.estimatedImpact = smartInsightRound(item.estimatedImpact);
+  }
+  return map;
+};
+
+const normalizeSmartDecisionValue = (value: any, allowed: string[], fallback: string) => {
+  const v = String(value || '').trim();
+  return allowed.includes(v) ? v : fallback;
+};
+const smartDecisionCopy = (decision: any = {}) => {
+  const userDecision = String(decision.userDecision || 'pending');
+  const outcome = String(decision.outcome || 'unknown');
+  const status = String(decision.status || 'open');
+  const decisionLabel = userDecision === 'accepted' ? 'اقدام شد' : userDecision === 'rejected' ? 'رد شد' : userDecision === 'snoozed' ? 'بعداً بررسی شود' : 'در انتظار تصمیم';
+  const outcomeLabel = outcome === 'positive' ? 'نتیجه مثبت' : outcome === 'negative' ? 'نتیجه منفی' : outcome === 'neutral' ? 'بدون اثر قطعی' : 'نتیجه ثبت نشده';
+  const statusLabel = status === 'closed' ? 'بسته‌شده' : status === 'dismissed' ? 'نادیده گرفته‌شده' : status === 'snoozed' ? 'تعویق' : 'باز';
+  return { decisionLabel, outcomeLabel, statusLabel };
+};
+
+app.get('/api/ai/features', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (_req, res, next) => {
+  try {
+    const enabledMap = await getAiFeatureEnabledMap();
+    const features = await calculateAiFeatureProgress(enabledMap);
+    res.json({ success: true, data: { features } });
+  } catch (err) { next(err); }
+});
+
+app.get('/api/ai/features/impact', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (_req, res, next) => {
+  try {
+    const impact = await calculateAiFeatureImpactSummary();
+    res.json({ success: true, data: { impact } });
+  } catch (err) { next(err); }
+});
+
+
+const roundPricingAiMoney = (value: any, step = 500000) => {
+  const n = smartInsightNum(value);
+  const safeStep = Math.max(1, smartInsightNum(step) || 500000);
+  return Math.round(n / safeStep) * safeStep;
+};
+
+const buildPricingAiDecision = (row: any, index = 0) => {
+  const purchasePrice = smartInsightNum(row.purchasePrice || row.buyPrice || row.oldPrice);
+  const finalSale = smartInsightNum(row.finalSale || row.salePrice || row.unitPrice || row.newPrice);
+  const suggestedSale = roundPricingAiMoney(row.suggestedSale || (purchasePrice > 0 ? purchasePrice * 1.14 : finalSale), 500000);
+  const markupPercent = purchasePrice > 0 && finalSale > 0 ? ((finalSale - purchasePrice) / purchasePrice) * 100 : 0;
+  const diffRatio = suggestedSale > 0 && finalSale > 0 ? Math.abs(finalSale - suggestedSale) / suggestedSale : 1;
+  const actionRaw = String(row.action || row.userDecision || '').trim();
+  const action = actionRaw || (diffRatio <= 0.015 ? 'accepted' : diffRatio > 0.04 ? 'overridden' : 'manual');
+  const createdAt = String(row.createdAt || row.transactionDate || row.saleDate || row.registerDate || new Date().toISOString());
+  return {
+    id: String(row.id || `pricing-ai-${index}-${createdAt}`),
+    source: String(row.source || 'server-pricing-learning'),
+    userKey: String(row.userKey || row.username || 'system'),
+    model: String(row.model || row.productName || row.description || 'مدل نامشخص'),
+    condition: String(row.condition || row.status || row.paymentMethod || 'فروش ثبت‌شده'),
+    purchasePrice,
+    suggestedSale,
+    finalSale,
+    markupPercent,
+    suggestedMarkupPercent: 14,
+    action: ['accepted', 'overridden', 'manual'].includes(action) ? action : 'manual',
+    createdAt,
+  };
+};
+
+app.get('/api/ai/pricing/decision-log', authorizeRole(['Admin','Manager','Salesperson','Warehouse']), async (_req, res, next) => {
+  try {
+    const phoneOrderRows = await smartInsightSafeRows(`
+      SELECT 'phone-order-' || soi.id AS id, 'sales-order-phone' AS source, ph.model AS model,
+        COALESCE(ph.condition, ph.status, 'فروش گوشی') AS condition,
+        COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0) AS purchasePrice,
+        COALESCE(NULLIF(soi.unitPrice, 0), NULLIF(soi.totalPrice, 0) / MAX(1, COALESCE(soi.quantity, 1)), ph.salePrice, 0) AS finalSale,
+        so.transactionDate AS createdAt, so.paymentMethod AS paymentMethod
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      LEFT JOIN phones ph ON soi.itemType = 'phone' AND soi.itemId = ph.id
+      WHERE soi.itemType = 'phone' AND COALESCE(so.status, 'active') = 'active'
+        AND COALESCE(NULLIF(soi.unitPrice, 0), NULLIF(soi.totalPrice, 0), ph.salePrice, 0) > 0
+        AND COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0) > 0
+    `);
+    const standalonePhoneRows = await smartInsightSafeRows(`
+      SELECT 'phone-history-' || id AS id, 'phone-sales-history' AS source, model,
+        COALESCE(condition, status, 'فروش گوشی') AS condition,
+        COALESCE(NULLIF(currentPurchasePrice, 0), purchasePrice, 0) AS purchasePrice,
+        COALESCE(salePrice, 0) AS finalSale,
+        COALESCE(saleDate, registerDate, purchaseDate) AS createdAt
+      FROM phones
+      WHERE COALESCE(salePrice, 0) > 0 AND COALESCE(NULLIF(currentPurchasePrice, 0), purchasePrice, 0) > 0
+    `);
+    const pricingHistoryRows = await smartInsightSafeRows(`
+      SELECT 'pricing-history-' || phist.id AS id, 'pricing-history' AS source,
+        COALESCE(p.name, phist.note, 'تغییر قیمت') AS model,
+        'اصلاح/ثبت قیمت' AS condition,
+        COALESCE(phist.oldPrice, 0) AS purchasePrice,
+        COALESCE(phist.newPrice, 0) AS finalSale,
+        COALESCE(phist.createdAt, datetime('now')) AS createdAt,
+        'manual' AS action
+      FROM pricing_history phist
+      LEFT JOIN products p ON p.id = phist.productId
+      WHERE COALESCE(phist.newPrice, 0) > 0
+    `);
+    const seen = new Set<string>();
+    const items = [...phoneOrderRows, ...standalonePhoneRows, ...pricingHistoryRows]
+      .map((row, index) => buildPricingAiDecision(row, index))
+      .filter((item) => item.purchasePrice > 0 && item.finalSale > 0 && item.createdAt)
+      .filter((item) => { const key = `${item.source}-${item.id}-${item.finalSale}`; if (seen.has(key)) return false; seen.add(key); return true; })
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      .slice(-500);
+    res.json({ success: true, data: { items, total: items.length } });
+  } catch (err) { next(err); }
+});
+app.post('/api/ai/features/auto-pause/dismiss', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureAiFeatureConfigs();
+    const key = String(req.body?.key || '').trim();
+    const def = AI_FEATURE_DEFINITIONS.find((f) => f.key === key);
+    if (!def) return res.status(400).json({ success: false, message: 'ماژول هوشمندسازی نامعتبر است.' });
+    const days = Math.max(1, Math.min(90, Number(req.body?.days) || 14));
+    await runAsync(`
+      INSERT INTO ai_feature_auto_pause_reviews (featureKey, dismissedAt, dismissedUntil, note, updatedAt, userId)
+      VALUES (?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), datetime('now', ?), ?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), ?)
+      ON CONFLICT(featureKey) DO UPDATE SET dismissedAt = excluded.dismissedAt, dismissedUntil = excluded.dismissedUntil, note = excluded.note, updatedAt = excluded.updatedAt, userId = excluded.userId
+    `, [key, `+${days} days`, String(req.body?.note || 'auto_pause_review_dismissed'), (req as any).user?.id || null]);
+    const enabledMap = await getAiFeatureEnabledMap();
+    const features = await calculateAiFeatureProgress(enabledMap);
+    res.json({ success: true, data: { features } });
+  } catch (err) { next(err); }
+});
+
+app.post('/api/ai/features/toggle', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureAiFeatureConfigs();
+    const key = String(req.body?.key || '').trim();
+    const def = AI_FEATURE_DEFINITIONS.find((f) => f.key === key);
+    if (!def) return res.status(400).json({ success: false, message: 'ماژول هوشمندسازی نامعتبر است.' });
+    const enabled = req.body?.enabled === true || req.body?.enabled === 1 || req.body?.enabled === 'true' ? 1 : 0;
+    await runAsync(`
+      UPDATE ai_feature_configs
+      SET enabled = ?, updatedAt = strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), userId = ?
+      WHERE key = ?
+    `, [enabled, req.user?.id || null, key]);
+    const enabledMap = await getAiFeatureEnabledMap();
+    const features = await calculateAiFeatureProgress(enabledMap);
+    res.json({ success: true, data: { key, enabled: !!enabled, features } });
+  } catch (err) { next(err); }
+});
+
+app.get('/api/reports/smart-insights', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    await ensureSmartInsightDecisionMemory();
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.fromDate || req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.toDate || req.query.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+    const resetAt = String(req.query.resetAt || '').trim() || null;
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+
+    const toMoment = moment(toISO, 'YYYY-MM-DD', true).isValid() ? moment(toISO, 'YYYY-MM-DD') : moment();
+    const fromMoment = moment(fromISO, 'YYYY-MM-DD', true).isValid() ? moment(fromISO, 'YYYY-MM-DD') : toMoment.clone().subtract(30, 'day');
+    const previousStartISO = fromMoment.clone().subtract(Math.max(7, toMoment.diff(fromMoment, 'day') + 1), 'day').format('YYYY-MM-DD');
+    const recent14ISO = toMoment.clone().subtract(14, 'day').format('YYYY-MM-DD');
+    const todayISO = toMoment.format('YYYY-MM-DD');
+    const aiEnabled = await getAiFeatureEnabledMap();
+    const aiIsEnabled = (key: string) => aiEnabled[key] !== false;
+
+    const insights: any[] = [];
+    const hiddenProfitCards: any[] = [];
+    const suspiciousInvoiceAudits: any[] = [];
+    const addInsight = (raw: any) => {
+      const score = Math.max(0, Math.min(100, Math.round(smartInsightNum(raw.score || 0))));
+      const severity = raw.severity || smartInsightSeverityFromScore(score);
+      insights.push({
+        id: raw.id || `insight-${insights.length + 1}`,
+        type: raw.type || 'daily_summary',
+        category: raw.category || 'هوشمند',
+        title: raw.title || 'Insight فروشگاه',
+        summary: raw.summary || '',
+        severity,
+        score,
+        confidence: Math.max(0, Math.min(100, Math.round(smartInsightNum(raw.confidence ?? 72)))),
+        icon: raw.icon || 'fa-brain',
+        tone: raw.tone || severity,
+        reasons: Array.isArray(raw.reasons) ? raw.reasons.filter(Boolean) : [],
+        metrics: Array.isArray(raw.metrics) ? raw.metrics.filter(Boolean) : [],
+        actions: Array.isArray(raw.actions) ? raw.actions.filter(Boolean) : [],
+        target: raw.target || {},
+      });
+    };
+
+    const salesStats = await smartInsightSafeOne(`
+      SELECT
+        COUNT(*) AS ordersCount,
+        COALESCE(SUM(grandTotal), 0) AS totalSales,
+        COALESCE(SUM(discount), 0) AS invoiceDiscount,
+        COUNT(DISTINCT transactionDate) AS activeDays,
+        COUNT(DISTINCT customerId) AS customersCount
+      FROM sales_orders
+      WHERE date(substr(transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(status, 'active') = 'active'
+    `, [fromISO, toISO]);
+
+    const prevStats = await smartInsightSafeOne(`
+      SELECT
+        COUNT(*) AS ordersCount,
+        COALESCE(SUM(grandTotal), 0) AS totalSales,
+        COUNT(DISTINCT transactionDate) AS activeDays
+      FROM sales_orders
+      WHERE date(substr(transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(status, 'active') = 'active'
+    `, [previousStartISO, fromMoment.clone().subtract(1, 'day').format('YYYY-MM-DD')]);
+
+    const todayStats = await smartInsightSafeOne(`
+      SELECT COUNT(*) AS ordersCount, COALESCE(SUM(grandTotal), 0) AS totalSales, COALESCE(SUM(discount), 0) AS discount
+      FROM sales_orders
+      WHERE transactionDate = ? AND COALESCE(status, 'active') = 'active'
+    `, [todayISO]);
+
+    const activeDays = Math.max(1, smartInsightNum(salesStats.activeDays));
+    const prevActiveDays = Math.max(1, smartInsightNum(prevStats.activeDays));
+    const avgDaily = smartInsightNum(salesStats.totalSales) / activeDays;
+    const prevAvgDaily = smartInsightNum(prevStats.totalSales) / prevActiveDays;
+    const todaySales = smartInsightNum(todayStats.totalSales);
+    const trendPct = prevAvgDaily > 0 ? ((avgDaily - prevAvgDaily) / prevAvgDaily) * 100 : 0;
+    if (prevAvgDaily > 0 && trendPct <= -18) {
+      addInsight({
+        id: 'sales-drop-vs-previous-period', type: 'sales_drop', category: 'فروش', severity: trendPct <= -35 ? 'critical' : 'high', score: Math.min(100, Math.abs(trendPct) * 1.7), confidence: 82,
+        icon: 'fa-arrow-trend-down',
+        title: 'افت فروش نسبت به دوره قبل شناسایی شد',
+        summary: `میانگین فروش روزانه این بازه حدود ${smartInsightPercent(Math.abs(trendPct))} کمتر از دوره قبل است.`,
+        reasons: [`میانگین روزانه دوره فعلی: ${smartInsightMoney(avgDaily)}`, `میانگین روزانه دوره قبل: ${smartInsightMoney(prevAvgDaily)}`, 'این مقایسه با تعداد روزهای فعال فروش نرمال‌سازی شده است.'],
+        metrics: [{ label: 'افت', value: smartInsightPercent(Math.abs(trendPct)) }, { label: 'میانگین فعلی', value: smartInsightMoney(avgDaily) }, { label: 'میانگین قبل', value: smartInsightMoney(prevAvgDaily) }],
+        actions: [{ label: 'بررسی فروش غیرگوشی', to: '/reports/product-sales', icon: 'fa-boxes-stacked' }, { label: 'بررسی فروش موبایل', to: '/reports/mobile-sales-analytics', icon: 'fa-mobile-screen-button' }],
+      });
+    } else if (prevAvgDaily > 0 && trendPct >= 22) {
+      addInsight({
+        id: 'sales-growth-vs-previous-period', type: 'sales_growth', category: 'فروش', severity: 'positive', score: Math.min(100, trendPct * 1.4), confidence: 80,
+        icon: 'fa-arrow-trend-up',
+        title: 'رشد فروش معنادار دیده می‌شود',
+        summary: `میانگین فروش روزانه حدود ${smartInsightPercent(trendPct)} بهتر از دوره قبل است.`,
+        reasons: ['رشد با مقایسه بازه فعلی و بازه قبلی هم‌اندازه محاسبه شده است.', 'بهتر است کالاهای پرفروش این بازه برای خرید مجدد بررسی شوند.'],
+        metrics: [{ label: 'رشد', value: smartInsightPercent(trendPct) }, { label: 'میانگین فعلی', value: smartInsightMoney(avgDaily) }, { label: 'فروش امروز/انتهای بازه', value: smartInsightMoney(todaySales) }],
+        actions: [{ label: 'مشاهده پیشنهاد خرید', to: '/reports/analysis/suggestions', icon: 'fa-lightbulb' }],
+      });
+    }
+
+    const reorderRows = aiIsEnabled('forecast') ? await smartInsightSafeRows(`
+      SELECT
+        p.id AS productId,
+        p.name AS productName,
+        COALESCE(p.stock_quantity, 0) AS stockQuantity,
+        COALESCE(p.threshold, 5) AS thresholdQty,
+        COALESCE(SUM(soi.quantity), 0) AS soldQty,
+        COALESCE(SUM(soi.totalPrice), 0) AS soldAmount,
+        COALESCE(SUM((COALESCE(soi.unitPrice, 0) - COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0)) * soi.quantity - COALESCE(soi.discountPerItem, 0)), 0) AS estimatedProfit
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      JOIN products p ON soi.itemType = 'inventory' AND soi.itemId = p.id
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY p.id, p.name, p.stock_quantity, p.threshold
+      HAVING soldQty > 0 AND (stockQuantity <= thresholdQty OR stockQuantity <= soldQty OR estimatedProfit > 0)
+      ORDER BY (CASE WHEN stockQuantity <= thresholdQty THEN 1 ELSE 0 END) DESC, estimatedProfit DESC, soldQty DESC
+      LIMIT 5
+    `, [recent14ISO, toISO]) : [];
+
+    if (reorderRows.length) {
+      const top = reorderRows[0] || {};
+      const names = reorderRows.slice(0, 3).map((r: any) => String(r.productName || 'کالا')).join('، ');
+      addInsight({
+        id: 'smart-reorder-suggestion', type: 'stock_reorder', category: 'انبار و خرید', severity: smartInsightNum(top.stockQuantity) <= smartInsightNum(top.thresholdQty) ? 'high' : 'medium', score: 72 + Math.min(22, reorderRows.length * 4), confidence: 78,
+        icon: 'fa-cart-flatbed',
+        title: 'پیشنهاد خرید هوشمند برای کالاهای پرفروش',
+        summary: `${reorderRows.length.toLocaleString('fa-IR')} قلم کالا در ۱۴ روز اخیر سیگنال خرید مجدد دارند؛ مثل ${names}.`,
+        reasons: reorderRows.slice(0, 5).map((r: any) => `${r.productName}: فروش ${smartInsightNum(r.soldQty).toLocaleString('fa-IR')} عدد، موجودی ${smartInsightNum(r.stockQuantity).toLocaleString('fa-IR')}، نقطه امن ${smartInsightNum(r.thresholdQty).toLocaleString('fa-IR')}`),
+        metrics: [{ label: 'تعداد پیشنهاد', value: reorderRows.length.toLocaleString('fa-IR') }, { label: 'سود تخمینی ۱۴ روز', value: smartInsightMoney(reorderRows.reduce((s: number, r: any) => s + smartInsightNum(r.estimatedProfit), 0)) }, { label: 'فروش ۱۴ روز', value: smartInsightMoney(reorderRows.reduce((s: number, r: any) => s + smartInsightNum(r.soldAmount), 0)) }],
+        actions: [{ label: 'رفتن به پیشنهاد خرید', to: '/reports/analysis/suggestions', icon: 'fa-lightbulb' }, { label: 'مدیریت کالاها', to: '/products', icon: 'fa-boxes-stacked' }],
+        target: { rows: reorderRows },
+      });
+    }
+
+    const discountRows = aiIsEnabled('audit_radar') ? await smartInsightSafeRows(`
+      SELECT
+        so.id AS orderId,
+        so.transactionDate,
+        COALESCE(c.fullName, 'مشتری مهمان') AS customerName,
+        COALESCE(so.subtotal, 0) AS subtotal,
+        COALESCE(so.grandTotal, 0) AS grandTotal,
+        COALESCE(so.discount, 0) AS invoiceDiscount,
+        COALESCE(SUM(soi.discountPerItem), 0) AS itemDiscount,
+        CASE WHEN COALESCE(so.subtotal, 0) > 0 THEN ((COALESCE(so.discount, 0) + COALESCE(SUM(soi.discountPerItem), 0)) / COALESCE(so.subtotal, 1)) * 100 ELSE 0 END AS discountRate
+      FROM sales_orders so
+      LEFT JOIN sales_order_items soi ON soi.orderId = so.id
+      LEFT JOIN customers c ON c.id = so.customerId
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY so.id, so.transactionDate, c.fullName, so.subtotal, so.grandTotal, so.discount
+      HAVING discountRate >= 12 OR (invoiceDiscount + itemDiscount) >= 1000000
+      ORDER BY discountRate DESC, (invoiceDiscount + itemDiscount) DESC
+      LIMIT 8
+    `, [fromISO, toISO]) : [];
+
+    if (discountRows.length) {
+      const top = discountRows[0] || {};
+      addInsight({
+        id: 'discount-anomaly-watch', type: 'discount_anomaly', category: 'کنترل تخفیف', severity: smartInsightNum(top.discountRate) >= 25 ? 'critical' : 'high', score: Math.min(96, 48 + smartInsightNum(top.discountRate) * 1.5), confidence: 86,
+        icon: 'fa-tags',
+        title: 'تخفیف‌های غیرعادی نیاز به بررسی دارند',
+        summary: `${discountRows.length.toLocaleString('fa-IR')} فاکتور در این بازه تخفیف بالاتر از سطح معمول دارند.`,
+        reasons: discountRows.slice(0, 5).map((r: any) => `فاکتور ${r.orderId} برای ${r.customerName}: نرخ تخفیف ${smartInsightPercent(r.discountRate)}، مبلغ تخفیف ${smartInsightMoney(smartInsightNum(r.invoiceDiscount) + smartInsightNum(r.itemDiscount))}`),
+        metrics: [{ label: 'بالاترین نرخ', value: smartInsightPercent(top.discountRate) }, { label: 'فاکتورهای مشکوک', value: discountRows.length.toLocaleString('fa-IR') }, { label: 'جمع تخفیف‌های مشکوک', value: smartInsightMoney(discountRows.reduce((s: number, r: any) => s + smartInsightNum(r.invoiceDiscount) + smartInsightNum(r.itemDiscount), 0)) }],
+        actions: [{ label: 'گزارش فروش غیرگوشی', to: '/reports/product-sales', icon: 'fa-magnifying-glass-chart' }],
+        target: { rows: discountRows },
+      });
+    }
+    const suspiciousRows = aiIsEnabled('audit_radar') ? await smartInsightSafeRows(`
+      WITH order_base AS (
+        SELECT orderId, SUM(COALESCE(totalPrice, 0)) AS itemBase, COUNT(*) AS itemCount, SUM(COALESCE(discountPerItem, 0)) AS itemDiscountTotal
+        FROM sales_order_items
+        GROUP BY orderId
+      ), line_audit AS (
+        SELECT
+          so.id AS orderId,
+          so.transactionDate,
+          COALESCE(c.fullName, 'مشتری مهمان') AS customerName,
+          COALESCE(so.subtotal, 0) AS subtotal,
+          COALESCE(so.grandTotal, 0) AS grandTotal,
+          COALESCE(so.discount, 0) AS invoiceDiscount,
+          COALESCE(ob.itemBase, 0) AS itemBase,
+          COALESCE(ob.itemCount, 0) AS itemCount,
+          COALESCE(ob.itemDiscountTotal, 0) AS itemDiscountTotal,
+          soi.description AS itemTitle,
+          soi.itemType,
+          COALESCE(soi.quantity, 0) AS qty,
+          COALESCE(soi.unitPrice, 0) AS unitPrice,
+          COALESCE(soi.totalPrice, 0) AS lineTotal,
+          COALESCE(soi.discountPerItem, 0) AS lineDiscount,
+          COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0) AS costPrice,
+          CASE WHEN COALESCE(ob.itemBase, 0) > 0 THEN COALESCE(so.discount, 0) * COALESCE(soi.totalPrice, 0) / COALESCE(ob.itemBase, 1) ELSE 0 END AS allocatedInvoiceDiscount
+        FROM sales_orders so
+        JOIN sales_order_items soi ON soi.orderId = so.id
+        LEFT JOIN products p ON soi.itemType = 'inventory' AND p.id = soi.itemId
+        LEFT JOIN customers c ON c.id = so.customerId
+        LEFT JOIN order_base ob ON ob.orderId = so.id
+        WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND COALESCE(so.status, 'active') = 'active'
+      )
+      SELECT
+        orderId,
+        transactionDate,
+        customerName,
+        MAX(subtotal) AS subtotal,
+        MAX(grandTotal) AS grandTotal,
+        MAX(invoiceDiscount) AS invoiceDiscount,
+        MAX(itemBase) AS itemBase,
+        MAX(itemCount) AS itemCount,
+        MAX(itemDiscountTotal) AS itemDiscountTotal,
+        SUM(lineTotal - (costPrice * qty) - allocatedInvoiceDiscount) AS estimatedProfitAfterDiscount,
+        SUM(CASE WHEN itemType = 'inventory' AND costPrice > 0 AND (lineTotal - (costPrice * qty) - allocatedInvoiceDiscount) < 0 THEN 1 ELSE 0 END) AS negativeProfitLines,
+        SUM(CASE WHEN itemType = 'inventory' AND costPrice > 0 AND unitPrice < costPrice THEN 1 ELSE 0 END) AS belowCostLines,
+        SUM(CASE WHEN itemType = 'inventory' AND costPrice <= 0 THEN 1 ELSE 0 END) AS missingCostLines,
+        SUM(CASE WHEN ABS(lineTotal - ((unitPrice * qty) - lineDiscount)) > 100 THEN 1 ELSE 0 END) AS inconsistentLineTotals,
+        SUM(CASE WHEN (unitPrice * qty) > 0 AND (lineDiscount / (unitPrice * qty)) >= 0.15 THEN 1 ELSE 0 END) AS heavyItemDiscountLines,
+        MAX(CASE WHEN subtotal > 0 AND invoiceDiscount / subtotal >= 0.12 THEN 1 ELSE 0 END) AS heavyInvoiceDiscount,
+        MAX(CASE WHEN itemBase > 0 AND ABS((itemBase - invoiceDiscount) - grandTotal) > 5000 THEN 1 ELSE 0 END) AS totalMismatch,
+        GROUP_CONCAT(CASE
+          WHEN itemType = 'inventory' AND costPrice > 0 AND (lineTotal - (costPrice * qty) - allocatedInvoiceDiscount) < 0 THEN itemTitle
+          WHEN itemType = 'inventory' AND costPrice > 0 AND unitPrice < costPrice THEN itemTitle
+          WHEN itemType = 'inventory' AND costPrice <= 0 THEN itemTitle
+          ELSE NULL END, '، ') AS riskyItems
+      FROM line_audit
+      GROUP BY orderId, transactionDate, customerName
+      HAVING negativeProfitLines > 0 OR belowCostLines > 0 OR missingCostLines > 0 OR inconsistentLineTotals > 0 OR heavyItemDiscountLines > 0 OR heavyInvoiceDiscount > 0 OR totalMismatch > 0
+      ORDER BY (negativeProfitLines * 28 + belowCostLines * 22 + missingCostLines * 14 + inconsistentLineTotals * 18 + heavyItemDiscountLines * 10 + heavyInvoiceDiscount * 16 + totalMismatch * 24) DESC,
+               ABS(estimatedProfitAfterDiscount) DESC
+      LIMIT 10
+    `, [fromISO, toISO]) : [];
+
+    suspiciousRows.forEach((r: any) => {
+      const reasonParts = [
+        smartInsightNum(r.negativeProfitLines) > 0 ? `${smartInsightNum(r.negativeProfitLines).toLocaleString('fa-IR')} قلم با سود منفی بعد از تخفیف` : '',
+        smartInsightNum(r.belowCostLines) > 0 ? `${smartInsightNum(r.belowCostLines).toLocaleString('fa-IR')} قلم فروش زیر قیمت خرید` : '',
+        smartInsightNum(r.missingCostLines) > 0 ? `${smartInsightNum(r.missingCostLines).toLocaleString('fa-IR')} قلم بدون قیمت خرید معتبر` : '',
+        smartInsightNum(r.inconsistentLineTotals) > 0 ? 'عدم تطابق جمع ردیف با قیمت×تعداد' : '',
+        smartInsightNum(r.heavyItemDiscountLines) > 0 ? 'تخفیف سنگین روی ردیف کالا' : '',
+        smartInsightNum(r.heavyInvoiceDiscount) > 0 ? 'تخفیف کلی سنگین روی فاکتور' : '',
+        smartInsightNum(r.totalMismatch) > 0 ? 'اختلاف بین جمع اقلام و مبلغ نهایی' : '',
+      ].filter(Boolean);
+      const riskScore = Math.min(100, Math.round(
+        smartInsightNum(r.negativeProfitLines) * 28 + smartInsightNum(r.belowCostLines) * 22 + smartInsightNum(r.missingCostLines) * 14 + smartInsightNum(r.inconsistentLineTotals) * 18 + smartInsightNum(r.heavyItemDiscountLines) * 10 + smartInsightNum(r.heavyInvoiceDiscount) * 16 + smartInsightNum(r.totalMismatch) * 24 + Math.min(18, Math.abs(smartInsightNum(r.estimatedProfitAfterDiscount)) / 1000000)
+      ));
+      suspiciousInvoiceAudits.push({
+        id: `audit-invoice-${r.orderId}`,
+        orderId: r.orderId,
+        transactionDate: r.transactionDate,
+        customerName: r.customerName,
+        riskScore,
+        severity: riskScore >= 72 ? 'critical' : riskScore >= 48 ? 'high' : 'medium',
+        title: `فاکتور ${Number(r.orderId || 0).toLocaleString('fa-IR')} نیاز به کنترل دارد`,
+        subtitle: reasonParts.slice(0, 3).join('، ') || 'سیگنال حسابداری غیرعادی پیدا شد',
+        reasons: reasonParts,
+        riskyItems: String(r.riskyItems || '').split('، ').filter(Boolean).slice(0, 5),
+        metrics: [
+          { label: 'فروش نهایی', value: smartInsightMoney(r.grandTotal) },
+          { label: 'تخفیف کل', value: smartInsightMoney(smartInsightNum(r.invoiceDiscount) + smartInsightNum(r.itemDiscountTotal)) },
+          { label: 'سود بعد از تخفیف', value: smartInsightMoney(r.estimatedProfitAfterDiscount) },
+        ],
+      });
+    });
+
+    if (suspiciousInvoiceAudits.length) {
+      const topAudit = suspiciousInvoiceAudits[0] || {};
+      const auditReasonCount = (matcher: (text: string) => boolean) => suspiciousInvoiceAudits.reduce((sum: number, row: any) => {
+        const reasons = Array.isArray(row.reasons) ? row.reasons : [];
+        return sum + (reasons.some((reason: any) => matcher(String(reason || ''))) ? 1 : 0);
+      }, 0);
+      const auditDiscountTotal = suspiciousInvoiceAudits.reduce((sum: number, row: any) => {
+        const metric = (Array.isArray(row.metrics) ? row.metrics : []).find((m: any) => String(m.label || '').includes('تخفیف'));
+        const raw = String(metric?.value || '').replace(/[^0-9.-]/g, '');
+        return sum + smartInsightNum(raw);
+      }, 0);
+      const auditConfidence = Math.max(55, Math.min(96, Math.round(
+        48 + Math.min(24, suspiciousInvoiceAudits.length * 3) + Math.min(18, smartInsightNum(salesStats.ordersCount) * 0.9) + Math.min(10, activeDays * 1.1)
+      )));
+      addInsight({
+        id: 'invoice-accounting-audit', type: 'invoice_audit', category: 'کنترل داخلی', severity: topAudit.severity || 'high', score: Math.max(68, smartInsightNum(topAudit.riskScore)), confidence: auditConfidence,
+        icon: 'fa-shield-halved',
+        title: 'فاکتورهای مشکوک حسابداری شناسایی شد',
+        summary: `${suspiciousInvoiceAudits.length.toLocaleString('fa-IR')} فاکتور از نظر سود منفی، تخفیف، قیمت خرید یا جمع ردیف‌ها نیاز به کنترل دارد.`,
+        reasons: suspiciousInvoiceAudits.slice(0, 5).map((r: any) => `${r.title}: ${r.subtitle}`),
+        metrics: [
+          { label: 'فاکتورهای قابل کنترل', value: suspiciousInvoiceAudits.length.toLocaleString('fa-IR') },
+          { label: 'بالاترین ریسک', value: `${smartInsightNum(topAudit.riskScore).toLocaleString('fa-IR')} از ۱۰۰` },
+          { label: 'بالاترین تخفیف', value: auditDiscountTotal > 0 ? smartInsightMoney(auditDiscountTotal) : ((topAudit.metrics || [])[1]?.value || smartInsightMoney(0)) },
+          { label: 'سود منفی', value: auditReasonCount((text) => text.includes('سود منفی')).toLocaleString('fa-IR') },
+          { label: 'اختلاف جمع', value: auditReasonCount((text) => text.includes('اختلاف') || text.includes('عدم تطابق')).toLocaleString('fa-IR') },
+          { label: 'تخفیف مشکوک', value: auditReasonCount((text) => text.includes('تخفیف')).toLocaleString('fa-IR') },
+        ],
+        actions: [{ label: 'مشاهده فاکتورها', to: '/invoices', icon: 'fa-file-invoice' }, { label: 'گزارش فروش', to: '/reports/product-sales', icon: 'fa-chart-column' }],
+        target: { rows: suspiciousInvoiceAudits },
+      });
+    }
+
+
+    const productProfitRows = aiIsEnabled('hidden_profit') ? await smartInsightSafeRows(`
+      SELECT
+        p.id AS productId,
+        p.name AS productName,
+        COALESCE(p.stock_quantity, 0) AS stockQuantity,
+        COALESCE(SUM(CASE WHEN so.id IS NOT NULL THEN soi.quantity ELSE 0 END), 0) AS soldQty,
+        COALESCE(SUM(CASE WHEN so.id IS NOT NULL THEN soi.totalPrice ELSE 0 END), 0) AS soldAmount,
+        COALESCE(SUM(CASE WHEN so.id IS NOT NULL THEN COALESCE(soi.discountPerItem, 0) ELSE 0 END), 0) AS itemDiscount,
+        COALESCE(AVG(COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0)), 0) AS avgBuyPrice,
+        COALESCE(AVG(COALESCE(soi.unitPrice, 0)), 0) AS avgSalePrice,
+        COALESCE(SUM(CASE WHEN so.id IS NOT NULL THEN ((COALESCE(soi.unitPrice, 0) - COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0)) * COALESCE(soi.quantity, 0) - COALESCE(soi.discountPerItem, 0)) ELSE 0 END), 0) AS grossProfit
+      FROM products p
+      LEFT JOIN sales_order_items soi ON soi.itemType = 'inventory' AND soi.itemId = p.id
+      LEFT JOIN sales_orders so ON so.id = soi.orderId AND date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY p.id, p.name, p.stock_quantity
+      HAVING soldAmount > 0 OR stockQuantity > 0
+      ORDER BY grossProfit DESC, soldAmount DESC
+      LIMIT 80
+    `, [fromISO, toISO]) : [];
+
+    const highMarginSleepers = productProfitRows
+      .map((r: any) => {
+        const soldAmount = smartInsightNum(r.soldAmount);
+        const profit = smartInsightNum(r.grossProfit);
+        const margin = soldAmount > 0 ? (profit / soldAmount) * 100 : 0;
+        const soldQty = smartInsightNum(r.soldQty);
+        const stock = smartInsightNum(r.stockQuantity);
+        const opportunity = Math.round(Math.max(0, margin) * 1.8 + Math.min(stock, 50) * 1.2 - soldQty * 1.4);
+        return { ...r, margin, opportunity };
+      })
+      .filter((r: any) => smartInsightNum(r.margin) >= 18 && smartInsightNum(r.stockQuantity) > 0 && smartInsightNum(r.soldQty) <= 4)
+      .sort((a: any, b: any) => smartInsightNum(b.opportunity) - smartInsightNum(a.opportunity))
+      .slice(0, 5);
+
+    const priceLiftRows = productProfitRows
+      .map((r: any) => {
+        const soldAmount = smartInsightNum(r.soldAmount);
+        const profit = smartInsightNum(r.grossProfit);
+        const soldQty = smartInsightNum(r.soldQty);
+        const discountRate = soldAmount > 0 ? (smartInsightNum(r.itemDiscount) / soldAmount) * 100 : 0;
+        const margin = soldAmount > 0 ? (profit / soldAmount) * 100 : 0;
+        const suggestedLiftPct = margin >= 22 && discountRate <= 3 ? 3 : margin >= 14 && discountRate <= 5 ? 2 : 1;
+        const extraProfit = soldAmount * (suggestedLiftPct / 100);
+        const score = Math.round(soldQty * 3 + margin * 1.2 - discountRate * 2);
+        return { ...r, margin, discountRate, suggestedLiftPct, extraProfit, score };
+      })
+      .filter((r: any) => smartInsightNum(r.soldQty) >= 3 && smartInsightNum(r.score) >= 20 && smartInsightNum(r.suggestedLiftPct) >= 2)
+      .sort((a: any, b: any) => smartInsightNum(b.extraProfit) - smartInsightNum(a.extraProfit))
+      .slice(0, 5);
+
+    const bundleRows = aiIsEnabled('hidden_profit') ? await smartInsightSafeRows(`
+      WITH item_profit AS (
+        SELECT
+          so.id AS orderId,
+          p.id AS productId,
+          p.name AS productName,
+          COALESCE(soi.totalPrice, 0) AS lineAmount,
+          (COALESCE(soi.unitPrice, 0) - COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0)) * COALESCE(soi.quantity, 0) - COALESCE(soi.discountPerItem, 0) AS lineProfit
+        FROM sales_orders so
+        JOIN sales_order_items soi ON soi.orderId = so.id AND soi.itemType = 'inventory'
+        JOIN products p ON p.id = soi.itemId
+        WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND COALESCE(so.status, 'active') = 'active'
+      )
+      SELECT
+        a.productId AS productAId,
+        a.productName AS productA,
+        b.productId AS productBId,
+        b.productName AS productB,
+        COUNT(DISTINCT a.orderId) AS togetherOrders,
+        COALESCE(SUM(a.lineAmount + b.lineAmount), 0) AS bundleSales,
+        COALESCE(SUM(a.lineProfit + b.lineProfit), 0) AS bundleProfit
+      FROM item_profit a
+      JOIN item_profit b ON a.orderId = b.orderId AND a.productId < b.productId
+      GROUP BY a.productId, a.productName, b.productId, b.productName
+      HAVING togetherOrders >= 2 AND bundleProfit > 0
+      ORDER BY togetherOrders DESC, bundleProfit DESC
+      LIMIT 6
+    `, [fromISO, toISO]) : [];
+
+    if (highMarginSleepers.length) {
+      hiddenProfitCards.push({
+        id: 'high-margin-sleepers', title: 'کالاهای پرسودِ کم‌نمایش', subtitle: 'این کالاها سود خوبی دارند اما در فروش دیده نمی‌شوند.', icon: 'fa-gem', tone: 'emerald',
+        impact: smartInsightMoney(highMarginSleepers.reduce((s: number, r: any) => s + Math.max(0, smartInsightNum(r.grossProfit)), 0)),
+        action: 'نمایش در پیشنهاد فروش، کنار صندوق یا باندل مکمل',
+        rows: highMarginSleepers.map((r: any) => ({ productId: r.productId, title: r.productName, metric: `حاشیه سود ${smartInsightPercent(r.margin)} | موجودی ${smartInsightNum(r.stockQuantity).toLocaleString('fa-IR')}`, reason: `فروش کم (${smartInsightNum(r.soldQty).toLocaleString('fa-IR')}) با سود بالقوه بالا` })),
+      });
+    }
+    if (bundleRows.length) {
+      hiddenProfitCards.push({
+        id: 'bundle-candidates', title: 'باندل‌های طبیعی فروشگاه', subtitle: 'این کالاها در فاکتورهای واقعی با هم خریداری شده‌اند.', icon: 'fa-link', tone: 'indigo',
+        impact: smartInsightMoney(bundleRows.reduce((s: number, r: any) => s + smartInsightNum(r.bundleProfit), 0)),
+        action: 'ساخت پیشنهاد باندل، برچسب قفسه یا پیشنهاد کنار فاکتور',
+        rows: bundleRows.slice(0, 5).map((r: any) => ({ productId: `${r.productAId}-${r.productBId}`, title: `${r.productA} + ${r.productB}`, metric: `${smartInsightNum(r.togetherOrders).toLocaleString('fa-IR')} فاکتور مشترک | سود ${smartInsightMoney(r.bundleProfit)}`, reason: 'هم‌خرید واقعی در فاکتورهای ثبت‌شده' })),
+      });
+    }
+    if (priceLiftRows.length) {
+      hiddenProfitCards.push({
+        id: 'safe-price-lift', title: 'افزایش قیمت کم‌ریسک', subtitle: 'کالاهایی که ظرفیت تست افزایش قیمت محدود دارند.', icon: 'fa-arrow-up-right-dots', tone: 'amber',
+        impact: smartInsightMoney(priceLiftRows.reduce((s: number, r: any) => s + smartInsightNum(r.extraProfit), 0)),
+        action: 'تست افزایش ۲ تا ۳ درصدی برای یک هفته و ثبت نتیجه',
+        rows: priceLiftRows.map((r: any) => ({ productId: r.productId, title: r.productName, metric: `پیشنهاد ${smartInsightPercent(r.suggestedLiftPct)} | سود اضافه ${smartInsightMoney(r.extraProfit)}`, reason: `فروش مناسب، تخفیف پایین (${smartInsightPercent(r.discountRate)}) و حاشیه سود ${smartInsightPercent(r.margin)}` })),
+      });
+    }
+
+    if (hiddenProfitCards.length) {
+      addInsight({
+        id: 'hidden-profit-detector', type: 'hidden_profit', category: 'فرصت سود', severity: hiddenProfitCards.length >= 2 ? 'high' : 'medium', score: Math.min(96, 62 + hiddenProfitCards.length * 10), confidence: 79,
+        icon: 'fa-sack-dollar', title: 'فرصت‌های سود پنهان شناسایی شد',
+        summary: `${hiddenProfitCards.length.toLocaleString('fa-IR')} مسیر افزایش سود از دل داده فروش و موجودی پیدا شد؛ از کالاهای پرسود کم‌نمایش تا باندل‌های طبیعی.`,
+        reasons: hiddenProfitCards.map((c: any) => `${c.title}: ${c.action}`),
+        metrics: hiddenProfitCards.map((c: any) => ({ label: c.title, value: c.impact })),
+        actions: [{ label: 'بررسی فرصت‌های سود', icon: 'fa-sack-dollar' }, { label: 'مدیریت کالاها', to: '/products', icon: 'fa-boxes-stacked' }],
+        target: { cards: hiddenProfitCards },
+      });
+    }
+
+    const hiddenLossRows = aiIsEnabled('profit_engine') ? await smartInsightSafeRows(`
+      WITH order_item_totals AS (
+        SELECT orderId, SUM(COALESCE(totalPrice, 0)) AS orderBase
+        FROM sales_order_items
+        GROUP BY orderId
+      )
+      SELECT * FROM (
+        SELECT
+          'نقدی' AS saleType,
+          so.id AS saleId,
+          so.transactionDate AS saleDate,
+          COALESCE(c.fullName, 'مشتری مهمان') AS customerName,
+          ph.model AS phoneModel,
+          ph.imei AS imei,
+          COALESCE(soi.totalPrice, 0) - CASE WHEN COALESCE(oit.orderBase, 0) > 0 THEN COALESCE(so.discount, 0) * (COALESCE(soi.totalPrice, 0) / COALESCE(oit.orderBase, 1)) ELSE 0 END AS saleNet,
+          COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0) AS replacementPrice,
+          (COALESCE(soi.totalPrice, 0) - CASE WHEN COALESCE(oit.orderBase, 0) > 0 THEN COALESCE(so.discount, 0) * (COALESCE(soi.totalPrice, 0) / COALESCE(oit.orderBase, 1)) ELSE 0 END) - COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0) AS realProfit
+        FROM sales_order_items soi
+        JOIN sales_orders so ON so.id = soi.orderId
+        JOIN order_item_totals oit ON oit.orderId = so.id
+        JOIN phones ph ON soi.itemType = 'phone' AND soi.itemId = ph.id
+        LEFT JOIN customers c ON c.id = so.customerId
+        WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND COALESCE(so.status, 'active') = 'active'
+        UNION ALL
+        SELECT
+          'اقساطی' AS saleType,
+          ins.id AS saleId,
+          substr(COALESCE(ins.dateCreated, ''), 1, 10) AS saleDate,
+          COALESCE(c.fullName, 'مشتری مهمان') AS customerName,
+          ph.model AS phoneModel,
+          ph.imei AS imei,
+          COALESCE(ins.actualSalePrice, 0) AS saleNet,
+          COALESCE(NULLIF(ph.currentPurchasePrice, 0), ph.purchasePrice, 0) AS replacementPrice,
+          COALESCE(ins.actualSalePrice, 0) - COALESCE(NULLIF(ph.currentPurchasePrice, 0), ph.purchasePrice, 0) AS realProfit
+        FROM installment_sales ins
+        JOIN phones ph ON ph.id = ins.phoneId
+        LEFT JOIN customers c ON c.id = ins.customerId
+        WHERE substr(COALESCE(ins.dateCreated, ''), 1, 10) BETWEEN ? AND ?
+      ) x
+      WHERE realProfit < 0
+      ORDER BY realProfit ASC
+      LIMIT 8
+    `, [fromISO, toISO, fromISO, toISO]) : [];
+
+    if (hiddenLossRows.length) {
+      const totalLoss = hiddenLossRows.reduce((s: number, r: any) => s + Math.abs(Math.min(0, smartInsightNum(r.realProfit))), 0);
+      addInsight({
+        id: 'hidden-loss-mobile-replacement-price', type: 'hidden_loss', category: 'سود واقعی گوشی', severity: totalLoss >= 5000000 ? 'critical' : 'high', score: Math.min(98, 58 + totalLoss / 250000), confidence: 84,
+        icon: 'fa-mobile-screen-button',
+        title: 'ضرر پنهان بر اساس قیمت خرید روز دیده شد',
+        summary: `${hiddenLossRows.length.toLocaleString('fa-IR')} فروش گوشی با قیمت جایگزینی فعلی سود واقعی منفی دارد.`,
+        reasons: hiddenLossRows.slice(0, 5).map((r: any) => `${r.saleType} ${r.phoneModel || ''} (${r.imei || 'بدون IMEI'}): فروش خالص ${smartInsightMoney(r.saleNet)}، قیمت خرید روز ${smartInsightMoney(r.replacementPrice)}، نتیجه ${smartInsightMoney(r.realProfit)}`),
+        metrics: [{ label: 'تعداد فروش زیان‌ده', value: hiddenLossRows.length.toLocaleString('fa-IR') }, { label: 'زیان پنهان', value: smartInsightMoney(totalLoss) }, { label: 'بدترین فروش', value: smartInsightMoney(hiddenLossRows[0]?.realProfit) }],
+        actions: [{ label: 'تحلیل گوشی نقد و اقساط', to: '/reports/mobile-sales-analytics', icon: 'fa-mobile-screen-button' }],
+        target: { rows: hiddenLossRows },
+      });
+    }
+
+    try {
+      const collections = await buildProductSalesCollectionsReport(fromISO, toISO);
+      const risk = await buildProductSalesCollectionRisk(collections.rows || [], collections.docs || [], 10);
+      const riskItems = await enrichCollectionCenterItems(Array.isArray(risk?.items) ? risk.items : []);
+      const actionableRiskItems = riskItems.filter((x: any) => {
+        const stage = String(x.kanbanStage || '');
+        if (x.touchedToday) return false;
+        if (stage === 'settled' || stage === 'promise' || stage === 'waiting') return false;
+        return ['critical', 'urgent'].includes(String(x.level));
+      });
+      const critical = actionableRiskItems.slice(0, 5);
+      if (critical.length) {
+        const totalOutstanding = critical.reduce((s: number, r: any) => s + smartInsightNum(r.outstandingAmount), 0);
+        addInsight({
+          id: 'collection-risk-critical', type: 'collection_risk', category: 'وصول مطالبات', severity: 'critical', score: Math.min(99, Math.max(...critical.map((x: any) => smartInsightNum(x.score)))), confidence: 88,
+          icon: 'fa-headset',
+          title: 'پرونده‌های وصول فوری/بحرانی شناسایی شد',
+          summary: `${critical.length.toLocaleString('fa-IR')} سند نیازمند پیگیری فوری است و مانده آن‌ها ${smartInsightMoney(totalOutstanding)} است.`,
+          reasons: critical.map((r: any) => `${r.customerName || 'مشتری'} | سند ${r.orderId}: ${r.label || 'ریسک بالا'}، مانده ${smartInsightMoney(r.outstandingAmount)}، وصول ${smartInsightPercent(r.collectionRate)}`),
+          metrics: [{ label: 'پرونده فوری', value: critical.length.toLocaleString('fa-IR') }, { label: 'مانده فوری', value: smartInsightMoney(totalOutstanding) }, { label: 'بالاترین امتیاز', value: Math.max(...critical.map((x: any) => smartInsightNum(x.score))).toLocaleString('fa-IR') }],
+          actions: [{ label: 'مرکز پیگیری وصول', to: '/reports/collection-center', icon: 'fa-headset' }],
+          target: { rows: critical },
+        });
+      }
+
+      const totalProfit = smartInsightNum(collections.summary?.totalProfit);
+      const realizedProfit = smartInsightNum(collections.summary?.realizedProfit);
+      const profitCollectionRate = totalProfit > 0 ? (realizedProfit / totalProfit) * 100 : 100;
+      if (totalProfit > 0 && profitCollectionRate < 65) {
+        addInsight({
+          id: 'profit-quality-realized-profit', type: 'profit_quality', category: 'کیفیت سود', severity: profitCollectionRate < 40 ? 'high' : 'medium', score: 100 - profitCollectionRate, confidence: 76,
+          icon: 'fa-scale-balanced',
+          title: 'کیفیت سود نیاز به کنترل دارد',
+          summary: `بخش قابل توجهی از سود این بازه هنوز وصول نشده؛ نرخ سود وصول‌شده ${smartInsightPercent(profitCollectionRate)} است.`,
+          reasons: [`سود کل برآوردی: ${smartInsightMoney(totalProfit)}`, `سود وصول‌شده: ${smartInsightMoney(realizedProfit)}`, `سود وصول‌نشده: ${smartInsightMoney(totalProfit - realizedProfit)}`],
+          metrics: [{ label: 'نرخ سود وصول‌شده', value: smartInsightPercent(profitCollectionRate) }, { label: 'سود وصول‌نشده', value: smartInsightMoney(totalProfit - realizedProfit) }],
+          actions: [{ label: 'فروش غیرگوشی', to: '/reports/product-sales', icon: 'fa-boxes-stacked' }, { label: 'مرکز وصول', to: '/reports/collection-center', icon: 'fa-headset' }],
+        });
+      }
+    } catch (e: any) {
+      console.error('SmartInsight collection risk failed:', e?.message || e);
+    }
+
+    if (!insights.length) {
+      addInsight({
+        id: 'daily-positive-summary', type: 'daily_summary', category: 'خلاصه روز', severity: 'positive', score: 55, confidence: 68,
+        icon: 'fa-circle-check',
+        title: 'در بازه فعلی هشدار جدی دیده نشد',
+        summary: 'سیستم افت شدید، تخفیف غیرعادی سنگین یا ریسک وصول بحرانی در بازه انتخابی پیدا نکرده است.',
+        reasons: ['داده‌های فعلی در محدوده هشدارهای تعریف‌شده قرار نگرفته‌اند.', 'با افزایش داده فروش، دقت یادگیری سیستم بالاتر می‌رود.'],
+        metrics: [{ label: 'فروش کل', value: smartInsightMoney(salesStats.totalSales) }, { label: 'تعداد فاکتور', value: smartInsightNum(salesStats.ordersCount).toLocaleString('fa-IR') }, { label: 'بازه', value: `${fromJ} تا ${toJ}` }],
+        actions: [{ label: 'داشبورد گزارشات', to: '/reports', icon: 'fa-chart-column' }],
+      });
+    }
+
+
+
+    // --- Customer Intelligence Engine + Auto Pricing Engine (applied, not placeholder) ---
+    const customerIntelligenceRows = aiIsEnabled('customer_intelligence') ? await smartInsightSafeRows(`
+      WITH customer_sales AS (
+        SELECT
+          c.id AS customerId,
+          c.fullName AS customerName,
+          c.phoneNumber AS phoneNumber,
+          COUNT(DISTINCT so.id) AS ordersCount,
+          COALESCE(SUM(so.grandTotal), 0) AS totalSpend,
+          COALESCE(SUM(so.discount), 0) + COALESCE(SUM(soi.discountPerItem), 0) AS totalDiscount,
+          COALESCE(SUM((COALESCE(soi.unitPrice,0) - COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice, 0)) * COALESCE(soi.quantity,0) - COALESCE(soi.discountPerItem,0)), 0) AS estimatedProfit,
+          MIN(so.transactionDate) AS periodFirstPurchaseAt,
+          MAX(so.transactionDate) AS periodLastPurchaseAt,
+          SUM(CASE WHEN COALESCE(so.paymentMethod,'cash') IN ('credit','installment','mixed') THEN 1 ELSE 0 END) AS creditOrders,
+          COUNT(DISTINCT so.transactionDate) AS activeDays
+        FROM customers c
+        JOIN sales_orders so ON so.customerId = c.id AND COALESCE(so.status, 'active') = 'active'
+        LEFT JOIN sales_order_items soi ON soi.orderId = so.id
+        LEFT JOIN products p ON soi.itemType = 'inventory' AND soi.itemId = p.id
+        WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        GROUP BY c.id, c.fullName, c.phoneNumber
+      ), last_before AS (
+        SELECT customerId, MAX(transactionDate) AS prevPurchaseAt
+        FROM sales_orders
+        WHERE transactionDate < ? AND customerId IS NOT NULL AND COALESCE(status, 'active') = 'active'
+        GROUP BY customerId
+      ), last_purchase AS (
+        SELECT customerId, MAX(transactionDate) AS lastPurchaseAt
+        FROM sales_orders
+        WHERE customerId IS NOT NULL
+          AND COALESCE(status, 'active') = 'active'
+          AND date(substr(transactionDate, 1, 10)) <= date(?)
+        GROUP BY customerId
+      )
+      SELECT cs.*, lb.prevPurchaseAt, lp.lastPurchaseAt AS absoluteLastPurchaseAt
+      FROM customer_sales cs
+      LEFT JOIN last_before lb ON lb.customerId = cs.customerId
+      LEFT JOIN last_purchase lp ON lp.customerId = cs.customerId
+      ORDER BY estimatedProfit DESC, totalSpend DESC
+      LIMIT 12
+    `, [fromISO, toISO, fromISO, toISO]) : [];
+
+    const customerIntelligence = (customerIntelligenceRows || []).map((r: any) => {
+      const totalSpend = smartInsightNum(r.totalSpend);
+      const profit = smartInsightNum(r.estimatedProfit);
+      const discountRate = totalSpend > 0 ? (smartInsightNum(r.totalDiscount) / totalSpend) * 100 : 0;
+      const creditRate = smartInsightNum(r.ordersCount) > 0 ? (smartInsightNum(r.creditOrders) / smartInsightNum(r.ordersCount)) * 100 : 0;
+      const lastDateRaw = String(r.absoluteLastPurchaseAt || r.periodLastPurchaseAt || r.lastPurchaseAt || '');
+      const lastDateIso = lastDateRaw ? lastDateRaw.slice(0, 10) : '';
+      const lastPurchaseMoment = lastDateIso ? moment(lastDateIso, 'YYYY-MM-DD', true) : null;
+      const daysSinceLast = lastPurchaseMoment?.isValid() ? Math.max(0, toMoment.diff(lastPurchaseMoment, 'day')) : 999;
+      const lastPurchaseLabel = daysSinceLast >= 999
+        ? 'نامشخص'
+        : daysSinceLast === 0
+          ? 'امروز'
+          : daysSinceLast === 1
+            ? 'دیروز'
+            : `${daysSinceLast.toLocaleString('fa-IR')} روز قبل`;
+      const recencyRisk = Math.min(45, Math.max(0, daysSinceLast - 14));
+      const riskScore = Math.min(100, Math.round(discountRate * 1.15 + creditRate * 0.55 + recencyRisk));
+      const profitScore = Math.min(100, Math.round((profit / Math.max(1, totalSpend)) * 180 + Math.min(35, smartInsightNum(r.ordersCount) * 5) + Math.min(25, profit / 2000000)));
+      const segments = [
+        profitScore >= 70 ? 'مشتری طلایی' : '',
+        profitScore >= 48 ? 'سودآور' : '',
+        riskScore >= 62 ? 'پرریسک' : '',
+        discountRate >= 12 ? 'تخفیف‌گیر حرفه‌ای' : '',
+        creditRate >= 45 ? 'کندپرداخت/اعتباری' : '',
+        daysSinceLast >= 35 ? 'در حال ریزش' : '',
+      ].filter(Boolean);
+      const action = riskScore >= 62
+        ? 'قبل از فروش اعتباری بعدی سقف بدهی و تضمین را کنترل کن.'
+        : daysSinceLast >= 35
+          ? 'یک پیشنهاد بازگشت کوتاه و شخصی‌سازی‌شده ارسال کن.'
+          : discountRate >= 12
+            ? 'تخفیف را به باندل سودآور تبدیل کن، نه کاهش مستقیم قیمت.'
+            : profitScore >= 70
+              ? 'برای این مشتری پیشنهاد VIP یا باندل پریمیوم بساز.'
+              : 'رفتار خرید را زیر نظر بگیر و پیشنهاد مکمل بده.';
+      return {
+        customerId: r.customerId,
+        customerName: r.customerName || 'مشتری بدون نام',
+        phoneNumber: r.phoneNumber || '',
+        segment: segments[0] || 'عادی',
+        segments,
+        riskScore,
+        profitScore,
+        totalSpend: smartInsightRound(totalSpend),
+        estimatedProfit: smartInsightRound(profit),
+        discountRate: smartInsightRound(discountRate),
+        creditRate: smartInsightRound(creditRate),
+        daysSinceLast,
+        lastPurchaseAt: lastDateIso,
+        lastPurchaseLabel,
+        action,
+      };
+    });
+
+    for (const c of customerIntelligence) {
+      if (!c.customerId) continue;
+      await runAsync(`
+        INSERT INTO customer_scores (customerId, segment, riskScore, profitScore, lastCalculatedAt)
+        VALUES (?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+        ON CONFLICT(customerId) DO UPDATE SET
+          segment = excluded.segment,
+          riskScore = excluded.riskScore,
+          profitScore = excluded.profitScore,
+          lastCalculatedAt = excluded.lastCalculatedAt
+      `, [c.customerId, c.segment || 'عادی', smartInsightNum(c.riskScore), smartInsightNum(c.profitScore)]).catch(() => null as any);
+    }
+
+    const topCustomerRisk = customerIntelligence.find((c: any) => smartInsightNum(c.riskScore) >= 62 || String(c.segment).includes('ریزش'));
+    if (topCustomerRisk) {
+      addInsight({
+        id: 'customer-intelligence-risk', type: 'customer_intelligence', category: 'مشتری', severity: smartInsightNum(topCustomerRisk.riskScore) >= 72 ? 'high' : 'medium', score: Math.max(58, smartInsightNum(topCustomerRisk.riskScore)), confidence: Math.min(92, 60 + customerIntelligence.length * 3),
+        icon: 'fa-user-shield',
+        title: 'شخصیت مشتری نیازمند اقدام شناسایی شد',
+        summary: `${topCustomerRisk.customerName} در سگمنت «${topCustomerRisk.segment}» قرار گرفته و بهتر است رفتار فروش/وصول برای او کنترل شود.`,
+        reasons: [`ریسک: ${smartInsightPercent(topCustomerRisk.riskScore)}`, `تخفیف دریافتی: ${smartInsightPercent(topCustomerRisk.discountRate)}`, `نرخ خرید اعتباری: ${smartInsightPercent(topCustomerRisk.creditRate)}`, `آخرین خرید: ${topCustomerRisk.lastPurchaseLabel || (smartInsightNum(topCustomerRisk.daysSinceLast) >= 999 ? 'نامشخص' : `${smartInsightNum(topCustomerRisk.daysSinceLast).toLocaleString('fa-IR')} روز قبل`)}`],
+        metrics: [{ label: 'ریسک', value: smartInsightPercent(topCustomerRisk.riskScore) }, { label: 'سودآوری', value: smartInsightPercent(topCustomerRisk.profitScore) }, { label: 'سود تخمینی', value: smartInsightMoney(topCustomerRisk.estimatedProfit) }],
+        actions: [{ label: 'مشاهده مشتریان', to: '/customers', icon: 'fa-users' }],
+        target: { customers: customerIntelligence.slice(0, 8) },
+      });
+    }
+
+    const pricingRows = aiIsEnabled('auto_pricing') ? await smartInsightSafeRows(`
+      WITH product_sales AS (
+        SELECT
+          p.id AS productId,
+          p.name AS productName,
+          COALESCE(p.purchasePrice, 0) AS purchasePrice,
+          COALESCE(p.sellingPrice, 0) AS currentPrice,
+          COALESCE(p.stock_quantity, 0) AS stockQuantity,
+          COALESCE(p.threshold, 5) AS thresholdQty,
+          COALESCE(SUM(CASE WHEN date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) THEN soi.quantity ELSE 0 END), 0) AS sold7,
+          COALESCE(SUM(CASE WHEN date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) THEN soi.quantity ELSE 0 END), 0) AS sold30,
+          COALESCE(SUM(CASE WHEN date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) THEN soi.totalPrice ELSE 0 END), 0) AS revenue30,
+          COALESCE(SUM(CASE WHEN date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) THEN soi.discountPerItem ELSE 0 END), 0) AS discount30,
+          COALESCE(SUM(CASE WHEN date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) THEN (COALESCE(soi.unitPrice,0) - COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice, 0)) * COALESCE(soi.quantity,0) - COALESCE(soi.discountPerItem,0) ELSE 0 END), 0) AS profit30
+        FROM products p
+        LEFT JOIN sales_order_items soi ON soi.itemType = 'inventory' AND soi.itemId = p.id
+        LEFT JOIN sales_orders so ON so.id = soi.orderId AND COALESCE(so.status, 'active') = 'active'
+        GROUP BY p.id, p.name, p.purchasePrice, p.sellingPrice, p.stock_quantity, p.threshold
+        HAVING currentPrice > 0 AND (sold30 > 0 OR stockQuantity > 0)
+        ORDER BY profit30 DESC, sold30 DESC
+        LIMIT 18
+      )
+      SELECT * FROM product_sales
+    `, [toMoment.clone().subtract(7, 'day').format('YYYY-MM-DD'), toISO, fromISO, toISO, fromISO, toISO, fromISO, toISO, fromISO, toISO]) : [];
+
+    const pricingRecommendations = (pricingRows || []).map((r: any) => {
+      const currentPrice = smartInsightNum(r.currentPrice);
+      const purchasePrice = smartInsightNum(r.purchasePrice);
+      const stock = smartInsightNum(r.stockQuantity);
+      const sold7 = smartInsightNum(r.sold7);
+      const sold30 = smartInsightNum(r.sold30);
+      const velocity = sold30 / Math.max(1, toMoment.diff(fromMoment, 'day') + 1);
+      const marginPct = currentPrice > 0 ? ((currentPrice - purchasePrice) / currentPrice) * 100 : 0;
+      const discountRate = smartInsightNum(r.revenue30) > 0 ? (smartInsightNum(r.discount30) / smartInsightNum(r.revenue30)) * 100 : 0;
+      const daysToStockout = velocity > 0 ? stock / velocity : 999;
+      const elasticityScore = Math.max(-2.5, Math.min(0.5, -0.55 - discountRate / 35 + (sold7 > sold30 / 4 ? 0.18 : -0.12) + (marginPct > 28 ? 0.16 : 0)));
+      const safeMinPrice = Math.max(purchasePrice * 1.08, currentPrice * 0.92);
+      const lift = daysToStockout < 7 ? 0.06 : marginPct > 25 && discountRate < 8 ? 0.04 : discountRate > 15 ? -0.03 : sold7 > Math.max(1, sold30 / 4) ? 0.03 : 0;
+      const rawOptimal = currentPrice * (1 + lift);
+      const optimalPrice = Math.max(safeMinPrice, Math.round(rawOptimal / 1000) * 1000);
+      const volumeDelta = lift > 0 ? Math.round(elasticityScore * lift * 100) : Math.round(Math.abs(elasticityScore) * Math.abs(lift) * 45);
+      const profitDelta = Math.round(((optimalPrice - purchasePrice) - (currentPrice - purchasePrice)) * Math.max(1, Math.min(sold30, stock || sold30 || 1)));
+      const risk = lift > 0.045 && elasticityScore < -1.1 ? 'بالا' : lift < 0 ? 'کنترل فروش' : 'کم';
+      const action = lift > 0 ? 'افزایش قیمت کنترل‌شده ۷ روزه' : lift < 0 ? 'کاهش قیمت/تخلیه موجودی کنترل‌شده' : 'حفظ قیمت و پایش';
+      return {
+        productId: r.productId,
+        productName: r.productName,
+        currentPrice: smartInsightRound(currentPrice),
+        purchasePrice: smartInsightRound(purchasePrice),
+        safeMinPrice: smartInsightRound(safeMinPrice),
+        optimalPrice: smartInsightRound(optimalPrice),
+        aggressivePrice: smartInsightRound(Math.max(safeMinPrice, currentPrice * 0.96)),
+        marginPct: smartInsightRound(marginPct),
+        elasticityScore: smartInsightRound(elasticityScore),
+        sold7: smartInsightRound(sold7),
+        sold30: smartInsightRound(sold30),
+        daysToStockout: daysToStockout >= 999 ? 999 : smartInsightRound(daysToStockout),
+        expectedProfitDelta: smartInsightRound(profitDelta),
+        expectedVolumeDelta: volumeDelta,
+        confidence: Math.max(45, Math.min(92, Math.round(52 + Math.min(22, sold30 * 2) + Math.min(14, Math.max(0, marginPct)) - Math.max(0, discountRate - 12)))),
+        risk,
+        action,
+      };
+    }).sort((a: any, b: any) => Math.abs(smartInsightNum(b.expectedProfitDelta)) - Math.abs(smartInsightNum(a.expectedProfitDelta))).slice(0, 8);
+
+    const topPricing = pricingRecommendations.find((p: any) => Math.abs(smartInsightNum(p.expectedProfitDelta)) > 0 || smartInsightNum(p.sold30) > 0);
+    if (topPricing) {
+      addInsight({
+        id: 'auto-pricing-opportunity', type: 'auto_pricing', category: 'قیمت‌گذاری', severity: smartInsightNum(topPricing.expectedProfitDelta) > 0 ? 'medium' : 'low', score: Math.min(92, 50 + smartInsightNum(topPricing.confidence) * 0.35 + Math.min(18, Math.abs(smartInsightNum(topPricing.expectedProfitDelta)) / 1000000)), confidence: topPricing.confidence,
+        icon: 'fa-tags',
+        title: 'قیمت‌گذاری هوشمند پیشنهاد جدید دارد',
+        summary: `برای ${topPricing.productName} قیمت پیشنهادی ${smartInsightMoney(topPricing.optimalPrice)} است؛ قیمت فعلی ${smartInsightMoney(topPricing.currentPrice)}.`,
+        reasons: [`حاشیه سود: ${smartInsightPercent(topPricing.marginPct)}`, `کشش قیمت تخمینی: ${topPricing.elasticityScore}`, `فروش ۳۰ روز: ${smartInsightNum(topPricing.sold30).toLocaleString('fa-IR')}`, `ریسک اجرا: ${topPricing.risk}`],
+        metrics: [{ label: 'قیمت فعلی', value: smartInsightMoney(topPricing.currentPrice) }, { label: 'قیمت پیشنهادی', value: smartInsightMoney(topPricing.optimalPrice) }, { label: 'اثر سود', value: smartInsightMoney(topPricing.expectedProfitDelta) }],
+        actions: [{ label: 'مدیریت کالاها', to: '/products', icon: 'fa-tags' }],
+        target: { pricing: pricingRecommendations },
+      });
+    }
+
+    // --- AI Sales Agent: active selling / collection playbook based on customer intelligence, pricing and purchase history ---
+    const customerIdsForAgent = customerIntelligence.map((c: any) => String(c.customerId || '')).filter(Boolean).slice(0, 20);
+    const lastCustomerItems = aiIsEnabled('sales_agent') && customerIdsForAgent.length ? await smartInsightSafeRows(`
+      SELECT
+        so.customerId,
+        p.id AS productId,
+        p.name AS productName,
+        MAX(so.transactionDate) AS lastBoughtAt,
+        SUM(COALESCE(soi.quantity, 0)) AS boughtQty,
+        SUM(COALESCE(soi.totalPrice, 0)) AS boughtAmount
+      FROM sales_orders so
+      JOIN sales_order_items soi ON soi.orderId = so.id AND soi.itemType = 'inventory'
+      LEFT JOIN products p ON p.id = soi.itemId
+      WHERE so.customerId IN (${customerIdsForAgent.map(() => '?').join(',')})
+        AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY so.customerId, p.id, p.name
+      ORDER BY MAX(so.transactionDate) DESC, SUM(COALESCE(soi.totalPrice, 0)) DESC
+    `, customerIdsForAgent) : [];
+    const lastItemByCustomer = new Map();
+    for (const row of lastCustomerItems || []) {
+      const key = String(row.customerId || '');
+      if (!lastItemByCustomer.has(key) && row.productName) lastItemByCustomer.set(key, row);
+    }
+    const bestPricingProduct = pricingRecommendations.find((p: any) => smartInsightNum(p.expectedProfitDelta) >= 0 && smartInsightNum(p.optimalPrice) > 0) || pricingRecommendations[0] || null;
+    const salesAgentLeads = aiIsEnabled('sales_agent') ? customerIntelligence
+      .filter((c: any) => c.customerId && (smartInsightNum(c.profitScore) >= 45 || smartInsightNum(c.riskScore) >= 45 || smartInsightNum(c.daysSinceLast) >= 21 || smartInsightNum(c.discountRate) >= 10))
+      .map((c: any) => {
+        const lastItem = lastItemByCustomer.get(String(c.customerId)) || {};
+        const isCollection = smartInsightNum(c.creditRate) >= 45 || smartInsightNum(c.riskScore) >= 68;
+        const isWinback = smartInsightNum(c.daysSinceLast) >= 35;
+        const isDiscountSeeker = smartInsightNum(c.discountRate) >= 12;
+        const isVip = smartInsightNum(c.profitScore) >= 70;
+        const targetProduct = lastItem.productName || bestPricingProduct?.productName || 'محصولات تازه فروشگاه';
+        const intent = isCollection ? 'collection' : isWinback ? 'winback' : isVip ? 'vip_upsell' : isDiscountSeeker ? 'bundle_offer' : 'cross_sell';
+        const title = intent === 'collection' ? 'پیگیری وصول بدون از دست دادن مشتری' : intent === 'winback' ? 'بازگرداندن مشتری در حال ریزش' : intent === 'vip_upsell' ? 'پیشنهاد VIP برای مشتری سودآور' : intent === 'bundle_offer' ? 'تبدیل تخفیف به باندل سودآور' : 'فروش مکمل شخصی‌سازی‌شده';
+        const message = intent === 'collection'
+          ? `سلام ${c.customerName} عزیز، برای هماهنگی تسویه حساب قبلی و ادامه خریدهای بعدی در خدمتتون هستیم. اگر مایل باشید امروز وضعیت حساب رو با هم نهایی کنیم.`
+          : intent === 'winback'
+            ? `سلام ${c.customerName} عزیز، ${targetProduct} و چند قلم تازه فروشگاه موجود شده. اگر دوست داشتید، امروز می‌تونیم یک پیشنهاد مناسب بر اساس خرید قبلی‌تون آماده کنیم.`
+            : intent === 'vip_upsell'
+              ? `سلام ${c.customerName} عزیز، برای شما یک پیشنهاد ویژه روی ${targetProduct} آماده کردیم؛ ترکیب تازه و باکیفیت با اولویت موجودی امروز.`
+              : intent === 'bundle_offer'
+                ? `سلام ${c.customerName} عزیز، به جای تخفیف مستقیم، یک ترکیب اقتصادی و به‌صرفه از ${targetProduct} براتون آماده کردیم که ارزش خرید بالاتری داره.`
+                : `سلام ${c.customerName} عزیز، با توجه به خرید قبلی شما از ${targetProduct}، چند گزینه مکمل تازه داریم که می‌تونه انتخاب خوبی برای خرید بعدی باشه.`;
+        const priority = Math.round(
+          smartInsightNum(c.profitScore) * 0.62 +
+          smartInsightNum(c.riskScore) * 0.38 +
+          Math.min(24, smartInsightNum(c.daysSinceLast) / 2) +
+          (intent === 'collection' ? 22 : intent === 'vip_upsell' ? 18 : intent === 'winback' ? 14 : 8)
+        );
+        return {
+          id: `sales-agent-${c.customerId}-${intent}`,
+          customerId: c.customerId,
+          customerName: c.customerName,
+          phoneNumber: c.phoneNumber || '',
+          segment: c.segment || 'عادی',
+          intent,
+          title,
+          priority: Math.min(100, Math.max(1, priority)),
+          recommendedChannel: c.phoneNumber ? 'تماس / پیامک / تلگرام' : 'تماس حضوری یا ثبت شماره',
+          targetProduct,
+          message,
+          reason: intent === 'collection' ? 'ریسک اعتباری یا خرید نسیه بالا است.' : intent === 'winback' ? 'فاصله آخرین خرید زیاد شده و احتمال ریزش وجود دارد.' : intent === 'vip_upsell' ? 'سودآوری مشتری بالاست و ارزش پیشنهاد ویژه دارد.' : intent === 'bundle_offer' ? 'رفتار مشتری تخفیف‌محور است؛ باندل بهتر از کاهش قیمت است.' : 'رفتار خرید، ظرفیت فروش مکمل را نشان می‌دهد.',
+          expectedImpact: intent === 'collection' ? 'کاهش ریسک وصول' : intent === 'winback' ? 'بازگشت مشتری' : intent === 'vip_upsell' ? 'افزایش سود فاکتور' : intent === 'bundle_offer' ? 'حفظ حاشیه سود' : 'افزایش فروش مکمل',
+          ctaLabel: intent === 'collection' ? 'پیگیری وصول' : 'آماده‌سازی پیام فروش',
+          to: c.customerId ? `/customers/${c.customerId}` : '/customers',
+        };
+      })
+      .sort((a: any, b: any) => smartInsightNum(b.priority) - smartInsightNum(a.priority))
+      .slice(0, 8) : [];
+
+    if (salesAgentLeads.length) {
+      const topLead = salesAgentLeads[0];
+      addInsight({
+        id: 'ai-sales-agent-active-lead', type: 'ai_sales_agent', category: 'فروش فعال', severity: smartInsightNum(topLead.priority) >= 78 ? 'high' : 'medium', score: topLead.priority, confidence: Math.min(92, 58 + salesAgentLeads.length * 5),
+        icon: 'fa-headset',
+        title: 'دستیار فروش فعال، مشتری آماده اقدام پیدا کرد',
+        summary: `${topLead.customerName} برای «${topLead.title}» اولویت دارد؛ پیام آماده و مسیر اقدام ساخته شد.`,
+        reasons: [topLead.reason, `سگمنت: ${topLead.segment}`, `کانال پیشنهادی: ${topLead.recommendedChannel}`, `اثر مورد انتظار: ${topLead.expectedImpact}`],
+        metrics: [{ label: 'اولویت', value: smartInsightPercent(topLead.priority) }, { label: 'لید فعال', value: salesAgentLeads.length.toLocaleString('fa-IR') }, { label: 'هدف', value: topLead.expectedImpact }],
+        actions: [{ label: 'مشاهده مشتری', to: topLead.to, icon: 'fa-user' }],
+        target: { salesAgent: salesAgentLeads },
+      });
+    }
+
+
+    // --- Real Profit Engine: سود واقعی، سود وصول‌شده و سود در خطر ---
+    const profitRows = aiIsEnabled('profit_engine') ? await smartInsightSafeRows(`
+      SELECT
+        so.id AS orderId,
+        so.transactionDate,
+        COALESCE(so.paymentMethod, 'cash') AS paymentMethod,
+        COALESCE(so.subtotal, 0) AS subtotal,
+        COALESCE(so.grandTotal, 0) AS grandTotal,
+        COALESCE(so.discount, 0) AS invoiceDiscount,
+        COALESCE(SUM(COALESCE(soi.quantity,0) * COALESCE(soi.unitPrice,0)), 0) AS lineGross,
+        COALESCE(SUM(COALESCE(soi.discountPerItem,0)), 0) AS itemDiscount,
+        COALESCE(SUM(COALESCE(soi.totalPrice,0)), 0) AS lineNet,
+        COALESCE(SUM(COALESCE(soi.totalPrice,0) - (COALESCE(NULLIF(soi.buyPrice,0), p.purchasePrice, 0) * COALESCE(soi.quantity,0))), 0) AS lineProfitBeforeInvoiceDiscount
+      FROM sales_orders so
+      LEFT JOIN sales_order_items soi ON soi.orderId = so.id
+      LEFT JOIN products p ON soi.itemType = 'inventory' AND soi.itemId = p.id
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY so.id, so.transactionDate, so.paymentMethod, so.subtotal, so.grandTotal, so.discount
+    `, [fromISO, toISO]) : [];
+
+    const profitInvoices = (profitRows || []).map((r: any) => {
+      const grandTotal = smartInsightNum(r.grandTotal);
+      const subtotal = smartInsightNum(r.subtotal) || smartInsightNum(r.lineGross) || grandTotal;
+      const invoiceDiscount = smartInsightNum(r.invoiceDiscount);
+      const lineProfitBeforeInvoiceDiscount = smartInsightNum(r.lineProfitBeforeInvoiceDiscount);
+      const invoiceDiscountShare = invoiceDiscount > 0 ? invoiceDiscount : Math.max(0, subtotal - grandTotal);
+      const realProfit = lineProfitBeforeInvoiceDiscount - invoiceDiscountShare;
+      const isDeferred = ['credit','installment','mixed'].includes(String(r.paymentMethod || '').toLowerCase());
+      const recognitionRate = isDeferred ? 0.5 : 1;
+      const recognizedProfit = realProfit * recognitionRate;
+      const profitAtRisk = realProfit - recognizedProfit;
+      const marginPct = grandTotal > 0 ? (realProfit / grandTotal) * 100 : 0;
+      const riskScore = Math.min(100, Math.max(0,
+        (realProfit < 0 ? 55 : 0) +
+        (marginPct < 8 ? 22 : 0) +
+        (invoiceDiscountShare > 0 && subtotal > 0 ? Math.min(24, (invoiceDiscountShare / subtotal) * 100) : 0) +
+        (isDeferred ? 14 : 0)
+      ));
+      return {
+        orderId: r.orderId,
+        transactionDate: r.transactionDate,
+        paymentMethod: r.paymentMethod,
+        grandTotal: smartInsightRound(grandTotal),
+        invoiceDiscount: smartInsightRound(invoiceDiscountShare),
+        realProfit: smartInsightRound(realProfit),
+        recognizedProfit: smartInsightRound(recognizedProfit),
+        profitAtRisk: smartInsightRound(profitAtRisk),
+        marginPct: smartInsightRound(marginPct),
+        riskScore: Math.round(riskScore),
+        label: realProfit < 0 ? 'زیان‌ده' : marginPct < 8 ? 'حاشیه سود ضعیف' : isDeferred ? 'سود وصول‌نشده' : 'سود سالم',
+        to: '/invoices/' + r.orderId,
+      };
+    });
+
+    const profitSummary = profitInvoices.reduce((acc: any, r: any) => {
+      acc.grossSales += smartInsightNum(r.grandTotal);
+      acc.realProfit += smartInsightNum(r.realProfit);
+      acc.recognizedProfit += smartInsightNum(r.recognizedProfit);
+      acc.profitAtRisk += smartInsightNum(r.profitAtRisk);
+      acc.negativeProfitCount += smartInsightNum(r.realProfit) < 0 ? 1 : 0;
+      acc.lowMarginCount += smartInsightNum(r.realProfit) >= 0 && smartInsightNum(r.marginPct) < 8 ? 1 : 0;
+      acc.deferredCount += smartInsightNum(r.profitAtRisk) > 0 ? 1 : 0;
+      return acc;
+    }, { grossSales: 0, realProfit: 0, recognizedProfit: 0, profitAtRisk: 0, negativeProfitCount: 0, lowMarginCount: 0, deferredCount: 0 });
+    profitSummary.marginPct = profitSummary.grossSales > 0 ? smartInsightRound((profitSummary.realProfit / profitSummary.grossSales) * 100) : 0;
+    profitSummary.qualityScore = Math.max(0, Math.min(100, Math.round(
+      64 + Math.min(22, smartInsightNum(profitSummary.marginPct)) - smartInsightNum(profitSummary.negativeProfitCount) * 12 - smartInsightNum(profitSummary.lowMarginCount) * 4 - (profitSummary.realProfit > 0 ? Math.min(18, (profitSummary.profitAtRisk / Math.max(1, profitSummary.realProfit)) * 28) : 0)
+    )));
+    const profitEngine = {
+      summary: {
+        grossSales: smartInsightRound(profitSummary.grossSales),
+        realProfit: smartInsightRound(profitSummary.realProfit),
+        recognizedProfit: smartInsightRound(profitSummary.recognizedProfit),
+        profitAtRisk: smartInsightRound(profitSummary.profitAtRisk),
+        marginPct: smartInsightRound(profitSummary.marginPct),
+        qualityScore: profitSummary.qualityScore,
+        negativeProfitCount: profitSummary.negativeProfitCount,
+        lowMarginCount: profitSummary.lowMarginCount,
+        deferredCount: profitSummary.deferredCount,
+      },
+      riskyInvoices: profitInvoices
+        .filter((r: any) => smartInsightNum(r.riskScore) >= 20 || smartInsightNum(r.realProfit) < 0 || smartInsightNum(r.profitAtRisk) > 0)
+        .sort((a: any, b: any) => smartInsightNum(b.riskScore) - smartInsightNum(a.riskScore))
+        .slice(0, 8),
+    };
+
+    if (profitInvoices.length) {
+      await runAsync(`
+        INSERT INTO profit_engine_snapshots (periodFrom, periodTo, grossSales, realProfit, recognizedProfit, profitAtRisk, marginPct, userId)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `, [fromISO, toISO, profitEngine.summary.grossSales, profitEngine.summary.realProfit, profitEngine.summary.recognizedProfit, profitEngine.summary.profitAtRisk, profitEngine.summary.marginPct, req.user?.id || null]);
+    }
+
+    if (profitEngine.summary.negativeProfitCount > 0 || profitEngine.summary.lowMarginCount > 0 || profitEngine.summary.profitAtRisk > 0) {
+      addInsight({
+        id: 'real-profit-engine-watch', type: 'real_profit', category: 'سود واقعی', severity: profitEngine.summary.negativeProfitCount > 0 ? 'critical' : profitEngine.summary.qualityScore < 58 ? 'high' : 'medium', score: Math.min(99, 100 - profitEngine.summary.qualityScore + 42), confidence: 88,
+        icon: 'fa-sack-dollar',
+        title: 'موتور سود واقعی، نقاط حساس سود را پیدا کرد',
+        summary: 'سود واقعی بازه ' + smartInsightMoney(profitEngine.summary.realProfit) + ' است؛ ' + profitEngine.summary.negativeProfitCount.toLocaleString('fa-IR') + ' فاکتور زیان‌ده و ' + profitEngine.summary.deferredCount.toLocaleString('fa-IR') + ' فاکتور با سود در خطر دیده شد.',
+        reasons: [
+          'حاشیه سود واقعی: ' + smartInsightPercent(profitEngine.summary.marginPct),
+          'سود شناسایی‌شده: ' + smartInsightMoney(profitEngine.summary.recognizedProfit),
+          'سود در خطر/وصول‌نشده: ' + smartInsightMoney(profitEngine.summary.profitAtRisk),
+          'تخفیف کلی فاکتور از سود واقعی کسر شده و فروش اعتباری با شناسایی محافظه‌کارانه دیده می‌شود.',
+        ],
+        metrics: [{ label: 'سود واقعی', value: smartInsightMoney(profitEngine.summary.realProfit) }, { label: 'کیفیت سود', value: smartInsightPercent(profitEngine.summary.qualityScore) }, { label: 'در خطر', value: smartInsightMoney(profitEngine.summary.profitAtRisk) }],
+        actions: [{ label: 'بررسی فاکتورهای حساس', to: '/reports/product-sales', icon: 'fa-scale-balanced' }],
+        target: { profitEngine },
+      });
+    }
+
+    insights.sort((a, b) => {
+      const rank: any = { critical: 5, high: 4, medium: 3, low: 2, positive: 1 };
+      return (rank[b.severity] || 0) - (rank[a.severity] || 0) || smartInsightNum(b.score) - smartInsightNum(a.score);
+    });
+
+    const soldProductCountRow = await smartInsightSafeOne(`
+      SELECT COUNT(DISTINCT itemId) AS soldProducts
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?) AND soi.itemType IN ('inventory', 'service', 'phone') AND COALESCE(so.status, 'active') = 'active'
+    `, [fromISO, toISO]);
+    const totalProductsRow = await smartInsightSafeOne(`SELECT COUNT(*) AS productsCount FROM products`);
+    const totalCustomersRow = await smartInsightSafeOne(`SELECT COUNT(*) AS customersCount FROM customers`);
+    const ordersCount = smartInsightNum(salesStats.ordersCount);
+    const soldProducts = smartInsightNum(soldProductCountRow.soldProducts);
+    const customersCount = smartInsightNum(totalCustomersRow.customersCount);
+    const signalsScore = Math.min(100, Math.round((ordersCount * 1.6) + (activeDays * 2.2) + (soldProducts * 3) + Math.min(customersCount, 80) * 0.28));
+    const learningLevel = signalsScore >= 86 ? 'excellent' : signalsScore >= 62 ? 'reliable' : signalsScore >= 28 ? 'learning' : 'no_data';
+    const learningLabel = learningLevel === 'excellent' ? 'بسیار قابل اعتماد' : learningLevel === 'reliable' ? 'قابل اعتماد' : learningLevel === 'learning' ? 'در حال یادگیری' : 'داده کافی ندارد';
+    const learningDescription = learningLevel === 'excellent'
+      ? 'سیستم داده کافی برای تشخیص الگوهای فروش، تخفیف، موجودی و وصول دارد.'
+      : learningLevel === 'reliable'
+        ? 'داده‌ها برای پیشنهادهای عملیاتی قابل اتکا هستند؛ با فروش بیشتر دقت بالاتر می‌رود.'
+        : learningLevel === 'learning'
+          ? 'سیستم هنوز در حال شناخت رفتار فروشگاه است و پیشنهادها محافظه‌کارانه ارائه می‌شوند.'
+          : 'برای تحلیل هوشمند واقعی، فروش و تراکنش بیشتری لازم است.';
+
+    let memoryRows: any[] = [];
+    if (aiIsEnabled('decision_memory')) {
+      for (const insight of insights) {
+        await runAsync(`
+          INSERT INTO smart_insight_decisions (insightId, type, title, severity, score, confidence, occurrenceCount, lastGeneratedAt, updatedAt)
+          VALUES (?, ?, ?, ?, ?, ?, 1, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+          ON CONFLICT(insightId) DO UPDATE SET
+            type = excluded.type,
+            title = excluded.title,
+            severity = excluded.severity,
+            score = excluded.score,
+            confidence = excluded.confidence,
+            occurrenceCount = COALESCE(smart_insight_decisions.occurrenceCount, 0) + 1,
+            lastGeneratedAt = excluded.lastGeneratedAt,
+            updatedAt = excluded.updatedAt
+        `, [insight.id, insight.type, insight.title, insight.severity, insight.score, insight.confidence]);
+      }
+      memoryRows = await smartInsightSafeRows(`SELECT * FROM smart_insight_decisions ORDER BY updatedAt DESC LIMIT 500`);
+      const memoryById = new Map((memoryRows || []).map((r: any) => [String(r.insightId), r]));
+      for (const insight of insights) {
+        const memory: any = memoryById.get(String(insight.id)) || {};
+        insight.decision = {
+          status: memory.status || 'open', userDecision: memory.userDecision || 'pending', outcome: memory.outcome || 'unknown',
+          note: memory.note || '', actionLabel: memory.actionLabel || '', occurrenceCount: smartInsightNum(memory.occurrenceCount),
+          firstGeneratedAt: memory.firstGeneratedAt || null, lastGeneratedAt: memory.lastGeneratedAt || null,
+          decidedAt: memory.decidedAt || null, outcomeAt: memory.outcomeAt || null, ...smartDecisionCopy(memory),
+        };
+      }
+    }
+    const severityWeight: any = { critical: 120, high: 95, medium: 70, low: 45, positive: 25 };
+    const decisionPenalty: any = { accepted: 28, rejected: 60, snoozed: 12, pending: 0 };
+    const typeBoost: any = { collection_risk: 18, invoice_audit: 20, hidden_loss: 16, stock_reorder: 14, discount_anomaly: 12, profit_quality: 10, sales_drop: 8 };
+    const todayActions = aiIsEnabled('today_actions') ? insights
+      .filter((i: any) => String(i.severity) !== 'positive' && String(i.type) !== 'daily_summary' && String(i.decision?.userDecision || 'pending') !== 'rejected')
+      .map((i: any) => {
+        const firstAction = Array.isArray(i.actions) && i.actions.length ? i.actions[0] : {};
+        const repeatBoost = Math.min(18, smartInsightNum(i.decision?.occurrenceCount) * 2);
+        const outcomeBoost = String(i.decision?.outcome || 'unknown') === 'positive' ? 8 : String(i.decision?.outcome || 'unknown') === 'negative' ? -10 : 0;
+        const priority = Math.max(1, Math.round((severityWeight[i.severity] || 50) + smartInsightNum(i.score) * 0.42 + smartInsightNum(i.confidence) * 0.18 + (typeBoost[i.type] || 0) + repeatBoost + outcomeBoost - (decisionPenalty[i.decision?.userDecision || 'pending'] || 0)));
+        return {
+          id: 'today-action-' + i.id,
+          insightId: i.id,
+          title: i.type === 'collection_risk' ? 'اول وصول فوری را پیگیری کن' : i.type === 'stock_reorder' ? 'خرید مجدد کالاهای پرفروش را بررسی کن' : i.type === 'invoice_audit' ? 'فاکتورهای مشکوک را کنترل کن' : i.type === 'hidden_loss' ? 'جلوی ضرر پنهان را بگیر' : i.type === 'discount_anomaly' ? 'تخفیف‌های غیرعادی را کنترل کن' : i.type === 'profit_quality' ? 'کیفیت سود وصول‌شده را بررسی کن' : i.title,
+          summary: i.summary,
+          priority,
+          severity: i.severity,
+          icon: i.icon,
+          actionLabel: firstAction.label || 'باز کردن اقدام',
+          to: firstAction.to || '',
+          decision: i.decision || {},
+        };
+      })
+      .sort((a: any, b: any) => smartInsightNum(b.priority) - smartInsightNum(a.priority))
+      .slice(0, 3) : [];
+    const memorySummary = (memoryRows || []).reduce((acc: any, r: any) => {
+      const decision = String(r.userDecision || 'pending');
+      const outcome = String(r.outcome || 'unknown');
+      acc.total += 1;
+      acc[decision] = (acc[decision] || 0) + 1;
+      acc['outcome_' + outcome] = (acc['outcome_' + outcome] || 0) + 1;
+      return acc;
+    }, { total: 0, pending: 0, accepted: 0, rejected: 0, snoozed: 0, outcome_positive: 0, outcome_negative: 0, outcome_neutral: 0, outcome_unknown: 0 });
+
+    const summaryCounts = insights.reduce((acc: any, i: any) => { acc[i.severity] = (acc[i.severity] || 0) + 1; return acc; }, { critical: 0, high: 0, medium: 0, low: 0, positive: 0 });
+
+    // Smart Insight Engine: executive-grade decision layer
+    // این لایه بعد از ساخت همه Insightها اجرا می‌شود تا از فروش، سود، وصول، موجودی، ممیزی و حافظه تصمیمات
+    // یک خروجی مدیریتی قابل اقدام بسازد؛ نه فقط نمایش عدد خام.
+    const urgentCount = smartInsightNum(summaryCounts.critical) + smartInsightNum(summaryCounts.high);
+    const avgConfidence = insights.length ? Math.round(insights.reduce((sum: number, i: any) => sum + smartInsightNum(i.confidence), 0) / insights.length) : 0;
+    const profitQuality = smartInsightNum(profitEngine?.summary?.qualityScore || 0);
+    const realMargin = smartInsightNum(profitEngine?.summary?.marginPct || 0);
+    const auditRiskCount = suspiciousInvoiceAudits.length + insights.filter((i: any) => ['invoice_audit', 'hidden_loss', 'discount_anomaly'].includes(String(i.type))).length;
+    const collectionRiskCount = insights.filter((i: any) => String(i.type) === 'collection_risk').length;
+    const inventoryRiskCount = insights.filter((i: any) => String(i.type) === 'stock_reorder').length;
+    const decisionWinRate = smartInsightNum(memorySummary.accepted) > 0
+      ? Math.round((smartInsightNum(memorySummary.outcome_positive) / Math.max(1, smartInsightNum(memorySummary.accepted))) * 100)
+      : 0;
+    const executiveScore = Math.max(0, Math.min(100, Math.round(
+      (signalsScore * 0.22) +
+      (avgConfidence * 0.18) +
+      (Math.max(0, 100 - urgentCount * 11) * 0.18) +
+      ((profitQuality || Math.max(0, Math.min(100, realMargin * 4))) * 0.18) +
+      (Math.max(0, 100 - auditRiskCount * 9) * 0.14) +
+      ((decisionWinRate || 55) * 0.10)
+    )));
+    const executiveStatus = executiveScore >= 86 ? 'excellent' : executiveScore >= 70 ? 'healthy' : executiveScore >= 52 ? 'watch' : 'risk';
+    const executiveStatusLabel = executiveStatus === 'excellent' ? 'عالی و قابل اتکا' : executiveStatus === 'healthy' ? 'سالم' : executiveStatus === 'watch' ? 'نیازمند پایش' : 'پرریسک';
+    const executiveNarrative = executiveStatus === 'excellent'
+      ? 'فروشگاه از نظر داده، سود و کنترل ریسک در وضعیت قابل اتکاست؛ تمرکز بعدی روی رشد سود و افزایش فروش تکراری باشد.'
+      : executiveStatus === 'healthy'
+        ? 'وضعیت کلی خوب است، اما چند سیگنال مالی/عملیاتی نیاز به اقدام دارد تا سود واقعی افت نکند.'
+        : executiveStatus === 'watch'
+          ? 'سیستم چند ریسک قابل توجه در سود، وصول یا موجودی دیده؛ قبل از تصمیم خرید یا تخفیف، موارد فوری بررسی شوند.'
+          : 'ریسک گزارشات بالاست؛ بهتر است امروز اول اختلاف فاکتور، وصولی‌ها و فروش زیر قیمت کنترل شود.';
+    const rankedActionPool = [...todayActions, ...insights]
+      .map((item: any) => ({
+        id: String(item.id || item.insightId || `engine-action-${Math.random()}`),
+        title: item.title || 'اقدام مدیریتی',
+        summary: item.summary || '',
+        severity: item.severity || 'medium',
+        priority: smartInsightNum(item.priority) || smartInsightNum(item.score) || 40,
+        to: item.to || item.actions?.[0]?.to || '',
+        actionLabel: item.actionLabel || item.actions?.[0]?.label || 'بررسی',
+      }))
+      .sort((a: any, b: any) => smartInsightNum(b.priority) - smartInsightNum(a.priority));
+    const seenEngineActions = new Set<string>();
+    const nextBestActions = rankedActionPool.filter((a: any) => {
+      const key = `${a.title}-${a.to}`;
+      if (seenEngineActions.has(key)) return false;
+      seenEngineActions.add(key);
+      return true;
+    }).slice(0, 5);
+    const executiveBrain = {
+      score: executiveScore,
+      status: executiveStatus,
+      statusLabel: executiveStatusLabel,
+      narrative: executiveNarrative,
+      confidence: avgConfidence,
+      winRate: decisionWinRate,
+      focusAreas: [
+        { key: 'profit', label: 'کیفیت سود', value: profitQuality || Math.round(Math.max(0, Math.min(100, realMargin * 4))), tone: (profitQuality || realMargin * 4) >= 70 ? 'positive' : 'warning' },
+        { key: 'audit', label: 'ریسک اختلاف', value: auditRiskCount, tone: auditRiskCount > 0 ? 'danger' : 'positive' },
+        { key: 'collection', label: 'ریسک وصول', value: collectionRiskCount, tone: collectionRiskCount > 0 ? 'warning' : 'positive' },
+        { key: 'inventory', label: 'ریسک موجودی', value: inventoryRiskCount, tone: inventoryRiskCount > 0 ? 'warning' : 'positive' },
+      ],
+      nextBestActions,
+      command: nextBestActions[0]?.title || (urgentCount ? 'موارد فوری گزارشات را بررسی کن' : 'وضعیت پایدار است؛ روی رشد سود تمرکز کن'),
+    };
+    const dailyBrief = [
+      `فروش بازه: ${smartInsightMoney(salesStats.totalSales)} از ${smartInsightNum(salesStats.ordersCount).toLocaleString('fa-IR')} سند.`,
+      trendPct ? `روند نسبت به دوره قبل: ${trendPct >= 0 ? 'رشد' : 'افت'} ${smartInsightPercent(Math.abs(trendPct))}.` : 'برای مقایسه روند، داده دوره قبل محدود است.',
+      `${urgentCount.toLocaleString('fa-IR')} Insight فوری/مهم برای اقدام مدیریتی وجود دارد.`,
+      `وضعیت موتور تصمیم‌ساز: ${executiveStatusLabel} با امتیاز ${executiveScore.toLocaleString('fa-IR')} از ۱۰۰.`,
+    ];
+
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        generatedAt: new Date().toISOString(),
+        currencyBase: SMART_INSIGHT_CURRENCY_BASE,
+        displayCurrency: SMART_INSIGHT_DISPLAY_CURRENCY,
+        moneyDivisor: 10,
+        learning: {
+          level: learningLevel,
+          label: learningLabel,
+          description: learningDescription,
+          confidence: signalsScore,
+          lastResetAt: resetAt,
+          signals: [
+            { label: 'سندهای بررسی‌شده', value: ordersCount.toLocaleString('fa-IR') },
+            { label: 'روزهای فعال فروش', value: activeDays.toLocaleString('fa-IR') },
+            { label: 'اقلام دارای فروش', value: soldProducts.toLocaleString('fa-IR') },
+            { label: 'مشتریان ثبت‌شده', value: customersCount.toLocaleString('fa-IR') },
+            { label: 'تصمیم‌های ثبت‌شده', value: smartInsightNum(memorySummary.accepted).toLocaleString('fa-IR') },
+          ],
+        },
+        summary: {
+          totalInsights: insights.length,
+          ...summaryCounts,
+          totalSales: smartInsightRound(salesStats.totalSales),
+          ordersCount,
+          avgDaily: smartInsightRound(avgDaily),
+          trendPct: smartInsightRound(trendPct),
+          decisionMemory: memorySummary,
+        },
+        dailyBrief,
+        executiveBrain,
+        todayActions,
+        hiddenProfit: hiddenProfitCards,
+        suspiciousAudit: suspiciousInvoiceAudits,
+        customerIntelligence,
+        pricingRecommendations,
+        salesAgentLeads,
+        profitEngine,
+        insights,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Financial Brain: executive financial decision layer
+// این endpoint مستقل است تا گزارشات فقط به متن Smart Insight وابسته نباشند و خروجی تصمیم‌ساز مالی قابل تست داشته باشند.
+app.get('/api/brain/financial', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.fromDate || req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.toDate || req.query.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ) || moment(fromJ, ['YYYY-MM-DD', 'YYYY/MM/DD'], true).format('YYYY-MM-DD');
+    const toISO = fromShamsiStringToISO(toJ) || moment(toJ, ['YYYY-MM-DD', 'YYYY/MM/DD'], true).format('YYYY-MM-DD');
+    if (!fromISO || !toISO || !moment(fromISO, 'YYYY-MM-DD', true).isValid() || !moment(toISO, 'YYYY-MM-DD', true).isValid()) {
+      return res.status(400).json({ success: false, message: 'بازه زمانی Financial Brain نامعتبر است.' });
+    }
+    const start = fromISO <= toISO ? fromISO : toISO;
+    const end = fromISO <= toISO ? toISO : fromISO;
+    const n = (v: any) => Number.isFinite(Number(v)) ? Number(v) : 0;
+
+    const sales = await getAsync(`
+      SELECT COUNT(*) AS ordersCount,
+             COALESCE(SUM(grandTotal), 0) AS totalSales,
+             COALESCE(SUM(discount), 0) AS invoiceDiscount,
+             COALESCE(AVG(grandTotal), 0) AS avgTicket
+      FROM sales_orders
+      WHERE date(substr(transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(status, 'active') = 'active'
+    `, [start, end]).catch(() => ({} as any));
+
+    const profit = await getAsync(`
+      SELECT COALESCE(SUM(COALESCE(soi.totalPrice, 0)), 0) AS lineRevenue,
+             COALESCE(SUM(
+               COALESCE(soi.totalPrice, 0)
+               - (
+                 CASE
+                   WHEN soi.itemType = 'phone' THEN COALESCE(NULLIF(ph.currentPurchasePrice, 0), NULLIF(soi.buyPrice, 0), ph.purchasePrice, 0)
+                   WHEN soi.itemType = 'inventory' THEN COALESCE(NULLIF(soi.buyPrice, 0), p.purchasePrice, 0)
+                   ELSE COALESCE(soi.buyPrice, 0)
+                 END
+               ) * COALESCE(soi.quantity, 1)
+               - COALESCE(soi.discountPerItem, 0)
+             ), 0) AS grossProfit,
+             COALESCE(SUM(CASE
+               WHEN soi.itemType = 'phone' AND COALESCE(NULLIF(ph.currentPurchasePrice, 0), 0) = 0 THEN 1
+               WHEN soi.itemType = 'inventory' AND COALESCE(NULLIF(soi.buyPrice, 0), NULLIF(p.purchasePrice, 0), 0) = 0 THEN 1
+               ELSE 0
+             END), 0) AS missingCostRows
+      FROM sales_order_items soi
+      JOIN sales_orders so ON so.id = soi.orderId
+      LEFT JOIN products p ON soi.itemType = 'inventory' AND p.id = soi.itemId
+      LEFT JOIN phones ph ON soi.itemType = 'phone' AND ph.id = soi.itemId
+      WHERE date(substr(so.transactionDate, 1, 10)) BETWEEN date(?) AND date(?)
+        AND COALESCE(so.status, 'active') = 'active'
+    `, [start, end]).catch(() => ({} as any));
+
+    const collections = await getAsync(`
+      SELECT COALESCE(SUM(COALESCE(remainingAmount, 0)), 0) AS openCredit,
+             COALESCE(SUM(CASE WHEN dueDate IS NOT NULL AND date(substr(dueDate, 1, 10)) < date('now') THEN COALESCE(remainingAmount, 0) ELSE 0 END), 0) AS overdueAmount,
+             COALESCE(SUM(CASE WHEN dueDate IS NOT NULL AND date(substr(dueDate, 1, 10)) < date('now') THEN 1 ELSE 0 END), 0) AS overdueCount
+      FROM installment_sales
+      WHERE COALESCE(status, 'active') NOT IN ('settled', 'cancelled')
+    `).catch(() => ({} as any));
+
+    const stock = await getAsync(`
+      SELECT COALESCE(SUM(CASE WHEN COALESCE(stock_quantity, 0) <= COALESCE(threshold, 5) THEN 1 ELSE 0 END), 0) AS lowStockCount,
+             COALESCE(SUM(CASE WHEN COALESCE(stock_quantity, 0) < 0 THEN 1 ELSE 0 END), 0) AS negativeStockCount
+      FROM products
+    `).catch(() => ({} as any));
+
+    const revenue = n(sales?.totalSales);
+    const grossProfit = n(profit?.grossProfit);
+    const marginPct = revenue > 0 ? (grossProfit / revenue) * 100 : 0;
+    const missingCosts = n(profit?.missingCostRows);
+    const overdueAmount = n(collections?.overdueAmount);
+    const lowStockCount = n(stock?.lowStockCount);
+    const negativeStockCount = n(stock?.negativeStockCount);
+    const risks: any[] = [];
+    const opportunities: any[] = [];
+    const actions: any[] = [];
+
+    if (missingCosts > 0) risks.push({ id: 'missing-cost', severity: 'high', title: 'بهای تمام‌شده ناقص', summary: `${missingCosts.toLocaleString('fa-IR')} ردیف فروش قیمت خرید/قیمت خرید روز کامل ندارد.`, to: '/reports/financial-audit' });
+    if (marginPct > 0 && marginPct < 12) risks.push({ id: 'low-margin', severity: 'medium', title: 'حاشیه سود پایین', summary: `حاشیه سود بازه حدود ${Math.round(marginPct).toLocaleString('fa-IR')}٪ است.`, to: '/reports/product-profit-real' });
+    if (overdueAmount > 0) risks.push({ id: 'collection-pressure', severity: 'high', title: 'فشار وصول', summary: `وصول معوق حدود ${formatReportMoneyText(overdueAmount)} است.`, to: '/reports/aging-receivables' });
+    if (lowStockCount > 0 || negativeStockCount > 0) risks.push({ id: 'stock-risk', severity: negativeStockCount > 0 ? 'critical' : 'medium', title: 'ریسک موجودی', summary: `${lowStockCount.toLocaleString('fa-IR')} کالا کم‌موجودی و ${negativeStockCount.toLocaleString('fa-IR')} کالا موجودی منفی دارد.`, to: '/reports/analysis/inventory' });
+
+    if (revenue > 0 && n(sales?.ordersCount) > 0) opportunities.push({ id: 'ticket-growth', title: 'افزایش میانگین فاکتور', summary: `میانگین فاکتور فعلی ${formatReportMoneyText(n(sales?.avgTicket))} است؛ گزارش اقلام پرفروش را برای باندل بررسی کن.`, to: '/reports/product-sales' });
+    if (marginPct >= 18) opportunities.push({ id: 'healthy-margin', title: 'حاشیه سود قابل اتکا', summary: 'سود بازه برای توسعه فروش کالاهای مشابه مناسب است.', to: '/reports/product-profit-real' });
+
+    actions.push(...risks.slice(0, 3).map((r) => ({ id: 'fix-' + r.id, title: r.title, summary: r.summary, actionLabel: 'بررسی', to: r.to, severity: r.severity })));
+    if (!actions.length) actions.push({ id: 'grow-profit', title: 'تمرکز روی رشد سود', summary: 'ریسک بحرانی دیده نشد؛ گزارش سود واقعی و اقلام پرفروش را برای رشد حاشیه بررسی کن.', actionLabel: 'مشاهده سود واقعی', to: '/reports/product-profit-real', severity: 'positive' });
+
+    const riskPenalty = risks.reduce((sum, r: any) => sum + (r.severity === 'critical' ? 18 : r.severity === 'high' ? 13 : 8), 0);
+    const dataPenalty = missingCosts > 0 ? Math.min(18, missingCosts * 3) : 0;
+    const score = Math.max(0, Math.min(100, Math.round(86 + Math.min(10, marginPct / 3) - riskPenalty - dataPenalty)));
+    const confidence = Math.max(55, Math.min(98, Math.round(96 - dataPenalty - Math.min(18, risks.length * 4))));
+
+    res.json({
+      success: true,
+      data: {
+        range: { from: fromJ, to: toJ, fromISO: start, toISO: end },
+        currencyBase: REPORT_CURRENCY_CONTRACT.currencyBase,
+        displayCurrency: REPORT_CURRENCY_CONTRACT.displayCurrency,
+        moneyDivisor: REPORT_CURRENCY_CONTRACT.moneyDivisor,
+        summary: { totalSales: Math.round(revenue), ordersCount: n(sales?.ordersCount), avgTicket: Math.round(n(sales?.avgTicket)), grossProfit: Math.round(grossProfit), marginPct: Math.round(marginPct * 10) / 10, invoiceDiscount: Math.round(n(sales?.invoiceDiscount)), openCredit: Math.round(n(collections?.openCredit)), overdueAmount: Math.round(overdueAmount), lowStockCount, negativeStockCount, missingCostRows: missingCosts },
+        executiveBrain: { score, status: score >= 85 ? 'excellent' : score >= 70 ? 'healthy' : score >= 52 ? 'watch' : 'risk', statusLabel: score >= 85 ? 'عالی و قابل اتکا' : score >= 70 ? 'سالم' : score >= 52 ? 'نیازمند پایش' : 'پرریسک', confidence, command: actions[0]?.title || 'وضعیت مالی پایدار است', narrative: actions[0]?.summary || 'داده‌ها برای تصمیم مدیریتی آماده است.', nextBestActions: actions },
+        risks,
+        opportunities,
+        actions,
+        confidence,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Predictive Engine: forward-looking financial brain layer
+// پیش‌بینی را جدا از Insightهای توصیفی نگه می‌داریم تا تصمیم آینده‌نگر با confidence و دلیل قابل ممیزی باشد.
+app.get('/api/brain/predictive', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.fromDate || req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.toDate || req.query.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ) || moment(fromJ, ['YYYY-MM-DD', 'YYYY/MM/DD'], true).format('YYYY-MM-DD');
+    const toISO = fromShamsiStringToISO(toJ) || moment(toJ, ['YYYY-MM-DD', 'YYYY/MM/DD'], true).format('YYYY-MM-DD');
+    if (!fromISO || !toISO || !moment(fromISO, 'YYYY-MM-DD', true).isValid() || !moment(toISO, 'YYYY-MM-DD', true).isValid()) {
+      return res.status(400).json({ success: false, message: 'بازه زمانی پیش‌بینی نامعتبر است.' });
+    }
+
+    const end = moment(toISO, 'YYYY-MM-DD');
+    const historyStartISO = end.clone().subtract(55, 'day').format('YYYY-MM-DD');
+    const recentStartISO = end.clone().subtract(6, 'day').format('YYYY-MM-DD');
+    const previousStartISO = end.clone().subtract(13, 'day').format('YYYY-MM-DD');
+    const previousEndISO = end.clone().subtract(7, 'day').format('YYYY-MM-DD');
+
+    const dailyRows = await allAsync(`
+      SELECT substr(transactionDate, 1, 10) AS day,
+             COUNT(*) AS ordersCount,
+             COALESCE(SUM(grandTotal), 0) AS totalSales,
+             COALESCE(SUM(discount), 0) AS discountTotal
+      FROM sales_orders
+      WHERE substr(transactionDate, 1, 10) BETWEEN ? AND ?
+        AND COALESCE(status, 'active') = 'active'
+      GROUP BY substr(transactionDate, 1, 10)
+      ORDER BY day ASC
+    `, [historyStartISO, toISO]).catch(() => []);
+
+    const recent7 = await getAsync(`
+      SELECT COUNT(DISTINCT substr(transactionDate, 1, 10)) AS activeDays,
+             COUNT(*) AS ordersCount,
+             COALESCE(SUM(grandTotal), 0) AS totalSales,
+             COALESCE(SUM(discount), 0) AS discountTotal
+      FROM sales_orders
+      WHERE substr(transactionDate, 1, 10) BETWEEN ? AND ?
+        AND COALESCE(status, 'active') = 'active'
+    `, [recentStartISO, toISO]).catch(() => ({} as any));
+
+    const prev7 = await getAsync(`
+      SELECT COUNT(DISTINCT substr(transactionDate, 1, 10)) AS activeDays,
+             COUNT(*) AS ordersCount,
+             COALESCE(SUM(grandTotal), 0) AS totalSales,
+             COALESCE(SUM(discount), 0) AS discountTotal
+      FROM sales_orders
+      WHERE substr(transactionDate, 1, 10) BETWEEN ? AND ?
+        AND COALESCE(status, 'active') = 'active'
+    `, [previousStartISO, previousEndISO]).catch(() => ({} as any));
+
+    const num = (v: any) => Number.isFinite(Number(v)) ? Number(v) : 0;
+    const activeDays = Math.max(1, num(recent7?.activeDays));
+    const prevActiveDays = Math.max(1, num(prev7?.activeDays));
+    const recentAvgDaily = num(recent7?.totalSales) / activeDays;
+    const prevAvgDaily = num(prev7?.totalSales) / prevActiveDays;
+    const trendPct = prevAvgDaily > 0 ? ((recentAvgDaily - prevAvgDaily) / prevAvgDaily) * 100 : 0;
+    const boundedTrend = Math.max(-0.35, Math.min(0.35, trendPct / 100));
+    const tomorrowSalesForecast = Math.max(0, Math.round(recentAvgDaily * (1 + boundedTrend * 0.45)));
+    const next7SalesForecast = Math.max(0, Math.round((recentAvgDaily * 7) * (1 + boundedTrend * 0.35)));
+    const avgTicket = num(recent7?.ordersCount) > 0 ? num(recent7?.totalSales) / Math.max(1, num(recent7?.ordersCount)) : 0;
+    const forecastOrders = avgTicket > 0 ? Math.max(0, Math.round(tomorrowSalesForecast / avgTicket)) : 0;
+
+    const stockRows = await allAsync(`
+      SELECT p.id AS productId,
+             p.name AS productName,
+             COALESCE(p.stock_quantity, 0) AS stockQuantity,
+             COALESCE(p.threshold, 5) AS thresholdQty,
+             COALESCE(SUM(soi.quantity), 0) AS soldQty14,
+             COALESCE(SUM(soi.totalPrice), 0) AS soldAmount14
+      FROM products p
+      LEFT JOIN sales_order_items soi ON soi.itemType = 'inventory' AND soi.itemId = p.id
+      LEFT JOIN sales_orders so ON so.id = soi.orderId
+        AND substr(so.transactionDate, 1, 10) BETWEEN ? AND ?
+        AND COALESCE(so.status, 'active') = 'active'
+      GROUP BY p.id, p.name, p.stock_quantity, p.threshold
+      HAVING soldQty14 > 0 OR stockQuantity <= thresholdQty
+      ORDER BY (CASE WHEN stockQuantity <= thresholdQty THEN 1 ELSE 0 END) DESC, soldQty14 DESC, soldAmount14 DESC
+      LIMIT 12
+    `, [end.clone().subtract(13, 'day').format('YYYY-MM-DD'), toISO]).catch(() => []);
+
+    const stockoutRisks = (stockRows || []).map((r: any) => {
+      const avgDailySold = num(r.soldQty14) / 14;
+      const daysToStockout = avgDailySold > 0 ? num(r.stockQuantity) / avgDailySold : (num(r.stockQuantity) <= num(r.thresholdQty) ? 0 : 999);
+      const severity = daysToStockout <= 2 ? 'critical' : daysToStockout <= 5 ? 'high' : daysToStockout <= 9 ? 'medium' : 'low';
+      const suggestedBuyQty = Math.max(0, Math.ceil(avgDailySold * 21 - num(r.stockQuantity)));
+      return {
+        productId: r.productId,
+        productName: r.productName || 'کالا',
+        stockQuantity: num(r.stockQuantity),
+        thresholdQty: num(r.thresholdQty),
+        soldQty14: num(r.soldQty14),
+        avgDailySold: Math.round(avgDailySold * 100) / 100,
+        daysToStockout: daysToStockout >= 999 ? null : Math.round(daysToStockout * 10) / 10,
+        suggestedBuyQty,
+        severity,
+        actionLabel: suggestedBuyQty > 0 ? 'بررسی خرید مجدد' : 'کنترل موجودی',
+        to: '/reports/analysis/suggestions',
+      };
+    }).filter((r: any) => r.severity !== 'low' || r.suggestedBuyQty > 0).slice(0, 8);
+
+    const overdue = await getAsync(`
+      SELECT COUNT(*) AS overdueCount, COALESCE(SUM(amountDue), 0) AS overdueAmount
+      FROM installment_payments
+      WHERE COALESCE(status, 'پرداخت نشده') <> 'پرداخت شده'
+        AND REPLACE(dueDate, '/', '-') < ?
+    `, [toISO]).catch(() => ({ overdueCount: 0, overdueAmount: 0 } as any));
+
+    const dueSoon = await getAsync(`
+      SELECT COUNT(*) AS dueSoonCount, COALESCE(SUM(amountDue), 0) AS dueSoonAmount
+      FROM installment_payments
+      WHERE COALESCE(status, 'پرداخت نشده') <> 'پرداخت شده'
+        AND REPLACE(dueDate, '/', '-') BETWEEN ? AND ?
+    `, [toISO, end.clone().add(7, 'day').format('YYYY-MM-DD')]).catch(() => ({ dueSoonCount: 0, dueSoonAmount: 0 } as any));
+
+    const discountPressure = num(recent7?.totalSales) > 0 ? (num(recent7?.discountTotal) / Math.max(1, num(recent7?.totalSales))) * 100 : 0;
+    const dataPoints = Array.isArray(dailyRows) ? dailyRows.length : 0;
+    const baseConfidence = Math.min(94, Math.max(38, 42 + dataPoints * 2.1 + Math.min(20, num(recent7?.ordersCount) * 0.8)));
+    const confidence = Math.round(Math.max(25, Math.min(96, baseConfidence - Math.min(14, Math.abs(trendPct) * 0.12) - (discountPressure > 18 ? 6 : 0))));
+
+    const alerts: any[] = [];
+    if (trendPct <= -18) alerts.push({ id: 'predicted-sales-drop', severity: trendPct <= -35 ? 'critical' : 'high', title: 'ریسک افت فروش فردا', summary: `روند ۷ روز اخیر نسبت به ۷ روز قبل حدود ${Math.abs(Math.round(trendPct)).toLocaleString('fa-IR')}٪ افت دارد.`, actionLabel: 'بررسی گزارش فروش', to: '/reports/sales' });
+    if (stockoutRisks.some((r: any) => ['critical', 'high'].includes(r.severity))) alerts.push({ id: 'stockout-next-days', severity: 'high', title: 'ریسک اتمام موجودی در چند روز آینده', summary: `${stockoutRisks.filter((r: any) => ['critical', 'high'].includes(r.severity)).length.toLocaleString('fa-IR')} کالا سیگنال خرید فوری دارد.`, actionLabel: 'مشاهده پیشنهاد خرید', to: '/reports/analysis/suggestions' });
+    if (num(overdue?.overdueCount) > 0 || num(dueSoon?.dueSoonCount) > 0) alerts.push({ id: 'collection-pressure-next-week', severity: num(overdue?.overdueCount) > 0 ? 'high' : 'medium', title: 'فشار وصول هفته آینده', summary: `${num(overdue?.overdueCount).toLocaleString('fa-IR')} قسط معوق و ${num(dueSoon?.dueSoonCount).toLocaleString('fa-IR')} قسط نزدیک سررسید وجود دارد.`, actionLabel: 'مرکز پیگیری وصول', to: '/reports/collection-center' });
+    if (discountPressure >= 18) alerts.push({ id: 'discount-pressure', severity: 'medium', title: 'احتمال فشار روی حاشیه سود', summary: `نسبت تخفیف به فروش ۷ روز اخیر حدود ${Math.round(discountPressure).toLocaleString('fa-IR')}٪ است.`, actionLabel: 'بررسی سود واقعی', to: '/reports/product-profit-real' });
+
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        generatedAt: new Date().toISOString(),
+        confidence,
+        horizon: { tomorrow: end.clone().add(1, 'day').format('YYYY-MM-DD'), next7DaysUntil: end.clone().add(7, 'day').format('YYYY-MM-DD') },
+        forecast: {
+          tomorrowSales: tomorrowSalesForecast,
+          next7Sales: next7SalesForecast,
+          tomorrowOrders: forecastOrders,
+          avgTicket: Math.round(avgTicket),
+          trendPct: Math.round(trendPct * 10) / 10,
+          discountPressure: Math.round(discountPressure * 10) / 10,
+        },
+        risks: {
+          stockout: stockoutRisks,
+          collection: {
+            overdueCount: num(overdue?.overdueCount),
+            overdueAmount: Math.round(num(overdue?.overdueAmount)),
+            dueSoonCount: num(dueSoon?.dueSoonCount),
+            dueSoonAmount: Math.round(num(dueSoon?.dueSoonAmount)),
+          },
+        },
+        alerts,
+        method: {
+          label: 'میانگین متحرک ۷ روزه + مقایسه ۷ روز قبل + ریسک موجودی بر اساس نرخ مصرف ۱۴ روزه',
+          dataPoints,
+          warning: dataPoints < 10 ? 'داده تاریخی کم است؛ پیش‌بینی را به‌عنوان جهت روند ببین، نه عدد قطعی.' : '',
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+app.post('/api/reports/smart-insights/decisions', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const featureMap = await getAiFeatureEnabledMap();
+    if (featureMap.decision_memory === false) return res.status(409).json({ success: false, message: 'حافظه تصمیمات در تنظیمات هوشمندسازی خاموش است.' });
+    await ensureSmartInsightDecisionMemory();
+    const body = req.body || {};
+    const insightId = String(body.insightId || '').trim();
+    if (!insightId) return res.status(400).json({ success: false, message: 'شناسه Insight نامعتبر است.' });
+    const userDecision = normalizeSmartDecisionValue(body.userDecision, ['pending', 'accepted', 'rejected', 'snoozed'], 'pending');
+    const outcome = normalizeSmartDecisionValue(body.outcome, ['unknown', 'positive', 'negative', 'neutral'], 'unknown');
+    const status = normalizeSmartDecisionValue(body.status, ['open', 'closed', 'dismissed', 'snoozed'], userDecision === 'rejected' ? 'dismissed' : userDecision === 'snoozed' ? 'snoozed' : 'open');
+    const note = String(body.note || '').trim().slice(0, 1000);
+    const actionLabel = String(body.actionLabel || '').trim().slice(0, 180);
+    await runAsync(`
+      INSERT INTO smart_insight_decisions (insightId, type, title, severity, score, confidence, status, userDecision, outcome, note, actionLabel, decidedAt, outcomeAt, updatedAt, userId)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? != 'pending' THEN strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc') ELSE NULL END, CASE WHEN ? != 'unknown' THEN strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc') ELSE NULL END, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), ?)
+      ON CONFLICT(insightId) DO UPDATE SET
+        type = COALESCE(NULLIF(excluded.type, ''), smart_insight_decisions.type), title = COALESCE(NULLIF(excluded.title, ''), smart_insight_decisions.title),
+        severity = COALESCE(NULLIF(excluded.severity, ''), smart_insight_decisions.severity), score = excluded.score, confidence = excluded.confidence,
+        status = excluded.status, userDecision = excluded.userDecision, outcome = excluded.outcome, note = excluded.note, actionLabel = excluded.actionLabel,
+        decidedAt = CASE WHEN excluded.userDecision != 'pending' THEN strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc') ELSE smart_insight_decisions.decidedAt END,
+        outcomeAt = CASE WHEN excluded.outcome != 'unknown' THEN strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc') ELSE smart_insight_decisions.outcomeAt END,
+        updatedAt = excluded.updatedAt, userId = excluded.userId
+    `, [insightId, String(body.type || '').trim().slice(0, 80), String(body.title || '').trim().slice(0, 240), String(body.severity || '').trim().slice(0, 40), smartInsightNum(body.score), smartInsightNum(body.confidence), status, userDecision, outcome, note, actionLabel, userDecision, outcome, req.user?.id || null]);
+    const featureKey = insightTypeToAiFeatureKey(body.type || 'decision_memory');
+    await recordAiFeatureImpactEvent(featureKey, outcome === 'positive' ? 'positive_outcome' : outcome === 'negative' ? 'negative_outcome' : userDecision === 'accepted' ? 'accepted_decision' : userDecision === 'rejected' ? 'rejected_decision' : 'decision_update', {
+      impactAmount: outcome === 'positive' ? smartInsightNum(body.score) * 10000 : outcome === 'negative' ? -smartInsightNum(body.score) * 10000 : 0,
+      success: outcome !== 'negative',
+      context: { insightId, title: body.title, actionLabel },
+      userId: req.user?.id || null,
+    });
+    const row = await smartInsightSafeOne(`SELECT * FROM smart_insight_decisions WHERE insightId = ?`, [insightId]);
+    res.json({ success: true, data: { ...row, ...smartDecisionCopy(row) } });
+  } catch (err) { next(err); }
+});
+app.post('/api/reports/smart-insights/reset-learning', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try { await ensureSmartInsightDecisionMemory(); await runAsync(`DELETE FROM smart_insight_decisions`); res.json({ success: true, data: { resetAt: new Date().toISOString() }, message: 'حافظه تصمیمات مغز هوشمند پاک شد.' }); }
+  catch (err) { next(err); }
+});
+
+
+app.post('/api/ai/pricing/apply', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const featureMap = await getAiFeatureEnabledMap();
+    if (featureMap.auto_pricing === false) return res.status(409).json({ success: false, message: 'قیمت‌گذاری هوشمند در تنظیمات خاموش است.' });
+    await ensureSmartInsightDecisionMemory();
+    const productId = Number(req.body?.productId);
+    const newPrice = Number(req.body?.newPrice);
+    const note = String(req.body?.note || 'اعمال قیمت پیشنهادی مغز هوشمند').slice(0, 500);
+    if (!Number.isFinite(productId) || productId <= 0 || !Number.isFinite(newPrice) || newPrice <= 0) {
+      return res.status(400).json({ success: false, message: 'شناسه کالا یا قیمت جدید نامعتبر است.' });
+    }
+    const product = await smartInsightSafeOne(`SELECT id, name, sellingPrice, purchasePrice FROM products WHERE id = ?`, [productId]);
+    if (!product?.id) return res.status(404).json({ success: false, message: 'کالا پیدا نشد.' });
+    const safeMinPrice = Math.max(smartInsightNum(product.purchasePrice) * 1.08, smartInsightNum(product.sellingPrice) * 0.88);
+    if (newPrice < safeMinPrice) {
+      return res.status(422).json({ success: false, message: `قیمت پیشنهادی پایین‌تر از حد امن فروش است. حد امن: ${smartInsightMoney(safeMinPrice)}` });
+    }
+    await runAsync(`UPDATE products SET sellingPrice = ? WHERE id = ?`, [newPrice, productId]);
+    await runAsync(`
+      INSERT INTO pricing_history (productId, oldPrice, newPrice, source, note, userId)
+      VALUES (?, ?, ?, 'ai_brain', ?, ?)
+    `, [productId, smartInsightNum(product.sellingPrice), newPrice, note, req.user?.id || null]);
+    await recordAiFeatureImpactEvent('auto_pricing', 'price_applied', {
+      impactAmount: newPrice - smartInsightNum(product.sellingPrice),
+      success: true,
+      context: { productId, productName: product.name, oldPrice: smartInsightNum(product.sellingPrice), newPrice },
+      userId: req.user?.id || null,
+    });
+    res.json({ success: true, data: { productId, oldPrice: smartInsightNum(product.sellingPrice), newPrice }, message: 'قیمت کالا با گارد حد امن اعمال شد.' });
+  } catch (err) { next(err); }
+});
+
+app.post('/api/ai/pricing/simulate', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const featureMap = await getAiFeatureEnabledMap();
+    if (featureMap.auto_pricing === false) return res.status(409).json({ success: false, message: 'شبیه‌سازی قیمت‌گذاری هوشمند خاموش است.' });
+    const currentPrice = Number(req.body?.currentPrice || 0);
+    const purchasePrice = Number(req.body?.purchasePrice || 0);
+    const sold30 = Math.max(1, Number(req.body?.sold30 || 1));
+    const candidatePrice = Number(req.body?.candidatePrice || currentPrice);
+    if (!Number.isFinite(currentPrice) || !Number.isFinite(candidatePrice) || currentPrice <= 0 || candidatePrice <= 0) {
+      return res.status(400).json({ success: false, message: 'قیمت برای شبیه‌سازی نامعتبر است.' });
+    }
+    const lift = (candidatePrice - currentPrice) / currentPrice;
+    const elasticityScore = Math.max(-2.5, Math.min(0.5, Number(req.body?.elasticityScore ?? -0.8)));
+    const expectedVolumeDelta = Math.round(elasticityScore * lift * 100);
+    const expectedUnits = Math.max(0, sold30 * (1 + expectedVolumeDelta / 100));
+    const currentProfit = (currentPrice - purchasePrice) * sold30;
+    const expectedProfit = (candidatePrice - purchasePrice) * expectedUnits;
+    res.json({
+      success: true,
+      data: {
+        currencyBase: REPORT_CURRENCY_CONTRACT.currencyBase,
+        displayCurrency: REPORT_CURRENCY_CONTRACT.displayCurrency,
+        moneyDivisor: REPORT_CURRENCY_CONTRACT.moneyDivisor,
+        currentProfit: smartInsightRound(currentProfit),
+        expectedProfit: smartInsightRound(expectedProfit),
+        expectedProfitDelta: smartInsightRound(expectedProfit - currentProfit),
+        expectedVolumeDelta,
+        expectedUnits: smartInsightRound(expectedUnits),
+      },
+    });
+  } catch (err) { next(err); }
+});
+
+
+
+const normalizeCollectionCenterDate = (value: any) => {
+  const parsed = collectionCenterSafeMoment(value);
+  return parsed ? parsed.format('YYYY-MM-DD') : '';
+};
+
+const isCollectionCenterDateInRange = (value: any, fromISO: string, toISO: string) => {
+  const d = normalizeCollectionCenterDate(value);
+  if (!d) return false;
+  return !moment(d).isBefore(moment(String(fromISO).slice(0, 10)), 'day') && !moment(d).isAfter(moment(String(toISO).slice(0, 10)), 'day');
+};
+
+const shouldShowCollectionCenterItemForOperationalWindow = (item: any, fromISO: string, toISO: string) => {
+  const outstanding = Number(item?.outstandingAmount || 0);
+  if (outstanding <= 1000) return false;
+
+  const overdueDays = Number(item?.overdueDays || 0);
+  const overdueAmount = Number(item?.overdueAmount || 0);
+  const overdueCount = Number(item?.overdueCount || 0);
+  const isOverdue = overdueDays > 0 || overdueAmount > 0 || overdueCount > 0;
+  if (isOverdue) return true;
+
+  const nextFollowup = item?.nextFollowupDate || item?.automation?.suggestedNextFollowupDate || null;
+  if (isCollectionCenterDateInRange(nextFollowup, fromISO, toISO)) return true;
+
+  if (isCollectionCenterDateInRange(item?.dueDate, fromISO, toISO)) return true;
+  if (isCollectionCenterDateInRange(item?.transactionDate, fromISO, toISO)) return true;
+
+  const dueInDays = Number(item?.dueInDays);
+  const toIncludesToday = !moment(String(toISO).slice(0, 10)).isBefore(moment().startOf('day'), 'day');
+  if (Number.isFinite(dueInDays) && dueInDays >= 0 && dueInDays <= 7 && toIncludesToday) return true;
+
+  if (item?.automation?.shouldEscalate) return true;
+  return false;
+};
+
+
+
+const collectionCenterSafeMoment = (value: any) => {
+  const raw = String(value || '').trim();
+  if (!raw) return null;
+
+  const normalized = raw.replace(/[۰-۹]/g, (d) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString()).replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString());
+  const onlyDate = normalized.slice(0, 10);
+
+  // Important: Jalali years like 1405/03/05 are also "valid" Gregorian years for moment.
+  // Convert Jalali first, otherwise delay calculations become hundreds of years wrong.
+  const looksJalali = /^1[34]\d{2}[\/-]\d{1,2}[\/-]\d{1,2}/.test(normalized);
+  if (looksJalali) {
+    const jalaliInput = onlyDate.replace(/-/g, '/');
+    const iso = fromShamsiStringToISO(jalaliInput);
+    if (iso) {
+      try {
+        const parsed = moment(iso, ['YYYY-MM-DD', moment.ISO_8601], true);
+        if (parsed && typeof parsed.isValid === 'function' && parsed.isValid()) return parsed;
+      } catch {}
+    }
+    try {
+      const jm = moment(jalaliInput, 'jYYYY/jMM/jDD', true);
+      if (jm && typeof jm.isValid === 'function' && jm.isValid()) return jm;
+    } catch {}
+    return null;
+  }
+
+  const candidates = [normalized, onlyDate].filter(Boolean);
+  for (const candidate of candidates) {
+    try {
+      const parsed = moment(candidate, [moment.ISO_8601, 'YYYY-MM-DD', 'YYYY/MM/DD'], true);
+      if (parsed && typeof parsed.isValid === 'function' && parsed.isValid()) return parsed;
+    } catch {}
+  }
+
+  try {
+    const loose = moment(normalized);
+    if (loose && typeof loose.isValid === 'function' && loose.isValid()) return loose;
+  } catch {}
+
+  return null;
+};
+
+const collectionCenterDateDiffInDays = (value: any, base: any) => {
+  const parsed = collectionCenterSafeMoment(value);
+  const safeBase = base && typeof base.clone === 'function' ? base.clone() : moment().startOf('day');
+  if (!parsed) return null;
+  return parsed.startOf('day').diff(safeBase.startOf('day'), 'days');
+};
+
+const collectionCenterOverdueDays = (value: any, base: any) => {
+  const diff = collectionCenterDateDiffInDays(value, base);
+  return typeof diff === 'number' && diff < 0 ? Math.abs(diff) : 0;
+};
+
+const collectionCenterToShamsiDisplay = (value: any) => {
+  const parsed = collectionCenterSafeMoment(value);
+  return parsed ? parsed.locale('fa').format('jYYYY/jMM/jDD') : '';
+};
+
+const collectionCenterPickEarliestDate = (...values: any[]) => {
+  const parsed = values
+    .map((value) => {
+      const m = collectionCenterSafeMoment(value);
+      return m ? { raw: value, m } : null;
+    })
+    .filter(Boolean) as Array<{ raw: any; m: any }>;
+  if (!parsed.length) return null;
+  parsed.sort((a, b) => a.m.valueOf() - b.m.valueOf());
+  return parsed[0].raw;
+};
+
+
+
+
+async function buildDirectInstallmentCollectionItems(fromISO: string, toISO: string) {
+  const today = moment().startOf('day');
+  const todayJ = moment().locale('fa').format('jYYYY/MM/DD');
+
+  const rows = await allAsync(
+    `SELECT
+        ins.id AS orderId,
+        ins.customerId,
+        c.fullName AS customerName,
+        c.phoneNumber AS customerPhone,
+        COALESCE(ins.dateCreated, ins.installmentsStartDate, '') AS transactionDate,
+        COALESCE(ins.actualSalePrice, 0) AS contractualTotal,
+        COALESCE(ins.downPayment, 0) AS receivedAmount,
+        COALESCE(pay.unpaidAmount, 0) AS unpaidInstallmentAmount,
+        COALESCE(pay.overdueAmount, 0) AS overdueInstallmentAmount,
+        COALESCE(pay.unpaidCount, 0) AS unpaidInstallmentCount,
+        COALESCE(pay.overdueCount, 0) AS overdueInstallmentCount,
+        pay.nearestDueDate AS nearestInstallmentDueDate,
+        pay.earliestOverdueDate AS earliestInstallmentOverdueDate,
+        COALESCE(ch.unpaidCheckAmount, 0) AS unpaidCheckAmount,
+        COALESCE(ch.overdueCheckAmount, 0) AS overdueCheckAmount,
+        COALESCE(ch.unpaidCheckCount, 0) AS unpaidCheckCount,
+        COALESCE(ch.overdueCheckCount, 0) AS overdueCheckCount,
+        ch.nearestCheckDueDate AS nearestCheckDueDate,
+        ch.earliestCheckOverdueDate AS earliestCheckOverdueDate
+       FROM installment_sales ins
+       LEFT JOIN customers c ON c.id = ins.customerId
+       LEFT JOIN (
+         SELECT saleId,
+                COUNT(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') THEN 1 END) AS unpaidCount,
+                COALESCE(SUM(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') THEN COALESCE(amountDue,0) ELSE 0 END),0) AS unpaidAmount,
+                COALESCE(SUM(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') AND dueDate < ? THEN COALESCE(amountDue,0) ELSE 0 END),0) AS overdueAmount,
+                SUM(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') AND dueDate < ? THEN 1 ELSE 0 END) AS overdueCount,
+                MIN(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') THEN dueDate ELSE NULL END) AS nearestDueDate,
+                MIN(CASE WHEN COALESCE(status,'') NOT IN ('پرداخت شده','پرداخت‌شده','تسویه شده','تسویه‌شده','paid','Paid') AND dueDate < ? THEN dueDate ELSE NULL END) AS earliestOverdueDate
+           FROM installment_payments
+          GROUP BY saleId
+       ) pay ON pay.saleId = ins.id
+       LEFT JOIN (
+         SELECT saleId,
+                COUNT(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') THEN 1 END) AS unpaidCheckCount,
+                COALESCE(SUM(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') THEN COALESCE(amount,0) ELSE 0 END),0) AS unpaidCheckAmount,
+                COALESCE(SUM(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') AND dueDate < ? THEN COALESCE(amount,0) ELSE 0 END),0) AS overdueCheckAmount,
+                SUM(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') AND dueDate < ? THEN 1 ELSE 0 END) AS overdueCheckCount,
+                MIN(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') THEN dueDate ELSE NULL END) AS nearestCheckDueDate,
+                MIN(CASE WHEN COALESCE(status,'') NOT IN ('نقد شد','پاس شده','وصول شده','تسویه شده','نقدشده','paid','Paid') AND dueDate < ? THEN dueDate ELSE NULL END) AS earliestCheckOverdueDate
+           FROM installment_checks
+          GROUP BY saleId
+       ) ch ON ch.saleId = ins.id
+      WHERE COALESCE(ins.actualSalePrice, 0) > 0
+        AND (COALESCE(pay.unpaidAmount, 0) > 1000 OR COALESCE(ch.unpaidCheckAmount, 0) > 1000)`,
+    [todayJ, todayJ, todayJ, todayJ, todayJ, todayJ]
+  ).catch(() => []);
+
+  const items: any[] = [];
+  for (const row of rows as any[]) {
+    const orderId = Number(row.orderId || 0);
+    if (!orderId) continue;
+
+    const dueDateRaw = collectionCenterPickEarliestDate(row.nearestInstallmentDueDate, row.nearestCheckDueDate);
+    const overdueBaseRaw = collectionCenterPickEarliestDate(row.earliestInstallmentOverdueDate, row.earliestCheckOverdueDate);
+    const dueDate = collectionCenterToShamsiDisplay(dueDateRaw);
+    const overdueBase = collectionCenterToShamsiDisplay(overdueBaseRaw);
+
+    const dueInDays = dueDateRaw ? collectionCenterDateDiffInDays(dueDateRaw, today) : null;
+    const overdueDays = overdueBaseRaw
+      ? collectionCenterOverdueDays(overdueBaseRaw, today)
+      : (typeof dueInDays === 'number' && dueInDays < 0 ? Math.abs(dueInDays) : 0);
+
+    const unpaidInstallmentAmount = Number(row.unpaidInstallmentAmount || 0);
+    const unpaidCheckAmount = Number(row.unpaidCheckAmount || 0);
+    const overdueInstallmentAmount = Number(row.overdueInstallmentAmount || 0);
+    const overdueCheckAmount = Number(row.overdueCheckAmount || 0);
+    const outstandingAmount = Math.max(0, unpaidInstallmentAmount + unpaidCheckAmount);
+    if (outstandingAmount <= 1000) continue;
+
+    const total = Math.max(0, Number(row.contractualTotal || 0));
+    const received = Math.max(0, total - outstandingAmount);
+    const collectionRate = total > 0 ? Math.min(100, Math.max(0, (received / total) * 100)) : 0;
+    const overdueCount = Math.max(0, Number(row.overdueInstallmentCount || 0) + Number(row.overdueCheckCount || 0));
+    const overdueAmount = Math.max(0, overdueInstallmentAmount + overdueCheckAmount);
+    const unpaidCount = Math.max(0, Number(row.unpaidInstallmentCount || 0) + Number(row.unpaidCheckCount || 0));
+
+    let score = 18;
+    const reasons: string[] = [];
+    if (overdueDays > 30) { score += 35; reasons.push(`${overdueDays.toLocaleString('fa-IR')} روز از سررسید گذشته است`); }
+    else if (overdueDays > 7) { score += 24; reasons.push(`${overdueDays.toLocaleString('fa-IR')} روز تأخیر در سررسید دارد`); }
+    else if (overdueDays > 0) { score += 14; reasons.push('سررسید قسط/چک گذشته است'); }
+    else if (typeof dueInDays === 'number' && dueInDays >= 0 && dueInDays <= 7) { score += 10; reasons.push(`موعد قسط/چک تا ${dueInDays.toLocaleString('fa-IR')} روز آینده است`); }
+
+    if (overdueCount >= 3) { score += 22; reasons.push(`${overdueCount.toLocaleString('fa-IR')} قسط/چک عقب‌افتاده وجود دارد`); }
+    else if (overdueCount > 0) { score += 12; reasons.push(`${overdueCount.toLocaleString('fa-IR')} مورد سررسید عقب‌افتاده وجود دارد`); }
+
+    if (outstandingAmount > 20000000) { score += 18; reasons.push(`مانده وصول بالا است: ${formatReportMoneyText(outstandingAmount)}`); }
+    else if (outstandingAmount > 5000000) { score += 10; reasons.push(`مانده وصول قابل توجه است: ${formatReportMoneyText(outstandingAmount)}`); }
+
+    if (unpaidCheckAmount > 0) reasons.push(`چک پرداخت‌نشده/نقدنشده: ${formatReportMoneyText(unpaidCheckAmount)}`);
+    if (unpaidInstallmentAmount > 0) reasons.push(`اقساط پرداخت‌نشده: ${formatReportMoneyText(unpaidInstallmentAmount)}`);
+    if (overdueAmount > 0) reasons.push(`مبلغ سررسید گذشته: ${formatReportMoneyText(overdueAmount)}`);
+    if (!reasons.length) reasons.push(`${unpaidCount.toLocaleString('fa-IR')} قسط/چک پرداخت‌نشده برای پیگیری وجود دارد`);
+
+    const meta = productSalesRiskLevelMeta(score);
+    items.push({
+      id: getProductSalesDocKey('installment', orderId),
+      level: meta.level,
+      label: meta.label,
+      score: Math.min(100, Math.round(score)),
+      sourceType: 'installment',
+      paymentType: 'installment',
+      orderId,
+      customerId: Number(row.customerId || 0),
+      customerName: row.customerName || 'مشتری ثبت‌نشده',
+      customerPhone: row.customerPhone || '',
+      transactionDate: String(row.transactionDate || ''),
+      dueDate,
+      ageDays: 0,
+      dueInDays: typeof dueInDays === 'number' ? dueInDays : null,
+      overdueDays,
+      overdueCount,
+      overdueAmount,
+      contractualTotal: total,
+      receivedAmount: received,
+      outstandingAmount,
+      fullProfit: 0,
+      realizedProfit: 0,
+      unrecognizedProfit: 0,
+      collectionRate,
+      customerBalance: outstandingAmount,
+      discountRate: 0,
+      reasons,
+      directCollectionSource: true,
+    });
+  }
+
+  return items.filter((item) => shouldShowCollectionCenterItemForOperationalWindow(item, fromISO, toISO));
+}
+
+
+const buildCollectionCenterSourceFromISO = (fromISO: string) => {
+  const explicitFrom = collectionCenterSafeMoment(String(fromISO).slice(0, 10));
+  const operationalLookback = moment().subtract(24, 'months').startOf('day');
+  if (!explicitFrom) return operationalLookback.format('YYYY-MM-DD');
+  return explicitFrom.isBefore(operationalLookback, 'day') ? explicitFrom.format('YYYY-MM-DD') : operationalLookback.format('YYYY-MM-DD');
+};
+
+
+app.get('/api/reports/collection-center', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().subtract(6, 'jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+
+    const level = String(req.query.level || 'all').trim();
+    const query = String(req.query.q || req.query.query || '').trim().toLowerCase();
+    const onlyUntouched = String(req.query.onlyUntouched || '') === '1';
+    const sourceFromISO = buildCollectionCenterSourceFromISO(fromISO);
+    let report = await buildProductSalesCollectionsReport(sourceFromISO, toISO);
+    let risk = await buildProductSalesCollectionRisk(report.rows, report.docs, 500);
+
+    const riskItems = (risk.items || []).filter((item: any) => shouldShowCollectionCenterItemForOperationalWindow(item, fromISO, toISO));
+    const directInstallmentItems = await buildDirectInstallmentCollectionItems(fromISO, toISO);
+
+    const mergedItemMap = new Map<string, any>();
+    for (const item of [...riskItems, ...directInstallmentItems]) {
+      const key = getProductSalesDocKey(String(item?.sourceType || 'invoice'), Number(item?.orderId || 0));
+      const existing = mergedItemMap.get(key);
+      if (!existing || Number(item?.score || 0) > Number(existing?.score || 0) || Number(item?.outstandingAmount || 0) > Number(existing?.outstandingAmount || 0)) {
+        mergedItemMap.set(key, item);
+      } else if (existing && Array.isArray(item?.reasons)) {
+        existing.reasons = Array.from(new Set([...(existing.reasons || []), ...item.reasons])).slice(0, 8);
+      }
+    }
+
+    let items = await enrichCollectionCenterItems(Array.from(mergedItemMap.values()));
+    items = items.map((item: any) => {
+      const normalizedTransactionDate = collectionCenterToShamsiDisplay(item?.transactionDate) || item?.transactionDate || '';
+      const normalizedDueDate = collectionCenterToShamsiDisplay(item?.dueDate) || item?.dueDate || '';
+      const dueForDelay = item?.earliestOverdueDate || item?.overdueDate || item?.dueDate || null;
+      const fixedDueInDays = item?.dueDate ? collectionCenterDateDiffInDays(item.dueDate, moment().startOf('day')) : item?.dueInDays;
+      const fixedOverdueDays = dueForDelay ? collectionCenterOverdueDays(dueForDelay, moment().startOf('day')) : Number(item?.overdueDays || 0);
+      return {
+        ...item,
+        transactionDate: normalizedTransactionDate,
+        dueDate: normalizedDueDate,
+        dueInDays: typeof fixedDueInDays === 'number' ? fixedDueInDays : item?.dueInDays,
+        overdueDays: Math.max(0, Number(fixedOverdueDays || 0)),
+      };
+    });
+
+    if (['critical', 'urgent', 'followup', 'low'].includes(level)) items = items.filter((item) => String(item.level) === level);
+    if (onlyUntouched) items = items.filter((item) => !item.touchedToday);
+    if (query) {
+      items = items.filter((item) => [item.customerName, item.customerPhone, item.orderId, item.label, item.paymentType, item.reasons?.join(' '), item.automation?.recommendedActionLabel, item.automation?.smsText, item.automation?.reason].some((v) => String(v || '').toLowerCase().includes(query)));
+    }
+
+    const levelRank: any = { critical: 4, urgent: 3, followup: 2, low: 1 };
+    items = items.sort((a: any, b: any) => (Number(b.automation?.shouldEscalate || 0) - Number(a.automation?.shouldEscalate || 0)) || ((collectionCenterKanbanMeta(b.kanbanStage).rank || 0) - (collectionCenterKanbanMeta(a.kanbanStage).rank || 0)) || (levelRank[b.level] - levelRank[a.level]) || Number(b.score || 0) - Number(a.score || 0) || Number(b.outstandingAmount || 0) - Number(a.outstandingAmount || 0));
+
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        filters: { level, query, onlyUntouched, operationalWindow: true, sourceFrom: sourceFromISO },
+        summary: summarizeCollectionCenter(items),
+        sourceSummary: {
+          status: risk.status,
+          totalDocs: risk.totalDocs,
+          directInstallmentDocs: directInstallmentItems.length,
+          counts: risk.counts,
+          totalOutstanding: risk.totalOutstanding,
+          totalUnrecognizedProfit: risk.totalUnrecognizedProfit,
+          highestScore: risk.highestScore,
+        },
+        items,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/api/reports/collection-center/actions', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req, res, next) => {
+  try {
+    const body = req.body || {};
+    const customerId = Number(body.customerId || 0);
+    const orderId = Number(body.orderId || 0);
+    const sourceType = String(body.sourceType || 'invoice') === 'installment' ? 'installment' : 'invoice';
+    const action = String(body.action || 'reviewed');
+    const user = (req as any).user || {};
+    if (!customerId || !orderId) return res.status(400).json({ success: false, message: 'شناسه مشتری یا سند نامعتبر است.' });
+
+    const meta = collectionCenterActionMeta(action);
+    const nextFollowupDate = defaultCollectionCenterNextDate(action, body.nextFollowupDate);
+    const noteText = String(body.note || '').trim();
+    const contextParts = [
+      buildCollectionCenterMarker(sourceType, orderId),
+      `[action:${action}]`,
+      `مرکز وصول: ${meta.label}`,
+      noteText ? `یادداشت: ${noteText}` : '',
+      body.outstandingAmount != null ? `مانده: ${formatReportMoneyText(body.outstandingAmount)}` : '',
+      body.riskLabel ? `سطح ریسک: ${String(body.riskLabel)}` : '',
+    ].filter(Boolean).join(' | ');
+
+    const created = await addCustomerFollowupToDb(customerId, { note: contextParts, nextFollowupDate }, { userId: Number(user.id || user.userId || 0), username: user.username || user.email || null });
+
+    await recordAiFeatureImpactEvent('customer_intelligence', 'collection_action_recorded', {
+      success: true,
+      impactAmount: Number(body.outstandingAmount || 0),
+      userId: Number(user.id || user.userId || 0) || null,
+      context: {
+        action,
+        actionLabel: meta.label,
+        customerId,
+        orderId,
+        sourceType,
+        outstandingAmount: Number(body.outstandingAmount || 0),
+        riskLabel: body.riskLabel || '',
+        nextFollowupDate,
+      },
+    });
+
+    await ensureSmartInsightDecisionMemory();
+    await runAsync(`
+      INSERT INTO smart_insight_decisions
+        (insightId, type, title, severity, score, confidence, status, userDecision, outcome, note, actionLabel, occurrenceCount, decidedAt, updatedAt, userId)
+      VALUES
+        (?, 'collection_risk', 'پرونده وصول پیگیری شد', ?, ?, 88, 'in_progress', 'accepted', 'neutral', ?, ?, 1, strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'), ?)
+      ON CONFLICT(insightId) DO UPDATE SET
+        status = 'in_progress',
+        userDecision = 'accepted',
+        outcome = 'neutral',
+        note = excluded.note,
+        actionLabel = excluded.actionLabel,
+        occurrenceCount = COALESCE(smart_insight_decisions.occurrenceCount, 0) + 1,
+        decidedAt = strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'),
+        updatedAt = strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'),
+        userId = excluded.userId
+    `, [
+      `collection-action:${sourceType}:${orderId}`,
+      String(body.riskLabel || '').includes('بحرانی') ? 'critical' : 'high',
+      Number(body.outstandingAmount || 0) > 0 ? Math.min(100, Math.max(35, Math.round(Number(body.outstandingAmount || 0) / 1000000))) : 50,
+      contextParts,
+      meta.label,
+      Number(user.id || user.userId || 0) || null,
+    ]);
+
+    res.status(201).json({
+      success: true,
+      data: {
+        ...(created || {}),
+        action,
+        actionLabel: meta.label,
+        sourceType,
+        orderId,
+        customerId,
+        nextFollowupDate,
+        note: contextParts,
+        createdAt: (created && (created.createdAt || created.created_at)) || new Date().toISOString(),
+      },
+      message: 'اقدام پیگیری ثبت شد و روی مرکز وصول و Smart Insights اعمال می‌شود.',
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+app.get('/api/reports/product-sales/details', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    const fromISO = fromShamsiStringToISO(fromJ);
+    const toISO = fromShamsiStringToISO(toJ);
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+
+    const page = Math.max(1, parseInt(String(req.query.page || '1'), 10) || 1);
+    const pageSize = Math.min(200, Math.max(10, parseInt(String(req.query.pageSize || '50'), 10) || 50));
+    const exportAll = String(req.query.all || '').trim() === '1' || String(req.query.export || '').trim() === '1';
+    const auditMode = ['item', 'invoice'].includes(String(req.query.auditMode || '')) ? String(req.query.auditMode) : 'all';
+    const query = String(req.query.q || req.query.query || '').trim();
+
+    const report = await buildProductSalesCollectionsReport(fromISO, toISO);
+    const queryRows = (report.rows || []).filter((row: any) => matchesProductSalesDetailsQuery(row, query));
+    const auditCounts = queryRows.reduce((acc: any, row: any) => {
+      const audit = getProductSalesDetailsDiscountAudit(row);
+      acc.all += 1;
+      if (audit.hasAnyDiscount) acc.discounted += 1;
+      if (audit.hasItemDiscount) acc.itemDiscounted += 1;
+      if (audit.hasInvoiceDiscount) acc.invoiceDiscounted += 1;
+      return acc;
+    }, { all: 0, discounted: 0, itemDiscounted: 0, invoiceDiscounted: 0 });
+
+    const filteredRows = queryRows.filter((row: any) => {
+      const audit = getProductSalesDetailsDiscountAudit(row);
+      if (auditMode === 'item') return audit.hasItemDiscount;
+      if (auditMode === 'invoice') return audit.hasInvoiceDiscount;
+      return true;
+    });
+
+    const totalRows = filteredRows.length;
+    const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+    const safePage = Math.min(page, totalPages);
+    const startIndex = (safePage - 1) * pageSize;
+    const paginatedRows = exportAll ? filteredRows : filteredRows.slice(startIndex, startIndex + pageSize);
+    const startRow = totalRows > 0 ? startIndex + 1 : 0;
+    const endRow = exportAll ? totalRows : Math.min(totalRows, startIndex + pageSize);
+
+    res.json({
+      success: true,
+      data: {
+        from: fromJ,
+        to: toJ,
+        rows: paginatedRows,
+        summary: report.summary,
+        docs: report.docs,
+        filteredSummary: summarizeProductSalesDetailsRows(filteredRows),
+        auditCounts,
+        topProducts: buildProductSalesDetailsTopProducts(filteredRows),
+        calculationHealth: buildProductSalesCalculationHealth(queryRows, report.docs, report.rows),
+        collectionRisk: await buildProductSalesCollectionRisk(filteredRows, report.docs),
+        pagination: {
+          page: exportAll ? 1 : safePage,
+          pageSize: exportAll ? totalRows : pageSize,
+          totalRows,
+          totalPages: exportAll ? 1 : totalPages,
+          startRow: exportAll ? (totalRows > 0 ? 1 : 0) : startRow,
+          endRow,
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+// -------------------------------------------------
+// Installments calendar (Phase P1)
+// -------------------------------------------------
+app.get('/api/reports/installments-calendar', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const nowJ = moment().locale('fa');
+    const fromJ = String(req.query.from || nowJ.clone().startOf('jMonth').format('jYYYY/jMM/jDD'));
+    const toJ = String(req.query.to || nowJ.clone().endOf('jMonth').format('jYYYY/jMM/jDD'));
+    // Basic validation
+    const fromIso = fromShamsiStringToISO(fromJ);
+    const toIso = fromShamsiStringToISO(toJ);
+    if (!fromIso || !toIso) {
+      return res.status(400).json({ success: false, message: 'بازه زمانی نامعتبر است.' });
+    }
+    const payments = await allAsync(
+      `SELECT ip.id AS id, ip.saleId, ip.dueDate, ip.amountDue AS amount, ip.status,
+              isale.customerId, c.fullName AS customerFullName, c.phoneNumber AS customerPhoneNumber
+         FROM installment_payments ip
+         JOIN installment_sales isale ON ip.saleId = isale.id
+         JOIN customers c ON isale.customerId = c.id
+        WHERE ip.dueDate BETWEEN ? AND ?
+        ORDER BY ip.dueDate ASC`,
+      [fromJ, toJ]
+    );
+    const checks = await allAsync(
+      `SELECT ic.id AS id, ic.saleId, ic.checkNumber, ic.bankName, ic.dueDate, ic.amount, ic.status,
+              isale.customerId, c.fullName AS customerFullName, c.phoneNumber AS customerPhoneNumber
+         FROM installment_checks ic
+         JOIN installment_sales isale ON ic.saleId = isale.id
+         JOIN customers c ON isale.customerId = c.id
+        WHERE ic.dueDate BETWEEN ? AND ?
+        ORDER BY ic.dueDate ASC`,
+      [fromJ, toJ]
+    );
+    const items = [
+      ...payments.map((p: any) => ({
+        type: 'payment',
+        id: p.id,
+        saleId: p.saleId,
+        dueDate: p.dueDate,
+        amount: p.amount,
+        status: p.status,
+        customerId: p.customerId,
+        customerFullName: p.customerFullName,
+        customerPhoneNumber: p.customerPhoneNumber,
+      })),
+      ...checks.map((c: any) => ({
+        type: 'check',
+        id: c.id,
+        saleId: c.saleId,
+        dueDate: c.dueDate,
+        amount: c.amount,
+        status: c.status,
+        checkNumber: c.checkNumber,
+        bankName: c.bankName,
+        customerId: c.customerId,
+        customerFullName: c.customerFullName,
+        customerPhoneNumber: c.customerPhoneNumber,
+      })),
+    ].sort((a: any, b: any) => String(a.dueDate).localeCompare(String(b.dueDate)));
+    res.json({ success: true, data: { range: { from: fromJ, to: toJ }, items } });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/sales-risk-decisions', authorizeRole(['Admin','Manager']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const limit = Math.min(parseInt(String(req.query.limit || '100'), 10) || 100, 300);
+    const from = String(req.query.from || '').trim();
+    const to = String(req.query.to || '').trim();
+    const whereParts = ['action = ?'];
+    const params: any[] = ['sales-risk-payment-method-change'];
+
+    if (from) {
+      whereParts.push('date(createdAt) >= date(?)');
+      params.push(from);
+    }
+    if (to) {
+      whereParts.push('date(createdAt) <= date(?)');
+      params.push(to);
+    }
+
+    const rows = await allAsync(
+      `SELECT id, userId, username, role, action, entityType, entityId, description, createdAt
+         FROM audit_logs
+        WHERE ${whereParts.join(' AND ')}
+        ORDER BY datetime(createdAt) DESC, id DESC
+        LIMIT ?`,
+      [...params, limit]
+    ).catch(() => [] as any[]);
+
+    const cashSwitchCount = (rows || []).filter((row: any) => String(row.description || '').includes('به نقدی')).length;
+    const creditReturnCount = (rows || []).filter((row: any) => String(row.description || '').includes('به اعتباری')).length;
+    const uniqueCustomers = new Set((rows || []).map((row: any) => Number(row.entityId || 0)).filter(Boolean)).size;
+
+    res.json({
+      success: true,
+      data: rows || [],
+      meta: {
+        totalCount: (rows || []).length,
+        cashSwitchCount,
+        creditReturnCount,
+        uniqueCustomers,
+        range: { from: from || null, to: to || null },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Internal sales risk log: records important operator decisions around risky customer payment method changes.
+app.post('/api/sales-orders/risk-payment-log', authorizeRole(['Admin','Manager','Salesperson','Marketer']), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const body = req.body || {};
+    const user = (req as any).user || {};
+    const customerId = Number(body.customerId || 0);
+    const customerName = String(body.customerName || '').trim();
+    const fromMethod = String(body.fromMethod || '').trim();
+    const toMethod = String(body.toMethod || '').trim();
+    const score = Number(body.score || 0);
+    const tierLabel = String(body.tierLabel || '').trim();
+    const reason = String(body.reason || '').trim();
+    const grandTotal = Number(body.grandTotal || 0);
+    const suggestedCreditLimit = Number(body.suggestedCreditLimit || 0);
+    const projectedCreditExposure = Number(body.projectedCreditExposure || 0);
+
+    if (!customerId || !fromMethod || !toMethod) {
+      return res.status(400).json({ success: false, message: 'اطلاعات ثبت لاگ ریسک پرداخت کامل نیست.' });
+    }
+
+    const description = [
+      `تغییر روش پرداخت مشتری پرریسک از ${fromMethod === 'credit' ? 'اعتباری' : 'نقدی'} به ${toMethod === 'credit' ? 'اعتباری' : 'نقدی'}`,
+      customerName ? `مشتری: ${customerName}` : `شناسه مشتری: ${customerId}`,
+      score ? `امتیاز اعتماد: ${score}` : '',
+      tierLabel ? `سطح اعتماد: ${tierLabel}` : '',
+      grandTotal ? `مبلغ فاکتور جاری: ${grandTotal.toLocaleString('fa-IR')}` : '',
+      suggestedCreditLimit ? `سقف اعتبار پیشنهادی: ${suggestedCreditLimit.toLocaleString('fa-IR')}` : '',
+      projectedCreditExposure ? `تعهد بعد از فروش: ${projectedCreditExposure.toLocaleString('fa-IR')}` : '',
+      reason ? `علت: ${reason}` : '',
+    ].filter(Boolean).join(' | ');
+
+    await addAuditLog(
+      Number(user.id || 0) || null,
+      user.username || null,
+      user.roleName || null,
+      'sales-risk-payment-method-change',
+      'customer',
+      customerId,
+      description,
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Audit log endpoint: returns a list of recent audit entries. Supports pagination via
+// query parameters 'limit' and 'offset'. Only Admin and Manager roles can access logs.
+app.get('/api/audit-log', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const limit = Math.min(parseInt(String(req.query.limit || '100'), 10) || 100, 500);
+    const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+    const logs = await getAuditLogs(limit, offset);
+    res.json({ success: true, data: logs });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Reports: Saved Filters (per-user, per-report)
+// -----------------------------------------------------
+app.get('/api/reports/saved-filters', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const reportKey = String(req.query.reportKey || '').trim();
+    if (!reportKey) return res.status(400).json({ success: false, message: 'reportKey الزامی است.' });
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const data = await listReportSavedFilters(userId, reportKey);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.post('/api/reports/saved-filters', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { reportKey, name, filters } = req.body || {};
+    if (!reportKey || !name) return res.status(400).json({ success: false, message: 'reportKey و name الزامی است.' });
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const row = await createOrReplaceReportSavedFilter(userId, String(reportKey), String(name), filters);
+    res.status(201).json({ success: true, data: row });
+  } catch (e) { next(e); }
+});
+app.delete('/api/reports/saved-filters/:id', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const data = await deleteReportSavedFilter(userId, id);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Reports: Scheduling (Telegram/SMS) - CEO summaries
+// -----------------------------------------------------
+type ReportScheduleRow = {
+  id: number;
+  userId: number;
+  reportKey: string;
+  cronExpr: string; // e.g. "0 9 * * *" (09:00 daily)
+  channel: 'telegram' | 'sms';
+  isEnabled: number;
+  createdAt: string;
+};
+const ensureReportSchedulesTable = async () => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS report_schedules (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER NOT NULL,
+      reportKey TEXT NOT NULL,
+      cronExpr TEXT NOT NULL,
+      payloadJson TEXT,
+      channel TEXT NOT NULL DEFAULT 'telegram',
+      isEnabled INTEGER NOT NULL DEFAULT 1,
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+  // Lightweight migration for older DBs that were created before payloadJson existed
+  try {
+    await runAsync(`ALTER TABLE report_schedules ADD COLUMN payloadJson TEXT`);
+  } catch {
+    // ignore (already exists)
+  }
+};
+const listReportSchedules = async (userId: number) => {
+  await ensureReportSchedulesTable();
+  return allAsync(`SELECT * FROM report_schedules WHERE userId = ? ORDER BY id DESC`, [userId]);
+};
+const createReportSchedule = async (userId: number, row: { reportKey: string; cronExpr: string; payloadJson?: any; channel?: string }) => {
+  await ensureReportSchedulesTable();
+  const reportKey = String(row.reportKey || '').trim();
+  const cronExpr = String(row.cronExpr || '').trim();
+  const payloadJson = row.payloadJson != null ? JSON.stringify(row.payloadJson) : null;
+  const channel = (row.channel === 'sms' ? 'sms' : 'telegram');
+  if (!reportKey || !cronExpr) throw new Error('reportKey و cronExpr الزامی است.');
+  // Validate cron (node-cron will throw if invalid)
+  if (!cron.validate(cronExpr)) throw new Error('فرمت cronExpr نامعتبر است.');
+  const r = await runAsync(
+    `INSERT INTO report_schedules (userId, reportKey, cronExpr, payloadJson, channel, isEnabled) VALUES (?,?,?,?,?,1)`,
+    [userId, reportKey, cronExpr, payloadJson, channel]
+  );
+  return r?.lastID;
+};
+const deleteReportSchedule = async (userId: number, id: number) => {
+  await ensureReportSchedulesTable();
+  await runAsync(`DELETE FROM report_schedules WHERE id = ? AND userId = ?`, [id, userId]);
+};
+// Scheduler runtime
+const scheduleTasks = new Map<number, any>();
+const buildScheduledTelegramReportText = async (reportKey: string, payloadJsonRaw?: any) => {
+  // payloadJson is optional; default range = today (Shamsi)
+  let payload: any = null;
+  try {
+    if (typeof payloadJsonRaw === 'string' && payloadJsonRaw.trim()) payload = JSON.parse(payloadJsonRaw);
+    else if (payloadJsonRaw && typeof payloadJsonRaw === 'object') payload = payloadJsonRaw;
+  } catch {
+    payload = null;
+  }
+  const nowJ = moment().locale('fa');
+  const nowText = nowJ.format('jYYYY/jMM/jDD HH:mm');
+  const fromJ = String(payload?.range?.fromJ || payload?.range?.from || nowJ.clone().format('jYYYY/jMM/jDD'));
+  const toJ = String(payload?.range?.toJ || payload?.range?.to || nowJ.clone().format('jYYYY/jMM/jDD'));
+  // ISO range (useful for some advanced reports)
+  const fromISO = String(payload?.range?.fromISO || fromShamsiStringToISO(fromJ) || '');
+  const toISO = String(payload?.range?.toISO || fromShamsiStringToISO(toJ) || '');
+  const moneyFa = (n: any) => formatReportMoneyText(n);
+  const settings = await getAllSettingsAsObject();
+  const baseUrl = String((settings as any).app_base_url || '').trim();
+  const keyPath = String(reportKey || '').trim();
+  const isFinancialOverview = keyPath === 'financial-overview';
+  const fromParam = isFinancialOverview ? 'from' : 'fromDate';
+  const toParam = isFinancialOverview ? 'to' : 'toDate';
+  const link =
+    baseUrl && keyPath
+      ? `${baseUrl}/#/reports/${encodeURIComponent(keyPath)}?${fromParam}=${encodeURIComponent(fromJ)}&${toParam}=${encodeURIComponent(toJ)}`
+      : '';
+  // 1) Sales summary (Sales + Profit) – executive-friendly numbers
+  if (keyPath === 'sales-summary') {
+    const data = await getSalesSummaryAndProfit(fromJ, toJ);
+    const tplKey = 'telegram_tpl_reports_sales-summary';
+    const customTpl = String((settings as any)[tplKey] || '').trim();
+    const vars = {
+      title: 'گزارش فروش و سود',
+      fromDate: fromJ,
+      toDate: toJ,
+      totalRevenue: Number((data as any)?.totalRevenue) || 0,
+      grossProfit: Number((data as any)?.grossProfit) || 0,
+      totalTransactions: Number((data as any)?.totalTransactions) || 0,
+      averageSaleValue: Number((data as any)?.averageSaleValue) || 0,
+      link,
+      // ✅ Telegram-facing timestamps should be Shamsi like the rest of the app
+      now: nowText,
+    };
+    const defaultText = telegramCard('گزارش فروش و سود', '📊', [
+      `📅 <b>از:</b> ${fromJ}`,
+      `📅 <b>تا:</b> ${toJ}`,
+      `💰 <b>فروش کل:</b> ${moneyFa(vars.totalRevenue)}`,
+      `📈 <b>سود ناخالص:</b> ${moneyFa(vars.grossProfit)}`,
+      `🧾 <b>تعداد فاکتور/تراکنش:</b> ${(vars.totalTransactions).toLocaleString('fa-IR')}`,
+      `💳 <b>میانگین فروش:</b> ${moneyFa(vars.averageSaleValue)}`,
+    ], link ? `🔗 <a href="${escapeHtml(link)}">مشاهده گزارش</a>` : 'ℹ️ گزارش در همین پیام خلاصه شده است.');
+    return customTpl ? safeReplaceTemplate(customTpl, vars) : defaultText;
+  }
+  // 2) Financial overview – summary using invoices table (sales_orders)
+  if (isFinancialOverview) {
+    const fo = await (async () => {
+      const ordersCountRow = await getAsync(
+        `SELECT COUNT(*) AS cnt, COALESCE(SUM(grandTotal),0) AS totalSales
+           FROM sales_orders
+          WHERE date(transactionDate) BETWEEN date(?) AND date(?)`,
+        [fromISO, toISO]
+      );
+      const productSalesRow = await getAsync(
+        `SELECT COALESCE(SUM(soi.totalPrice),0) AS productSales
+           FROM sales_order_items soi
+           JOIN sales_orders so ON so.id = soi.orderId
+          WHERE soi.itemType='inventory'
+            AND date(so.transactionDate) BETWEEN date(?) AND date(?)`,
+        [fromISO, toISO]
+      );
+      const items = await allAsync(
+        `SELECT soi.itemType, soi.itemId, soi.quantity, soi.totalPrice
+           FROM sales_order_items soi
+           JOIN sales_orders so ON so.id = soi.orderId
+          WHERE date(so.transactionDate) BETWEEN date(?) AND date(?)`,
+        [fromISO, toISO]
+      );
+      const invIds = Array.from(new Set((items as any[]).filter((i:any)=>i.itemType==='inventory').map((i:any)=>i.itemId)));
+      const phoneIds = Array.from(new Set((items as any[]).filter((i:any)=>i.itemType==='phone').map((i:any)=>i.itemId)));
+      const [invRows, phoneRows] = await Promise.all([
+        invIds.length ? allAsync(`SELECT id, purchasePrice FROM products WHERE id IN (${invIds.map(()=>'?').join(',')})`, invIds) : Promise.resolve([]),
+        phoneIds.length ? allAsync(`SELECT id, COALESCE(NULLIF(currentPurchasePrice, 0), purchasePrice, 0) AS purchasePrice FROM phones WHERE id IN (${phoneIds.map(()=>'?').join(',')})`, phoneIds) : Promise.resolve([]),
+      ]);
+      const invCost = new Map<number, number>((invRows as any[]).map((r:any)=>[Number(r.id), Number(r.purchasePrice)||0]));
+      const phoneCost = new Map<number, number>((phoneRows as any[]).map((r:any)=>[Number(r.id), Number(r.purchasePrice)||0]));
+      let profit=0;
+      for (const it of items as any[]) {
+        const qty = Number(it.quantity)||0;
+        const rev = Number(it.totalPrice)||0;
+        let cost=0;
+        if (it.itemType==='inventory') cost=(invCost.get(Number(it.itemId))||0)*qty;
+        if (it.itemType==='phone') cost=(phoneCost.get(Number(it.itemId))||0)*qty;
+        profit += (rev - cost);
+      }
+      const repairs = await getRepairFinancialSummary(fromISO, toISO);
+      return {
+        ordersCount: Number((ordersCountRow as any)?.cnt)||0,
+        totalSales: Number((ordersCountRow as any)?.totalSales)||0,
+        productSales: Number((productSalesRow as any)?.productSales)||0,
+        grossProfit: profit,
+        repairs,
+      };
+    })();
+    const tplKey = 'telegram_tpl_reports_financial-overview';
+    const customTpl = String((settings as any)[tplKey] || '').trim();
+    const vars = {
+      title: 'نمای کلی مالی',
+      fromDate: fromJ,
+      toDate: toJ,
+      sumSales: fo.totalSales,
+      invoiceCount: fo.ordersCount,
+      productSales: fo.productSales,
+      grossProfit: Math.round(fo.grossProfit),
+      repairCount: Number((fo as any)?.repairs?.count || 0),
+      repairRevenue: Number((fo as any)?.repairs?.revenue || 0),
+      repairCosts: Number((fo as any)?.repairs?.costs || 0),
+      repairProfit: Number((fo as any)?.repairs?.profit || 0),
+      link,
+      now: nowText,
+    };
+    const defaultText = telegramCard('نمای کلی مالی', '📊', [
+      `📅 <b>از:</b> ${fromJ}`,
+      `📅 <b>تا:</b> ${toJ}`,
+      `🧾 <b>تعداد فاکتور:</b> ${fo.ordersCount.toLocaleString('fa-IR')}`,
+      `💰 <b>فروش کل:</b> ${moneyFa(fo.totalSales)}`,
+      `📦 <b>فروش محصولات (بدون گوشی):</b> ${moneyFa(fo.productSales)}`,
+      `🛠 <b>تعمیرات:</b> ${Number((fo as any)?.repairs?.count || 0).toLocaleString('fa-IR')} مورد`,
+      `💵 <b>درآمد تعمیرات:</b> ${moneyFa(Number((fo as any)?.repairs?.revenue || 0))}`,
+      `🧾 <b>هزینه تعمیرات:</b> ${moneyFa(Number((fo as any)?.repairs?.costs || 0))}`,
+      `📈 <b>سود تعمیرات:</b> ${moneyFa(Number((fo as any)?.repairs?.profit || 0))}`,
+      `📈 <b>سود ناخالص تقریبی:</b> ${moneyFa(Math.round(fo.grossProfit))}`,
+    ], link ? `🔗 <a href="${escapeHtml(link)}">مشاهده گزارش</a>` : 'ℹ️ گزارش در همین پیام خلاصه شده است.');
+    return customTpl ? safeReplaceTemplate(customTpl, vars) : defaultText;
+  }
+  // 3) Fallback: link-only (works for ALL reports)
+  const niceTitle = (keyPath || 'گزارش').replace(/[-_/]/g, ' ');
+  const tplKey = `telegram_tpl_reports_${keyPath}`;
+  const customTpl = String((settings as any)[tplKey] || '').trim();
+  const vars = {
+    title: niceTitle,
+    reportKey: keyPath,
+    fromDate: fromJ,
+    toDate: toJ,
+    link,
+    now: nowText,
+  };
+  const defaultText = telegramCard(`گزارش ${niceTitle}`, '📊', [
+    `📅 <b>از:</b> ${fromJ}`,
+    `📅 <b>تا:</b> ${toJ}`,
+  ], link ? `🔗 <a href="${escapeHtml(link)}">مشاهده گزارش</a>` : 'ℹ️ گزارش در همین پیام خلاصه شده است.');
+  return customTpl ? safeReplaceTemplate(customTpl, vars) : defaultText;
+};
+const startReportSchedulers = async () => {
+  await ensureReportSchedulesTable();
+  // Respect local timezone for cron (defaults to Asia/Tehran).
+  // This matters a lot when the server is running in UTC.
+  let schedulerTz = 'Asia/Tehran';
+  try {
+    const s = await getAllSettingsAsObject();
+    schedulerTz = String((s as any).report_scheduler_timezone || (s as any).backup_timezone || (s as any).app_timezone || 'Asia/Tehran');
+  } catch {}
+  const rows = await allAsync(`SELECT * FROM report_schedules WHERE isEnabled = 1`);
+  for (const r of rows as any[]) {
+    const id = Number(r.id);
+    if (scheduleTasks.has(id)) continue;
+    if (!cron.validate(String(r.cronExpr))) continue;
+    const task = cron.schedule(String(r.cronExpr), async () => {
+      try {
+        const settings = await getAllSettingsAsObject();
+        // ✅ scheduled jobs also need proxy (manual/check endpoints set it, but cron callbacks didn't)
+        setTelegramProxy((settings as any).telegram_proxy);
+        if (String(r.channel) === 'telegram') {
+          const okType = await isTopicTypeEnabled('reports', String(r.reportKey));
+          if (!okType) return;
+          const { botToken, chatIds } = await getTelegramTargetsForTopic('reports');
+          if (botToken && chatIds.length) {
+            const text = await buildScheduledTelegramReportText(String(r.reportKey), (r as any).payloadJson);
+            // Send per-chat to get real success/failure (sendTelegramMessages didn't validate TelegramResult.success)
+            let sent = 0;
+            const results: any[] = [];
+            for (const cid of chatIds) {
+              const rr = await sendTelegramMessage(botToken, cid, sanitizeTelegramHtml(markdownishToHtml(text)), { parseMode: 'HTML' });
+              results.push({ chatId: cid, success: !!(rr as any)?.success, message: (rr as any)?.message });
+              if ((rr as any)?.success) sent++;
+            }
+            // Unified log viewer uses sms_logs even for telegram.
+            try {
+              await insertSmsLog({
+                provider: 'telegram',
+                eventType: `REPORT_SCHEDULE:${String(r.reportKey)}`,
+                entityType: 'report_schedule',
+                entityId: id,
+                recipient: chatIds.join(', '),
+                patternId: 'TELEGRAM_REPORT_SCHEDULE',
+                tokens: [String(r.reportKey), String(r.cronExpr)],
+                success: sent > 0,
+                response: { scheduleId: id, reportKey: String(r.reportKey), sent, total: chatIds.length, results },
+                error: sent > 0 ? undefined : 'No successful telegram deliveries',
+              });
+            } catch {}
+          }
+        } else if (String(r.channel) === 'sms') {
+          // SMS scheduling requires provider-specific templates; left as a safe no-op by default.
+        }
+      } catch (e) {
+        // swallow scheduler errors to avoid crashing the process
+        console.error('Report scheduler error:', e);
+      }
+    }, { timezone: schedulerTz });
+    scheduleTasks.set(id, task);
+  }
+};
+app.get('/api/reports/schedules', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const data = await listReportSchedules(userId);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.post('/api/reports/schedules', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const { reportKey, cronExpr, payloadJson, channel } = req.body || {};
+    const id = await createReportSchedule(userId, { reportKey, cronExpr, payloadJson, channel });
+    // refresh schedulers
+    await startReportSchedulers();
+    res.json({ success: true, id });
+  } catch (e) { next(e); }
+});
+app.delete('/api/reports/schedules/:id', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const id = Number(req.params.id);
+    await deleteReportSchedule(userId, id);
+    // stop task if exists
+    const t = scheduleTasks.get(id);
+    if (t) { try { t.stop(); } catch {} scheduleTasks.delete(id); }
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Reports: Send to Telegram NOW (manual button on all report pages)
+// -----------------------------------------------------
+app.post('/api/reports/send-telegram', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const userId = Number((req as any).user?.id || (req as any).currentUser?.id || (req as any).authUser?.id);
+    if (!userId) return res.status(401).json({ success: false, message: 'احراز هویت نامعتبر است.' });
+    const { reportKey, payloadJson } = req.body || {};
+    const key = String(reportKey || '').trim();
+    if (!key) return res.status(400).json({ success: false, message: 'reportKey الزامی است.' });
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const { botToken, chatIds } = await getTelegramTargetsForTopic('reports');
+    if (!botToken) return res.status(400).json({ success: false, message: 'توکن تلگرام تنظیم نشده است.' });
+    if (!chatIds?.length) return res.status(400).json({ success: false, message: 'Chat ID برای گزارشات تنظیم نشده است.' });
+    const text = await buildScheduledTelegramReportText(key, payloadJson);
+    let sent = 0;
+    const results: any[] = [];
+    for (const cid of chatIds) {
+      const rr = await sendTelegramMessage(botToken, cid, sanitizeTelegramHtml(markdownishToHtml(text)), { parseMode: 'HTML' });
+      results.push({ chatId: cid, success: !!(rr as any)?.success, message: (rr as any)?.message });
+      if ((rr as any)?.success) sent++;
+    }
+    try {
+      await insertSmsLog({
+        provider: 'telegram',
+        eventType: `REPORT_MANUAL:${key}`,
+        entityType: 'report_manual',
+        entityId: 0,
+        recipient: chatIds.join(', '),
+        patternId: 'TELEGRAM_REPORT_MANUAL',
+        tokens: [key],
+        success: sent > 0,
+        response: { reportKey: key, sent, total: chatIds.length, results },
+        error: sent > 0 ? undefined : 'No successful telegram deliveries',
+      });
+    } catch {}
+    res.json({ success: true, data: { sent, total: chatIds.length, results } });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// Telegram Bot Webhook (Model A - OTP Linking)
+// =====================================================
+// NOTE:
+//  - Telegram bots cannot message users by phone number.
+//  - User must interact with the bot first (e.g. /start).
+//  - We collect chat_id + verified phone via SMS OTP.
+//
+// Settings used:
+//  - telegram_bot_token (required)
+//  - telegram_webhook_secret (optional, recommended): compared with header `x-telegram-bot-api-secret-token`
+//  - sms_otp_* template settings (optional, depends on SMS provider)
+// Default OTP TTL for Telegram linking (minutes). Can be overridden by Settings key: sms_otp_exp_minutes
+const TG_OTP_TTL_MIN_DEFAULT = 10;
+const getOtpTtlMinutes = async () => {
+  try {
+    const s = await getAllSettingsAsObject();
+    const v = Number((s as any).sms_otp_exp_minutes ?? TG_OTP_TTL_MIN_DEFAULT);
+    if (Number.isFinite(v) && v >= 1 && v <= 60) return Math.floor(v);
+  } catch {}
+  return TG_OTP_TTL_MIN_DEFAULT;
+};
+
+const isTelegramLinkOtpEnabled = async () => {
+  try {
+    const s = await getAllSettingsAsObject();
+    return String((s as any).telegram_link_otp_enabled ?? '1').trim() !== '0';
+  } catch {}
+  return true;
+};
+const TG_OTP_MAX_ATTEMPTS = 5;
+const hashOtp = (code: string) => {
+  const salt = String(process.env.TG_OTP_SALT || 'korush-tg-otp');
+  return crypto.createHash('sha256').update(`${salt}:${code}`).digest('hex');
+};
+const generateOtp = () => {
+  // 6 digits
+  const n = Math.floor(100000 + Math.random() * 900000);
+  return String(n);
+};
+const buildContactKeyboard = () => ({
+  keyboard: [
+    [{ text: '📲 اتصال امن با شماره موبایل', request_contact: true }],
+    [{ text: 'ℹ️ راهنمای ورود' }, { text: '💬 ارتباط با فروشگاه' }],
+    [{ text: '🌐 ورود به سایت فروشگاه' }, { text: '🔄 شروع دوباره' }],
+  ],
+  resize_keyboard: true,
+  one_time_keyboard: false,
+  is_persistent: true,
+  input_field_placeholder: 'شماره‌تان را برای فعال‌سازی امن ارسال کنید…',
+});
+const getTelegramProxyAgentFromSettings = (settings: any) => {
+  // settings.telegram_proxy has priority; fall back to env vars
+  const proxy = String((settings as any)?.telegram_proxy || '').trim()
+    || String(process.env.TG_PROXY || '').trim()
+    || String(process.env.HTTPS_PROXY || '').trim()
+    || String(process.env.HTTP_PROXY || '').trim();
+  if (!proxy) return undefined as any;
+  if (proxy.startsWith('socks')) return new SocksProxyAgent(proxy) as any;
+  return new HttpsProxyAgent(proxy) as any;
+};
+const sendBotMessage = async (chatId: string, text: string, extra?: any) => {
+  const settings = await getAllSettingsAsObject();
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  if (!botToken) return;
+  // use shared telegram service (supports proxy + parse_mode + reply_markup)
+  try {
+    const replyMarkup = extra?.reply_markup || extra?.replyMarkup;
+    const hasParseMode = extra && (Object.prototype.hasOwnProperty.call(extra, 'parse_mode') || Object.prototype.hasOwnProperty.call(extra, 'parseMode'));
+    const parseMode = hasParseMode ? (extra?.parse_mode ?? extra?.parseMode) : 'HTML';
+    await sendTelegramMessage(botToken, chatId, text, {
+      parseMode,
+      replyMarkup,
+      disableWebPreview: true,
+    });
+  } catch (e: any) {
+    try { console.error('Telegram sendMessage failed:', e?.message || e); } catch {}
+  }
+};
+
+const getTelegramRichHeaderPath = () => path.join(process.cwd(), 'assets', 'telegram', 'kourosh-rich-header.png');
+
+const sendTelegramRichHeader = async (
+  chatId: string,
+  title: string,
+  subtitle: string,
+  replyMarkup?: any
+) => {
+  const settings = await getAllSettingsAsObject().catch(() => ({} as any));
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  if (!botToken) return false;
+  const filePath = getTelegramRichHeaderPath();
+  if (!fs.existsSync(filePath)) return false;
+  const caption = [
+    `<b>${String(title || 'دستیار هوشمند کوروش')}</b>`,
+    `<i>${String(subtitle || 'گزارش اختصاصی شما آماده است.')}</i>`,
+  ].join('\n');
+  try {
+    const result = await sendTelegramPhoto(botToken, chatId, filePath, caption, {
+      parseMode: 'HTML',
+      replyMarkup,
+      mimeType: 'image/png',
+    });
+    if (!result?.success) {
+      console.warn('[TelegramBot] rich media header failed:', result?.message || result?.rawText || result?.status || 'unknown');
+      return false;
+    }
+    return true;
+  } catch (e: any) {
+    try { console.warn('[TelegramBot] rich media header failed:', e?.message || e); } catch {}
+    return false;
+  }
+};
+
+const sendBotRichCard = async (
+  chatId: string,
+  text: string,
+  extra: any,
+  media?: { title?: string; subtitle?: string; enabled?: boolean }
+) => {
+  const replyMarkup = extra?.reply_markup || extra?.replyMarkup;
+  const wantsMedia = media?.enabled !== false;
+  let mediaSent = false;
+  if (wantsMedia) {
+    mediaSent = await sendTelegramRichHeader(
+      chatId,
+      media?.title || 'دستیار هوشمند کوروش',
+      media?.subtitle || 'گزارش اختصاصی شما آماده است.',
+      replyMarkup
+    );
+  }
+  await sendBotMessage(chatId, text, mediaSent ? { ...extra, reply_markup: undefined, replyMarkup: undefined } : extra);
+};
+
+const telegramLog = (...args: any[]) => {
+  try { console.log('[TelegramBot]', ...args); } catch {}
+};
+
+const resetTelegramCommandMenu = async (botToken: string) => {
+  const attempts: Array<Promise<any>> = [
+    // Delete commands with no language code. This is the one Telegram usually
+    // shows in the blue bottom Menu sheet.
+    callTelegramBotApi(botToken, 'deleteMyCommands', { scope: { type: 'default' } }),
+    // Also clear localized command sets that older builds may have registered.
+    callTelegramBotApi(botToken, 'deleteMyCommands', { scope: { type: 'default' }, language_code: 'fa' }),
+    callTelegramBotApi(botToken, 'deleteMyCommands', { scope: { type: 'default' }, language_code: 'en' }),
+    // Keep the Telegram menu button neutral; the real menu is ReplyKeyboardMarkup.
+    setTelegramDefaultMenuButton(botToken),
+  ];
+  const results = await Promise.allSettled(attempts);
+  return results.map((r) => r.status === 'fulfilled' ? r.value : { success: false, message: String((r as any).reason?.message || (r as any).reason || 'failed') });
+};
+
+const ensureTelegramPersistentMenu = async () => {
+  const settings = await getAllSettingsAsObject().catch(() => ({} as any));
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  if (!botToken) return;
+  try {
+    await resetTelegramCommandMenu(botToken);
+  } catch (e: any) {
+    try { console.error('Telegram persistent menu setup failed:', e?.message || e); } catch {}
+  }
+};
+
+const sendOtpSms = async (phone: string, code: string) => {
+  // Uses the current sms_provider and otp template keys.
+  const settings = await getAllSettingsAsObject();
+  const provider = String((settings as any).sms_provider || 'meli_payamak').toLowerCase();
+  if (provider === 'meli_payamak') {
+    const bodyId = Number((settings as any).sms_otp_meli_body_id || 0);
+    if (!bodyId) return { success: false, message: 'BodyId پیامک OTP تنظیم نشده است.' };
+    return await trySendSmsNow({ provider: 'meli_payamak', recipient: phone, meliBodyId: bodyId, tokens: [code] });
+  }
+  if (provider === 'kavenegar') {
+    const template = String((settings as any).sms_otp_kavenegar_template || '').trim();
+    if (!template) return { success: false, message: 'قالب OTP کاوه‌نگار تنظیم نشده است.' };
+    return await trySendSmsNow({ provider: 'kavenegar', recipient: phone, kavenegarTemplate: template, tokens: [code] });
+  }
+  if (provider === 'sms_ir') {
+    const templateId = Number((settings as any).sms_otp_sms_ir_template_id || 0);
+    if (!templateId) return { success: false, message: 'TemplateId OTP SMS.ir تنظیم نشده است.' };
+    return await trySendSmsNow({ provider: 'sms_ir', recipient: phone, smsIrTemplateId: templateId, tokens: [code] });
+  }
+  if (provider === 'ippanel') {
+    const patternCode = String((settings as any).sms_otp_ippanel_pattern_code || '').trim();
+    if (!patternCode) return { success: false, message: 'PatternCode OTP آی‌پنل تنظیم نشده است.' };
+    return await trySendSmsNow({ provider: 'ippanel', recipient: phone, ippanelPatternCode: patternCode, tokens: [code] });
+  }
+  return { success: false, message: 'سرویس پیامک ناشناخته است.' };
+};
+// -----------------------------------------------------
+// Telegram bot: Webhook + Polling (for local servers)
+// -----------------------------------------------------
+const handleTelegramUpdate = async (update: any) => {
+  try {
+    // Support both message and callback_query updates
+    const msg = update?.message || update?.edited_message || update?.callback_query?.message;
+    const cb = update?.callback_query;
+    if (!msg) return;
+    const chatId = String(msg.chat?.id ?? '').trim();
+    const fromId = String((cb?.from?.id ?? msg.from?.id) ?? '').trim();
+    if (!chatId || !fromId) return;
+    const incomingText = String(cb?.data ? cb.data : (msg?.text || msg?.contact?.phone_number || '')).trim();
+    telegramLog('update received', { updateId: update?.update_id, chatId, fromId, kind: cb?.data ? 'callback' : msg?.contact ? 'contact' : 'message', text: incomingText });
+    // Record received updates for support (Telegram Inbox)
+    try {
+      await ensureTelegramInboxTable();
+      const kind = cb?.data ? 'callback' : msg?.contact ? 'contact' : 'message';
+      const text = cb?.data ? String(cb.data || '') : String(msg.text || '').trim();
+      const payloadJson = JSON.stringify({ update_id: update?.update_id, message: update?.message, callback_query: update?.callback_query, edited_message: update?.edited_message });
+      await runAsync(
+        `INSERT INTO telegram_inbox (chatId, fromId, kind, text, payloadJson) VALUES (?,?,?,?,?)`,
+        [chatId, fromId, kind, text || null, payloadJson]
+      );
+      // keep DB small (last 2000)
+      await runAsync(`DELETE FROM telegram_inbox WHERE id NOT IN (SELECT id FROM telegram_inbox ORDER BY id DESC LIMIT 2000)`);
+    } catch {
+      // ignore logging failures
+    }
+    // ---------- helpers (local to telegram handler) ----------
+    const getLinkedCustomer = async () => {
+      // Robust lookup for both old and new DB schemas. Some installs have only
+      // telegramChatId, while newer ones may have telegram_chat_id as well.
+      const queries = [
+        {
+          sql: `SELECT id, fullName, phoneNumber,
+                       COALESCE(telegram_opted_out,0) AS telegram_opted_out,
+                       telegram_chat_id AS tg_chat_id,
+                       telegram_user_id
+                FROM customers
+                WHERE telegram_chat_id=?
+                LIMIT 1`,
+          args: [chatId],
+        },
+        {
+          sql: `SELECT id, fullName, phoneNumber,
+                       COALESCE(telegram_opted_out,0) AS telegram_opted_out,
+                       telegramChatId AS tg_chat_id
+                FROM customers
+                WHERE telegramChatId=?
+                LIMIT 1`,
+          args: [chatId],
+        },
+      ];
+      for (const q of queries) {
+        try {
+          const row = await getAsync(q.sql, q.args);
+          if (row?.id) return row;
+        } catch {
+          // Try next schema variant.
+        }
+      }
+      return null;
+    };
+    const getLinkedPartner = async () => {
+      try {
+        const row = await getLinkedPartnerByChatId(chatId);
+        if (row?.id) return row;
+      } catch {
+        // Continue with schema-safe fallbacks.
+      }
+      const queries = [
+        {
+          sql: `SELECT id, partnerName, phoneNumber, telegramChatId, telegram_linked_at
+                FROM partners
+                WHERE telegramChatId=?
+                LIMIT 1`,
+          args: [chatId],
+        },
+        {
+          sql: `SELECT id, partnerName, phoneNumber, telegram_chat_id AS telegramChatId, telegram_linked_at
+                FROM partners
+                WHERE telegram_chat_id=?
+                LIMIT 1`,
+          args: [chatId],
+        },
+      ];
+      for (const q of queries) {
+        try {
+          const row = await getAsync(q.sql, q.args);
+          if (row?.id) return row;
+        } catch {
+          // Try next schema variant.
+        }
+      }
+      return null;
+    };
+
+    const findCustomerByNormalizedPhone = async (phone: string) => {
+      const normalized = normalizeIranPhone(String(phone || ''));
+      if (!normalized) return null;
+      const rows = await allAsync(`SELECT id, fullName, phoneNumber FROM customers WHERE COALESCE(phoneNumber,'') != ''`).catch(() => [] as any[]);
+      return (rows || []).find((r: any) => normalizeIranPhone(String(r?.phoneNumber || '')) === normalized) || null;
+    };
+    const findPartnerByNormalizedPhone = async (phone: string) => {
+      const normalized = normalizeIranPhone(String(phone || ''));
+      if (!normalized) return null;
+      const rows = await allAsync(`SELECT id, partnerName, phoneNumber FROM partners WHERE COALESCE(phoneNumber,'') != ''`).catch(() => [] as any[]);
+      return (rows || []).find((r: any) => normalizeIranPhone(String(r?.phoneNumber || '')) === normalized) || null;
+    };
+    const linkPartnerTelegramByIdSafe = async (partnerId: number) => {
+      try {
+        await runAsync(
+          `UPDATE partners
+           SET telegramChatId=?, telegram_chat_id=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+           WHERE id=?`,
+          [chatId, chatId, Number(partnerId)]
+        );
+      } catch {
+        await runAsync(`UPDATE partners SET telegramChatId=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [chatId, Number(partnerId)]).catch(async () => {
+          await runAsync(`UPDATE partners SET telegramChatId=? WHERE id=?`, [chatId, Number(partnerId)]);
+        });
+      }
+      await runAsync(`UPDATE customers SET telegramChatId=NULL WHERE telegramChatId=?`, [chatId]).catch(() => {});
+      await runAsync(`UPDATE customers SET telegram_chat_id=NULL, telegram_user_id=NULL WHERE telegram_chat_id=?`, [chatId]).catch(() => {});
+    };
+    const setOptedOut = async (customerId: number, optedOut: 0 | 1) => {
+      try {
+        await runAsync(
+          `UPDATE customers SET telegram_opted_out=? WHERE id=?`,
+          [Number(optedOut), Number(customerId)]
+        );
+      } catch {
+        // ignore if column does not exist
+      }
+    };
+    const unlinkTelegram = async (customerId: number) => {
+      try {
+        await runAsync(
+          `UPDATE customers
+           SET telegramChatId=NULL,
+               telegram_chat_id=NULL,
+               telegram_user_id=NULL,
+               telegram_linked_at=NULL,
+               telegram_opted_out=1
+           WHERE id=?`,
+          [Number(customerId)]
+        );
+      } catch {
+        // fallback for older schemas
+        await runAsync(`UPDATE customers SET telegramChatId=NULL WHERE id=?`, [Number(customerId)]).catch(()=>{});
+      }
+    };
+    const formatMoney = (v: any) => {
+      const n = Number(v || 0);
+      try { return n.toLocaleString('fa-IR'); } catch { return String(n); }
+    };
+    const esc = (s: any) => {
+      const t = String(s ?? '');
+      return t
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    };
+    const prettyRepairStatus = (raw: any) => {
+      const s = String(raw ?? '').trim();
+      if (!s) return { icon: 'ℹ️', label: 'نامشخص' };
+      const lc = s.toLowerCase();
+      // English-ish
+      if (lc.includes('ready')) return { icon: '✅', label: 'آماده تحویل' };
+      if (lc.includes('progress')) return { icon: '🧰', label: 'در حال تعمیر' };
+      if (lc.includes('wait')) return { icon: '⏳', label: 'در انتظار قطعه' };
+      if (lc.includes('deliver') || lc.includes('done')) return { icon: '📦', label: 'تحویل شد' };
+      // Persian-ish
+      if (s.includes('آماده')) return { icon: '✅', label: s };
+      if (s.includes('انتظار') || s.includes('قطعه')) return { icon: '⏳', label: s };
+      if (s.includes('در حال') || s.includes('تعمیر')) return { icon: '🧰', label: s };
+      if (s.includes('تحویل')) return { icon: '📦', label: s };
+      if (s.includes('پذیرش') || s.includes('دریافت')) return { icon: '📥', label: s };
+      return { icon: 'ℹ️', label: s };
+    };
+    const buildMainMenuKeyboard = () => ({
+      inline_keyboard: [
+        [
+          { text: '📌 وضعیت حساب', callback_data: 'MENU_BALANCE' },
+          { text: '🧾 اقساط من', callback_data: 'MENU_INSTALLMENTS' },
+        ],
+        [
+          { text: '🛠 پیگیری تعمیرات من', callback_data: 'MENU_REPAIRS' },
+          { text: '🧾 خریدهای اخیر من', callback_data: 'MENU_INVOICES' },
+        ],
+        [
+          { text: '🔔 اعلان‌ها', callback_data: 'MENU_NOTIFS' },
+          { text: 'ℹ️ راهنمای ورود', callback_data: 'MENU_HELP' },
+        ],
+        [
+          { text: '💬 ارتباط با فروشگاه', callback_data: 'MENU_SUPPORT' },
+          { text: '🌐 ورود به سایت فروشگاه', callback_data: 'MENU_SITE' },
+        ],
+        [
+          { text: '🏠 منوی اصلی', callback_data: 'MENU_HOME' },
+          { text: '🔗 قطع اتصال', callback_data: 'MENU_UNLINK' },
+        ],
+      ],
+    });
+
+    const buildMainReplyKeyboard = () => ({
+      keyboard: [
+        [{ text: '💎 نمای مالی من' }, { text: '📆 برنامه اقساط من' }],
+        [{ text: '🛠 پیگیری تعمیرات' }, { text: '🧾 خریدهای اخیر من' }],
+        [{ text: '🔔 تنظیم اعلان‌ها' }, { text: '💬 راهنمای سریع' }],
+        [{ text: '💬 ارتباط با فروشگاه' }, { text: '🌐 سایت فروشگاه' }],
+        [{ text: '🏠 منوی اصلی' }, { text: '✨ تازه‌سازی اطلاعات' }],
+        [{ text: '🔓 خروج از حساب تلگرام' }],
+      ],
+      resize_keyboard: true,
+      one_time_keyboard: false,
+      is_persistent: true,
+      input_field_placeholder: 'یک گزینه از پنل مشتریان کوروش انتخاب کنید…',
+    });
+    const clearReplyKeyboard = async () => {
+      await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+    };
+    const buildPartnerMenuKeyboard = () => ({
+      inline_keyboard: [
+        [
+          { text: '📱 موجودی گوشی‌های من', callback_data: 'PARTNER_PHONES' },
+          { text: '📒 گردش حساب شما', callback_data: 'PARTNER_LEDGER' },
+        ],
+        [
+          { text: '💰 وضعیت حساب شما', callback_data: 'PARTNER_BALANCE' },
+          { text: 'ℹ️ راهنمای ورود', callback_data: 'PARTNER_HELP' },
+        ],
+        [
+          { text: '💬 ارتباط با فروشگاه', callback_data: 'PARTNER_SUPPORT' },
+          { text: '🌐 ورود به سایت فروشگاه', callback_data: 'PARTNER_SITE' },
+        ],
+        [
+          { text: '🏠 منوی اصلی', callback_data: 'PARTNER_HOME' },
+          { text: '🔗 قطع اتصال', callback_data: 'PARTNER_UNLINK' },
+        ],
+      ],
+    });
+
+    const buildPartnerReplyKeyboard = () => ({
+      keyboard: [
+        [{ text: '📱 موجودی گوشی‌های من' }, { text: '📒 گردش حساب من' }],
+        [{ text: '💎 نمای همکاری من' }, { text: '💬 راهنمای سریع' }],
+        [{ text: '💬 ارتباط با فروشگاه' }, { text: '🌐 سایت فروشگاه' }],
+        [{ text: '🏠 منوی اصلی' }, { text: '✨ تازه‌سازی اطلاعات' }],
+        [{ text: '🔓 خروج از حساب تلگرام' }],
+      ],
+      resize_keyboard: true,
+      one_time_keyboard: false,
+      is_persistent: true,
+      input_field_placeholder: 'یک گزینه از پنل همکاران کوروش انتخاب کنید…',
+    });
+    const formatJalaliDate = (value: any, withTime = true) => {
+      const raw = String(value ?? '').trim();
+      if (!raw) return '—';
+      const m = moment(raw);
+      if (!m.isValid()) return raw;
+      try {
+        return withTime ? m.locale('fa').format('jYYYY/jMM/jDD HH:mm') : m.locale('fa').format('jYYYY/jMM/jDD');
+      } catch {
+        return raw;
+      }
+    };
+    const neonLine = '━━━━━━━━━━━━━━━━━━━━';
+    const softLine = '────────────────────';
+    const compactDescription = (value: any, maxLen = 90) => {
+      const clean = String(value ?? '')
+        .replace(/\s+/g, ' ')
+        .replace(/[()]/g, '')
+        .trim();
+      if (!clean) return 'گردش حساب';
+      return clean.length > maxLen ? `${clean.slice(0, maxLen - 1)}…` : clean;
+    };
+    const ledgerIconFor = (description: any, debit: number, credit: number) => {
+      const text = String(description ?? '').toLowerCase();
+      if (text.includes('حذف')) return '🛒';
+      if (text.includes('دریافت') || text.includes('گوشی')) return '📱';
+      if (text.includes('واریز') || text.includes('پرداخت') || text.includes('تسویه')) return '👛';
+      if (credit > 0) return '🟢';
+      if (debit > 0) return '🔴';
+      return '💠';
+    };
+    const ledgerBadgeFor = (description: any, debit: number, credit: number) => {
+      const text = String(description ?? '').toLowerCase();
+      if (text.includes('حذف')) return 'خرید اولیه';
+      if (text.includes('دریافت') || text.includes('گوشی')) return 'دریافت گوشی';
+      if (text.includes('واریز') || text.includes('پرداخت')) return 'واریز وجه';
+      if (text.includes('تسویه')) return 'تسویه حساب';
+      if (credit > 0) return 'بستانکاری';
+      if (debit > 0) return 'بدهکاری';
+      return 'گردش مالی';
+    };
+    const parsePartnerLedgerMetaForTelegram = (description?: any) => {
+      const raw = String(description || '').trim();
+      const imei = (raw.match(/IMEI[:：]\s*([^,)\-\n•]+)/i)?.[1] || '').trim();
+      const identifier = (raw.match(/شناسه(?:\s*گوشی|\s*سیستم)?[:：]\s*([^,)\-\n•]+)/i)?.[1] || '').trim();
+      const saleId = (raw.match(/شناسه\s*فروش[:：]\s*(\d+)/i)?.[1] || '').trim();
+      const amountText = (
+        raw.match(/به\s*ارزش\s*([\d٬,۰-۹٠-٩]+)\s*تومان/i)?.[1] ||
+        raw.match(/ارزش\s*([\d٬,۰-۹٠-٩]+)\s*تومان/i)?.[1] ||
+        ''
+      ).trim();
+      const firstLine = raw.split(/[\n\r]/)[0] || raw;
+      const summary = firstLine
+        .replace(/\(\s*شناسه\s*فروش:\s*\d+\s*\)/gi, '')
+        .replace(/\(.*?\)/g, '')
+        .replace(/IMEI[:：]\s*[^•,\n]+/gi, '')
+        .replace(/شناسه(?:\s*گوشی|\s*سیستم)?[:：]\s*[^•,\n]+/gi, '')
+        .replace(/\s*به\s*ارزش\s*[\d٬,۰-۹٠-٩]+\s*(?:تومان)?/gi, '')
+        .replace(/\s*•\s*/g, ' ')
+        .replace(/[-–—]\s*$/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+      return { raw, summary: summary || 'گردش مالی ثبت‌شده', imei, identifier, saleId, amountText };
+    };
+    const smartLedgerAmountLine = (debit: number, credit: number) => {
+      if (credit > 0) return `🟢 <b>بستانکار:</b> <code>${esc(formatReportMoneyText(credit))}</code>`;
+      if (debit > 0) return `🔴 <b>بدهکار:</b> <code>${esc(formatReportMoneyText(debit))}</code>`;
+      return '⚪ <b>مبلغ:</b> بدون تغییر مستقیم';
+    };
+    const smartLedgerBalanceLine = (balance: number) => {
+      if (balance > 0) return `🔻 <b>مانده بدهکاری:</b> <code>${esc(formatReportMoneyText(Math.abs(balance)))}</code>`;
+      if (balance < 0) return `🔺 <b>مانده بستانکاری:</b> <code>${esc(formatReportMoneyText(Math.abs(balance)))}</code>`;
+      return '✅ <b>مانده حساب:</b> تسویه کامل';
+    };
+    const commercialHeader = (title: string, subtitle: string, icon = '💎') => [
+      `<b>${icon} ${esc(title)}</b>`,
+      `<i>${esc(subtitle)}</i>`,
+      neonLine,
+    ].join('\n');
+    const showMainMenu = async (customer?: any) => {
+      await ensureTelegramPersistentMenu().catch(() => {});
+      const name = String(customer?.fullName || '').trim();
+      const greet = name ? `سلام ${name} عزیز 👋` : 'سلام 👋';
+      const text = [
+        commercialHeader('به دستیار هوشمند فروشگاه کوروش ورود به دستیار کوروش', greet, '✨'),
+        '💠 <b>پنل اختصاصی شما فعال شد.</b>',
+        '',
+        'از منوی پایین، وضعیت مالی، اقساط، تعمیرات و خریدهای اخیرتان را با چند لمس بررسی کنید.',
+        '',
+        '🔹 نمایش اطلاعات فقط برای شماره تأییدشده شما انجام می‌شود.',
+      ].join('\n');
+      await sendBotMessage(chatId, text, { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+    };
+    const showPartnerMenu = async (partner?: any, intro?: string) => {
+      await ensureTelegramPersistentMenu().catch(() => {});
+      const name = String(partner?.partnerName || '').trim();
+      const greet = name ? `سلام ${name} عزیز 👋` : 'سلام عزیز 👋';
+      const text = [
+        commercialHeader('پنل هوشمند همکاران کوروش', intro || greet, '💎'),
+        '✨ <b>نمای همکاری شما آماده است.</b>',
+        '',
+        'از منوی پایین، موجودی گوشی‌ها، گردش حساب و نمای مالی همکاری را سریع بررسی کنید.',
+        '',
+        '🔐 دسترسی این پنل فقط برای شماره تأییدشده شما فعال است.',
+      ].join('\n');
+      await sendBotMessage(chatId, text, { reply_markup: buildPartnerReplyKeyboard(), parse_mode: 'HTML' });
+    };
+    const buildSmartSummaryText = (title: string, subtitle: string, icon: string, sections: string[], footer?: string) => [
+      commercialHeader(title, subtitle, icon),
+      ...sections.filter(Boolean),
+      softLine,
+      footer || '✨ برای دریافت آخرین وضعیت، دکمه «تازه‌سازی اطلاعات» را انتخاب کنید.',
+    ].filter(Boolean).join('\n\n');
+    const statBlock = (icon: string, label: string, value: string, hint?: string) => [
+      `${icon} <b>${esc(label)}</b>`,
+      `<code>${esc(value)}</code>`,
+      hint ? `<i>${esc(hint)}</i>` : '',
+    ].filter(Boolean).join('\n');
+    const sendPartnerBalance = async (partnerId: number) => {
+      const partner = await getPartnerByIdFromDb(partnerId).catch(() => null as any);
+      if (!partner?.id) {
+        await sendBotMessage(chatId, telegramCard('ورود امن لازم است', '🔒', ['برای نمایش اطلاعات همکاری، ابتدا ورود امن با شماره موبایل را کامل کنید.'], 'پس از تأیید، پنل اختصاصی همکاران برای شما فعال می‌شود.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      const currentBalance = Number(partner.currentBalance || 0);
+      const balanceState = currentBalance > 0 ? 'بدهکار به فروشگاه' : currentBalance < 0 ? 'بستانکار از فروشگاه' : 'تسویه کامل';
+      const balanceIcon = currentBalance > 0 ? '🔴' : currentBalance < 0 ? '🟢' : '✅';
+      const ledgerStats: any = await getAsync(
+        `SELECT COUNT(*) AS totalCount,
+                MAX(COALESCE(transactionDate, createdAt, updatedAt)) AS lastActivity
+         FROM partner_ledger
+         WHERE partnerId=?`,
+        [Number(partnerId)]
+      ).catch(() => null);
+      const inventoryRows: any[] = await getPurchasedItemsFromPartnerDb(partnerId).catch(() => [] as any[]);
+      const phoneRows = (inventoryRows || []).filter((r: any) => String(r?.type || '').trim() === 'phone');
+      const soldPhones = phoneRows.filter((r: any) => String(r?.status || '').includes('فروخته')).length;
+      const activePhones = Math.max(0, phoneRows.length - soldPhones);
+      const sections = [
+        statBlock(balanceIcon, 'مانده حساب', formatReportMoneyText(Math.abs(currentBalance)), balanceState),
+        statBlock('📒', 'تعداد گردش‌های ثبت‌شده', `${formatMoney(ledgerStats?.totalCount || 0)} رکورد`, ledgerStats?.lastActivity ? `آخرین فعالیت: ${formatJalaliDate(ledgerStats.lastActivity, true)}` : 'هنوز گردش جدیدی برای این حساب ثبت نشده است'),
+        statBlock('📱', 'وضعیت گوشی‌ها', `${formatMoney(phoneRows.length)} دستگاه`, `فعال: ${formatMoney(activePhones)} | فروخته‌شده: ${formatMoney(soldPhones)}`),
+        statBlock('🔐', 'وضعیت دسترسی ربات', 'فعال و تأییدشده', partner.telegram_linked_at ? `اتصال: ${formatJalaliDate(partner.telegram_linked_at, true)}` : 'اتصال تلگرام برقرار است'),
+      ];
+      const name = String(partner.partnerName || 'همکار گرامی').trim();
+      const text = buildSmartSummaryText(
+        'خلاصه وضعیت همکاری شما',
+        `${name} عزیز، نمای سریع حساب شما آماده است.`,
+        '💎',
+        sections,
+        '📌 برای جزئیات کامل‌تر، «📒 گردش حساب من» یا «📱 موجودی گوشی‌های من» را انتخاب کنید.'
+      );
+      await sendBotRichCard(chatId, text, { reply_markup: buildPartnerQuickActionsKeyboard('summary'), parse_mode: 'HTML' }, { title: '💎 نمای همکاری کوروش', subtitle: 'خلاصه مالی و وضعیت همکاری شما' });
+    };
+    const sendPartnerPhones = async (partnerId: number) => {
+      const rows = await getPurchasedItemsFromPartnerDb(partnerId).catch(() => [] as any[]);
+      const phones = (rows || []).filter((r: any) => String(r?.type || '').trim() === 'phone').slice(0, 8);
+      if (!phones.length) {
+        await sendBotMessage(chatId, [commercialHeader('گوشی‌های من', 'هنوز گوشی مرتبطی برای حساب شما ثبت نشده است.', '📱'), 'پس از ثبت موجودی یا فروش، اطلاعات این بخش تکمیل می‌شود.'].join('\n'), { reply_markup: buildPartnerQuickActionsKeyboard('phones'), parse_mode: 'HTML' });
+        return;
+      }
+      const lines = phones.map((r: any) => {
+        const name = String(r?.name || 'گوشی').trim();
+        const imei = String(r?.identifier || '').trim();
+        const sold = ['فروخته شده', 'فروخته شده (قسطی)'].includes(String(r?.status || '').trim());
+        const paymentMethod = String(r?.salePaymentMethod || '').trim();
+        const state = sold ? (paymentMethod.includes('اقساط') ? 'فروخته‌شده اقساطی' : 'فروخته‌شده نقدی') : 'فروخته‌نشده';
+        const icon = sold ? (paymentMethod.includes('اقساط') ? '🧾' : '💵') : '📦';
+        const ref = String(r?.saleReferenceLabel || '').trim();
+        const when = formatJalaliDate(r?.soldAt || r?.purchaseDate || null, false);
+        return `${icon} <b>${esc(name)}</b>${imei ? ` — <code>${esc(imei)}</code>` : ''}
+${esc(state)}${ref ? ` • ${esc(ref)}` : ''}${when && when !== '—' ? `
+🕒 ${esc(when)}` : ''}`;
+      });
+      const text = [commercialHeader('گوشی‌های من', 'آخرین گوشی‌های مرتبط با حساب همکاری شما', '📱'), ...lines, softLine, '✨ برای تازه‌سازی لیست، دکمه «دریافت تازه‌سازی» را بزنید.'].join('\n\n');
+      await sendBotRichCard(chatId, text, { reply_markup: buildPartnerQuickActionsKeyboard('phones'), parse_mode: 'HTML' }, { title: '📱 موجودی گوشی‌های همکار', subtitle: 'نمای مرتب از گوشی‌های مرتبط با حساب شما' });
+    };
+    const safePageNumber = (value: any) => {
+      const n = Math.floor(Number(value));
+      return Number.isFinite(n) && n >= 0 ? n : 0;
+    };
+    const buildPaginationLabel = (page: number, totalPages: number) => `${esc(formatMoney(page + 1))} / ${esc(formatMoney(totalPages))}`;
+    const buildTelegramActionRows = (rows: any[][]) => ({
+      inline_keyboard: rows.filter((row) => Array.isArray(row) && row.length > 0),
+    });
+    const buildCustomerQuickActionsKeyboard = (active: 'summary' | 'installments' | 'repairs' | 'invoices' | 'support' | 'site' | 'home' = 'home', page = 0) => {
+      const refreshTarget =
+        active === 'installments' ? `MENU_INSTALLMENTS_PAGE:${safePageNumber(page)}` :
+        active === 'repairs' ? 'MENU_REPAIRS' :
+        active === 'invoices' ? 'MENU_INVOICES' :
+        active === 'support' ? 'MENU_SUPPORT' :
+        active === 'site' ? 'MENU_SITE' :
+        active === 'summary' ? 'MENU_BALANCE' : 'MENU_HOME';
+      return buildTelegramActionRows([
+        [
+          { text: '✨ تازه‌سازی همین گزارش', callback_data: refreshTarget },
+          { text: '🏠 منوی اصلی', callback_data: 'MENU_HOME' },
+        ],
+      ]);
+    };
+    const buildPartnerQuickActionsKeyboard = (active: 'summary' | 'ledger' | 'phones' | 'support' | 'site' | 'home' = 'home', page = 0) => {
+      const refreshTarget =
+        active === 'ledger' ? `PARTNER_LEDGER_PAGE:${safePageNumber(page)}` :
+        active === 'phones' ? 'PARTNER_PHONES' :
+        active === 'support' ? 'PARTNER_SUPPORT' :
+        active === 'site' ? 'PARTNER_SITE' :
+        active === 'summary' ? 'PARTNER_BALANCE' : 'PARTNER_HOME';
+      return buildTelegramActionRows([
+        [
+          { text: '✨ تازه‌سازی همین گزارش', callback_data: refreshTarget },
+          { text: '🏠 منوی اصلی همکاران', callback_data: 'PARTNER_HOME' },
+        ],
+      ]);
+    };
+    const buildPartnerLedgerPaginationKeyboard = (page: number, totalPages: number) => {
+      const prev = Math.max(0, page - 1);
+      const next = Math.min(totalPages - 1, page + 1);
+      const nav: any[] = [];
+      if (page > 0) nav.push({ text: '⬅️ صفحه قبل', callback_data: `PARTNER_LEDGER_PAGE:${prev}` });
+      nav.push({ text: `💎 ${buildPaginationLabel(page, totalPages)}`, callback_data: `PARTNER_LEDGER_PAGE:${page}` });
+      if (page < totalPages - 1) nav.push({ text: 'صفحه بعد ➡️', callback_data: `PARTNER_LEDGER_PAGE:${next}` });
+      const actions = buildPartnerQuickActionsKeyboard('ledger', page).inline_keyboard;
+      return { inline_keyboard: [nav, ...actions] };
+    };
+    const buildInstallmentsPaginationKeyboard = (page: number, totalPages: number) => {
+      const prev = Math.max(0, page - 1);
+      const next = Math.min(totalPages - 1, page + 1);
+      const nav: any[] = [];
+      if (page > 0) nav.push({ text: '⬅️ صفحه قبل', callback_data: `MENU_INSTALLMENTS_PAGE:${prev}` });
+      nav.push({ text: `💎 ${buildPaginationLabel(page, totalPages)}`, callback_data: `MENU_INSTALLMENTS_PAGE:${page}` });
+      if (page < totalPages - 1) nav.push({ text: 'صفحه بعد ➡️', callback_data: `MENU_INSTALLMENTS_PAGE:${next}` });
+      const actions = buildCustomerQuickActionsKeyboard('installments', page).inline_keyboard;
+      return { inline_keyboard: [nav, ...actions] };
+    };
+    const sendPartnerLedger = async (partnerId: number, page = 0) => {
+      const rows = await getLedgerForPartnerFromDb(partnerId).catch(() => [] as any[]);
+      const pageSize = 4;
+      const totalRows = (rows || []).length;
+      const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+      const safePage = Math.min(safePageNumber(page), totalPages - 1);
+      const ledgerRows = (rows || []).slice(safePage * pageSize, safePage * pageSize + pageSize);
+      if (!ledgerRows.length) {
+        await sendBotMessage(
+          chatId,
+          [
+            commercialHeader('گردش حساب من', 'هنوز گردش مالی ثبت‌شده‌ای برای حساب شما وجود ندارد.', '📒'),
+            '',
+            '💠 بعد از ثبت اولین خرید، فروش یا تسویه، گزارش حساب شما همین‌جا به‌صورت خوانا نمایش داده می‌شود.',
+          ].join('\n'),
+          { reply_markup: buildPartnerQuickActionsKeyboard('ledger'), parse_mode: 'HTML' }
+        );
+        return;
+      }
+      const cards = ledgerRows.map((r: any, index: number) => {
+        const dt = formatJalaliDate(r?.transactionDate || r?.createdAt || r?.updatedAt || null, true);
+        const debit = Number(r?.debit || 0);
+        const credit = Number(r?.credit || 0);
+        const balance = Number(r?.balance || 0);
+        const meta = parsePartnerLedgerMetaForTelegram(r?.description || '');
+        const badge = ledgerBadgeFor(meta.raw || meta.summary, debit, credit);
+        const icon = ledgerIconFor(meta.raw || meta.summary, debit, credit);
+        const title = compactDescription(meta.summary, 76);
+        const details = [
+          meta.identifier ? `🆔 <b>شناسه سیستم:</b> <code>${esc(meta.identifier)}</code>` : '',
+          meta.imei ? `🔑 <b>IMEI:</b> <code>${esc(meta.imei)}</code>` : '',
+          meta.saleId ? `🧾 <b>شناسه فروش:</b> <code>#${esc(meta.saleId)}</code>` : '',
+          meta.amountText ? `💵 <b>ارزش ثبت‌شده:</b> <code>${esc(meta.amountText)}</code> تومان` : '',
+        ].filter(Boolean);
+        return [
+          `💎 <b>کارت ${esc(formatMoney(index + 1))}</b>`,
+          `${icon} <b>${esc(badge)}</b>`,
+          `📝 ${esc(title)}`,
+          '',
+          smartLedgerAmountLine(debit, credit),
+          smartLedgerBalanceLine(balance),
+          details.length ? '' : '',
+          ...details,
+          '',
+          `🕒 <code>${esc(dt)}</code>`,
+        ].filter((line) => line !== '').join('\n');
+      });
+      const text = [
+        commercialHeader('گزارش گردش حساب شما', 'آخرین تراکنش‌های حساب همکاری، مرتب و خلاصه‌شده', '📒'),
+        `📌 <b>نمایش صفحه:</b> ${buildPaginationLabel(safePage, totalPages)}  •  <b>کل گردش‌ها:</b> ${esc(formatMoney(totalRows))}`,
+        '',
+        cards.join(`\n\n${neonLine}\n\n`),
+        '',
+        softLine,
+        '✨ برای دریافت آخرین وضعیت، دکمه «دریافت تازه‌سازی» را از منوی پایین بزنید.',
+      ].join('\n');
+      await sendBotRichCard(chatId, text, { reply_markup: buildPartnerLedgerPaginationKeyboard(safePage, totalPages), parse_mode: 'HTML' }, { title: '📒 گردش حساب همکار', subtitle: 'کارت‌های مالی خوانا با مانده هر تراکنش' });
+    };
+    const sendBalance = async (customerId: number) => {
+      const customer: any = await getLinkedCustomer().catch(() => null);
+      const latestLedger: any = await getAsync(
+        `SELECT balance, transactionDate, description
+         FROM customer_ledger
+         WHERE customerId=?
+         ORDER BY (transactionDate IS NULL), transactionDate DESC, id DESC
+         LIMIT 1`,
+        [Number(customerId)]
+      ).catch(() => null);
+      const installmentStats: any = await getAsync(
+        `SELECT COUNT(*) AS openCount, COALESCE(SUM(p.amountDue),0) AS openAmount,
+                MIN(p.dueDate) AS nextDue
+         FROM installment_payments p
+         JOIN installment_sales s ON s.id = p.saleId
+         WHERE s.customerId=? AND (p.status IS NULL OR p.status != 'paid')`,
+        [Number(customerId)]
+      ).catch(() => null);
+      const repairStats: any = await getAsync(
+        `SELECT COUNT(*) AS activeCount, MAX(COALESCE(dateReceived, createdAt)) AS lastRepair
+         FROM repairs
+         WHERE customerId=? AND (status IS NULL OR status NOT IN ('delivered','done','تحویل شد','تکمیل شد'))`,
+        [Number(customerId)]
+      ).catch(() => null);
+      const invoiceStats: any = await getAsync(
+        `SELECT COUNT(*) AS invoiceCount, MAX(transactionDate) AS lastInvoice
+         FROM invoices
+         WHERE customerId=?`,
+        [Number(customerId)]
+      ).catch(() => null);
+      const bal = Number(latestLedger?.balance || 0);
+      const status = bal > 0 ? 'بدهی فعال' : bal < 0 ? 'طلب از فروشگاه' : 'تسویه کامل';
+      const headIcon = bal > 0 ? '🔴' : bal < 0 ? '🟢' : '✅';
+      const nextDue = installmentStats?.nextDue ? formatJalaliDate(installmentStats.nextDue, false) : 'بدون سررسید فعال';
+      const name = String(customer?.fullName || 'مشتری گرامی').trim();
+      const sections = [
+        statBlock(headIcon, 'وضعیت مالی', formatReportMoneyText(Math.abs(bal)), status),
+        statBlock('🗓️', 'اقساط باز', `${formatMoney(installmentStats?.openCount || 0)} قسط`, `مبلغ باز: ${formatReportMoneyText(installmentStats?.openAmount || 0)} | بعدی: ${nextDue}`),
+        statBlock('🛠️', 'تعمیرات فعال', `${formatMoney(repairStats?.activeCount || 0)} مورد`, repairStats?.lastRepair ? `آخرین پذیرش: ${formatJalaliDate(repairStats.lastRepair, false)}` : 'مورد فعالی ثبت نشده است'),
+        statBlock('🧾', 'فاکتورهای ثبت‌شده', `${formatMoney(invoiceStats?.invoiceCount || 0)} فاکتور`, invoiceStats?.lastInvoice ? `آخرین فاکتور: ${formatJalaliDate(invoiceStats.lastInvoice, false)}` : 'هنوز فاکتوری ثبت نشده است'),
+        latestLedger?.description ? statBlock('📝', 'آخرین توضیح حساب', compactDescription(latestLedger.description, 80), latestLedger?.transactionDate ? `تازه‌سازی: ${formatJalaliDate(latestLedger.transactionDate, true)}` : undefined) : '',
+      ];
+      const text = buildSmartSummaryText(
+        'خلاصه وضعیت حساب شما',
+        `${name} عزیز، نمای سریع حساب فروشگاهی شما آماده است.`,
+        '💼',
+        sections,
+        '📌 برای مشاهده جزئیات، از «📆 برنامه اقساط من»، «🛠 پیگیری تعمیرات» یا «🧾 خریدهای اخیر من» استفاده کنید.'
+      );
+      await sendBotRichCard(chatId, text, { reply_markup: buildCustomerQuickActionsKeyboard('summary'), parse_mode: 'HTML' }, { title: '💼 نمای مالی مشتری', subtitle: 'خلاصه وضعیت حساب، اقساط و پیگیری‌ها' });
+    };
+    const parseTelegramDueMoment = (value: any) => {
+      const raw = String(value ?? '').trim();
+      if (!raw) return null;
+      const candidates = [
+        moment(raw, 'jYYYY/jMM/jDD', true),
+        moment(raw, 'jYYYY-jMM-jDD', true),
+        moment(raw, 'YYYY-MM-DD', true),
+        moment(raw),
+      ];
+      const found = candidates.find((m) => m.isValid());
+      return found || null;
+    };
+    const installmentStatusInfo = (row: any) => {
+      const dueMoment = parseTelegramDueMoment(row?.dueDate);
+      const today = moment().startOf('day');
+      if (!dueMoment) return { icon: 'ℹ️', label: 'در انتظار تاریخ', tone: 'neutral', hint: 'تاریخ سررسید این قسط کامل ثبت نشده است.' };
+      const due = dueMoment.clone().startOf('day');
+      const days = due.diff(today, 'days');
+      if (days < 0) return { icon: '🔴', label: 'معوق', tone: 'danger', hint: `${formatMoney(Math.abs(days))} روز از سررسید گذشته است.` };
+      if (days === 0) return { icon: '🟠', label: 'سررسید امروز', tone: 'warning', hint: 'امروز زمان پرداخت این قسط است.' };
+      if (days <= 7) return { icon: '🟡', label: 'نزدیک سررسید', tone: 'soon', hint: `${formatMoney(days)} روز تا سررسید باقی مانده است.` };
+      return { icon: '🟢', label: 'در برنامه پرداخت', tone: 'ok', hint: `${formatMoney(days)} روز تا سررسید باقی مانده است.` };
+    };
+    const buildInstallmentSmartCard = (row: any, index: number) => {
+      const status = installmentStatusInfo(row);
+      const due = row?.dueDate ? formatJalaliDate(row.dueDate, false) : 'ثبت نشده';
+      const item = compactDescription(row?.itemsSummary || row?.phoneModel || row?.saleTitle || 'فروش اقساطی فروشگاه', 76);
+      const amount = Number(row?.amountDue || 0);
+      const total = Number(row?.actualSalePrice || 0);
+      const paidAmount = Number(row?.paidAmount || 0) + Number(row?.downPayment || 0);
+      const remainingSale = Math.max(0, total - paidAmount);
+      const paidCount = Number(row?.paidCount || 0);
+      const totalCount = Number(row?.numberOfInstallments || 0);
+      const progressText = totalCount > 0 ? `${formatMoney(paidCount)} از ${formatMoney(totalCount)} قسط پرداخت‌شده` : `${formatMoney(paidCount)} پرداخت ثبت‌شده`;
+      return [
+        `💎 <b>کارت قسط ${esc(formatMoney(index + 1))}</b>  •  <code>#${esc(row?.saleId || '-')}</code>`,
+        `${status.icon} <b>${esc(status.label)}</b>`,
+        `<i>${esc(status.hint)}</i>`,
+        softLine,
+        `🧾 <b>پرونده فروش:</b> ${esc(item)}`,
+        `🔢 <b>شماره قسط:</b> <code>${esc(row?.installmentNumber ?? '-')}</code>`,
+        `📅 <b>سررسید:</b> <code>${esc(due)}</code>`,
+        `💳 <b>مبلغ قسط:</b> <code>${esc(formatReportMoneyText(amount))}</code>`,
+        total > 0 ? `💰 <b>مبلغ کل فروش:</b> <code>${esc(formatReportMoneyText(total))}</code>` : '',
+        total > 0 ? `✅ <b>پرداخت‌شده:</b> <code>${esc(formatReportMoneyText(paidAmount))}</code>` : '',
+        total > 0 ? `⏳ <b>مانده تقریبی پرونده:</b> <code>${esc(formatReportMoneyText(remainingSale))}</code>` : '',
+        `📊 <b>پیشرفت پرداخت:</b> ${esc(progressText)}`,
+      ].filter(Boolean).join('\n');
+    };
+    const sendInstallments = async (customerId: number, page = 0) => {
+      const rows = await allAsync(
+        `SELECT p.id, p.saleId, p.installmentNumber, p.dueDate, p.amountDue, p.status,
+                s.itemsSummary, s.actualSalePrice, s.downPayment, s.numberOfInstallments, s.installmentAmount, s.saleType, s.dateCreated,
+                COALESCE((SELECT SUM(COALESCE(pp.amountDue, 0)) FROM installment_payments pp WHERE pp.saleId = s.id AND (LOWER(COALESCE(pp.status,'')) IN ('paid','پرداخت شده','پرداخت‌شده') OR pp.paymentDate IS NOT NULL)), 0) AS paidAmount,
+                COALESCE((SELECT COUNT(*) FROM installment_payments pc WHERE pc.saleId = s.id AND (LOWER(COALESCE(pc.status,'')) IN ('paid','پرداخت شده','پرداخت‌شده') OR pc.paymentDate IS NOT NULL)), 0) AS paidCount
+         FROM installment_payments p
+         JOIN installment_sales s ON s.id = p.saleId
+         WHERE s.customerId=?
+           AND NOT (LOWER(COALESCE(p.status,'')) IN ('paid','پرداخت شده','پرداخت‌شده') OR p.paymentDate IS NOT NULL)
+         ORDER BY (p.dueDate IS NULL), p.dueDate ASC, p.installmentNumber ASC, p.id ASC`,
+        [Number(customerId)]
+      ).catch((err) => {
+        console.error('[telegram installments smart cards] query failed:', err?.message || err);
+        return [];
+      });
+      if (!rows?.length) {
+        const text = [
+          commercialHeader('اقساط من', 'در حال حاضر قسط بازی برای حساب شما ثبت نشده است.', '🗓️'),
+          '✅ <b>وضعیت:</b> پرداخت‌های ثبت‌شده شما منظم و بدون قسط باز هستند.',
+          '',
+          'هر فروش اقساطی جدید، با سررسید و مبلغ هر قسط در همین بخش نمایش داده می‌شود.',
+          softLine,
+          '☎️ برای هماهنگی پرداخت یا رفع مغایرت، «ارتباط با فروشگاه» را انتخاب کنید.',
+        ].join('\n');
+        await sendBotMessage(chatId, text, { reply_markup: buildCustomerQuickActionsKeyboard('installments'), parse_mode: 'HTML' });
+        return;
+      }
+      const pageSize = 3;
+      const totalRows = rows.length;
+      const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+      const safePage = Math.min(safePageNumber(page), totalPages - 1);
+      const pageRows = rows.slice(safePage * pageSize, safePage * pageSize + pageSize);
+      const overdueCount = rows.filter((r: any) => installmentStatusInfo(r).tone === 'danger').length;
+      const dueSoonCount = rows.filter((r: any) => ['warning', 'soon'].includes(installmentStatusInfo(r).tone)).length;
+      const totalOpenAmount = rows.reduce((sum: number, r: any) => sum + Number(r?.amountDue || 0), 0);
+      const cards = pageRows.map((r: any, index: number) => buildInstallmentSmartCard(r, safePage * pageSize + index));
+      const text = [
+        commercialHeader('نمای هوشمند اقساط شما', 'سررسیدها، مبلغ‌ها و وضعیت پرداخت در یک نمای مرتب و قابل پیگیری', '🗓️'),
+        `📌 <b>نمایش صفحه:</b> ${buildPaginationLabel(safePage, totalPages)}  •  <b>کل اقساط باز:</b> ${esc(formatMoney(totalRows))}`,
+        `💳 <b>مجموع مبلغ اقساط باز:</b> <code>${esc(formatReportMoneyText(totalOpenAmount))}</code>`,
+        overdueCount > 0 ? `🔴 <b>معوق:</b> ${esc(formatMoney(overdueCount))} قسط` : '',
+        dueSoonCount > 0 ? `🟡 <b>نزدیک سررسید:</b> ${esc(formatMoney(dueSoonCount))} قسط` : '',
+        '',
+        cards.join(`\n\n${neonLine}\n\n`),
+        '',
+        softLine,
+        '✨ پس از ثبت پرداخت، وضعیت اقساط به‌صورت خودکار به‌روزرسانی می‌شود.',
+        '☎️ برای هماهنگی پرداخت یا رفع مغایرت، «ارتباط با فروشگاه» را انتخاب کنید.',
+      ].filter((line) => line !== '').join('\n');
+      await sendBotRichCard(chatId, text, { reply_markup: buildInstallmentsPaginationKeyboard(safePage, totalPages), parse_mode: 'HTML' }, { title: '🗓️ برنامه اقساط', subtitle: 'سررسیدها، هشدارها و مانده پرداخت در یک نگاه' });
+    };
+    const repairProgressLabel = (statusInfo: { icon: string; label: string }) => {
+      const label = String(statusInfo?.label || '').trim();
+      if (label.includes('آماده')) return 'آماده تحویل';
+      if (label.includes('تحویل') || label.includes('تکمیل')) return 'بسته‌شده';
+      if (label.includes('انتظار') || label.includes('قطعه')) return 'در انتظار قطعه';
+      if (label.includes('پذیرش') || label.includes('دریافت')) return 'پذیرش‌شده';
+      if (label.includes('در حال') || label.includes('تعمیر')) return 'در حال انجام';
+      return label || 'در حال بررسی';
+    };
+    const repairCostLine = (row: any) => {
+      const finalCost = Number(row?.finalCost || 0);
+      const estimatedCost = Number(row?.estimatedCost || 0);
+      const laborFee = Number(row?.laborFee || 0);
+      if (finalCost > 0) return `💵 <b>هزینه نهایی:</b> <code>${esc(formatReportMoneyText(finalCost))}</code>`;
+      if (estimatedCost > 0) return `💰 <b>برآورد هزینه:</b> <code>${esc(formatReportMoneyText(estimatedCost))}</code>`;
+      if (laborFee > 0) return `🧾 <b>اجرت ثبت‌شده:</b> <code>${esc(formatReportMoneyText(laborFee))}</code>`;
+      return '💳 <b>هزینه:</b> در انتظار اعلام فروشگاه';
+    };
+    const repairDeviceLine = (row: any) => {
+      const model = String(row?.deviceModel || 'دستگاه شما').trim();
+      const color = String(row?.deviceColor || '').trim();
+      const serial = String(row?.serialNumber || '').trim();
+      return [
+        `📱 <b>دستگاه:</b> ${esc(model)}${color ? ` • ${esc(color)}` : ''}`,
+        serial ? `🔑 <b>سریال / IMEI:</b> <code>${esc(serial)}</code>` : '',
+      ].filter(Boolean).join('\n');
+    };
+    const buildRepairSmartCard = (row: any, index: number) => {
+      const statusInfo = prettyRepairStatus(row?.status);
+      const progress = repairProgressLabel(statusInfo);
+      const receivedAt = row?.dateReceived ? formatJalaliDate(row.dateReceived, true) : 'ثبت نشده';
+      const completedAt = row?.dateCompleted ? formatJalaliDate(row.dateCompleted, true) : '';
+      const technician = String(row?.technicianName || '').trim();
+      const problem = compactDescription(row?.problemDescription || '', 110);
+      const notes = compactDescription(row?.technicianNotes || '', 90);
+      const partsCount = Number(row?.partsCount || 0);
+      const lines = [
+        `💎 <b>کارت تعمیر ${esc(formatMoney(index + 1))}</b>  •  <code>#${esc(row?.id || '-')}</code>`,
+        `${statusInfo.icon} <b>${esc(progress)}</b>`,
+        softLine,
+        repairDeviceLine(row),
+        problem && problem !== 'گردش حساب' ? `🧩 <b>شرح مشکل:</b> ${esc(problem)}` : '',
+        repairCostLine(row),
+        technician ? `👨‍🔧 <b>مسئول پیگیری:</b> ${esc(technician)}` : '👨‍🔧 <b>مسئول پیگیری:</b> تیم خدمات فروشگاه',
+        partsCount > 0 ? `🧰 <b>قطعات مصرفی:</b> ${esc(formatMoney(partsCount))} مورد` : '',
+        notes && notes !== 'گردش حساب' ? `📝 <b>یادداشت فنی:</b> ${esc(notes)}` : '',
+        '',
+        `📥 <b>تاریخ پذیرش:</b> <code>${esc(receivedAt)}</code>`,
+        completedAt ? `📦 <b>تاریخ تحویل:</b> <code>${esc(completedAt)}</code>` : '',
+      ];
+      return lines.filter((line) => line !== '').join('\n');
+    };
+    const sendRepairs = async (customerId: number) => {
+      const rows = await allAsync(
+        `SELECT r.id, r.deviceModel, r.deviceColor, r.serialNumber,
+                r.problemDescription, r.technicianNotes, r.status,
+                r.estimatedCost, r.finalCost, r.laborFee,
+                r.dateReceived, r.dateCompleted,
+                t.partnerName AS technicianName,
+                (SELECT COUNT(*) FROM repair_parts rp WHERE rp.repairId = r.id) AS partsCount
+         FROM repairs r
+         LEFT JOIN partners t ON t.id = r.technicianId
+         WHERE r.customerId=?
+         ORDER BY (r.dateReceived IS NULL), r.dateReceived DESC, r.id DESC
+         LIMIT 8`,
+        [Number(customerId)]
+      ).catch((err) => {
+        console.error('[telegram repairs smart cards] query failed:', err?.message || err);
+        return [];
+      });
+      if (!rows?.length) {
+        const text = [
+          commercialHeader('پیگیری تعمیرات من', 'در حال حاضر پرونده تعمیراتی فعالی برای شما ثبت نشده است.', '🛠️'),
+          '✅ <b>وضعیت:</b> بدون پرونده فعال',
+          '',
+          'پرونده‌های تعمیر جدید، با وضعیت پذیرش، هزینه و آماده‌تحویل بودن دستگاه در همین بخش نمایش داده می‌شوند.',
+          softLine,
+          '☎️ برای ثبت یا پیگیری تعمیر، «ارتباط با فروشگاه» را انتخاب کنید.',
+        ].join('\n');
+        await sendBotRichCard(chatId, text, { reply_markup: buildCustomerQuickActionsKeyboard('repairs'), parse_mode: 'HTML' }, { title: '🛠️ پیگیری تعمیرات', subtitle: 'پرونده‌های تعمیراتی با وضعیت، هزینه و زمان‌بندی' });
+        return;
+      }
+      const cards = rows.map((r, index) => buildRepairSmartCard(r, index));
+      const activeCount = rows.filter((r) => {
+        const label = String(prettyRepairStatus(r?.status).label || '');
+        return !(label.includes('تحویل') || label.includes('تکمیل') || label.toLowerCase().includes('done'));
+      }).length;
+      const readyCount = rows.filter((r) => String(prettyRepairStatus(r?.status).label || '').includes('آماده')).length;
+      const text = [
+        commercialHeader('نمای هوشمند تعمیرات شما', 'پرونده‌های تعمیراتی شما، مرتب، شفاف و قابل پیگیری', '🛠️'),
+        `📌 <b>تعداد نمایش:</b> ${esc(formatMoney(rows.length))} پرونده اخیر`,
+        `🟢 <b>پرونده‌های در جریان:</b> ${esc(formatMoney(activeCount))} مورد`,
+        readyCount > 0 ? `✅ <b>آماده تحویل:</b> ${esc(formatMoney(readyCount))} دستگاه` : '',
+        '',
+        cards.join(`\n\n${neonLine}\n\n`),
+        '',
+        softLine,
+        '✨ برای مشاهده تازه‌ترین وضعیت، «تازه‌سازی اطلاعات» را انتخاب کنید.',
+        '☎️ برای هماهنگی تحویل یا اعلام مشکل، «ارتباط با فروشگاه» را انتخاب کنید.',
+      ].filter((line) => line !== '').join('\n');
+      await sendBotRichCard(chatId, text, { reply_markup: buildCustomerQuickActionsKeyboard('repairs'), parse_mode: 'HTML' }, { title: '🛠️ پیگیری تعمیرات', subtitle: 'پرونده‌های تعمیراتی با وضعیت، هزینه و زمان‌بندی' });
+    };
+    const sendInvoices = async (customerId: number) => {
+      const rows = await allAsync(
+        `SELECT id, grandTotal, transactionDate, status
+         FROM sales_orders
+         WHERE customerId=?
+         ORDER BY (transactionDate IS NULL), transactionDate DESC, id DESC
+         LIMIT 8`,
+        [Number(customerId)]
+      ).catch(() => []);
+      if (!rows?.length) {
+        await sendBotMessage(
+          chatId,
+          telegramCard('خریدهای اخیر من', '🧾', ['در حال حاضر خرید ثبت‌شده‌ای برای حساب شما پیدا نشد.'], 'برای بازگشت، «🏠 منوی اصلی» را انتخاب کنید.'),
+          { reply_markup: buildCustomerQuickActionsKeyboard('invoices'), parse_mode: 'HTML' }
+        );
+        return;
+      }
+      const lines = rows.map((r) => {
+        const d = r?.transactionDate ? String(r.transactionDate) : '-';
+        const t = formatMoney(r?.grandTotal);
+        const st = String(r?.status || '').trim();
+        return [`🧾 <b>خرید #${esc(r.id)}</b>`, `🕒 تاریخ: <code>${esc(d)}</code>`, `💰 مبلغ: <code>${esc(t)}</code> تومان${st ? ` • ${esc(st)}` : ''}`].join('\n');
+      });
+      const text = [commercialHeader('خریدهای اخیر من', 'آخرین خریدها و اسناد مالی ثبت‌شده برای حساب شما', '🧾'), ...lines.map((x, i) => `${i ? softLine + '\n' : ''}${x}`), softLine, '✨ برای دریافت جزئیات کامل خرید، با فروشگاه تماس بگیرید.'].join('\n\n');
+      await sendBotRichCard(chatId, text, { reply_markup: buildCustomerQuickActionsKeyboard('invoices'), parse_mode: 'HTML' }, { title: '🧾 خریدهای اخیر', subtitle: 'اسناد مالی و خریدهای ثبت‌شده برای حساب شما' });
+    };
+    const getStoreTelegramInfoLines = async () => {
+      const settings = await getAllSettingsAsObject().catch(() => ({} as any));
+      const storeName = String((settings as any).store_name || 'فروشگاه کوروش').trim();
+      const phone = String((settings as any).store_phone || '').trim();
+      const email = String((settings as any).store_email || '').trim();
+      const address = [
+        String((settings as any).store_address_line1 || '').trim(),
+        String((settings as any).store_address_line2 || '').trim(),
+        String((settings as any).store_city_state_zip || '').trim(),
+      ].filter(Boolean).join(' - ');
+      const site = String((settings as any).qr_public_base_url || (settings as any).public_app_base_url || '').trim();
+      return { storeName, phone, email, address, site };
+    };
+    const sendSupportInfo = async (replyMarkup: any) => {
+      const info = await getStoreTelegramInfoLines();
+      const lines = [
+        `🏪 <b>فروشگاه:</b> ${esc(info.storeName)}`,
+        info.phone ? `☎️ <b>شماره تماس:</b> ${esc(info.phone)}` : '☎️ شماره تماس در تنظیمات فروشگاه ثبت نشده است.',
+        info.email ? `✉️ <b>ایمیل:</b> ${esc(info.email)}` : '',
+        info.address ? `📍 <b>آدرس:</b> ${esc(info.address)}` : '',
+      ];
+      await sendBotMessage(chatId, telegramCard('ارتباط با فروشگاه', '☎️', lines, 'برای بازگشت، «🏠 منوی اصلی» را انتخاب کنید.'), { reply_markup: replyMarkup, parse_mode: 'HTML' });
+    };
+    const sendSiteInfo = async (replyMarkup: any) => {
+      const info = await getStoreTelegramInfoLines();
+      const lines = [
+        info.site ? `🌐 <b>سایت فروشگاه:</b> ${esc(info.site)}` : '🌐 ورود به سایت فروشگاه/دامنه عمومی هنوز در تنظیمات فروشگاه ثبت نشده است.',
+        'برای فعال‌سازی لینک سایت، دامنه عمومی فروشگاه را در تنظیمات تکمیل کنید.',
+      ];
+      await sendBotMessage(chatId, telegramCard('سایت فروشگاه', '🌐', lines, 'برای بازگشت، «🏠 منوی اصلی» را انتخاب کنید.'), { reply_markup: replyMarkup, parse_mode: 'HTML' });
+    };
+    // Handle callback buttons
+    if (cb?.data) {
+      const data = String(cb.data || '').trim();
+      const customer = await getLinkedCustomer();
+      const partner = await getLinkedPartner();
+
+      if (data.startsWith('PARTNER_')) {
+        if (!partner?.id) {
+          if (customer?.id) {
+            await showMainMenu(customer);
+            return;
+          }
+          await sendBotMessage(chatId, telegramCard('ورود امن لازم است', '🔒', ['برای نمایش اطلاعات همکاری، ابتدا ورود امن با شماره موبایل را کامل کنید.'], 'پس از تأیید، پنل اختصاصی همکاران برای شما فعال می‌شود.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        const pid = Number(partner.id);
+        if (data === 'PARTNER_HOME') { await showPartnerMenu(partner); return; }
+        if (data === 'PARTNER_PHONES') { await sendPartnerPhones(pid); return; }
+        if (data === 'PARTNER_LEDGER') { await sendPartnerLedger(pid, 0); return; }
+        if (data.startsWith('PARTNER_LEDGER_PAGE:')) { await sendPartnerLedger(pid, Number(data.split(':')[1] || 0)); return; }
+        if (data === 'PARTNER_BALANCE') { await sendPartnerBalance(pid); return; }
+        if (data === 'PARTNER_SUPPORT') { await sendSupportInfo(buildPartnerMenuKeyboard()); return; }
+        if (data === 'PARTNER_SITE') { await sendSiteInfo(buildPartnerMenuKeyboard()); return; }
+        if (data === 'PARTNER_HELP') {
+          const helpText = telegramCard(
+            'راهنمای سریع همکار',
+            'ℹ️',
+            [
+              '• موجودی گوشی‌های من: گوشی‌های مرتبط با حساب همکاری',
+              '• گردش حساب من: مشاهده گردش‌ها با تاریخ شمسی و مانده هر رکورد',
+              '• نمای همکاری من: مانده، گوشی‌ها و آخرین فعالیت در یک نگاه',
+            ],
+            'برای بازگشت به منوی همکار، از دکمه «🏠 منو» استفاده کنید.'
+          );
+          await sendBotMessage(chatId, helpText, { reply_markup: buildPartnerReplyKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (data === 'PARTNER_UNLINK') {
+          await unlinkPartnerTelegram(pid);
+          await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده همکار جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        await showPartnerMenu(partner);
+        return;
+      }
+
+      if (!customer?.id) {
+        if (partner?.id) {
+          await showPartnerMenu(partner);
+          return;
+        }
+        await sendBotMessage(chatId, telegramCard('ورود امن لازم است', '🔒', ['برای استفاده از منو، ابتدا /start را بزنید و شماره موبایل را تأیید کنید.'], 'پس از تأیید، پنل اختصاصی شما فعال می‌شود.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+
+      const cid = Number(customer.id);
+      if (data === 'MENU_BALANCE') return await sendBalance(cid);
+      if (data === 'MENU_HOME') return await showMainMenu(customer);
+      if (data === 'MENU_INSTALLMENTS') return await sendInstallments(cid, 0);
+      if (data.startsWith('MENU_INSTALLMENTS_PAGE:')) return await sendInstallments(cid, Number(data.split(':')[1] || 0));
+      if (data === 'MENU_REPAIRS') return await sendRepairs(cid);
+      if (data === 'MENU_INVOICES') return await sendInvoices(cid);
+      if (data === 'MENU_SUPPORT') return await sendSupportInfo(buildMainMenuKeyboard());
+      if (data === 'MENU_SITE') return await sendSiteInfo(buildMainMenuKeyboard());
+      if (data === 'MENU_HELP') {
+        const helpText = telegramCard(
+          'راهنمای سریع ربات',
+          'ℹ️',
+          [
+            '• نمای مالی من: مشاهده مانده حساب و وضعیت مالی',
+            '• برنامه اقساط من: سررسیدها و پرداخت‌های باز',
+            '• پیگیری تعمیرات: آخرین وضعیت پذیرش، هزینه و تحویل',
+            '• خریدهای اخیر من: مرور اسناد مالی',
+          ],
+          'برای بازگشت به منوی اصلی، از دکمه «🏠 منو» استفاده کنید.'
+        );
+        await sendBotMessage(chatId, helpText, { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      if (data === 'MENU_NOTIFS') {
+        const cur = Number((customer as any).telegram_opted_out || 0) ? 1 : 0;
+        const next = cur ? 0 : 1;
+        await setOptedOut(cid, next as any);
+        await sendBotMessage(
+          chatId,
+          next
+            ? telegramCard('اعلان‌ها خاموش شد', '🔕', ['دریافت اعلان‌های خودکار برای این حساب متوقف شد.'], 'برای فعال‌سازی دوباره، از همین منو استفاده کنید.')
+            : telegramCard('اعلان‌ها روشن شد', '🔔', ['دریافت اعلان‌های خودکار برای این حساب فعال شد.'], 'از این پس پیام‌ها طبق تنظیمات شما ارسال می‌شوند.'),
+          { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' }
+        );
+        return;
+      }
+      if (data === 'MENU_UNLINK') {
+        await unlinkTelegram(cid);
+        await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده فروشگاه جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      // Unknown callback
+      if (partner?.id) {
+        await showPartnerMenu(partner);
+        return;
+      }
+      await showMainMenu(customer);
+      return;
+    }
+    // /start -> ask for contact
+    const msgText = String(msg.text || '').trim();
+    const restartBotForChat = async () => {
+      await ensureTelegramPersistentMenu().catch(() => {});
+      const customer = await getLinkedCustomer();
+      if (customer?.id) {
+        await showMainMenu(customer);
+        return;
+      }
+      const partner = await getLinkedPartner();
+      if (partner?.id) {
+        await showPartnerMenu(partner);
+        return;
+      }
+      await sendBotMessage(
+        chatId,
+        telegramCard(
+          'شروع دوباره دستیار',
+          '🔄',
+          ['پنل تلگرام تازه‌سازی شد. برای ورود امن، شماره موبایل ثبت‌شده در فروشگاه را ارسال کنید.'],
+          'دکمه «📲 اتصال امن با شماره موبایل» را لمس کنید.'
+        ),
+        { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' }
+      );
+    };
+    if (msgText.startsWith('/restart') || msgText === '🔄 شروع دوباره' || msgText.includes('تازه‌سازی اطلاعات') || msgText.includes('دریافت تازه‌سازی')) {
+      await restartBotForChat();
+      return;
+    }
+    if (msgText && !msgText.startsWith('/')) {
+      const customer = await getLinkedCustomer();
+      const partner = await getLinkedPartner();
+      const normalized = msgText.replace(/\s+/g, ' ').trim();
+
+      if (!customer?.id && !partner?.id) {
+        if (normalized.includes('راهنمای ورود') || normalized.includes('راهنمای سریع') || normalized.includes('راهنمای اتصال') || normalized.includes('راهنمای استفاده')) {
+          await sendBotMessage(chatId, telegramCard('راهنمای سریع اتصال', 'ℹ️', ['۱. دکمه «📲 اتصال امن با شماره موبایل» را لمس کنید.', '۲. شماره‌ای را بفرستید که در پرونده مشتری یا همکار ثبت شده است.', '۳. بعد از تأیید، منوی اختصاصی شما نمایش داده می‌شود.'], 'اگر پرونده پیدا نشد، ابتدا آن را در پرونده فروشگاه ثبت کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (normalized.includes('ارتباط با فروشگاه') || normalized.includes('پشتیبانی فروشگاه')) { await sendSupportInfo(buildContactKeyboard()); return; }
+        if (normalized.includes('سایت فروشگاه') || normalized.includes('وب‌سایت فروشگاه')) { await sendSiteInfo(buildContactKeyboard()); return; }
+      }
+
+      if (partner?.id) {
+        const pid = Number(partner.id);
+        if (normalized.includes('موجودی گوشی‌های من') || normalized.includes('گوشی‌های من')) { await sendPartnerPhones(pid); return; }
+        if (normalized.includes('گردش حساب شما') || normalized.includes('گردش حساب من')) { await sendPartnerLedger(pid, 0); return; }
+        if (normalized.includes('نمای همکاری') || normalized.includes('وضعیت حساب شما') || normalized.includes('خلاصه وضعیت من')) { await sendPartnerBalance(pid); return; }
+        if (normalized.includes('ارتباط با فروشگاه') || normalized.includes('پشتیبانی فروشگاه')) { await sendSupportInfo(buildPartnerReplyKeyboard()); return; }
+        if (normalized.includes('سایت فروشگاه') || normalized.includes('وب‌سایت فروشگاه')) { await sendSiteInfo(buildPartnerReplyKeyboard()); return; }
+        if (normalized.includes('راهنمای ورود') || normalized.includes('راهنمای سریع') || normalized.includes('راهنمای اتصال') || normalized.includes('راهنمای استفاده')) {
+          const helpText = telegramCard(
+            'راهنمای سریع همکار',
+            'ℹ️',
+            [
+              '• موجودی گوشی‌های من: گوشی‌های مرتبط با حساب همکاری',
+              '• گردش حساب من: مشاهده گردش‌ها با تاریخ شمسی و مانده هر رکورد',
+              '• نمای همکاری من: مانده، گوشی‌ها و آخرین فعالیت در یک نگاه',
+            ],
+            'برای بازگشت، دکمه «🏠 منوی اصلی» را بزنید.'
+          );
+          await sendBotMessage(chatId, helpText, { reply_markup: buildPartnerReplyKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (normalized.includes('خروج از حساب') || normalized.includes('قطع اتصال') || normalized.includes('قطع اتصال حساب')) {
+          await unlinkPartnerTelegram(pid);
+          await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده همکار جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (normalized.includes('منوی اصلی') || normalized.includes('صفحه اصلی') || normalized === 'منو') { await showPartnerMenu(partner); return; }
+        await showPartnerMenu(partner);
+        return;
+      }
+
+      if (customer?.id) {
+        const cid = Number(customer.id);
+        if (normalized.includes('نمای مالی') || normalized.includes('وضعیت حساب')) { await sendBalance(cid); return; }
+        if (normalized.includes('برنامه اقساط') || normalized.includes('اقساط من')) { await sendInstallments(cid, 0); return; }
+        if (normalized.includes('پیگیری تعمیرات') || normalized.includes('تعمیرات من')) { await sendRepairs(cid); return; }
+        if (normalized.includes('خریدهای اخیر') || normalized.includes('فاکتورهای اخیر')) { await sendInvoices(cid); return; }
+        if (normalized.includes('ارتباط با فروشگاه') || normalized.includes('پشتیبانی فروشگاه')) { await sendSupportInfo(buildMainReplyKeyboard()); return; }
+        if (normalized.includes('سایت فروشگاه') || normalized.includes('وب‌سایت فروشگاه')) { await sendSiteInfo(buildMainReplyKeyboard()); return; }
+        if (normalized.includes('راهنمای ورود') || normalized.includes('راهنمای سریع') || normalized.includes('راهنمای اتصال') || normalized.includes('راهنمای استفاده')) {
+          const helpText = telegramCard(
+            'راهنمای سریع ربات',
+            'ℹ️',
+            [
+              '• نمای مالی من: مشاهده مانده حساب و وضعیت مالی',
+              '• برنامه اقساط من: سررسیدها و پرداخت‌های باز',
+              '• پیگیری تعمیرات: آخرین وضعیت پذیرش، هزینه و تحویل',
+              '• خریدهای اخیر من: مرور اسناد مالی',
+            ],
+            'برای بازگشت، دکمه «🏠 منوی اصلی» را بزنید.'
+          );
+          await sendBotMessage(chatId, helpText, { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (normalized.includes('اعلان‌ها') || normalized.includes('تنظیم اعلان') || normalized.includes('مدیریت اعلان‌ها')) {
+          const cur = Number((customer as any).telegram_opted_out || 0) ? 1 : 0;
+          const next = cur ? 0 : 1;
+          await setOptedOut(cid, next as any);
+          await sendBotMessage(
+            chatId,
+            next
+              ? telegramCard('اعلان‌ها خاموش شد', '🔕', ['دریافت اعلان‌های خودکار برای این حساب متوقف شد.'], 'برای فعال‌سازی دوباره، از همین منو استفاده کنید.')
+              : telegramCard('اعلان‌ها روشن شد', '🔔', ['دریافت اعلان‌های خودکار برای این حساب فعال شد.'], 'از این پس پیام‌ها طبق تنظیمات شما ارسال می‌شوند.'),
+            { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' }
+          );
+          return;
+        }
+        if (normalized.includes('خروج از حساب') || normalized.includes('قطع اتصال') || normalized.includes('قطع اتصال حساب')) {
+          await unlinkTelegram(cid);
+          await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده فروشگاه جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+          return;
+        }
+        if (normalized.includes('منوی اصلی') || normalized.includes('صفحه اصلی') || normalized === 'منو') { await showMainMenu(customer); return; }
+        await showMainMenu(customer);
+        return;
+      }
+    }
+    if (msgText.startsWith('/start')) {
+      await ensureTelegramPersistentMenu().catch(() => {});
+      const parts = msgText.split(' ').filter(Boolean);
+      const payload = String(parts[1] || '').trim();
+      // One-tap QR linking: /start link_<token>
+      if (payload.startsWith('link_')) {
+        const token = payload.slice('link_'.length).trim();
+        const row: any = await getTelegramLinkTokenByPlainToken(token);
+        if (!row?.id) {
+          await sendBotMessage(chatId, 'این لینک دیگر معتبر نیست. لطفاً یک QR جدید از فروشگاه دریافت کنید.');
+          return;
+        }
+        if (String(row.status || '') === 'used') {
+          await sendBotMessage(chatId, 'این لینک قبلاً استفاده شده است. برای اتصال دوباره، QR جدید دریافت کنید.');
+          return;
+        }
+        if (String(row.status || '') === 'expired') {
+          await sendBotMessage(chatId, 'اعتبار این لینک پایان یافته است. لطفاً QR جدید دریافت کنید.');
+          return;
+        }
+        const customerRow: any = await getAsync(`SELECT id, fullName, phoneNumber FROM customers WHERE id=? LIMIT 1`, [Number(row.customer_id)]);
+        if (!customerRow?.id) {
+          await markTelegramLinkTokenStatus(Number(row.id), 'canceled', { chatId, telegramUserId: fromId, err: 'Customer not found' });
+          await sendBotMessage(chatId, 'پرونده مشتری مربوط به این لینک پیدا نشد. لطفاً با فروشگاه تماس بگیرید.');
+          return;
+        }
+        // If customer has a phone on file, request contact for verification; otherwise link immediately.
+        const expectedPhone = customerRow?.phoneNumber ? normalizeIranPhone(String(customerRow.phoneNumber)) : '';
+        if (expectedPhone) {
+          await markTelegramLinkTokenStatus(Number(row.id), 'await_contact', { chatId, telegramUserId: fromId });
+          await sendBotMessage(
+            chatId,
+            telegramCard(
+              'تأیید اتصال',
+              '🔐',
+              [`سلام ${esc(customerRow.fullName || '')} 👋`, 'برای ادامه، لطفاً شماره موبایل خودتان را با دکمه زیر ارسال کنید.'],
+              '⚠️ فقط شماره‌ای که متعلق به خودتان باشد پذیرفته می‌شود.'
+            ),
+            { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' }
+          );
+          return;
+        }
+        await linkCustomerTelegramById({ customerId: Number(customerRow.id), chatId, telegramUserId: fromId });
+        await markTelegramLinkTokenStatus(Number(row.id), 'used', { chatId, telegramUserId: fromId });
+        await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+        await sendBotMessage(chatId, telegramCard('ورود امن تکمیل شد', '✅', ['حساب تلگرام شما با موفقیت به پرونده فروشگاه متصل شد.'], 'از پنل پایین، گزارش‌های مالی و پیگیری‌های خود را مشاهده کنید.'), { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+        const customer = await getLinkedCustomer();
+        await showMainMenu(customer);
+        return;
+      }
+      if (payload.startsWith('partner_')) {
+        const partnerId = Number(payload.slice('partner_'.length).trim());
+        if (!partnerId) {
+          await sendBotMessage(chatId, 'لینک همکار معتبر نیست. لطفاً QR جدید دریافت کنید.');
+          return;
+        }
+        const partnerRow: any = await getAsync(`SELECT id, partnerName, phoneNumber FROM partners WHERE id=? LIMIT 1`, [partnerId]);
+        if (!partnerRow?.id) {
+          await sendBotMessage(chatId, 'پرونده همکار مربوط به این لینک پیدا نشد. لطفاً با فروشگاه تماس بگیرید.');
+          return;
+        }
+        await runAsync(`UPDATE partners SET telegramChatId=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [chatId, partnerId]);
+        await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+        await showPartnerMenu(partnerRow, `✅ ورود امن همکار «${partnerRow.partnerName || ''}» انجام شد.`);
+        return;
+      }
+      // Normal /start flow
+      const customer = await getLinkedCustomer();
+      if (customer?.id) {
+        await showMainMenu(customer);
+        return;
+      }
+      const partner = await getLinkedPartner();
+      if (partner?.id) {
+        await showPartnerMenu(partner);
+        return;
+      }
+      await sendBotMessage(
+        chatId,
+        telegramCard(
+          'ورود به دستیار کوروش',
+          '👋',
+          ['برای فعال‌سازی پنل اختصاصی و مشاهده گزارش‌های حساب، شماره موبایل ثبت‌شده در فروشگاه را ارسال کنید.'],
+          'دکمه «📲 اتصال امن با شماره موبایل» را لمس کنید.'
+        ),
+        { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' }
+      );
+      return;
+    }
+    if (msgText.startsWith('/help') || msgText.startsWith('/menu')) {
+      const customer = await getLinkedCustomer();
+      if (customer?.id) {
+        await showMainMenu(customer);
+        return;
+      }
+      const partner = await getLinkedPartner();
+      if (partner?.id) {
+        await showPartnerMenu(partner);
+        return;
+      }
+      await sendBotMessage(chatId, telegramCard('ورود امن لازم است', '🔒', ['برای نمایش اطلاعات حساب، ابتدا ورود امن با شماره موبایل را کامل کنید.'], 'پس از تأیید، پنل اختصاصی شما فعال می‌شود.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+      return;
+    }
+    if (msgText.startsWith('/stop')) {
+      const customer = await getLinkedCustomer();
+      if (customer?.id) {
+        await setOptedOut(Number(customer.id), 1);
+        await sendBotMessage(chatId, telegramCard('اعلان‌ها متوقف شد', '🔕', ['ارسال اعلان‌های خودکار برای این حساب متوقف شد.'], 'برای فعال‌سازی دوباره، از منوی اصلی وارد تنظیم اعلان‌ها شوید.'), { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      const partner = await getLinkedPartner();
+      if (partner?.id) {
+        await sendBotMessage(chatId, telegramCard('راهنمای سریع', 'ℹ️', ['تنظیم اعلان‌های همکار از پنل فروشگاه مدیریت می‌شود.'], 'برای بازگشت، منوی اصلی را انتخاب کنید.'), { reply_markup: buildPartnerReplyKeyboard(), parse_mode: 'HTML' });
+      } else {
+        await sendBotMessage(chatId, telegramCard('اتصال لازم است', '🔒', ['ابتدا /start را بزنید تا اتصال انجام شود.'], 'پس از اتصال، می‌توانید /menu را باز کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+      }
+      return;
+    }
+    if (msgText.startsWith('/unlink')) {
+      const customer = await getLinkedCustomer();
+      if (customer?.id) {
+        await unlinkTelegram(Number(customer.id));
+        await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده فروشگاه جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      const partner = await getLinkedPartner();
+      if (partner?.id) {
+        await unlinkPartnerTelegram(Number(partner.id));
+        await sendBotMessage(chatId, telegramCard('خروج از حساب انجام شد', '🔗', ['حساب تلگرام شما از پرونده همکار جدا شد.'], 'برای اتصال دوباره، ورود امن را از ابتدا انجام دهید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+      } else {
+        await sendBotMessage(chatId, telegramCard('اتصال فعالی پیدا نشد', 'ℹ️', ['در حال حاضر اتصال فعالی برای قطع کردن وجود ندارد.'], 'اگر قبلاً متصل بوده‌اید، شماره موبایل ثبت‌شده یا QR جدید را بررسی کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+      }
+      return;
+    }
+    // Contact share
+    const contact = msg.contact;
+    if (contact?.phone_number) {
+      // Only accept self-contact to prevent linking others
+      const contactUserId = String(contact.user_id ?? '').trim();
+      if (contactUserId && contactUserId !== fromId) {
+        await sendBotMessage(chatId, telegramCard('تأیید امنیتی', '🛡️', ['برای حفظ امنیت حساب، فقط شماره متعلق به خودتان قابل اتصال است.'], 'لطفاً از دکمه «📲 اتصال امن با شماره موبایل» استفاده کنید.'), { parse_mode: 'HTML' });
+        return;
+      }
+      const phone = normalizeIranPhone(String(contact.phone_number));
+      if (!phone) {
+        await sendBotMessage(chatId, telegramCard('شماره نامعتبر', '⚠️', ['شماره ارسال‌شده معتبر نیست. لطفاً دوباره تلاش کنید.'], 'از دکمه «📲 اتصال امن با شماره موبایل» استفاده کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+      const customerCandidate: any = await findCustomerByNormalizedPhone(phone);
+      const partnerCandidate: any = await findPartnerByNormalizedPhone(phone);
+      // Mobile number is the real identity key for the bot. If a shared number
+      // belongs to a partner, partner access wins because the partner menu is more privileged.
+      if (partnerCandidate?.id) {
+        await linkPartnerTelegramByIdSafe(Number(partnerCandidate.id));
+        await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+        const partner = await getLinkedPartner();
+        await showPartnerMenu(partner || partnerCandidate, `✅ شماره موبایل با پرونده همکار «${partnerCandidate.partnerName || 'همکار'}» تطبیق داده شد.`);
+        return;
+      }
+      if (!customerCandidate?.id) {
+        await sendBotMessage(
+          chatId,
+          telegramCard(
+            'دسترسی فعال نشد',
+            '🔒',
+            ['این شماره موبایل در پرونده مشتریان یا همکاران فروشگاه ثبت نشده است.'],
+            'برای فعال‌سازی دستیار، شماره شما باید قبلاً در سیستم فروشگاه ثبت شده باشد.'
+          ),
+          { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' }
+        );
+        return;
+      }
+      const otpEnabled = await isTelegramLinkOtpEnabled();
+      if (!otpEnabled) {
+        if (customerCandidate?.id) {
+          const linked = await linkCustomerTelegramByPhone({ phone, chatId, telegramUserId: fromId });
+          if (!linked.ok) {
+            await sendBotMessage(chatId, telegramCard('پرونده پیدا نشد', '⚠️', ['این شماره در پرونده مشتریان فروشگاه ثبت نشده است.'], 'لطفاً ابتدا شماره را در پرونده فروشگاه ثبت کنید و سپس دوباره تلاش کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+            return;
+          }
+          await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+          await sendBotMessage(chatId, telegramCard('ورود امن تکمیل شد', '✅', ['شماره موبایل با پرونده مشتری تطبیق داده شد و ورود امن شما تکمیل شد.'], 'از پنل پایین، گزارش‌های مالی و پیگیری‌های خود را مشاهده کنید.'), { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+          const customer = await getLinkedCustomer();
+          await showMainMenu(customer);
+          return;
+        }
+        await sendBotMessage(chatId, telegramCard('پرونده پیدا نشد', '⚠️', ['این شماره در پرونده مشتریان فروشگاه ثبت نشده است.'], 'لطفاً ابتدا شماره را در پرونده فروشگاه ثبت کنید و سپس دوباره تلاش کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+        return;
+      }
+
+      // If a QR link token is pending for this chat, verify phone and link without OTP when possible.
+      const pendingToken: any = await getPendingTelegramLinkTokenByChatId(chatId);
+      if (pendingToken?.id && pendingToken?.customer_id) {
+        const expected = pendingToken.expected_phone ? normalizeIranPhone(String(pendingToken.expected_phone)) : '';
+        if (expected && phone === expected) {
+          await linkCustomerTelegramById({ customerId: Number(pendingToken.customer_id), chatId, telegramUserId: fromId });
+          await markTelegramLinkTokenStatus(Number(pendingToken.id), 'used', { chatId, telegramUserId: fromId });
+          await sendBotMessage(chatId, '​', { reply_markup: { remove_keyboard: true }, parse_mode: undefined });
+          await sendBotMessage(chatId, telegramCard('ورود امن تکمیل شد', '✅', ['حساب تلگرام شما با موفقیت به پرونده فروشگاه متصل شد.'], 'از پنل پایین، گزارش‌های مالی و پیگیری‌های خود را مشاهده کنید.'), { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+          const customer = await getLinkedCustomer();
+          await showMainMenu(customer);
+          return;
+        }
+        // Mismatch: use OTP only if needed (send OTP to expected phone on file)
+        if (expected && phone !== expected) {
+          await markTelegramLinkTokenStatus(Number(pendingToken.id), 'await_otp', { chatId, telegramUserId: fromId, err: 'Phone mismatch' });
+          await sendBotMessage(chatId, `شماره ارسال‌شده با شماره ثبت‌شده در فروشگاه همخوانی ندارد.
+برای تأیید، کد پیامکی به شماره ${expected} ارسال می‌شود.`);
+          // fall-through to OTP flow but force OTP target to expected phone
+          // (we keep "phone" as the contact phone for logging, but OTP should go to expected)
+          // We'll overwrite below before sending.
+        }
+      }
+      if (customerCandidate?.id) {
+        const otpTarget = (typeof pendingToken !== 'undefined' && pendingToken?.id && pendingToken?.expected_phone && normalizeIranPhone(String(pendingToken.expected_phone)) && normalizeIranPhone(String(pendingToken.expected_phone)) !== phone)
+          ? normalizeIranPhone(String(pendingToken.expected_phone))
+          : phone;
+        const otp = generateOtp();
+        const ttlMin = await getOtpTtlMinutes();
+        const expiresAt = moment().add(ttlMin, 'minutes').toISOString();
+        const codeHash = hashOtp(otp);
+        await upsertTelegramLinkRequest({ phone: otpTarget, chatId, telegramUserId: fromId, codeHash, expiresAtISO: expiresAt });
+        const sms = await sendOtpSms(otpTarget, otp);
+        if (!sms?.success) {
+          await sendBotMessage(
+            chatId,
+            `ارسال پیامک تأیید با خطا در عملیات مواجه شد.
+${sms?.message || ''}
+
+اگر پیامک دریافت نشد، با فروشگاه تماس بگیرید.`
+          );
+          return;
+        }
+        await sendBotMessage(
+          chatId,
+          `کد تأیید برای شماره ${otpTarget} ارسال شد.
+لطفاً کد ۶ رقمی را همین‌جا ارسال کنید.
+(اعتبار: ${ttlMin} دقیقه)`
+        );
+        return;
+      }
+      await sendBotMessage(chatId, telegramCard('دسترسی فعال نشد', '🔒', ['این شماره موبایل در پرونده مشتریان یا همکاران فروشگاه ثبت نشده است.'], 'برای فعال‌سازی دستیار، شماره شما باید قبلاً در سیستم فروشگاه ثبت شده باشد.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+      return;
+    }
+    // OTP verification message (digits only)
+    if (/^\d{4,8}$/.test(msgText)) {
+      const pending = await getPendingTelegramLinkRequestByChatId(chatId);
+      if (!pending) {
+        await sendBotMessage(chatId, 'درخواست فعالی برای ورود پیدا نشد. لطفاً از منوی شروع دوباره استفاده کنید.');
+        return;
+      }
+      if (pending.telegram_user_id !== fromId) {
+        await sendBotMessage(chatId, 'این کد برای حساب دیگری صادر شده است. لطفاً ورود را دوباره شروع کنید.');
+        return;
+      }
+      if (pending.attempts >= TG_OTP_MAX_ATTEMPTS) {
+        await sendBotMessage(chatId, 'تعداد تلاش‌ها بیش از حد مجاز شد. لطفاً چند دقیقه بعد دوباره ورود را شروع کنید.');
+        return;
+      }
+      const ok = hashOtp(msgText) === String(pending.code_hash || '');
+      if (!ok) {
+        await bumpTelegramLinkRequestAttempt(pending.id, 'Invalid OTP');
+        await sendBotMessage(chatId, 'کد واردشده صحیح نیست. لطفاً دوباره تلاش کنید.');
+        return;
+      }
+      const linked = await linkCustomerTelegramByPhone({ phone: pending.phone, chatId, telegramUserId: fromId });
+      if (!linked.ok) {
+        await bumpTelegramLinkRequestAttempt(pending.id, 'Customer not found');
+        await sendBotMessage(
+          chatId,
+          'شماره شما در سیستم مشتریان پیدا نشد.\nلطفاً ابتدا در فروشگاه به‌عنوان مشتری ثبت شوید و دوباره /start کنید.'
+        );
+        return;
+      }
+      await markTelegramLinkRequestVerified(pending.id);
+      // If this OTP was triggered from a QR token flow, mark that token as used.
+      try {
+        const t = await getPendingTelegramLinkTokenByChatId(chatId);
+        if (t?.id) await markTelegramLinkTokenStatus(Number(t.id), 'used', { chatId, telegramUserId: fromId });
+      } catch {}
+      await sendBotMessage(chatId, telegramCard('ورود امن تکمیل شد', '✅', ['حساب تلگرام شما با موفقیت به پرونده فروشگاه متصل شد.'], 'از پنل پایین، گزارش‌های مالی و پیگیری‌های خود را مشاهده کنید.'), { reply_markup: buildMainReplyKeyboard(), parse_mode: 'HTML' });
+      // Show main menu right away
+      const customer = await getLinkedCustomer();
+      await showMainMenu(customer);
+      return;
+    }
+  } catch (e: any) {
+    try { console.error('[TelegramBot] handler failed:', e?.message || e); } catch {}
+    // never crash bot handler
+  }
+};
+app.post('/api/telegram/webhook', async (req: Request, res: Response) => {
+  // Always ack fast; handle asynchronously.
+  res.status(200).json({ ok: true });
+  try {
+    const settings = await getAllSettingsAsObject();
+    const secret = String((settings as any).telegram_webhook_secret || '').trim();
+    if (secret) {
+      const h = String(req.headers['x-telegram-bot-api-secret-token'] || '').trim();
+      if (h !== secret) return;
+    }
+    // Track last received update for Control Center
+    try { await updateSetting('telegram_last_webhook_at', moment().toISOString()); } catch {}
+    await handleTelegramUpdate(req.body || {});
+  } catch {
+    // swallow errors (webhook should never crash)
+  }
+});
+let telegramPollingStarted = false;
+let telegramPollingOffset: number | null = null;
+
+const SHOULD_LOG_EXTERNAL_ERRORS =
+  String(process.env.NODE_ENV || '').trim() === 'production' &&
+  String(process.env.EXTERNAL_SERVICE_LOGS || '').trim() === '1';
+
+const isTelegramWebhookUrlPublic = (urlRaw: string) => {
+  const url = String(urlRaw || '').trim().toLowerCase();
+  if (!url) return false;
+  if (!url.startsWith('https://')) return false;
+  return !(
+    url.includes('localhost') ||
+    url.includes('127.0.0.1') ||
+    url.includes('0.0.0.0') ||
+    url.includes('192.168.') ||
+    url.includes('10.0.') ||
+    url.includes('172.16.') ||
+    url.includes('172.17.') ||
+    url.includes('172.18.') ||
+    url.includes('172.19.') ||
+    url.includes('172.20.') ||
+    url.includes('172.21.') ||
+    url.includes('172.22.') ||
+    url.includes('172.23.') ||
+    url.includes('172.24.') ||
+    url.includes('172.25.') ||
+    url.includes('172.26.') ||
+    url.includes('172.27.') ||
+    url.includes('172.28.') ||
+    url.includes('172.29.') ||
+    url.includes('172.30.') ||
+    url.includes('172.31.')
+  );
+};
+
+const shouldUseTelegramPolling = async () => {
+  const settings = await getAllSettingsAsObject();
+  const mode = String((settings as any).telegram_update_mode || '').trim().toLowerCase();
+  const enabled = String((settings as any).telegram_polling_enabled ?? '').trim();
+  return mode === 'polling'
+    || enabled === '1'
+    || String(process.env.TELEGRAM_MODE || '').toLowerCase() === 'polling'
+    || String(process.env.TELEGRAM_POLLING || '').trim() === '1';
+};
+
+const autoConfigureTelegramUpdateMode = async () => {
+  const settings = await getAllSettingsAsObject().catch(() => ({} as any));
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  if (!botToken) return { changed: false, mode: 'disabled', reason: 'missing-token' };
+
+  const explicitMode = String((settings as any).telegram_update_mode || '').trim().toLowerCase();
+  const explicitPolling = String((settings as any).telegram_polling_enabled || '').trim() === '1';
+  if (explicitMode === 'webhook') return { changed: false, mode: 'webhook', reason: 'explicit-webhook' };
+  if (explicitMode === 'polling' || explicitPolling) return { changed: false, mode: 'polling', reason: 'explicit-polling' };
+
+  // Local Kourosh runs usually have no public HTTPS webhook. In that case
+  // Telegram will never deliver /start to the server, even though outbound
+  // sendMessage tests work. Auto-switch to polling unless a real public webhook
+  // is already configured.
+  const webhookInfo: any = await callTelegramBotApi(botToken, 'getWebhookInfo', {}).catch((e: any) => ({ success: false, message: e?.message || String(e || 'webhook-check-failed') }));
+  const webhookUrl = String(webhookInfo?.result?.url || '').trim();
+  if (isTelegramWebhookUrlPublic(webhookUrl)) {
+    return { changed: false, mode: 'webhook', reason: 'public-webhook', webhookUrl };
+  }
+
+  await callTelegramBotApi(botToken, 'deleteWebhook', { drop_pending_updates: false }).catch(() => null);
+  await updateSetting('telegram_update_mode', 'polling').catch(() => null);
+  await updateSetting('telegram_polling_enabled', '1').catch(() => null);
+  await resetTelegramCommandMenu(botToken).catch(() => null);
+  telegramLog('auto update mode: polling enabled', { webhookUrl: webhookUrl || null });
+  return { changed: true, mode: 'polling', reason: webhookUrl ? 'non-public-webhook' : 'empty-webhook', webhookUrl };
+};
+
+const startTelegramPolling = async () => {
+  if (telegramPollingStarted) return;
+  const settings = await getAllSettingsAsObject();
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  if (!botToken) return;
+  const usePolling = await shouldUseTelegramPolling();
+  if (!usePolling) return;
+  telegramPollingStarted = true;
+  try { if (SHOULD_LOG_EXTERNAL_ERRORS) console.log('[Telegram] polling started'); } catch {}
+  // restore offset from settings if present
+  const savedOffset = Number((settings as any).telegram_polling_offset || 0);
+  if (!Number.isNaN(savedOffset) && savedOffset > 0) telegramPollingOffset = savedOffset;
+  const loop = async () => {
+    try {
+      const s = await getAllSettingsAsObject();
+      setTelegramProxy((s as any).telegram_proxy);
+      const token = String((s as any).telegram_bot_token || '').trim();
+      if (!token) { telegramPollingStarted = false; return; }
+      const offsetParam = telegramPollingOffset ? `&offset=${telegramPollingOffset}` : '';
+      const url = `https://api.telegram.org/bot${token}/getUpdates?timeout=25${offsetParam}`;
+      const r = await fetch(url, { agent: getTelegramProxyAgentFromSettings(s) } as any);
+      const j: any = await r.json().catch(() => ({}));
+      if (j && j.ok === false) {
+        const desc = String(j.description || j.message || '').trim();
+        telegramLog('polling getUpdates rejected', { description: desc });
+        // Telegram returns 409 when a webhook is still active. This is the most
+        // common reason /start does nothing in local mode while sendMessage tests
+        // still work. Remove webhook and continue polling automatically.
+        if (desc.includes('409') || desc.toLowerCase().includes('webhook')) {
+          await callTelegramBotApi(token, 'deleteWebhook', { drop_pending_updates: false }).catch(() => null);
+          await updateSetting('telegram_update_mode', 'polling').catch(() => null);
+          await updateSetting('telegram_polling_enabled', '1').catch(() => null);
+        }
+      }
+      const updates: any[] = Array.isArray(j?.result) ? j.result : [];
+      for (const upd of updates) {
+        const id = Number(upd?.update_id);
+        if (!Number.isNaN(id)) telegramPollingOffset = id + 1;
+        await handleTelegramUpdate(upd);
+      }
+      // persist offset sometimes (best-effort)
+      if (telegramPollingOffset && updates.length) {
+        try {
+          await updateSetting('telegram_polling_offset', String(telegramPollingOffset));
+        } catch {}
+      }
+    } catch (e: any) {
+      try { if (SHOULD_LOG_EXTERNAL_ERRORS) console.error('[Telegram] polling loop error:', e?.message || e); } catch {}
+    } finally {
+      if (telegramPollingStarted) setTimeout(loop, 1200);
+    }
+  };
+  loop();
+};
+// Admin debug endpoints (optional but helpful)
+app.get('/api/telegram/debug/status', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botToken) return res.status(400).json({ success: false, message: 'telegram_bot_token تنظیم نشده است.' });
+
+    const [me, webhook, commandsDefault, commandsFa, commandsEn, menuButton] = await Promise.allSettled([
+      getTelegramBotInfo(botToken),
+      callTelegramBotApi(botToken, 'getWebhookInfo', {}),
+      callTelegramBotApi(botToken, 'getMyCommands', { scope: { type: 'default' } }),
+      callTelegramBotApi(botToken, 'getMyCommands', { scope: { type: 'default' }, language_code: 'fa' }),
+      callTelegramBotApi(botToken, 'getMyCommands', { scope: { type: 'default' }, language_code: 'en' }),
+      callTelegramBotApi(botToken, 'getChatMenuButton', {}),
+    ]);
+
+    const unwrap = (x: PromiseSettledResult<any>) => x.status === 'fulfilled' ? x.value : { success: false, message: String((x as any).reason?.message || (x as any).reason || 'failed') };
+    res.json({
+      success: true,
+      data: {
+        bot: unwrap(me),
+        webhook: unwrap(webhook),
+        commandsDefault: unwrap(commandsDefault),
+        commandsFa: unwrap(commandsFa),
+        commandsEn: unwrap(commandsEn),
+        menuButton: unwrap(menuButton),
+        local: {
+          updateMode: String((settings as any).telegram_update_mode || ''),
+          pollingEnabled: String((settings as any).telegram_polling_enabled || ''),
+          pollingStarted: telegramPollingStarted,
+          pollingOffset: telegramPollingOffset,
+          lastWebhookAt: String((settings as any).telegram_last_webhook_at || ''),
+        },
+      },
+    });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/admin/reset-bot-menu', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botToken) return res.status(400).json({ success: false, message: 'telegram_bot_token تنظیم نشده است.' });
+    const resetResults = await resetTelegramCommandMenu(botToken);
+    res.json({ success: true, message: 'منوی دستوری تلگرام پاک شد. حالا /start یا /restart را داخل ربات بزنید تا Reply Keyboard واقعی ساخته شود.', data: { resetResults } });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/admin/enable-polling', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botToken) return res.status(400).json({ success: false, message: 'telegram_bot_token تنظیم نشده است.' });
+
+    const deleteWebhook = await callTelegramBotApi(botToken, 'deleteWebhook', { drop_pending_updates: false });
+    await updateSetting('telegram_update_mode', 'polling');
+    await updateSetting('telegram_polling_enabled', '1');
+    const resetResults = await resetTelegramCommandMenu(botToken);
+    telegramPollingStarted = false;
+    await startTelegramPolling();
+
+    res.json({
+      success: true,
+      message: 'Polling فعال شد و webhook غیرفعال شد. حالا داخل تلگرام /start را بزنید.',
+      data: { deleteWebhook, resetResults, pollingStarted: telegramPollingStarted },
+    });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/admin/send-guest-menu-test', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const chatId = String(req.body?.chatId || req.query?.chatId || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'chatId الزامی است.' });
+    await ensureTelegramPersistentMenu().catch(() => {});
+    await sendBotMessage(chatId, telegramCard('پیش‌نمایش پنل تلگرام', '✨', ['پنل تلگرام با دکمه‌های پایین چت برای این کاربر ارسال شد.'], 'برای ورود امن، دکمه «📲 اتصال امن با شماره موبایل» را لمس کنید.'), { reply_markup: buildContactKeyboard(), parse_mode: 'HTML' });
+    res.json({ success: true, message: 'پیش‌نمایش پنل تلگرام ارسال شد.' });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/admin/send-real-menu', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const chatId = String(req.body?.chatId || req.query?.chatId || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'chatId الزامی است.' });
+    await ensureTelegramPersistentMenu().catch(() => {});
+    await handleTelegramUpdate({
+      update_id: Date.now(),
+      message: {
+        message_id: Date.now(),
+        chat: { id: chatId, type: 'private' },
+        from: { id: chatId, is_bot: false },
+        text: '/menu',
+        date: Math.floor(Date.now() / 1000),
+      },
+    });
+    res.json({ success: true, message: 'منوی واقعی بر اساس وضعیت همین chatId ارسال شد.' });
+  } catch (e) { next(e); }
+});
+
+
+app.post('/api/telegram/admin/send-customer-menu', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const chatId = String(req.body?.chatId || req.query?.chatId || '').trim();
+    const customerIdRaw = String(req.body?.customerId || req.query?.customerId || '').trim();
+    const phoneRaw = String(req.body?.phone || req.query?.phone || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'Chat ID الزامی است.' });
+    let customer: any = null;
+    if (customerIdRaw) {
+      customer = await getAsync(`SELECT id, fullName, phoneNumber FROM customers WHERE id=? LIMIT 1`, [Number(customerIdRaw)]);
+    } else if (phoneRaw) {
+      const normalizedPhone = normalizeIranPhone(phoneRaw);
+      const rows = await allAsync(`SELECT id, fullName, phoneNumber FROM customers WHERE COALESCE(phoneNumber,'') != ''`).catch(() => [] as any[]);
+      customer = (rows || []).find((r: any) => normalizeIranPhone(String(r?.phoneNumber || '')) === normalizedPhone) || null;
+    }
+    if (!customer?.id) return res.status(404).json({ success: false, message: 'مشتری با این شماره موبایل/شناسه پیدا نشد.' });
+    const customerId = Number(customer.id);
+
+    try {
+      await runAsync(
+        `UPDATE customers
+         SET telegramChatId=?, telegram_chat_id=?, telegram_user_id=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc'), telegram_opted_out=0
+         WHERE id=?`,
+        [chatId, chatId, chatId, customerId]
+      );
+    } catch {
+      await runAsync(`UPDATE customers SET telegramChatId=? WHERE id=?`, [chatId, customerId]);
+    }
+
+    // Prevent the same Telegram chat from also being treated as a partner.
+    await runAsync(`UPDATE partners SET telegramChatId=NULL WHERE telegramChatId=?`, [chatId]).catch(() => {});
+    await runAsync(`UPDATE partners SET telegram_chat_id=NULL WHERE telegram_chat_id=?`, [chatId]).catch(() => {});
+
+    await ensureTelegramPersistentMenu().catch(() => {});
+    await handleTelegramUpdate({
+      update_id: Date.now(),
+      message: {
+        message_id: Date.now(),
+        chat: { id: chatId, type: 'private' },
+        from: { id: chatId, is_bot: false },
+        text: '/menu',
+        date: Math.floor(Date.now() / 1000),
+      },
+    });
+
+    res.json({ success: true, message: `منوی واقعی مشتری برای ${customer.fullName || 'مشتری'} ارسال و همین Chat ID به پرونده مشتری وصل شد.` });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/admin/send-partner-menu', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const chatId = String(req.body?.chatId || req.query?.chatId || '').trim();
+    const partnerIdRaw = String(req.body?.partnerId || req.query?.partnerId || '').trim();
+    const phoneRaw = String(req.body?.phone || req.query?.phone || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'Chat ID الزامی است.' });
+    let partner: any = null;
+    if (partnerIdRaw) {
+      partner = await getAsync(`SELECT id, partnerName, phoneNumber FROM partners WHERE id=? LIMIT 1`, [Number(partnerIdRaw)]);
+    } else if (phoneRaw) {
+      const normalizedPhone = normalizeIranPhone(phoneRaw);
+      const rows = await allAsync(`SELECT id, partnerName, phoneNumber FROM partners WHERE COALESCE(phoneNumber,'') != ''`).catch(() => [] as any[]);
+      partner = (rows || []).find((r: any) => normalizeIranPhone(String(r?.phoneNumber || '')) === normalizedPhone) || null;
+    }
+    if (!partner?.id) return res.status(404).json({ success: false, message: 'همکار با این شماره موبایل/شناسه پیدا نشد.' });
+    const partnerId = Number(partner.id);
+
+    try {
+      await runAsync(
+        `UPDATE partners
+         SET telegramChatId=?, telegram_chat_id=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+         WHERE id=?`,
+        [chatId, chatId, partnerId]
+      );
+    } catch {
+      await runAsync(`UPDATE partners SET telegramChatId=?, telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [chatId, partnerId]).catch(async () => {
+        await runAsync(`UPDATE partners SET telegramChatId=? WHERE id=?`, [chatId, partnerId]);
+      });
+    }
+
+    // Prevent the same Telegram chat from also being treated as a customer.
+    await runAsync(`UPDATE customers SET telegramChatId=NULL WHERE telegramChatId=?`, [chatId]).catch(() => {});
+    await runAsync(`UPDATE customers SET telegram_chat_id=NULL, telegram_user_id=NULL WHERE telegram_chat_id=?`, [chatId]).catch(() => {});
+
+    await ensureTelegramPersistentMenu().catch(() => {});
+    await handleTelegramUpdate({
+      update_id: Date.now(),
+      message: {
+        message_id: Date.now(),
+        chat: { id: chatId, type: 'private' },
+        from: { id: chatId, is_bot: false },
+        text: '/menu',
+        date: Math.floor(Date.now() / 1000),
+      },
+    });
+
+    res.json({ success: true, message: `منوی واقعی همکار برای ${partner.partnerName || 'همکار'} ارسال و همین Chat ID به پرونده همکار وصل شد.` });
+  } catch (e) { next(e); }
+});
+
+// -----------------------------------------------------
+// Telegram One-tap Linking (QR) - Admin endpoints
+// -----------------------------------------------------
+app.get('/api/telegram/partner-deeplink/:partnerId', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const partnerId = Number(req.params.partnerId || 0);
+    if (!partnerId) return res.status(400).json({ success: false, message: 'partnerId الزامی است.' });
+    const partner = await getAsync(`SELECT id, partnerName, phoneNumber, telegramChatId FROM partners WHERE id=? LIMIT 1`, [partnerId]);
+    if (!partner) return res.status(404).json({ success: false, message: 'همکار پیدا نشد.' });
+    const settings = await getAllSettingsAsObject();
+    let botUsername = String((settings as any).telegram_bot_username || '').trim().replace(/^@+/, '');
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botUsername && botToken) {
+      try {
+        const me = await getTelegramBotInfo(botToken);
+        const fetchedUsername = String(
+          (me as any)?.result?.username ||
+          (me as any)?.data?.result?.username ||
+          (me as any)?.data?.username ||
+          ''
+        ).trim().replace(/^@+/, '');
+        if (fetchedUsername) {
+          botUsername = fetchedUsername;
+          await updateSetting('telegram_bot_username', fetchedUsername);
+        }
+      } catch (err: any) {
+        return res.status(502).json({
+          success: false,
+          message: err?.message || 'دریافت نام کاربری ربات از تلگرام عملیات ناعملیات با موفقیت انجام شد بود بود.'
+        });
+      }
+    }
+    if (!botUsername) {
+      return res.status(400).json({
+        success: false,
+        message: 'نام کاربری ربات تلگرام ثبت نشده است. در تنظیمات تلگرام، نام کاربری ربات را بدون @ وارد کنید.'
+      });
+    }
+    const deepLink = `https://t.me/${botUsername}?start=${encodeURIComponent(`partner_${partnerId}`)}`;
+    return res.json({
+      success: true,
+      data: {
+        partnerId,
+        partnerName: String((partner as any).partnerName || ''),
+        botUsername,
+        deepLink,
+        qrData: deepLink,
+        linked: !!(partner as any).telegramChatId,
+      },
+    });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/link-token', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const customerId = Number(req.body?.customerId || 0);
+    const minutes = Number(req.body?.expiresMinutes ?? 60);
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId الزامی است.' });
+    const created = await createTelegramLinkToken({ customerId, expiresMinutes: minutes });
+    const settings = await getAllSettingsAsObject();
+    const publicBase = String((settings as any).public_app_base_url || '').trim(); // e.g. https://your.app
+    let botUsername = String((settings as any).telegram_bot_username || '').trim().replace(/^@+/, '');
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botUsername && botToken) {
+      try {
+        const me = await getTelegramBotInfo(botToken);
+        const fetchedUsername = String((me as any)?.result?.username || '').trim().replace(/^@+/, '');
+        if (fetchedUsername) {
+          botUsername = fetchedUsername;
+          await updateSetting('telegram_bot_username', fetchedUsername);
+        }
+      } catch {}
+    }
+    const deepLink = botUsername ? `https://t.me/${botUsername}?start=link_${created.token}` : '';
+    res.json({ success: true, data: { token: created.token, deepLink, expiresAt: created.expiresAtISO, expectedPhone: created.expectedPhone, publicBase, botUsername } });
+  } catch (e) { next(e); }
+});
+app.get('/api/telegram/link-requests', authorizeRole(['Admin', 'Manager']), async (req, res, next) => {
+  try {
+    const rows = await allAsync(
+      `SELECT id, phone, chat_id, telegram_user_id, expires_at, attempts, status, created_at, verified_at, last_error
+       FROM telegram_link_requests
+       ORDER BY id DESC
+       LIMIT 200`,
+      []
+    );
+    res.json({ success: true, data: rows || [] });
+  } catch (e) {
+    next(e);
+  }
+});
+// -----------------------------------------------------
+// Reports: New executive-grade reports
+// -----------------------------------------------------
+app.get('/api/reports/inventory-turnover', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromISO, toISO } = req.query;
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'fromISO و toISO الزامی است.' });
+    const data = await getInventoryTurnoverReport(String(fromISO), String(toISO));
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/dead-stock', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const days = Number(req.query.days ?? 60);
+    const data = await getDeadStockReport(Math.max(1, days));
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/abc', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromISO, toISO, metric } = req.query;
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'fromISO و toISO الزامی است.' });
+    const m = (metric === 'profit' ? 'profit' : 'sales') as any;
+    const data = await getAbcReport(String(fromISO), String(toISO), m);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/aging-receivables', authorizeRole(REPORT_ROLES), async (_req, res, next) => {
+  try {
+    const data = await getAgingReceivablesReport();
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.get('/api/reports/cashflow', authorizeRole(REPORT_ROLES), async (req, res, next) => {
+  try {
+    const { fromISO, toISO, forecastDays } = req.query;
+    if (!fromISO || !toISO) return res.status(400).json({ success: false, message: 'fromISO و toISO الزامی است.' });
+    const fd = forecastDays ? Number(forecastDays) : 30;
+    const data = await getCashflowReport(String(fromISO), String(toISO), Math.max(1, Math.min(120, fd)));
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 16) پیامک رویدادی
+// =====================================================
+const makeCorrId = () => `sms_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+const makeUtcIsoTimestamp = () => new Date().toISOString();
+type SmsLogInsert = {
+  reqUser?: { id?: number; username?: string };
+  provider: string;
+  eventType?: string;
+  entityType?: string;
+  entityId?: number | null;
+  recipient: string;
+  eventKey?: string | null;
+  capCustomerId?: number | null;
+  patternId?: string;
+  tokens?: string[];
+  success: boolean;
+  response?: any;
+  error?: string;
+  request?: any;
+  httpStatus?: number;
+  rawResponseText?: string;
+  durationMs?: number;
+  correlationId?: string;
+  relatedLogId?: number;
+};
+const insertSmsLog = async (x: SmsLogInsert) => {
+  try {
+    await runAsync(
+      `INSERT INTO sms_logs (
+        createdAt,
+        createdByUserId,
+        createdByUsername,
+        provider,
+        eventType,
+        entityType,
+        entityId,
+        recipient,
+        patternId,
+        tokensJson,
+        success,
+        requestJson,
+        httpStatus,
+        rawResponseText,
+        durationMs,
+        correlationId,
+        responseJson,
+        error,
+        errorText,
+        relatedLogId
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        makeUtcIsoTimestamp(),
+        x.reqUser?.id ?? null,
+        x.reqUser?.username ?? null,
+        x.provider,
+        x.eventType ?? null,
+        x.entityType ?? null,
+        x.entityId ?? null,
+        x.recipient,
+        x.patternId ?? null,
+        x.tokens ? JSON.stringify(x.tokens) : null,
+        x.success ? 1 : 0,
+        x.request ? JSON.stringify(x.request) : null,
+        typeof x.httpStatus === 'number' ? x.httpStatus : null,
+        x.rawResponseText ?? null,
+        typeof x.durationMs === 'number' ? x.durationMs : null,
+        x.correlationId ?? null,
+        x.response ? JSON.stringify(x.response) : null,
+        x.error ?? null,
+        x.error ?? null,
+        x.relatedLogId ?? null,
+      ]
+    );
+  } catch (e) {
+    // don't break main flows
+    console.error('Failed to insert sms_logs:', e);
+  }
+};
+const inferEntityTypeFromEvent = (eventType?: string): string | undefined => {
+  if (!eventType) return undefined;
+  if (eventType.startsWith('INSTALLMENT')) return 'installment';
+  if (eventType.startsWith('REPAIR')) return 'repair';
+  if (eventType.startsWith('CHECK')) return 'check';
+  return undefined;
+};
+// ارسال بررسی پیامک (Pattern) - برای بررسی سریع تنظیمات
+// فعلاً فقط ملی پیامک (SendByBaseNumber2) به صورت پترن اجباری پشتیبانی می‌شود.
+app.post('/api/sms/check-pattern', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const { bodyId, to, tokens } = req.body || {};
+    const bid = Number(bodyId);
+    const recipient = String(to || '').trim();
+    const tokenArr: string[] = Array.isArray(tokens) ? tokens.map((x) => String(x ?? '')) : [];
+    if (!bid || isNaN(bid) || bid <= 0) {
+      return res.status(400).json({ success: false, message: 'شناسه پترن (BodyId) نامعتبر است.' });
+    }
+    if (!recipient || recipient.length < 10) {
+      return res.status(400).json({ success: false, message: 'شماره گیرنده نامعتبر است.' });
+    }
+    const settings = await getAllSettingsAsObject();
+    const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+    if (provider !== 'meli_payamak') {
+      return res.status(400).json({ success: false, message: 'ارسال بررسی در حال حاضر فقط برای «ملی پیامک» فعال است.' });
+    }
+    const username = settings.meli_payamak_username;
+    const password = settings.meli_payamak_password;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: 'نام کاربری/رمز عبور ملی پیامک در تنظیمات وارد نشده است.' });
+    }
+    const correlationId = makeCorrId();
+    const smsResult = await sendMeliPayamakPatternSms(recipient, bid, tokenArr, username, password);
+    const d: any = (smsResult as any)?.details || {};
+    await insertSmsLog({
+      correlationId,
+      reqUser: req.user,
+      provider,
+      eventType: 'TEST_PATTERN',
+      entityType: 'settings',
+      entityId: undefined,
+      recipient,
+      patternId: String(bid),
+      tokens: tokenArr,
+      success: !!smsResult?.success,
+      request: {
+        provider,
+        endpoint: d.endpoint || 'https://api.payamak-panel.com/post/send.asmx',
+        method: 'SendByBaseNumber2',
+        bodyId: String(bid),
+        to: recipient,
+        tokensCount: tokenArr.length,
+      },
+      httpStatus: typeof d.httpStatus === 'number' ? d.httpStatus : undefined,
+      rawResponseText: d.rawResponseText || undefined,
+      durationMs: typeof d.durationMs === 'number' ? d.durationMs : undefined,
+      response: smsResult,
+      error: smsResult?.success ? undefined : smsResult?.message,
+    });
+    if (smsResult?.success) {
+      return res.json({ success: true, message: 'پیامک بررسی ارسال شد.', data: smsResult });
+    }
+    // خطا در عملیاتهای برگشتی از سرویس پیامک (مثل BodyId نامعتبر، خطا در عملیاتی اعتبارسنجی، ...) خطا در عملیاتی سرور ما نیست.
+    // برای جلوگیری از نمایش «500» در مرورگر، همیشه 200 برگردانیم و success=false را اعلام کنیم.
+    return res.json({
+      success: false,
+      message: smsResult?.message || 'خطا در ارسال پیامک بررسی',
+      data: smsResult,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+// بررسی سلامت تنظیمات پیامک‌های پترنی (Health Check)
+// هدف: یک گزارش سریع از اینکه کدام پترن‌ها تنظیم شده‌اند/نیستند.
+app.get('/api/sms/health-check', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+    // فعلاً Health Check برای ملی پیامک (پترن) فعال است.
+    if (provider !== 'meli_payamak') {
+      return res.json({
+        success: false,
+        message: 'Health Check در حال حاضر فقط برای «ملی پیامک» فعال است.',
+        provider,
+        items: [],
+      });
+    }
+    const required = [
+      { key: 'meli_payamak_installment_settlement_pattern_id', label: 'تسویه اقساط', category: 'اقساط' },
+      { key: 'meli_payamak_installment_overdue_pattern_id', label: 'اطلاع‌رسانی دیرکرد اقساط', category: 'اقساط' },
+      { key: 'meli_payamak_installment_sale_created_pattern_id', label: 'ثبت فروش اقساطی', category: 'اقساط' },
+      { key: 'meli_payamak_installment_due_notice_pattern_id', label: 'سررسید قسط', category: 'اقساط' },
+      { key: 'meli_payamak_payment_confirmation_pattern_id', label: 'تأیید دریافت قسط', category: 'اقساط' },
+      { key: 'meli_payamak_repair_received_pattern_id', label: 'تأیید پذیرش گوشی تعمیری', category: 'تعمیرات' },
+      { key: 'meli_payamak_repair_cost_notice_pattern_id', label: 'اعلام هزینه', category: 'تعمیرات' },
+      { key: 'meli_payamak_repair_ready_pattern_id', label: 'گوشی تعمیری آماده تحویل', category: 'تعمیرات' },
+      { key: 'meli_payamak_repair_delivered_pattern_id', label: 'تحویل گوشی تعمیری', category: 'تعمیرات' },
+      { key: 'meli_payamak_repair_status_pattern_id', label: 'وضعیت تعمیرات', category: 'تعمیرات' },
+      { key: 'meli_payamak_account_balance_pattern_id', label: 'بدهی/طلب', category: 'حساب' },
+      { key: 'meli_payamak_check_failed_pattern_id', label: 'چک برگشتی', category: 'چک‌ها' },
+      { key: 'meli_payamak_invoice_created_pattern_id', label: 'ثبت فاکتور', category: 'فاکتورها' },
+      { key: 'meli_payamak_invoice_payment_received_pattern_id', label: 'پرداخت فاکتور ثبت شد', category: 'فاکتورها' },
+    ] as const;
+    const items = required.map((r) => {
+      const raw = String(settings[r.key] || '').trim();
+      const bodyId = raw ? Number(raw) : NaN;
+      const configured = Number.isFinite(bodyId) && bodyId > 0;
+      return {
+        key: r.key,
+        label: r.label,
+        category: r.category,
+        configured,
+        bodyId: configured ? bodyId : null,
+      };
+    });
+    const username = String(settings.meli_payamak_username || '').trim();
+    const password = String(settings.meli_payamak_password || '').trim();
+    const credsOk = !!(username && password);
+    return res.json({
+      success: true,
+      provider,
+      credsOk,
+      items,
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+// بررسی گروهی چند پترن انتخابی (Bulk Check)
+app.post('/api/sms/bulk-check', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+    if (provider !== 'meli_payamak') {
+      return res.status(400).json({ success: false, message: 'بررسی گروهی فعلاً فقط برای «ملی پیامک» فعال است.' });
+    }
+    const username = settings.meli_payamak_username;
+    const password = settings.meli_payamak_password;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: 'نام کاربری/رمز عبور ملی پیامک در تنظیمات وارد نشده است.' });
+    }
+    const { to, checks } = req.body || {};
+    const recipient = String(to || '').trim();
+    if (!recipient || recipient.length < 10) {
+      return res.status(400).json({ success: false, message: 'شماره گیرنده نامعتبر است.' });
+    }
+    const arr: any[] = Array.isArray(checks) ? checks : [];
+    if (!arr.length) {
+      return res.status(400).json({ success: false, message: 'هیچ پیامکی برای بررسی انتخاب نشده است.' });
+    }
+    const results: any[] = [];
+    for (const t of arr) {
+      const bodyId = Number(t?.bodyId);
+      const key = String(t?.key || '').trim();
+      const label = String(t?.label || key || 'پیامک');
+      const tokenArr: string[] = Array.isArray(t?.tokens) ? t.tokens.map((x: any) => String(x ?? '')) : [];
+      if (!bodyId || isNaN(bodyId) || bodyId <= 0) {
+        results.push({ key, label, bodyId, success: false, message: 'BodyId نامعتبر است.' });
+        continue;
+      }
+      const smsResult = await sendMeliPayamakPatternSms(recipient, bodyId, tokenArr, username, password);
+      await insertSmsLog({
+        reqUser: req.user,
+        provider,
+        eventType: 'TEST_BULK',
+        entityType: 'settings',
+        recipient,
+        patternId: String(bodyId),
+        tokens: tokenArr,
+        success: !!smsResult?.success,
+        response: smsResult,
+        error: smsResult?.success ? undefined : smsResult?.message,
+      });
+      results.push({
+        key,
+        label,
+        bodyId,
+        success: !!smsResult?.success,
+        message: smsResult?.success ? 'ارسال شد' : (smsResult?.message || 'عملیات ناعملیات با موفقیت انجام شد بود'),
+        data: smsResult,
+      });
+    }
+    return res.json({ success: true, provider, to: recipient, results });
+  } catch (e) {
+    next(e);
+  }
+});
+// =====================================================
+// Notification Outbox (Queue/Retry) + Auto-Send Rules
+// =====================================================
+type OutboxStatus = 'pending' | 'processing' | 'done' | 'failed';
+type OutboxChannel = 'sms' | 'telegram';
+type OutboxRow = {
+  id: number;
+  channel: OutboxChannel;
+  provider?: string | null;
+  eventType?: string | null;
+  entityType?: string | null;
+  entityId?: number | null;
+  recipient: string;
+  payloadJson: string;
+  status: OutboxStatus;
+  attempts: number;
+  maxAttempts: number;
+  nextAttemptAt?: string | null;
+  lastError?: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+const ensureNotificationOutboxTables = async () => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS notification_outbox (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      channel TEXT NOT NULL,
+      provider TEXT,
+      eventType TEXT,
+      entityType TEXT,
+      entityId INTEGER,
+      recipient TEXT NOT NULL,
+      payloadJson TEXT NOT NULL,
+      eventKey TEXT,
+      capCustomerId INTEGER,
+      status TEXT NOT NULL DEFAULT 'pending',
+      attempts INTEGER NOT NULL DEFAULT 0,
+      maxAttempts INTEGER NOT NULL DEFAULT 6,
+      nextAttemptAt TEXT,
+      lastError TEXT,
+      supportStatus TEXT,
+      supportNote TEXT,
+      supportUpdatedAt TEXT,
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      updatedAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+  // Lightweight migrations for older DBs (SQLite doesn't support IF NOT EXISTS on ADD COLUMN).
+  try {
+    const cols = await allAsync(`PRAGMA table_info(notification_outbox)`);
+    const has = (name: string) => (cols || []).some((c: any) => String(c?.name) === name);
+    if (!has('supportStatus')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN supportStatus TEXT`).catch(() => {});
+    if (!has('supportNote')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN supportNote TEXT`).catch(() => {});
+    if (!has('supportUpdatedAt')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN supportUpdatedAt TEXT`).catch(() => {});
+    if (!has('eventKey')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN eventKey TEXT`).catch(() => {});
+    if (!has('capCustomerId')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN capCustomerId INTEGER`).catch(() => {});
+    if (!has('telegramMessageId')) await runAsync(`ALTER TABLE notification_outbox ADD COLUMN telegramMessageId INTEGER`).catch(() => {});
+  } catch {
+    // ignore
+  }
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS notification_sent_log (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      dayKey TEXT NOT NULL,
+      channel TEXT NOT NULL,
+      eventType TEXT,
+      entityType TEXT,
+      entityId INTEGER,
+      recipient TEXT,
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+  await runAsync(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_notification_sent_dedupe
+    ON notification_sent_log(dayKey, channel, eventType, entityType, entityId, recipient);
+  `);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS notification_event_dedupe (
+      eventKey TEXT PRIMARY KEY,
+      lastQueuedAt TEXT,
+      lastSentAt TEXT
+    );
+  `);
+  await runAsync(`CREATE INDEX IF NOT EXISTS idx_notification_event_dedupe_lastQueued ON notification_event_dedupe(lastQueuedAt);`);
+};
+// =====================================================
+// Reminder Rules (CRM-style Rule Builder for Installments)
+// =====================================================
+type ReminderMatchType = 'days_until' | 'overdue_days';
+type ReminderChannel = 'telegram' | 'sms';
+type ReminderTargetType = 'both' | 'installment' | 'check';
+type ReminderRuleRow = {
+  id: number;
+  name: string;
+  enabled: number;
+  channel: ReminderChannel;
+  matchType: ReminderMatchType;
+  value: number;
+  template: string;
+  installmentTemplate?: string;
+  checkTemplate?: string;
+  targetType?: ReminderTargetType;
+  createdAt: string;
+  updatedAt: string;
+  matchedCount?: number;
+};
+type ReminderConfigRow = {
+  id: number;
+  sendStartHour: number;
+  sendEndHour: number;
+  maxPerDayPerCustomer: number;
+  timezone: string;
+};
+const ensureReminderRulesTables = async () => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS reminder_config (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      sendStartHour INTEGER NOT NULL DEFAULT 10,
+      sendEndHour INTEGER NOT NULL DEFAULT 21,
+      maxPerDayPerCustomer INTEGER NOT NULL DEFAULT 1,
+      timezone TEXT NOT NULL DEFAULT 'Asia/Tehran',
+      updatedAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+  await runAsync(`INSERT OR IGNORE INTO reminder_config (id) VALUES (1);`);
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS reminder_rules (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      enabled INTEGER NOT NULL DEFAULT 1,
+      channel TEXT NOT NULL DEFAULT 'telegram',
+      matchType TEXT NOT NULL,
+      value INTEGER NOT NULL,
+      template TEXT NOT NULL,
+      installmentTemplate TEXT,
+      checkTemplate TEXT,
+      targetType TEXT NOT NULL DEFAULT 'both',
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      updatedAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+  try {
+    const cols: any[] = await allAsync(`PRAGMA table_info(reminder_rules)`).catch(() => []);
+    const has = (name: string) => cols.some((c: any) => String(c?.name || '').toLowerCase() === name.toLowerCase());
+    if (!has('installmentTemplate')) await runAsync(`ALTER TABLE reminder_rules ADD COLUMN installmentTemplate TEXT`).catch(() => {});
+    if (!has('checkTemplate')) await runAsync(`ALTER TABLE reminder_rules ADD COLUMN checkTemplate TEXT`).catch(() => {});
+    if (!has('targetType')) await runAsync(`ALTER TABLE reminder_rules ADD COLUMN targetType TEXT NOT NULL DEFAULT 'both'`).catch(() => {});
+  } catch {}
+  // Daily cap log (successful sends)
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS reminder_daily_cap (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      dayKey TEXT NOT NULL,
+      channel TEXT NOT NULL,
+      customerId INTEGER NOT NULL,
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      UNIQUE(dayKey, channel, customerId)
+    );
+  `);
+};
+const getReminderConfig = async (): Promise<ReminderConfigRow> => {
+  const row = await getAsync(`SELECT * FROM reminder_config WHERE id=1 LIMIT 1`, []).catch(() => null);
+  return {
+    id: 1,
+    sendStartHour: Number(row?.sendStartHour ?? 10),
+    sendEndHour: Number(row?.sendEndHour ?? 21),
+    maxPerDayPerCustomer: Math.max(1, Number(row?.maxPerDayPerCustomer ?? 1)),
+    timezone: String(row?.timezone || 'Asia/Tehran'),
+  };
+};
+const getReminderRules = async (): Promise<ReminderRuleRow[]> => {
+  const rows = await allAsync(`SELECT * FROM reminder_rules ORDER BY id DESC`, []).catch(() => []);
+  return (rows || []) as any;
+};
+const getEnabledReminderRules = async (channel: ReminderChannel): Promise<ReminderRuleRow[]> => {
+  const rows = await allAsync(
+    `SELECT * FROM reminder_rules WHERE enabled=1 AND channel=? ORDER BY id ASC`,
+    [channel]
+  ).catch(() => []);
+  return (rows || []) as any;
+};
+const normalizeReminderTargetType = (value: any): ReminderTargetType => {
+  const v = String(value || '').trim();
+  if (v === 'installment' || v === 'check' || v === 'both') return v as ReminderTargetType;
+  return 'both';
+};
+const reminderTargetsInstallments = (rule: Pick<ReminderRuleRow, 'targetType'>) => normalizeReminderTargetType((rule as any).targetType) !== 'check';
+const reminderTargetsChecks = (rule: Pick<ReminderRuleRow, 'targetType'>) => normalizeReminderTargetType((rule as any).targetType) !== 'installment';
+const countRuleMatches = async (rule: Pick<ReminderRuleRow, 'matchType' | 'value'>): Promise<number> => {
+  const now = moment();
+  const today = now.clone().startOf('day');
+  const allUnpaid = await getOverdueInstallmentsFromDb();
+  const allChecks = await getPendingInstallmentChecksWithCustomer().catch(() => []);
+  const matchedCustomerIds = new Set<number>();
+  const scanDueItems = (items: any[] | undefined) => {
+    for (const item of items || []) {
+      const due = parseAnyDate(item?.dueDate);
+      if (!due) continue;
+      const daysUntil = due.clone().startOf('day').diff(today, 'days');
+      const matched = rule.matchType === 'days_until'
+        ? Number(daysUntil) === Number(rule.value)
+        : Number(daysUntil) === -Math.abs(Number(rule.value));
+      if (!matched) continue;
+      const customerId = Number(item?.customerId || 0);
+      if (customerId > 0) matchedCustomerIds.add(customerId);
+    }
+  };
+  if (reminderTargetsInstallments(rule as any)) scanDueItems(allUnpaid as any[]);
+  if (reminderTargetsChecks(rule as any)) scanDueItems(allChecks as any[]);
+  return matchedCustomerIds.size;
+};
+// Store dayKey in UTC to match createdAt timestamps (which are saved in UTC).
+const getDayKeyUtc = () => moment().utc().format('YYYY-MM-DD');
+const hasCustomerDailyCap = async (channel: ReminderChannel, customerId: number) => {
+  const dayKey = getDayKeyUtc();
+  const row = await getAsync(
+    `SELECT 1 as ok FROM reminder_daily_cap WHERE dayKey=? AND channel=? AND customerId=? LIMIT 1`,
+    [dayKey, channel, customerId]
+  ).catch(() => null);
+  return !!row;
+};
+const hasPendingCustomerCapInOutbox = async (channel: ReminderChannel, customerId: number) => {
+  // Prevent enqueue spam before success is logged.
+  const dayKey = getDayKeyUtc();
+  const row = await getAsync(
+    `SELECT 1 as ok
+       FROM notification_outbox
+      WHERE channel=?
+        AND status IN ('pending','processing')
+        AND createdAt >= ?
+        AND IFNULL(capCustomerId,0)=?
+      LIMIT 1`,
+    [channel, `${dayKey}T00:00:00Z`, customerId]
+  ).catch(() => null);
+  return !!row;
+};
+// =====================================================
+// Telegram Inbox (Webhook/Polling received messages)
+// =====================================================
+const ensureTelegramInboxTable = async () => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS telegram_inbox (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      chatId TEXT,
+      fromId TEXT,
+      kind TEXT,
+      text TEXT,
+      payloadJson TEXT,
+      createdAt TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc'))
+    );
+  `);
+};
+const ensureCustomerTelegramColumns = async () => {
+  // Be defensive across older DB versions
+  const addCol = async (sql: string) => { try { await runAsync(sql); } catch {} };
+  // Some DBs already use camelCase (telegramChatId). We keep both to stay compatible.
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_chat_id TEXT`);
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_user_id TEXT`);
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_linked_at TEXT`);
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_opted_out INTEGER DEFAULT 0`);
+  // Invalid/blocked chats (auto-mark when user blocks bot)
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_invalid INTEGER DEFAULT 0`);
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_invalid_reason TEXT`);
+  await addCol(`ALTER TABLE customers ADD COLUMN telegram_invalid_at TEXT`);
+};
+const getExistingCustomerColumns = async (): Promise<Set<string>> => {
+  try {
+    const cols: any[] = await allAsync(`PRAGMA table_info(customers)`);
+    return new Set((cols || []).map((c: any) => String(c?.name || '').trim()).filter(Boolean));
+  } catch {
+    return new Set();
+  }
+};
+const buildCustomerTelegramLinkedWhereSql = (cols: Set<string>): string => {
+  const candidates = ['telegram_chat_id', 'telegramChatId'].filter((c) => cols.has(c));
+  if (!candidates.length) return `1=0`;
+  const nonEmpty = candidates.map((c) => `( ${c} IS NOT NULL AND TRIM(${c}) <> '' )`);
+  return `(${nonEmpty.join(' OR ')})`;
+};
+const computeNextAttemptISO = (attempts: number) => {
+  // 30s, 60s, 120s, 240s, 480s, 600s (cap 10 min)
+  const base = 30;
+  const sec = Math.min(base * Math.pow(2, Math.max(0, attempts)), 600);
+  return moment().add(sec, 'seconds').toISOString();
+};
+const getTelegramAudienceKey = (baseKey: string, audience: 'customer' | 'partner' | 'manager') => (
+  audience === 'customer' ? baseKey : `${baseKey}_${audience}`
+);
+const getTelegramAudienceFormatKey = (baseKey: string, audience: 'customer' | 'partner' | 'manager') => (
+  audience === 'customer' ? `${baseKey}_format` : `${baseKey}_${audience}_format`
+);
+const TELEGRAM_AUDIENCE_FALLBACKS: Record<string, { partner?: string; manager?: string }> = {
+  telegram_installment_settlement_message: {
+    partner: 'همکار گرامی، پرونده اقساط مشتری {name} به‌صورت کامل تسویه شد. شماره قرارداد: {saleId}. مبلغ کل پرونده: {total} تومان.',
+    manager: 'گزارش مدیریتی اقساط: پرونده مشتری {name} با شماره قرارداد {saleId} به‌طور کامل تسویه شد. جمع کل: {total} تومان.',
+  },
+  telegram_installment_overdue_message: {
+    partner: 'یادآوری پیگیری: قسط مشتری {name} با مبلغ {amount} تومان و سررسید {dueDate} هنوز پرداخت نشده است. لطفاً پیگیری لازم انجام شود.',
+    manager: 'هشدار مدیریتی اقساط: قسط معوق برای مشتری {name} | سررسید: {dueDate} | مبلغ: {amount} تومان.',
+  },
+  telegram_installment_sale_created_message: {
+    partner: 'ثبت فروش اقساطی جدید برای مشتری {name}. قرارداد {saleId} با مبلغ کل {total} تومان در سیستم ثبت شد.',
+    manager: 'گزارش فروش اقساطی: قرارداد {saleId} برای مشتری {name} با مبلغ کل {total} تومان ثبت شد.',
+  },
+  telegram_installment_due_notice_message: {
+    partner: 'پیگیری اقساط: مشتری {name} در تاریخ {dueDate} سررسید پرداخت به مبلغ {amount} تومان دارد.',
+    manager: 'گزارش سررسید اقساط: مشتری {name} | سررسید {dueDate} | مبلغ {amount} تومان.',
+  },
+  telegram_installment_payment_received_message: {
+    partner: 'پرداخت قسط مشتری {name} به مبلغ {amount} تومان ثبت شد. لطفاً وضعیت پرونده را بررسی کنید.',
+    manager: 'گزارش دریافت قسط: مشتری {name} مبلغ {amount} تومان پرداخت کرد.',
+  },
+  telegram_repair_received_message: {
+    partner: 'پذیرش تعمیر ثبت شد: مشتری {name} | دستگاه {deviceModel} | کد رهگیری {repairId}.',
+    manager: 'گزارش پذیرش تعمیر: {deviceModel} برای مشتری {name} با کد {repairId} ثبت شد.',
+  },
+  telegram_repair_cost_notice_message: {
+    partner: 'هزینه تعمیر برای دستگاه {deviceModel} مشتری {name} مبلغ {estimatedCost} تومان برآورد شد. منتظر تأیید مشتری بمانید.',
+    manager: 'گزارش هزینه تعمیر: مشتری {name} | دستگاه {deviceModel} | برآورد {estimatedCost} تومان.',
+  },
+  telegram_repair_ready_message: {
+    partner: 'دستگاه {deviceModel} مشتری {name} آماده تحویل شد. مبلغ قابل پرداخت: {finalCost} تومان.',
+    manager: 'گزارش آماده تحویل: مشتری {name} | دستگاه {deviceModel} | مبلغ نهایی {finalCost} تومان.',
+  },
+  telegram_repair_delivered_message: {
+    partner: 'تحویل تعمیر انجام شد: دستگاه {deviceModel} مشتری {name} با کد {repairId} تحویل گردید.',
+    manager: 'گزارش تحویل تعمیر: مشتری {name} | دستگاه {deviceModel} | رسید {repairId}.',
+  },
+  telegram_repair_status_message: {
+    partner: 'وضعیت تعمیر به‌روزرسانی شد: مشتری {name} | دستگاه {deviceModel} | وضعیت {status}.',
+    manager: 'گزارش وضعیت تعمیر: {deviceModel} مشتری {name} اکنون در وضعیت {status} قرار دارد.',
+  },
+  telegram_account_balance_message: {
+    partner: 'وضعیت حساب مشتری {name}: {status} {amount} تومان. لطفاً در پیگیری‌های مالی لحاظ شود.',
+    manager: 'گزارش حساب مشتری: {name} | {status} | مبلغ {amount} تومان.',
+  },
+  telegram_check_failed_message: {
+    partner: 'پیگیری مالی: چک مشتری {name} در تاریخ {dueDate} عملیات ناعملیات با موفقیت انجام شد بود شد. مبلغ: {amount} تومان.',
+    manager: 'هشدار مدیریتی چک: مشتری {name} | تاریخ {dueDate} | مبلغ {amount} تومان | وضعیت عملیات ناعملیات با موفقیت انجام شد بود.',
+  },
+  telegram_invoice_created_message: {
+    partner: 'فاکتور جدید برای مشتری {name} ثبت شد. شماره فاکتور {invoiceNo} با مبلغ {total} تومان.',
+    manager: 'گزارش ثبت فاکتور: مشتری {name} | فاکتور {invoiceNo} | مبلغ {total} تومان.',
+  },
+  telegram_invoice_payment_received_message: {
+    partner: 'پرداخت فاکتور ثبت شد: مشتری {name} | فاکتور {invoiceNo} | مبلغ {amount} تومان.',
+    manager: 'گزارش دریافت وجه: مشتری {name} | فاکتور {invoiceNo} | مبلغ {amount} تومان.',
+  },
+};
+const getTelegramTemplateForAudience = (
+  settings: Record<string, any>,
+  baseKey: string,
+  audience: 'customer' | 'partner' | 'manager',
+  customerFallback: string,
+) => {
+  const audienceKey = getTelegramAudienceKey(baseKey, audience);
+  const raw = String((settings as any)?.[audienceKey] || '').trim();
+  if (raw) {
+    return {
+      template: raw,
+      parseMode: String((settings as any)?.[getTelegramAudienceFormatKey(baseKey, audience)] || (settings as any)?.[`${baseKey}_format`] || (audience === 'manager' ? 'html' : 'text')).trim() || (audience === 'manager' ? 'html' : 'text'),
+    };
+  }
+  if (audience === 'customer') {
+    return {
+      template: String((settings as any)?.[baseKey] || customerFallback || '').trim() || customerFallback,
+      parseMode: String((settings as any)?.[`${baseKey}_format`] || 'text').trim() || 'text',
+    };
+  }
+  return {
+    template: TELEGRAM_AUDIENCE_FALLBACKS[baseKey]?.[audience] || '',
+    parseMode: String((settings as any)?.[getTelegramAudienceFormatKey(baseKey, audience)] || (audience === 'manager' ? 'html' : 'text')).trim() || (audience === 'manager' ? 'html' : 'text'),
+  };
+};
+const lookupCustomerTelegramChatId = async (customerId: number): Promise<string> => {
+  if (!customerId) return '';
+  try {
+    await ensureCustomerTelegramColumns();
+    const row: any = await getAsync(
+      `SELECT COALESCE(telegram_chat_id, telegramChatId) AS tg_chat_id FROM customers WHERE id=? LIMIT 1`,
+      [customerId]
+    );
+    return String(row?.tg_chat_id || '').trim();
+  } catch {
+    return '';
+  }
+};
+const lookupPartnerTelegramChatId = async (partnerId: number): Promise<string> => {
+  if (!partnerId) return '';
+  try {
+    const cols: any[] = await allAsync(`PRAGMA table_info(partners)`);
+    const names = new Set((cols || []).map((c: any) => String(c?.name || '').trim()));
+    const chatCol = names.has('telegram_chat_id') ? 'telegram_chat_id' : (names.has('telegramChatId') ? 'telegramChatId' : '');
+    if (!chatCol) return '';
+    const row: any = await getAsync(`SELECT ${chatCol} AS tg_chat_id FROM partners WHERE id=? LIMIT 1`, [partnerId]);
+    return String(row?.tg_chat_id || '').trim();
+  } catch {
+    return '';
+  }
+};
+const normalizeTelegramParseMode = (value: any): 'HTML' | 'Markdown' | 'MarkdownV2' => {
+  const v = String(value || 'text').trim().toLowerCase();
+  if (v === 'html') return 'HTML';
+  if (v === 'markdownv2') return 'MarkdownV2';
+  if (v === 'markdown') return 'Markdown';
+  return 'HTML';
+};
+const enqueueTelegramAudienceCopies = async (opts: {
+  settings: Record<string, any>;
+  eventType: string;
+  baseKey: string;
+  customerFallback: string;
+  vars: Record<string, any>;
+  topic: 'reports' | 'installments' | 'sales' | 'notifications';
+  entityType: string;
+  entityId: number;
+}) => {
+  const partnerCfg = getTelegramTemplateForAudience(opts.settings, opts.baseKey, 'partner', opts.customerFallback);
+  const managerCfg = getTelegramTemplateForAudience(opts.settings, opts.baseKey, 'manager', opts.customerFallback);
+  const partnerText = safeReplaceTemplate(String(partnerCfg.template || '').trim(), opts.vars);
+  const managerText = safeReplaceTemplate(String(managerCfg.template || '').trim(), opts.vars);
+  if (partnerText) {
+    await enqueueTelegramToTopicTargets(opts.topic, `${opts.eventType}_PARTNER`, partnerText, {
+      entityType: opts.entityType,
+      entityId: opts.entityId,
+    });
+  }
+  if (managerText) {
+    await enqueueTelegramToTopicTargets('notifications', `${opts.eventType}_MANAGER`, managerText, {
+      entityType: opts.entityType,
+      entityId: opts.entityId,
+    });
+  }
+};
+const didSendToday = async (row: { channel: OutboxChannel; eventType?: string | null; entityType?: string | null; entityId?: number | null; recipient?: string | null; }) => {
+  await ensureNotificationOutboxTables();
+  const dayKey = moment().format('YYYY-MM-DD');
+  const exists = await getAsync(
+    `SELECT id FROM notification_sent_log WHERE dayKey=? AND channel=? AND IFNULL(eventType,'')=? AND IFNULL(entityType,'')=? AND IFNULL(entityId,0)=? AND IFNULL(recipient,'')=? LIMIT 1`,
+    [dayKey, row.channel, row.eventType ?? '', row.entityType ?? '', Number(row.entityId ?? 0), row.recipient ?? '']
+  );
+  return !!exists;
+};
+const markSentToday = async (row: { channel: OutboxChannel; eventType?: string | null; entityType?: string | null; entityId?: number | null; recipient?: string | null; }) => {
+  await ensureNotificationOutboxTables();
+  const dayKey = moment().format('YYYY-MM-DD');
+  try {
+    await runAsync(
+      `INSERT OR IGNORE INTO notification_sent_log (dayKey, channel, eventType, entityType, entityId, recipient) VALUES (?,?,?,?,?,?)`,
+      [dayKey, row.channel, row.eventType ?? null, row.entityType ?? null, row.entityId ?? null, row.recipient ?? null]
+    );
+  } catch (e: any) {
+    try { console.error('Telegram sendMessage failed:', e?.message || e); } catch {}
+  }
+};
+const enqueueOutbox = async (opts: {
+  channel: OutboxChannel;
+  provider?: string | null;
+  eventType?: string | null;
+  entityType?: string | null;
+  entityId?: number | null;
+  recipient: string;
+  payload: any;
+  dedupeToday?: boolean;
+  maxAttempts?: number;
+  // stronger dedupe for event-id
+  dedupeEventWindowHours?: number;
+  skipCustomerRateLimit?: boolean;
+  skipInvalidChatCheck?: boolean;
+}) => {
+  await ensureNotificationOutboxTables();
+  const payloadObj: any = opts.payload ?? {};
+  const capCustomerId = Number(payloadObj?.capCustomerId ?? payloadObj?.meta?.capCustomerId ?? 0) || null;
+  // stop enqueue if customer was marked invalid/blocked
+  if (opts.channel === 'telegram' && capCustomerId && !opts.skipInvalidChatCheck) {
+    const ok = await ensureCustomerIsNotInvalid(capCustomerId);
+    if (!ok) return { queued: false, reason: 'invalid_chat' as const };
+  }
+  // Dedupe within today (legacy)
+  if (opts.dedupeToday) {
+    const already = await didSendToday({
+      channel: opts.channel,
+      eventType: opts.eventType,
+      entityType: opts.entityType,
+      entityId: opts.entityId,
+      recipient: opts.recipient,
+    });
+    if (already) return { queued: false, reason: 'deduped' as const };
+  }
+  // Stronger dedupe by eventKey in a moving window
+  const eventKey = `${opts.channel}|${String(opts.eventType ?? '')}|${String(opts.entityType ?? '')}|${String(opts.entityId ?? '')}|${String(opts.recipient ?? '')}`;
+  const windowH = Number(opts.dedupeEventWindowHours ?? 0);
+  if (Number.isFinite(windowH) && windowH > 0) {
+    try {
+      const since = moment().utc().subtract(windowH, 'hours').toISOString();
+      const row = await getAsync(`SELECT lastQueuedAt FROM notification_event_dedupe WHERE eventKey=? LIMIT 1`, [eventKey]).catch(() => null);
+      const lastQ = String(row?.lastQueuedAt || '').trim();
+      if (lastQ && lastQ >= since) {
+        return { queued: false, reason: 'deduped_event' as const };
+      }
+      await runAsync(
+        `INSERT INTO notification_event_dedupe (eventKey, lastQueuedAt, lastSentAt)
+         VALUES (?,?,NULL)
+         ON CONFLICT(eventKey) DO UPDATE SET lastQueuedAt=excluded.lastQueuedAt`,
+        [eventKey, moment().utc().toISOString()]
+      ).catch(() => {});
+    } catch {
+      // ignore
+    }
+  }
+  // Rate limit per customer/day (global).
+  if (opts.channel === 'telegram' && capCustomerId && !opts.skipCustomerRateLimit) {
+    try {
+      const settings = await getAllSettingsAsObject();
+      const maxPerDay = Number((settings as any).telegram_max_per_day_per_customer ?? 1);
+      if (Number.isFinite(maxPerDay) && maxPerDay > 0) {
+        // For now: enforce 1/day (CRM-like). If you want N/day later, we can add counters.
+        const sent = await hasCustomerDailyCap('telegram', capCustomerId);
+        const pending = await hasPendingCustomerCapInOutbox('telegram', capCustomerId);
+        if (sent || pending) return { queued: false, reason: 'rate_limited' as const };
+      }
+    } catch {
+      // ignore
+    }
+  }
+  const payloadJson = JSON.stringify(payloadObj);
+  const r = await runAsync(
+    `INSERT INTO notification_outbox (channel, provider, eventType, entityType, entityId, recipient, payloadJson, eventKey, capCustomerId, status, attempts, maxAttempts, nextAttemptAt)
+     VALUES (?,?,?,?,?,?,?,?,?,'pending',0,?,?)`,
+    [
+      opts.channel,
+      opts.provider ?? null,
+      opts.eventType ?? null,
+      opts.entityType ?? null,
+      opts.entityId ?? null,
+      opts.recipient,
+      payloadJson,
+      eventKey,
+      capCustomerId,
+      Number(opts.maxAttempts ?? 6),
+      moment().toISOString(),
+    ]
+  );
+  return { queued: true, id: r?.lastID as number };
+};
+const trySendTelegramNow = async (
+  text: string,
+  chatIdOverride?: string | null,
+  opts?: { replyMarkup?: any; parseMode?: 'HTML' | 'MarkdownV2' | 'Markdown' }
+) => {
+  const settings = await getAllSettingsAsObject();
+  // Optional proxy (e.g. socks5://127.0.0.1:10808 for v2rayN)
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  const chatId = String((chatIdOverride && String(chatIdOverride).trim()) || (settings as any).telegram_chat_id || '').trim();
+  if (!botToken || !chatId) return { success: false, message: 'توکن ربات یا Chat ID تلگرام تنظیم نشده است.' };
+  return await sendTelegramMessage(botToken, chatId, text, {
+    parseMode: opts?.parseMode || 'HTML',
+    replyMarkup: opts?.replyMarkup,
+    disableWebPreview: true,
+  });
+};
+const trySendTelegramMediaNow = async (
+  type: 'photo' | 'document',
+  fileRelPath: string,
+  caption: string,
+  chatIdOverride?: string | null,
+  opts?: { replyMarkup?: any; parseMode?: 'HTML' | 'MarkdownV2' | 'Markdown'; replyToMessageId?: number; mimeType?: string }
+) => {
+  const settings = await getAllSettingsAsObject();
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String((settings as any).telegram_bot_token || '').trim();
+  const chatId = String((chatIdOverride && String(chatIdOverride).trim()) || (settings as any).telegram_chat_id || '').trim();
+  if (!botToken || !chatId) return { success: false, message: 'توکن ربات یا Chat ID تلگرام تنظیم نشده است.' };
+  if (type === 'photo') {
+    return await sendTelegramPhoto(botToken, chatId, fileRelPath, caption, {
+      parseMode: opts?.parseMode || 'HTML',
+      replyMarkup: opts?.replyMarkup,
+      replyToMessageId: opts?.replyToMessageId,
+      mimeType: opts?.mimeType,
+    });
+  }
+  return await sendTelegramDocument(botToken, chatId, fileRelPath, caption, {
+    parseMode: opts?.parseMode || 'HTML',
+    replyMarkup: opts?.replyMarkup,
+    replyToMessageId: opts?.replyToMessageId,
+    mimeType: opts?.mimeType,
+  });
+};
+const trySendSmsNow = async (payload: any) => {
+  const settings = await getAllSettingsAsObject();
+  const provider: string = String(payload?.provider || settings.sms_provider || 'meli_payamak').toLowerCase();
+  const recipientNumber = String(payload?.recipient || '').trim();
+  const tokens: string[] = Array.isArray(payload?.tokens) ? payload.tokens.map((x: any) => String(x ?? '')) : [];
+  if (!recipientNumber) return { success: false, message: 'شماره گیرنده نامعتبر است.' };
+  if (provider === 'meli_payamak') {
+    const username = settings.meli_payamak_username;
+    const password = settings.meli_payamak_password;
+    const bodyId = Number(payload?.meliBodyId || 0);
+    if (!username || !password) return { success: false, message: 'نام کاربری/رمز عبور ملی پیامک وارد نشده است.' };
+    if (!bodyId || isNaN(bodyId)) return { success: false, message: 'BodyId الگو نامعتبر است.' };
+    return await sendMeliPayamakPatternSms(recipientNumber, bodyId, tokens, username, password);
+  }
+  if (provider === 'kavenegar') {
+    const apiKey = String(settings.kavenegar_api_key || '').trim();
+    const template = String(payload?.kavenegarTemplate || '').trim();
+    if (!apiKey) return { success: false, message: 'API Key کاوه‌نگار تنظیم نشده است.' };
+    if (!template) return { success: false, message: 'نام قالب کاوه‌نگار تنظیم نشده است.' };
+    return await sendKavenegarVerifySms(apiKey, template, recipientNumber, tokens);
+  }
+  if (provider === 'sms_ir') {
+    const apiKey = String(settings.sms_ir_api_key || '').trim();
+    const templateId = Number(payload?.smsIrTemplateId || 0);
+    if (!apiKey) return { success: false, message: 'API Key SMS.ir تنظیم نشده است.' };
+    if (!templateId || isNaN(templateId)) return { success: false, message: 'شناسه قالب SMS.ir نامعتبر است.' };
+    return await sendSmsIrPatternSms(apiKey, templateId, recipientNumber, tokens);
+  }
+  if (provider === 'ippanel') {
+    const apiKey = String(settings.ippanel_api_key || '').trim();
+    const patternCode = String(payload?.ippanelPatternCode || '').trim();
+    const sender = String(settings.ippanel_sender || '').trim();
+    if (!apiKey) return { success: false, message: 'API Key آی‌پنل تنظیم نشده است.' };
+    if (!patternCode) return { success: false, message: 'کد الگوی آی‌پنل تنظیم نشده است.' };
+    return await sendIppanelPatternSms(apiKey, sender, patternCode, recipientNumber, tokens);
+  }
+  return { success: false, message: 'سرویس پیامک ناشناخته است.' };
+};
+
+const tryDeliverQueuedTelegramNow = async (queued: any, payload: any, chatId: string) => {
+  const queuedId = Number(queued?.id || 0);
+  if (!queued?.queued || !queuedId) return queued;
+
+  try {
+    const msgType = String(payload?.type || 'message');
+    const text = String(payload?.text || payload?.message || payload?.body || payload?.caption || '');
+    const parseMode = payload?.parse_mode || payload?.parseMode || 'HTML';
+    const replyMarkup = payload?.reply_markup || payload?.replyMarkup || null;
+    const replyToMessageId = Number(payload?.replyToMessageId || 0) || 0;
+    let result: any;
+
+    if (msgType === 'photo' || msgType === 'document') {
+      const fileRelPath = payload?.fileRelPath || payload?.filePath || payload?.relPath || null;
+      if (!fileRelPath) {
+        result = { success: false, message: 'fileRelPath not provided for telegram media' };
+      } else {
+        result = await trySendTelegramMediaNow(msgType as any, String(fileRelPath), text, chatId, {
+          parseMode,
+          replyMarkup,
+          replyToMessageId: replyToMessageId || undefined,
+          mimeType: payload?.mimeType || undefined,
+        });
+      }
+    } else {
+      result = await trySendTelegramNow(text, chatId, { parseMode, replyMarkup });
+    }
+
+    if (result?.success) {
+      const telegramMessageId = Number((result as any)?.data?.result?.message_id || 0) || null;
+      await runAsync(
+        `UPDATE notification_outbox
+            SET status='done', lastError=NULL, telegramMessageId=COALESCE(?, telegramMessageId), updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+          WHERE id=?`,
+        [telegramMessageId, queuedId]
+      );
+      return { ...queued, deliveredNow: true, result };
+    }
+
+    await runAsync(
+      `UPDATE notification_outbox
+          SET status='pending', attempts=0, nextAttemptAt=?, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+        WHERE id=?`,
+      [moment().add(10, 'seconds').toISOString(), String(result?.message || 'ارسال مستقیم انجام نشد؛ پیام در صف تلاش مجدد قرار گرفت.'), queuedId]
+    );
+    return { ...queued, deliveredNow: false, result };
+  } catch (e: any) {
+    await runAsync(
+      `UPDATE notification_outbox
+          SET status='pending', attempts=0, nextAttemptAt=?, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+        WHERE id=?`,
+      [moment().add(10, 'seconds').toISOString(), String(e?.message || 'ارسال مستقیم انجام نشد؛ پیام در صف تلاش مجدد قرار گرفت.'), queuedId]
+    ).catch(() => {});
+    return { ...queued, deliveredNow: false, error: String(e?.message || e) };
+  }
+};
+
+const processOneOutboxRow = async () => {
+  await ensureNotificationOutboxTables();
+  const row = await getAsync(
+    `SELECT * FROM notification_outbox
+      WHERE status IN ('pending','failed')
+        AND (nextAttemptAt IS NULL OR nextAttemptAt <= ?)
+      ORDER BY id ASC
+      LIMIT 1`,
+    [moment().toISOString()]
+  ) as any as OutboxRow | undefined;
+  if (!row) return false;
+  await runAsync(`UPDATE notification_outbox SET status='processing', updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [row.id]);
+  try {
+    const payload = JSON.parse(String(row.payloadJson || '{}'));
+    let result: any;
+    if (row.channel === 'telegram') {
+      const msgType = String(payload?.type || 'message');
+      const text = String(payload?.text || payload?.message || payload?.body || payload?.caption || '');
+      const chatIdOverride = payload?.chatId || payload?.recipient || null;
+      const replyToMessageId = Number(payload?.replyToMessageId || 0) || 0;
+      const mimeType = payload?.mimeType || undefined;
+      const fileRelPath = payload?.fileRelPath || payload?.filePath || payload?.relPath || null;
+      // Hard-stop if customer is already marked invalid/blocked
+      try {
+        const capCustomerId = Number(payload?.capCustomerId ?? payload?.meta?.capCustomerId ?? 0);
+        if (capCustomerId) {
+          const ok = await ensureCustomerIsNotInvalid(capCustomerId);
+          if (!ok) {
+            await runAsync(
+              `UPDATE notification_outbox SET status='failed', attempts=maxAttempts, nextAttemptAt=NULL, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+              ['invalid chat (blocked/unknown)', row.id]
+            );
+            return true;
+          }
+        }
+      } catch {}
+      // Quiet hours: prevent noisy nights. Priority:
+      // 1) telegram_quiet_start_hour / telegram_quiet_end_hour (numeric)
+      // 2) telegram_silent_hours (HH:mm-HH:mm legacy)
+      try {
+        const settings = await readAllSettings();
+        const nextAllowed =
+          computeNextAllowedTelegramSendISOFromHours((settings as any).telegram_quiet_start_hour, (settings as any).telegram_quiet_end_hour)
+          || computeNextAllowedTelegramSendISO((settings as any).telegram_silent_hours);
+        if (nextAllowed) {
+          await runAsync(
+            `UPDATE notification_outbox SET status='pending', nextAttemptAt=?, lastError=NULL, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+            [nextAllowed, row.id]
+          );
+          return true;
+        }
+      } catch {
+        // ignore quiet-hours errors
+      }
+      const replyMarkup = payload?.reply_markup || payload?.replyMarkup || null;
+      const parseMode = payload?.parse_mode || payload?.parseMode || 'HTML';
+      let effectiveChatId = chatIdOverride ? String(chatIdOverride).trim() : '';
+      if (!effectiveChatId && row.recipient === 'telegram_chat') {
+        const capCustomerId = Number(payload?.capCustomerId ?? payload?.meta?.capCustomerId ?? 0);
+        if (capCustomerId) effectiveChatId = await lookupCustomerTelegramChatId(capCustomerId);
+      }
+      if (!effectiveChatId && row.recipient === 'telegram_partner_chat') {
+        const partnerId = Number(payload?.partnerId ?? payload?.meta?.partnerId ?? row.entityId ?? 0);
+        if (partnerId) effectiveChatId = await lookupPartnerTelegramChatId(partnerId);
+      }
+      if (msgType === 'photo' || msgType === 'document') {
+        if (!fileRelPath) {
+          result = { success: false, message: 'fileRelPath not provided for telegram media' } as any;
+        } else {
+          result = await trySendTelegramMediaNow(msgType as any, String(fileRelPath), text, effectiveChatId || null, { replyMarkup, parseMode, replyToMessageId: replyToMessageId || undefined, mimeType });
+        }
+      } else {
+        result = await trySendTelegramNow(text, effectiveChatId || null, { replyMarkup, parseMode });
+      }
+    } else {
+      result = await trySendSmsNow(payload);
+    }
+    if (result?.success) {
+      const telegramMessageId = Number((result as any)?.data?.result?.message_id || 0) || null;
+      await runAsync(
+        `UPDATE notification_outbox SET status='done', lastError=NULL, telegramMessageId=COALESCE(?, telegramMessageId), updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+        [telegramMessageId, row.id]
+      );
+      await markSentToday({ channel: row.channel, eventType: row.eventType, entityType: row.entityType, entityId: row.entityId, recipient: row.recipient });
+      // Update event dedupe table (lastSentAt)
+      try {
+        if (row.eventKey) {
+          await runAsync(
+            `INSERT INTO notification_event_dedupe (eventKey, lastQueuedAt, lastSentAt)
+             VALUES (?,?,?)
+             ON CONFLICT(eventKey) DO UPDATE SET lastSentAt=excluded.lastSentAt`,
+            [String(row.eventKey), moment().utc().toISOString(), moment().utc().toISOString()]
+          ).catch(() => {});
+        }
+      } catch {
+        // ignore
+      }
+      // Optional: daily cap per customer for reminder rules
+      try {
+        const payload = JSON.parse(String(row.payloadJson || '{}'));
+        const capCustomerId = Number(payload?.capCustomerId ?? payload?.meta?.capCustomerId ?? 0);
+        if (capCustomerId && Number.isFinite(capCustomerId)) {
+          await ensureReminderRulesTables();
+          const dayKey = getDayKeyUtc();
+          await runAsync(
+            `INSERT OR IGNORE INTO reminder_daily_cap (dayKey, channel, customerId) VALUES (?,?,?)`,
+            [dayKey, row.channel, capCustomerId]
+          ).catch(() => {});
+        }
+      } catch {
+        // ignore
+      }
+      return true;
+    }
+    const attempts = Number(row.attempts || 0) + 1;
+    const maxAttempts = Number(row.maxAttempts || 6);
+    const nextAttemptAt = attempts >= maxAttempts ? null : computeNextAttemptISO(attempts);
+    const status: OutboxStatus = attempts >= maxAttempts ? 'failed' : 'pending';
+    // Auto-mark invalid chats when user blocks bot or chat is missing.
+    if (row.channel === 'telegram') {
+      try {
+        const c = classifyTelegramError(result?.message);
+        const capCustomerId = Number(payload?.capCustomerId ?? payload?.meta?.capCustomerId ?? 0);
+        if (capCustomerId && (c.code === 'blocked' || c.code === 'chat_not_found')) {
+          await markCustomerTelegramInvalid(capCustomerId, c.code);
+        }
+      } catch {
+        // ignore
+      }
+    }
+    await runAsync(
+      `UPDATE notification_outbox SET status=?, attempts=?, nextAttemptAt=?, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+      [status, attempts, nextAttemptAt, (() => { const c = classifyTelegramError(result?.message); return `${c.code}: ${String(result?.message || 'خطا در ارسال')}`; })(), row.id]
+    );
+    return true;
+  } catch (e: any) {
+    const attempts = Number(row.attempts || 0) + 1;
+    const maxAttempts = Number(row.maxAttempts || 6);
+    const nextAttemptAt = attempts >= maxAttempts ? null : computeNextAttemptISO(attempts);
+    const status: OutboxStatus = attempts >= maxAttempts ? 'failed' : 'pending';
+    await runAsync(
+      `UPDATE notification_outbox SET status=?, attempts=?, nextAttemptAt=?, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+      [status, attempts, nextAttemptAt, String(e?.message || 'خطا در عملیاتی ناشناخته'), row.id]
+    );
+    return true;
+  }
+};
+let outboxWorkerStarted = false;
+const startOutboxWorker = () => {
+  if (outboxWorkerStarted) return;
+  outboxWorkerStarted = true;
+  // Tick every 30s
+  setInterval(async () => {
+    try {
+      // process up to 10 messages per tick
+      for (let i = 0; i < 10; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const did = await processOneOutboxRow();
+        if (!did) break;
+      }
+    } catch (e) {
+      console.error('Outbox worker error:', e);
+    }
+  }, 30_000);
+};
+// Admin endpoints for outbox
+// --------------------------------------------------
+// Manual messaging (SMS/Telegram) – free text
+// --------------------------------------------------
+// --------------------------------------------------
+// Person report text for Telegram/SMS
+// --------------------------------------------------
+const moneyFa = (v: any) => formatReportMoneyText(v);
+const buildCustomerReportText = async (customerId: number) => {
+  const c = await getCustomerByIdFromDb(customerId);
+  if (!c) return null;
+  // invoices
+  const invAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(grandTotal),0) as total, MAX(date) as lastDate
+       FROM invoices
+      WHERE customerId = ?`,
+    [customerId]
+  );
+  // installment sales
+  const instAgg = await getAsync(
+    `SELECT COUNT(1) as cnt,
+            COALESCE(SUM(actualSalePrice),0) as total,
+            COALESCE(SUM(downPayment),0) as down
+       FROM installment_sales
+      WHERE customerId = ?`,
+    [customerId]
+  );
+  // unpaid / overdue / due soon (uses shamsi dueDate in installment_payments)
+  const todayJ = moment().locale('fa').format('jYYYY/jMM/jDD');
+  const soon7J = moment().add(7, 'day').locale('fa').format('jYYYY/jMM/jDD');
+  const unpaidAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(ip.amountDue),0) as total
+       FROM installment_payments ip
+       JOIN installment_sales s ON s.id = ip.saleId
+      WHERE s.customerId = ?
+        AND ip.status != 'پرداخت شده'`,
+    [customerId]
+  );
+  const overdueAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(ip.amountDue),0) as total
+       FROM installment_payments ip
+       JOIN installment_sales s ON s.id = ip.saleId
+      WHERE s.customerId = ?
+        AND ip.status != 'پرداخت شده'
+        AND ip.dueDate < ?`,
+    [customerId, todayJ]
+  );
+  const dueSoonAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(ip.amountDue),0) as total
+       FROM installment_payments ip
+       JOIN installment_sales s ON s.id = ip.saleId
+      WHERE s.customerId = ?
+        AND ip.status != 'پرداخت شده'
+        AND ip.dueDate >= ?
+        AND ip.dueDate <= ?`,
+    [customerId, todayJ, soon7J]
+  );
+  const lines: string[] = [];
+  lines.push('گزارش مشتری');
+  lines.push(`نام: ${c.fullName || '—'}`);
+  lines.push(`موبایل: ${(c.phoneNumber || '').trim() || '—'}`);
+  lines.push('');
+  lines.push(`فروش نقدی: ${Number(invAgg?.cnt || 0).toLocaleString('fa-IR')} فاکتور • ${moneyFa(invAgg?.total)}`);
+  if (invAgg?.lastDate) lines.push(`آخرین خرید: ${String(invAgg.lastDate).slice(0, 10)}`);
+  lines.push(`فروش اقساطی: ${Number(instAgg?.cnt || 0).toLocaleString('fa-IR')} فروش • ${moneyFa(instAgg?.total)} (پیش‌پرداخت: ${moneyFa(instAgg?.down)})`);
+  lines.push(`مانده اقساط: ${moneyFa(unpaidAgg?.total)} • تعداد: ${Number(unpaidAgg?.cnt || 0).toLocaleString('fa-IR')}`);
+  lines.push(`معوق: ${moneyFa(overdueAgg?.total)} • ${Number(overdueAgg?.cnt || 0).toLocaleString('fa-IR')} قسط`);
+  lines.push(`۷ روز آینده: ${moneyFa(dueSoonAgg?.total)} • ${Number(dueSoonAgg?.cnt || 0).toLocaleString('fa-IR')} قسط`);
+  return lines.join('\n');
+};
+
+const getPartnerTypeFa = (value?: string | null) => {
+  const v = String(value || '').trim().toLowerCase();
+  if (v === 'supplier') return 'تأمین‌کننده';
+  if (v === 'technician') return 'تعمیرکار';
+  if (v === 'both') return 'همکار چندمنظوره';
+  return String(value || '—');
+};
+
+const buildPartnerReportText = async (partnerId: number) => {
+  const p = await getPartnerByIdFromDb(partnerId);
+  if (!p) return null;
+
+  const purchasesAgg = await getAsync(
+    `SELECT
+       COUNT(1) as cnt,
+       COALESCE(SUM(CASE WHEN credit > 0 THEN credit ELSE 0 END),0) as total,
+       MAX(transactionDate) as lastDate
+     FROM partner_ledger
+     WHERE partnerId = ?
+       AND (credit > 0 OR LOWER(COALESCE(referenceType, '')) LIKE '%purchase%' OR description LIKE '%خرید%')`,
+    [partnerId]
+  );
+  const repairsAgg = await getAsync(
+    `SELECT
+       COUNT(1) as cnt,
+       COALESCE(SUM(CASE WHEN credit > 0 THEN credit ELSE 0 END),0) as total,
+       MAX(transactionDate) as lastDate
+     FROM partner_ledger
+     WHERE partnerId = ?
+       AND (credit > 0 OR LOWER(COALESCE(referenceType, '')) LIKE '%repair%' OR description LIKE '%تعمیر%')`,
+    [partnerId]
+  );
+  const allLedgerAgg = await getAsync(
+    `SELECT
+       COUNT(1) as cnt,
+       COALESCE(SUM(CASE WHEN credit > 0 THEN credit ELSE debit END),0) as total,
+       MAX(transactionDate) as lastDate
+     FROM partner_ledger
+     WHERE partnerId = ?`,
+    [partnerId]
+  );
+  const purchasesTableAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(totalCost),0) as total, MAX(purchaseDate) as lastDate
+       FROM purchases
+      WHERE supplierId = ?`,
+    [partnerId]
+  );
+  const repTableAgg = await getAsync(
+    `SELECT COUNT(1) as cnt, COALESCE(SUM(COALESCE(finalCost, laborFee, 0)),0) as total
+       FROM repairs
+      WHERE technicianId = ?`,
+    [partnerId]
+  );
+
+  const currentBalance = Number((p as any)?.currentBalance || 0);
+  const balanceText = currentBalance > 0
+    ? `بدهکار: ${moneyFa(currentBalance)}`
+    : currentBalance < 0
+      ? `طلبکار: ${moneyFa(Math.abs(currentBalance))}`
+      : 'تسویه';
+
+  const purchasesCount = Number(purchasesAgg?.cnt || purchasesTableAgg?.cnt || allLedgerAgg?.cnt || (currentBalance !== 0 ? 1 : 0));
+  const purchasesTotal = Number(purchasesAgg?.total || purchasesTableAgg?.total || allLedgerAgg?.total || Math.abs(currentBalance) || 0);
+  const purchasesLastDate = purchasesAgg?.lastDate || purchasesTableAgg?.lastDate || allLedgerAgg?.lastDate || null;
+  const repairsCount = Number(repTableAgg?.cnt || repairsAgg?.cnt || 0);
+  const repairsTotal = Number(repTableAgg?.total || repairsAgg?.total || 0);
+
+  const lines: string[] = [];
+  lines.push('گزارش همکار');
+  lines.push(`نام: ${p.partnerName || '—'}`);
+  lines.push(`موبایل: ${(p.phoneNumber || '').trim() || '—'}`);
+  lines.push(`نوع: ${getPartnerTypeFa(p.partnerType)}`);
+  lines.push('');
+  lines.push(`خریدها: ${purchasesCount.toLocaleString('fa-IR')} سند • ${moneyFa(purchasesTotal)}`);
+  if (purchasesLastDate) lines.push(`آخرین خرید: ${String(purchasesLastDate).slice(0, 10)}`);
+  lines.push(`تعمیرات: ${repairsCount.toLocaleString('fa-IR')} مورد • ${moneyFa(repairsTotal)}`);
+  lines.push(`مانده حساب: ${balanceText}`);
+  return lines.join('\n');
+};
+
+app.get('/api/reports/customer/:id/message', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success: false, message: 'شناسه مشتری نامعتبر است.' });
+    const text = await buildCustomerReportText(id);
+    if (!text) return res.status(404).json({ success: false, message: 'مشتری پیدا نشد.' });
+    return res.json({ success: true, data: { text } });
+  } catch (e) {
+    return next(e);
+  }
+});
+app.get('/api/reports/partner/:id/message', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id) return res.status(400).json({ success: false, message: 'شناسه همکار نامعتبر است.' });
+    const text = await buildPartnerReportText(id);
+    if (!text) return res.status(404).json({ success: false, message: 'همکار پیدا نشد.' });
+    return res.json({ success: true, data: { text } });
+  } catch (e) {
+    return next(e);
+  }
+});
+app.post('/api/messages/send', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const body = req.body || {};
+    const recipientType = String(body.recipientType || '').trim();
+    const recipientId = body.recipientId != null ? Number(body.recipientId) : null;
+    const phoneNumberRaw = String(body.phoneNumber || '').trim();
+    const telegramChatIdRaw = String(body.telegramChatId || '').trim();
+    const channels: string[] = Array.isArray(body.channels) ? body.channels : [];
+    const text = String(body.text || '').trim();
+    const saveToProfile = body.saveToProfile !== false;
+    const customVariables = body?.variables && typeof body.variables === 'object' ? body.variables : {};
+    const formatMessageAmount = (value: unknown) => {
+      if (value == null || value === '') return '';
+      const normalized = String(value).replace(/,/g, '').trim();
+      const numeric = Number(normalized);
+      if (Number.isFinite(numeric)) return numeric.toLocaleString('fa-IR');
+      return String(value);
+    };
+    const resolveManualTemplateText = (rawText: string, variables: Record<string, unknown>) =>
+      String(rawText || '').replace(/\{(name|phone|amount|dueDate|link)\}/g, (match, key) => {
+        const value = variables[key];
+        if (key === 'amount') return formatMessageAmount(value) || match;
+        const resolved = String(value ?? '').trim();
+        return resolved || match;
+      });
+    if (!text) return res.status(400).json({ success: false, message: 'متن پیام الزامی است.' });
+    if (!channels.length) return res.status(400).json({ success: false, message: 'حداقل یک کانال انتخاب کنید.' });
+    if (!['customer', 'partner', 'manual'].includes(recipientType)) {
+      return res.status(400).json({ success: false, message: 'نوع گیرنده نامعتبر است.' });
+    }
+    const settings = await getAllSettingsAsObject();
+    // Resolve recipient info
+    let resolvedName: string | null = null;
+    let resolvedPhone: string | null = phoneNumberRaw || null;
+    let resolvedChatId: string | null = telegramChatIdRaw || null;
+    if (recipientType !== 'manual') {
+      if (!recipientId || Number.isNaN(recipientId)) {
+        return res.status(400).json({ success: false, message: 'شناسه گیرنده نامعتبر است.' });
+      }
+      if (recipientType === 'customer') {
+        const c = await getCustomerByIdFromDb(recipientId);
+        if (!c) return res.status(404).json({ success: false, message: 'مشتری پیدا نشد.' });
+        resolvedName = c.fullName || null;
+        resolvedPhone = resolvedPhone || c.phoneNumber || null;
+        resolvedChatId = resolvedChatId || (c as any).telegramChatId || null;
+        // save chat id if asked
+        if (saveToProfile && telegramChatIdRaw) {
+          await updateCustomerInDb(recipientId, {
+            fullName: c.fullName,
+            phoneNumber: c.phoneNumber,
+            address: c.address,
+            notes: c.notes,
+            telegramChatId: telegramChatIdRaw,
+          });
+        }
+      } else {
+        const p = await getPartnerByIdFromDb(recipientId);
+        if (!p) return res.status(404).json({ success: false, message: 'همکار پیدا نشد.' });
+        resolvedName = p.partnerName || null;
+        resolvedPhone = resolvedPhone || p.phoneNumber || null;
+        resolvedChatId = resolvedChatId || (p as any).telegramChatId || null;
+        if (saveToProfile && telegramChatIdRaw) {
+          await updatePartnerInDb(recipientId, {
+            partnerName: p.partnerName,
+            partnerType: p.partnerType,
+            contactPerson: p.contactPerson,
+            phoneNumber: p.phoneNumber,
+            email: p.email,
+            address: p.address,
+            notes: p.notes,
+            telegramChatId: telegramChatIdRaw,
+          });
+        }
+      }
+    }
+    const normalizedPhone = (resolvedPhone || '').replace(/\D/g, '');
+    const normalizedChatId = String(resolvedChatId || '').trim();
+    // Validate per channel
+    if (channels.includes('sms') && (!normalizedPhone || normalizedPhone.length < 10)) {
+      return res.status(400).json({ success: false, message: 'شماره موبایل برای پیامک معتبر نیست.' });
+    }
+    if (channels.includes('telegram') && !normalizedChatId) {
+      return res.status(400).json({ success: false, message: 'Chat ID تلگرام گیرنده مشخص نیست.' });
+    }
+    // Build & enqueue
+    const entityType = recipientType === 'partner' ? 'partner' : 'customer';
+    const entityId = recipientType === 'manual' ? null : recipientId;
+    const templateVariables = {
+      name: resolvedName || customVariables?.name || '',
+      phone: normalizedPhone || String(customVariables?.phone || '').trim(),
+      amount: customVariables?.amount ?? '',
+      dueDate: String(customVariables?.dueDate || '').trim(),
+      link: String(customVariables?.link || '').trim(),
+    };
+    const resolvedText = resolveManualTemplateText(text, templateVariables);
+    const baseContext = {
+      name: resolvedName || '',
+      phoneNumber: normalizedPhone,
+      telegramChatId: normalizedChatId,
+      ...templateVariables,
+    };
+    const queued: any[] = [];
+    if (channels.includes('telegram')) {
+      const tgProvider = String(settings.telegram_provider || 'bot');
+      const payload = {
+        provider: tgProvider,
+        chatId: normalizedChatId,
+        text: resolvedText,
+        context: baseContext,
+      };
+      const queuedTelegram = await enqueueOutbox({
+        channel: 'telegram',
+        provider: tgProvider,
+        eventType: 'MANUAL_MESSAGE',
+        entityType: entityType,
+        entityId: entityId,
+        recipient: normalizedChatId,
+        payload,
+        skipCustomerRateLimit: true,
+        skipInvalidChatCheck: true,
+      });
+      const deliveredTelegram = await tryDeliverQueuedTelegramNow(queuedTelegram, payload, normalizedChatId);
+      queued.push({ channel: 'telegram', id: (queuedTelegram as any)?.id, deliveredNow: !!(deliveredTelegram as any)?.deliveredNow });
+    }
+    if (channels.includes('sms')) {
+      const smsProvider = String(settings.sms_provider || 'meli_payamak');
+      // Free-text via pattern/template requires a configured "custom" template per provider.
+      const nameToken = (resolvedName || '').trim() || 'مشتری';
+      const tokens = [nameToken, resolvedText];
+      let smsPayload: any = { provider: smsProvider, recipient: normalizedPhone, tokens };
+      if (smsProvider === 'meli_payamak') {
+        const bodyId = String(settings.meli_payamak_custom_body_id || '').trim();
+        if (!bodyId) {
+          return res.status(400).json({ success: false, message: 'برای پیامک متن آزاد، «کد بدنه/BodyId سفارشی» در تنظیمات پیامک را تنظیم کنید.' });
+        }
+        smsPayload = { ...smsPayload, meliBodyId: bodyId };
+      } else if (smsProvider === 'kavenegar') {
+        const template = String(settings.kavenegar_custom_template || '').trim();
+        if (!template) {
+          return res.status(400).json({ success: false, message: 'برای پیامک متن آزاد، «نام قالب/Template سفارشی» کاوه‌نگار را در تنظیمات پیامک تنظیم کنید.' });
+        }
+        smsPayload = { ...smsPayload, kavenegarTemplate: template };
+      } else if (smsProvider === 'sms_ir') {
+        const templateId = String(settings.sms_ir_custom_template_id || '').trim();
+        if (!templateId) {
+          return res.status(400).json({ success: false, message: 'برای پیامک متن آزاد، «TemplateId سفارشی» SMS.ir را در تنظیمات پیامک تنظیم کنید.' });
+        }
+        smsPayload = { ...smsPayload, smsIrTemplateId: templateId };
+      } else if (smsProvider === 'ippanel') {
+        const patternCode = String(settings.ippanel_custom_pattern_code || '').trim();
+        if (!patternCode) {
+          return res.status(400).json({ success: false, message: 'برای پیامک متن آزاد، «PatternCode سفارشی» IPPanel را در تنظیمات پیامک تنظیم کنید.' });
+        }
+        smsPayload = { ...smsPayload, ippanelPatternCode: patternCode };
+      }
+      const rowId = await enqueueOutbox({
+        channel: 'sms',
+        provider: smsProvider,
+        eventType: 'MANUAL_MESSAGE',
+        entityType: entityType,
+        entityId: entityId,
+        recipient: normalizedPhone,
+        payload: smsPayload,
+      });
+      queued.push({ channel: 'sms', id: rowId });
+    }
+    return res.json({ success: true, data: { queued } });
+  } catch (err) {
+    next(err);
+  }
+});
+// Admin endpoints for outbox
+app.get('/api/notifications/outbox', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const status = String(req.query.status || 'pending');
+    const limit = Math.min(parseInt(String(req.query.limit || '100'), 10) || 100, 500);
+    const rows = await allAsync(
+      `SELECT * FROM notification_outbox ${status && status !== 'ALL' ? 'WHERE status = ?' : ''} ORDER BY id DESC LIMIT ?`,
+      status && status !== 'ALL' ? [status, limit] : [limit]
+    );
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+});
+app.post('/api/notifications/outbox/:id/retry', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    await ensureNotificationOutboxTables();
+    await runAsync(`UPDATE notification_outbox SET status='pending', nextAttemptAt=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [moment().toISOString(), id]);
+    // kick worker once
+    try { await processOneOutboxRow(); } catch {}
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// Telegram Inbox/Outbox (Support Center)
+// =====================================================
+// Telegram Outbox: rich list for support center (filters + parsed payload + customer linkage)
+app.get('/api/telegram/outbox/messages', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const status = String(req.query.status || 'ALL'); // ALL | pending | processing | done | failed
+    const type = String(req.query.type || 'ALL'); // installments | repairs | manual | reports | other
+    const customerId = String(req.query.customerId || '').trim();
+    const from = String(req.query.from || '').trim();
+    const to = String(req.query.to || '').trim();
+    const q = String(req.query.q || '').trim().toLowerCase();
+    const support = String(req.query.support || 'ALL'); // ALL | resolved | open
+    const limit = Math.min(parseInt(String(req.query.limit || '200'), 10) || 200, 500);
+    const where: string[] = [`channel='telegram'`];
+    const args: any[] = [];
+    if (status && status !== 'ALL') { where.push(`status=?`); args.push(status); }
+    if (from) { where.push(`datetime(createdAt) >= datetime(?)`); args.push(from); }
+    if (to) { where.push(`datetime(createdAt) <= datetime(?)`); args.push(to); }
+    if (support === 'resolved') { where.push(`supportStatus='resolved'`); }
+    if (support === 'open') { where.push(`IFNULL(supportStatus,'') != 'resolved'`); }
+    const rows: any[] = await allAsync(
+      `SELECT * FROM notification_outbox WHERE ${where.join(' AND ')} ORDER BY id DESC LIMIT ?`,
+      [...args, limit]
+    );
+    const parsePayload = (s: any) => {
+      try { return JSON.parse(String(s || '{}')); } catch { return {}; }
+    };
+    const inferType = (eventType?: string | null, entityType?: string | null) => {
+      const e = String(eventType || '').toUpperCase();
+      const en = String(entityType || '').toLowerCase();
+      if (e === 'MANUAL_MESSAGE') return 'manual';
+      if (e.startsWith('REPAIR_') || en.includes('repair')) return 'repairs';
+      if (e.startsWith('INSTALLMENT_') || e.startsWith('CHECK_') || en.includes('installment')) return 'installments';
+      if (e.startsWith('REPORT_')) return 'reports';
+      return 'other';
+    };
+    const classifyError = (err: any) => {
+      const t = String(err || '').toLowerCase();
+      if (!t) return null;
+      if (t.includes('bot was blocked') || t.includes('blocked by the user') || t.includes('forbidden') || t.includes('403')) return 'blocked';
+      if (t.includes('chat not found') || t.includes('user not found') || t.includes('400')) return 'chat not found';
+      if (t.includes('proxy') || t.includes('socks') || t.includes('econnrefused') || t.includes('etimedout') || t.includes('tunnel') || t.includes('timeout')) return 'proxy error';
+      return 'other';
+    };
+    // Collect customer ids from payloads
+    const customerIds = new Set<number>();
+    for (const r of rows) {
+      const p = parsePayload(r.payloadJson);
+      const cid = Number(p?.customerId || p?.context?.customerId || 0);
+      if (cid) customerIds.add(cid);
+    }
+    const customerMap = new Map<number, any>();
+    if (customerIds.size) {
+      const ids = Array.from(customerIds);
+      const qs = ids.map(() => '?').join(',');
+      const cs = await allAsync(
+        `SELECT id, fullName, phoneNumber, COALESCE(telegram_chat_id, telegramChatId) AS telegramChatId FROM customers WHERE id IN (${qs})`,
+        ids
+      ).catch(() => []);
+      for (const c of cs || []) customerMap.set(Number(c.id), c);
+    }
+    const data = (rows || []).map((r) => {
+      const payload = parsePayload(r.payloadJson);
+      const cid = Number(payload?.customerId || payload?.context?.customerId || 0) || null;
+      const customer = cid ? customerMap.get(cid) : null;
+      const msgText = String(payload?.text || '').trim();
+      const chatId = String(payload?.chatId || r.recipient || '').trim();
+      const t = inferType(r.eventType, r.entityType);
+      if (type !== 'ALL' && t !== type) return null;
+      if (customerId && String(cid || '') !== customerId) return null;
+      const hay = [
+        r.id, r.eventType, r.entityType, r.status, r.lastError,
+        chatId,
+        customer?.fullName,
+        customer?.phoneNumber,
+        msgText,
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (q && !hay.includes(q)) return null;
+      const isRetried = Number(r.attempts || 0) > 0 && (String(r.status) === 'pending' || String(r.status) === 'processing');
+      return {
+        id: r.id,
+        status: r.status,
+        isRetried,
+        attempts: r.attempts,
+        maxAttempts: r.maxAttempts,
+        nextAttemptAt: r.nextAttemptAt,
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt,
+        eventType: r.eventType,
+        entityType: r.entityType,
+        entityId: r.entityId,
+        chatId,
+        text: msgText,
+        customerId: cid,
+        customerName: customer?.fullName || null,
+        customerPhone: customer?.phoneNumber || null,
+        supportStatus: r.supportStatus || null,
+        supportNote: r.supportNote || null,
+        error: r.lastError || null,
+        errorKind: classifyError(r.lastError),
+        messageType: t,
+      };
+    }).filter(Boolean);
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/outbox/:id/mark-resolved', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const id = Number(req.params.id);
+    const note = String(req.body?.note || '').trim();
+    await runAsync(
+      `UPDATE notification_outbox SET supportStatus='resolved', supportNote=?, supportUpdatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+      [note || null, id]
+    );
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// Send check (immediate) using the same payload text + chatId (helps debug blocked/chat/proxy)
+app.post('/api/telegram/outbox/:id/send-check', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const id = Number(req.params.id);
+    const row: any = await getAsync(`SELECT * FROM notification_outbox WHERE id=? AND channel='telegram' LIMIT 1`, [id]);
+    if (!row) return res.status(404).json({ success: false, message: 'پیام پیدا نشد.' });
+
+    let payload: any = {};
+    try { payload = JSON.parse(String(row.payloadJson || '{}')); } catch { payload = {}; }
+
+    const msgType = String(payload?.type || 'message');
+    const text = String(payload?.text || payload?.message || payload?.body || payload?.caption || '').trim();
+    const replyMarkup = payload?.reply_markup || payload?.replyMarkup || null;
+    const parseMode = payload?.parse_mode || payload?.parseMode || 'HTML';
+    const replyToMessageId = Number(payload?.replyToMessageId || 0) || 0;
+    const mimeType = payload?.mimeType || undefined;
+    const fileRelPath = payload?.fileRelPath || payload?.filePath || payload?.relPath || null;
+
+    let effectiveChatId = String(payload?.chatId || payload?.recipient || '').trim();
+    if (!effectiveChatId && row.recipient === 'telegram_chat') {
+      const capCustomerId = Number(payload?.capCustomerId ?? payload?.meta?.capCustomerId ?? row.capCustomerId ?? 0);
+      if (capCustomerId) effectiveChatId = await lookupCustomerTelegramChatId(capCustomerId);
+    }
+    if (!effectiveChatId && row.recipient === 'telegram_partner_chat') {
+      const partnerId = Number(payload?.partnerId ?? payload?.meta?.partnerId ?? row.entityId ?? 0);
+      if (partnerId) effectiveChatId = await lookupPartnerTelegramChatId(partnerId);
+    }
+    if (!effectiveChatId && String(row.recipient || '').trim() && !['telegram_chat', 'telegram_partner_chat'].includes(String(row.recipient))) {
+      effectiveChatId = String(row.recipient || '').trim();
+    }
+
+    if (!effectiveChatId) return res.json({ success: false, message: 'Chat ID مقصد پیدا نشد. اگر پیام مربوط به مشتری/همکار است، ابتدا اتصال تلگرام او را بررسی کنید.' });
+    if (!text && !(msgType === 'photo' || msgType === 'document')) return res.json({ success: false, message: 'متن پیام خالی است.' });
+
+    let r: any;
+    if (msgType === 'photo' || msgType === 'document') {
+      if (!fileRelPath) {
+        r = { success: false, message: 'مسیر فایل برای ارسال تلگرام پیدا نشد.' };
+      } else {
+        r = await trySendTelegramMediaNow(msgType as any, String(fileRelPath), text, effectiveChatId || null, {
+          parseMode,
+          replyMarkup,
+          replyToMessageId: replyToMessageId || undefined,
+          mimeType,
+        });
+      }
+    } else {
+      r = await trySendTelegramNow(text, effectiveChatId, { parseMode, replyMarkup });
+    }
+
+    try {
+      await insertSmsLog({
+        reqUser: req.user,
+        provider: 'telegram',
+        eventType: 'OUTBOX_SEND_TEST',
+        entityType: row.entityType || 'telegram',
+        entityId: row.entityId ?? null,
+        recipient: effectiveChatId,
+        patternId: 'TELEGRAM_TEST',
+        tokens: [text],
+        success: !!r?.success,
+        response: r,
+        error: r?.success ? undefined : r?.message,
+      });
+    } catch {}
+
+    if (r?.success) {
+      const telegramMessageId = Number((r as any)?.data?.result?.message_id || 0) || null;
+      await runAsync(
+        `UPDATE notification_outbox SET status='done', lastError=NULL, telegramMessageId=COALESCE(?, telegramMessageId), updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+        [telegramMessageId, id]
+      ).catch(() => {});
+      return res.json({ success: true, message: 'پیام بررسی ارسال شد.', data: r });
+    }
+
+    await runAsync(
+      `UPDATE notification_outbox SET status='failed', attempts=COALESCE(attempts,0)+1, lastError=?, nextAttemptAt=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+      [String(r?.message || 'ارسال بررسی انجام نشد.'), moment().add(30, 'seconds').toISOString(), id]
+    ).catch(() => {});
+    return res.json({ success: false, message: r?.message || 'ارسال بررسی انجام نشد.', data: r });
+  } catch (e: any) {
+    return res.json({ success: false, message: e?.message || 'ارسال بررسی انجام نشد.' });
+  }
+});
+// Telegram Inbox list
+app.get('/api/telegram/inbox', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureTelegramInboxTable();
+    await ensureCustomerTelegramColumns();
+    const limit = Math.min(parseInt(String(req.query.limit || '200'), 10) || 200, 500);
+    const chatId = String(req.query.chatId || '').trim();
+    const from = String(req.query.from || '').trim();
+    const to = String(req.query.to || '').trim();
+    const q = String(req.query.q || '').trim().toLowerCase();
+    const where: string[] = [];
+    const args: any[] = [];
+    if (chatId) { where.push(`ti.chatId=?`); args.push(chatId); }
+    if (from) { where.push(`datetime(ti.createdAt) >= datetime(?)`); args.push(from); }
+    if (to) { where.push(`datetime(ti.createdAt) <= datetime(?)`); args.push(to); }
+    const rows: any[] = await allAsync(
+      `SELECT
+          ti.id, ti.chatId, ti.fromId, ti.kind, ti.text, ti.createdAt,
+          c.id AS customerId,
+          c.fullName AS customerName,
+          c.phoneNumber AS customerPhone,
+          COALESCE(c.telegram_opted_out,0) AS telegramOptedOut
+       FROM telegram_inbox ti
+       LEFT JOIN customers c
+         ON (COALESCE(c.telegram_chat_id, c.telegramChatId) = ti.chatId)
+       ${where.length ? `WHERE ${where.join(' AND ')}` : ''}
+       ORDER BY ti.id DESC
+       LIMIT ?`,
+      [...args, limit]
+    );
+    const filtered = (rows || []).filter(r => {
+      if (!q) return true;
+      const hay = [
+        r.id, r.chatId, r.fromId, r.kind, r.text,
+        r.customerId, r.customerName, r.customerPhone
+      ].filter(Boolean).join(' ').toLowerCase();
+      return hay.includes(q);
+    });
+    res.json({ success: true, data: filtered });
+  } catch (e) { next(e); }
+});
+// Telegram Conversation (Inbox + Outbox merged) for a specific customer or partner
+app.get('/api/telegram/conversation', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureTelegramInboxTable();
+    await ensureNotificationOutboxTables();
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.query.customerId || 0);
+    const partnerId = Number(req.query.partnerId || 0);
+    const limit = Math.min(parseInt(String(req.query.limit || '250'), 10) || 250, 800);
+    if (!customerId && !partnerId) return res.status(400).json({ success: false, message: 'شناسه مشتری یا همکار نامعتبر است.' });
+
+    let chatId = '';
+    let c: any = null;
+    let p: any = null;
+    if (partnerId) {
+      p = await getAsync(
+        `SELECT id, partnerName, phoneNumber, telegramChatId
+         FROM partners WHERE id=? LIMIT 1`,
+        [partnerId]
+      );
+      if (!p) return res.status(404).json({ success: false, message: 'همکار پیدا نشد.' });
+      chatId = String(p?.telegramChatId || '').trim();
+    } else {
+      c = await getAsync(
+        `SELECT id, fullName, phoneNumber,
+                COALESCE(telegram_chat_id, telegramChatId) AS telegramChatId,
+                COALESCE(telegram_opted_out,0) AS telegramOptedOut,
+                COALESCE(telegram_invalid,0) AS telegramInvalid,
+                telegram_invalid_reason AS telegramInvalidReason
+         FROM customers WHERE id=? LIMIT 1`,
+        [customerId]
+      );
+      if (!c) return res.status(404).json({ success: false, message: 'مشتری پیدا نشد.' });
+      chatId = String(c?.telegramChatId || '').trim();
+    }
+    const inboxRows: any[] = chatId
+      ? await allAsync(
+          `SELECT id, chatId, fromId, kind, text, payloadJson, createdAt
+           FROM telegram_inbox
+           WHERE chatId=?
+           ORDER BY id DESC
+           LIMIT ?`,
+          [chatId, Math.floor(limit / 2)]
+        )
+      : [];
+    const outboxRows: any[] = partnerId
+      ? await allAsync(
+          `SELECT id, channel, eventType, entityType, entityId, recipient, payloadJson, status, attempts, lastError, telegramMessageId, createdAt, updatedAt
+           FROM notification_outbox
+           WHERE channel='telegram' AND entityType='partner' AND entityId=?
+           ORDER BY id DESC
+           LIMIT ?`,
+          [partnerId, Math.floor(limit / 2)]
+        )
+      : await allAsync(
+          `SELECT id, channel, eventType, entityType, entityId, recipient, payloadJson, status, attempts, lastError, telegramMessageId, createdAt, updatedAt
+           FROM notification_outbox
+           WHERE channel='telegram' AND capCustomerId=?
+           ORDER BY id DESC
+           LIMIT ?`,
+          [customerId, Math.floor(limit / 2)]
+        );
+    const safeJson = (s: any) => { try { return s ? JSON.parse(String(s)) : null; } catch { return null; } };
+    const classifyError = (msg: string) => {
+      const m = String(msg || '').toLowerCase();
+      if (!m) return undefined;
+      if (m.includes('blocked') || m.includes('bot was blocked')) return 'blocked';
+      if (m.includes('chat not found') || m.includes('user not found')) return 'chat_not_found';
+      if (m.includes('proxy') || m.includes('socks') || m.includes('econnrefused') || m.includes('timeout')) return 'proxy_error';
+      return 'other';
+    };
+    const inbox = (inboxRows || []).map(r => {
+      const p = safeJson(r.payloadJson);
+      // Telegram update payload usually has update.message.message_id
+      const messageId =
+        Number(p?.message?.message_id || p?.edited_message?.message_id || p?.callback_query?.message?.message_id || p?.message_id || 0) || null;
+      const hasPhoto = Array.isArray(p?.message?.photo) && p.message.photo.length > 0;
+      const hasDoc = !!p?.message?.document;
+      const kind = hasPhoto ? 'photo' : hasDoc ? 'document' : (r.kind || 'message');
+      return ({
+        id: `in_${r.id}`,
+        direction: 'in',
+        kind,
+        text: String(r.text || ''),
+        telegramMessageId: messageId,
+        createdAt: r.createdAt,
+      });
+    });
+    const outbox = (outboxRows || []).map(r => {
+      const payload = safeJson(r.payloadJson) || {};
+      const msgType = String(payload?.type || 'message');
+      const text = String(payload?.text ?? payload?.caption ?? payload?.message ?? payload?.body ?? payload?.tokens?.[0] ?? '');
+      const parseMode = payload?.parse_mode || payload?.parseMode;
+      const fileRelPath = payload?.fileRelPath || payload?.filePath || payload?.relPath || null;
+      const mediaUrl = fileRelPath ? (String(fileRelPath).startsWith('/') ? String(fileRelPath) : `/${String(fileRelPath)}`) : null;
+      return {
+        id: `out_${r.id}`,
+        direction: 'out',
+        kind: (msgType === 'photo' || msgType === 'document') ? msgType : 'message',
+        text,
+        mediaUrl,
+        parseMode,
+        telegramMessageId: Number(r.telegramMessageId || 0) || null,
+        status: r.status,
+        attempts: Number(r.attempts || 0),
+        lastError: r.lastError || null,
+        errorCategory: classifyError(r.lastError),
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt,
+      };
+    });
+    const merged = [...inbox, ...outbox]
+      .filter(x => x?.createdAt)
+      .sort((a: any, b: any) => {
+        const ta = +new Date(a.createdAt);
+        const tb = +new Date(b.createdAt);
+        if (ta === tb) return String(a.id).localeCompare(String(b.id));
+        return ta - tb;
+      });
+    const summary = {
+      total: merged.length,
+      inbox: inbox.length,
+      outbox: outbox.length,
+      failed: outbox.filter((x: any) => String(x.status || '') === 'failed').length,
+      pending: outbox.filter((x: any) => ['pending', 'processing'].includes(String(x.status || ''))).length,
+      lastInteractionAt: merged.length ? merged[merged.length - 1]?.createdAt : null,
+    };
+
+    res.json({
+      success: true,
+      meta: partnerId
+        ? {
+            partnerId,
+            chatId,
+            partnerName: p?.partnerName || '',
+            phoneNumber: p?.phoneNumber || '',
+            telegramOptedOut: false,
+            telegramInvalid: false,
+            telegramInvalidReason: null,
+            summary,
+          }
+        : {
+            customerId,
+            chatId,
+            telegramOptedOut: Number(c.telegramOptedOut || 0) === 1,
+            telegramInvalid: Number(c.telegramInvalid || 0) === 1,
+            telegramInvalidReason: c.telegramInvalidReason || null,
+            summary,
+          },
+      data: merged,
+    });
+  } catch (e) { next(e); }
+});
+/**
+ * Telegram ↔ Customer quick actions (for Inbox support UX)
+ * - link: assign chatId to a customer (and clear it from any other customer)
+ * - unlink: remove chatId/userId and opt-out (optional)
+ * - optout: toggle opt-out flag
+ */
+app.post('/api/telegram/customers/link', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    const chatId = String(req.body?.chatId || '').trim();
+    const fromId = String(req.body?.fromId || '').trim();
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    if (!chatId) return res.status(400).json({ success: false, message: 'chatId خالی است.' });
+    // Ensure customer exists
+    const c = await getAsync(`SELECT id FROM customers WHERE id=? LIMIT 1`, [customerId]);
+    if (!c) return res.status(404).json({ success: false, message: 'مشتری پیدا نشد.' });
+    // Clear chatId from other customers to keep 1:1 mapping
+    await runAsync(
+      `UPDATE customers
+       SET telegram_chat_id=NULL, telegramChatId=NULL, telegram_user_id=NULL, telegram_linked_at=NULL
+       WHERE COALESCE(telegram_chat_id, telegramChatId)=? AND id<>?`,
+      [chatId, customerId]
+    );
+    await runAsync(
+      `UPDATE customers
+       SET telegram_chat_id=?,
+           telegramChatId=?,
+           telegram_user_id=?,
+           telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc'),
+           telegram_opted_out=0
+       WHERE id=?`,
+      [chatId, chatId, fromId || null, customerId]
+    );
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/customers/unlink', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    await runAsync(
+      `UPDATE customers
+       SET telegram_chat_id=NULL,
+           telegramChatId=NULL,
+           telegram_user_id=NULL,
+           telegram_linked_at=NULL,
+           telegram_opted_out=1
+       WHERE id=?`,
+      [customerId]
+    );
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/customers/optout', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    const optedOut = Number(req.body?.optedOut ? 1 : 0);
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    await runAsync(`UPDATE customers SET telegram_opted_out=? WHERE id=?`, [optedOut, customerId]);
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// Reminder Rules API (Installments CRM-style)
+// =====================================================
+app.get('/api/reminders/config', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const cfg = await getReminderConfig();
+    res.json({ success: true, data: cfg });
+  } catch (e) { next(e); }
+});
+app.post('/api/reminders/config', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const sendStartHour = Math.max(0, Math.min(23, Number(req.body?.sendStartHour ?? 10)));
+    const sendEndHour = Math.max(0, Math.min(23, Number(req.body?.sendEndHour ?? 21)));
+    const maxPerDayPerCustomer = Math.max(1, Number(req.body?.maxPerDayPerCustomer ?? 1));
+    const timezone = String(req.body?.timezone || 'Asia/Tehran');
+    await runAsync(
+      `UPDATE reminder_config
+          SET sendStartHour=?, sendEndHour=?, maxPerDayPerCustomer=?, timezone=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')
+        WHERE id=1`,
+      [sendStartHour, sendEndHour, maxPerDayPerCustomer, timezone]
+    );
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.get('/api/reminders/rules', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const rules = await getReminderRules();
+    const rulesWithCounts = await Promise.all((rules || []).map(async (rule) => ({
+      ...rule,
+      matchedCount: await countRuleMatches(rule),
+    })));
+    res.json({ success: true, data: rulesWithCounts });
+  } catch (e) { next(e); }
+});
+app.post('/api/reminders/rules', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const name = String(req.body?.name || '').trim() || 'قانون جدید';
+    const enabled = Number(req.body?.enabled ? 1 : 0);
+    const channel = String(req.body?.channel || 'telegram');
+    const matchType = String(req.body?.matchType || 'days_until');
+    const value = Number(req.body?.value ?? 0);
+    const installmentTemplate = String(req.body?.installmentTemplate || req.body?.template || '').trim();
+    const checkTemplate = String(req.body?.checkTemplate || req.body?.template || '').trim();
+    const targetType = normalizeReminderTargetType(req.body?.targetType);
+    const template = installmentTemplate || checkTemplate;
+    if (!template) return res.status(400).json({ success: false, message: 'حداقل یکی از متن‌های قسط یا چک باید وارد شود.' });
+    if (matchType !== 'days_until' && matchType !== 'overdue_days') {
+      return res.status(400).json({ success: false, message: 'matchType نامعتبر است.' });
+    }
+    const r = await runAsync(
+      `INSERT INTO reminder_rules (name, enabled, channel, matchType, value, template, installmentTemplate, checkTemplate, targetType)
+       VALUES (?,?,?,?,?,?,?,?,?)`,
+      [name, enabled, channel, matchType, Math.trunc(value), template, installmentTemplate, checkTemplate, targetType]
+    );
+    res.json({ success: true, data: { id: r.lastID } });
+  } catch (e) { next(e); }
+});
+app.put('/api/reminders/rules/:id', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const id = Number(req.params.id || 0);
+    if (!id) return res.status(400).json({ success: false, message: 'id نامعتبر است.' });
+    const name = String(req.body?.name || '').trim() || 'قانون';
+    const enabled = Number(req.body?.enabled ? 1 : 0);
+    const channel = String(req.body?.channel || 'telegram');
+    const matchType = String(req.body?.matchType || 'days_until');
+    const value = Number(req.body?.value ?? 0);
+    const installmentTemplate = String(req.body?.installmentTemplate || req.body?.template || '').trim();
+    const checkTemplate = String(req.body?.checkTemplate || req.body?.template || '').trim();
+    const targetType = normalizeReminderTargetType(req.body?.targetType);
+    const template = installmentTemplate || checkTemplate;
+    if (!template) return res.status(400).json({ success: false, message: 'حداقل یکی از متن‌های قسط یا چک باید وارد شود.' });
+    if (matchType !== 'days_until' && matchType !== 'overdue_days') {
+      return res.status(400).json({ success: false, message: 'matchType نامعتبر است.' });
+    }
+    await runAsync(
+      `UPDATE reminder_rules
+          SET name=?, enabled=?, channel=?, matchType=?, value=?, template=?, installmentTemplate=?, checkTemplate=?, targetType=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')
+        WHERE id=?`,
+      [name, enabled, channel, matchType, Math.trunc(value), template, installmentTemplate, checkTemplate, targetType, id]
+    );
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.delete('/api/reminders/rules/:id', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const id = Number(req.params.id || 0);
+    await runAsync(`DELETE FROM reminder_rules WHERE id=?`, [id]);
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.post('/api/reminders/rules/preview', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const matchType = String(req.body?.matchType || 'days_until') as ReminderMatchType;
+    const value = Math.trunc(Number(req.body?.value ?? 0));
+    const installmentTemplate = String(req.body?.installmentTemplate || req.body?.template || '').trim();
+    const checkTemplate = String(req.body?.checkTemplate || req.body?.template || '').trim();
+    const targetType = normalizeReminderTargetType(req.body?.targetType);
+    if (!installmentTemplate && !checkTemplate) return res.status(400).json({ success: false, message: 'متن پیام خالی است.' });
+
+    const now = moment();
+    const today = now.clone().startOf('day');
+    const installmentHtmlTemplate = markdownishToHtml(installmentTemplate || checkTemplate);
+    const checkHtmlTemplate = markdownishToHtml(checkTemplate || installmentTemplate);
+
+    const buildDateMeta = (rawDate: any) => {
+      const due = parseAnyDate(rawDate);
+      if (!due) return null;
+      const daysUntil = due.clone().startOf('day').diff(today, 'days');
+      const matched = matchType === 'days_until'
+        ? Number(daysUntil) === Number(value)
+        : Number(daysUntil) === -Math.abs(Number(value));
+      return { due, daysUntil, matched, dueDate: String(rawDate || '').trim() };
+    };
+
+    const installmentRowsRaw = targetType !== 'check' ? await getOverdueInstallmentsFromDb() : [];
+    const installmentRows = (installmentRowsRaw || []).map((item: any) => {
+      const meta = buildDateMeta(item?.dueDate);
+      if (!meta) return null;
+      const name = item?.customerFullName || 'مشتری';
+      const amount = formatMoneyFa(item?.amountDue);
+      const vars = {
+        name,
+        amount,
+        dueDate: meta.dueDate,
+        days: String(meta.daysUntil),
+        saleId: String(item?.saleId ?? ''),
+        type: 'قسط',
+      };
+      const text = renderTplHtml(installmentHtmlTemplate, vars);
+      return {
+        type: 'installment',
+        paymentId: Number(item?.id ?? 0) || null,
+        checkId: null,
+        saleId: Number(item?.saleId ?? 0) || null,
+        customerId: Number(item?.customerId ?? 0) || null,
+        customerName: name,
+        phone: String(item?.customerPhoneNumber || '').trim(),
+        chatId: String(item?.telegramChatId || '').trim(),
+        dueDate: meta.dueDate,
+        amount,
+        daysUntil: meta.daysUntil,
+        matched: meta.matched,
+        title: 'قسط',
+        text,
+      };
+    }).filter(Boolean) as any[];
+
+    const checkRowsRaw = targetType !== 'installment' ? await getPendingInstallmentChecksWithCustomer() : [];
+    const checkRows = (checkRowsRaw || []).map((item: any) => {
+      const meta = buildDateMeta(item?.dueDate);
+      if (!meta) return null;
+      const name = item?.customerFullName || 'مشتری';
+      const amount = formatMoneyFa(item?.amount);
+      const vars = {
+        name,
+        amount,
+        dueDate: meta.dueDate,
+        days: String(meta.daysUntil),
+        saleId: String(item?.saleId ?? ''),
+        checkNumber: String(item?.checkNumber || '').trim(),
+        bank: String(item?.bankName || '').trim(),
+        type: 'چک',
+      };
+      const text = renderTplHtml(checkHtmlTemplate, vars);
+      return {
+        type: 'check',
+        paymentId: null,
+        checkId: Number(item?.checkId ?? 0) || null,
+        saleId: Number(item?.saleId ?? 0) || null,
+        customerId: Number(item?.customerId ?? 0) || null,
+        customerName: name,
+        phone: String(item?.customerPhoneNumber || '').trim(),
+        chatId: String(item?.telegramChatId || '').trim(),
+        dueDate: meta.dueDate,
+        amount,
+        daysUntil: meta.daysUntil,
+        matched: meta.matched,
+        checkNumber: String(item?.checkNumber || '').trim(),
+        bankName: String(item?.bankName || '').trim(),
+        title: 'چک',
+        text,
+      };
+    }).filter(Boolean) as any[];
+
+    const installmentMatched = installmentRows.filter((r) => r.matched);
+    const checkMatched = checkRows.filter((r) => r.matched);
+    const previews = [...installmentMatched.slice(0, 3), ...checkMatched.slice(0, 3)];
+
+    const fallbackDays = matchType === 'overdue_days' ? -Math.abs(Number(value || 0)) : Number(value || 0);
+    const fallbackDueDate = moment().add(Math.max(0, value || 0), 'days').format('jYYYY/jMM/jDD');
+    const fallbackInstallmentVars = { name: 'مشتری پیش‌نمایش', amount: formatMoneyFa(1250000), dueDate: fallbackDueDate, days: String(fallbackDays), saleId: '1024', type: 'قسط' };
+    const fallbackCheckVars = { name: 'مشتری پیش‌نمایش', amount: formatMoneyFa(10000000), dueDate: fallbackDueDate, days: String(fallbackDays), saleId: '1024', checkNumber: '۱۲۳۴۵۶', bank: 'ملت', type: 'چک' };
+
+    return res.json({
+      success: true,
+      data: {
+        matchType,
+        value,
+        targetType,
+        totalMatched: installmentMatched.length + checkMatched.length,
+        totalInstallmentMatched: installmentMatched.length,
+        totalCheckMatched: checkMatched.length,
+        previews,
+        installmentPreviews: installmentMatched.slice(0, 5),
+        checkPreviews: checkMatched.slice(0, 5),
+        fallback: {
+          vars: fallbackInstallmentVars,
+          text: renderTplHtml(installmentHtmlTemplate, fallbackInstallmentVars),
+        },
+        installmentFallback: {
+          vars: fallbackInstallmentVars,
+          text: renderTplHtml(installmentHtmlTemplate, fallbackInstallmentVars),
+        },
+        checkFallback: {
+          vars: fallbackCheckVars,
+          text: renderTplHtml(checkHtmlTemplate, fallbackCheckVars),
+        },
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+app.post('/api/reminders/rules/seed-defaults', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    await ensureReminderRulesTables();
+    const cnt = await getAsync(`SELECT COUNT(1) as cnt FROM reminder_rules`, []).catch(() => ({ cnt: 0 }));
+    if (Number(cnt?.cnt || 0) > 0) {
+      return res.json({ success: true, message: 'قوانین موجود هستند.' });
+    }
+    const tplA = '🔔 <b>یادآوری قسط</b> (۳ روز مانده)\nسلام {name} 👋\nقسط شما به مبلغ <b>{amount} تومان</b> در تاریخ <b>{dueDate}</b> سررسید می‌شود.';
+    const chkA = '🔔 <b>یادآوری چک</b> (۳ روز مانده)\n{name} عزیز، چک شماره <b>{checkNumber}</b> بانک <b>{bank}</b> به مبلغ <b>{amount} تومان</b> در تاریخ <b>{dueDate}</b> سررسید می‌شود.';
+    const tplB = '⏰ <b>سررسید قسط امروز</b>\n{name} عزیز، قسط <b>{amount} تومان</b> امروز (<b>{dueDate}</b>) سررسید است.';
+    const chkB = '⏰ <b>سررسید چک امروز</b>\n{name} عزیز، چک شماره <b>{checkNumber}</b> بانک <b>{bank}</b> به مبلغ <b>{amount} تومان</b> امروز (<b>{dueDate}</b>) سررسید است.';
+    const tplC = '⚠️ <b>قسط معوق</b> (۷ روز)\n{name} عزیز، قسط <b>{amount} تومان</b> با سررسید <b>{dueDate}</b> هنوز ثبت نشده است.';
+    const chkC = '⚠️ <b>چک معوق</b> (۷ روز)\n{name} عزیز، چک شماره <b>{checkNumber}</b> بانک <b>{bank}</b> با سررسید <b>{dueDate}</b> هنوز وصول نشده است.';
+    await runAsync(`INSERT INTO reminder_rules (name, enabled, channel, matchType, value, template, installmentTemplate, checkTemplate, targetType) VALUES (?,?,?,?,?,?,?,?,?)`, ['۳ روز مانده', 1, 'telegram', 'days_until', 3, tplA, tplA, chkA, 'both']);
+    await runAsync(`INSERT INTO reminder_rules (name, enabled, channel, matchType, value, template, installmentTemplate, checkTemplate, targetType) VALUES (?,?,?,?,?,?,?,?,?)`, ['روز سررسید', 1, 'telegram', 'days_until', 0, tplB, tplB, chkB, 'both']);
+    await runAsync(`INSERT INTO reminder_rules (name, enabled, channel, matchType, value, template, installmentTemplate, checkTemplate, targetType) VALUES (?,?,?,?,?,?,?,?,?)`, ['۷ روز معوق', 1, 'telegram', 'overdue_days', 7, tplC, tplC, chkC, 'both']);
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Auto-send rules (daily 09:00) - SMS / Telegram / Both
+// Keys in settings: auto_send_installment_due, auto_send_check_due, auto_send_repair_ready
+// Values: off | sms | telegram | both
+// -----------------------------------------------------
+const normalizeAutoSendMode = (v: any): 'off' | 'sms' | 'telegram' | 'both' => {
+  const s = String(v || 'off').toLowerCase();
+  if (s === 'sms') return 'sms';
+  if (s === 'telegram') return 'telegram';
+  if (s === 'both') return 'both';
+  return 'off';
+};
+// --- Telegram extras: silent hours + deep links ---
+const parseTimeHHmm = (s: string): { h: number; m: number } | null => {
+  const m = String(s || '').trim().match(/^([0-1]?\d|2[0-3]):([0-5]\d)$/);
+  if (!m) return null;
+  return { h: Number(m[1]), m: Number(m[2]) };
+};
+// telegram_silent_hours format: "22:00-08:00" (Tehran time, +03:30)
+const computeNextAllowedTelegramSendISO = (silent: string | undefined | null): string | null => {
+  const raw = String(silent || '').trim();
+  if (!raw) return null;
+  const parts = raw.split('-').map((p) => p.trim());
+  if (parts.length !== 2) return null;
+  const start = parseTimeHHmm(parts[0]);
+  const end = parseTimeHHmm(parts[1]);
+  if (!start || !end) return null;
+  const nowTehran = moment().utcOffset(210);
+  const startToday = nowTehran.clone().hour(start.h).minute(start.m).second(0).millisecond(0);
+  const endToday = nowTehran.clone().hour(end.h).minute(end.m).second(0).millisecond(0);
+  const crossesMidnight = endToday.isSameOrBefore(startToday);
+  const inSilent = (() => {
+    if (!crossesMidnight) return nowTehran.isSameOrAfter(startToday) && nowTehran.isBefore(endToday);
+    return nowTehran.isSameOrAfter(startToday) || nowTehran.isBefore(endToday);
+  })();
+  if (!inSilent) return null;
+  const next = crossesMidnight
+    ? (nowTehran.isBefore(endToday) ? endToday : endToday.clone().add(1, 'day'))
+    : endToday;
+  return next.clone().utc().toISOString();
+};
+// Quiet Hours (start/end hour) in Tehran time, e.g. 21 -> 10
+const computeNextAllowedTelegramSendISOFromHours = (startHourRaw: any, endHourRaw: any): string | null => {
+  const startHour = Number(startHourRaw);
+  const endHour = Number(endHourRaw);
+  if (!Number.isFinite(startHour) || !Number.isFinite(endHour)) return null;
+  if (startHour < 0 || startHour > 23 || endHour < 0 || endHour > 23) return null;
+  const nowTehran = moment().utcOffset(210);
+  const start = nowTehran.clone().hour(startHour).minute(0).second(0).millisecond(0);
+  const end = nowTehran.clone().hour(endHour).minute(0).second(0).millisecond(0);
+  const crossesMidnight = end.isSameOrBefore(start);
+  const inQuiet = (() => {
+    if (!crossesMidnight) return nowTehran.isSameOrAfter(start) && nowTehran.isBefore(end);
+    return nowTehran.isSameOrAfter(start) || nowTehran.isBefore(end);
+  })();
+  if (!inQuiet) return null;
+  const next = crossesMidnight
+    ? (nowTehran.isBefore(end) ? end : end.clone().add(1, 'day'))
+    : end;
+  return next.clone().utc().toISOString();
+};
+const classifyTelegramError = (msg: any) => {
+  const s = String(msg || '').toLowerCase();
+  if (!s) return { code: 'other' as const, label: 'other' };
+  if (s.includes('bot was blocked') || s.includes('blocked by the user') || (s.includes('forbidden') && s.includes('blocked'))) {
+    return { code: 'blocked' as const, label: 'blocked' };
+  }
+  if (s.includes('chat not found') || s.includes('user is deactivated')) {
+    return { code: 'chat_not_found' as const, label: 'chat not found' };
+  }
+  if (s.includes('proxy') || s.includes('socks') || s.includes('econnrefused') || s.includes('etimedout') || s.includes('tunnel') || s.includes('fetch failed')) {
+    return { code: 'proxy_error' as const, label: 'proxy error' };
+  }
+  return { code: 'other' as const, label: 'other' };
+};
+const ensureCustomerIsNotInvalid = async (customerId: number): Promise<boolean> => {
+  if (!customerId) return true;
+  try {
+    await ensureCustomerTelegramColumns();
+    const row = await getAsync(`SELECT telegram_invalid as invalid FROM customers WHERE id=? LIMIT 1`, [customerId]).catch(() => null);
+    return String(row?.invalid || '0') !== '1';
+  } catch {
+    return true;
+  }
+};
+const markCustomerTelegramInvalid = async (customerId: number, reason: string) => {
+  if (!customerId) return;
+  try {
+    await ensureCustomerTelegramColumns();
+    await runAsync(
+      `UPDATE customers SET telegram_invalid=1, telegram_invalid_reason=?, telegram_invalid_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+      [String(reason || 'invalid'), customerId]
+    ).catch(() => {});
+  } catch {
+    // ignore
+  }
+};
+const buildAppLink = (baseUrl: string, hashPath: string): string => {
+  const b = String(baseUrl || '').trim().replace(/\/+$/, '');
+  if (!b) return '';
+  const p = String(hashPath || '').trim().replace(/^\/+/, '');
+  return `${b}/#/${p}`;
+};
+// Deep links for Telegram buttons (PWA routes). Uses app_base_url like: https://example.com
+// We use hash routes: {base}/#/{path}
+const buildInstallmentDeepLink = (settings: any, saleId: any, paymentId?: any) => {
+  const baseUrl = String((settings as any)?.app_base_url || '').trim();
+  if (!baseUrl) return '';
+  const sid = String(saleId ?? '').trim();
+  if (!sid) return '';
+  const q = paymentId ? `?paymentId=${encodeURIComponent(String(paymentId))}` : '';
+  return buildAppLink(baseUrl, `installment-sales/${encodeURIComponent(sid)}${q}`);
+};
+const buildRepairDeepLink = (settings: any, repairId: any) => {
+  const baseUrl = String((settings as any)?.app_base_url || '').trim();
+  const rid = String(repairId ?? '').trim();
+  if (!baseUrl || !rid) return '';
+  return buildAppLink(baseUrl, `repairs/${encodeURIComponent(rid)}`);
+};
+// Optional payment link (if you have a gateway). Configure one of these keys in Settings:
+// - telegram_payment_link_template (recommended) e.g. https://pay.example.com/i/{paymentId}
+// - payment_link_template
+// Placeholders supported: {customerId} {saleId} {paymentId} {amount} {dueDate}
+const buildPaymentLink = (settings: any, vars: Record<string, any>) => {
+  const tpl = String((settings as any)?.telegram_payment_link_template || (settings as any)?.payment_link_template || '').trim();
+  if (!tpl) return '';
+  const url = safeReplaceTemplate(tpl, vars);
+  return /^https?:\/\//i.test(url) ? url : '';
+};
+const buildTelegramDeepLinkKeyboard = (opts: {
+  primaryMenu: 'installments' | 'repairs' | 'balance' | 'invoices';
+  installment?: { saleId: any; paymentId?: any; amount?: any; dueDate?: any; customerId?: any };
+  repair?: { repairId: any; customerId?: any };
+  settings: any;
+}) => {
+  const s = opts.settings || {};
+  const rows: any[] = [];
+  // Entity deep links (URL buttons) — only if app_base_url exists
+  const deepBtns: any[] = [];
+  if (opts.installment?.saleId) {
+    const url = buildInstallmentDeepLink(s, opts.installment.saleId, opts.installment.paymentId);
+    if (url) deepBtns.push({ text: `🔎 مشاهده جزئیات قسط #${String(opts.installment.paymentId ?? opts.installment.saleId)}`, url });
+    const payUrl = buildPaymentLink(s, {
+      customerId: opts.installment.customerId,
+      saleId: opts.installment.saleId,
+      paymentId: opts.installment.paymentId,
+      amount: opts.installment.amount,
+      dueDate: opts.installment.dueDate,
+    });
+    if (payUrl) deepBtns.push({ text: '💳 پرداخت', url: payUrl });
+  }
+  if (opts.repair?.repairId) {
+    const url = buildRepairDeepLink(s, opts.repair.repairId);
+    if (url) deepBtns.push({ text: `🔎 جزئیات تعمیر #${String(opts.repair.repairId)}`, url });
+  }
+  if (deepBtns.length) rows.push(deepBtns.slice(0, 2)); // keep it clean
+  // Keep the bot menu buttons too (fallback + UX)
+  const baseMenu = buildNotifKeyboard(opts.primaryMenu);
+  for (const r of (baseMenu as any).inline_keyboard || []) rows.push(r);
+  return { inline_keyboard: rows };
+};
+const safeReplaceTemplate = (tpl: string, vars: Record<string, any>): string => {
+  const raw = String(tpl || '');
+  return raw.replace(/\{(\w+)\}/g, (_m, key) => {
+    const v = vars[key];
+    if (v === undefined || v === null) return '';
+    return String(v);
+  });
+};
+// Basic sanitizers for Telegram parse modes (server-side)
+const sanitizeTelegramHtml = (html: string): string => {
+  let s = String(html || '');
+  s = s.replace(/<\s*(script|style|iframe|object|embed|link|meta)(.|\n|\r)*?<\s*\/\s*\1\s*>/gi, '');
+  s = s.replace(/<\s*(script|style|iframe|object|embed|link|meta)[^>]*\/>/gi, '');
+  s = s.replace(/\son\w+\s*=\s*"[^"]*"/gi, '');
+  s = s.replace(/\son\w+\s*=\s*'[^']*'/gi, '');
+  s = s.replace(/\son\w+\s*=\s*[^\s>]+/gi, '');
+  s = s.replace(/(href|src)\s*=\s*"\s*javascript:[^"]*"/gi, '$1="#"');
+  s = s.replace(/(href|src)\s*=\s*'\s*javascript:[^']*'/gi, '$1="#"');
+  return s;
+};
+const stripTags = (txt: string): string => String(txt || '').replace(/<[^>]*>/g, '');
+const getTelegramTargetsForTopic = async (topic: 'reports' | 'installments' | 'sales' | 'notifications'): Promise<{ botToken: string; chatIds: string[] }> => {
+  const settings = await getAllSettingsAsObject();
+  setTelegramProxy((settings as any).telegram_proxy);
+  const botToken = String(settings.telegram_bot_token || '').trim();
+  const fallback = String(settings.telegram_chat_id || '').trim();
+  const topicKey =
+    topic === 'reports' ? 'telegram_chat_ids_reports'
+    : topic === 'installments' ? 'telegram_chat_ids_installments'
+    : topic === 'sales' ? 'telegram_chat_ids_sales'
+    : 'telegram_chat_ids_notifications';
+  const chatIds = parseChatIdList((settings as any)[topicKey]);
+  const finalIds = chatIds.length ? chatIds : (fallback ? [fallback] : []);
+  return { botToken, chatIds: finalIds };
+};
+const TOPIC_TYPES_KEYS: Record<string, string> = {
+  reports: 'telegram_topic_types_reports',
+  installments: 'telegram_topic_types_installments',
+  sales: 'telegram_topic_types_sales',
+  notifications: 'telegram_topic_types_notifications',
+};
+const getEnabledTypesForTopic = async (topic: 'reports' | 'installments' | 'sales' | 'notifications'): Promise<Set<string>> => {
+  const settings = await getAllSettingsAsObject();
+  const key = TOPIC_TYPES_KEYS[topic];
+  const raw = String((settings as any)[key] || '').trim();
+  if (!raw) return new Set(); // empty => allow all
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) return new Set(arr.map(x => String(x)));
+  } catch {
+    // also accept comma/newline-separated
+    const arr = raw.split(/[,\n\r\t\s]+/g).map(s => s.trim()).filter(Boolean);
+    if (arr.length) return new Set(arr);
+  }
+  return new Set();
+};
+const isTopicTypeEnabled = async (topic: 'reports' | 'installments' | 'sales' | 'notifications', typeKey: string): Promise<boolean> => {
+  const set = await getEnabledTypesForTopic(topic);
+  if (!set.size) return true;
+  return set.has(typeKey);
+};
+const enqueueTelegramToTopicTargets = async (topic: 'reports' | 'installments' | 'sales' | 'notifications', typeKey: string, text: string, meta?: { entityType?: string; entityId?: number }) => {
+  try {
+    const ok = await isTopicTypeEnabled(topic, typeKey);
+    if (!ok) return;
+    const { botToken, chatIds } = await getTelegramTargetsForTopic(topic);
+    if (!botToken || !chatIds.length) return;
+    for (const chatId of chatIds) {
+      // eslint-disable-next-line no-await-in-loop
+      await enqueueOutbox({
+        channel: 'telegram',
+        provider: null,
+        eventType: typeKey,
+        entityType: meta?.entityType || topic,
+        entityId: meta?.entityId || null,
+        recipient: String(chatId),
+        payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+        dedupeToday: false,
+      });
+    }
+  } catch {
+    // never break main flows
+  }
+};
+const enqueueEventNotifications = async (eventType: string, targetId: number, mode: 'sms'|'telegram'|'both') => {
+  const settings = await getAllSettingsAsObject();
+  const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+  // Build common payloads (same logic as manual trigger)
+  if (eventType.startsWith('INSTALLMENT_')) {
+    const p = await getInstallmentPaymentDetailsForSms(targetId);
+    if (!p) return;
+    const recipientNumber = String(p.customerPhoneNumber || '').trim();
+    const tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+    // SMS identifiers
+    const smsPayload: any = { provider, recipient: recipientNumber, tokens };
+    if (eventType === 'INSTALLMENT_DUE_7') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_installment_due_7_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_installment_due_7_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_installment_due_7_template_id ? Number(settings.sms_ir_installment_due_7_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_installment_due_7_pattern_code;
+    } else if (eventType === 'INSTALLMENT_DUE_3') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_installment_due_3_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_installment_due_3_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_installment_due_3_template_id ? Number(settings.sms_ir_installment_due_3_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_installment_due_3_pattern_code;
+    } else if (eventType === 'INSTALLMENT_DUE_TODAY') {
+      smsPayload.meliBodyId = Number((settings as any).meli_payamak_installment_due_notice_pattern_id || settings.meli_payamak_installment_due_today_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_installment_due_today_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_installment_due_today_template_id ? Number(settings.sms_ir_installment_due_today_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_installment_due_today_pattern_code;
+    } else if (eventType === 'INSTALLMENT_REMINDER') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_installment_reminder_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_installment_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_installment_template_id ? Number(settings.sms_ir_installment_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_installment_pattern_code;
+    } else if (eventType === 'INSTALLMENT_COMPLETED') {
+      smsPayload.meliBodyId = settings.meli_payamak_installment_completed_pattern_id ? Number(settings.meli_payamak_installment_completed_pattern_id) : undefined;
+      smsPayload.kavenegarTemplate = settings.kavenegar_installment_completed_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_installment_completed_template_id ? Number(settings.sms_ir_installment_completed_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_installment_completed_pattern_code;
+    } else {
+      return;
+    }
+    // Telegram template
+    const baseUrl = String((settings as any).app_base_url || '').trim();
+    const link = buildAppLink(baseUrl, 'installment-sales');
+    const values: Record<string, any> = {
+      name: tokens[0] ?? '',
+      amount: tokens[1] ?? '',
+      dueDate: tokens[2] ?? '',
+      link,
+      saleId: (p as any)?.saleId ?? '',
+      customerId: (p as any)?.customerId ?? '',
+    };
+    const tgTemplateKey = (
+      eventType === 'INSTALLMENT_DUE_7' ? 'telegram_installment_due_7_message' :
+      eventType === 'INSTALLMENT_DUE_3' ? 'telegram_installment_due_3_message' :
+      eventType === 'INSTALLMENT_DUE_TODAY' ? 'telegram_installment_due_today_message' :
+      eventType === 'INSTALLMENT_COMPLETED' ? 'telegram_installment_completed_message' :
+      'telegram_installment_reminder_message'
+    );
+    const tgTemplate = String((settings as any)[tgTemplateKey] || '').trim();
+    // جایگزینی متغیرها مثل {name} {amount} {dueDate} {link}
+    const build = (tpl: string, vals: Record<string, any>) => safeReplaceTemplate(tpl, vals);
+    const tgText = build(tgTemplate || '🔔 یادآوری قسط\nمشتری: {name}\nمبلغ: {amount}\nسررسید: {dueDate}', values);
+    if (mode === 'sms' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'sms',
+        provider,
+        eventType,
+        entityType: 'installment_payment',
+        entityId: targetId,
+        recipient: recipientNumber,
+        payload: smsPayload,
+        dedupeToday: true,
+      });
+    }
+    if (mode === 'telegram' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'telegram',
+        provider: null,
+        eventType,
+        entityType: 'installment_payment',
+        entityId: targetId,
+        recipient: 'telegram_chat',
+        payload: { text: tgText, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: values.saleId, paymentId: targetId, amount: (p as any)?.amountDue ?? values.amount, dueDate: (p as any)?.dueDate ?? values.dueDate, customerId: values.customerId }, settings }), parse_mode: 'HTML', capCustomerId: Number(values.customerId || 0) || undefined },
+        dedupeToday: true,
+      });
+    }
+    // Optional: send an internal copy to configured installments chats
+    try {
+      const enabled = await isTopicTypeEnabled('installments', eventType);
+      if (!enabled) {
+        // skip internal copy
+      } else {
+      const { botToken, chatIds } = await getTelegramTargetsForTopic('installments');
+      if (botToken && chatIds.length) {
+        const adminText =
+          `📌 یادآوری اقساط\n` +
+          `مشتری: ${String((p as any)?.customerFullName || (p as any)?.customerName || '').trim()}\n` +
+          `تاریخ: ${String((p as any)?.dueDate || '').trim()}\n` +
+          `مبلغ: ${formatPriceForSms(Number((p as any)?.amount || 0))} تومان\n` +
+          `وضعیت: ${eventType.replace('INSTALLMENT_', '')}`;
+        await sendTelegramMessages(botToken, chatIds, adminText);
+      }
+      }
+    } catch (e) {
+      // do not fail the main flow
+    }
+    return;
+  }
+  if (eventType.startsWith('CHECK_')) {
+    const c = await getInstallmentCheckDetailsForSms(targetId);
+    if (!c) return;
+    const recipientNumber = String(c.customerPhoneNumber || '').trim();
+    const tokens = [c.customerFullName, c.checkNumber, c.dueDate, formatPriceForSms(c.amount)];
+    const smsPayload: any = { provider, recipient: recipientNumber, tokens };
+    if (eventType === 'CHECK_DUE_7') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_check_due_7_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_check_due_7_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_check_due_7_template_id ? Number(settings.sms_ir_check_due_7_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_check_due_7_pattern_code;
+    } else if (eventType === 'CHECK_DUE_3') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_check_due_3_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_check_due_3_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_check_due_3_template_id ? Number(settings.sms_ir_check_due_3_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_check_due_3_pattern_code;
+    } else if (eventType === 'CHECK_DUE_TODAY') {
+      smsPayload.meliBodyId = Number(settings.meli_payamak_check_due_today_pattern_id);
+      smsPayload.kavenegarTemplate = settings.kavenegar_check_due_today_template;
+      smsPayload.smsIrTemplateId = settings.sms_ir_check_due_today_template_id ? Number(settings.sms_ir_check_due_today_template_id) : undefined;
+      smsPayload.ippanelPatternCode = settings.ippanel_check_due_today_pattern_code;
+    } else {
+      return;
+    }
+    const values: Record<string, string> = { name: tokens[0] ?? '', checkNumber: tokens[1] ?? '', dueDate: tokens[2] ?? '', amount: tokens[3] ?? '' };
+    const tgTemplateKey = (
+      eventType === 'CHECK_DUE_7' ? 'telegram_check_due_7_message' :
+      eventType === 'CHECK_DUE_3' ? 'telegram_check_due_3_message' :
+      'telegram_check_due_today_message'
+    );
+    const tgTemplate = String((settings as any)[tgTemplateKey] || '').trim();
+    // جایگزینی متغیرها مثل {name} {amount} {dueDate} {link}
+    const build = (tpl: string, vals: Record<string, any>) => safeReplaceTemplate(tpl, vals);
+    const tgText = build(tgTemplate || '🧾 یادآوری چک\nمشتری: {name}\nشماره چک: {checkNumber}\nتاریخ: {dueDate}\nمبلغ: {amount}', values);
+    if (mode === 'sms' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'sms',
+        provider,
+        eventType,
+        entityType: 'installment_check',
+        entityId: targetId,
+        recipient: recipientNumber,
+        payload: smsPayload,
+        dedupeToday: true,
+      });
+    }
+    if (mode === 'telegram' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'telegram',
+        provider: null,
+        eventType,
+        entityType: 'installment_check',
+        entityId: targetId,
+        recipient: 'telegram_chat',
+        payload: { text: tgText, capCustomerId: Number((c as any)?.customerId || 0) || undefined },
+        dedupeToday: true,
+      });
+    }
+    return;
+  }
+  if (eventType === 'REPAIR_READY_FOR_PICKUP') {
+    const r = await getRepairDetailsForSms(targetId);
+    if (!r || r.finalCost == null) return;
+    const recipientNumber = String(r.customerPhoneNumber || '').trim();
+    const tokens = [r.customerFullName, r.deviceModel, formatPriceForSms(r.finalCost)];
+    const smsPayload: any = {
+      provider,
+      recipient: recipientNumber,
+      tokens,
+      meliBodyId: Number(settings.meli_payamak_repair_ready_pattern_id),
+      kavenegarTemplate: settings.kavenegar_repair_ready_template,
+      smsIrTemplateId: settings.sms_ir_repair_ready_template_id ? Number(settings.sms_ir_repair_ready_template_id) : undefined,
+      ippanelPatternCode: settings.ippanel_repair_ready_pattern_code,
+    };
+    const values: Record<string, string> = { name: tokens[0] ?? '', deviceModel: tokens[1] ?? '', finalCost: tokens[2] ?? '', repairId: String(targetId) };
+    const tgTemplate = String(settings.telegram_repair_ready_message || '').trim();
+    // جایگزینی متغیرها مثل {name} {amount} {dueDate} {link}
+    const build = (tpl: string, vals: Record<string, any>) => safeReplaceTemplate(tpl, vals);
+    const tgText = build(tgTemplate || '📦 آماده تحویل\nمشتری: {name}\nدستگاه: {deviceModel}\nکد تعمیر: {repairId}\nهزینه نهایی: {finalCost}', values);
+    if (mode === 'sms' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'sms',
+        provider,
+        eventType,
+        entityType: 'repair',
+        entityId: targetId,
+        recipient: recipientNumber,
+        payload: smsPayload,
+        dedupeToday: true,
+      });
+    }
+    if (mode === 'telegram' || mode === 'both') {
+      await enqueueOutbox({
+        channel: 'telegram',
+        provider: null,
+        eventType,
+        entityType: 'repair',
+        entityId: targetId,
+        recipient: 'telegram_chat',
+        payload: { text: tgText, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'repairs', repair: { repairId: targetId, customerId: (r as any)?.customerId }, settings }), parse_mode: 'HTML', capCustomerId: Number((r as any)?.customerId || 0) || undefined },
+        dedupeToday: true,
+      });
+    }
+  }
+};
+const sendCustomCustomerNotification = async (
+  eventType: 'INSTALLMENT_SALE_CREATED' | 'INSTALLMENT_DUE_NOTICE' | 'INSTALLMENT_PAYMENT_RECEIVED' | 'INSTALLMENT_SETTLED' | 'INSTALLMENT_OVERDUE_NOTICE' | 'REPAIR_RECEIVED_CONFIRMATION' | 'REPAIR_COST_ESTIMATED' | 'REPAIR_DELIVERED' | 'REPAIR_STATUS_UPDATED' | 'ACCOUNT_BALANCE_STATUS' | 'CHECK_FAILED' | 'INVOICE_CREATED' | 'INVOICE_PAYMENT_RECEIVED',
+  targetId: number,
+  mode: 'sms' | 'telegram' | 'both' = 'both',
+  extra?: Record<string, any>
+) => {
+  const settings = await getAllSettingsAsObject();
+  const provider = String(settings.sms_provider || 'meli_payamak').toLowerCase();
+  const baseUrl = String((settings as any).app_base_url || '').trim();
+  let recipientNumber = '';
+  let capCustomerId: number | undefined;
+  let entityType = 'customer';
+  let vars: Record<string, any> = {};
+  let smsKey = '';
+  let tgKey = '';
+  let fallbackTemplate = '';
+  if (eventType === 'INSTALLMENT_SALE_CREATED' || eventType === 'INSTALLMENT_SETTLED') {
+    const s = await getAsync(`SELECT s.id as saleId, s.customerId, s.actualSalePrice as totalPrice, c.fullName as customerFullName, c.phoneNumber as customerPhoneNumber
+                              FROM installment_sales s JOIN customers c ON c.id=s.customerId WHERE s.id=?`, [targetId]) as any;
+    if (!s) return;
+    recipientNumber = String(s.customerPhoneNumber || '').trim();
+    capCustomerId = Number(s.customerId || 0) || undefined;
+    entityType = 'installment_sale';
+    vars = { name: String(s.customerFullName || ''), saleId: String(s.saleId || targetId), total: formatPriceForSms(Number(s.totalPrice || 0)) };
+    smsKey = eventType === 'INSTALLMENT_SETTLED' ? 'meli_payamak_installment_settlement_pattern_id' : 'meli_payamak_installment_sale_created_pattern_id';
+    tgKey = eventType === 'INSTALLMENT_SETTLED' ? 'telegram_installment_settlement_message' : 'telegram_installment_sale_created_message';
+    fallbackTemplate = eventType === 'INSTALLMENT_SETTLED'
+      ? APP_MESSAGES.telegram.installmentSettled
+      : APP_MESSAGES.telegram.installmentSaleCreated;
+  } else if (eventType === 'INSTALLMENT_DUE_NOTICE' || eventType === 'INSTALLMENT_PAYMENT_RECEIVED' || eventType === 'INSTALLMENT_OVERDUE_NOTICE') {
+    const p = await getAsync(`SELECT ip.id as paymentId, ip.saleId, ip.customerId, ip.amountDue, ip.dueDate, ip.remainingAmount, c.fullName as customerFullName, c.phoneNumber as customerPhoneNumber
+                              FROM (
+                                SELECT ip.id, ip.saleId, s.customerId, ip.amountDue, ip.dueDate,
+                                  MAX(0, COALESCE(ip.amountDue,0) - COALESCE((SELECT SUM(t.amount_paid) FROM installment_transactions t WHERE t.installment_payment_id=ip.id),0)) as remainingAmount
+                                FROM installment_payments ip JOIN installment_sales s ON s.id=ip.saleId
+                              ) ip
+                              JOIN customers c ON c.id=ip.customerId
+                              WHERE ip.id=?`, [targetId]) as any;
+    if (!p) return;
+    recipientNumber = String(p.customerPhoneNumber || '').trim();
+    capCustomerId = Number(p.customerId || 0) || undefined;
+    entityType = 'installment_payment';
+    vars = {
+      name: String(p.customerFullName || ''),
+      amount: formatPriceForSms(Number(extra?.amount ?? p.amountDue ?? 0)),
+      dueDate: String(p.dueDate || ''),
+      remaining: formatPriceForSms(Number(extra?.remaining ?? p.remainingAmount ?? 0)),
+      saleId: String(p.saleId || ''),
+    };
+    smsKey = eventType === 'INSTALLMENT_OVERDUE_NOTICE'
+      ? 'meli_payamak_installment_overdue_pattern_id'
+      : eventType === 'INSTALLMENT_DUE_NOTICE'
+      ? 'meli_payamak_installment_due_notice_pattern_id'
+      : 'meli_payamak_payment_confirmation_pattern_id';
+    tgKey = eventType === 'INSTALLMENT_OVERDUE_NOTICE'
+      ? 'telegram_installment_overdue_message'
+      : eventType === 'INSTALLMENT_DUE_NOTICE'
+      ? 'telegram_installment_due_notice_message'
+      : 'telegram_installment_completed_message';
+    fallbackTemplate = eventType === 'INSTALLMENT_OVERDUE_NOTICE'
+      ? 'مشتری گرامی {name}، پرداخت قسط شما به مبلغ {amount} تومان با سررسید {dueDate} هنوز در سیستم ما ثبت نشده است. لطفاً جهت پیگیری اقدام فرمایید. فروشگاه کوروش'
+      : eventType === 'INSTALLMENT_DUE_NOTICE'
+      ? 'مشتری گرامی {name}، قسط شما با سررسید {dueDate} آماده پرداخت است. مبلغ: {amount} تومان. موبایل کوروش'
+      : 'مشتری گرامی {name}، پرداخت قسط شما به مبلغ {amount} تومان با موفقیت در سیستم ثبت شد. از پرداخت به موقع شما سپاسگزاریم. فروشگاه کوروش';
+  } else if (eventType === 'REPAIR_RECEIVED_CONFIRMATION' || eventType === 'REPAIR_COST_ESTIMATED' || eventType === 'REPAIR_DELIVERED' || eventType === 'REPAIR_STATUS_UPDATED') {
+    const r = await getAsync(`SELECT r.id, r.customerId, r.deviceModel, r.status, r.estimatedCost, r.finalCost, c.fullName as customerFullName, c.phoneNumber as customerPhoneNumber
+                              FROM repairs r JOIN customers c ON c.id=r.customerId WHERE r.id=?`, [targetId]) as any;
+    if (!r) return;
+    recipientNumber = String(r.customerPhoneNumber || '').trim();
+    capCustomerId = Number(r.customerId || 0) || undefined;
+    entityType = 'repair';
+    vars = {
+      name: String(r.customerFullName || ''),
+      deviceModel: String(r.deviceModel || ''),
+      repairId: String(r.id || targetId),
+      estimatedCost: formatPriceForSms(Number(r.estimatedCost || 0)),
+      finalCost: formatPriceForSms(Number(r.finalCost || 0)),
+      status: String(extra?.status || r.status || ''),
+    };
+    smsKey = eventType === 'REPAIR_RECEIVED_CONFIRMATION'
+      ? 'meli_payamak_repair_received_pattern_id'
+      : eventType === 'REPAIR_COST_ESTIMATED'
+      ? 'meli_payamak_repair_cost_notice_pattern_id'
+      : eventType === 'REPAIR_DELIVERED'
+      ? 'meli_payamak_repair_delivered_pattern_id'
+      : 'meli_payamak_repair_status_pattern_id';
+    tgKey = eventType === 'REPAIR_RECEIVED_CONFIRMATION'
+      ? 'telegram_repair_received_message'
+      : eventType === 'REPAIR_COST_ESTIMATED'
+      ? 'telegram_repair_cost_notice_message'
+      : eventType === 'REPAIR_DELIVERED'
+      ? 'telegram_repair_delivered_message'
+      : 'telegram_repair_status_message';
+    fallbackTemplate = eventType === 'REPAIR_RECEIVED_CONFIRMATION'
+      ? 'مشتری گرامی {name}، دستگاه {deviceModel} شما جهت تعمیرات در فروشگاه کوروش پذیرش و با کد رهگیری {repairId} ثبت گردید. وضعیت دستگاه از طریق تماس با فروشگاه قابل پیگیری است. موبایل کوروش'
+      : eventType === 'REPAIR_COST_ESTIMATED'
+      ? 'مشتری گرامی {name}، هزینه تعمیرات دستگاه {deviceModel} شما مبلغ {estimatedCost} تومان برآورد شده است. لطفاً جهت تأیید و ادامه فرآیند تعمیر با فروشگاه تماس حاصل فرمایید. فروشگاه کوروش. موبایل کوروش'
+      : eventType === 'REPAIR_DELIVERED'
+      ? 'مشتری گرامی {name}، دستگاه {deviceModel} با موفقیت تحویل شد. شماره رسید: {repairId}. سپاس از همراهی شما. موبایل کوروش'
+      : 'تعمیرات کوروش: دستگاه شما {deviceModel} در وضعیت {status} است. موبایل کوروش';
+  } else if (eventType === 'ACCOUNT_BALANCE_STATUS') {
+    const c = await getAsync(`SELECT id, fullName, phoneNumber, COALESCE((SELECT balance FROM customer_ledger WHERE customerId=customers.id ORDER BY id DESC LIMIT 1),0) AS currentBalance FROM customers WHERE id=?`, [targetId]) as any;
+    if (!c) return;
+    recipientNumber = String(c.phoneNumber || '').trim();
+    capCustomerId = Number(c.id || 0) || undefined;
+    entityType = 'customer';
+    const bal = Number(c.currentBalance || 0);
+    vars = { name: String(c.fullName || ''), status: bal > 0 ? 'بدهی شما' : bal < 0 ? 'طلب شما' : 'تسویه', amount: formatPriceForSms(Math.abs(bal)) };
+    smsKey = 'meli_payamak_account_balance_pattern_id';
+    tgKey = 'telegram_account_balance_message';
+    fallbackTemplate = 'وضعیت حساب کوروش: {status} {amount} تومان. موبایل کوروش';
+  } else if (eventType === 'CHECK_FAILED') {
+    const c = await getAsync(`SELECT ic.id, ic.saleId, ic.amount, ic.dueDate, s.customerId, cu.fullName as customerFullName, cu.phoneNumber as customerPhoneNumber
+                              FROM installment_checks ic JOIN installment_sales s ON s.id=ic.saleId JOIN customers cu ON cu.id=s.customerId WHERE ic.id=?`, [targetId]) as any;
+    if (!c) return;
+    recipientNumber = String(c.customerPhoneNumber || '').trim();
+    capCustomerId = Number(c.customerId || 0) || undefined;
+    entityType = 'installment_check';
+    vars = { name: String(c.customerFullName || ''), dueDate: String(c.dueDate || ''), amount: formatPriceForSms(Number(c.amount || 0)) };
+    smsKey = 'meli_payamak_check_failed_pattern_id';
+    tgKey = 'telegram_check_failed_message';
+    fallbackTemplate = 'مشتری گرامی {name}، وضعیت چک شما در تاریخ {dueDate} عملیات ناعملیات با موفقیت انجام شد بود ثبت شد. مبلغ: {amount} تومان. لطفاً پیگیری فرمایید. موبایل کوروش';
+  } else if (eventType === 'INVOICE_CREATED') {
+    const inv = await getAsync(`SELECT so.id, so.customerId, so.grandTotal, c.fullName as customerFullName, c.phoneNumber as customerPhoneNumber
+                                FROM sales_orders so LEFT JOIN customers c ON c.id=so.customerId WHERE so.id=?`, [targetId]) as any;
+    if (!inv || !inv.customerId) return;
+    recipientNumber = String(inv.customerPhoneNumber || '').trim();
+    capCustomerId = Number(inv.customerId || 0) || undefined;
+    entityType = 'sales_order';
+    vars = { name: String(inv.customerFullName || ''), invoiceNo: String(inv.id || targetId), total: formatPriceForSms(Number(inv.grandTotal || 0)) };
+    smsKey = 'meli_payamak_invoice_created_pattern_id';
+    tgKey = 'telegram_invoice_created_message';
+    fallbackTemplate = 'مشتری گرامی {name}، فاکتور شما ثبت شد. شماره فاکتور: {invoiceNo}. مبلغ قابل پرداخت: {total} تومان. موبایل کوروش';
+  } else if (eventType === 'INVOICE_PAYMENT_RECEIVED') {
+    const customerId = Number(extra?.customerId || targetId || 0);
+    const c = await getAsync(`SELECT id, fullName, phoneNumber FROM customers WHERE id=?`, [customerId]) as any;
+    if (!c) return;
+    recipientNumber = String(c.phoneNumber || '').trim();
+    capCustomerId = Number(c.id || 0) || undefined;
+    entityType = 'customer';
+    vars = { name: String(c.fullName || ''), invoiceNo: String(extra?.invoiceNo || '—'), amount: formatPriceForSms(Number(extra?.amount || 0)) };
+    smsKey = 'meli_payamak_invoice_payment_received_pattern_id';
+    tgKey = 'telegram_invoice_payment_received_message';
+    fallbackTemplate = 'مشتری گرامی {name}، پرداخت فاکتور {invoiceNo} به مبلغ {amount} تومان ثبت شد. موبایل کوروش';
+  }
+  if (!recipientNumber && mode !== 'telegram') return;
+  const customerTelegram = getTelegramTemplateForAudience(settings as any, tgKey, 'customer', fallbackTemplate);
+  const text = safeReplaceTemplate(String(customerTelegram.template || '').trim(), vars);
+  const maybeBodyId = Number((settings as any)[smsKey] || 0) || undefined;
+  if ((mode === 'sms' || mode === 'both') && provider === 'meli_payamak' && recipientNumber && maybeBodyId) {
+    const tokenCandidates = [vars.name, vars.saleId, vars.total, vars.amount, vars.dueDate, vars.remaining, vars.deviceModel, vars.repairId, vars.status];
+    const tokens = tokenCandidates.filter((v) => v !== undefined && v !== null && String(v).trim() !== '').slice(0, 4).map((v) => String(v));
+    await enqueueOutbox({ channel: 'sms', provider, eventType, entityType, entityId: targetId, recipient: recipientNumber, payload: { provider, recipient: recipientNumber, tokens, meliBodyId: maybeBodyId }, dedupeToday: false });
+  }
+  if ((mode === 'telegram' || mode === 'both') && capCustomerId && text) {
+    await enqueueOutbox({ channel: 'telegram', provider: null, eventType, entityType, entityId: targetId, recipient: 'telegram_chat', payload: { text, parse_mode: normalizeTelegramParseMode(customerTelegram.parseMode), capCustomerId }, dedupeToday: false });
+  }
+  if (mode === 'telegram' || mode === 'both') {
+    const topic = eventType.startsWith('INSTALLMENT_') || eventType === 'CHECK_FAILED' || eventType === 'ACCOUNT_BALANCE_STATUS'
+      ? 'installments'
+      : eventType.startsWith('INVOICE_')
+      ? 'sales'
+      : 'notifications';
+    await enqueueTelegramAudienceCopies({
+      settings: settings as any,
+      eventType,
+      baseKey: tgKey,
+      customerFallback: fallbackTemplate,
+      vars,
+      topic: topic as any,
+      entityType,
+      entityId: targetId,
+    });
+  }
+};
+const runAutoSendRulesOnce = async () => {
+  const settings = await getAllSettingsAsObject();
+  const modeInstallment = normalizeAutoSendMode((settings as any).auto_send_installment_due);
+  const modeCheck = normalizeAutoSendMode((settings as any).auto_send_check_due);
+  const modeRepair = normalizeAutoSendMode((settings as any).auto_send_repair_ready);
+  // compute target due dates in Shamsi (stored in DB as jYYYY/jMM/jDD)
+  const nowJ = moment().locale('fa');
+  const d0 = nowJ.clone().format('jYYYY/jMM/jDD');
+  const d3 = nowJ.clone().add(3, 'day').format('jYYYY/jMM/jDD');
+  const d7 = nowJ.clone().add(7, 'day').format('jYYYY/jMM/jDD');
+  // If Rule Builder has active Telegram rules, use it as the source of truth for Telegram installment reminders.
+  // Legacy auto-send will continue only for SMS (or when no rule exists) so Telegram does not ignore Rule Builder.
+  let hasTelegramReminderRules = false;
+  try {
+    await ensureReminderRulesTables();
+    const activeTelegramRules = await getEnabledReminderRules('telegram');
+    hasTelegramReminderRules = (activeTelegramRules || []).length > 0;
+  } catch {
+    hasTelegramReminderRules = false;
+  }
+  if (hasTelegramReminderRules && (modeInstallment === 'telegram' || modeInstallment === 'both')) {
+    await runCustomerTelegramNotificationsTick();
+  }
+  const legacyInstallmentMode: 'off' | 'sms' | 'telegram' | 'both' = hasTelegramReminderRules
+    ? (modeInstallment === 'both' ? 'sms' : (modeInstallment === 'telegram' ? 'off' : modeInstallment))
+    : modeInstallment;
+  // installments
+  if (legacyInstallmentMode !== 'off') {
+    const rows = await getPendingInstallmentPaymentsWithCustomer();
+    const mapDue: Record<string, string> = { [d7]: 'INSTALLMENT_DUE_7', [d3]: 'INSTALLMENT_DUE_3', [d0]: 'INSTALLMENT_DUE_TODAY' };
+    for (const r of (rows || []) as any[]) {
+      const et = mapDue[String(r.dueDate)];
+      if (!et) continue;
+      // eslint-disable-next-line no-await-in-loop
+      await enqueueEventNotifications(et, Number(r.paymentId), legacyInstallmentMode === 'both' ? 'both' : (legacyInstallmentMode as any));
+    }
+  }
+  // checks
+  if (modeCheck !== 'off') {
+    const rows = await getPendingInstallmentChecksWithCustomer();
+    const mapDue: Record<string, string> = { [d7]: 'CHECK_DUE_7', [d3]: 'CHECK_DUE_3', [d0]: 'CHECK_DUE_TODAY' };
+    for (const r of (rows || []) as any[]) {
+      const et = mapDue[String(r.dueDate)];
+      if (!et) continue;
+      // eslint-disable-next-line no-await-in-loop
+      await enqueueEventNotifications(et, Number(r.checkId), modeCheck === 'both' ? 'both' : (modeCheck as any));
+    }
+  }
+  // repairs ready
+  if (modeRepair !== 'off') {
+    const rows = await getRepairsReadyForPickupFromDb();
+    for (const r of (rows || []) as any[]) {
+      // eslint-disable-next-line no-await-in-loop
+      await enqueueEventNotifications('REPAIR_READY_FOR_PICKUP', Number(r.id), modeRepair === 'both' ? 'both' : (modeRepair as any));
+    }
+  }
+  // process a small batch immediately
+  try {
+    for (let i = 0; i < 20; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const did = await processOneOutboxRow();
+      if (!did) break;
+    }
+  } catch (e: any) {
+    try { console.error('Telegram sendMessage failed:', e?.message || e); } catch {}
+  }
+};
+/**
+ * -----------------------------------------------------
+ * Customer Telegram Notifications (Installments + Repairs)
+ * - SMS is only used for OTP verification (linking).
+ * - All ongoing reminders are sent via Telegram to the linked customer chat_id.
+ * - Uses notification_outbox + daily dedupe to avoid spam.
+ * -----------------------------------------------------
+ */
+const getIntList = (raw: any, fallback: number[]) => {
+  const s = String(raw ?? '').trim();
+  if (!s) return fallback;
+  const out = s.split(/[,،\s]+/).map(x => Number(String(x).trim())).filter(n => Number.isFinite(n));
+  return out.length ? out : fallback;
+};
+const renderTpl = (tpl: string, vars: Record<string, any>) => {
+  const src = String(tpl ?? '');
+  return src.replace(/\{(\w+)\}/g, (_m, k) => {
+    const v = (vars as any)[k];
+    return (v === undefined || v === null) ? '' : String(v);
+  });
+};
+const escapeHtml = (s: any) => {
+  const t = String(s ?? '');
+  return t
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
+// For Telegram parse_mode=HTML. Keeps templates simple while preventing tag injection.
+const renderTplHtml = (tpl: string, vars: Record<string, any>) => {
+  const safeVars: Record<string, any> = {};
+  for (const k of Object.keys(vars || {})) safeVars[k] = escapeHtml((vars as any)[k]);
+  return renderTpl(String(tpl ?? ''), safeVars);
+};
+// Best-effort: allow older templates that used markdown-like **bold** and __italic__
+// to render nicely in Telegram HTML parse mode.
+const markdownishToHtml = (tpl: string) => {
+  const s = String(tpl ?? '');
+  // replace **bold**
+  const b = s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+  // replace __italic__
+  return b.replace(/__(.+?)__/g, '<i>$1</i>');
+};
+const telegramSafeValue = (value: any) => escapeHtml(value);
+const telegramCard = (title: string, icon: string, lines: string[], footer?: string) => {
+  const body = (lines || []).filter(Boolean).join('\n');
+  return [
+    `<b>${icon} ${title}</b>`,
+    '────────────',
+    body,
+    footer ? `\n${footer}` : '',
+  ].filter(Boolean).join('\n');
+};
+const telegramBullet = (icon: string, label: string, value: any) => `▫️ ${icon} <b>${telegramSafeValue(label)}:</b> ${telegramSafeValue(value)}`;
+const parseAnyDate = (s: any) => {
+  const raw = String(s ?? '').trim();
+  if (!raw) return null;
+  const j = moment(raw, 'jYYYY/jMM/jDD', true);
+  const m = j.isValid() ? j : moment(raw);
+  return m.isValid() ? m : null;
+};
+const formatMoneyFa = (v: any) => {
+  const n = Number(v ?? 0);
+  try { return n.toLocaleString('fa-IR'); } catch { return String(n); }
+};
+const buildNotifKeyboard = (primary: 'installments' | 'repairs' | 'balance' | 'invoices') => {
+  const primaryBtn =
+    primary === 'installments' ? { text: '🧾 اقساط من', callback_data: 'MENU_INSTALLMENTS' } :
+    primary === 'repairs' ? { text: '🛠 پیگیری تعمیرات من', callback_data: 'MENU_REPAIRS' } :
+    primary === 'invoices' ? { text: '🧾 خریدهای اخیر من', callback_data: 'MENU_INVOICES' } :
+    { text: '📌 وضعیت حساب', callback_data: 'MENU_BALANCE' };
+  return {
+    inline_keyboard: [
+      [primaryBtn, { text: '🏠 منو', callback_data: 'MENU_HOME' }],
+      [{ text: '🔔 اعلان‌ها روشن/خاموش', callback_data: 'MENU_NOTIFS' }],
+    ],
+  };
+};
+const buildInstallmentText = (
+  kind: 'due_7' | 'due_3' | 'due_today' | 'overdue',
+  item: any,
+  settings: any,
+  daysUntil: number
+) => {
+  const name = item?.customerFullName || 'مشتری';
+  const amount = formatMoneyFa(item?.amountDue);
+  const dueDate = String(item?.dueDate || '').trim();
+  const baseVars = { name, amount, dueDate, days: String(daysUntil), saleId: String(item?.saleId ?? '') };
+  const defaults: Record<string, string> = {
+    due_7: telegramCard('یادآوری قسط', '🔔', [
+      '⏳ <b>۷ روز مانده</b>',
+      `👤 مشتری: <b>{name}</b>`,
+      `💰 مبلغ قسط: <b>{amount} تومان</b>`,
+      `📅 سررسید: <b>{dueDate}</b>`,
+    ], '🧾 مشاهده اقساط: /installments'),
+    due_3: telegramCard('یادآوری قسط', '🔔', [
+      '⏳ <b>۳ روز مانده</b>',
+      `👤 مشتری: <b>{name}</b>`,
+      `💰 مبلغ قسط: <b>{amount} تومان</b>`,
+      `📅 سررسید: <b>{dueDate}</b>`,
+    ], '🧾 مشاهده اقساط: /installments'),
+    due_today: telegramCard('سررسید امروز', '⏰', [
+      `👤 مشتری: <b>{name}</b>`,
+      `💰 مبلغ قسط: <b>{amount} تومان</b>`,
+      `📅 سررسید امروز: <b>{dueDate}</b>`,
+    ], '🧾 مشاهده اقساط: /installments'),
+    overdue: telegramCard('قسط معوق', '⚠️', [
+      `👤 مشتری: <b>{name}</b>`,
+      `💰 مبلغ قسط: <b>{amount} تومان</b>`,
+      `📅 سررسید: <b>{dueDate}</b>`,
+      'لطفاً در اولین فرصت بررسی و پیگیری شود.',
+    ], '🧾 مشاهده اقساط: /installments'),
+  };
+  // Backward-compatible keys already present in Settings → Telegram
+  const keyMap: any = {
+    due_7: 'telegram_installment_due_7_message',
+    due_3: 'telegram_installment_due_3_message',
+    due_today: 'telegram_installment_reminder_message',
+    overdue: 'telegram_installment_overdue_message',
+  };
+  const tplRaw = String(settings?.[keyMap[kind]] || '').trim() || defaults[kind];
+  const tpl = markdownishToHtml(tplRaw);
+  return renderTplHtml(tpl, baseVars);
+};
+const buildRepairReadyText = (item: any, settings: any) => {
+  const name = item?.customerFullName || 'مشتری';
+  const device = item?.deviceModel || 'دستگاه';
+  const cost = formatMoneyFa(item?.finalCost);
+  const defaults = telegramCard('آماده تحویل', '✅', [
+    `👤 مشتری: <b>{name}</b>`,
+    `📱 دستگاه: <b>{device}</b>`,
+    `💰 هزینه نهایی: <b>{cost} تومان</b>`,
+  ], '🛠 جزئیات تعمیرات: /repairs');
+  const tplRaw = String((settings as any)?.telegram_repair_ready_message || '').trim() || defaults;
+  const tpl = markdownishToHtml(tplRaw);
+  return renderTplHtml(tpl, { name, device, deviceModel: device, cost, finalCost: cost, repairId: String(item?.id ?? '') });
+};
+const buildRepairStatusChangedText = (item: any, settings: any) => {
+  const name = item?.customerFullName || 'مشتری';
+  const device = item?.deviceModel || 'دستگاه';
+  const statusRaw = String(item?.status || '').trim();
+  const statusInfo = (() => {
+    const s = statusRaw;
+    if (!s) return { icon: 'ℹ️', label: 'نامشخص' };
+    const lc = s.toLowerCase();
+    if (lc.includes('ready') || s.includes('آماده')) return { icon: '✅', label: s.includes('آماده') ? s : 'آماده تحویل' };
+    if (lc.includes('wait') || s.includes('انتظار') || s.includes('قطعه')) return { icon: '⏳', label: s || 'در انتظار قطعه' };
+    if (lc.includes('progress') || s.includes('در حال') || s.includes('تعمیر')) return { icon: '🧰', label: s || 'در حال تعمیر' };
+    if (lc.includes('deliver') || lc.includes('done') || s.includes('تحویل')) return { icon: '📦', label: s || 'تحویل شد' };
+    if (s.includes('پذیرش') || s.includes('دریافت')) return { icon: '📥', label: s };
+    return { icon: 'ℹ️', label: s };
+  })();
+  const cost = item?.finalCost != null ? formatMoneyFa(item?.finalCost) : '';
+  const defaults = telegramCard('تازه‌سازی تعمیرات', '🛠', [
+    `👤 مشتری: <b>{name}</b>`,
+    `📱 دستگاه: <b>{device}</b>`,
+    `${statusInfo.icon} وضعیت جدید: <b>{status}</b>`,
+    cost ? `💰 هزینه: <b>{cost} تومان</b>` : '',
+  ], '🛠 جزئیات: /repairs');
+  const tplRaw = String((settings as any).telegram_repair_status_changed_message || '').trim() || defaults;
+  const tpl = markdownishToHtml(tplRaw);
+  return renderTplHtml(tpl, { name, device, deviceModel: device, status: statusInfo.label, finalCost: cost, cost, repairId: String(item?.id ?? '') });
+};
+const runCustomerTelegramNotificationsTick = async () => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    // Keeps track of last notified repair status to avoid duplicate notifications.
+    try {
+      await runAsync(`
+        CREATE TABLE IF NOT EXISTS repair_notify_state (
+          repairId INTEGER PRIMARY KEY,
+          lastStatus TEXT,
+          lastNotifiedAt TEXT
+        );
+      `);
+      await runAsync(`CREATE INDEX IF NOT EXISTS idx_repair_notify_state_status ON repair_notify_state(lastStatus);`);
+    } catch {
+      // ignore
+    }
+    const enabledInstallments = String((settings as any).telegram_notify_installments || '1').trim() !== '0';
+    const enabledRepairs = String((settings as any).telegram_notify_repairs || '1').trim() !== '0';
+    // Legacy knobs (kept for backward compatibility if no rules exist)
+    const remindDays = getIntList((settings as any).telegram_installment_remind_days, [7, 3, 0]);
+    const overdueRepeatDays = Math.max(1, Number((settings as any).telegram_installment_overdue_repeat_days || 3));
+    const now = moment();
+    const today = now.clone().startOf('day');
+    if (enabledInstallments) {
+      // CRM-style rule builder (preferred if at least one rule exists)
+      let rulesCfg: ReminderConfigRow | null = null;
+      let rules: ReminderRuleRow[] = [];
+      try {
+        await ensureReminderRulesTables();
+        rulesCfg = await getReminderConfig();
+        rules = await getEnabledReminderRules('telegram');
+      } catch {
+        rulesCfg = null;
+        rules = [];
+      }
+      const useRuleBuilder = (rules || []).length > 0;
+      const nowTehran = moment().utcOffset(210);
+      const hourNow = nowTehran.hour();
+      const inSendWindow = rulesCfg
+        ? (hourNow >= Number(rulesCfg.sendStartHour) && hourNow <= Number(rulesCfg.sendEndHour))
+        : true;
+      const allUnpaid = await getOverdueInstallmentsFromDb();
+      for (const item of (allUnpaid || [])) {
+        const chatId = String(item?.telegramChatId || '').trim();
+        const optedOut = String(item?.telegramOptedOut || '0').trim() === '1';
+        if (!chatId || optedOut || String((item as any)?.telegramInvalid || (item as any)?.telegram_invalid || "0") === "1") continue;
+        const due = parseAnyDate(item?.dueDate);
+        if (!due) continue;
+        const daysUntil = due.clone().startOf('day').diff(today, 'days');
+        if (useRuleBuilder) {
+          if (!inSendWindow) continue;
+          const customerId = Number(item?.customerId ?? item?.customer_id ?? 0);
+          if (customerId && rulesCfg?.maxPerDayPerCustomer) {
+            const sent = await hasCustomerDailyCap('telegram', customerId);
+            const pending = await hasPendingCustomerCapInOutbox('telegram', customerId);
+            if (sent || pending) continue;
+          }
+          // Match rules against daysUntil
+          const matches = (rules || []).filter((r) => {
+            if (!reminderTargetsInstallments(r as any)) return false;
+            if (r.matchType === 'days_until') return Number(r.value) === Number(daysUntil);
+            if (r.matchType === 'overdue_days') return Number(daysUntil) === -Math.abs(Number(r.value));
+            return false;
+          });
+          if (matches.length) {
+            // pick the best match
+            matches.sort((a, b) => {
+              const pa = a.matchType === 'overdue_days' ? 0 : (Number(a.value) === 0 ? 1 : 2);
+              const pb = b.matchType === 'overdue_days' ? 0 : (Number(b.value) === 0 ? 1 : 2);
+              if (pa !== pb) return pa - pb;
+              // smaller days_until gets priority (0 before 3 before 7)
+              return Math.abs(Number(a.value)) - Math.abs(Number(b.value));
+            });
+            const rule = matches[0];
+            const name = item?.customerFullName || 'مشتری';
+            const amount = formatMoneyFa(item?.amountDue);
+            const dueDate = String(item?.dueDate || '').trim();
+            const vars = { name, amount, dueDate, days: String(daysUntil), saleId: String(item?.saleId ?? '') };
+            const tpl = markdownishToHtml(String((rule as any).installmentTemplate || rule.template || ''));
+            const text = renderTplHtml(tpl, vars);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: `installment_rule_${rule.id}`,
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: {
+                text,
+                chatId,
+                reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }),
+                parse_mode: 'HTML',
+                capCustomerId: customerId || undefined,
+                meta: { ruleId: rule.id, capCustomerId: customerId || undefined },
+              },
+              dedupeToday: true,
+            });
+          }
+          continue;
+        }
+        // Legacy behavior (no rules)
+        if (remindDays.includes(daysUntil)) {
+          if (daysUntil === 7) {
+            const text = buildInstallmentText('due_7', item, settings, daysUntil);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: 'installment_due_7',
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+              dedupeToday: true,
+            });
+          } else if (daysUntil === 3) {
+            const text = buildInstallmentText('due_3', item, settings, daysUntil);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: 'installment_due_3',
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+              dedupeToday: true,
+            });
+          } else if (daysUntil === 0) {
+            const text = buildInstallmentText('due_today', item, settings, daysUntil);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: 'installment_due_today',
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+              dedupeToday: true,
+            });
+          } else {
+            const text = buildInstallmentText('due_today', item, settings, daysUntil);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: 'installment_reminder',
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+              dedupeToday: true,
+            });
+          }
+        }
+        if (daysUntil < 0) {
+          const overdueDays = Math.abs(daysUntil);
+          if (overdueDays % overdueRepeatDays === 0) {
+            const text = buildInstallmentText('overdue', item, settings, daysUntil);
+            await enqueueOutbox({
+              channel: 'telegram',
+              eventType: 'installment_overdue',
+              entityType: 'installment_payment',
+              entityId: Number(item?.id ?? 0) || null,
+              recipient: chatId,
+              payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, paymentId: item?.paymentId, amount: item?.amountDue, dueDate: item?.dueDate, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+              dedupeToday: true,
+            });
+          }
+        }
+      }
+      if (useRuleBuilder) {
+        const checkRows = await getPendingInstallmentChecksWithCustomer().catch(() => []);
+        for (const item of (checkRows || [])) {
+          const chatId = String(item?.telegramChatId || '').trim();
+          const optedOut = String(item?.telegramOptedOut || '0').trim() === '1';
+          if (!chatId || optedOut || String((item as any)?.telegramInvalid || (item as any)?.telegram_invalid || '0') === '1') continue;
+          const due = parseAnyDate(item?.dueDate);
+          if (!due) continue;
+          const daysUntil = due.clone().startOf('day').diff(today, 'days');
+          if (!inSendWindow) continue;
+          const customerId = Number(item?.customerId ?? item?.customer_id ?? 0);
+          if (customerId && rulesCfg?.maxPerDayPerCustomer) {
+            const sent = await hasCustomerDailyCap('telegram', customerId);
+            const pending = await hasPendingCustomerCapInOutbox('telegram', customerId);
+            if (sent || pending) continue;
+          }
+          const matches = (rules || []).filter((r) => {
+            if (!reminderTargetsChecks(r as any)) return false;
+            if (r.matchType === 'days_until') return Number(r.value) === Number(daysUntil);
+            if (r.matchType === 'overdue_days') return Number(daysUntil) === -Math.abs(Number(r.value));
+            return false;
+          });
+          if (!matches.length) continue;
+          matches.sort((a, b) => {
+            const pa = a.matchType === 'overdue_days' ? 0 : (Number(a.value) === 0 ? 1 : 2);
+            const pb = b.matchType === 'overdue_days' ? 0 : (Number(b.value) === 0 ? 1 : 2);
+            if (pa !== pb) return pa - pb;
+            return Math.abs(Number(a.value)) - Math.abs(Number(b.value));
+          });
+          const rule = matches[0];
+          const name = item?.customerFullName || 'مشتری';
+          const amount = formatMoneyFa(item?.amount);
+          const dueDate = String(item?.dueDate || '').trim();
+          const vars = {
+            name,
+            amount,
+            dueDate,
+            days: String(daysUntil),
+            saleId: String(item?.saleId ?? ''),
+            checkNumber: String(item?.checkNumber || '—'),
+            bank: String(item?.bankName || '—'),
+            type: 'چک',
+          };
+          const tpl = markdownishToHtml(String((rule as any).checkTemplate || rule.template || ''));
+          const text = renderTplHtml(tpl, vars);
+          await enqueueOutbox({
+            channel: 'telegram',
+            eventType: `check_rule_${rule.id}`,
+            entityType: 'installment_check',
+            entityId: Number(item?.checkId ?? 0) || null,
+            recipient: chatId,
+            payload: {
+              text,
+              chatId,
+              reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'installments', installment: { saleId: item?.saleId, checkId: item?.checkId, amount: item?.amount, dueDate: item?.dueDate, customerId: item?.customerId }, settings }),
+              parse_mode: 'HTML',
+              capCustomerId: customerId || undefined,
+              meta: { ruleId: rule.id, capCustomerId: customerId || undefined, checkId: item?.checkId },
+            },
+            dedupeToday: true,
+          });
+        }
+      }
+    }
+    if (enabledRepairs) {
+      // VIP: notify on ANY status change (deduped by repair_notify_state)
+      const repairs = await allAsync(
+        `SELECT r.id, r.customerId, r.deviceModel, r.status, r.finalCost, r.dateReceived,
+                c.fullName AS customerFullName,
+                COALESCE(c.telegram_chat_id, c.telegramChatId) AS telegramChatId,
+                COALESCE(c.telegram_opted_out,0) AS telegramOptedOut
+         FROM repairs r
+         JOIN customers c ON c.id = r.customerId
+         WHERE COALESCE(c.telegram_chat_id, c.telegramChatId) IS NOT NULL
+           AND TRIM(COALESCE(c.telegram_chat_id, c.telegramChatId)) != ''
+         ORDER BY r.id DESC
+         LIMIT 250`,
+        []
+      ).catch(() => []);
+      for (const item of (repairs || [])) {
+        const chatId = String(item?.telegramChatId || '').trim();
+        const optedOut = String(item?.telegramOptedOut || '0').trim() === '1';
+        if (!chatId || optedOut || String((item as any)?.telegramInvalid || (item as any)?.telegram_invalid || "0") === "1") continue;
+        const currentStatus = String(item?.status || '').trim();
+        if (!currentStatus) continue;
+        const st = await getAsync(
+          `SELECT lastStatus FROM repair_notify_state WHERE repairId=? LIMIT 1`,
+          [Number(item?.id ?? 0)]
+        ).catch(() => null);
+        const lastStatus = String(st?.lastStatus || '').trim();
+        if (lastStatus && lastStatus === currentStatus) continue;
+        // Enqueue notification
+        const isReady = currentStatus.toLowerCase().includes('ready') || currentStatus.includes('آماده');
+        const text = isReady ? buildRepairReadyText(item, settings) : buildRepairStatusChangedText(item, settings);
+        await enqueueOutbox({
+          channel: 'telegram',
+          eventType: isReady ? 'repair_ready' : 'repair_status_changed',
+          entityType: 'repair',
+          entityId: Number(item?.id ?? 0) || null,
+          recipient: chatId,
+          payload: { text, chatId, reply_markup: buildTelegramDeepLinkKeyboard({ primaryMenu: 'repairs', repair: { repairId: item?.id, customerId: item?.customerId }, settings }), parse_mode: 'HTML' },
+          dedupeToday: false,
+        });
+        // Update state immediately to avoid duplicates; outbox will retry if needed.
+        await runAsync(
+          `INSERT INTO repair_notify_state (repairId, lastStatus, lastNotifiedAt)
+           VALUES (?,?,strftime('%Y-%m-%dT%H:%M:%SZ','now','utc'))
+           ON CONFLICT(repairId) DO UPDATE SET lastStatus=excluded.lastStatus, lastNotifiedAt=excluded.lastNotifiedAt`,
+          [Number(item?.id ?? 0), currentStatus]
+        ).catch(() => {});
+      }
+    }
+    // kick worker (small batch)
+    try {
+      for (let i = 0; i < 20; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const did = await processOneOutboxRow();
+        if (!did) break;
+      }
+    } catch {}
+  } catch (e: any) {
+    try { console.error('Customer telegram notifications tick failed:', e?.message || e); } catch {}
+  }
+};
+let customerTelegramNotifySchedulerStarted = false;
+const startCustomerTelegramNotifyScheduler = () => {
+  if (customerTelegramNotifySchedulerStarted) return;
+  customerTelegramNotifySchedulerStarted = true;
+  // every 15 minutes (safe, deduped daily)
+  try {
+    cron.schedule('*/15 * * * *', async () => {
+      await runCustomerTelegramNotificationsTick();
+    });
+  } catch (e) {
+    try { console.error('Failed to start customer telegram scheduler:', (e as any)?.message || e); } catch {}
+  }
+  // run once shortly after boot
+  setTimeout(() => { runCustomerTelegramNotificationsTick(); }, 15_000);
+};
+let autoSendSchedulerStarted = false;
+const startAutoSendScheduler = () => {
+  if (autoSendSchedulerStarted) return;
+  autoSendSchedulerStarted = true;
+  // run daily 09:00
+  try {
+    cron.schedule('0 9 * * *', async () => {
+      try { await runAutoSendRulesOnce(); } catch (e) { console.error('Auto-send rule error:', e); }
+    });
+  } catch (e) {
+    console.error('Failed to start auto-send scheduler:', e);
+  }
+};
+app.post('/api/automation/run-auto-send', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    await runAutoSendRulesOnce();
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+app.post('/api/reminders/run-now', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    await runCustomerTelegramNotificationsTick();
+    try {
+      for (let i = 0; i < 20; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const did = await processOneOutboxRow();
+        if (!did) break;
+      }
+    } catch {}
+    res.json({ success: true });
+  } catch (e) { next(e); }
+});
+// SMS Logs (آخرین ارسال‌ها)
+app.get('/api/sms/logs', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const limit = Math.min(parseInt(String(req.query.limit || '50'), 10) || 50, 200);
+    const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+    const success = typeof req.query.success === 'string' ? String(req.query.success) : undefined;
+    const eventType = typeof req.query.eventType === 'string' ? String(req.query.eventType) : undefined;
+    const recipient = typeof req.query.recipient === 'string' ? String(req.query.recipient) : undefined;
+    const where: string[] = [];
+    const params: any[] = [];
+    if (success === 'true') { where.push('success = 1'); }
+    if (success === 'false') { where.push('success = 0'); }
+    if (eventType && eventType !== 'ALL') { where.push('eventType = ?'); params.push(eventType); }
+    if (recipient && recipient.trim()) { where.push('recipient LIKE ?'); params.push(`%${recipient.trim()}%`); }
+    const sql = `SELECT * FROM sms_logs ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+      ORDER BY id DESC LIMIT ? OFFSET ?`;
+    const rows = await allAsync(sql, [...params, limit, offset]);
+    res.json({ success: true, data: rows });
+  } catch (e) { next(e); }
+});
+// Retry a previous sms log entry (pattern re-send)
+app.post('/api/sms/logs/:id/retry', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id || isNaN(id)) return res.status(400).json({ success: false, message: 'شناسه لاگ نامعتبر است.' });
+    const log = await getAsync('SELECT * FROM sms_logs WHERE id = ?', [id]);
+    if (!log) return res.status(404).json({ success: false, message: 'لاگ یافت نشد.' });
+    const settings = await getAllSettingsAsObject();
+    const provider: string = String(log.provider || settings.sms_provider || 'meli_payamak').toLowerCase();
+    const recipientNumber = String(log.recipient || '').trim();
+    const tokens: string[] = log.tokensJson ? JSON.parse(String(log.tokensJson) || '[]') : [];
+    const patternId = String(log.patternId || '').trim();
+    if (!recipientNumber) return res.status(400).json({ success: false, message: 'شماره گیرنده در لاگ موجود نیست.' });
+    if (!patternId) return res.status(400).json({ success: false, message: 'شناسه پترن در لاگ موجود نیست.' });
+    let result: any;
+    if (provider === 'meli_payamak') {
+      const username = settings.meli_payamak_username;
+      const password = settings.meli_payamak_password;
+      const bid = Number(patternId);
+      if (!username || !password) return res.status(400).json({ success: false, message: 'نام کاربری/رمز عبور ملی پیامک در تنظیمات وارد نشده است.' });
+      if (!bid || isNaN(bid)) return res.status(400).json({ success: false, message: 'BodyId نامعتبر است.' });
+      result = await sendMeliPayamakPatternSms(recipientNumber, bid, tokens, username, password);
+    } else {
+      return res.status(400).json({ success: false, message: 'ارسال مجدد فعلاً فقط برای ملی پیامک فعال است.' });
+    }
+    await insertSmsLog({
+      correlationId,
+      reqUser: req.user,
+      provider,
+      eventType: String(log.eventType || 'RETRY'),
+      entityType: log.entityType || inferEntityTypeFromEvent(log.eventType),
+      entityId: log.entityId ? Number(log.entityId) : undefined,
+      recipient: recipientNumber,
+      patternId,
+      tokens,
+      success: !!result?.success,
+      response: result,
+      error: result?.success ? undefined : result?.message,
+      relatedLogId: id,
+    });
+    if (result?.success) return res.json({ success: true, message: 'ارسال مجدد انجام شد.', data: result });
+    return res.status(500).json({ success: false, message: result?.message || 'خطا در ارسال مجدد', data: result });
+  } catch (e) { next(e); }
+});
+app.post('/api/sms/trigger-event', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const { targetId, eventType } = req.body || {};
+    const correlationId = makeCorrId();
+    if (!targetId || isNaN(Number(targetId))) return res.status(400).json({ success: false, message: 'شناسه هدف نامعتبر است.' });
+    const settings = await getAllSettingsAsObject();
+    // Determine which SMS provider to use. Default to MeliPayamak if none is set.
+    const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+    // Will hold common values across providers
+    let recipientNumber = '';
+    let tokens: string[] = [];
+    let meliBodyId: number | undefined;
+    let kavenegarTemplate: string | undefined;
+    let smsIrTemplateId: number | undefined;
+    let ippanelPatternCode: string | undefined;
+    let telegramTemplate: string | undefined;
+    // Prepare data based on event type
+    if (eventType === 'INSTALLMENT_REMINDER') {
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      recipientNumber = p.customerPhoneNumber;
+      // For all providers we build tokens in order: name, amount, due date
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      // Provider-specific pattern/template identifiers
+      // Default pattern for "یادآوری قسط (کلی)" if setting is empty
+      meliBodyId = Number(settings.meli_payamak_installment_reminder_pattern_id) || 341283;
+      kavenegarTemplate = settings.kavenegar_installment_template;
+      smsIrTemplateId = settings.sms_ir_installment_template_id ? Number(settings.sms_ir_installment_template_id) : undefined;
+      ippanelPatternCode = settings.ippanel_installment_pattern_code;
+    } else if (eventType === 'INSTALLMENT_COMPLETED') {
+      const s = await getInstallmentSaleDetailsForSms(targetId);
+      if (!s) throw new Error('اطلاعات فروش اقساطی یافت نشد.');
+      recipientNumber = s.customerPhoneNumber;
+      // Tokens: name, sale id, total sale price
+      tokens = [s.customerFullName, String(s.saleId), formatPriceForSms(s.totalPrice)];
+      meliBodyId = settings.meli_payamak_installment_completed_pattern_id ? Number(settings.meli_payamak_installment_completed_pattern_id) : undefined;
+      kavenegarTemplate = settings.kavenegar_installment_completed_template;
+      smsIrTemplateId = settings.sms_ir_installment_completed_template_id ? Number(settings.sms_ir_installment_completed_template_id) : undefined;
+      ippanelPatternCode = settings.ippanel_installment_completed_pattern_code;
+      telegramTemplate = settings.telegram_installment_completed_message;
+    } else if (eventType === 'REPAIR_RECEIVED') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r) throw new Error('اطلاعات تعمیر یافت نشد.');
+      recipientNumber = r.customerPhoneNumber;
+      // Tokens: name, device model, repair ID
+      tokens = [r.customerFullName, r.deviceModel, String(r.id)];
+      meliBodyId = Number(settings.meli_payamak_repair_received_pattern_id);
+      kavenegarTemplate = settings.kavenegar_repair_received_template;
+      smsIrTemplateId = settings.sms_ir_repair_received_template_id ? Number(settings.sms_ir_repair_received_template_id) : undefined;
+      ippanelPatternCode = settings.ippanel_repair_received_pattern_code;
+    } else if (eventType === 'REPAIR_COST_ESTIMATED') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r || r.estimatedCost == null) throw new Error('اطلاعات هزینه تخمینی یافت نشد.');
+      recipientNumber = r.customerPhoneNumber;
+      tokens = [r.customerFullName, r.deviceModel, formatPriceForSms(r.estimatedCost)];
+      meliBodyId = Number(settings.meli_payamak_repair_cost_estimated_pattern_id);
+      kavenegarTemplate = settings.kavenegar_repair_cost_estimated_template;
+      smsIrTemplateId = settings.sms_ir_repair_cost_estimated_template_id ? Number(settings.sms_ir_repair_cost_estimated_template_id) : undefined;
+      ippanelPatternCode = settings.ippanel_repair_cost_estimated_pattern_code;
+    } else if (eventType === 'REPAIR_READY_FOR_PICKUP') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r || r.finalCost == null) throw new Error('اطلاعات هزینه نهایی یافت نشد.');
+      recipientNumber = r.customerPhoneNumber;
+      tokens = [r.customerFullName, r.deviceModel, formatPriceForSms(r.finalCost)];
+      meliBodyId = Number(settings.meli_payamak_repair_ready_pattern_id);
+      kavenegarTemplate = settings.kavenegar_repair_ready_template;
+      smsIrTemplateId = settings.sms_ir_repair_ready_template_id ? Number(settings.sms_ir_repair_ready_template_id) : undefined;
+      ippanelPatternCode = settings.ippanel_repair_ready_pattern_code;
+    } else if (eventType === 'INSTALLMENT_DUE_7' || eventType === 'INSTALLMENT_DUE_3' || eventType === 'INSTALLMENT_DUE_TODAY') {
+      // Installment payment due reminders: 7 days, 3 days, or same-day
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      recipientNumber = p.customerPhoneNumber;
+      // Tokens: customer name, amount due, due date
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      // Choose correct template/pattern based on days remaining
+      if (eventType === 'INSTALLMENT_DUE_7') {
+        meliBodyId = Number(settings.meli_payamak_installment_due_7_pattern_id);
+        kavenegarTemplate = settings.kavenegar_installment_due_7_template;
+        smsIrTemplateId = settings.sms_ir_installment_due_7_template_id ? Number(settings.sms_ir_installment_due_7_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_installment_due_7_pattern_code;
+        telegramTemplate = settings.telegram_installment_due_7_message;
+      } else if (eventType === 'INSTALLMENT_DUE_3') {
+        meliBodyId = Number(settings.meli_payamak_installment_due_3_pattern_id);
+        kavenegarTemplate = settings.kavenegar_installment_due_3_template;
+        smsIrTemplateId = settings.sms_ir_installment_due_3_template_id ? Number(settings.sms_ir_installment_due_3_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_installment_due_3_pattern_code;
+        telegramTemplate = settings.telegram_installment_due_3_message;
+      } else {
+        // Same-day reminder
+        meliBodyId = Number((settings as any).meli_payamak_installment_due_notice_pattern_id || settings.meli_payamak_installment_due_today_pattern_id);
+        kavenegarTemplate = settings.kavenegar_installment_due_today_template;
+        smsIrTemplateId = settings.sms_ir_installment_due_today_template_id ? Number(settings.sms_ir_installment_due_today_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_installment_due_today_pattern_code;
+        telegramTemplate = (settings as any).telegram_installment_due_notice_message || settings.telegram_installment_due_today_message;
+      }
+    } else if (eventType === 'CHECK_DUE_7' || eventType === 'CHECK_DUE_3' || eventType === 'CHECK_DUE_TODAY') {
+      // Installment check due reminders: 7 days, 3 days, or same-day
+      const c = await getInstallmentCheckDetailsForSms(targetId);
+      if (!c) throw new Error('اطلاعات چک یافت نشد.');
+      recipientNumber = c.customerPhoneNumber;
+      // Tokens: customer name, check number, due date
+      tokens = [c.customerFullName, c.checkNumber, c.dueDate, formatPriceForSms(c.amount)];
+      if (eventType === 'CHECK_DUE_7') {
+        meliBodyId = Number(settings.meli_payamak_check_due_7_pattern_id);
+        kavenegarTemplate = settings.kavenegar_check_due_7_template;
+        smsIrTemplateId = settings.sms_ir_check_due_7_template_id ? Number(settings.sms_ir_check_due_7_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_check_due_7_pattern_code;
+        telegramTemplate = settings.telegram_check_due_7_message;
+      } else if (eventType === 'CHECK_DUE_3') {
+        meliBodyId = Number(settings.meli_payamak_check_due_3_pattern_id);
+        kavenegarTemplate = settings.kavenegar_check_due_3_template;
+        smsIrTemplateId = settings.sms_ir_check_due_3_template_id ? Number(settings.sms_ir_check_due_3_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_check_due_3_pattern_code;
+        telegramTemplate = settings.telegram_check_due_3_message;
+      } else {
+        meliBodyId = Number(settings.meli_payamak_check_due_today_pattern_id);
+        kavenegarTemplate = settings.kavenegar_check_due_today_template;
+        smsIrTemplateId = settings.sms_ir_check_due_today_template_id ? Number(settings.sms_ir_check_due_today_template_id) : undefined;
+        ippanelPatternCode = settings.ippanel_check_due_today_pattern_code;
+        telegramTemplate = settings.telegram_check_due_today_message;
+      }
+    } else {
+      throw new Error('نوع رویداد نامعتبر است.');
+    }
+    if (!recipientNumber) throw new Error('شماره تماس گیرنده یافت نشد.');
+    let smsResult;
+    try {
+      switch (provider) {
+        case 'meli_payamak': {
+          const username = settings.meli_payamak_username;
+          const password = settings.meli_payamak_password;
+          if (!username || !password) throw new Error('نام کاربری یا رمز عبور پنل ملی پیامک در تنظیمات وجود ندارد.');
+          if (!meliBodyId) throw new Error('شناسه الگوی پیامک ملی پیامک یافت نشد.');
+          smsResult = await sendMeliPayamakPatternSms(recipientNumber, meliBodyId, tokens, username, password);
+          break;
+        }
+        case 'kavenegar': {
+          const apiKey = settings.kavenegar_api_key;
+          if (!apiKey) throw new Error('کلید API کاوه‌نگار در تنظیمات وجود ندارد.');
+          if (!kavenegarTemplate) throw new Error('نام قالب کاوه‌نگار یافت نشد.');
+          smsResult = await sendKavenegarPatternSms(recipientNumber, kavenegarTemplate, tokens, apiKey);
+          break;
+        }
+        case 'sms_ir': {
+          const apiKey = settings.sms_ir_api_key;
+          if (!apiKey) throw new Error('کلید API سرویس SMS.ir در تنظیمات وجود ندارد.');
+          if (!smsIrTemplateId) throw new Error('شناسه قالب SMS.ir یافت نشد.');
+          smsResult = await sendSmsIrPatternSms(recipientNumber, smsIrTemplateId, tokens, apiKey);
+          break;
+        }
+        case 'ippanel': {
+          const tokenAuth = settings.ippanel_token;
+          const fromNumber = settings.ippanel_from_number;
+          if (!tokenAuth || !fromNumber) throw new Error('توکن یا شماره فرستنده IPPanel در تنظیمات وجود ندارد.');
+          if (!ippanelPatternCode) throw new Error('کد الگو برای IPPanel یافت نشد.');
+          smsResult = await sendIppanelPatternSms(recipientNumber, ippanelPatternCode, tokens, tokenAuth, fromNumber);
+          break;
+        }
+        case 'telegram': {
+          setTelegramProxy((settings as any).telegram_proxy);
+          const botToken = settings.telegram_bot_token;
+          const chatId = settings.telegram_chat_id;
+          if (!botToken || !chatId) throw new Error('توکن ربات یا شناسه چت تلگرام در تنظیمات وجود ندارد.');
+          if (!telegramTemplate) throw new Error('قالب پیام تلگرام یافت نشد.');
+          // Build message by replacing previews {name}, {amount}, {dueDate}, {checkNumber}
+          const values: Record<string, string> = {
+            name: tokens[0] ?? '',
+            amount: tokens[1] ?? '',
+            dueDate: tokens[2] ?? '',
+            checkNumber: tokens[1] ?? '',
+            saleId: tokens[1] ?? '',
+            total: tokens[2] ?? '',
+          };
+          const text = sanitizeTelegramHtml(renderTplHtml(markdownishToHtml(String(telegramTemplate)), values));
+          smsResult = await sendTelegramMessage(botToken, chatId, text, { parseMode: 'HTML' });
+          break;
+        }
+        default:
+          throw new Error('سرویس دهنده پیامک ناشناخته است.');
+      }
+    } catch (err) {
+      // If provider-specific error thrown, wrap to unify error handling
+      return next(err);
+    }
+    // Store sms log
+    await insertSmsLog({
+      reqUser: req.user,
+      provider,
+      eventType,
+      entityType: inferEntityTypeFromEvent(eventType),
+      entityId: Number(targetId),
+      recipient: recipientNumber,
+      patternId: provider === 'meli_payamak' ? String(meliBodyId ?? '') : (provider === 'kavenegar' ? String(kavenegarTemplate ?? '') : (provider === 'sms_ir' ? String(smsIrTemplateId ?? '') : (provider === 'ippanel' ? String(ippanelPatternCode ?? '') : (provider === 'telegram' ? 'TELEGRAM' : '')))),
+      tokens,
+      success: !!smsResult?.success,
+      response: smsResult,
+      request: { eventType, targetId: Number(targetId), provider, patternId: String(meliBodyId ?? kavenegarTemplate ?? smsIrTemplateId ?? ''), recipient: recipientNumber, tokensCount: tokens.length },
+      httpStatus: (smsResult as any)?.details?.httpStatus,
+      rawResponseText: (smsResult as any)?.details?.rawResponseText,
+      durationMs: (smsResult as any)?.details?.durationMs,
+      error: smsResult?.success ? undefined : smsResult?.message,
+    });
+    // Respond to client based on SMS result
+    if (smsResult && smsResult.success) {
+      res.status(200).json({ success: true, message: 'پیامک با موفقیت زمان‌بندی شد.', data: smsResult });
+    } else {
+      const msg = smsResult?.message || 'خطا در ارسال پیامک';
+      res.status(500).json({ success: false, message: `خطا در عملیات از سرویس پیامک: ${msg}`, data: smsResult });
+    }
+  } catch (e) { next(e); }
+});
+// ======================= Telegram Notifications =======================
+// بررسی اتصال ربات تلگرام (getMe)
+app.get('/api/telegram/health', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String(settings.telegram_bot_token || '').trim();
+    if (!botToken) return res.status(400).json({ success: false, message: 'توکن ربات تلگرام تنظیم نشده است.' });
+    const result = await getTelegramBotInfo(botToken);
+    // audit log (in sms_logs for unified viewer)
+    try {
+      await insertSmsLog({
+        reqUser: (req as any).user,
+        provider: 'telegram',
+        eventType: 'HEALTH_CHECK',
+        entityType: 'telegram',
+        entityId: null as any,
+        recipient: 'telegram:getMe',
+        patternId: 'TELEGRAM_GETME',
+        tokens: [],
+        success: !!result?.success,
+        response: result,
+        error: result?.success ? undefined : result?.message,
+      });
+    } catch {}
+    if (result?.success) {
+      const bot = (result as any)?.data?.result;
+      return res.json({
+        success: true,
+        message: 'اتصال تلگرام برقرار است.',
+        data: {
+          bot,
+        },
+      });
+    }
+    return res.json({ success: false, message: result?.message || 'خطا در بررسی اتصال تلگرام', data: result });
+  } catch (e) { next(e); }
+});
+
+// دریافت آخرین Chat IDهایی که ربات با آن‌ها تعامل داشته است
+app.get('/api/telegram/recent-chats', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureTelegramInboxTable();
+    const settings = await getAllSettingsAsObject();
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botToken) {
+      return res.status(400).json({ success: false, message: 'ابتدا توکن ربات تلگرام را ذخیره کنید.' });
+    }
+
+    const normalizeChat = (raw: any, source: 'updates' | 'inbox') => {
+      const msg = raw?.message || raw?.edited_message || raw?.callback_query?.message || raw?.my_chat_member || raw?.chat_member || raw || {};
+      const chat = msg?.chat || raw?.chat || {};
+      const from = raw?.callback_query?.from || msg?.from || raw?.from || {};
+      const chatId = String(chat?.id || raw?.chatId || raw?.chat_id || '').trim();
+      if (!chatId) return null;
+      const title = String(chat?.title || chat?.first_name || from?.first_name || raw?.title || raw?.customerName || '').trim();
+      const username = String(chat?.username || from?.username || raw?.username || '').trim();
+      const firstName = String(from?.first_name || '').trim();
+      const lastName = String(from?.last_name || '').trim();
+      const displayName = title || [firstName, lastName].filter(Boolean).join(' ') || username || `Chat ${chatId}`;
+      return {
+        chatId,
+        title: displayName,
+        username,
+        type: String(chat?.type || raw?.type || 'private'),
+        source,
+        text: String(msg?.text || raw?.text || raw?.kind || '').slice(0, 120),
+        at: raw?.createdAt || (msg?.date ? new Date(Number(msg.date) * 1000).toISOString() : null),
+      };
+    };
+
+    const collected: any[] = [];
+
+    // ۱) اول از پیام‌های ذخیره‌شده در Inbox داخلی استفاده می‌کنیم؛ این مسیر با polling/webhook سازگارتر است.
+    try {
+      const inboxRows = await allAsync(
+        `SELECT chatId, fromId, kind, text, payloadJson, createdAt
+           FROM telegram_inbox
+          WHERE TRIM(COALESCE(chatId,'')) <> ''
+          ORDER BY id DESC
+          LIMIT 30`,
+        []
+      );
+      for (const row of (inboxRows || []) as any[]) {
+        let payload: any = null;
+        try { payload = row?.payloadJson ? JSON.parse(row.payloadJson) : null; } catch { payload = null; }
+        const normalized = normalizeChat(payload || row, 'inbox');
+        if (normalized) collected.push(normalized);
+      }
+    } catch {
+      // inbox هنوز ساخته نشده یا خالی است؛ از getUpdates استفاده می‌کنیم.
+    }
+
+    // ۲) سپس از Telegram getUpdates می‌خوانیم؛ اگر webhook فعال باشد ممکن است تلگرام 409 بدهد.
+    let updatesError = '';
+    try {
+      const url = `https://api.telegram.org/bot${botToken}/getUpdates?timeout=0&limit=25`;
+      const fetchUpdates = async (useProxy: boolean) => {
+        const init: any = useProxy ? { agent: getTelegramProxyAgentFromSettings(settings) } : {};
+        const r = await fetch(url, init);
+        const j: any = await r.json().catch(() => ({}));
+        if (!r.ok || j?.ok === false) throw new Error(j?.description || `Telegram getUpdates HTTP ${r.status}`);
+        return Array.isArray(j?.result) ? j.result : [];
+      };
+      let updates: any[] = [];
+      try {
+        updates = await fetchUpdates(true);
+      } catch (e: any) {
+        updatesError = e?.message || 'خواندن getUpdates انجام نشد.';
+        // اگر پروکسی خراب است، یک بار مستقیم تلاش می‌کنیم.
+        try { updates = await fetchUpdates(false); updatesError = ''; } catch (e2: any) { updatesError = e2?.message || updatesError; }
+      }
+      for (const upd of updates) {
+        const normalized = normalizeChat(upd, 'updates');
+        if (normalized) collected.push(normalized);
+      }
+    } catch (e: any) {
+      updatesError = e?.message || updatesError || 'خواندن getUpdates انجام نشد.';
+    }
+
+    const seen = new Set<string>();
+    const chats = collected
+      .filter((item) => {
+        if (!item?.chatId || seen.has(item.chatId)) return false;
+        seen.add(item.chatId);
+        return true;
+      })
+      .slice(0, 12);
+
+    return res.json({
+      success: true,
+      data: {
+        chats,
+        updatesError,
+        hint: chats.length
+          ? 'Chat ID موردنظر را انتخاب کنید و سپس تنظیمات تلگرام را ذخیره کنید.'
+          : 'در تلگرام ربات را Start کنید یا یک پیام برای ربات بفرستید، سپس دوباره دریافت Chat ID را بزنید.',
+      },
+    });
+  } catch (e) { next(e); }
+});
+
+// -----------------------------------------------------
+// Telegram Control Center (Settings dashboard)
+//  - Health: Bot API / Proxy / last send+receive / queue lag
+//  - Coverage: linked customers / opt-out / invalid chat estimates
+//  - Queue: pending/failed + bulk actions
+// -----------------------------------------------------
+app.get('/api/telegram/control-center', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    await ensureCustomerTelegramColumns();
+    const settings = await getAllSettingsAsObject();
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    const proxy = String((settings as any).telegram_proxy || '').trim();
+    // Health: Bot API (getMe) + proxy configured
+    let botApiOk = false;
+    let botApiMessage: string | undefined;
+    let botInfo: any = null;
+    try {
+      setTelegramProxy(proxy);
+      if (botToken) {
+        const r = await getTelegramBotInfo(botToken);
+        botApiOk = !!(r as any)?.success;
+        botApiMessage = String((r as any)?.message || '');
+        botInfo = (r as any)?.data?.result || null;
+      } else {
+        botApiOk = false;
+        botApiMessage = 'توکن ربات تلگرام تنظیم نشده است.';
+      }
+    } catch (e: any) {
+      botApiOk = false;
+      botApiMessage = e?.message || 'خطا در بررسی Bot API';
+    }
+    const proxyConfigured = !!proxy;
+    // Proxy OK is best-effort: if bot call succeeded while proxy configured, treat it as ok.
+    // If no proxy configured, we report null (not applicable).
+    const proxyOk: boolean | null = proxyConfigured ? botApiOk : null;
+    // Last send (from sms_logs)
+    const lastSendRow: any = await getAsync(
+      `SELECT createdAt, eventType, success FROM sms_logs 
+       WHERE provider='telegram' AND IFNULL(eventType,'') <> 'HEALTH_CHECK'
+       ORDER BY id DESC LIMIT 1`,
+      []
+    );
+    const lastSentAt = lastSendRow?.createdAt || null;
+    // Last receive (from settings - updated by webhook)
+    const lastReceivedAt = String((settings as any).telegram_last_webhook_at || '').trim() || null;
+    // Coverage (customers)
+    const customerCols = await getExistingCustomerColumns();
+    const linkedWhere = buildCustomerTelegramLinkedWhereSql(customerCols);
+    const linkedRow: any = await getAsync(
+      `SELECT COUNT(1) AS cnt FROM customers WHERE ${linkedWhere}`,
+      []
+    );
+    const optoutRow: any = await getAsync(
+      `SELECT COUNT(1) AS cnt FROM customers WHERE IFNULL(telegram_opted_out,0) = 1`,
+      []
+    );
+    let linkedPartners = 0;
+    try {
+      const partnerCols: any[] = await allAsync(`PRAGMA table_info(partners)`);
+      const partnerNames = new Set((partnerCols || []).map((c: any) => String(c?.name || '')));
+      const partnerChatCol = partnerNames.has('telegram_chat_id') ? 'telegram_chat_id' : (partnerNames.has('telegramChatId') ? 'telegramChatId' : '');
+      if (partnerChatCol) {
+        const linkedPartnerRow: any = await getAsync(
+          `SELECT COUNT(1) AS cnt FROM partners WHERE TRIM(COALESCE(${partnerChatCol}, '')) <> ''`,
+          []
+        );
+        linkedPartners = Number(linkedPartnerRow?.cnt || 0);
+      }
+    } catch {}
+    const routeValues = [
+      String((settings as any).telegram_chat_id || '').trim(),
+      String((settings as any).telegram_chat_ids_reports || '').trim(),
+      String((settings as any).telegram_chat_ids_installments || '').trim(),
+      String((settings as any).telegram_chat_ids_sales || '').trim(),
+      String((settings as any).telegram_chat_ids_notifications || '').trim(),
+    ].filter(Boolean);
+    const destinationChats = Array.from(new Set(routeValues.join('\n').split(/\r?\n|,/).map((x) => String(x || '').trim()).filter(Boolean))).length;
+    // Invalid chat estimate (last 30 days failed telegram logs mentioning 403 / blocked / chat not found)
+    const since30 = moment().subtract(30, 'days').toISOString();
+    const invalidRow: any = await getAsync(
+      `SELECT COUNT(DISTINCT recipient) AS cnt
+         FROM sms_logs
+        WHERE provider='telegram'
+          AND IFNULL(success,0)=0
+          AND createdAt >= ?
+          AND (
+            IFNULL(errorText,'') LIKE '%403%'
+            OR IFNULL(errorText,'') LIKE '%blocked%'
+            OR IFNULL(errorText,'') LIKE '%chat%'
+            OR IFNULL(responseJson,'') LIKE '%403%'
+            OR IFNULL(responseJson,'') LIKE '%blocked%'
+            OR IFNULL(responseJson,'') LIKE '%chat%'
+          )`,
+      [since30]
+    );
+    // Queue stats
+    const pendingRow: any = await getAsync(
+      `SELECT COUNT(1) AS cnt FROM notification_outbox WHERE channel='telegram' AND status IN ('pending','processing')`,
+      []
+    );
+    const failedRow: any = await getAsync(
+      `SELECT COUNT(1) AS cnt FROM notification_outbox WHERE channel='telegram' AND status='failed'`,
+      []
+    );
+    const oldestPending: any = await getAsync(
+      `SELECT createdAt AS oldest FROM notification_outbox WHERE channel='telegram' AND status='pending' ORDER BY id ASC LIMIT 1`,
+      []
+    );
+    let queueLagSeconds: number | null = null;
+    if (oldestPending?.oldest) {
+      try {
+        queueLagSeconds = Math.max(0, moment().diff(moment(String(oldestPending.oldest)), 'seconds'));
+      } catch { queueLagSeconds = null; }
+    }
+    return res.json({
+      success: true,
+      data: {
+        health: {
+          botApi: { ok: botApiOk, message: botApiMessage || undefined, bot: botInfo },
+          proxy: { configured: proxyConfigured, ok: proxyOk, value: proxyConfigured ? proxy : null },
+          lastSentAt,
+          lastReceivedAt,
+          queueLagSeconds,
+        },
+        coverage: {
+          linkedCustomers: Number(linkedRow?.cnt || 0),
+          linkedPartners,
+          optedOutCustomers: Number(optoutRow?.cnt || 0),
+          invalidChatsEstimate: Number(invalidRow?.cnt || 0),
+          destinationChats,
+        },
+        queue: {
+          pending: Number(pendingRow?.cnt || 0),
+          failed: Number(failedRow?.cnt || 0),
+        },
+      },
+    });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/outbox/retry-all', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const nowIso = moment().toISOString();
+    await runAsync(
+      `UPDATE notification_outbox
+          SET status='pending', nextAttemptAt=?, lastError=NULL,
+              updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+        WHERE channel='telegram' AND status='failed'`,
+      [nowIso]
+    );
+    const row: any = await getAsync(
+      `SELECT COUNT(1) AS cnt FROM notification_outbox WHERE channel='telegram' AND status='failed'`,
+      []
+    );
+    return res.json({ success: true, message: 'Retry all انجام شد.', data: { remainingFailed: Number(row?.cnt || 0) } });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/outbox/cleanup-failed', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const days = Math.max(1, Math.min(365, Number(req.body?.olderThanDays || 30)));
+    const cutoffIso = moment().subtract(days, 'days').toISOString();
+    await runAsync(
+      `DELETE FROM notification_outbox
+        WHERE channel='telegram' AND status='failed' AND createdAt < ?`,
+      [cutoffIso]
+    );
+    return res.json({ success: true, message: `Failedهای قدیمی‌تر از ${days} روز پاک شد.` });
+  } catch (e) { next(e); }
+});
+// -----------------------------------------------------
+// Telegram per-topic configuration (chat ids + enabled types)
+// -----------------------------------------------------
+const TOPIC_CHATID_KEYS: Record<string, string> = {
+  reports: 'telegram_chat_ids_reports',
+  installments: 'telegram_chat_ids_installments',
+  sales: 'telegram_chat_ids_sales',
+  notifications: 'telegram_chat_ids_notifications',
+};
+app.get('/api/telegram/topic-config/:topic', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const topic = String(req.params.topic || '').trim();
+    if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+    const settings = await getAllSettingsAsObject();
+    const chatIdsText = String((settings as any)[TOPIC_CHATID_KEYS[topic]] || '');
+    const typesKey = TOPIC_TYPES_KEYS[topic];
+    let enabledTypes: string[] = [];
+    const raw = String((settings as any)[typesKey] || '').trim();
+    if (raw) {
+      try { enabledTypes = Array.isArray(JSON.parse(raw)) ? JSON.parse(raw) : []; }
+      catch { enabledTypes = raw.split(/[,\n\r\t\s]+/g).map(s => s.trim()).filter(Boolean); }
+    }
+    return res.json({ success: true, data: { chatIdsText, enabledTypes } });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/topic-config/:topic', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const topic = String(req.params.topic || '').trim();
+    if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+    const chatIdsText = String(req.body?.chatIdsText || '');
+    const enabledTypes = Array.isArray(req.body?.enabledTypes) ? (req.body.enabledTypes as any[]).map(x => String(x)) : [];
+    const payload: any = {};
+    payload[TOPIC_CHATID_KEYS[topic]] = chatIdsText;
+    payload[TOPIC_TYPES_KEYS[topic]] = enabledTypes.length ? JSON.stringify(enabledTypes) : '';
+    const settingsArray: SettingItem[] = Object.keys(payload).map(key => ({ key, value: payload[key] }));
+    await updateMultipleSettings(settingsArray);
+    return res.json({ success: true });
+  } catch (e) { next(e); }
+});
+    // -----------------------------------------------------
+    // Telegram per-topic templates (edit/preview/check)
+    // -----------------------------------------------------
+    const tplKey = (topic: string, type: string) => `telegram_tpl_${topic}_${type}`.toLowerCase();
+    const getTopicTemplates = async (topic: string, types: string[]) => {
+      const settings = await getAllSettingsAsObject();
+      const out: Record<string, string> = {};
+      for (const t of types) {
+        const k = tplKey(topic, t);
+        out[t] = String((settings as any)[k] || '');
+      }
+      return out;
+    };
+    const upsertTopicTemplates = async (topic: string, templates: Record<string, string>) => {
+      const settingsArray: SettingItem[] = Object.keys(templates).map((t) => ({
+        key: tplKey(topic, t),
+        value: String(templates[t] ?? ''),
+      }));
+      if (settingsArray.length) await updateMultipleSettings(settingsArray);
+    };
+    const getSampleVarsForTopic = async (topic: string) => {
+      // Provide sane sample data for preview/check (lacheck entities)
+      try {
+        const nowText = moment().locale('fa').format('jYYYY/jMM/jDD HH:mm');
+        if (topic === 'sales') {
+          const inv = await getAsync(`SELECT * FROM invoices ORDER BY id DESC LIMIT 1`);
+          const cust = inv?.customerId ? await getAsync(`SELECT * FROM customers WHERE id=?`, [inv.customerId]) : null;
+          const invoiceNo = inv?.invoiceNumber || (inv?.id ? `INV-${inv.id}` : 'INV-1001');
+          const total = Number(inv?.grandTotal || inv?.subtotal || 0);
+          const customerName = cust?.name || cust?.fullName || 'مشتری پیش‌نمایش';
+          const customerPhone = cust?.phone || cust?.mobile || '';
+          return {
+            invoiceId: inv?.id ?? 0,
+            invoiceNo,
+            total,
+            subtotal: Number(inv?.subtotal || 0),
+            discount: Number(inv?.discountAmount || 0),
+            customerId: cust?.id ?? inv?.customerId ?? 0,
+            customerName,
+            customerPhone,
+            date: inv?.date || new Date().toISOString(),
+          };
+        }
+        if (topic === 'installments') {
+          const sale = await getAsync(`SELECT * FROM installment_sales ORDER BY id DESC LIMIT 1`);
+          const cust = sale?.customerId ? await getAsync(`SELECT * FROM customers WHERE id=?`, [sale.customerId]) : null;
+          const customerName = cust?.name || cust?.fullName || 'مشتری پیش‌نمایش';
+          const customerPhone = cust?.phone || cust?.mobile || '';
+          return {
+            installmentSaleId: sale?.id ?? 0,
+            customerId: cust?.id ?? sale?.customerId ?? 0,
+            customerName,
+            customerPhone,
+            amount: Number(sale?.installmentAmount || 0),
+            installments: Number(sale?.numberOfInstallments || 0),
+            startDate: String(sale?.installmentsStartDate || '1405/01/01'),
+            downPayment: Number(sale?.downPayment || 0),
+            total: Number(sale?.actualSalePrice || 0),
+            saleType: String(sale?.saleType || 'installment'),
+          };
+        }
+        if (topic === 'reports') {
+          // last 7 days summary from invoices
+          const to = new Date();
+          const from = new Date(Date.now() - 7 * 24 * 3600 * 1000);
+          const fromIso = from.toISOString().slice(0, 10);
+          const toIso = to.toISOString().slice(0, 10);
+          // Telegram-facing dates should be Shamsi (Jalali)
+          const fromJ = moment(fromIso).locale('fa').format('jYYYY/jMM/jDD');
+          const toJ = moment(toIso).locale('fa').format('jYYYY/jMM/jDD');
+          const row = await getAsync(
+            `SELECT COALESCE(SUM(grandTotal),0) as sumSales, COUNT(*) as countInv FROM invoices WHERE date(date) BETWEEN date(?) AND date(?)`,
+            [fromIso, toIso]
+          );
+          return {
+            fromDate: fromJ,
+            toDate: toJ,
+            fromISO: fromIso,
+            toISO: toIso,
+            sumSales: Number(row?.sumSales || 0),
+            invoiceCount: Number(row?.countInv || 0),
+          };
+        }
+        return { now: nowText };
+      } catch {
+        return { now: nowText };
+      }
+    };
+    // GET topic config + templates for provided types
+    app.get('/api/telegram/topic-config/:topic/templates', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+      try {
+        const topic = String(req.params.topic || '').trim();
+        if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+        const rawTypes = String(req.query.types || '').trim();
+        const types = rawTypes ? rawTypes.split(/[\n\t\s,]+/g).map(s => s.trim()).filter(Boolean) : [];
+        const templates = types.length ? await getTopicTemplates(topic, types) : {};
+        const sample = await getSampleVarsForTopic(topic);
+        return res.json({ success: true, data: { templates, sample } });
+      } catch (e) { next(e); }
+    });
+    // Save templates for topic
+    app.post('/api/telegram/topic-config/:topic/templates', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+      try {
+        const topic = String(req.params.topic || '').trim();
+        if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+        const templates = (req.body?.templates && typeof req.body.templates === 'object') ? req.body.templates : {};
+        await upsertTopicTemplates(topic, templates);
+        return res.json({ success: true });
+      } catch (e) { next(e); }
+    });
+    // Preview a template with sample vars
+    app.post('/api/telegram/topic-config/:topic/preview', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+      try {
+        const topic = String(req.params.topic || '').trim();
+        if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+        const type = String(req.body?.type || '').trim();
+        const tpl = String(req.body?.template || '').trim();
+        if (!type) return res.status(400).json({ success: false, message: 'نوع پیام مشخص نیست.' });
+        const sample = await getSampleVarsForTopic(topic);
+        const settings = await getAllSettingsAsObject();
+        const baseUrl = String(settings.app_base_url || '').trim();
+        const link =
+          topic === 'sales' ? `${baseUrl}/#/sales` :
+          topic === 'installments' ? `${baseUrl}/#/installment-sales` :
+          `${baseUrl}/#/reports`;
+        const vars = { ...sample, link, now: moment().locale('fa').format('jYYYY/jMM/jDD HH:mm') };
+        const text = safeReplaceTemplate(tpl, vars);
+        return res.json({ success: true, data: { text, sample: vars } });
+      } catch (e) { next(e); }
+    });
+    // Send a check message for a template to topic chat ids
+    app.post('/api/telegram/topic-config/:topic/check', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+      try {
+        const topic = String(req.params.topic || '').trim();
+        if (!TOPIC_CHATID_KEYS[topic]) return res.status(400).json({ success: false, message: 'Topic نامعتبر است.' });
+        const type = String(req.body?.type || '').trim();
+        const tpl = String(req.body?.template || '').trim();
+        if (!type) return res.status(400).json({ success: false, message: 'نوع پیام مشخص نیست.' });
+        const settings = await getAllSettingsAsObject();
+        setTelegramProxy((settings as any).telegram_proxy);
+        const botToken = String(settings.telegram_bot_token || '').trim();
+        if (!botToken) return res.status(400).json({ success: false, message: 'توکن تلگرام تنظیم نشده است.' });
+        const { chatIds } = await getTelegramTargetsForTopic(topic as any);
+        if (!chatIds.length) return res.status(400).json({ success: false, message: 'Chat ID مقصد برای این بخش تنظیم نشده است.' });
+        const sample = await getSampleVarsForTopic(topic);
+        const baseUrl = String(settings.app_base_url || '').trim();
+        const link =
+          topic === 'sales' ? `${baseUrl}/#/sales` :
+          topic === 'installments' ? `${baseUrl}/#/installment-sales` :
+          `${baseUrl}/#/reports`;
+        const vars = { ...sample, link, now: moment().locale('fa').format('jYYYY/jMM/jDD HH:mm') };
+        const text = safeReplaceTemplate(tpl, vars);
+        const results: any[] = [];
+        let sent = 0;
+        for (const cid of chatIds) {
+          const r = await sendTelegramMessage(botToken, cid, sanitizeTelegramHtml(markdownishToHtml(text)), { parseMode: 'HTML' });
+          results.push({ chatId: cid, success: !!(r as any)?.success, message: (r as any)?.message });
+          if ((r as any)?.success) sent++;
+        }
+        return res.json({ success: true, data: { sent, total: chatIds.length, results } });
+      } catch (e) { next(e); }
+    });
+// ارسال بررسی پیام تلگرام (متن ساده)
+app.post('/api/telegram/check-message', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const { text, parseMode } = req.body || {};
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String(settings.telegram_bot_token || '').trim();
+    const chatId = String(settings.telegram_chat_id || '').trim();
+    if (!botToken || !chatId) return res.status(400).json({ success: false, message: 'توکن ربات یا Chat ID تلگرام تنظیم نشده است.' });
+    const correlationId = makeCorrId();
+    const pmRaw = String(parseMode || '').trim();
+    const pm = (pmRaw === 'HTML' || pmRaw === 'Markdown' || pmRaw === 'MarkdownV2') ? (pmRaw as any) : undefined;
+    let msg = String(text || '').trim();
+    if (!msg) return res.status(400).json({ success: false, message: 'متن پیام خالی است.' });
+    if (pm === 'HTML') msg = sanitizeTelegramHtml(msg);
+    // for Markdown modes, at least drop raw tags
+    if (pm === 'Markdown' || pm === 'MarkdownV2') msg = stripTags(msg);
+    const result = await sendTelegramMessage(botToken, chatId, msg, { parseMode: pm });
+    // log like sms_logs for uniform audit
+    try {
+      await insertSmsLog({
+        reqUser: req.user,
+        provider: 'telegram',
+        eventType: 'TEST_MESSAGE',
+        entityType: 'telegram',
+        entityId: null as any,
+        recipient: chatId,
+        patternId: `TELEGRAM_${pm || 'TEXT'}`,
+        tokens: [msg],
+        success: !!result?.success,
+        response: result,
+        correlationId,
+        request: {
+          action: 'sendMessage',
+          chatId,
+          parseMode: pm || 'TEXT',
+          textLength: msg.length,
+        },
+        httpStatus: (result as any)?.details?.httpStatus ?? (result as any)?.status,
+        rawResponseText: (result as any)?.details?.rawResponseText ?? (result as any)?.rawText,
+        durationMs: (result as any)?.details?.durationMs,
+        error: result?.success ? undefined : result?.message,
+      });
+    } catch {}
+    if (result?.success) return res.json({ success: true, message: 'پیام تلگرام ارسال شد.', data: result });
+    return res.json({ success: false, message: result?.message || 'خطا در ارسال تلگرام', data: result });
+  } catch (e) { next(e); }
+});
+// Telegram Logs (بر اساس sms_logs اما فقط provider=telegram)
+// =====================================================
+// Customer Telegram Actions (Customer Card)
+// =====================================================
+app.post('/api/telegram/customer-actions/retry-outbox', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    const outboxIdRaw = String(req.body?.outboxId || '').trim().replace(/^out_/, '');
+    const outboxId = Number(outboxIdRaw || 0);
+    if (!outboxId) return res.status(400).json({ success: false, message: 'شناسه پیام نامعتبر است.' });
+
+    const row = await getAsync(
+      `SELECT id, channel, entityType, entityId, recipient, payloadJson, status, attempts, lastError
+         FROM notification_outbox
+        WHERE id=? AND channel='telegram'
+        LIMIT 1`,
+      [outboxId]
+    ) as any;
+    if (!row) return res.status(404).json({ success: false, message: 'پیام تلگرام یافت نشد.' });
+
+    const safeJson = (s: any) => { try { return s ? JSON.parse(String(s)) : null; } catch { return null; } };
+    const payload = safeJson(row.payloadJson) || {};
+    const chatId = String(row.recipient || payload.chatId || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'Chat ID برای ارسال مجدد موجود نیست.' });
+
+    await runAsync(
+      `UPDATE notification_outbox
+          SET status='pending', attempts=0, nextAttemptAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc'), lastError=NULL, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc')
+        WHERE id=?`,
+      [outboxId]
+    );
+
+    const delivered = await tryDeliverQueuedTelegramNow({ id: outboxId, queued: true }, payload, chatId);
+    try { addAuditLog(req.user?.id, req.user?.username, req.user?.roleName, 'retry', 'telegram_outbox', outboxId, 'ارسال مجدد پیام تلگرام'); } catch {}
+
+    res.json({ success: true, data: delivered });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/customer-actions/send-manual', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    const textRaw = String(req.body?.text || '').trim();
+    const parseModeRaw = String(req.body?.parseMode || '').trim();
+    const parseMode = (parseModeRaw === 'HTML' || parseModeRaw === 'Markdown' || parseModeRaw === 'MarkdownV2') ? (parseModeRaw as any) : 'HTML';
+    const attachment = (req.body as any)?.attachment || null;
+    const replyToMessageId = Number((req.body as any)?.replyToMessageId || 0) || 0;
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    if (!textRaw && !attachment) return res.status(400).json({ success: false, message: 'متن پیام یا فایل باید ارسال شود.' });
+    const c = await getAsync(
+      `SELECT id, fullName, phoneNumber,
+              COALESCE(telegram_opted_out,0) AS telegram_opted_out,
+              COALESCE(telegram_chat_id, telegramChatId) AS tg_chat_id
+       FROM customers WHERE id=? LIMIT 1`,
+      [customerId]
+    ) as any;
+    if (!c) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+    if (Number(c.telegram_opted_out || 0) === 1) return res.status(400).json({ success: false, message: 'این مشتری از تلگرام opt-out کرده است.' });
+    const chatId = String(c?.tg_chat_id || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'این مشتری به تلگرام لینک نشده است.' });
+    let text = textRaw;
+    if (parseMode === 'HTML') text = sanitizeTelegramHtml(text);
+    if (parseMode === 'Markdown' || parseMode === 'MarkdownV2') text = stripTags(text);
+    // Attachment support (photo/document) + reply-to
+    const hasAtt = attachment && typeof attachment === 'object';
+    const attType = hasAtt ? String(attachment.type || '').toLowerCase() : '';
+    const attRelPath = hasAtt ? String(attachment.relPath || attachment.path || '').trim() : '';
+    const attMime = hasAtt ? String(attachment.mimeType || '').trim() : '';
+    const attOriginal = hasAtt ? String(attachment.originalName || '').trim() : '';
+    const payload: any = {
+      chatId,
+      parseMode,
+      capCustomerId: customerId,
+      replyToMessageId: replyToMessageId || undefined,
+    };
+    if (hasAtt) {
+      if (!(attType === 'photo' || attType === 'document')) {
+        return res.status(400).json({ success: false, message: 'نوع فایل نامعتبر است.' });
+      }
+      if (!attRelPath) {
+        return res.status(400).json({ success: false, message: 'مسیر فایل ارسال نشده است.' });
+      }
+      payload.type = attType;
+      payload.fileRelPath = attRelPath;
+      payload.mimeType = attMime || undefined;
+      payload.originalName = attOriginal || undefined;
+      payload.caption = text || '';
+    } else {
+      payload.type = 'message';
+      payload.text = text;
+    }
+    const queued = await enqueueOutbox({
+      channel: 'telegram',
+      provider: 'telegram',
+      eventType: 'CUSTOMER_MANUAL',
+      entityType: 'customer',
+      entityId: customerId,
+      recipient: chatId,
+      payload,
+      dedupeToday: false,
+      maxAttempts: 6,
+      skipCustomerRateLimit: true,
+      skipInvalidChatCheck: true,
+    });
+    const delivered = await tryDeliverQueuedTelegramNow(queued, payload, chatId);
+    return res.json({ success: true, data: delivered });
+  } catch (e) { next(e); }
+});
+// Upload attachment for Telegram (used in Conversation View)
+app.post('/api/telegram/upload', authorizeRole(['Admin','Manager']), upload.single('file'), async (req, res, next) => {
+  try {
+    const f: any = (req as any).file;
+    if (!f) return res.status(400).json({ success: false, message: 'فایلی ارسال نشده است.' });
+    // Multer storage puts files under /uploads (served statically)
+    const relPath = `uploads/${f.filename}`;
+    const url = `/${relPath}`;
+    res.json({
+      success: true,
+      data: {
+        filename: f.filename,
+        originalName: f.originalname,
+        mimeType: f.mimetype,
+        size: f.size,
+        relPath,
+        url,
+      }
+    });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/customer-actions/send-menu', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    const c = await getAsync(
+      `SELECT id, fullName, phoneNumber,
+              COALESCE(telegram_opted_out,0) AS telegram_opted_out,
+              COALESCE(telegram_chat_id, telegramChatId) AS tg_chat_id
+       FROM customers WHERE id=? LIMIT 1`,
+      [customerId]
+    ) as any;
+    if (!c) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+    if (Number(c.telegram_opted_out || 0) === 1) return res.status(400).json({ success: false, message: 'این مشتری از تلگرام opt-out کرده است.' });
+    const chatId = String(c?.tg_chat_id || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'این مشتری به تلگرام لینک نشده است.' });
+    const settings = await getAllSettingsAsObject();
+    const baseUrl = String((settings as any).app_base_url || '').trim();
+    const tpl = String((settings as any).telegram_customer_bot_menu_message || '').trim();
+    const defaultText =
+      telegramCard(
+        'منوی مشتری',
+        '🤖',
+        [
+          `سلام ${esc(c.fullName || '')} 👋`,
+          'از این منو می‌توانید سریع به اطلاعات مهم حساب خود دسترسی داشته باشید.',
+          '',
+          '📌 وضعیت حساب',
+          '🧾 اقساط من',
+          '🛠 تعمیرات',
+          '🧾 خریدهای اخیر من',
+        ],
+        baseUrl ? `🔗 لینک برنامه: <a href="${escapeHtml(baseUrl)}">${escapeHtml(baseUrl)}</a>` : 'ℹ️ از دکمه‌های پایین برای ادامه استفاده کنید.'
+      );
+    const rawText = tpl ? safeReplaceTemplate(tpl, { name: c.fullName || '', phone: c.phoneNumber || '', link: baseUrl, now: moment().locale('fa').format('jYYYY/jMM/jDD HH:mm') }) : defaultText;
+    const text = sanitizeTelegramHtml(markdownishToHtml(rawText));
+    const payload = { text, chatId, parseMode: 'HTML', capCustomerId: customerId };
+    const queued = await enqueueOutbox({
+      channel: 'telegram',
+      provider: 'telegram',
+      eventType: 'CUSTOMER_BOT_MENU',
+      entityType: 'customer',
+      entityId: customerId,
+      recipient: chatId,
+      payload,
+      dedupeToday: false,
+      maxAttempts: 6,
+      skipCustomerRateLimit: true,
+      skipInvalidChatCheck: true,
+    });
+    const delivered = await tryDeliverQueuedTelegramNow(queued, payload, chatId);
+    return res.json({ success: true, data: delivered });
+  } catch (e) { next(e); }
+});
+app.post('/api/telegram/customer-actions/send-account-status', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    await ensureNotificationOutboxTables();
+    await ensureCustomerTelegramColumns();
+    const customerId = Number(req.body?.customerId || 0);
+    if (!customerId) return res.status(400).json({ success: false, message: 'customerId نامعتبر است.' });
+    // NOTE: بعضی دیتابیس‌ها ستون currentBalance داخل customers ندارند.
+    // برای سازگاری، موجودی را از آخرین رکورد customer_ledger می‌خوانیم.
+    const c = await getAsync(
+      `SELECT id, fullName, phoneNumber,
+              COALESCE((SELECT balance FROM customer_ledger WHERE customerId=? ORDER BY id DESC LIMIT 1), 0) AS currentBalance,
+              COALESCE(telegram_opted_out,0) AS telegram_opted_out,
+              COALESCE(telegram_chat_id, telegramChatId) AS tg_chat_id
+       FROM customers WHERE id=? LIMIT 1`,
+      [customerId, customerId]
+    ) as any;
+    if (!c) return res.status(404).json({ success: false, message: 'مشتری یافت نشد.' });
+    if (Number(c.telegram_opted_out || 0) === 1) return res.status(400).json({ success: false, message: 'این مشتری از تلگرام opt-out کرده است.' });
+    const chatId = String(c?.tg_chat_id || '').trim();
+    if (!chatId) return res.status(400).json({ success: false, message: 'این مشتری به تلگرام لینک نشده است.' });
+    // installments overview
+    const agg = await getAsync(
+      `SELECT COUNT(*) AS openCount,
+              MIN(p.dueDate) AS nextDueDate,
+              SUM(p.amountDue) AS openTotal
+       FROM installment_payments p
+       JOIN installment_sales s ON s.id=p.saleId
+       WHERE s.customerId=? AND (p.status IS NULL OR p.status!='پرداخت شده')`,
+      [customerId]
+    ) as any;
+    const nextRow = await getAsync(
+      `SELECT p.dueDate AS dueDate, p.amountDue AS amountDue
+       FROM installment_payments p
+       JOIN installment_sales s ON s.id=p.saleId
+       WHERE s.customerId=? AND (p.status IS NULL OR p.status!='پرداخت شده')
+       ORDER BY p.dueDate ASC
+       LIMIT 1`,
+      [customerId]
+    ) as any;
+    const openCount = Number(agg?.openCount || 0);
+    const nextDueDate = String(nextRow?.dueDate || agg?.nextDueDate || '').trim();
+    const nextAmount = Number(nextRow?.amountDue || 0);
+    const openTotal = Number(agg?.openTotal || 0);
+    const bal = Number(c?.currentBalance || 0);
+    const fmtMoney = (v: number) => (Math.round(v).toLocaleString('fa-IR') + ' تومان');
+    const settings = await getAllSettingsAsObject();
+    const tpl = String((settings as any).telegram_customer_account_status_message || '').trim();
+    const defaultText =
+      telegramCard(
+        'وضعیت حساب',
+        '📌',
+        [
+          `👤 <b>مشتری:</b> {name}`,
+          `💳 <b>موجودی دفتری:</b> {balance}`,
+          `🧾 <b>اقساط باز:</b> {openCount}`,
+          nextDueDate ? `⏳ <b>نزدیک‌ترین سررسید:</b> {nextDueDate} — {nextAmount}` : '',
+          openCount ? `📊 <b>جمع اقساط باز:</b> {openTotal}` : '',
+        ],
+        'این پیام به‌صورت خودکار تولید شده است.'
+      );
+    const vars = {
+      name: String(c.fullName || ''),
+      phone: String(c.phoneNumber || ''),
+      balance: fmtMoney(bal),
+      openCount: String(openCount),
+      nextDueDate: nextDueDate || '',
+      nextAmount: fmtMoney(nextAmount || 0),
+      openTotal: fmtMoney(openTotal || 0),
+      now: moment().locale('fa').format('jYYYY/jMM/jDD HH:mm'),
+    };
+    const rawText = safeReplaceTemplate(tpl || defaultText, vars);
+    const text = sanitizeTelegramHtml(markdownishToHtml(rawText));
+    const payload = { text, chatId, parseMode: 'HTML', capCustomerId: customerId };
+    const queued = await enqueueOutbox({
+      channel: 'telegram',
+      provider: 'telegram',
+      eventType: 'CUSTOMER_ACCOUNT_STATUS',
+      entityType: 'customer',
+      entityId: customerId,
+      recipient: chatId,
+      payload,
+      dedupeToday: false,
+      maxAttempts: 6,
+      skipCustomerRateLimit: true,
+      skipInvalidChatCheck: true,
+    });
+    const delivered = await tryDeliverQueuedTelegramNow(queued, payload, chatId);
+    return res.json({ success: true, data: delivered });
+  } catch (e) { next(e); }
+});
+app.get('/api/telegram/logs', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const limit = Math.min(parseInt(String(req.query.limit || '50'), 10) || 50, 200);
+    const offset = Math.max(parseInt(String(req.query.offset || '0'), 10) || 0, 0);
+    const success = typeof req.query.success === 'string' ? String(req.query.success) : undefined;
+    const eventType = typeof req.query.eventType === 'string' ? String(req.query.eventType) : undefined;
+    const recipient = typeof req.query.recipient === 'string' ? String(req.query.recipient) : undefined;
+    const where: string[] = ['provider = ?'];
+    const params: any[] = ['telegram'];
+    if (success === 'true') where.push('success = 1');
+    if (success === 'false') where.push('success = 0');
+    if (eventType && eventType !== 'ALL') { where.push('eventType = ?'); params.push(eventType); }
+    if (recipient && recipient.trim()) { where.push('recipient LIKE ?'); params.push(`%${recipient.trim()}%`); }
+    const sql = `SELECT * FROM sms_logs WHERE ${where.join(' AND ')} ORDER BY id DESC LIMIT ? OFFSET ?`;
+    const rows = await allAsync(sql, [...params, limit, offset]);
+    const normalizeLogRow = (row: any) => {
+      let response: any = null;
+      try { response = row?.responseJson ? JSON.parse(String(row.responseJson)) : null; } catch {}
+      const details = response?.details || {};
+      return {
+        ...row,
+        correlationId: row?.correlationId || `tg-${String(row?.id || '').padStart(6, '0')}`,
+        httpStatus: typeof row?.httpStatus === 'number' ? row.httpStatus : (typeof details?.httpStatus === 'number' ? details.httpStatus : null),
+        rawResponseText: row?.rawResponseText || details?.rawResponseText || response?.rawText || null,
+        durationMs: typeof row?.durationMs === 'number' ? row.durationMs : (typeof details?.durationMs === 'number' ? details.durationMs : null),
+      };
+    };
+    res.json({ success: true, data: rows.map(normalizeLogRow) });
+  } catch (e) { next(e); }
+});
+
+app.post('/api/telegram/logs/:id/retry', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    if (!id || isNaN(id)) return res.status(400).json({ success: false, message: 'شناسه لاگ تلگرام نامعتبر است.' });
+
+    const log = await getAsync('SELECT * FROM sms_logs WHERE id = ? AND provider = ?', [id, 'telegram']) as any;
+    if (!log) return res.status(404).json({ success: false, message: 'لاگ تلگرام یافت نشد.' });
+
+    const parseSafeJson = (value: any, fallback: any) => {
+      try {
+        if (value === null || value === undefined || value === '') return fallback;
+        return JSON.parse(String(value));
+      } catch {
+        return fallback;
+      }
+    };
+
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String((settings as any).telegram_bot_token || '').trim();
+    if (!botToken) return res.status(400).json({ success: false, message: 'توکن ربات تلگرام تنظیم نشده است.' });
+
+    const eventType = String(log.eventType || 'RETRY');
+    const recipient = String(log.recipient || '').trim();
+    const tokens = parseSafeJson(log.tokensJson, []);
+    const requestJson = parseSafeJson(log.requestJson, {});
+    const correlationId = makeCorrId();
+    let result: any;
+    let requestForLog: any = { retryOfLogId: id, eventType, recipient };
+
+    if (eventType === 'HEALTH_CHECK' || recipient === 'telegram:getMe') {
+      result = await getTelegramBotInfo(botToken);
+      requestForLog = { ...requestForLog, action: 'getMe' };
+    } else {
+      const chatId = String(
+        recipient ||
+        requestJson?.chatId ||
+        requestJson?.recipient ||
+        (settings as any).telegram_chat_id ||
+        ''
+      ).trim();
+      if (!chatId) return res.status(400).json({ success: false, message: 'گیرنده تلگرام در لاگ یا تنظیمات پیدا نشد.' });
+
+      const rawText = String(
+        requestJson?.text ||
+        requestJson?.message ||
+        requestJson?.body ||
+        requestJson?.caption ||
+        (Array.isArray(tokens) ? tokens[0] : '') ||
+        ''
+      ).trim();
+      if (!rawText) {
+        return res.status(400).json({
+          success: false,
+          message: 'این لاگ متن قابل ارسال مجدد ندارد. برای این نوع پیام باید رویداد اصلی دوباره اجرا شود.',
+        });
+      }
+
+      const parseModeRaw = String(requestJson?.parseMode || requestJson?.parse_mode || '').trim();
+      const inferredParseMode = String(log.patternId || '').includes('HTML') ? 'HTML' : undefined;
+      const parseMode = (parseModeRaw === 'HTML' || parseModeRaw === 'Markdown' || parseModeRaw === 'MarkdownV2')
+        ? (parseModeRaw as any)
+        : (inferredParseMode as any);
+      let text = rawText;
+      if (parseMode === 'HTML') text = sanitizeTelegramHtml(text);
+      if (parseMode === 'Markdown' || parseMode === 'MarkdownV2') text = stripTags(text);
+      result = await sendTelegramMessage(botToken, chatId, text, { parseMode });
+      requestForLog = { ...requestForLog, chatId, parseMode: parseMode || 'TEXT', textLength: text.length };
+    }
+
+    await insertSmsLog({
+      reqUser: req.user,
+      provider: 'telegram',
+      eventType,
+      entityType: log.entityType || inferEntityTypeFromEvent(eventType) || 'telegram',
+      entityId: log.entityId ? Number(log.entityId) : null as any,
+      recipient: recipient || String((settings as any).telegram_chat_id || 'telegram:getMe'),
+      patternId: String(log.patternId || 'TELEGRAM_RETRY'),
+      tokens: Array.isArray(tokens) ? tokens : [],
+      success: !!result?.success,
+      response: result,
+      request: requestForLog,
+      httpStatus: (result as any)?.details?.httpStatus,
+      rawResponseText: (result as any)?.details?.rawResponseText,
+      durationMs: (result as any)?.details?.durationMs,
+      correlationId,
+      error: result?.success ? undefined : result?.message,
+      relatedLogId: id,
+    });
+
+    if (result?.success) return res.json({ success: true, message: 'ارسال مجدد تلگرام انجام شد.', data: result });
+    return res.status(500).json({ success: false, message: result?.message || 'ارسال مجدد تلگرام ناموفق بود.', data: result });
+  } catch (e) { next(e); }
+});
+// ارسال تلگرام بر اساس رویداد (مشابه SMS trigger-event)
+app.post('/api/telegram/trigger-event', authorizeRole(['Admin','Manager','Salesperson']), async (req, res, next) => {
+  try {
+    const { targetId, eventType } = req.body || {};
+    const correlationId = makeCorrId();
+    if (!targetId || isNaN(Number(targetId))) return res.status(400).json({ success: false, message: 'شناسه هدف نامعتبر است.' });
+    if (!eventType) return res.status(400).json({ success: false, message: 'نوع رویداد نامعتبر است.' });
+    const settings = await getAllSettingsAsObject();
+    setTelegramProxy((settings as any).telegram_proxy);
+    const botToken = String(settings.telegram_bot_token || '').trim();
+    const chatId = String(settings.telegram_chat_id || '').trim();
+    if (!botToken || !chatId) return res.status(400).json({ success: false, message: 'توکن ربات یا Chat ID تلگرام تنظیم نشده است.' });
+    let tokens: string[] = [];
+    let template: string | undefined;
+    if (eventType === 'INSTALLMENT_REMINDER') {
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      template = settings.telegram_installment_reminder_message;
+    } else if (eventType === 'INSTALLMENT_COMPLETED') {
+      const s = await getInstallmentSaleDetailsForSms(targetId);
+      if (!s) throw new Error('اطلاعات فروش اقساطی یافت نشد.');
+      tokens = [s.customerFullName, String(s.saleId), formatPriceForSms(s.totalPrice)];
+      template = settings.telegram_installment_completed_message;
+    } else if (eventType === 'INSTALLMENT_DUE_7') {
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      template = settings.telegram_installment_due_7_message;
+    } else if (eventType === 'INSTALLMENT_DUE_3') {
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      template = settings.telegram_installment_due_3_message;
+    } else if (eventType === 'INSTALLMENT_DUE_TODAY') {
+      const p = await getInstallmentPaymentDetailsForSms(targetId);
+      if (!p) throw new Error('اطلاعات قسط یافت نشد.');
+      tokens = [p.customerFullName, formatPriceForSms(p.amountDue), p.dueDate];
+      template = (settings as any).telegram_installment_due_notice_message || settings.telegram_installment_due_today_message;
+    } else if (eventType === 'CHECK_DUE_7') {
+      const c = await getInstallmentCheckDetailsForSms(targetId);
+      if (!c) throw new Error('اطلاعات چک یافت نشد.');
+      tokens = [c.customerFullName, c.checkNumber, c.dueDate, formatPriceForSms(c.amount)];
+      template = settings.telegram_check_due_7_message;
+    } else if (eventType === 'CHECK_DUE_3') {
+      const c = await getInstallmentCheckDetailsForSms(targetId);
+      if (!c) throw new Error('اطلاعات چک یافت نشد.');
+      tokens = [c.customerFullName, c.checkNumber, c.dueDate, formatPriceForSms(c.amount)];
+      template = settings.telegram_check_due_3_message;
+    } else if (eventType === 'CHECK_DUE_TODAY') {
+      const c = await getInstallmentCheckDetailsForSms(targetId);
+      if (!c) throw new Error('اطلاعات چک یافت نشد.');
+      tokens = [c.customerFullName, c.checkNumber, c.dueDate, formatPriceForSms(c.amount)];
+      template = settings.telegram_check_due_today_message;
+    } else if (eventType === 'REPAIR_RECEIVED') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r) throw new Error('اطلاعات تعمیر یافت نشد.');
+      tokens = [r.customerFullName, r.deviceModel, String(r.id)];
+      template = settings.telegram_repair_received_message;
+    } else if (eventType === 'REPAIR_COST_ESTIMATED') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r || r.estimatedCost == null) throw new Error('اطلاعات هزینه تخمینی یافت نشد.');
+      tokens = [r.customerFullName, r.deviceModel, String(r.id), formatPriceForSms(r.estimatedCost)];
+      template = (settings as any).telegram_repair_cost_notice_message || settings.telegram_repair_cost_estimated_message;
+    } else if (eventType === 'REPAIR_READY_FOR_PICKUP') {
+      const r = await getRepairDetailsForSms(targetId);
+      if (!r || r.finalCost == null) throw new Error('اطلاعات هزینه نهایی یافت نشد.');
+      tokens = [r.customerFullName, r.deviceModel, String(r.id), formatPriceForSms(r.finalCost)];
+      template = settings.telegram_repair_ready_message;
+    } else {
+      throw new Error('نوع رویداد نامعتبر است.');
+    }
+    // Default templates (fallback) if admin hasn't set one yet
+    if (!template) {
+      switch (eventType) {
+        case 'INSTALLMENT_REMINDER':
+          template = telegramCard('یادآوری قسط', '🔔', [
+            `👤 مشتری: <b>{name}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+            `📅 سررسید: <b>{dueDate}</b>`,
+          ], '🧾 جزئیات اقساط: /installments');
+          break;
+        case 'INSTALLMENT_COMPLETED':
+          template = telegramCard('تسویه اقساط', '✅', [
+            `👤 مشتری: <b>{name}</b>`,
+            `🧾 شماره فروش: <b>{saleId}</b>`,
+            `💰 مبلغ کل: <b>{total} تومان</b>`,
+          ], 'سپاس از همراهی شما');
+          break;
+        case 'INSTALLMENT_DUE_7':
+          template = telegramCard('۷ روز مانده تا سررسید قسط', '⏳', [
+            `👤 مشتری: <b>{name}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+            `📅 سررسید: <b>{dueDate}</b>`,
+          ], '🧾 جزئیات اقساط: /installments');
+          break;
+        case 'INSTALLMENT_DUE_3':
+          template = telegramCard('۳ روز مانده تا سررسید قسط', '⏳', [
+            `👤 مشتری: <b>{name}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+            `📅 سررسید: <b>{dueDate}</b>`,
+          ], '🧾 جزئیات اقساط: /installments');
+          break;
+        case 'INSTALLMENT_DUE_TODAY':
+          template = telegramCard('سررسید امروز', '⏰', [
+            `👤 مشتری: <b>{name}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+            `📅 سررسید امروز: <b>{dueDate}</b>`,
+          ], '🧾 جزئیات اقساط: /installments');
+          break;
+        case 'CHECK_DUE_7':
+          template = telegramCard('سررسید چک - ۷ روز', '🧾', [
+            `👤 مشتری: <b>{name}</b>`,
+            `🔢 شماره چک: <b>{checkNumber}</b>`,
+            `📅 تاریخ: <b>{dueDate}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+          ], 'برای پیگیری، از پرونده مالی استفاده کنید.');
+          break;
+        case 'CHECK_DUE_3':
+          template = telegramCard('سررسید چک - ۳ روز', '🧾', [
+            `👤 مشتری: <b>{name}</b>`,
+            `🔢 شماره چک: <b>{checkNumber}</b>`,
+            `📅 تاریخ: <b>{dueDate}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+          ], 'برای پیگیری، از پرونده مالی استفاده کنید.');
+          break;
+        case 'CHECK_DUE_TODAY':
+          template = telegramCard('سررسید چک امروز', '🧾', [
+            `👤 مشتری: <b>{name}</b>`,
+            `🔢 شماره چک: <b>{checkNumber}</b>`,
+            `📅 تاریخ: <b>{dueDate}</b>`,
+            `💰 مبلغ: <b>{amount} تومان</b>`,
+          ], 'برای پیگیری، از پرونده مالی استفاده کنید.');
+          break;
+        case 'REPAIR_RECEIVED':
+          template = telegramCard('پذیرش تعمیر', '📥', [
+            `👤 مشتری: <b>{name}</b>`,
+            `📱 دستگاه: <b>{deviceModel}</b>`,
+            `🧾 کد تعمیر: <b>{repairId}</b>`,
+          ], 'وضعیت از بخش تعمیرات قابل پیگیری است.');
+          break;
+        case 'REPAIR_COST_ESTIMATED':
+          template = telegramCard('برآورد هزینه تعمیر', '🧮', [
+            `👤 مشتری: <b>{name}</b>`,
+            `📱 دستگاه: <b>{deviceModel}</b>`,
+            `🧾 کد تعمیر: <b>{repairId}</b>`,
+            `💰 هزینه: <b>{estimatedCost} تومان</b>`,
+          ], 'برای تأیید و ادامه، پیگیری انجام شود.');
+          break;
+        case 'REPAIR_READY_FOR_PICKUP':
+          template = telegramCard('آماده تحویل', '📦', [
+            `👤 مشتری: <b>{name}</b>`,
+            `📱 دستگاه: <b>{deviceModel}</b>`,
+            `🧾 کد تعمیر: <b>{repairId}</b>`,
+            `💰 هزینه نهایی: <b>{finalCost} تومان</b>`,
+          ], 'لطفاً جهت تحویل هماهنگ شود.');
+          break;
+      }
+    }
+    const values: Record<string, string> = {
+      name: tokens[0] ?? '',
+      amount: tokens[1] ?? '',
+      dueDate: tokens[2] ?? '',
+      saleId: tokens[1] ?? '',
+      total: tokens[2] ?? '',
+      checkNumber: tokens[1] ?? '',
+      deviceModel: tokens[1] ?? '',
+      repairId: tokens[2] ?? '',
+      estimatedCost: tokens[3] ?? '',
+      finalCost: tokens[3] ?? '',
+    };
+    const text = sanitizeTelegramHtml(renderTplHtml(markdownishToHtml(String(template)), values));
+    const result = await sendTelegramMessage(botToken, chatId, text, { parseMode: 'HTML' });
+    try {
+      await insertSmsLog({
+        reqUser: req.user,
+        provider: 'telegram',
+        eventType,
+        entityType: inferEntityTypeFromEvent(eventType) as any,
+        entityId: Number(targetId),
+        recipient: chatId,
+        patternId: 'TELEGRAM_TEMPLATE',
+        tokens,
+        success: !!result?.success,
+        response: result,
+        error: result?.success ? undefined : result?.message,
+      });
+    } catch {}
+    if (result?.success) return res.json({ success: true, message: 'تلگرام ارسال شد.', data: result });
+    return res.json({ success: false, message: result?.message || 'خطا در ارسال تلگرام', data: result });
+  } catch (e) { next(e); }
+});
+// =====================================================
+// 17) مرکز تعمیرات
+// =====================================================
+app.post('/api/repairs', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try {
+    const created = await createRepairInDb(req.body as NewRepairData);
+    try { if (created?.id) await sendCustomCustomerNotification('REPAIR_RECEIVED_CONFIRMATION', Number(created.id), 'both'); } catch (notifyErr) { console.warn('repair created notify failed:', notifyErr); }
+    try { if (created?.id && Number((created as any)?.repair?.estimatedCost ?? (created as any)?.estimatedCost ?? 0) > 0) await sendCustomCustomerNotification('REPAIR_COST_ESTIMATED', Number(created.id), 'both'); } catch (notifyErr) { console.warn('repair estimated notify failed:', notifyErr); }
+    if (req.user) {
+      try { addAuditLog(req.user.id, req.user.username, req.user.roleName, 'create', 'repair', created?.id || null, `ثبت تعمیر #${created?.id ?? ''}`); } catch {}
+    }
+    res.status(201).json({ success: true, data: created });
+  }
+  catch (e) { next(e); }
+});
+app.get('/api/repairs', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { res.json({ success: true, data: await getAllRepairsFromDb(req.query.status as string | undefined) }); }
+  catch (e) { next(e); }
+});
+app.get('/api/repairs/:id', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try {
+    const details = await getRepairByIdFromDb(+req.params.id);
+    details ? res.json({ success: true, data: details }) : res.status(404).json({ success: false, message: 'تعمیر یافت نشد.' });
+  } catch (e) { next(e); }
+});
+app.put('/api/repairs/:id', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try {
+    const rid = +req.params.id;
+    let beforeStatus: string | undefined;
+    try {
+      const before = await getRepairByIdFromDb(rid);
+      beforeStatus = before?.repair?.status;
+    } catch {}
+    const updated = await updateRepairInDb(rid, req.body);
+    // P1: Auto notify customer on important status changes (uses SMS provider settings when possible)
+    try {
+      const afterStatus = (updated as any)?.repair?.status ?? (updated as any)?.status;
+      const statusChanged = beforeStatus && afterStatus && beforeStatus !== afterStatus;
+      const sendRepairEvent = async (eventType: 'REPAIR_RECEIVED' | 'REPAIR_READY_FOR_PICKUP') => {
+        const settings = await getAllSettingsAsObject();
+        const provider: string = (settings.sms_provider || 'meli_payamak').toLowerCase();
+        const r = await getRepairDetailsForSms(rid);
+        if (!r || !r.customerPhoneNumber) return;
+        // Tokens are aligned with the SMS trigger endpoint
+        let tokens: string[] = [];
+        let meliBodyId: number | undefined;
+        let kavenegarTemplate: string | undefined;
+        let smsIrTemplateId: number | undefined;
+        let ippanelPatternCode: string | undefined;
+        if (eventType === 'REPAIR_RECEIVED') {
+          tokens = [r.customerFullName, r.deviceModel, String(r.id)];
+          meliBodyId = Number(settings.meli_payamak_repair_received_pattern_id);
+          kavenegarTemplate = settings.kavenegar_repair_received_template;
+          smsIrTemplateId = settings.sms_ir_repair_received_template_id ? Number(settings.sms_ir_repair_received_template_id) : undefined;
+          ippanelPatternCode = settings.ippanel_repair_received_pattern_code;
+        } else {
+          if (r.finalCost == null) return; // avoid sending incomplete message
+          tokens = [r.customerFullName, r.deviceModel, formatPriceForSms(r.finalCost)];
+          meliBodyId = Number(settings.meli_payamak_repair_ready_pattern_id);
+          kavenegarTemplate = settings.kavenegar_repair_ready_template;
+          smsIrTemplateId = settings.sms_ir_repair_ready_template_id ? Number(settings.sms_ir_repair_ready_template_id) : undefined;
+          ippanelPatternCode = settings.ippanel_repair_ready_pattern_code;
+        }
+        // Telegram provider: send a simple message to store chat (useful as fallback)
+        if (provider === 'telegram') {
+          setTelegramProxy((settings as any).telegram_proxy);
+          const botToken = settings.telegram_bot_token;
+          const chatId = settings.telegram_chat_id;
+          if (!botToken || !chatId) return;
+          const msg = eventType === 'REPAIR_RECEIVED'
+            ? telegramCard('پذیرش تعمیر', '✅', [
+                `👤 مشتری: <b>${esc(r.customerFullName)}</b>`,
+                `📱 دستگاه: <b>${esc(r.deviceModel)}</b>`,
+                `🧾 کد تعمیر: <b>#${esc(r.id)}</b>`,
+              ], 'وضعیت تعمیر از بخش «تعمیرات» قابل پیگیری است.')
+            : telegramCard('آماده تحویل', '📦', [
+                `👤 مشتری: <b>${esc(r.customerFullName)}</b>`,
+                `📱 دستگاه: <b>${esc(r.deviceModel)}</b>`,
+                `💰 هزینه: <b>${esc(formatPriceForSms(r.finalCost))} تومان</b>`,
+                `🧾 کد تعمیر: <b>#${esc(r.id)}</b>`,
+              ], 'لطفاً برای تحویل با مشتری هماهنگ شود.');
+          await sendTelegramMessage(botToken, chatId, msg, { parseMode: 'HTML' });
+          return;
+        }
+        // SMS providers
+        if (provider === 'meli_payamak') {
+          const username = settings.meli_payamak_username;
+          const password = settings.meli_payamak_password;
+          if (!username || !password || !meliBodyId) return;
+          await sendMeliPayamakPatternSms(r.customerPhoneNumber, meliBodyId, tokens, username, password);
+          return;
+        }
+        if (provider === 'kavenegar') {
+          const apiKey = settings.kavenegar_api_key;
+          if (!apiKey || !kavenegarTemplate) return;
+          await sendKavenegarPatternSms(r.customerPhoneNumber, kavenegarTemplate, tokens, apiKey);
+          return;
+        }
+        if (provider === 'sms_ir') {
+          const apiKey = settings.sms_ir_api_key;
+          if (!apiKey || !smsIrTemplateId) return;
+          await sendSmsIrPatternSms(r.customerPhoneNumber, smsIrTemplateId, tokens, apiKey);
+          return;
+        }
+        if (provider === 'ippanel') {
+          const tokenAuth = settings.ippanel_api_key;
+          const fromNumber = settings.ippanel_from;
+          if (!tokenAuth || !fromNumber || !ippanelPatternCode) return;
+          await sendIppanelPatternSms(r.customerPhoneNumber, ippanelPatternCode, tokens, tokenAuth, fromNumber);
+          return;
+        }
+      };
+      if (statusChanged) {
+        try { await sendCustomCustomerNotification('REPAIR_STATUS_UPDATED', rid, 'both', { status: afterStatus }); } catch {}
+        if (afterStatus === 'پذیرش شده') {
+          await sendRepairEvent('REPAIR_RECEIVED');
+        }
+        if (afterStatus === 'آماده تحویل') {
+          await sendRepairEvent('REPAIR_READY_FOR_PICKUP');
+        }
+        if (afterStatus === 'تحویل داده شده') {
+          try { await sendCustomCustomerNotification('REPAIR_DELIVERED', rid, 'both'); } catch {}
+        }
+      }
+    } catch (notifyErr) {
+      console.warn('repair auto-notify failed:', notifyErr);
+    }
+    if (req.user) {
+      try {
+        const afterStatus = (updated as any)?.repair?.status ?? (updated as any)?.status;
+        if (req.body?.status && beforeStatus && afterStatus && beforeStatus !== afterStatus) {
+          addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'repair', rid, `تغییر وضعیت تعمیر #${rid}: "${beforeStatus}" → "${afterStatus}"`);
+        } else {
+          addAuditLog(req.user.id, req.user.username, req.user.roleName, 'update', 'repair', rid, `ویرایش تعمیر #${rid}`);
+        }
+      } catch {}
+    }
+    res.json({ success: true, data: updated });
+  }
+  catch (e) { next(e); }
+});
+app.post('/api/repairs/:id/finalize', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { const data = await finalizeRepairInDb(+req.params.id, req.body as FinalizeRepairPayload);
+    try { await sendCustomCustomerNotification('REPAIR_DELIVERED', +req.params.id, 'both'); } catch {}
+    res.json({ success: true, data }); }
+  catch (e) { next(e); }
+});
+app.post('/api/repairs/:id/parts', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try {
+    const { productId, quantityUsed } = req.body || {};
+    res.status(201).json({ success: true, data: await addPartToRepairInDb(+req.params.id, productId, quantityUsed) });
+  } catch (e) { next(e); }
+});
+app.delete('/api/repairs/:id/parts/:partId', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { res.json({ success: await deletePartFromRepairInDb(+req.params.partId), message: 'قطعه با موفقیت حذف شد.' }); }
+  catch (e) { next(e); }
+});
+// =====================================================
+// 18) خدمات (Services) + آپلود فایل عمومی
+// =====================================================
+app.get('/api/services', async (_req, res, next) => {
+  try { res.json({ success: true, data: await getAllServicesFromDb() }); }
+  catch (e) { next(e); }
+});
+app.post('/api/services', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { res.status(201).json({ success: true, data: await addServiceToDb(req.body as Omit<Service, 'id'>), message: 'خدمت با موفقیت اضافه شد.' }); }
+  catch (e) { next(e); }
+});
+app.put('/api/services/:id', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { res.json({ success: true, data: await updateServiceInDb(+req.params.id, req.body as Omit<Service, 'id'>), message: 'خدمت با موفقیت ویرایش شد.' }); }
+  catch (e) { next(e); }
+});
+app.delete('/api/services/:id', authorizeRole(['Admin','Manager','Technician']), async (req, res, next) => {
+  try { await deleteServiceFromDb(+req.params.id); res.json({ success: true, message: 'خدمت با موفقیت حذف شد.' }); }
+  catch (e) { next(e); }
+});
+// آپلود عمومی (تصویر/فایل)
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ ok: false, error: 'NO_FILE' });
+  res.json({ ok: true, path: `/uploads/${req.file.filename}`, mime: req.file.mimetype, size: req.file.size });
+});
+// =====================================================
+// 19) 404 + ErrorHandler + Boot + Shutdown
+// =====================================================
+app.use((_req, res) => res.status(404).json({ success: false, message: 'مسیر API مورد نظر یافت نشد.' }));
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  console.error('An error occurred:', err);
+  res.status((err as any).statusCode || 500).json({ success: false, message: err?.message || 'خطا در عملیاتی داخلی سرور' });
+};
+app.use(errorHandler);
+getDbInstance().then(async db => {
+  if (!db) {
+    console.error('Failed to get DB instance, server not started.');
+    (process as any).exit(1);
+  }
+  await runPendingMigrations(db);
+  try { await ensureReminderRulesTables(); } catch {}
+  app.listen(port, '0.0.0.0', () => console.log(`Server running at http://localhost:${port}`));
+  startReportSchedulers().catch((e)=>console.error('Failed to start report schedulers:', e));
+  startOutboxWorker();
+  startAutoSendScheduler();
+  startCustomerTelegramNotifyScheduler();
+  // Telegram polling for local servers (enable via setting telegram_update_mode='polling' or telegram_polling_enabled='1')
+  autoConfigureTelegramUpdateMode()
+    .catch((e)=>console.error('Failed to auto-configure telegram update mode:', e))
+    .finally(()=>startTelegramPolling().catch((e)=>console.error('Failed to start telegram polling:', e)));
+  // Start DB backup scheduler using settings
+  getAllSettingsAsObject().then((s)=>{
+    const enabled = String(s.backup_enabled ?? '1') !== '0';
+    const cronExpr = String(s.backup_cron ?? '0 2 * * *');
+    const tz = String(s.backup_timezone ?? 'Asia/Tehran');
+    const retention = Number(s.backup_retention ?? 14);
+    startDailyBackupJob({ enabled, cronExpr, tz, retention });
+  }).catch(()=> startDailyBackupJob());
+}).catch(err => {
+  console.error('Failed to initialize database:', err);
+  (process as any).exit(1);
+});
+const cleanup = async () => {
+  console.log('Closing database connection...'); await closeDbConnection();
+  console.log('Exiting process.'); (process as any).exit();
+};
+(process as any).on('SIGINT', cleanup);
+(process as any).on('SIGTERM', cleanup);
+import { inventoryAlertsRouter } from "./inventoryAlerts";
+app.use("/inventory/alerts", inventoryAlertsRouter);
+// =====================================================
+// Admin: DB Backups (Manager/Admin only)
+// =====================================================
+app.get('/api/admin/backups', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const data = listBackups();
+    res.json({ success: true, data });
+  } catch (e) { next(e); }
+});
+app.post('/api/admin/backups', authorizeRole(['Admin','Manager']), async (_req, res, next) => {
+  try {
+    const data = await createDbBackup();
+    res.status(201).json({ success: true, data, message: 'بکاپ ایجاد شد.' });
+  } catch (e) { next(e); }
+});
+app.get('/api/admin/backups/:fileName', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+  try {
+    const p = getBackupPath(String(req.params.fileName));
+    res.download(p);
+  } catch (e) { next(e); }
+});

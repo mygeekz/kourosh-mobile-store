@@ -1,0 +1,305 @@
+
+/* v80 — Partner Detail shared UI/UX synced with finalized Customer Detail standards.
+   Scope: common sections only. Partner-specific finance/capital logic is untouched. */
+
+/* Common shell/cards */
+.partner-customer-sync-actions,
+.partner-customer-sync-extra-grid,
+.partner-customer-sync-telegram,
+.partner-customer-sync-ledger {
+  --partner-sync-border: rgba(226, 232, 240, .96);
+  --partner-sync-text: rgb(15, 23, 42);
+  --partner-sync-muted: rgb(100, 116, 139);
+}
+
+.partner-customer-sync-actions {
+  padding: 18px 24px !important;
+  background: rgba(248, 250, 252, .72) !important;
+}
+
+.partner-customer-sync-section-head h3 {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.partner-customer-sync-section-head p {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+  color: rgb(100, 116, 139) !important;
+  font-weight: 700 !important;
+}
+
+.partner-customer-sync-action-card {
+  min-height: 60px !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+  box-shadow: 0 14px 30px -30px rgba(15, 23, 42, .26) !important;
+}
+
+.partner-customer-sync-action-card:hover {
+  transform: translateY(-1px) !important;
+}
+
+.partner-customer-sync-action-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+}
+
+/* Basic information + summary cards */
+.partner-customer-sync-extra-grid {
+  gap: 16px !important;
+}
+
+.partner-customer-sync-basic-card,
+.partner-customer-sync-summary-card,
+.partner-customer-sync-telegram,
+.partner-customer-sync-ledger {
+  border-radius: 24px !important;
+  border: 1px solid var(--partner-sync-border) !important;
+  background: #fff !important;
+  box-shadow: 0 18px 40px -44px rgba(15, 23, 42, .32) !important;
+}
+
+.partner-customer-sync-card-head {
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  margin-bottom: 16px !important;
+}
+
+.partner-customer-sync-card-head h3,
+.partner-customer-sync-card-head .text-sm,
+.partner-customer-sync-card-head .text-sm.font-black,
+.partner-customer-sync-summary-card .text-sm.font-black {
+  font-size: 15px !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.partner-customer-sync-card-head p,
+.partner-customer-sync-card-head .text-xs,
+.partner-customer-sync-summary-card .text-xs {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+  color: rgb(100, 116, 139) !important;
+  font-weight: 700 !important;
+}
+
+.partner-customer-sync-head-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 12px !important;
+}
+
+.partner-customer-sync-info-card {
+  min-height: 78px !important;
+  border-radius: 18px !important;
+  background: rgba(248, 250, 252, .65) !important;
+  padding: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-customer-sync-summary-row {
+  min-height: 56px !important;
+  border-radius: 18px !important;
+  padding: 11px 14px !important;
+  background: rgba(248, 250, 252, .72) !important;
+}
+
+.partner-customer-sync-summary-icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 12px !important;
+}
+
+/* Telegram shared section aligned with customer Telegram standard */
+.partner-customer-sync-telegram {
+  padding: 20px !important;
+  background: #fff !important;
+  box-shadow: 0 18px 42px -40px rgba(15, 23, 42, .25) !important;
+}
+
+.partner-customer-sync-telegram-head {
+  padding-bottom: 16px !important;
+}
+
+.partner-customer-sync-telegram button,
+.partner-customer-sync-telegram .ux-btn {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.partner-customer-sync-telegram .inline-flex.h-11,
+.partner-customer-sync-telegram .h-11 {
+  min-height: 34px !important;
+  height: 34px !important;
+}
+
+.partner-customer-sync-telegram .h-7,
+.partner-customer-sync-telegram .w-7 {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 9px !important;
+}
+
+/* Partner ledger shared card density/responsiveness matched to customer ledger standard */
+.partner-customer-sync-ledger {
+  padding: 20px !important;
+}
+
+.partner-customer-sync-ledger-head {
+  padding-bottom: 16px !important;
+}
+
+.partner-customer-sync-ledger-head h2 {
+  font-size: 24px !important;
+  line-height: 1.35 !important;
+  font-weight: 950 !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.partner-customer-sync-ledger-head p {
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+  color: rgb(100, 116, 139) !important;
+  font-weight: 700 !important;
+}
+
+.partner-customer-sync-ledger-stats {
+  gap: 10px !important;
+}
+
+.partner-customer-sync-ledger-stat {
+  min-height: 78px !important;
+  border-radius: 18px !important;
+  padding: 14px !important;
+}
+
+.partner-customer-sync-ledger-stat .text-xl {
+  font-size: 18px !important;
+  line-height: 1.5 !important;
+}
+
+.partner-ledger-insight-grid {
+  gap: 12px !important;
+}
+
+.partner-ledger-insight-grid > div,
+.partner-ledger-quick-summary,
+.partner-ledger-quick-item {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-entry-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.partner-ledger-entry-metric {
+  min-height: 42px !important;
+  display: grid !important;
+  align-content: center !important;
+  border-radius: 14px !important;
+  padding: 8px 10px !important;
+  text-align: center !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+/* Focus/ring cleanup consistent with customer detail polish */
+.partner-customer-sync-actions :where(button, a, input, textarea, select):focus,
+.partner-customer-sync-actions :where(button, a, input, textarea, select):focus-visible,
+.partner-customer-sync-extra-grid :where(button, a, input, textarea, select):focus,
+.partner-customer-sync-extra-grid :where(button, a, input, textarea, select):focus-visible,
+.partner-customer-sync-telegram :where(button, a, input, textarea, select):focus,
+.partner-customer-sync-telegram :where(button, a, input, textarea, select):focus-visible,
+.partner-customer-sync-ledger :where(button, a, input, textarea, select):focus,
+.partner-customer-sync-ledger :where(button, a, input, textarea, select):focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+}
+
+/* Dark mode */
+.dark .partner-customer-sync-basic-card,
+.dark .partner-customer-sync-summary-card,
+.dark .partner-customer-sync-telegram,
+.dark .partner-customer-sync-ledger {
+  border-color: rgba(30, 41, 59, .96) !important;
+  background: rgb(2, 6, 23) !important;
+}
+
+.dark .partner-customer-sync-section-head h3,
+.dark .partner-customer-sync-card-head h3,
+.dark .partner-customer-sync-card-head .text-sm,
+.dark .partner-customer-sync-summary-card .text-sm.font-black,
+.dark .partner-customer-sync-ledger-head h2 {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .partner-customer-sync-section-head p,
+.dark .partner-customer-sync-card-head p,
+.dark .partner-customer-sync-card-head .text-xs,
+.dark .partner-customer-sync-summary-card .text-xs,
+.dark .partner-customer-sync-ledger-head p {
+  color: rgb(148, 163, 184) !important;
+}
+
+.dark .partner-customer-sync-info-card,
+.dark .partner-customer-sync-summary-row {
+  border-color: rgba(30, 41, 59, .96) !important;
+  background: rgba(15, 23, 42, .72) !important;
+}
+
+/* Responsive contract copied from customer-detail approach */
+@media (max-width: 1024px) {
+  .partner-customer-sync-extra-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-customer-sync-ledger-stats {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .partner-customer-sync-actions {
+    padding: 16px !important;
+  }
+
+  .partner-customer-sync-actions .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-customer-sync-action-card {
+    min-height: 56px !important;
+  }
+
+  .partner-customer-sync-ledger {
+    padding: 16px !important;
+  }
+
+  .partner-customer-sync-ledger-head {
+    gap: 12px !important;
+  }
+
+  .partner-ledger-entry-metrics {
+    grid-template-columns: 1fr !important;
+  }
+}

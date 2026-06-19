@@ -1,0 +1,530 @@
+/* Stage 130 — Cashflow executive polish
+   Scope-limited to /reports/cashflow. Keeps API/data logic and upgrades:
+   responsive filter grid, single-layer date fields, Bento KPI cards, premium chart shells. */
+
+.cashflow-report-page {
+  --cf-ink: #0f172a;
+  --cf-muted: #64748b;
+  --cf-border: rgba(148, 163, 184, .28);
+  --cf-panel: rgba(255, 255, 255, .96);
+  --cf-green: #059669;
+  --cf-rose: #e11d48;
+  --cf-blue: #2563eb;
+  --cf-amber: #d97706;
+  color: var(--cf-ink);
+}
+
+.cashflow-filter-panel {
+  margin-bottom: 22px !important;
+  padding: 18px !important;
+  border: 1px solid var(--cf-border) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow: 0 18px 48px -38px rgba(15,23,42,.30) !important;
+  overflow: visible !important;
+}
+
+.cashflow-filter-panel__head {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+  text-align: right !important;
+}
+
+.cashflow-filter-panel__icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  border: 1px solid rgba(203,213,225,.88) !important;
+  border-radius: 17px !important;
+  background: rgba(248,250,252,.92) !important;
+  color: #334155 !important;
+  box-shadow: 0 12px 26px -22px rgba(15,23,42,.34) !important;
+}
+
+.cashflow-filter-panel__head h3 {
+  margin: 0 !important;
+  color: var(--cf-ink) !important;
+  font-size: clamp(1rem, 1.5vw, 1.18rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+}
+
+.cashflow-filter-panel__head p {
+  margin: 2px 0 0 !important;
+  color: var(--cf-muted) !important;
+  font-size: .78rem !important;
+  font-weight: 760 !important;
+  line-height: 1.85 !important;
+}
+
+.cashflow-filter-panel__body {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(160px, 1fr)) auto !important;
+  grid-auto-rows: auto !important;
+  align-items: end !important;
+  gap: 12px !important;
+  width: 100% !important;
+  direction: rtl !important;
+}
+
+.cashflow-preset-chips {
+  grid-column: 1 / span 3 !important;
+  grid-row: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.cashflow-filter-field--forecast {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+}
+
+.cashflow-refresh-button {
+  grid-column: 5 !important;
+  grid-row: 1 !important;
+}
+
+.cashflow-filter-field--from {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+.cashflow-filter-field--to {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+/* Date preset chips: no surrounding frame; only chips draw the surface. */
+.cashflow-preset-chips.report-date-presets,
+.cashflow-preset-chips.report-date-presets.report-date-presets--modern,
+.cashflow-report-page [data-ui-report-date-presets="true"].cashflow-preset-chips {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-preset-chips .report-date-presets__chips,
+.cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-preset-chips .report-date-preset-chip,
+.cashflow-preset-chips [data-ui-report-date-preset="true"] {
+  height: 37px !important;
+  min-height: 37px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: #334155 !important;
+  box-shadow: 0 8px 22px rgba(15,23,42,.04) !important;
+  font-size: .74rem !important;
+  font-weight: 950 !important;
+}
+
+.cashflow-preset-chips .report-date-preset-chip.is-active,
+.cashflow-preset-chips [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(15,23,42,.88) !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.13) !important;
+}
+
+/* Flat filter fields: wrapper is structural only. */
+.cashflow-filter-field.report-filter-field,
+.cashflow-filter-field[data-ui-report-filter-field="true"] {
+  min-width: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-filter-field .report-filter-field__head {
+  height: 17px !important;
+  min-height: 17px !important;
+  margin-bottom: 3px !important;
+  padding-inline: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  justify-content: flex-start !important;
+}
+
+.cashflow-filter-field .report-filter-field__icon {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  border-radius: 999px !important;
+  font-size: 9px !important;
+}
+
+.cashflow-filter-field .report-filter-field__body,
+.cashflow-filter-field .report-filter-field__body > *,
+.cashflow-filter-field :where(.app-date-field, .app-date-field__control) {
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.cashflow-date-input {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  padding-inline: 14px !important;
+  border: 1px solid rgba(203,213,225,.92) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: var(--cf-ink) !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.32) !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+}
+
+.cashflow-select-field {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  border: 1px solid rgba(203,213,225,.92) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: var(--cf-ink) !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.32) !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+  text-align-last: center !important;
+  outline: 0 !important;
+  padding-inline: 10px !important;
+}
+
+.cashflow-refresh-button {
+  align-self: end !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  min-width: 112px !important;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #10a979 !important;
+  color: #fff !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 14px 28px rgba(16,169,121,.19) !important;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
+}
+
+.cashflow-refresh-button:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  filter: brightness(.98) !important;
+  box-shadow: 0 18px 34px rgba(16,169,121,.24) !important;
+}
+
+.cashflow-refresh-button:disabled {
+  cursor: wait !important;
+  opacity: .72 !important;
+}
+
+/* KPI cards */
+.cashflow-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+  margin: 0 0 16px !important;
+}
+
+.cashflow-kpi-card {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  min-height: 122px !important;
+  padding: 17px !important;
+  border: 1px solid var(--cf-border) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)),
+    radial-gradient(circle at 16% 0%, rgba(37,99,235,.07), transparent 36%) !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.055) !important;
+  overflow: hidden !important;
+}
+
+.cashflow-kpi-card::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 16px !important;
+  inset-inline-start: 0 !important;
+  width: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(37,99,235,.48) !important;
+}
+
+.cashflow-kpi-card--inflow::before { background: rgba(5,150,105,.56) !important; }
+.cashflow-kpi-card--outflow::before { background: rgba(225,29,72,.50) !important; }
+.cashflow-kpi-card--net::before { background: rgba(37,99,235,.52) !important; }
+
+.cashflow-card-icon {
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(147,197,253,.70) !important;
+  background: linear-gradient(180deg, rgba(239,246,255,.98), rgba(219,234,254,.76)) !important;
+  color: var(--cf-blue) !important;
+}
+
+.cashflow-kpi-card--inflow .cashflow-card-icon {
+  border-color: rgba(16,185,129,.24) !important;
+  background: #ecfdf5 !important;
+  color: var(--cf-green) !important;
+}
+
+.cashflow-kpi-card--outflow .cashflow-card-icon {
+  border-color: rgba(251,113,133,.25) !important;
+  background: #fff1f2 !important;
+  color: var(--cf-rose) !important;
+}
+
+.cashflow-kpi-card .text-muted {
+  color: var(--cf-muted) !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+.cashflow-kpi-value {
+  color: var(--cf-ink) !important;
+  font-size: clamp(1.22rem, 2.2vw, 1.86rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.18 !important;
+  letter-spacing: -.02em !important;
+}
+
+/* Risk cards and charts */
+.cashflow-risk-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+  margin-bottom: 16px !important;
+}
+
+.cashflow-risk-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  min-height: 116px !important;
+  padding: 16px !important;
+  border: 1px solid var(--cf-border) !important;
+  border-radius: 24px !important;
+  background: var(--cf-panel) !important;
+  box-shadow: 0 14px 34px rgba(15,23,42,.045) !important;
+}
+
+.cashflow-risk-card__icon {
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  width: 39px !important;
+  height: 39px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203,213,225,.75) !important;
+  background: rgba(248,250,252,.95) !important;
+  color: #475569 !important;
+}
+
+.cashflow-risk-card__icon--success { color: var(--cf-green) !important; background: #ecfdf5 !important; border-color: rgba(16,185,129,.24) !important; }
+.cashflow-risk-card__icon--warning { color: var(--cf-amber) !important; background: #fffbeb !important; border-color: rgba(245,158,11,.26) !important; }
+.cashflow-risk-card__icon--danger { color: var(--cf-rose) !important; background: #fff1f2 !important; border-color: rgba(251,113,133,.25) !important; }
+
+.cashflow-risk-card__label {
+  color: var(--cf-muted) !important;
+  font-size: .71rem !important;
+  font-weight: 900 !important;
+}
+
+.cashflow-risk-card__value {
+  margin-top: 4px !important;
+  color: var(--cf-ink) !important;
+  font-size: clamp(1rem, 1.6vw, 1.28rem) !important;
+  font-weight: 950 !important;
+}
+
+.cashflow-risk-card p {
+  margin: 4px 0 0 !important;
+  color: var(--cf-muted) !important;
+  font-size: .74rem !important;
+  font-weight: 760 !important;
+  line-height: 1.8 !important;
+}
+
+.cashflow-chart-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 14px !important;
+  margin-bottom: 16px !important;
+}
+
+.cashflow-chart-card {
+  border: 1px solid var(--cf-border) !important;
+  border-radius: 24px !important;
+  background: var(--cf-panel) !important;
+  padding: 16px !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.05) !important;
+  overflow: hidden !important;
+}
+
+.cashflow-chart-card .text-sm,
+.cashflow-kpi-card > .text-sm {
+  color: var(--cf-ink) !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+}
+
+.cashflow-chart-card .recharts-wrapper,
+.cashflow-chart-card svg,
+.cashflow-kpi-card .recharts-wrapper,
+.cashflow-kpi-card svg {
+  direction: ltr !important;
+}
+
+.cashflow-chart-card .recharts-cartesian-grid line,
+.cashflow-kpi-card .recharts-cartesian-grid line {
+  stroke: rgba(148,163,184,.26) !important;
+}
+
+.cashflow-chart-card .recharts-text,
+.cashflow-kpi-card .recharts-text {
+  fill: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.dark .cashflow-report-page {
+  --cf-ink: #f8fafc;
+  --cf-muted: #94a3b8;
+  --cf-border: rgba(148,163,184,.18);
+  --cf-panel: rgba(15,23,42,.90);
+}
+
+.dark .cashflow-filter-panel,
+.dark .cashflow-kpi-card,
+.dark .cashflow-risk-card,
+.dark .cashflow-chart-card {
+  background:
+    linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.88)) !important;
+  box-shadow: none !important;
+}
+
+.dark .cashflow-filter-panel__icon,
+.dark .cashflow-risk-card__icon {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgba(15,23,42,.72) !important;
+  color: #cbd5e1 !important;
+}
+
+.dark .cashflow-preset-chips .report-date-preset-chip,
+.dark .cashflow-preset-chips [data-ui-report-date-preset="true"],
+.dark .cashflow-select-field,
+.dark .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]) {
+  border-color: rgba(51,65,85,.9) !important;
+  background: rgba(15,23,42,.78) !important;
+  color: #f8fafc !important;
+}
+
+.dark .cashflow-preset-chips .report-date-preset-chip.is-active,
+.dark .cashflow-preset-chips [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(248,250,252,.78) !important;
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+.dark .cashflow-kpi-card--inflow .cashflow-card-icon,
+.dark .cashflow-risk-card__icon--success { background: rgba(6,78,59,.34) !important; color: #6ee7b7 !important; }
+.dark .cashflow-kpi-card--outflow .cashflow-card-icon,
+.dark .cashflow-risk-card__icon--danger { background: rgba(136,19,55,.30) !important; color: #fda4af !important; }
+.dark .cashflow-risk-card__icon--warning { background: rgba(120,53,15,.32) !important; color: #fcd34d !important; }
+
+.dark .cashflow-chart-card .recharts-text,
+.dark .cashflow-kpi-card .recharts-text {
+  fill: #94a3b8 !important;
+}
+
+@media (max-width: 1180px) {
+  .cashflow-filter-panel__body {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .cashflow-preset-chips,
+  .cashflow-filter-field--forecast,
+  .cashflow-refresh-button,
+  .cashflow-filter-field--from,
+  .cashflow-filter-field--to {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .cashflow-preset-chips {
+    grid-column: 1 / -1 !important;
+  }
+
+  .cashflow-refresh-button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .cashflow-filter-panel {
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .cashflow-filter-panel__head {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cashflow-filter-panel__icon {
+    display: none !important;
+  }
+
+  .cashflow-filter-panel__body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cashflow-preset-chips .report-date-presets__chips,
+  .cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .cashflow-chart-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

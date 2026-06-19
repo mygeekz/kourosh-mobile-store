@@ -1,0 +1,1261 @@
+/* ===== People empty states / list / detail pages quarantine ===== */
+/* This file preserves the original cascade order of legacy runtime overrides. */
+
+/* ===== Source: styles/runtime-overrides/04a-people-empty-states.css ===== */
+/* People empty states, detail pages, modals, settlement and ledger polish.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== People pages zero-state landing ===== */
+.people-zero-state {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.people-zero-state__hero {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 28px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 20px 44px -36px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.92);
+  padding: 1.25rem;
+}
+
+.people-zero-state__hero-copy {
+  display: grid;
+  gap: .9rem;
+}
+
+.people-zero-state__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid rgba(226,232,240,.96);
+  background: rgba(248,250,252,.92);
+  color: rgb(71 85 105);
+  font-size: .7rem;
+  font-weight: 800;
+  padding: .42rem .7rem;
+}
+
+.people-zero-state__title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.people-zero-state__title-wrap {
+  min-width: 0;
+  display: grid;
+  gap: .45rem;
+}
+
+.people-zero-state__title {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: clamp(1.05rem, 1.2vw + .9rem, 1.55rem);
+  line-height: 1.7;
+  font-weight: 900;
+}
+
+.people-zero-state__description {
+  margin: 0;
+  color: rgb(100 116 139);
+  font-size: .9rem;
+  line-height: 2;
+  max-width: 66ch;
+}
+
+.people-zero-state__hero-icon,
+.people-zero-state__card-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  border: 1px solid rgba(226,232,240,.96);
+  background: rgba(248,250,252,.94);
+  color: rgb(51 65 85);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92);
+}
+
+.people-zero-state__hero-icon {
+  width: 58px;
+  height: 58px;
+  font-size: 1.2rem;
+}
+
+.people-zero-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .65rem;
+}
+
+.people-zero-state__actions .btn,
+.people-zero-state__actions button {
+  min-height: 36px !important;
+}
+
+.people-zero-state__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.people-zero-state__step {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .6rem;
+  border: 1px solid rgba(226,232,240,.88);
+  border-radius: 20px;
+  background: rgba(248,250,252,.88);
+  padding: .85rem .95rem;
+}
+
+.people-zero-state__step-index {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(15,23,42,.08);
+  color: rgb(15 23 42);
+  font-size: .78rem;
+  font-weight: 900;
+}
+
+.people-zero-state__step-label {
+  color: rgb(51 65 85);
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.people-zero-state__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.people-zero-state__card {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 24px;
+  background: rgba(255,255,255,.98);
+  padding: 1rem;
+  box-shadow: 0 16px 36px -34px rgba(15,23,42,.16);
+}
+
+.people-zero-state__card-icon {
+  width: 46px;
+  height: 46px;
+  font-size: 1rem;
+}
+
+.people-zero-state__card-copy {
+  min-width: 0;
+}
+
+.people-zero-state__card-copy h4 {
+  margin: 0 0 .35rem;
+  color: rgb(15 23 42);
+  font-size: .92rem;
+  font-weight: 900;
+}
+
+.people-zero-state__card-copy p {
+  margin: 0;
+  color: rgb(100 116 139);
+  font-size: .81rem;
+  line-height: 1.95;
+}
+
+html.dark .people-zero-state__hero,
+html.dark .people-zero-state__card {
+  background: rgb(2 6 23);
+  border-color: rgba(30,41,59,.95);
+  box-shadow: 0 20px 44px -36px rgba(2,6,23,.5), inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+html.dark .people-zero-state__eyebrow,
+html.dark .people-zero-state__step,
+html.dark .people-zero-state__hero-icon,
+html.dark .people-zero-state__card-icon {
+  background: rgb(15 23 42);
+  border-color: rgba(51,65,85,.95);
+  color: rgb(226 232 240);
+}
+
+html.dark .people-zero-state__title,
+html.dark .people-zero-state__card-copy h4 {
+  color: rgb(241 245 249);
+}
+
+html.dark .people-zero-state__description,
+html.dark .people-zero-state__card-copy p,
+html.dark .people-zero-state__step-label,
+html.dark .people-zero-state__eyebrow {
+  color: rgb(148 163 184);
+}
+
+html.dark .people-zero-state__step-index {
+  background: rgba(241,245,249,.12);
+  color: rgb(241 245 249);
+}
+
+@media (max-width: 1024px) {
+  .people-zero-state__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .people-zero-state__hero {
+    padding: 1rem;
+    border-radius: 24px;
+  }
+  .people-zero-state__title-row {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .people-zero-state__steps {
+    grid-template-columns: 1fr;
+  }
+  .people-zero-state__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .people-zero-state__actions .btn,
+  .people-zero-state__actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+
+/* ===== V41 — Premium empty states for people lists ===== */
+.people-zero-state__hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.10), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(248,250,252,0.96));
+}
+
+.people-zero-state__hero::before {
+  content: "";
+  position: absolute;
+  inset-inline: 1.25rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(14,165,233,.38), transparent);
+  pointer-events: none;
+}
+
+.people-zero-state__eyebrow {
+  gap: .45rem;
+  border-color: rgba(191, 219, 254, .9);
+  background: rgba(239, 246, 255, .86);
+  color: rgb(29 78 216);
+  font-weight: 950;
+}
+
+.people-zero-state__reason-card {
+  display: flex;
+  align-items: flex-start;
+  gap: .78rem;
+  max-width: 760px;
+  border: 1px solid rgba(226,232,240,.95);
+  border-radius: 22px;
+  background: rgba(255,255,255,.82);
+  padding: .9rem 1rem;
+  box-shadow: 0 14px 30px -28px rgba(15,23,42,.18);
+}
+
+.people-zero-state__reason-icon {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(191,219,254,.9);
+  background: rgba(239,246,255,.9);
+  color: rgb(37 99 235);
+}
+
+.people-zero-state__reason-copy {
+  min-width: 0;
+  display: grid;
+  gap: .2rem;
+}
+
+.people-zero-state__reason-copy strong {
+  color: rgb(15 23 42);
+  font-size: .86rem;
+  font-weight: 950;
+  line-height: 1.8;
+}
+
+.people-zero-state__reason-copy span {
+  color: rgb(100 116 139);
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.95;
+}
+
+.people-zero-state__actions {
+  justify-content: flex-start;
+}
+
+.people-zero-state__primary {
+  box-shadow: 0 18px 34px -24px rgba(37, 99, 235, .52) !important;
+}
+
+.people-zero-state__step,
+.people-zero-state__card {
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.people-zero-state__card:hover,
+.people-zero-state__step:hover {
+  transform: translateY(-1px);
+  border-color: rgba(147,197,253,.78);
+  box-shadow: 0 20px 38px -34px rgba(37,99,235,.24);
+}
+
+html.dark .people-zero-state__hero {
+  background:
+    radial-gradient(circle at 90% 0%, rgba(59, 130, 246, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(15,23,42,.98), rgba(2,6,23,.98));
+}
+
+html.dark .people-zero-state__hero::before {
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,.35), transparent);
+}
+
+html.dark .people-zero-state__eyebrow,
+html.dark .people-zero-state__reason-icon {
+  border-color: rgba(59,130,246,.36);
+  background: rgba(30,64,175,.18);
+  color: rgb(191 219 254);
+}
+
+html.dark .people-zero-state__reason-card {
+  border-color: rgba(51,65,85,.95);
+  background: rgba(15,23,42,.72);
+  box-shadow: 0 18px 40px -34px rgba(2,6,23,.65);
+}
+
+html.dark .people-zero-state__reason-copy strong {
+  color: rgb(248 250 252);
+}
+
+html.dark .people-zero-state__reason-copy span {
+  color: rgb(148 163 184);
+}
+
+@media (max-width: 768px) {
+  .people-zero-state__reason-card {
+    flex-direction: column;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/04b-people-list-unification.css ===== */
+/* ===== People section Apple Minimal unification =====
+   One visual language for Customers + Partners: solid executive surfaces,
+   compact controls, predictable icons, responsive cards, no decorative gradients. */
+.people-merged-page,
+.people-page-shell,
+.partners-page-shell,
+.customers-page-shell {
+  --people-solid-bg: #ffffff;
+  --people-soft-bg: #f8fafc;
+  --people-border-solid: rgb(226 232 240 / 0.96);
+  --people-text-strong: rgb(15 23 42);
+  --people-text-muted: rgb(100 116 139);
+  --people-icon-bg: rgb(248 250 252);
+  --people-icon-border: rgb(226 232 240);
+  --people-shadow-soft: 0 18px 42px -36px rgba(15,23,42,.20);
+}
+
+html.dark .people-merged-page,
+html.dark .people-page-shell,
+html.dark .partners-page-shell,
+html.dark .customers-page-shell {
+  --people-solid-bg: rgb(2 6 23);
+  --people-soft-bg: rgb(15 23 42);
+  --people-border-solid: rgb(30 41 59 / 0.96);
+  --people-text-strong: rgb(241 245 249);
+  --people-text-muted: rgb(148 163 184);
+  --people-icon-bg: rgb(15 23 42);
+  --people-icon-border: rgb(51 65 85);
+  --people-shadow-soft: 0 18px 42px -36px rgba(2,6,23,.55);
+}
+
+/* Solid shells: prevents the old faded/gradient look from resurfacing. */
+.people-merged-page :where(
+  .people-hero-panel,
+  .customers-hero-panel,
+  .partners-overview-hero,
+  .people-toolbar,
+  .customers-toolbar,
+  .partners-toolbar-shell,
+  .people-table-shell,
+  .partners-table-shell,
+  .people-mobile-card,
+  .customers-mobile-card,
+  .partners-mobile-card,
+  .people-stat-card,
+  .partners-stat-card
+) {
+  position: relative !important;
+  isolation: isolate !important;
+  background: var(--people-solid-bg) !important;
+  background-image: none !important;
+  border-color: var(--people-border-solid) !important;
+  color: var(--people-text-strong) !important;
+  box-shadow: var(--people-shadow-soft) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.people-merged-page :where(
+  .people-hero-panel,
+  .customers-hero-panel,
+  .partners-overview-hero,
+  .people-toolbar,
+  .customers-toolbar,
+  .partners-toolbar-shell,
+  .people-table-shell,
+  .partners-table-shell,
+  .people-mobile-card,
+  .customers-mobile-card,
+  .partners-mobile-card,
+  .people-stat-card,
+  .partners-stat-card
+)::before,
+.people-merged-page :where(
+  .people-hero-panel,
+  .customers-hero-panel,
+  .partners-overview-hero,
+  .people-toolbar,
+  .customers-toolbar,
+  .partners-toolbar-shell,
+  .people-table-shell,
+  .partners-table-shell,
+  .people-mobile-card,
+  .customers-mobile-card,
+  .partners-mobile-card,
+  .people-stat-card,
+  .partners-stat-card
+)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.people-merged-page :where(.bg-gradient-to-br, .bg-gradient-to-r, .bg-gradient-to-l, [class*="radial-gradient"], [class*="linear-gradient"]) {
+  background-image: none !important;
+}
+
+/* Top nav — selected state should be subtle, not a saturated pill. */
+.people-top-nav__item {
+  min-height: 36px !important;
+  border-color: var(--people-border-solid) !important;
+  background: var(--people-solid-bg) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.16) !important;
+}
+
+html.dark .people-top-nav__item {
+  color: rgb(203 213 225) !important;
+}
+
+.people-top-nav__item.is-active {
+  background: rgb(15 23 42) !important;
+  background-image: none !important;
+  border-color: rgb(15 23 42) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px -22px rgba(15,23,42,.42) !important;
+}
+
+html.dark .people-top-nav__item.is-active {
+  background: rgb(241 245 249) !important;
+  border-color: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+}
+
+/* Hero copy hierarchy. */
+.people-merged-page :where(.customers-hero-eyebrow, .people-zero-state__eyebrow) {
+  background: var(--people-soft-bg) !important;
+  border-color: var(--people-border-solid) !important;
+  color: var(--people-text-muted) !important;
+}
+
+.people-merged-page :where(.customers-hero-title, .people-zero-state__title) {
+  color: var(--people-text-strong) !important;
+  letter-spacing: -0.02em;
+}
+
+.people-merged-page :where(.customers-hero-subtitle, .people-zero-state__description, .customers-toolbar__summary, .partners-toolbar-summary__item) {
+  color: var(--people-text-muted) !important;
+}
+
+/* KPI cards — unified Apple cards with neutral icons. */
+.people-stats-grid {
+  align-items: stretch;
+}
+
+.people-stat-card,
+.partners-stat-card {
+  min-height: 116px;
+  border: 1px solid var(--people-border-solid) !important;
+  border-radius: 24px !important;
+  padding: 1rem !important;
+}
+
+.people-stat-card__label {
+  color: var(--people-text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.people-stat-card__value {
+  color: var(--people-text-strong) !important;
+  font-size: clamp(1.05rem, 1vw + .75rem, 1.45rem) !important;
+  font-weight: 900 !important;
+  line-height: 1.9 !important;
+}
+
+.people-stat-card__meta {
+  color: var(--people-text-muted) !important;
+  font-size: 11px !important;
+  line-height: 1.85 !important;
+}
+
+.people-stat-card__icon,
+.people-stat-card :where(.flex.h-11.w-11, span[class*="h-11"][class*="w-11"]) {
+  width: 44px !important;
+  height: 44px !important;
+  flex: 0 0 44px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--people-icon-border) !important;
+  background: var(--people-icon-bg) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85) !important;
+}
+
+html.dark .people-stat-card__icon,
+html.dark .people-stat-card :where(.flex.h-11.w-11, span[class*="h-11"][class*="w-11"]) {
+  color: rgb(226 232 240) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+/* Filters and toolbar: compact, readable, single grammar. */
+.people-filter-bar,
+.partners-filter-chips,
+.customers-toolbar__group {
+  gap: .5rem !important;
+}
+
+.people-filter-chip,
+.partners-filter-chip {
+  min-height: 34px !important;
+  border-radius: 999px !important;
+  border-color: var(--people-border-solid) !important;
+  background: var(--people-solid-bg) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+html.dark .people-filter-chip,
+html.dark .partners-filter-chip {
+  color: rgb(203 213 225) !important;
+}
+
+.people-filter-chip.is-active,
+.partners-filter-chip.is-active,
+.people-filter-chip[aria-pressed="true"] {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(15 23 42) !important;
+  color: #fff !important;
+}
+
+html.dark .people-filter-chip.is-active,
+html.dark .partners-filter-chip.is-active,
+html.dark .people-filter-chip[aria-pressed="true"] {
+  background: rgb(241 245 249) !important;
+  border-color: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+}
+
+.customers-toolbar__select-wrap,
+.customers-toolbar__summary,
+.partners-toolbar-summary__item {
+  min-height: 38px !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--people-border-solid) !important;
+  background: var(--people-soft-bg) !important;
+  box-shadow: none !important;
+}
+
+.customers-toolbar__icon,
+.customers-toolbar__summary i,
+.partners-toolbar-summary__item i {
+  color: rgb(71 85 105) !important;
+}
+
+html.dark .customers-toolbar__icon,
+html.dark .customers-toolbar__summary i,
+html.dark .partners-toolbar-summary__item i {
+  color: rgb(203 213 225) !important;
+}
+
+/* Table shell and headers — executive, solid and aligned. */
+.people-table-shell,
+.partners-table-shell {
+  border: 1px solid var(--people-border-solid) !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+
+.people-table-head,
+.partners-table-head,
+.people-table-shell thead,
+.partners-table-shell thead {
+  background: var(--people-soft-bg) !important;
+  background-image: none !important;
+  color: rgb(71 85 105) !important;
+}
+
+.people-table-head th,
+.partners-table-head th,
+.people-table-shell thead th,
+.partners-table-shell thead th {
+  height: 46px !important;
+  padding-block: .75rem !important;
+  color: rgb(71 85 105) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  border-bottom: 1px solid var(--people-border-solid) !important;
+  white-space: nowrap !important;
+}
+
+html.dark .people-table-head,
+html.dark .partners-table-head,
+html.dark .people-table-shell thead,
+html.dark .partners-table-shell thead {
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .people-table-head th,
+html.dark .partners-table-head th,
+html.dark .people-table-shell thead th,
+html.dark .partners-table-shell thead th {
+  color: rgb(203 213 225) !important;
+}
+
+.people-table-shell tbody,
+.partners-table-shell tbody {
+  background: var(--people-solid-bg) !important;
+}
+
+.people-table-row,
+.partners-table-row,
+.people-table-shell tbody tr,
+.partners-table-shell tbody tr {
+  background: var(--people-solid-bg) !important;
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.people-table-row:hover,
+.partners-table-row:hover,
+.people-table-shell tbody tr:hover,
+.partners-table-shell tbody tr:hover {
+  background: var(--people-soft-bg) !important;
+}
+
+.people-table-shell td,
+.partners-table-shell td {
+  color: var(--people-text-strong);
+  border-color: var(--people-border-solid) !important;
+}
+
+/* Avatars — same geometry and positioning across customers/partners. */
+.customer-row-avatar,
+.partners-row-avatar {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--people-icon-border) !important;
+  background: var(--people-icon-bg) !important;
+  color: rgb(15 23 42) !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.86) !important;
+}
+
+html.dark .customer-row-avatar,
+html.dark .partners-row-avatar {
+  color: rgb(241 245 249) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+/* Row action buttons — same compact sizing and icon alignment. */
+.people-action-btn,
+.partners-action-btn,
+.people-action-btn-clean,
+.people-action-btn-primary,
+.people-action-btn-secondary,
+.people-action-btn-danger,
+.partners-action-btn--primary,
+.partners-action-btn--secondary,
+.partners-action-btn--danger {
+  min-height: 36px !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  padding: .48rem .78rem !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
+.people-action-btn i,
+.partners-action-btn i {
+  flex: 0 0 auto !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+/* Mobile cards: same structure and action footer. */
+.people-mobile-card,
+.customers-mobile-card,
+.partners-mobile-card {
+  border: 1px solid var(--people-border-solid) !important;
+  border-radius: 24px !important;
+  padding: 1rem !important;
+}
+
+.people-mobile-card :where(.border-t),
+.customers-mobile-card :where(.border-t),
+.partners-mobile-card :where(.border-t) {
+  border-color: var(--people-border-solid) !important;
+}
+
+.people-mobile-card :where(.text-gray-900, .text-slate-900),
+.customers-mobile-card :where(.text-gray-900, .text-slate-900),
+.partners-mobile-card :where(.text-gray-900, .text-slate-900) {
+  color: var(--people-text-strong) !important;
+}
+
+.people-mobile-card :where(.text-gray-500, .text-slate-500, .text-gray-400, .text-slate-400),
+.customers-mobile-card :where(.text-gray-500, .text-slate-500, .text-gray-400, .text-slate-400),
+.partners-mobile-card :where(.text-gray-500, .text-slate-500, .text-gray-400, .text-slate-400) {
+  color: var(--people-text-muted) !important;
+}
+
+/* Responsive tuning. */
+@media (max-width: 1024px) {
+  .people-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .people-toolbar,
+  .customers-toolbar,
+  .partners-toolbar-shell {
+    align-items: stretch !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .people-page-shell {
+    gap: .85rem !important;
+  }
+  .people-stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: .75rem !important;
+  }
+  .people-stat-card,
+  .partners-stat-card {
+    min-height: auto !important;
+    border-radius: 22px !important;
+    padding: .9rem !important;
+  }
+  .people-top-nav {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+  }
+  .people-top-nav__item {
+    justify-content: center !important;
+    width: 100%;
+  }
+  .people-unified-hero__top,
+  .people-unified-hero__body,
+  .customers-toolbar,
+  .partners-toolbar-shell {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: .75rem !important;
+  }
+  .people-unified-hero__actions,
+  .customers-toolbar__group,
+  .partners-filter-chips,
+  .partners-toolbar-summary {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+  .people-primary-btn,
+  .people-unified-hero__actions button,
+  .people-unified-hero__actions a {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .people-mobile-card,
+  .customers-mobile-card,
+  .partners-mobile-card {
+    border-radius: 22px !important;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/04c-people-detail-pages.css ===== */
+/* ===== People detail pages — Apple Minimal unification =====
+   Applies the same visual language used in Customers/Partners landing & lists
+   to CustomerDetail and PartnerDetail without changing business logic. */
+.people-detail-apple {
+  --people-detail-surface: #ffffff;
+  --people-detail-surface-soft: #f8fafc;
+  --people-detail-border: rgba(226,232,240,.94);
+  --people-detail-border-strong: rgba(203,213,225,.92);
+  --people-detail-text: rgb(15 23 42);
+  --people-detail-muted: rgb(100 116 139);
+  --people-detail-shadow: 0 18px 46px -38px rgba(15,23,42,.22);
+  color: var(--people-detail-text);
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(.75rem, 1.2vw, 1.25rem);
+}
+
+html.dark .people-detail-apple {
+  --people-detail-surface: rgb(2 6 23);
+  --people-detail-surface-soft: rgb(15 23 42);
+  --people-detail-border: rgba(30,41,59,.95);
+  --people-detail-border-strong: rgba(51,65,85,.9);
+  --people-detail-text: rgb(241 245 249);
+  --people-detail-muted: rgb(148 163 184);
+  --people-detail-shadow: 0 18px 46px -38px rgba(2,6,23,.68);
+}
+
+.people-detail-apple,
+.people-detail-apple :where(.detail-hero-card, .detail-card, .people-ledger-grid, .detail-account-focus, .partner-detail-account-focus) {
+  position: relative;
+  isolation: isolate;
+}
+
+.people-detail-apple :where(.detail-hero-card, .detail-card, .people-ledger-grid) {
+  overflow: hidden;
+  border: 1px solid var(--people-detail-border) !important;
+  background: var(--people-detail-surface) !important;
+  background-image: none !important;
+  border-radius: 30px !important;
+  box-shadow: var(--people-detail-shadow) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.people-detail-apple :where(.detail-hero-card)::before,
+.people-detail-apple :where(.detail-hero-card)::after,
+.people-detail-apple :where(.detail-card)::before,
+.people-detail-apple :where(.detail-card)::after,
+.people-detail-apple :where(.people-ledger-grid)::before,
+.people-detail-apple :where(.people-ledger-grid)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.people-detail-apple .detail-hero-card__head {
+  padding: clamp(1rem, 1.6vw, 1.55rem) !important;
+}
+
+.people-detail-apple :where(.customer-detail-hero__top, .partner-detail-hero__top) {
+  gap: 1rem !important;
+  align-items: flex-start !important;
+}
+
+.people-detail-apple .detail-hero-card__icon {
+  width: 56px !important;
+  height: 56px !important;
+  flex: 0 0 56px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 22px !important;
+  border: 1px solid var(--people-detail-border) !important;
+  background: var(--people-detail-surface-soft) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+html.dark .people-detail-apple .detail-hero-card__icon {
+  color: rgb(226 232 240) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.people-detail-apple .detail-hero-card__head h2 {
+  color: var(--people-detail-text) !important;
+  font-size: clamp(1.25rem, 1.45vw + .92rem, 1.85rem) !important;
+  line-height: 1.65 !important;
+  letter-spacing: -0.02em;
+}
+
+.people-detail-apple .detail-hero-card__head p,
+.people-detail-apple :where(.text-slate-500, .text-gray-500, .text-slate-400, .text-gray-400) {
+  color: var(--people-detail-muted) !important;
+}
+
+.people-detail-apple :where(.detail-hero-card__head .inline-flex.rounded-full) {
+  background: var(--people-detail-surface-soft) !important;
+  border-color: var(--people-detail-border) !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+}
+
+html.dark .people-detail-apple :where(.detail-hero-card__head .inline-flex.rounded-full) {
+  color: rgb(203 213 225) !important;
+}
+
+.people-detail-apple :where(.customer-detail-actions, .partner-detail-actions) {
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  max-width: min(100%, 620px) !important;
+}
+
+.people-detail-apple :where(.people-action-btn, .people-action-btn-tight, .people-action-btn-primary, .people-action-btn-secondary) {
+  min-height: 36px !important;
+  height: auto !important;
+  border-radius: 999px !important;
+  padding: .5rem .78rem !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.people-detail-apple .detail-account-focus,
+.people-detail-apple .partner-detail-account-focus {
+  margin-top: 1rem !important;
+  border-radius: 24px !important;
+  border: 1px solid var(--people-detail-border) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 14px 34px -34px rgba(15,23,42,.18) !important;
+  color: var(--people-detail-text) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .people-detail-apple .detail-account-focus,
+html.dark .people-detail-apple .partner-detail-account-focus {
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+}
+
+html.dark .people-detail-apple .detail-account-focus,
+html.dark .people-detail-apple .partner-detail-account-focus {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.people-detail-apple .detail-account-focus :where(strong, .font-black, .font-bold) {
+  color: var(--people-detail-text) !important;
+}
+
+.people-detail-apple :where(.detail-account-focus, .partner-detail-account-focus) {
+  background: #ffffff !important;
+  background-image: none !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+html.dark .people-detail-apple :where(.detail-account-focus, .partner-detail-account-focus) {
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+}
+
+.people-detail-apple :where(.partner-detail-account-focus--solid, .partner-ledger-expanded-panel--solid) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .people-detail-apple :where(.partner-detail-account-focus--solid, .partner-ledger-expanded-panel--solid) {
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+}
+
+.people-detail-apple :where(.partner-detail-account-focus--solid, .partner-ledger-expanded-panel--solid)::before,
+.people-detail-apple :where(.partner-detail-account-focus--solid, .partner-ledger-expanded-panel--solid)::after {
+  content: none !important;
+  display: none !important;
+}
+
+.people-detail-apple :where(.detail-account-focus--danger, .detail-account-focus--success, .detail-account-focus--neutral) {
+  background: var(--people-detail-surface-soft) !important;
+  background-image: none !important;
+}
+
+.people-detail-apple .partner-system-id-value,
+.people-detail-apple .partner-ledger-group-row .partner-system-id-value,
+.people-detail-apple .partner-ledger-row .partner-system-id-value {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  margin-inline: auto !important;
+}
+
+.people-detail-apple .partner-system-id-block,
+.people-detail-apple .partner-system-id-field {
+  text-align: center !important;
+}
+
+.people-detail-apple .partner-system-id-field {
+  justify-items: center !important;
+}
+
+.people-detail-apple .people-chip {
+  border-radius: 999px !important;
+  border-color: var(--people-detail-border) !important;
+  background: var(--people-detail-surface) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+html.dark .people-detail-apple .people-chip {
+  color: rgb(203 213 225) !important;
+}
+
+.people-detail-apple .detail-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: .75rem !important;
+}
+
+.people-detail-apple .detail-stat-card,
+.people-detail-apple :where(.detail-kpi-grid > div),
+.people-detail-apple :where(.mx-6.mt-5.rounded-\[28px\]) {
+  border: 1px solid var(--people-detail-border) !important;
+  background: var(--people-detail-surface) !important;
+  background-image: none !important;
+  border-radius: 22px !important;
+  box-shadow: 0 14px 34px -34px rgba(15,23,42,.2) !important;
+}
+
+html.dark .people-detail-apple .detail-stat-card,
+html.dark .people-detail-apple :where(.detail-kpi-grid > div),
+html.dark .people-detail-apple :where(.mx-6.mt-5.rounded-\[28px\]) {
+  box-shadow: 0 14px 34px -34px rgba(2,6,23,.55) !important;
+}
+
+.people-detail-apple .detail-stat-card__icon,
+.people-detail-apple :where(.detail-kpi-grid > div) :where([class*="h-11"][class*="w-11"], [class*="h-9"][class*="w-9"]) {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--people-detail-border) !important;
+  background: var(--people-detail-surface-soft) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+html.dark .people-detail-apple .detail-stat-card__icon,
+html.dark .people-detail-apple :where(.detail-kpi-grid > div) :where([class*="h-11"][class*="w-11"], [class*="h-9"][class*="w-9"]) {
+  color: rgb(226 232 240) !important;
+}
+
+.people-detail-apple .detail-hero-card > .border-t {
+  border-color: var(--people-detail-border) !important;
+  background: var(--people-detail-surface-soft) !important;
+  background-image: none !important;
+  padding: clamp(1rem, 1.4vw, 1.35rem) !important;
+}
+
+.people-detail-apple .detail-hero-card > .border-t button.group {
+  border: 1px solid var(--people-detail-border) !important;
+  background: var(--people-detail-surface) !important;
+  background-image: none !important;
+  border-radius: 22px !important;
+  box-shadow: none !important;
+  transform: none;
+}
+
+.people-detail-apple .detail-hero-card > .border-t button.group:hover {
+  transform: translateY(-1px);
+  border-color: var(--people-detail-border-strong) !important;
+  box-shadow: 0 16px 36px -32px rgba(15,23,42,.18) !important;
+}
+
+.people-detail-apple .detail-hero-card > .border-t button.group :where([class*="h-11"][class*="w-11"]) {
+  border-color: var(--people-detail-border) !important;
+  background: var(--people-detail-surface-soft) !important;
+  color: rgb(51 65 85) !important;
+}
+
+html.dark .people-detail-apple .detail-hero-card > .border-t button.group :where([class*="h-11"][class*="w-11"]) {
+  color: rgb(226 232 240) !important;
+}
+
+.people-detail-apple .detail-card {
+  padding: clamp(1rem, 1.4vw, 1.35rem) !important;
+}
+
+.people-detail-apple .detail-card :where(.rounded-2xl.border, .rounded-3xl.border) {
+  border-color: var(--people-detail-border) !important;
+  background: var(--people-detail-surface-soft) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.people-detail-apple .people-ledger-grid {
+  padding: clamp(1rem, 1.4vw, 1.35rem) !important;
+}
+
+.people-detail-apple .people-ledger-grid :where(table, thead, tbody, tr, th, td) {
+  border-color: var(--people-detail-border) !important;
+}
+
+.people-detail-apple .people-ledger-grid :where(thead, th) {
+  background: var(--people-detail-surface-soft) !important;
+  background-image: none !important;
+  color: rgb(71 85 105) !important;
+}
+
+html.dark .people-detail-apple .people-ledger-grid :where(thead, th) {
+  color: rgb(203 213 225) !important;
+}
+
+.people-detail-apple .people-ledger-grid :where(tbody) {
+  background: var(--people-detail-surface) !important;
+}
+
+.people-detail-apple .people-ledger-grid :where(tr:hover) {
+  background: rgba(248,250,252,.85) !important;
+}
+
+html.dark .people-detail-apple .people-ledger-grid :where(tr:hover) {
+  background: rgba(15,23,42,.8) !important;
+}
+
+.people-detail-apple .ledger-action-btn {
+  min-height: 32px !important;
+  border-radius: 999px !important;
+  padding: .45rem .68rem !important;
+  box-shadow: none !important;
+}
+
+.people-detail-apple .ledger-actions-row {
+  gap: .45rem !important;
+  flex-wrap: wrap !important;
+}
+
+.people-detail-apple .people-ledger-timeline-index,
+.people-detail-apple .people-ledger-timeline-index-fallback {
+  background: var(--people-detail-surface-soft) !important;
+  border-color: var(--people-detail-border) !important;
+  color: rgb(71 85 105) !important;
+}
+
+html.dark .people-detail-apple .people-ledger-timeline-index,
+html.dark .people-detail-apple .people-ledger-timeline-index-fallback {
+  color: rgb(203 213 225) !important;
+}
+
+.people-detail-apple :where([class*="bg-gradient"], [class*="radial-gradient"], [class*="linear-gradient"]) {
+  background-image: none !important;
+}
+
+.people-detail-apple :where([class*="backdrop-blur"]) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+@media (max-width: 1024px) {
+  .people-detail-apple :where(.customer-detail-hero__top, .partner-detail-hero__top) {
+    align-items: stretch !important;
+  }
+  .people-detail-apple :where(.customer-detail-actions, .partner-detail-actions) {
+    max-width: 100% !important;
+    justify-content: flex-start !important;
+  }
+  .people-detail-apple .detail-account-focus,
+  .people-detail-apple .partner-detail-account-focus {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .people-detail-apple {
+    padding-inline: .55rem;
+  }
+  .people-detail-apple :where(.detail-hero-card, .detail-card, .people-ledger-grid) {
+    border-radius: 24px !important;
+  }
+  .people-detail-apple .detail-hero-card__head {
+    padding: .95rem !important;
+  }
+  .people-detail-apple :where(.customer-detail-hero__top, .partner-detail-hero__top) > .flex.items-start {
+    align-items: flex-start !important;
+    gap: .75rem !important;
+  }
+  .people-detail-apple .detail-hero-card__icon {
+    width: 48px !important;
+    height: 48px !important;
+    flex-basis: 48px !important;
+    border-radius: 18px !important;
+  }
+  .people-detail-apple :where(.customer-detail-actions, .partner-detail-actions) {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: .5rem !important;
+  }
+  .people-detail-apple :where(.customer-detail-actions, .partner-detail-actions) > * {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .people-detail-apple .detail-hero-card > .border-t .grid {
+    grid-template-columns: 1fr !important;
+  }
+  .people-detail-apple .people-ledger-grid {
+    overflow-x: auto !important;
+  }
+}

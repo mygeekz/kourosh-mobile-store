@@ -1,0 +1,172 @@
+/* Split from 02-legacy-reports-premium-components.css: people list controls + ux inputs/selects */
+@layer components {
+  .list-shell-modern {
+  }
+
+  .people-stat-card {
+    background-image:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.12), transparent 42%),
+      linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+  }
+
+  .dark .people-stat-card {
+    background-image:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.18), transparent 46%),
+      linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,0.90));
+    box-shadow: 0 26px 56px -42px rgba(2,6,23,0.76);
+  }
+
+  .people-stat-card__label {
+  }
+
+  .people-stat-card__value {
+  }
+
+  .people-stat-card__meta {
+  }
+
+  .people-filter-chip {
+  }
+  .people-filter-chip .ux-btn__icon {
+  }
+  .people-filter-chip:not(.is-active) {
+  }
+  .people-filter-chip.is-active {
+  }
+  .people-filter-chip.is-active .ux-btn__icon {
+    background-color: rgb(255 255 255 / 0.15);
+  }
+
+  .people-primary-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .people-secondary-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .people-table-shell {
+  }
+
+  .people-table-head {
+  }
+
+  .people-table-row {
+  }
+
+  .people-mobile-card {
+  }
+
+  .telegram-status-chip {
+    display: inline-flex;
+  }
+
+  .ux-btn-secondary {
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,245,249,0.96));
+  }
+
+  .dark .ux-btn-secondary {
+    background-image: linear-gradient(180deg, rgba(30,41,59,0.98), rgba(15,23,42,0.96));
+    box-shadow: 0 18px 34px -26px rgba(2,6,23,0.78);
+  }
+
+  .ux-btn-secondary:hover,
+  .ux-btn-secondary:hover .ux-btn__content,
+  .ux-btn-secondary:hover .ux-btn__icon,
+  .ux-btn-secondary:hover i,
+  .ux-btn-secondary:hover svg,
+  .ux-btn-secondary:hover span {
+    color: rgb(15 23 42);
+  }
+
+  .dark .ux-btn-secondary:hover,
+  .dark .ux-btn-secondary:hover .ux-btn__content,
+  .dark .ux-btn-secondary:hover .ux-btn__icon,
+  .dark .ux-btn-secondary:hover i,
+  .dark .ux-btn-secondary:hover svg,
+  .dark .ux-btn-secondary:hover span {
+    color: rgb(248 250 252);
+  }
+
+  button[class*='bg-gray-200']:hover,
+  button[class*='bg-gray-100']:hover,
+  button[class*='bg-white']:hover,
+  button[class*='bg-gray-200']:hover *,
+  button[class*='bg-gray-100']:hover *,
+  button[class*='bg-white']:hover * {
+    color: rgb(15 23 42);
+  }
+
+  .dark button[class*='bg-gray-200']:hover,
+  .dark button[class*='bg-gray-100']:hover,
+  .dark button[class*='bg-white']:hover,
+  .dark button[class*='bg-gray-200']:hover *,
+  .dark button[class*='bg-gray-100']:hover *,
+  .dark button[class*='bg-white']:hover * {
+    color: rgb(248 250 252);
+  }
+
+  .ux-btn-success {
+    background-image: linear-gradient(135deg, rgb(14 165 233), rgb(37 99 235));
+  }
+
+  .ux-btn-warning {
+    background-image: linear-gradient(135deg, rgb(251 191 36), rgb(249 115 22));
+  }
+
+  .ux-btn-danger {
+    background-image: linear-gradient(135deg, rgb(244 63 94), rgb(220 38 38));
+  }
+
+  .ux-btn-ghost {
+    background-color: rgb(255 255 255 / 0.75);
+  }
+
+  .ux-btn-xs { min-height: var(--control-h-sm); }
+  .ux-btn-sm { min-height: var(--control-h-sm); }
+  .ux-btn-md { min-height: var(--control-h); }
+  .ux-btn-lg { min-height: calc(var(--control-h) + 6px); }
+
+  .ux-input,
+  .ux-select,
+  .ux-textarea {
+  }
+
+  .ux-input,
+  .ux-select {
+    min-height: var(--control-h);
+  }
+
+  .ux-select,
+  .app-select,
+  .inventory-premium-select {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, rgb(100 116 139) 50%),
+      linear-gradient(135deg, rgb(100 116 139) 50%, transparent 50%);
+    background-position:
+      left 1.2rem center,
+      left 0.85rem center;
+    background-size: 0.42rem 0.42rem, 0.42rem 0.42rem;
+    background-repeat: no-repeat;
+    padding-inline-start: 3rem;
+  }
+
+  .dark .ux-select,
+  .dark .app-select,
+  .dark .inventory-premium-select {
+    background-image:
+      linear-gradient(45deg, transparent 50%, rgb(148 163 184) 50%),
+      linear-gradient(135deg, rgb(148 163 184) 50%, transparent 50%);
+  }
+
+  .ux-textarea {
+  }
+
+  .ux-action-bar {
+    display: flex;
+    flex-direction: column;
+  }
+}

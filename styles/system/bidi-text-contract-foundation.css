@@ -1,0 +1,268 @@
+/* Phase 18 — Bidi text contract foundation.
+   Moves the mixed RTL/LTR text contract out of runtime-overrides without changing selectors. */
+
+/* ===== Stage 62 — Mixed RTL/LTR text bidi contract =====
+   Purpose: keep Persian + English/number/code text stable in RTL UI.
+   This layer is intentionally imported after the icon/text layout contract.
+*/
+
+:root {
+  --ux-bidi-dir: rtl;
+}
+
+/* Semantic utilities for any mixed Persian/English text. */
+.ux-mixed-text,
+.ux-bidi-text {
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  min-inline-size: 0 !important;
+}
+
+.ux-mixed-line {
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.ux-ltr-token,
+.ux-code-token,
+.ux-id-token,
+[dir="ltr"].ux-token {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  text-align: left !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Numeric dots/badges should center visually even when digits are Persian. */
+:where(
+  .ux-filter-chip__count,
+  .icon-bubble > span.absolute,
+  .app-sidebar .icon-bubble [class*="absolute"],
+  .notification-count,
+  .badge-count,
+  .count-badge,
+  .nav-badge,
+  .pill-count
+) {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  text-align: center !important;
+  font-variant-numeric: tabular-nums !important;
+  line-height: 1 !important;
+}
+
+/* React Select: labels/options can contain Persian + English + numbers. */
+.sales-select-shell :where(
+  .sellable-select__placeholder,
+  .sellable-select__single-value,
+  .sellable-select__option,
+  .sellable-select__input-container,
+  .sellable-select__menu-notice,
+  .sellable-select__option-label
+) {
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+}
+
+.sales-select-shell .sellable-select__option {
+  display: block !important;
+  min-inline-size: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Sidebar labels: mixed labels such as English module names should not reorder the row. */
+.app-sidebar :where(
+  .sidebar-nav-row,
+  .sidebar-nav-row .ux-mixed-text,
+  .sidebar-nav-row > .icon-bubble + span,
+  .sidebar-nav-row > .icon-bubble + span > span,
+  .ux-sidebar-search__input
+) {
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+}
+
+/* Chips, buttons and status pills commonly mix Persian labels with English statuses/codes. */
+:where(
+  .ux-filter-chip,
+  .page-shell-status-chip,
+  .dashboard-kpi-surface-pill,
+  .header-quick-role-pill,
+  .financial-status-badge,
+  .telegram-status-chip,
+  .reports-premium-chip,
+  .report-date-preset-chip,
+  .people-chip,
+  .tg-chip,
+  .ux-btn,
+  .premium-submit-btn
+) {
+  unicode-bidi: plaintext !important;
+}
+
+/* Form controls in RTL screens: keep value/placeholder readable with mixed text. */
+[dir="rtl"] :where(
+  input:not([type='checkbox']):not([type='radio']),
+  textarea,
+  select
+) {
+  unicode-bidi: plaintext;
+}
+
+[dir="rtl"] :where(input[dir="ltr"], textarea[dir="ltr"], .ux-ltr-token input) {
+  unicode-bidi: isolate !important;
+  text-align: left !important;
+}
+
+/* Tables and detail values often include IMEI, system IDs, URLs or English statuses. */
+:where(
+  .people-ledger-table td,
+  .phone-inventory-table-v2 td,
+  .premium-data-table td,
+  .ux-table td,
+  .detail-value,
+  .meta-value,
+  .system-id-value,
+  .imei-value
+) {
+  unicode-bidi: plaintext;
+}
+
+/* Keep explicit LTR technical values stable inside RTL rows. */
+:where(
+  code,
+  kbd,
+  samp,
+  .font-mono,
+  .mono,
+  .ltr,
+  [data-bidi="ltr"],
+  [data-value-kind="id"],
+  [data-value-kind="imei"],
+  [data-value-kind="url"],
+  [data-value-kind="code"]
+) {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+
+
+/* Stage 63 — Technical token sweep.
+   These selectors intentionally target common technical-value class/name patterns
+   so Persian labels can stay RTL while the actual technical value remains stable LTR.
+*/
+:where(
+  .ux-technical-token,
+  .ux-phone-token,
+  .ux-url-token,
+  .ux-username-token,
+  [class*="imei" i],
+  [class*="serial" i],
+  [class*="system-id" i],
+  [class*="systemId" i],
+  [class*="tracking" i],
+  [class*="trace" i],
+  [class*="token" i],
+  [class*="code" i],
+  [class*="url" i],
+  [class*="username" i],
+  [class*="phone-number" i],
+  [data-field*="imei" i],
+  [data-field*="system" i],
+  [data-field*="tracking" i],
+  [data-field*="url" i],
+  [data-field*="username" i],
+  [data-kind*="imei" i],
+  [data-kind*="id" i],
+  [data-kind*="url" i]
+) {
+  unicode-bidi: plaintext !important;
+}
+
+:where(
+  .ux-ltr-token,
+  .ux-code-token,
+  .ux-id-token,
+  .ux-technical-token,
+  .ux-phone-token,
+  .ux-url-token,
+  .ux-username-token,
+  code,
+  kbd,
+  samp,
+  .font-mono,
+  .mono,
+  .ltr,
+  [dir="ltr"],
+  [data-bidi="ltr"],
+  [data-value-kind="id"],
+  [data-value-kind="imei"],
+  [data-value-kind="url"],
+  [data-value-kind="code"],
+  input[type="url"],
+  input[type="tel"],
+  input[type="email"],
+  input[name*="imei" i],
+  input[name*="serial" i],
+  input[name*="system" i],
+  input[name*="url" i],
+  input[name*="username" i],
+  input[name*="phone" i],
+  input[name*="token" i],
+  textarea[name*="url" i],
+  textarea[name*="token" i]
+) {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  text-align: left !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+/* Keep labels in mixed RTL rows stable without forcing the technical token itself to RTL. */
+:where(
+  td,
+  th,
+  .detail-value,
+  .meta-value,
+  .ledger-description,
+  .sale-item-name,
+  .product-name,
+  .phone-title,
+  .customer-name,
+  .partner-name,
+  .telegram-log-message,
+  .sms-log-message
+) {
+  unicode-bidi: plaintext;
+}
+
+/* Persian-first rows containing inline LTR tokens should clip safely. */
+:where(
+  .ux-mixed-text,
+  .ux-mixed-line,
+  .sellable-select__option-label,
+  .sidebar-nav-row span,
+  .people-ledger-table td,
+  .phone-inventory-table-v2 td,
+  .premium-data-table td
+) {
+  overflow-wrap: anywhere;
+}
+
+/* Explicit technical chips keep their value readable inside compact badges/buttons. */
+:where(.ux-id-token, .ux-code-token, .ux-ltr-token, .ux-technical-token) {
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

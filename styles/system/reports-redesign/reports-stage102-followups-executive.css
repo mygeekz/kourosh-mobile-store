@@ -1,0 +1,376 @@
+/* Stage 102 — Followups report executive redesign */
+.followups-executive-page {
+  display: grid;
+  gap: 16px;
+  direction: rtl;
+}
+
+.followups-panel {
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 42px -34px rgba(15, 23, 42, .35);
+  overflow: hidden;
+}
+
+.followups-panel--header { padding: 16px; }
+
+.followups-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.followups-metric-card {
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(148, 163, 184, .25);
+  border-radius: 18px;
+  background: #fff;
+  padding: 14px;
+}
+
+.followups-metric-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, .22);
+  color: #2563eb;
+}
+
+.followups-metric-card--rose .followups-metric-card__icon { color: #e11d48; background: #fff1f2; }
+.followups-metric-card--amber .followups-metric-card__icon { color: #d97706; background: #fffbeb; }
+.followups-metric-card--slate .followups-metric-card__icon { color: #475569; }
+
+.followups-metric-card span:not(.followups-metric-card__icon) {
+  display: block;
+  color: #64748b;
+  font-size: .76rem;
+  font-weight: 850;
+}
+
+.followups-metric-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #0f172a;
+  font-size: 1.35rem;
+  font-weight: 950;
+}
+
+.followups-metric-card small {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.followups-filter-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(226, 232, 240, .75);
+}
+
+.followups-filter-row--secondary { margin-top: 10px; }
+
+.followups-filter-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 42px;
+  padding: 5px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.followups-filter-group button {
+  height: 30px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0 12px;
+  background: transparent;
+  color: #475569;
+  font-size: .76rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.followups-filter-group button.is-active {
+  background: #111827;
+  color: #fff;
+}
+
+.followups-date-box {
+  width: 172px;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.followups-date-box > span {
+  padding-inline: 8px;
+  color: #64748b;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.followups-date-box .app-date-field,
+.followups-date-box .app-date-field__control,
+.followups-date-box .app-date-field__control.followups-date-input {
+  height: 38px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.followups-date-box input[data-app-date-input='true'] {
+  height: 38px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  background: #fff !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.followups-date-box .app-date-field__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.followups-refresh-button,
+.followups-modal-submit {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(16, 185, 129, .28);
+  border-radius: 14px;
+  background: #10b981;
+  color: #fff;
+  padding: 0 15px;
+  font-size: .8rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.followups-search-final {
+  box-sizing: border-box;
+  position: relative;
+  width: 360px;
+  max-width: min(360px, 100%);
+  height: 38px;
+}
+
+.followups-search-final i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: #64748b;
+  font-size: .78rem;
+  pointer-events: none;
+}
+
+.followups-search-final input {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  border: 1px solid rgba(148, 163, 184, .42);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0 13px 0 38px;
+  direction: rtl;
+  text-align: right;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.followups-search-final input::placeholder { color: #94a3b8; }
+
+.followups-page-size-final {
+  display: grid;
+  grid-template-columns: 58px 132px;
+  height: 38px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  direction: ltr;
+}
+
+.followups-page-size-final select {
+  all: unset;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 38px;
+  text-align: center;
+  text-align-last: center;
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 950;
+}
+
+.followups-page-size-final span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(226,232,240,.9);
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.followups-owner-field input {
+  all: unset;
+  box-sizing: border-box;
+  height: 38px;
+  width: 190px;
+  border: 1px solid rgba(148,163,184,.36);
+  border-radius: 14px;
+  background: #fff;
+  padding: 0 12px;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.followups-toggle-chip {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 14px;
+  background: #fff;
+  color: #475569;
+  font-size: .75rem;
+  font-weight: 850;
+}
+
+.followups-table-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid rgba(226, 232, 240, .85);
+}
+
+.followups-table-title { display: flex; align-items: center; gap: 10px; }
+.followups-table-title__icon {
+  width: 34px; height: 34px; border-radius: 13px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #2563eb; background: #eff6ff; border: 1px solid #bfdbfe;
+}
+.followups-table-title h2 { margin: 0; color: #0f172a; font-size: 1rem; font-weight: 950; }
+.followups-table-title p { margin: 4px 0 0; color: #64748b; font-size: .76rem; font-weight: 750; }
+
+.followups-table-shell { overflow: auto; }
+.followups-table { width: 100%; min-width: 980px; border-collapse: collapse; table-layout: fixed; }
+.followups-col-due { width: 14%; }
+.followups-col-customer { width: 20%; }
+.followups-col-status { width: 11%; }
+.followups-col-owner { width: 14%; }
+.followups-col-note { width: 24%; }
+.followups-col-action { width: 17%; }
+
+.followups-table th {
+  height: 44px;
+  padding: 0 14px;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(226,232,240,.95);
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 900;
+  text-align: right;
+}
+
+.followups-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid rgba(226,232,240,.7);
+  color: #0f172a;
+  vertical-align: middle;
+}
+
+.followups-table td strong { display: block; font-size: .84rem; font-weight: 950; color: #0f172a; }
+.followups-table td small { display: block; margin-top: 4px; font-size: .7rem; font-weight: 750; color: #64748b; }
+
+.followups-customer-link { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit; }
+.followups-customer-link > span {
+  width: 30px; height: 30px; border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; font-weight: 950;
+}
+
+.followups-status {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 70px; height: 30px; border-radius: 999px;
+  border: 1px solid rgba(148,163,184,.32);
+  font-size: .72rem; font-weight: 900;
+}
+.followups-status--open { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+.followups-status--warning { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+.followups-status--danger { background: #fff1f2; color: #e11d48; border-color: #fecdd3; }
+.followups-status--closed { background: #ecfdf5; color: #059669; border-color: #bbf7d0; }
+.followups-status--neutral { background: #f8fafc; color: #64748b; }
+
+.followups-note { margin: 0; color: #334155; line-height: 1.8; font-size: .78rem; font-weight: 760; }
+.followups-row-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.followups-row-action {
+  min-height: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  border: 1px solid rgba(148, 163, 184, .32); border-radius: 12px;
+  background: #fff; color: #0f172a; padding: 0 11px;
+  font-size: .74rem; font-weight: 900; text-decoration: none; cursor: pointer;
+}
+.followups-row-action--success { border-color: rgba(16,185,129,.28); color: #059669; background: #ecfdf5; }
+
+.followups-empty-state { padding: 44px 16px; text-align: center; color: #64748b; font-size: .85rem; font-weight: 800; }
+.followups-pagination {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px 16px; color: #64748b; font-size: .76rem; font-weight: 850;
+}
+.followups-pagination div { display: flex; gap: 8px; }
+.followups-pagination button,
+.followups-modal-secondary,
+.followups-modal-close {
+  height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(148,163,184,.32); border-radius: 12px; background: #fff; color: #0f172a;
+  padding: 0 12px; font-size: .75rem; font-weight: 900; cursor: pointer;
+}
+.followups-pagination button:disabled { opacity: .45; cursor: not-allowed; }
+
+.followups-modal-input {
+  width: 100%; box-sizing: border-box; border: 1px solid rgba(148,163,184,.36); border-radius: 14px;
+  background: #fff; padding: 11px 12px; color: #0f172a; font-size: .84rem; font-weight: 800;
+}
+.followups-modal-submit { width: 100%; }
+
+@media (max-width: 760px) {
+  .followups-search-final, .followups-owner-field input { width: 100%; max-width: 100%; }
+  .followups-filter-row { align-items: stretch; }
+  .followups-date-box { width: calc(50% - 5px); }
+}

@@ -1,0 +1,267 @@
+
+/* v93 — Repair after v92: stable header layout, no destructive absolute positioning.
+   Base: v91. Goal: keep cards in one clean row on desktop/laptop and keep actions top-left. */
+
+/* Main header must stay contained */
+.partner-header-mockup-v89 {
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 22px !important;
+  border-radius: 26px !important;
+}
+
+/* Hero: two clear physical columns.
+   In RTL, identity is on the right, actions on the left. */
+.partner-header-mockup-v89__hero {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important;
+  grid-template-areas: "identity actions" !important;
+  align-items: start !important;
+  gap: 18px !important;
+  direction: ltr !important;
+  min-height: auto !important;
+}
+
+.partner-header-mockup-v89__identity {
+  grid-area: identity !important;
+  justify-self: end !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+  direction: rtl !important;
+  min-width: 0 !important;
+}
+
+.partner-header-mockup-v89__identity-copy {
+  text-align: right !important;
+  justify-items: end !important;
+  min-width: 0 !important;
+}
+
+.partner-header-mockup-v89__identity h2 {
+  font-size: 32px !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+
+.partner-header-mockup-v89__identity p {
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+  margin: 0 !important;
+}
+
+/* Actions stay top-left but in normal grid flow, not absolute. */
+.partner-header-mockup-v89__actions {
+  grid-area: actions !important;
+  justify-self: start !important;
+  width: 300px !important;
+  max-width: 300px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 9px !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  direction: rtl !important;
+}
+
+.partner-header-mockup-v89__actions :where(button, .ux-btn, .partner-header-mockup-v89__action) {
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 13px !important;
+  padding-inline: 10px !important;
+  font-size: 10.5px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+  justify-content: center !important;
+}
+
+/* Chips should sit under identity and start from right */
+.partner-header-mockup-v89__chips {
+  margin-top: 15px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  flex-direction: row !important;
+  direction: rtl !important;
+  gap: 8px !important;
+}
+
+.partner-header-mockup-v89__chip {
+  min-height: 28px !important;
+  padding: 5px 10px !important;
+  font-size: 10.5px !important;
+}
+
+/* Cards: stable physical placement.
+   Left -> Risk | Middle -> Metrics | Right -> Account */
+.partner-header-mockup-v89__cards {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr) minmax(0, 1.08fr) !important;
+  grid-template-areas: "risk metrics account" !important;
+  gap: 14px !important;
+  margin-top: 18px !important;
+  align-items: stretch !important;
+}
+
+.partner-header-mockup-v89__card--risk {
+  grid-area: risk !important;
+  order: initial !important;
+}
+
+.partner-header-mockup-v89__card--metrics {
+  grid-area: metrics !important;
+  order: initial !important;
+}
+
+.partner-header-mockup-v89__card--account {
+  grid-area: account !important;
+  order: initial !important;
+}
+
+.partner-header-mockup-v89__card {
+  direction: rtl !important;
+  text-align: right !important;
+  min-width: 0 !important;
+  min-height: 276px !important;
+  border-radius: 22px !important;
+  padding: 16px !important;
+  box-shadow: none !important;
+}
+
+.partner-header-mockup-v89__card-head {
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+}
+
+.partner-header-mockup-v89__card-head h3 {
+  font-size: 15px !important;
+}
+
+.partner-header-mockup-v89__card-head p {
+  font-size: 10.5px !important;
+  line-height: 1.65 !important;
+}
+
+/* Compact cards */
+.partner-header-mockup-v89__account-amount {
+  margin-top: 16px !important;
+  font-size: 22px !important;
+  line-height: 1.5 !important;
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__account-text {
+  font-size: 11px !important;
+  line-height: 1.8 !important;
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__alert {
+  min-height: 46px !important;
+  margin-top: 13px !important;
+  padding: 9px 11px !important;
+  border-radius: 14px !important;
+  font-size: 11px !important;
+  line-height: 1.75 !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+}
+
+.partner-header-mockup-v89__ledger-btn {
+  height: 40px !important;
+  margin-top: 12px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+}
+
+.partner-header-mockup-v89__metric-grid {
+  margin-top: 14px !important;
+  border-radius: 18px !important;
+}
+
+.partner-header-mockup-v89__metric {
+  min-height: 94px !important;
+  padding: 10px 8px !important;
+}
+
+.partner-header-mockup-v89__metric strong {
+  display: block !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  font-size: 12.5px !important;
+  line-height: 1.6 !important;
+}
+
+.partner-header-mockup-v89__risk-body {
+  margin: 16px 0 14px !important;
+  grid-template-columns: minmax(0, 1fr) 82px !important;
+  min-height: 96px !important;
+  gap: 10px !important;
+}
+
+.partner-header-mockup-v89__risk-arc {
+  width: 82px !important;
+  height: 82px !important;
+  border-radius: 18px !important;
+}
+
+.partner-header-mockup-v89__risk-arc span {
+  width: 54px !important;
+  height: 54px !important;
+  border-width: 8px !important;
+}
+
+.partner-header-mockup-v89__risk-copy strong {
+  font-size: 21px !important;
+}
+
+/* Important: don't let older v91/v92 media rules stack cards too early.
+   Only stack on real narrow screens. */
+@media (max-width: 900px) {
+  .partner-header-mockup-v89__hero {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "identity"
+      "actions" !important;
+  }
+
+  .partner-header-mockup-v89__actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-header-mockup-v89__cards {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "account"
+      "metrics"
+      "risk" !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .partner-header-mockup-v89 {
+    padding: 16px !important;
+  }
+
+  .partner-header-mockup-v89__actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-header-mockup-v89__identity {
+    flex-direction: column !important;
+    align-items: flex-end !important;
+  }
+}

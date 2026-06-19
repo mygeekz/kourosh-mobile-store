@@ -1,0 +1,32 @@
+{
+  "phase": 53,
+  "title": "Header / Sidebar Manual Selector Consolidation — Pass 2",
+  "changed_files": [
+    "styles/system/header-sidebar-navigation-foundation.css"
+  ],
+  "logic_changed": false,
+  "removed_blocks": 2,
+  "preserved_declarations": 3,
+  "net_reduction_bytes": 52,
+  "net_reduction_lines": 6,
+  "important_reduction": 0,
+  "target_selectors": [
+    ".header-search-shell",
+    ".header-search-input"
+  ],
+  "untouched": [
+    "html.dark .header-search-shell",
+    "@media header-search-bar max-width",
+    "sidebar search selectors",
+    "header action/dropdown selectors"
+  ],
+  "final_file": {
+    "bytes": 23562,
+    "lines": 796,
+    "important": 297,
+    "selector_occurrences": {
+      ".header-search-shell": 2,
+      ".header-search-input": 1
+    }
+  }
+}

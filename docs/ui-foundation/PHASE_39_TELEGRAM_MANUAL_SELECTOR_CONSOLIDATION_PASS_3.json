@@ -1,0 +1,40 @@
+{
+  "phase": 39,
+  "title": "Telegram Manual Selector Consolidation — Pass 3",
+  "scope": [
+    "styles/system/telegram-ui-foundation.css"
+  ],
+  "changed_files": [
+    "styles/system/telegram-ui-foundation.css"
+  ],
+  "removed_blocks": [
+    {
+      "selector": "#telegram-settings-form .telegram-monitor-v2-action__value[dir=\"ltr\"], #telegram-settings-form .telegram-monitor-v2-action__value span[dir=\"ltr\"]",
+      "reason": "superseded later by broader LTR value/span rule with same/higher final effect",
+      "lines_removed": 5
+    },
+    {
+      "selector": "#telegram-settings-form .telegram-monitor-v2-action__value span[dir=\"ltr\"], #telegram-settings-form .telegram-monitor-v2-action__value[dir=\"ltr\"]",
+      "reason": "superseded later by LTR rule retaining direction/unicode-bidi and final text alignment",
+      "lines_removed": 6
+    },
+    {
+      "selector": "#telegram-settings-form .telegram-monitor-v2-action__value span[dir=\"ltr\"], #telegram-settings-form .telegram-monitor-v2-action__value[dir=\"ltr\"]",
+      "reason": "intermediate text-align:right override later superseded by final text-align:left rule for LTR values",
+      "lines_removed": 7
+    }
+  ],
+  "bytes_reduced": 648,
+  "lines_reduced": 18,
+  "qa": {
+    "css_file_bytes": 178548,
+    "css_file_lines": 5765,
+    "important_count": 2070,
+    "literal_backslash_n_css_files": [],
+    "brace_issues": [],
+    "css_import_count_index": 58,
+    "missing_css_imports": [],
+    "runtime_overrides_imports": [],
+    "css_parse_errors": []
+  }
+}

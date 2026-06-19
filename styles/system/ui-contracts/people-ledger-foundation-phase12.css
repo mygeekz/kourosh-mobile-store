@@ -1,0 +1,290 @@
+/* Phase 12 — People / Customers / Partners Foundation
+   Scoped contracts for customer/partner lists, profiles and ledgers. Plain CSS only. */
+
+.people-foundation,
+[data-ui-people-page] {
+  --people-surface: rgba(255, 255, 255, 0.94);
+  --people-surface-soft: rgba(248, 250, 252, 0.92);
+  --people-border: rgba(226, 232, 240, 0.92);
+  --people-border-strong: rgba(203, 213, 225, 0.92);
+  --people-text: rgb(15, 23, 42);
+  --people-muted: rgb(100, 116, 139);
+  --people-radius-xl: 24px;
+  --people-radius-lg: 18px;
+  --people-shadow: 0 18px 45px rgba(15, 23, 42, 0.055);
+  --people-shadow-soft: 0 10px 26px rgba(15, 23, 42, 0.045);
+  color: var(--people-text);
+}
+
+.dark .people-foundation,
+.dark [data-ui-people-page] {
+  --people-surface: rgba(15, 23, 42, 0.88);
+  --people-surface-soft: rgba(2, 6, 23, 0.72);
+  --people-border: rgba(51, 65, 85, 0.9);
+  --people-border-strong: rgba(71, 85, 105, 0.92);
+  --people-text: rgb(248, 250, 252);
+  --people-muted: rgb(148, 163, 184);
+  --people-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+  --people-shadow-soft: 0 10px 26px rgba(0, 0, 0, 0.18);
+}
+
+[data-ui-people-surface="list-shell"],
+.people-list-shell,
+.partners-shell,
+.people-detail-foundation .detail-card,
+[data-ui-people-ledger] {
+  border: 1px solid var(--people-border) !important;
+  border-radius: var(--people-radius-xl) !important;
+  background: var(--people-surface) !important;
+  box-shadow: var(--people-shadow-soft) !important;
+}
+
+.people-unified-hero,
+[data-ui-people-surface="detail-hero"] {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 30px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.9)) !important;
+  box-shadow: var(--people-shadow) !important;
+  overflow: hidden;
+}
+.dark .people-unified-hero,
+.dark [data-ui-people-surface="detail-hero"] {
+  background:
+    linear-gradient(180deg, rgba(15,23,42,0.92), rgba(2,6,23,0.78)) !important;
+}
+
+.people-top-nav,
+.people-unified-hero__actions,
+.partner-detail-actions,
+.customer-detail-hero__actions,
+[data-ui-people-filters] {
+  gap: 10px !important;
+}
+
+.people-top-nav__item,
+.people-filter-chip,
+.partners-filter-chip,
+.people-action-btn,
+.people-action-btn-clean,
+.partners-action-btn,
+.finance-table-action,
+[data-ui-people-page] [data-ui-button="true"] {
+  min-height: 38px;
+  border-radius: 14px !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.people-primary-btn,
+.partner-detail-action-btn,
+.people-action-btn-tight {
+  min-height: 40px !important;
+  padding-inline: 14px !important;
+}
+
+[data-ui-people-metrics] .people-stat-card,
+.people-stat-card,
+.partners-stat-card,
+.customers-hero-mini,
+.partners-hero-mini,
+.detail-account-focus,
+.detail-kpi-card,
+.detail-severity-card {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 22px !important;
+  background: var(--people-surface) !important;
+  box-shadow: var(--people-shadow-soft) !important;
+}
+
+.people-stat-card__label,
+.customers-hero-mini__label,
+.detail-kpi-card__label,
+[data-ui-people-page] small {
+  color: var(--people-muted) !important;
+  line-height: 1.8;
+}
+
+.people-stat-card__value,
+.customers-hero-mini__value,
+.detail-kpi-card__value,
+.partner-col-balance,
+.people-mobile-card__balance {
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: plaintext;
+}
+
+.people-toolbar,
+.customers-toolbar,
+.partners-toolbar-shell,
+.people-filter-bar,
+.partners-filter-chips {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 22px !important;
+  background: var(--people-surface-soft) !important;
+  padding: 12px !important;
+}
+
+.people-toolbar input,
+.people-toolbar select,
+.partners-toolbar-shell input,
+.partners-toolbar-shell select,
+.people-modal-form input,
+.people-modal-form select,
+.people-modal-form textarea,
+.people-finance-modal input,
+.people-finance-modal select,
+.people-finance-modal textarea {
+  min-height: 42px;
+  border-radius: 14px !important;
+  border-color: var(--people-border-strong) !important;
+  background: var(--people-surface) !important;
+  color: var(--people-text) !important;
+  line-height: 1.7;
+}
+
+.people-toolbar input:focus,
+.people-toolbar select:focus,
+.partners-toolbar-shell input:focus,
+.people-modal-form input:focus,
+.people-modal-form select:focus,
+.people-modal-form textarea:focus,
+.people-finance-modal input:focus,
+.people-finance-modal select:focus,
+.people-finance-modal textarea:focus {
+  outline: none !important;
+  border-color: rgba(99, 102, 241, 0.72) !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12) !important;
+}
+
+.people-mobile-card--commercial,
+.partners-mobile-card,
+.people-ledger-entry-card,
+.people-ledger-grid > *,
+.partner-ledger-grid > * {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 22px !important;
+  background: var(--people-surface) !important;
+  box-shadow: var(--people-shadow-soft) !important;
+}
+
+.people-ledger-type-grid,
+.partner-payment-modal__type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.people-ledger-type-card {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 20px !important;
+  background: var(--people-surface) !important;
+  min-height: 92px;
+  padding: 14px !important;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.people-ledger-type-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--people-shadow-soft) !important;
+}
+.people-ledger-type-card.is-active {
+  border-color: rgba(99, 102, 241, 0.58) !important;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12), var(--people-shadow-soft) !important;
+}
+
+[data-ui-people-ledger] table,
+.partners-table,
+.partner-ledger-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100%;
+}
+[data-ui-people-ledger] th,
+.partners-table th,
+.partner-ledger-table th {
+  background: var(--people-surface-soft) !important;
+  color: var(--people-muted) !important;
+  font-weight: 900 !important;
+  white-space: nowrap;
+}
+[data-ui-people-ledger] td,
+.partners-table td,
+.partner-ledger-table td {
+  line-height: 1.9;
+  vertical-align: middle;
+}
+[data-ui-people-ledger] tbody tr,
+.partners-table-row,
+.partner-ledger-table__body tr {
+  transition: background .16s ease, transform .16s ease;
+}
+[data-ui-people-ledger] tbody tr:hover,
+.partners-table-row:hover,
+.partner-ledger-table__body tr:hover {
+  background: rgba(248, 250, 252, 0.76) !important;
+}
+.dark [data-ui-people-ledger] tbody tr:hover,
+.dark .partners-table-row:hover,
+.dark .partner-ledger-table__body tr:hover {
+  background: rgba(30, 41, 59, 0.52) !important;
+}
+
+[data-ui-people-page] [dir="ltr"],
+[data-ui-people-page] .font-mono,
+[data-ui-people-page] input[type="tel"],
+[data-ui-people-page] input[type="email"],
+[data-ui-people-page] input[name*="phone" i],
+[data-ui-people-page] input[name*="email" i],
+[data-ui-people-page] input[name*="amount" i] {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-ui-people-page] .truncate,
+[data-ui-people-page] .line-clamp-1 {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+}
+
+.people-modal-summary-card,
+.people-finance-modal__summary,
+.people-finance-modal__preview,
+.people-finance-modal__card {
+  border: 1px solid var(--people-border) !important;
+  border-radius: 22px !important;
+  background: var(--people-surface-soft) !important;
+  box-shadow: var(--people-shadow-soft) !important;
+}
+
+@media (max-width: 768px) {
+  .people-unified-hero__top,
+  .people-unified-hero__actions,
+  .partner-detail-actions,
+  .customer-detail-hero__actions,
+  .people-toolbar,
+  .partners-toolbar-shell {
+    align-items: stretch !important;
+  }
+  .people-unified-hero__actions > *,
+  .partner-detail-actions > *,
+  .customer-detail-hero__actions > *,
+  [data-ui-people-filters] [data-ui-button="true"] {
+    width: 100%;
+  }
+  .people-ledger-type-grid,
+  .partner-payment-modal__type-grid {
+    grid-template-columns: 1fr;
+  }
+  .people-mobile-card__actions,
+  .partners-mobile-actions {
+    display: grid !important;
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,343 @@
+/* Phase 88 — Settings single header and RTL tabs polish */
+.settings-shell-page > .mx-auto.max-w-7xl:first-child,
+.settings-shell-page .page-shell-modern {
+  display: none !important;
+}
+
+.settings-shell {
+  direction: rtl;
+}
+
+.settings-sidebar button.settings-tab-item,
+.settings-sidebar .settings-tab-item {
+  direction: rtl;
+  text-align: right !important;
+}
+
+.settings-sidebar .settings-tab-item > div {
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+}
+
+.settings-sidebar .settings-tab-icon {
+  order: 0;
+}
+
+.settings-sidebar .settings-tab-item:hover .settings-tab-icon {
+  color: var(--color-primary, #0ea5e9) !important;
+}
+
+.settings-sidebar .settings-tab-item:hover i {
+  color: inherit;
+}
+
+.settings-mobile-tab {
+  direction: rtl;
+}
+
+.settings-mobile-tab:hover i {
+  color: var(--color-primary, #0ea5e9) !important;
+}
+
+.settings-mobile-tab.bg-primary:hover i,
+.settings-mobile-tab[class*="bg-primary"]:hover i {
+  color: #fff !important;
+}
+
+
+/* Phase 94 — Adaptive UI */
+.adaptive-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 30px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: .35rem .7rem;
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.adaptive-badge--positive {
+  color: rgb(190 18 60);
+  background: rgb(255 241 242);
+  border-color: rgb(255 228 230);
+}
+
+.adaptive-badge--negative {
+  color: rgb(4 120 87);
+  background: rgb(236 253 245);
+  border-color: rgb(209 250 229);
+}
+
+.adaptive-badge--overdue {
+  color: rgb(180 83 9);
+  background: rgb(255 251 235);
+  border-color: rgb(253 230 138);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, .08);
+}
+
+.adaptive-badge--settled {
+  color: rgb(71 85 105);
+  background: rgb(248 250 252);
+  border-color: rgb(226 232 240);
+}
+
+.dark .adaptive-badge--positive {
+  color: rgb(253 164 175);
+  background: rgba(136, 19, 55, .22);
+  border-color: rgba(190, 18, 60, .45);
+}
+
+.dark .adaptive-badge--negative {
+  color: rgb(110 231 183);
+  background: rgba(6, 78, 59, .28);
+  border-color: rgba(5, 150, 105, .45);
+}
+
+.dark .adaptive-badge--overdue {
+  color: rgb(252 211 77);
+  background: rgba(120, 53, 15, .30);
+  border-color: rgba(217, 119, 6, .45);
+}
+
+.dark .adaptive-badge--settled {
+  color: rgb(203 213 225);
+  background: rgba(15, 23, 42, .72);
+  border-color: rgba(71, 85, 105, .8);
+}
+
+.adaptive-row--positive { box-shadow: inset -3px 0 0 rgba(244, 63, 94, .45); }
+.adaptive-row--negative { box-shadow: inset -3px 0 0 rgba(16, 185, 129, .45); }
+.adaptive-row--settled { box-shadow: inset -3px 0 0 rgba(148, 163, 184, .22); }
+
+.adaptive-row--overdue {
+  box-shadow: inset -3px 0 0 rgba(245, 158, 11, .75);
+  background-image: linear-gradient(90deg, rgba(245, 158, 11, .06), transparent 38%);
+}
+
+.adaptive-panel--positive {
+  border-color: rgba(244, 63, 94, .24);
+  background: rgba(255, 241, 242, .96);
+}
+
+.adaptive-panel--negative {
+  border-color: rgba(16, 185, 129, .24);
+  background: rgba(236, 253, 245, .96);
+}
+
+.adaptive-panel--overdue {
+  border-color: rgba(245, 158, 11, .35);
+  background: rgba(255, 251, 235, .96);
+}
+
+.adaptive-panel--settled {
+  border-color: rgba(226, 232, 240, .95);
+  background: rgba(255,255,255,.96);
+}
+
+.dark .adaptive-panel--positive { background: rgba(136, 19, 55, .20); }
+.dark .adaptive-panel--negative { background: rgba(6, 78, 59, .22); }
+.dark .adaptive-panel--overdue { background: rgba(120, 53, 15, .22); }
+.dark .adaptive-panel--settled { border-color: rgba(51, 65, 85, .85); background: rgba(2,6,23,.80); }
+
+.people-smart-alert {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  border-radius: 22px;
+  border: 1px solid rgba(245, 158, 11, .28);
+  background: linear-gradient(135deg, rgba(255, 251, 235, .94), rgba(255,255,255,.92));
+  color: rgb(146 64 14);
+  padding: .8rem 1rem;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 14px 28px -24px rgba(146, 64, 14, .22);
+}
+
+.dark .people-smart-alert {
+  border-color: rgba(217, 119, 6, .38);
+  background: linear-gradient(135deg, rgba(120, 53, 15, .22), rgba(2,6,23,.72));
+  color: rgb(252 211 77);
+}
+
+
+
+
+/* Phase 98 — Settings sidebar neutral cleanup */
+.settings-sidebar {
+  direction: rtl;
+}
+
+.settings-sidebar button,
+.settings-sidebar a {
+  text-align: right !important;
+}
+
+.settings-sidebar button[class*="bg-"],
+.settings-sidebar a[class*="bg-"] {
+  box-shadow: none !important;
+}
+
+.settings-sidebar button,
+.settings-sidebar .settings-tab-item {
+  background: rgba(255,255,255,0.82) !important;
+  border: 1px solid rgba(226,232,240,0.88) !important;
+  color: rgb(30 41 59) !important;
+}
+
+.dark .settings-sidebar button,
+.dark .settings-sidebar .settings-tab-item {
+  background: rgba(15,23,42,0.72) !important;
+  border-color: rgba(51,65,85,0.85) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.settings-sidebar button:hover,
+.settings-sidebar .settings-tab-item:hover {
+  background: rgba(248,250,252,0.95) !important;
+  border-color: rgba(148,163,184,0.65) !important;
+  transform: translateY(-1px);
+}
+
+.dark .settings-sidebar button:hover,
+.dark .settings-sidebar .settings-tab-item:hover {
+  background: rgba(30,41,59,0.78) !important;
+  border-color: rgba(100,116,139,0.75) !important;
+}
+
+.settings-sidebar button [class*="h-9"][class*="w-9"],
+.settings-sidebar .settings-tab-icon {
+  background: rgba(241,245,249,0.96) !important;
+  color: rgb(100 116 139) !important;
+  border: 1px solid rgba(226,232,240,0.9) !important;
+}
+
+.dark .settings-sidebar button [class*="h-9"][class*="w-9"],
+.dark .settings-sidebar .settings-tab-icon {
+  background: rgba(30,41,59,0.85) !important;
+  color: rgb(203 213 225) !important;
+  border-color: rgba(71,85,105,0.85) !important;
+}
+
+.settings-sidebar button:hover [class*="h-9"][class*="w-9"],
+.settings-sidebar .settings-tab-item:hover .settings-tab-icon {
+  color: rgb(14 165 233) !important;
+  border-color: rgba(14,165,233,0.25) !important;
+  background: rgba(240,249,255,0.95) !important;
+}
+
+.settings-sidebar .bg-primary,
+.settings-sidebar .bg-primary\/10,
+.settings-sidebar .from-orange-500,
+.settings-sidebar .to-orange-500,
+.settings-sidebar .bg-orange-500,
+.settings-sidebar .bg-amber-500 {
+  background: rgba(241,245,249,0.96) !important;
+  color: rgb(100 116 139) !important;
+}
+
+.settings-sidebar .text-primary,
+.settings-sidebar .text-orange-500,
+.settings-sidebar .text-amber-500 {
+  color: rgb(100 116 139) !important;
+}
+
+.settings-sidebar .rounded-xl,
+.settings-sidebar .rounded-2xl {
+  border-radius: 18px !important;
+}
+
+.settings-sidebar .space-y-1 > * + * {
+  margin-top: 0.45rem !important;
+}
+
+
+
+
+/* ===== Phase 13 — Settings shell contract =====
+   Scope: Settings page only. Keeps route/state/save behavior intact. */
+.settings-shell {
+  --settings-card-radius: 24px;
+  --settings-card-border: rgba(148, 163, 184, 0.22);
+  --settings-card-bg: rgba(255, 255, 255, 0.94);
+  --settings-muted: rgb(100, 116, 139);
+  min-width: 0;
+}
+
+.settings-workspace {
+  min-width: 0;
+  border-radius: 28px;
+}
+
+.settings-sidebar {
+  min-width: 0;
+}
+
+.settings-tab-item {
+  min-width: 0;
+  isolation: isolate;
+}
+
+.settings-tab-row {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.settings-tab-row > :last-child,
+.settings-tab-item .min-w-0 {
+  min-width: 0;
+}
+
+.settings-tab-icon,
+.settings-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.settings-shell :is(input, textarea, select) {
+  min-width: 0;
+}
+
+.settings-shell :is(.rounded-\[28px\], .rounded-\[30px\]) {
+  scroll-margin-top: 96px;
+}
+
+.settings-shell [data-settings-mode="advanced"] {
+  min-width: 0;
+}
+
+.settings-shell .app-toggle-switch {
+  flex: 0 0 auto;
+}
+
+.settings-shell :is(button, [role="button"], summary):focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.2);
+  outline-offset: 3px;
+}
+
+.dark .settings-shell {
+  --settings-card-border: rgba(51, 65, 85, 0.86);
+  --settings-card-bg: rgba(2, 6, 23, 0.86);
+  --settings-muted: rgb(148, 163, 184);
+}
+
+@media (max-width: 768px) {
+  .settings-shell {
+    padding-inline: 12px !important;
+  }
+
+  .settings-mobile-tab {
+    min-height: 40px;
+    white-space: nowrap;
+  }
+
+  .settings-workspace {
+    overflow: visible;
+  }
+}

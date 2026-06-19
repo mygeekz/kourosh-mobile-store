@@ -1,0 +1,73 @@
+/* Final runtime overrides for installments, phone edit, financial badges, header/sidebar/layout.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== Installment sale combobox cleanup and phone edit vertical hard lock ===== */
+.installment-form-page .installment-clean-select,
+.installment-form-page select.installment-clean-select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: none !important;
+  background-position: initial !important;
+  background-size: auto !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid,
+.phone-finance-block--edit .phone-finance-block__grid,
+.phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-vertical-form {
+  max-width: 100%;
+}
+
+
+/* ===== Phone edit horizontal modal override ===== */
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--model,
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--imei,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--supplier,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--status {
+  grid-column: span 2 / span 2 !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__field--notes {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 767px) {
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > * {
+    grid-column: 1 / -1 !important;
+  }
+}
+

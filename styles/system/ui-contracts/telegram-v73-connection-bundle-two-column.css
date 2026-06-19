@@ -1,0 +1,200 @@
+
+/* v73 — Merge Telegram connection/setup area into one two-column Apple-base card.
+   Direct wrapper added in JSX:
+   .telegram-connection-bundle-v73
+   Contains:
+   - guide card
+   - token/username/chat/base URL grid
+   - proxy field + VPN/Direct status/explanation */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 0.9rem !important;
+  margin-top: 1rem !important;
+  padding: 1rem !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 16px 38px -32px rgba(15, 23, 42, 0.22) !important;
+}
+
+/* The old guide was its own large card; now it becomes a compact child in the bundle. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide {
+  grid-column: 1 / -1 !important;
+  margin: 0 !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 22px !important;
+  background: rgba(248, 250, 252, 0.74) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card-v64__inner {
+  padding: 0.8rem 0.9rem !important;
+  gap: 0.7rem !important;
+  align-items: flex-start !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__icon {
+  width: 2.1rem !important;
+  height: 2.1rem !important;
+  flex: 0 0 2.1rem !important;
+  border-radius: 14px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__title {
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.55fr) !important;
+  gap: 0.45rem 0.9rem !important;
+  align-items: start !important;
+  width: 100% !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__title {
+  grid-column: 1 / -1 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__text {
+  margin: 0 !important;
+  font-size: 0.68rem !important;
+  line-height: 1.75 !important;
+}
+
+/* Core fields: stays two-column but now inside the parent card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__core {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.78rem !important;
+  margin: 0 !important;
+}
+
+/* Proxy section: one block with two-column inner status/explanation. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) !important;
+  gap: 0.78rem !important;
+  margin: 0 !important;
+}
+
+/* Direct child ModalField surfaces in bundle */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 [data-ui-field="true"] {
+  min-height: 0 !important;
+  padding: 0.78rem 0.82rem !important;
+  border-radius: 20px !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  background: rgba(248, 250, 252, 0.78) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .modal-field-label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 label {
+  margin-bottom: 0.45rem !important;
+  font-size: 0.74rem !important;
+  line-height: 1.5 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 select {
+  min-height: 2.42rem !important;
+  height: 2.42rem !important;
+  border-radius: 16px !important;
+  font-size: 0.76rem !important;
+}
+
+/* Helper rows inside fields compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-field-feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-error {
+  margin-top: 0.42rem !important;
+  font-size: 0.66rem !important;
+  line-height: 1.6 !important;
+}
+
+/* Proxy route cards: no separate stacked feeling */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy > .flex {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr) !important;
+  gap: 0.78rem !important;
+  margin: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .telegram-route-status-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy > .flex > div {
+  width: 100% !important;
+  border-radius: 20px !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  background: rgba(248, 250, 252, 0.78) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .telegram-route-status-card {
+  padding: 0.78rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy > .flex > div:last-child {
+  padding: 0.82rem 0.9rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.8 !important;
+}
+
+/* Status pill compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .telegram-route-status-card .rounded-full {
+  padding: 0.22rem 0.55rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 {
+  background: rgba(15, 23, 42, 0.78) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .modal-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-field,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 [data-ui-field="true"],
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .telegram-route-status-card,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy > .flex > div {
+  background: rgba(2, 6, 23, 0.24) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__core,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__proxy > .flex,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73__guide .telegram-guide-card__content {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 {
+    padding: 0.78rem !important;
+    border-radius: 22px !important;
+    gap: 0.68rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v73 [data-ui-field="true"] {
+    padding: 0.68rem !important;
+    border-radius: 18px !important;
+  }
+}

@@ -1,0 +1,51 @@
+
+/* v98 — Partner edit modal uses the finalized Customer edit modal system */
+.partner-edit-v98-overlay .partner-edit-v98-avatar,
+.partner-edit-v98-overlay .customer-edit-v2-card__head-icon,
+.partner-edit-v98-overlay .customer-edit-v2-panel__head span {
+  color: rgb(14 165 233);
+}
+
+.partner-edit-v98-overlay .partner-edit-v98-select-shell {
+  position: relative;
+}
+
+.partner-edit-v98-overlay .partner-edit-v98-select,
+.partner-edit-v98-overlay .partner-edit-v98-select:hover,
+.partner-edit-v98-overlay .partner-edit-v98-select:focus,
+.partner-edit-v98-overlay .partner-edit-v98-select:focus-visible {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 6px !important;
+  color: rgb(15 23 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  text-align: right !important;
+  direction: rtl !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+}
+
+.partner-edit-v98-overlay .customer-edit-v2-clean-shell:has(.partner-edit-v98-select:focus),
+.partner-edit-v98-overlay .customer-edit-v2-clean-shell:has(.partner-edit-v98-select:focus-visible) {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.dark .partner-edit-v98-overlay .partner-edit-v98-select {
+  color: rgb(248 250 252) !important;
+}

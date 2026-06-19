@@ -1,0 +1,256 @@
+
+/* v58 — compact + responsive pass for Telegram log detail modal.
+   Goal: fit smaller monitors safely without losing structure. */
+
+/* Desktop baseline: slightly smaller, calmer scale */
+.tg-logs-detail-modal-overlay {
+  padding: 1rem !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-surface {
+  width: min(980px, calc(100vw - 2rem)) !important;
+  max-width: min(980px, calc(100vw - 2rem)) !important;
+  min-width: 0 !important;
+  max-height: calc(100vh - 2rem) !important;
+  border-radius: 24px !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-premium-header {
+  padding: 0.82rem 0.95rem !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-body-premium {
+  padding: 0.82rem 0.9rem 0.9rem !important;
+  max-height: calc(100vh - 6.2rem) !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+  gap: 0.72rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0.68rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+  grid-template-columns: 1.85rem minmax(0, 1fr) !important;
+  gap: 0.58rem !important;
+  min-height: 4.35rem !important;
+  padding: 0.72rem 0.76rem !important;
+  border-radius: 17px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon {
+  width: 1.85rem !important;
+  height: 1.85rem !important;
+  border-radius: 11px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard span:not(.tg-logs-apple__detailIcon) {
+  margin-bottom: 0.22rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.45 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard strong {
+  font-size: 0.76rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Main info blocks */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError {
+  border-radius: 17px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  padding: 0.75rem 0.8rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorHero {
+  gap: 0.58rem !important;
+  padding: 0.72rem !important;
+  border-radius: 15px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorIcon {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+  flex-basis: 1.8rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError strong,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance span,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError summary {
+  font-size: 0.74rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach p {
+  line-height: 1.7 !important;
+}
+
+/* Code/debug boxes */
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.68rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  padding: 0.72rem !important;
+  border-radius: 17px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox strong {
+  margin-bottom: 0.42rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.4 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+  max-height: 10.5rem !important;
+  padding: 0.62rem !important;
+  border-radius: 13px !important;
+  font-size: 0.68rem !important;
+  line-height: 1.6 !important;
+}
+
+/* Compact modal title area */
+.tg-logs-detail-modal-overlay .modal-premium-title {
+  font-size: 0.96rem !important;
+  line-height: 1.45 !important;
+}
+.tg-logs-detail-modal-overlay .modal-premium-subtitle {
+  font-size: 0.72rem !important;
+}
+.tg-logs-detail-modal-overlay .modal-close-btn {
+  width: 2.1rem !important;
+  height: 2.1rem !important;
+}
+
+/* Smaller laptops / 1366x768 class */
+@media (max-width: 1440px), (max-height: 820px) {
+  .tg-logs-detail-modal-overlay {
+    padding: 0.82rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: min(920px, calc(100vw - 1.6rem)) !important;
+    max-width: min(920px, calc(100vw - 1.6rem)) !important;
+    max-height: calc(100vh - 1.6rem) !important;
+    border-radius: 22px !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-premium-header {
+    padding: 0.74rem 0.86rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    padding: 0.74rem 0.8rem 0.82rem !important;
+    max-height: calc(100vh - 5.8rem) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.62rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+    min-height: 4.05rem !important;
+    padding: 0.66rem 0.72rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    gap: 0.62rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+    max-height: 8.7rem !important;
+  }
+}
+
+/* Tablet / narrow windows */
+@media (max-width: 1080px) {
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: calc(100vw - 1.4rem) !important;
+    max-width: calc(100vw - 1.4rem) !important;
+    max-height: calc(100vh - 1.4rem) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.58rem !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 720px) {
+  .tg-logs-detail-modal-overlay {
+    padding: 0.55rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: calc(100vw - 1.1rem) !important;
+    max-width: calc(100vw - 1.1rem) !important;
+    max-height: calc(100vh - 1.1rem) !important;
+    border-radius: 18px !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-premium-header {
+    padding: 0.68rem 0.75rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    padding: 0.66rem 0.72rem 0.76rem !important;
+    max-height: calc(100vh - 5.2rem) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalError,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+    padding: 0.64rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+    grid-template-columns: 1.7rem minmax(0, 1fr) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__errorIcon {
+    width: 1.7rem !important;
+    height: 1.7rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard strong,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalError strong,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__guidance p,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach p,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox strong,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError summary {
+    font-size: 0.72rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+    max-height: 7.6rem !important;
+    font-size: 0.66rem !important;
+  }
+}

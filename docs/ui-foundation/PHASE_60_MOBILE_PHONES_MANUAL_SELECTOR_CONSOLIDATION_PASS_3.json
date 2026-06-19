@@ -1,0 +1,22 @@
+{
+  "phase": 60,
+  "title": "Mobile Phones Manual Selector Consolidation — Pass 3",
+  "files_changed": [
+    "styles/system/mobile-phones-foundation.css"
+  ],
+  "docs_added": [
+    "docs/ui-foundation/PHASE_60_MOBILE_PHONES_MANUAL_SELECTOR_CONSOLIDATION_PASS_3.md",
+    "docs/ui-foundation/PHASE_60_MOBILE_PHONES_MANUAL_SELECTOR_CONSOLIDATION_PASS_3.json",
+    "docs/ui-foundation/PHASE_60_QA_CHECKS.json"
+  ],
+  "scope": [
+    ".phone-register-submitbar",
+    ".phone-register-submitbar__submit",
+    ".phone-register-submitbar__reset"
+  ],
+  "strategy": "Moved effective declarations into earlier canonical blocks, then removed later redundant blocks.",
+  "logic_changed": false,
+  "jsx_changed": false,
+  "api_changed": false,
+  "runtime_overrides_imports": 0
+}

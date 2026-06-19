@@ -1,0 +1,449 @@
+/* Phase 11 — Finance table/button density foundation.
+   Preserves the finance density system and adds a limited finance table safety contract. */
+
+/* ===== Source: styles/runtime-overrides/10b-finance-tables-density-system.css ===== */
+/* ===== Finance table action buttons — unified Apple minimal system ===== */
+.finance-primary-action {
+  min-height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .55rem !important;
+  border-radius: 18px !important;
+  border: 1px solid rgb(15 23 42 / .12) !important;
+  background: linear-gradient(180deg, rgb(15 23 42), rgb(30 41 59)) !important;
+  color: #fff !important;
+  padding: .65rem 1rem !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 18px 42px -28px rgba(15, 23, 42, .55) !important;
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease !important;
+}
+
+.finance-primary-action:hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04) !important;
+  box-shadow: 0 22px 46px -28px rgba(15, 23, 42, .62) !important;
+}
+
+.finance-table-action,
+button.finance-table-action,
+a.finance-table-action,
+.ux-btn.finance-table-action {
+  min-height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgb(226 232 240 / .95) !important;
+  background: linear-gradient(180deg, #fff, rgb(248 250 252)) !important;
+  color: rgb(51 65 85) !important;
+  padding: .42rem .78rem !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 12px 28px -24px rgba(15,23,42,.28) !important;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease, color .16s ease !important;
+}
+
+.finance-table-action :where(i, svg),
+.finance-table-action > i,
+.finance-table-action .ux-btn__icon {
+  width: 16px !important;
+  height: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+}
+
+.finance-table-action:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgb(148 163 184 / .8) !important;
+  background: linear-gradient(180deg, #fff, rgb(241 245 249)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 16px 32px -24px rgba(15,23,42,.34) !important;
+}
+
+.finance-table-action--view,
+.finance-table-action--history {
+  border-color: rgb(186 230 253 / .95) !important;
+  background: linear-gradient(180deg, #fff, rgb(240 249 255)) !important;
+  color: rgb(3 105 161) !important;
+}
+
+.finance-table-action--payment {
+  border-color: rgb(187 247 208 / .95) !important;
+  background: linear-gradient(180deg, #fff, rgb(240 253 244)) !important;
+  color: rgb(4 120 87) !important;
+}
+
+.finance-table-action--edit {
+  border-color: rgb(253 230 138 / .95) !important;
+  background: linear-gradient(180deg, #fff, rgb(255 251 235)) !important;
+  color: rgb(180 83 9) !important;
+}
+
+.finance-table-action--danger {
+  border-color: rgb(254 205 211 / .95) !important;
+  background: linear-gradient(180deg, #fff, rgb(255 241 242)) !important;
+  color: rgb(190 18 60) !important;
+}
+
+.finance-table-action--view:hover,
+.finance-table-action--history:hover { border-color: rgb(125 211 252 / .95) !important; }
+.finance-table-action--payment:hover { border-color: rgb(110 231 183 / .95) !important; }
+.finance-table-action--edit:hover { border-color: rgb(252 211 77 / .95) !important; }
+.finance-table-action--danger:hover { border-color: rgb(251 113 133 / .95) !important; }
+
+html.dark .finance-primary-action {
+  border-color: rgb(148 163 184 / .22) !important;
+  background: linear-gradient(180deg, rgb(241 245 249), rgb(203 213 225)) !important;
+  color: rgb(15 23 42) !important;
+}
+
+html.dark .finance-table-action,
+html.dark button.finance-table-action,
+html.dark a.finance-table-action,
+html.dark .ux-btn.finance-table-action {
+  border-color: rgb(51 65 85 / .95) !important;
+  background: linear-gradient(180deg, rgb(15 23 42), rgb(2 6 23)) !important;
+  color: rgb(226 232 240) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 16px 30px -26px rgba(0,0,0,.7) !important;
+}
+
+html.dark .finance-table-action--view,
+html.dark .finance-table-action--history {
+  border-color: rgb(14 165 233 / .34) !important;
+  background: linear-gradient(180deg, rgb(8 47 73 / .75), rgb(2 6 23)) !important;
+  color: rgb(186 230 253) !important;
+}
+
+html.dark .finance-table-action--payment {
+  border-color: rgb(16 185 129 / .34) !important;
+  background: linear-gradient(180deg, rgb(6 78 59 / .68), rgb(2 6 23)) !important;
+  color: rgb(167 243 208) !important;
+}
+
+html.dark .finance-table-action--edit {
+  border-color: rgb(245 158 11 / .34) !important;
+  background: linear-gradient(180deg, rgb(69 26 3 / .68), rgb(2 6 23)) !important;
+  color: rgb(253 230 138) !important;
+}
+
+html.dark .finance-table-action--danger {
+  border-color: rgb(244 63 94 / .34) !important;
+  background: linear-gradient(180deg, rgb(76 5 25 / .68), rgb(2 6 23)) !important;
+  color: rgb(254 205 211) !important;
+}
+
+.ledger-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .45rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .finance-table-action,
+  button.finance-table-action,
+  a.finance-table-action,
+  .ux-btn.finance-table-action {
+    min-height: 36px !important;
+    padding-inline: .7rem !important;
+  }
+}
+
+
+/* V32 — finance tables and modal cleanup */
+.people-finance-modal .price-input > .mb-2 {
+  display: none !important;
+}
+
+.people-finance-modal .price-input__field {
+  min-height: 48px !important;
+}
+
+.people-finance-modal__grid {
+  align-items: start;
+}
+
+.people-finance-modal .premium-helper-inline,
+.people-finance-modal .people-finance-modal__footer-note {
+  display: none !important;
+}
+
+.finance-table-action,
+.people-table-action,
+.installment-table-action,
+.invoice-table-action {
+  min-height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(203 213 225 / .88) !important;
+  background: linear-gradient(180deg, #fff, rgb(248 250 252)) !important;
+  color: rgb(51 65 85) !important;
+  padding: .5rem .8rem !important;
+  font-size: .74rem !important;
+  font-weight: 900 !important;
+  box-shadow: 0 12px 28px -24px rgb(15 23 42 / .32) !important;
+  transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease !important;
+  white-space: nowrap !important;
+}
+
+.finance-table-action:hover,
+.people-table-action:hover,
+.installment-table-action:hover,
+.invoice-table-action:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgb(148 163 184 / .86) !important;
+  box-shadow: 0 16px 34px -26px rgb(15 23 42 / .38) !important;
+}
+
+.finance-table-action--view,
+.people-table-action--view,
+.installment-table-action--view,
+.invoice-table-action--view {
+  border-color: rgb(125 211 252 / .72) !important;
+  background: linear-gradient(180deg, #fff, rgb(240 249 255)) !important;
+  color: rgb(3 105 161) !important;
+}
+
+.finance-table-action--pay,
+.people-table-action--pay,
+.installment-table-action--pay,
+.invoice-table-action--pay {
+  border-color: rgb(134 239 172 / .78) !important;
+  background: linear-gradient(180deg, #fff, rgb(240 253 244)) !important;
+  color: rgb(21 128 61) !important;
+}
+
+.finance-table-action--edit,
+.people-table-action--edit,
+.installment-table-action--edit,
+.invoice-table-action--edit {
+  border-color: rgb(253 230 138 / .86) !important;
+  background: linear-gradient(180deg, #fff, rgb(255 251 235)) !important;
+  color: rgb(146 64 14) !important;
+}
+
+.finance-table-action--delete,
+.people-table-action--delete,
+.installment-table-action--delete,
+.invoice-table-action--delete {
+  border-color: rgb(254 202 202 / .88) !important;
+  background: linear-gradient(180deg, #fff, rgb(255 241 242)) !important;
+  color: rgb(190 18 60) !important;
+}
+
+html.dark .finance-table-action,
+html.dark .people-table-action,
+html.dark .installment-table-action,
+html.dark .invoice-table-action {
+  border-color: rgb(51 65 85 / .92) !important;
+  background: linear-gradient(180deg, rgb(15 23 42), rgb(2 6 23)) !important;
+  color: rgb(226 232 240) !important;
+}
+
+html.dark .finance-table-action--view,
+html.dark .people-table-action--view,
+html.dark .installment-table-action--view,
+html.dark .invoice-table-action--view {
+  border-color: rgb(14 165 233 / .42) !important;
+  color: rgb(125 211 252) !important;
+}
+
+html.dark .finance-table-action--pay,
+html.dark .people-table-action--pay,
+html.dark .installment-table-action--pay,
+html.dark .invoice-table-action--pay {
+  border-color: rgb(34 197 94 / .42) !important;
+  color: rgb(134 239 172) !important;
+}
+
+html.dark .finance-table-action--edit,
+html.dark .people-table-action--edit,
+html.dark .installment-table-action--edit,
+html.dark .invoice-table-action--edit {
+  border-color: rgb(245 158 11 / .42) !important;
+  color: rgb(253 230 138) !important;
+}
+
+html.dark .finance-table-action--delete,
+html.dark .people-table-action--delete,
+html.dark .installment-table-action--delete,
+html.dark .invoice-table-action--delete {
+  border-color: rgb(244 63 94 / .42) !important;
+  color: rgb(254 202 202) !important;
+}
+
+/* V33 — compact finance table mode: tighter, readable, mobile-safe */
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(table) {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(th) {
+  padding-block: .7rem !important;
+  line-height: 1.6 !important;
+  white-space: nowrap !important;
+}
+
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td) {
+  padding-block: .72rem !important;
+  vertical-align: middle !important;
+  line-height: 1.65 !important;
+}
+
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td, th) {
+  padding-inline: .65rem !important;
+}
+
+/* Keep operation cells compact but usable */
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td:last-child, th:last-child) {
+  width: 1% !important;
+  white-space: nowrap !important;
+}
+
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td:last-child) > :where(div, .ledger-actions-row, .flex) {
+  justify-content: flex-end !important;
+  gap: .42rem !important;
+}
+
+/* Smaller actions in dense financial tables */
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+  min-height: 34px !important;
+  border-radius: 14px !important;
+  padding: .42rem .68rem !important;
+  font-size: .7rem !important;
+  gap: .38rem !important;
+}
+
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action i, .people-table-action i, .installment-table-action i, .invoice-table-action i) {
+  font-size: .78rem !important;
+}
+
+/* Amounts and identifiers stay legible */
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td) :where(.font-black, .font-bold) {
+  letter-spacing: -0.01em;
+}
+
+/* Long descriptions should not explode the row height */
+:where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td) :where(p, .text-xs, .text-sm) {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1280px) {
+  :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td, th) {
+    padding-inline: .5rem !important;
+  }
+  :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+    min-height: 32px !important;
+    padding: .38rem .58rem !important;
+  }
+}
+
+@media (max-width: 900px) {
+  :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+    width: 34px !important;
+    min-width: 34px !important;
+    padding-inline: 0 !important;
+  }
+  :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) :where(span:not(.ux-btn__icon), .ux-btn__label) {
+    display: none !important;
+  }
+}
+
+/* V34 — finance table density selector: راحت / فشرده / خیلی فشرده */
+html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(th) {
+  padding-block: .95rem !important;
+  line-height: 1.85 !important;
+}
+
+html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td) {
+  padding-block: 1rem !important;
+  line-height: 1.9 !important;
+}
+
+html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td, th) {
+  padding-inline: .85rem !important;
+}
+
+html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+  min-height: 38px !important;
+  border-radius: 16px !important;
+  padding: .5rem .8rem !important;
+  font-size: .74rem !important;
+  gap: .45rem !important;
+}
+
+html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(th) {
+  padding-block: .48rem !important;
+  line-height: 1.42 !important;
+}
+
+html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td) {
+  padding-block: .5rem !important;
+  line-height: 1.48 !important;
+}
+
+html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(td, th) {
+  padding-inline: .42rem !important;
+}
+
+html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+  min-height: 30px !important;
+  border-radius: 12px !important;
+  padding: .34rem .5rem !important;
+  font-size: .66rem !important;
+  gap: .32rem !important;
+}
+
+html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action i, .people-table-action i, .installment-table-action i, .invoice-table-action i) {
+  font-size: .72rem !important;
+}
+
+@media (max-width: 900px) {
+  html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+    width: auto !important;
+    min-width: 38px !important;
+    padding-inline: .65rem !important;
+  }
+
+  html[data-finance-table-density='comfortable'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) :where(span:not(.ux-btn__icon), .ux-btn__label) {
+    display: inline !important;
+  }
+
+  html[data-finance-table-density='ultra'] :where(.detail-card, .partner-settlement-desk, .installment-page, .invoices-page, .customer-detail-page, .partner-detail-page) :where(.finance-table-action, .people-table-action, .installment-table-action, .invoice-table-action) {
+    width: 30px !important;
+    min-width: 30px !important;
+    padding-inline: 0 !important;
+  }
+}
+
+
+/* ===== Phase 11 contract additions ===== */
+:where(.finance-table, .financial-overview-table, .cashflow-table, .installments-table) {
+  width: 100%;
+  min-width: 0;
+}
+
+:where(.finance-table, .financial-overview-table, .cashflow-table, .installments-table) :where(td, th) {
+  vertical-align: middle;
+}
+
+:where(.finance-table, .financial-overview-table, .cashflow-table, .installments-table) :where(.finance-table-action, .finance-primary-action) {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  :where(.finance-table-action, .finance-primary-action) {
+    white-space: normal !important;
+  }
+}

@@ -1,0 +1,154 @@
+/* Stage 121 — Inventory Turnover cards/formula polish
+   Fixes inner white blocks inside KPI cards and makes the formula/COGS explanation compact. */
+
+.inventory-turnover-executive-page .inventory-turnover-layout {
+  gap: 16px !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-grid,
+.inventory-turnover-executive-page .inventory-turnover-insight-grid {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card,
+.inventory-turnover-executive-page .inventory-turnover-insight-card {
+  min-height: 136px !important;
+  padding: 18px !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)),
+    radial-gradient(circle at 18% 0%, rgba(37,99,235,.08), transparent 34%) !important;
+}
+
+/* Remove the accidental inner/white blocks below KPI numbers. */
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content,
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content > *,
+.inventory-turnover-executive-page .inventory-turnover-insight-card p,
+.inventory-turnover-executive-page .inventory-turnover-insight-card p > * {
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content::before,
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content::after,
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content > *::before,
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content > *::after {
+  content: none !important;
+  display: none !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content {
+  margin-top: 12px !important;
+  gap: 5px !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content small {
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content strong {
+  display: block !important;
+  color: #0f172a !important;
+  font-size: clamp(1.45rem, 2.4vw, 2rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__content p {
+  max-width: 96% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #64748b !important;
+  font-size: .76rem !important;
+  font-weight: 760 !important;
+  line-height: 1.75 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__icon,
+.inventory-turnover-executive-page .inventory-turnover-insight-card__head > span {
+  flex: 0 0 38px !important;
+  background: rgba(239,246,255,.82) !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-kpi-card__badge {
+  background: rgba(255,255,255,.72) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-insight-grid {
+  align-items: stretch !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-insight-card {
+  min-height: 150px !important;
+}
+
+/* Compact formula card: no huge formula block. */
+.inventory-turnover-executive-page .inventory-turnover-insight-card--formula {
+  display: grid !important;
+  align-content: start !important;
+  gap: 10px !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-formula-box {
+  display: none !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-formula-compact {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  padding: 8px 10px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148,163,184,.24) !important;
+  border-radius: 14px !important;
+  background: rgba(248,250,252,.78) !important;
+  color: #0f172a !important;
+  font-size: .76rem !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+  overflow-x: auto !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-formula-compact strong {
+  color: #2563eb !important;
+  font-weight: 950 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-insight-card p strong {
+  color: #0f172a !important;
+  font-weight: 950 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-muted-note {
+  color: #7c8ca4 !important;
+  font-size: .74rem !important;
+  line-height: 1.75 !important;
+}
+
+.inventory-turnover-executive-page .inventory-turnover-action-row button {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+}
+
+@media (max-width: 760px) {
+  .inventory-turnover-executive-page .inventory-turnover-kpi-card--wide {
+    grid-column: auto !important;
+  }
+
+  .inventory-turnover-executive-page .inventory-turnover-formula-compact {
+    width: 100% !important;
+  }
+}

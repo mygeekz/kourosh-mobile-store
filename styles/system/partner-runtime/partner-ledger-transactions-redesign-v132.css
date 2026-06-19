@@ -1,0 +1,492 @@
+
+/* v132 — Apply the financial-transactions redesign on the existing ledger logic */
+.partner-ledger-v132 {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v132__transactions-panel {
+  border-radius: 30px !important;
+  border: 1px solid rgba(226, 232, 240, .92) !important;
+  background:
+    radial-gradient(circle at 96% 0%, rgba(59, 130, 246, .045), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+  padding: 20px !important;
+  box-shadow: 0 22px 58px -48px rgba(15, 23, 42, .34) !important;
+  overflow: visible !important;
+}
+
+.partner-ledger-v132__panel-head {
+  min-height: 54px !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+}
+
+.partner-ledger-v132__panel-title {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v132__panel-icon {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(191, 219, 254, .95) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  font-size: 17px !important;
+}
+
+.partner-ledger-v132__record-pill {
+  min-height: 38px !important;
+  border-radius: 15px !important;
+  border-color: rgba(226, 232, 240, .94) !important;
+  background: #fff !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+
+/* First row: search + system selector */
+.partner-ledger-v132__transactions-panel > div:nth-child(1) > div:first-child {
+  gap: 16px !important;
+}
+
+.partner-ledger-v132__transactions-panel .relative:has(input[value]),
+.partner-ledger-v132__transactions-panel .relative:has(input[placeholder]) {
+  min-height: 46px !important;
+}
+
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"] {
+  height: 46px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  background: #fff !important;
+  padding-right: 44px !important;
+  padding-left: 14px !important;
+  color: #334155 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"]:focus {
+  border-color: rgba(59, 130, 246, .30) !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, .08) !important;
+}
+
+.partner-ledger-v132__transactions-panel select {
+  height: 38px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Filter buttons: cleaner segmented control feel */
+.partner-ledger-v132__transactions-panel .people-action-btn,
+.partner-ledger-v132__transactions-panel .partner-detail-action-btn {
+  min-height: 38px !important;
+  border-radius: 15px !important;
+  padding-inline: 13px !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132__transactions-panel .people-action-btn-primary,
+.partner-ledger-v132__transactions-panel .people-action-btn-secondary {
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+  background: #fff !important;
+  color: #334155 !important;
+}
+
+.partner-ledger-v132__transactions-panel .people-action-btn-primary[class*="primary"],
+.partner-ledger-v132__transactions-panel .people-action-btn-secondary[class*="primary"] {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #fff !important;
+}
+
+/* Summary cards above table */
+.partner-ledger-v132 .partner-ledger-summary-card {
+  min-height: 92px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+  background: #fff !important;
+  padding: 16px !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, .34) !important;
+}
+
+.partner-ledger-v132 .partner-ledger-summary-card__label {
+  color: #64748b !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-summary-card__value {
+  color: #0f172a !important;
+  font-size: 24px !important;
+  font-weight: 950 !important;
+  line-height: 1.6 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-summary-card__meta {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+/* Table container */
+.partner-ledger-v132 .partner-ledger-shell {
+  border-radius: 24px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: #fff !important;
+  overflow: auto !important;
+  box-shadow: 0 18px 50px -44px rgba(15, 23, 42, .42) !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table {
+  min-width: 1120px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table__head,
+.partner-ledger-v132 .partner-ledger-table__head-row {
+  background: #f8fafc !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table__head th {
+  height: 50px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .96) !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table__body {
+  background: #fff !important;
+}
+
+.partner-ledger-v132 .partner-ledger-group-row {
+  display: none !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row {
+  background: #fff !important;
+  transition: background .15s ease, box-shadow .15s ease !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row:hover {
+  background: #fbfdff !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row > td {
+  min-height: 74px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .70) !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  vertical-align: middle !important;
+}
+
+/* Description cell: card-like and readable */
+.partner-ledger-v132 .partner-ledger-description-cell {
+  min-height: 58px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v132 .partner-ledger-description-title,
+.partner-ledger-v132 .partner-ledger-description-cell strong {
+  color: #0f172a !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-description-meta,
+.partner-ledger-v132 .partner-ledger-description-cell small {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+/* Money pills like the mockup */
+.partner-ledger-v132 .partner-ledger-debit-pill,
+.partner-ledger-v132 .partner-ledger-credit-pill,
+.partner-ledger-v132 .partner-ledger-balance-pill {
+  min-width: 108px !important;
+  min-height: 50px !important;
+  align-items: center !important;
+  border-radius: 16px !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+  line-height: 1.55 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-debit-pill {
+  border-color: rgba(254, 205, 211, .95) !important;
+  background: #fff1f2 !important;
+  color: #e11d48 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-credit-pill {
+  border-color: rgba(167, 243, 208, .95) !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-balance-pill {
+  border-color: rgba(226, 232, 240, .96) !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}
+
+/* Actions as large clean buttons */
+.partner-ledger-v132 .ledger-actions-row {
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+}
+
+.partner-ledger-v132 .finance-table-action {
+  min-width: 76px !important;
+  min-height: 38px !important;
+  border-radius: 13px !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132 .finance-table-action--danger {
+  border-color: rgba(254, 205, 211, .96) !important;
+  background: #fff1f2 !important;
+  color: #e11d48 !important;
+}
+
+.partner-ledger-v132 .finance-table-action--edit {
+  border-color: rgba(191, 219, 254, .96) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+}
+
+.partner-ledger-v132 .finance-table-action--view {
+  border-color: rgba(226, 232, 240, .96) !important;
+  background: #fff !important;
+  color: #334155 !important;
+}
+
+/* System and date chips */
+.partner-ledger-v132 .partner-system-id-block {
+  border-radius: 14px !important;
+  border-color: rgba(191, 219, 254, .96) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132 .partner-ledger-expanded-panel {
+  border-radius: 22px !important;
+}
+
+/* Remove older v130 overlap fixes from affecting table spacing */
+.partner-ledger-v132 .partner-ledger-v130__metric-box {
+  padding: 8px 10px !important;
+}
+
+/* Dark mode */
+.dark .partner-ledger-v132__transactions-panel,
+.dark .partner-ledger-v132 .partner-ledger-shell,
+.dark .partner-ledger-v132 .partner-ledger-summary-card {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .92) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-table__head,
+.dark .partner-ledger-v132 .partner-ledger-table__head-row {
+  background: rgba(15, 23, 42, .96) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-row,
+.dark .partner-ledger-v132 .partner-ledger-table__body {
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-row:hover {
+  background: rgba(30, 41, 59, .72) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-description-title,
+.dark .partner-ledger-v132 .partner-ledger-description-cell strong,
+.dark .partner-ledger-v132 .partner-ledger-summary-card__value {
+  color: #f8fafc !important;
+}
+
+@media (max-width: 980px) {
+  .partner-ledger-v132__transactions-panel {
+    padding: 14px !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-table {
+    min-width: 980px !important;
+  }
+
+  .partner-ledger-v132 .ledger-actions-row {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* v133 — compact the ledger filter header and summary stat cards */
+.partner-ledger-v132 .partner-ledger-v133__search-grid {
+  grid-template-columns: minmax(260px, 0.86fr) minmax(420px, 1.14fr) !important;
+  align-items: center !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-wrap {
+  max-width: 520px !important;
+  width: 100% !important;
+  justify-self: start !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-input,
+.partner-ledger-v132 .partner-ledger-v133__search-input:focus {
+  height: 42px !important;
+  min-height: 42px !important;
+  border-radius: 15px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  padding-right: 14px !important;
+  padding-left: 38px !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-wrap > i {
+  left: 12px !important;
+  right: auto !important;
+  font-size: 13px !important;
+  color: #94a3b8 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-grid > div:last-child {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-grid select {
+  height: 34px !important;
+  font-size: 11px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card {
+  min-height: 78px !important;
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+  box-shadow: 0 10px 24px -22px rgba(15, 23, 42, .24) !important;
+  position: relative !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  margin-bottom: 6px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 11px !important;
+  border: 1px solid currentColor !important;
+  background: #fff !important;
+  font-size: 13px !important;
+  opacity: .98 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-violet {
+  border-color: rgba(221, 214, 254, .96) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f5ff 100%) !important;
+}
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-violet .partner-ledger-v133__summary-icon,
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-violet .partner-ledger-summary-card__value {
+  color: #7c3aed !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-emerald {
+  border-color: rgba(167, 243, 208, .96) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%) !important;
+}
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-emerald .partner-ledger-v133__summary-icon,
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-emerald .partner-ledger-summary-card__value {
+  color: #059669 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-amber {
+  border-color: rgba(253, 230, 138, .96) !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fffbeb 100%) !important;
+}
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-amber .partner-ledger-v133__summary-icon,
+.partner-ledger-v132 .partner-ledger-v133__summary-card.is-amber .partner-ledger-summary-card__value {
+  color: #d97706 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card .partner-ledger-summary-card__label {
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 1.4 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card .partner-ledger-summary-card__value {
+  display: block !important;
+  margin-top: 0 !important;
+  font-size: 20px !important;
+  line-height: 1.35 !important;
+  font-weight: 950 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card .partner-ledger-summary-card__meta {
+  margin-top: 4px !important;
+  font-size: 10px !important;
+  line-height: 1.65 !important;
+}
+
+@media (max-width: 1279px) {
+  .partner-ledger-v132 .partner-ledger-v133__search-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-v133__search-wrap {
+    max-width: 100% !important;
+    justify-self: stretch !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .partner-ledger-v132 .partner-ledger-v133__summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,163 @@
+/* Stage 85 — Mobile sales analytics executive cleanup
+   Scope: /reports/mobile-sales-analytics only. */
+
+.mobile-sales-analytics-executive-page {
+  color: #0f172a;
+}
+
+/* Make the top analytics shell lighter and closer to the approved report standard. */
+.mobile-sales-analytics-executive-page > section:first-of-type {
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  border-radius: 22px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child {
+  border-bottom: 1px solid rgba(226, 232, 240, .9) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  padding: 16px 18px !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child :where(h1) {
+  color: #0f172a !important;
+  font-size: 1.35rem !important;
+  line-height: 1.8 !important;
+  margin-top: 4px !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child :where(p) {
+  color: #64748b !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child .inline-flex.rounded-full {
+  border-color: rgba(148, 163, 184, .34) !important;
+  background: #f8fafc !important;
+  color: #475569 !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child .grid > div {
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.mobile-sales-analytics-executive-page > section:first-of-type > div:first-child .grid > div :where(div, i) {
+  color: inherit !important;
+}
+
+/* Filter area: use the financial-style single panel rhythm. */
+.mobile-sales-analytics-executive-page > section:first-of-type > div:nth-child(2) {
+  padding: 14px 16px !important;
+}
+
+.mobile-sales-analytics-executive-page .report-date-presets,
+.mobile-sales-analytics-executive-page .report-date-presets__chips {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.mobile-sales-analytics-executive-page .report-date-presets {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.mobile-sales-analytics-executive-page .report-date-presets__chips {
+  min-height: 54px !important;
+  padding: 8px !important;
+  border: 1px solid rgba(148, 163, 184, .26) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+}
+
+.mobile-sales-analytics-executive-page .report-date-preset-chip {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .32) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  font-size: .78rem !important;
+  font-weight: 850 !important;
+}
+
+.mobile-sales-analytics-executive-page .report-date-preset-chip.is-active {
+  background: #111827 !important;
+  color: #fff !important;
+  border-color: #111827 !important;
+}
+
+/* Date fields and local search: remove nested-looking frames. */
+.mobile-sales-analytics-executive-page :where(.app-date-field, .app-date-field__control) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.mobile-sales-analytics-executive-page input[data-app-date-input='true'],
+.mobile-sales-analytics-executive-page .report-local-search-input {
+  height: 42px !important;
+  min-height: 42px !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  font-size: .82rem !important;
+  font-weight: 850 !important;
+}
+
+.mobile-sales-analytics-executive-page .report-local-search-input:focus,
+.mobile-sales-analytics-executive-page input[data-app-date-input='true']:focus {
+  border-color: rgba(59, 130, 246, .42) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.08) !important;
+}
+
+.mobile-sales-analytics-executive-page :where(.app-date-field__icon) {
+  display: none !important;
+}
+
+/* Kpi cards: no internal frames/highlights. */
+.mobile-sales-analytics-executive-page :where(.rounded-\[26px\].border.border-slate-200\/80.bg-white\/95),
+.mobile-sales-analytics-executive-page > section.grid > div,
+.mobile-sales-analytics-executive-page .grid > div.rounded-\[26px\] {
+  box-shadow: none !important;
+}
+
+.mobile-sales-analytics-executive-page :where(.rounded-\[26px\] *, .rounded-\[30px\] *)::before,
+.mobile-sales-analytics-executive-page :where(.rounded-\[26px\] *, .rounded-\[30px\] *)::after {
+  box-shadow: none !important;
+}
+
+.mobile-sales-analytics-executive-page :where(table) {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.mobile-sales-analytics-executive-page :where(th) {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+.mobile-sales-analytics-executive-page :where(td) {
+  vertical-align: middle !important;
+}
+
+@media (max-width: 920px) {
+  .mobile-sales-analytics-executive-page .report-date-presets__chips {
+    flex-wrap: wrap !important;
+    height: auto !important;
+  }
+}

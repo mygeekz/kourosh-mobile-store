@@ -1,0 +1,33 @@
+{
+  "stage": 59,
+  "name": "settings-import-export-runtime-audit",
+  "ok": true,
+  "counts": {
+    "scannedFiles": 20,
+    "localImports": 90,
+    "settingsBarrelValueExports": 13,
+    "settingsBarrelTypeExports": 84,
+    "settingsImportsFromBarrel": 26,
+    "failures": 0,
+    "warnings": 0
+  },
+  "checks": {
+    "missingLocalImports": true,
+    "ambiguousWindowsSettingsImport": false,
+    "settingsBarrelExportsValidated": true,
+    "runtimeSymbolsValidated": true,
+    "anyInPagesSettings": false
+  },
+  "changedFiles": [
+    "scripts/audit-settings-imports.mjs",
+    "package.json",
+    "docs/settings-import-export-audit-latest.json",
+    "docs/settings-import-export-audit-stage59-imports.csv",
+    "docs/settings-import-export-audit-stage59-barrel.csv",
+    "docs/settings-import-export-audit-stage59.md",
+    "docs/settings-split-validation-stage59.json"
+  ],
+  "notes": [
+    "No JSX, CSS, className, layout or handler behavior changed."
+  ]
+}

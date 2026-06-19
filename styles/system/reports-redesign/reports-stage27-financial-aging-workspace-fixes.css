@@ -1,0 +1,188 @@
+/* Stage 27 — report follow-up fixes
+   - Workspace drawer must render above sidebar/header.
+   - Financial overview keeps only the top ReportsLayout title; filters become one compact plain surface.
+   - Aging receivables customer names are plain text actions, not boxed chips. */
+
+/* Workspace drawer: portal-safe, above every app shell layer. */
+.reports-workspace--drawer {
+  z-index: 360 !important;
+  isolation: isolate;
+}
+
+.reports-workspace--drawer .reports-workspace__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.28) !important;
+  backdrop-filter: blur(2px);
+}
+
+.reports-workspace--drawer .reports-workspace__drawer {
+  position: absolute !important;
+  inset-block: 0 !important;
+  inset-inline-end: 0 !important;
+  z-index: 2 !important;
+  width: min(460px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  background: rgba(255,255,255,.98) !important;
+  border-inline-start: 1px solid rgba(148,163,184,.28) !important;
+  box-shadow: -24px 0 70px rgba(15,23,42,.14) !important;
+}
+
+.dark .reports-workspace--drawer .reports-workspace__drawer {
+  background: rgba(2,6,23,.98) !important;
+  border-inline-start-color: rgba(51,65,85,.9) !important;
+  box-shadow: -24px 0 70px rgba(0,0,0,.42) !important;
+}
+
+/* Financial overview: remove the second title/action shell entirely. */
+.financial-overview-stage27-shell {
+  display: block;
+  min-width: 0;
+}
+
+.financial-overview-redesign-v1 .report-header-shell--merged {
+  margin: 0 0 1rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.financial-overview-redesign-v1 .report-header-shell--merged::before,
+.financial-overview-redesign-v1 .report-header-shell--merged::after {
+  display: none !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single {
+  display: block !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* The old range summary card duplicated the filter information and created a second header feel. */
+.financial-overview-redesign-v1 .report-header-main--single > .w-full.rounded-2xl {
+  display: none !important;
+}
+
+/* One clean commercial filter surface. */
+.financial-overview-redesign-v1 .report-header-main--single > .w-full:first-child {
+  width: 100% !important;
+  padding: .85rem !important;
+  border: 1px solid rgba(148,163,184,.24) !important;
+  border-radius: 1.15rem !important;
+  background: rgba(255,255,255,.94) !important;
+  box-shadow: none !important;
+}
+
+.dark .financial-overview-redesign-v1 .report-header-main--single > .w-full:first-child {
+  border-color: rgba(51,65,85,.86) !important;
+  background: rgba(15,23,42,.74) !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single .space-y-3,
+.financial-overview-redesign-v1 .report-header-main--single .report-filter-grid {
+  gap: .65rem !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single .report-filter-grid--wide > div,
+.financial-overview-redesign-v1 .report-header-main--single .report-filter-grid--date-pair > div {
+  border: 1px solid rgba(148,163,184,.22) !important;
+  border-radius: .95rem !important;
+  background: rgba(248,250,252,.7) !important;
+  box-shadow: none !important;
+  padding: .65rem !important;
+}
+
+.dark .financial-overview-redesign-v1 .report-header-main--single .report-filter-grid--wide > div,
+.dark .financial-overview-redesign-v1 .report-header-main--single .report-filter-grid--date-pair > div {
+  border-color: rgba(51,65,85,.86) !important;
+  background: rgba(2,6,23,.28) !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single .report-date-presets,
+.financial-overview-redesign-v1 .report-header-main--single .report-date-presets__chips {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single label,
+.financial-overview-redesign-v1 .report-header-main--single .mb-1 {
+  margin-bottom: .35rem !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single input,
+.financial-overview-redesign-v1 .report-header-main--single .react-datepicker-wrapper input,
+.financial-overview-redesign-v1 .report-header-main--single .shamsi-date-picker input {
+  min-height: 2.65rem !important;
+  border-radius: .85rem !important;
+}
+
+.financial-overview-redesign-v1 .report-header-main--single button {
+  width: max-content !important;
+  min-height: 2.35rem !important;
+  border-radius: .85rem !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 768px) {
+  .financial-overview-redesign-v1 .report-header-main--single .report-filter-grid--date-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .financial-overview-redesign-v1 .report-header-main--single > .w-full:first-child {
+    padding: .75rem !important;
+  }
+
+  .financial-overview-redesign-v1 .report-header-main--single button {
+    width: auto !important;
+  }
+}
+
+/* Aging receivables: customer field should not look like a nested chip. */
+.aging-receivables__table th:first-child,
+.aging-receivables__table td:first-child {
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.aging-receivables__customer--plain {
+  max-width: none !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  line-height: 1.8 !important;
+}
+
+.dark .aging-receivables__customer--plain {
+  color: #f8fafc !important;
+}
+
+.aging-receivables__customer--plain span {
+  display: inline !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  white-space: nowrap;
+}
+
+.aging-receivables__customer--plain:hover span {
+  color: rgb(37, 99, 235) !important;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.aging-receivables__risk-pill {
+  width: max-content !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+}

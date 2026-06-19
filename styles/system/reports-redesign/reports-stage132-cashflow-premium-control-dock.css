@@ -1,0 +1,261 @@
+/* Stage 132 — Cashflow single premium control dock
+   Scope-limited to /reports/cashflow.
+   Converts the filter area into one compact Apple-minimal executive toolbar:
+   presets + from/to dates + forecast horizon + refresh action. */
+
+.cashflow-report-page .cashflow-filter-panel {
+  padding: 18px 20px !important;
+  border-radius: 28px !important;
+}
+
+.cashflow-report-page .cashflow-filter-panel__head {
+  margin-bottom: 14px !important;
+}
+
+.cashflow-report-page .cashflow-filter-panel__head p {
+  max-width: 760px !important;
+}
+
+.cashflow-report-page .cashflow-control-dock {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226, 232, 240, .72) !important;
+  border-radius: 24px !important;
+  background: rgba(248, 250, 252, .58) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72) !important;
+  direction: rtl !important;
+}
+
+.cashflow-report-page .cashflow-preset-chips {
+  flex: 1 1 360px !important;
+  width: auto !important;
+  min-width: min(100%, 330px) !important;
+  max-width: 470px !important;
+  margin: 0 !important;
+  order: 1 !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--from {
+  order: 2 !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--to {
+  order: 3 !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--forecast {
+  order: 4 !important;
+}
+
+.cashflow-report-page .cashflow-refresh-button {
+  order: 5 !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--date.report-filter-field,
+.cashflow-report-page .cashflow-filter-field--date[data-ui-report-filter-field="true"] {
+  flex: 0 0 154px !important;
+  width: 154px !important;
+  min-width: 154px !important;
+  max-width: 164px !important;
+}
+
+.cashflow-report-page .cashflow-filter-field--forecast.report-filter-field,
+.cashflow-report-page .cashflow-filter-field--forecast[data-ui-report-filter-field="true"] {
+  flex: 0 0 118px !important;
+  width: 118px !important;
+  min-width: 118px !important;
+  max-width: 124px !important;
+}
+
+.cashflow-report-page .cashflow-refresh-button {
+  flex: 0 0 auto !important;
+  align-self: flex-end !important;
+  width: auto !important;
+  min-width: 106px !important;
+  height: 38px !important;
+}
+
+/* Keep all filter wrappers structural; only actual controls draw the surface. */
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field.report-filter-field,
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field[data-ui-report-filter-field="true"] {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .report-filter-field__head {
+  height: 15px !important;
+  min-height: 15px !important;
+  margin-bottom: 4px !important;
+  padding-inline: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .report-filter-field__label {
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  color: #64748b !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .report-filter-field__icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  font-size: 8.5px !important;
+  border-radius: 999px !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .report-filter-field__body,
+.cashflow-report-page .cashflow-control-dock .report-filter-field__body > *,
+.cashflow-report-page .cashflow-control-dock :where(.app-date-field, .app-date-field__control) {
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.cashflow-report-page .cashflow-control-dock .cashflow-date-input,
+.cashflow-report-page .cashflow-control-dock .cashflow-select-field {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border: 1px solid rgba(203, 213, 225, .90) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .96) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .26) !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-select-field {
+  padding-inline: 8px !important;
+  text-align-last: center !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-refresh-button {
+  border-radius: 14px !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, .16) !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-refresh-button:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, .22) !important;
+}
+
+/* Presets stay frameless; only chips are visible. */
+.cashflow-report-page .cashflow-control-dock .cashflow-preset-chips.report-date-presets,
+.cashflow-report-page .cashflow-control-dock [data-ui-report-date-presets="true"].cashflow-preset-chips {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-preset-chips .report-date-presets__chips,
+.cashflow-report-page .cashflow-control-dock .cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.cashflow-report-page .cashflow-control-dock .cashflow-preset-chips .report-date-preset-chip,
+.cashflow-report-page .cashflow-control-dock .cashflow-preset-chips [data-ui-report-date-preset="true"] {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+}
+
+.dark .cashflow-report-page .cashflow-control-dock {
+  border-color: rgba(51, 65, 85, .72) !important;
+  background: rgba(15, 23, 42, .38) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04) !important;
+}
+
+.dark .cashflow-report-page .cashflow-control-dock .report-filter-field__label {
+  color: #94a3b8 !important;
+}
+
+.dark .cashflow-report-page .cashflow-control-dock .cashflow-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.dark .cashflow-report-page .cashflow-control-dock .cashflow-date-input,
+.dark .cashflow-report-page .cashflow-control-dock .cashflow-select-field {
+  border-color: rgba(51, 65, 85, .9) !important;
+  background: rgba(15, 23, 42, .82) !important;
+  color: #f8fafc !important;
+}
+
+.dark .cashflow-report-page .cashflow-control-dock .cashflow-refresh-button {
+  background: #f8fafc !important;
+  color: #020617 !important;
+  box-shadow: 0 12px 26px rgba(2, 6, 23, .32) !important;
+}
+
+@media (max-width: 1280px) {
+  .cashflow-report-page .cashflow-preset-chips {
+    flex: 1 1 100% !important;
+    max-width: none !important;
+  }
+
+  .cashflow-report-page .cashflow-filter-field--date.report-filter-field,
+  .cashflow-report-page .cashflow-filter-field--date[data-ui-report-filter-field="true"] {
+    flex: 1 1 180px !important;
+    width: auto !important;
+    min-width: 180px !important;
+    max-width: none !important;
+  }
+
+  .cashflow-report-page .cashflow-filter-field--forecast.report-filter-field,
+  .cashflow-report-page .cashflow-filter-field--forecast[data-ui-report-filter-field="true"] {
+    flex: 0 0 140px !important;
+    width: 140px !important;
+    min-width: 140px !important;
+    max-width: 140px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .cashflow-report-page .cashflow-control-dock {
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .cashflow-report-page .cashflow-control-dock .cashflow-preset-chips .report-date-presets__chips,
+  .cashflow-report-page .cashflow-control-dock .cashflow-preset-chips [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .cashflow-report-page .cashflow-filter-field--date.report-filter-field,
+  .cashflow-report-page .cashflow-filter-field--date[data-ui-report-filter-field="true"],
+  .cashflow-report-page .cashflow-filter-field--forecast.report-filter-field,
+  .cashflow-report-page .cashflow-filter-field--forecast[data-ui-report-filter-field="true"],
+  .cashflow-report-page .cashflow-refresh-button {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+}

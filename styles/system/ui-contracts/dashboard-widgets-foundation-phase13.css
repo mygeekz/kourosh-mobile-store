@@ -1,0 +1,338 @@
+
+/* Phase 13 — Dashboard / Widgets / Smart Insights Foundation
+   Scoped foundation for the dashboard surface, widget grid, clock, quick actions and smart panels.
+   Plain CSS only to keep PostCSS safe. */
+
+.dashboard-executive-foundation,
+[data-ui-dashboard-page] {
+  --dashboard-surface: rgba(255, 255, 255, 0.96);
+  --dashboard-soft: rgba(248, 250, 252, 0.92);
+  --dashboard-border: rgba(226, 232, 240, 0.9);
+  --dashboard-border-strong: rgba(203, 213, 225, 0.95);
+  --dashboard-text: #0f172a;
+  --dashboard-muted: #64748b;
+  --dashboard-radius: 24px;
+  --dashboard-radius-lg: 30px;
+  --dashboard-shadow: 0 18px 46px -36px rgba(15, 23, 42, 0.24);
+  --dashboard-shadow-hover: 0 26px 62px -38px rgba(15, 23, 42, 0.28);
+  color: var(--dashboard-text);
+}
+
+.dark .dashboard-executive-foundation,
+.dark [data-ui-dashboard-page] {
+  --dashboard-surface: rgba(2, 6, 23, 0.96);
+  --dashboard-soft: rgba(15, 23, 42, 0.82);
+  --dashboard-border: rgba(30, 41, 59, 0.95);
+  --dashboard-border-strong: rgba(51, 65, 85, 0.95);
+  --dashboard-text: #f8fafc;
+  --dashboard-muted: #94a3b8;
+}
+
+[data-ui-dashboard-page] * {
+  box-sizing: border-box;
+}
+
+[data-ui-dashboard-page] [dir="ltr"],
+[data-ui-dashboard-page] .font-mono,
+[data-ui-dashboard-page] [data-dashboard-widget-preset],
+[data-ui-dashboard-page] .premium-stat-card__value,
+[data-ui-dashboard-page] .dashboard-kpi-widget [class*="text-"][class*="font-black"] {
+  font-variant-numeric: tabular-nums;
+}
+
+[data-ui-dashboard-surface="hero"],
+[data-ui-dashboard-manager],
+[data-ui-dashboard-executive] > .dashboard-executive-panel,
+.dashboard-spotlight-card,
+[data-ui-dashboard-widget-shell="true"],
+[data-ui-dashboard-surface="add-widget-modal"] {
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border) !important;
+  box-shadow: var(--dashboard-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+[data-ui-dashboard-surface="hero"],
+[data-ui-dashboard-manager],
+[data-ui-dashboard-widget-shell="true"] {
+  border-radius: var(--dashboard-radius-lg) !important;
+}
+
+[data-ui-dashboard-surface="hero"] .dashboard-hero-decor,
+[data-ui-dashboard-page] .dashboard-hero-decor,
+[data-ui-dashboard-page] [class*="blur-3xl"],
+[data-ui-dashboard-page] [class*="backdrop-blur"] {
+  opacity: 0 !important;
+  display: none !important;
+}
+
+[data-ui-dashboard-actions],
+[data-ui-dashboard-manager] .dashboard-card-manager-section,
+[data-ui-dashboard-manager-section],
+[data-ui-dashboard-spotlight],
+[data-ui-dashboard-executive] {
+  min-width: 0;
+}
+
+[data-ui-dashboard-command],
+[data-ui-dashboard-widget-action],
+[data-ui-dashboard-modal] .app-command-button,
+[data-ui-dashboard-page] .dashboard-widget-resize-button,
+[data-ui-dashboard-page] .dashboard-widget-remove-button,
+[data-ui-dashboard-page] .dashboard-quick-action-link,
+[data-ui-dashboard-page] .premium-data-segment,
+[data-ui-dashboard-page] button[class*="rounded-full"],
+[data-ui-dashboard-page] button[class*="rounded-2xl"] {
+  min-height: 36px;
+  border-radius: 14px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+[data-ui-dashboard-command="manage-cards"],
+[data-ui-dashboard-command="finish-edit"],
+[data-ui-dashboard-command="add-widget"],
+[data-ui-dashboard-command="done-add-widget"] {
+  height: 38px;
+  padding-inline: 14px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+[data-ui-dashboard-manager] {
+  overflow: hidden;
+}
+
+[data-ui-dashboard-manager-section] {
+  background: var(--dashboard-soft) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+[data-ui-dashboard-manager] .dashboard-card-manager-item,
+[data-ui-dashboard-add-card],
+[data-ui-dashboard-widget-kind="recent-activities"] li,
+[data-ui-dashboard-widget-kind="product-sales-row"] {
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface) !important;
+  border-radius: 18px !important;
+}
+
+[data-ui-dashboard-page] [data-ui-field="true"],
+[data-ui-dashboard-modal] [data-ui-field="true"] {
+  min-height: 40px;
+  border-radius: 16px !important;
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border) !important;
+  box-shadow: none !important;
+}
+
+[data-ui-dashboard-page] input[data-ui-field="true"],
+[data-ui-dashboard-modal] input[data-ui-field="true"] {
+  padding-right: 42px !important;
+  padding-left: 42px !important;
+}
+
+[data-ui-dashboard-spotlight] {
+  align-items: stretch;
+}
+
+[data-ui-dashboard-spotlight] .dashboard-spotlight-card,
+[data-ui-dashboard-executive] .dashboard-executive-panel,
+[data-ui-dashboard-widget-shell="true"] {
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+[data-ui-dashboard-spotlight] .dashboard-spotlight-card:hover,
+[data-ui-dashboard-executive] .dashboard-executive-panel:hover,
+[data-ui-dashboard-widget-shell="true"]:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--dashboard-shadow-hover) !important;
+  border-color: var(--dashboard-border-strong) !important;
+}
+
+[data-ui-dashboard-grid-shell] {
+  position: relative;
+}
+
+[data-ui-dashboard-grid="true"].react-grid-layout,
+[data-ui-dashboard-grid="true"].layout {
+  min-height: 240px;
+}
+
+[data-ui-dashboard-widget-item] {
+  min-width: 0;
+}
+
+[data-ui-dashboard-widget-shell="true"] {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+[data-ui-dashboard-widget-shell="true"][data-dashboard-editable="true"] {
+  outline-color: rgba(37, 99, 235, 0.18) !important;
+  border-color: rgba(59, 130, 246, 0.34) !important;
+}
+
+[data-ui-dashboard-widget-header="edit"] {
+  background: var(--dashboard-soft) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+[data-ui-dashboard-widget-header="edit"] .truncate,
+[data-ui-dashboard-modal] .truncate,
+[data-ui-dashboard-page] .line-clamp-1,
+[data-ui-dashboard-page] .truncate {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+[data-ui-dashboard-widget-content="true"] {
+  min-width: 0;
+}
+
+[data-ui-dashboard-widget-kind="kpi"],
+[data-ui-dashboard-widget-kind="asset"],
+[data-ui-dashboard-widget-kind="sales-chart"],
+[data-ui-dashboard-widget-kind="installments"],
+[data-ui-dashboard-widget-kind="recent-activities"] {
+  border-radius: 24px !important;
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-surface) !important;
+  box-shadow: none !important;
+}
+
+[data-ui-dashboard-widget-kind="clock"] {
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+[data-ui-dashboard-widget-kind="clock"] [class*="sweep"],
+[data-ui-dashboard-widget-kind="clock"] [class*="glow"],
+[data-ui-dashboard-widget-kind="clock"] [class*="blur-"] {
+  opacity: 0.18;
+}
+
+[data-ui-dashboard-widget-kind="clock"] button,
+[data-ui-dashboard-clock-mode] {
+  border-radius: 12px !important;
+}
+
+[data-ui-dashboard-widget-kind="sales-chart"] .premium-data-segment,
+[data-ui-dashboard-widget-kind="sales-chart"] button {
+  min-height: 30px;
+}
+
+[data-ui-dashboard-page] .dashboard-quick-action-link {
+  min-height: 46px;
+  justify-content: space-between;
+  border-color: var(--dashboard-border) !important;
+  background: var(--dashboard-soft) !important;
+}
+
+[data-ui-dashboard-page] .dashboard-quick-action-link:hover {
+  background: var(--dashboard-surface) !important;
+}
+
+[data-ui-dashboard-modal="add-widget"] {
+  direction: rtl;
+}
+
+[data-ui-dashboard-modal="add-widget"] .dashboard-add-widget-backdrop {
+  background: rgba(15, 23, 42, 0.42) !important;
+  backdrop-filter: none !important;
+}
+
+[data-ui-dashboard-surface="add-widget-modal"] {
+  max-height: min(86vh, 820px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px !important;
+}
+
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__header,
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__footer {
+  background: var(--dashboard-surface) !important;
+  border-color: var(--dashboard-border) !important;
+}
+
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__body {
+  overflow: auto;
+  background: var(--dashboard-soft) !important;
+}
+
+[data-ui-dashboard-add-card] {
+  min-height: 92px;
+}
+
+[data-ui-dashboard-add-card] .dashboard-add-widget-card__title {
+  line-height: 1.7;
+}
+
+[data-ui-dashboard-add-card] .dashboard-add-widget-card__id {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-ui-dashboard-filter-chip] {
+  border-radius: 14px !important;
+  min-height: 38px;
+}
+
+[data-ui-dashboard-page] .dashboard-widget-scrollarea,
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.55) transparent;
+}
+
+[data-ui-dashboard-page] .dashboard-widget-scrollarea::-webkit-scrollbar,
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-ui-dashboard-page] .dashboard-widget-scrollarea::-webkit-scrollbar-thumb,
+[data-ui-dashboard-modal] .dashboard-add-widget-modal__body::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 999px;
+}
+
+@media (max-width: 768px) {
+  [data-ui-dashboard-page] {
+    padding: 10px !important;
+  }
+
+  [data-ui-dashboard-surface="hero"],
+  [data-ui-dashboard-manager],
+  [data-ui-dashboard-surface="add-widget-modal"] {
+    border-radius: 22px !important;
+  }
+
+  [data-ui-dashboard-actions],
+  [data-ui-dashboard-manager] .flex.flex-wrap,
+  [data-ui-dashboard-modal] .dashboard-add-widget-modal__footer {
+    align-items: stretch !important;
+  }
+
+  [data-ui-dashboard-actions] > button,
+  [data-ui-dashboard-manager] button,
+  [data-ui-dashboard-modal] .app-command-button {
+    width: 100%;
+  }
+
+  [data-ui-dashboard-surface="add-widget-modal"] {
+    width: min(96vw, 720px) !important;
+    max-height: 90vh;
+  }
+
+  [data-ui-dashboard-modal] .dashboard-add-widget-modal__header,
+  [data-ui-dashboard-modal] .dashboard-add-widget-modal__body,
+  [data-ui-dashboard-modal] .dashboard-add-widget-modal__footer {
+    padding-inline: 14px !important;
+  }
+}

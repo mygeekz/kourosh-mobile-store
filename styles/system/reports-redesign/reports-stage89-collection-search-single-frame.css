@@ -1,0 +1,103 @@
+/* Stage 89 — Collection center search single-frame fix
+   Keep the approved header layout from stage88; only replace the search visual with one real frame. */
+
+.collection-center-page .collection-center-search-final {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  direction: ltr !important;
+}
+
+.collection-center-page .collection-center-search-final::before,
+.collection-center-page .collection-center-search-final::after,
+.collection-center-page .collection-center-search-final input::before,
+.collection-center-page .collection-center-search-final input::after {
+  content: none !important;
+  display: none !important;
+}
+
+.collection-center-page .collection-center-search-final > i {
+  position: absolute !important;
+  left: 15px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: .84rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.collection-center-page .collection-center-search-final input,
+.collection-center-page .collection-center-search-final input[type='text'],
+.collection-center-page .collection-center-search-final input[type='search'] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 15px 0 42px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .38) !important;
+  border-radius: 15px !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: .8rem !important;
+  font-weight: 800 !important;
+  line-height: 42px !important;
+  caret-color: #0f172a !important;
+}
+
+.collection-center-page .collection-center-search-final input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.collection-center-page .collection-center-search-final input:focus,
+.collection-center-page .collection-center-search-final input:focus-visible,
+.collection-center-page .collection-center-search-final input:active {
+  border-color: rgba(59, 130, 246, .5) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.collection-center-page .collection-center-search-final input::-webkit-search-decoration,
+.collection-center-page .collection-center-search-final input::-webkit-search-cancel-button,
+.collection-center-page .collection-center-search-final input::-webkit-search-results-button,
+.collection-center-page .collection-center-search-final input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+@media (max-width: 920px) {
+  .collection-center-page .collection-center-search-final {
+    width: 100% !important;
+  }
+}

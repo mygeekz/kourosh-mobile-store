@@ -1,0 +1,640 @@
+/* Auto-generated UI Foundation.
+   Scope: controlled consolidation for Products / Services / Repairs UI.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+/* ===== Source: styles/runtime-overrides/02c-repairs-apple-commercial.css ===== */
+/* ===== REPAIRS FULL COMMERCIAL APPLE MINIMAL OVERRIDE =====
+   Scope: Repairs list, add repair, detail, receipt screen controls. Logic/API untouched. */
+.detail-page-shell,
+body:has([href="#/repairs"]) {
+  --repair-surface: #fff;
+}
+
+/* Main repairs surfaces */
+.app-card.ux-form-shell,
+.detail-page-shell :where(.app-card, .ux-form-shell, .repair-detail-editor-shell, .repair-detail-softbox),
+.space-y-4.text-right.max-w-7xl :where(.app-card, .ux-form-shell),
+.repairs-commercial-surface {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.dark .app-card.ux-form-shell,
+.dark .detail-page-shell :where(.app-card, .ux-form-shell, .repair-detail-editor-shell, .repair-detail-softbox),
+.dark .space-y-4.text-right.max-w-7xl :where(.app-card, .ux-form-shell),
+.dark .repairs-commercial-surface {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+}
+
+/* Kill legacy color/gradient blocks inside repairs. */
+.detail-page-shell :where([class*="bg-gradient"], [class*="from-"], [class*="via-"], [class*="to-"]),
+.space-y-4.text-right.max-w-7xl :where([class*="bg-gradient"], [class*="from-"], [class*="via-"], [class*="to-"]),
+.repairs-page :where([class*="bg-gradient"], [class*="from-"], [class*="via-"], [class*="to-"]) {
+  background-image: none !important;
+}
+
+.detail-page-shell :where([class*="shadow"], .shadow-sm, .shadow-md, .shadow-lg),
+.space-y-4.text-right.max-w-7xl :where([class*="shadow"], .shadow-sm, .shadow-md, .shadow-lg),
+.repairs-page :where([class*="shadow"], .shadow-sm, .shadow-md, .shadow-lg) {
+  box-shadow: none !important;
+}
+
+.detail-page-shell :where(.rounded-3xl, [class*="rounded-[26px]"], [class*="rounded-[28px]"], [class*="rounded-[30px]"], [class*="rounded-[32px]"]),
+.space-y-4.text-right.max-w-7xl :where(.rounded-3xl, [class*="rounded-[26px]"], [class*="rounded-[28px]"], [class*="rounded-[30px]"], [class*="rounded-[32px]"]),
+.repairs-page :where(.rounded-3xl, [class*="rounded-[26px]"], [class*="rounded-[28px]"], [class*="rounded-[30px]"], [class*="rounded-[32px]"]) {
+  border-radius: 18px !important;
+}
+
+/* Repair buttons: compact commercial. */
+.detail-page-shell button,
+.detail-page-shell a.repairs-link-btn,
+.detail-page-shell a.repairs-link-btn-success,
+.space-y-4.text-right.max-w-7xl button,
+.repairs-page button,
+.repairs-page a {
+  box-shadow: none !important;
+}
+
+.detail-page-shell :where(button, a.repairs-link-btn, a.repairs-link-btn-success),
+.space-y-4.text-right.max-w-7xl :where(button),
+.repairs-page :where(button) {
+  min-height: 36px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  transform: none !important;
+}
+
+.detail-page-shell :where(button:hover, a:hover),
+.space-y-4.text-right.max-w-7xl :where(button:hover),
+.repairs-page :where(button:hover) {
+  transform: none !important;
+}
+
+/* Status chips and filters: segmented/pill style. */
+.repairs-page :where(.rounded-full),
+.detail-page-shell :where(.rounded-full),
+.space-y-4.text-right.max-w-7xl :where(.rounded-full) {
+  min-height: 26px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+}
+
+.dark .repairs-page :where(.rounded-full),
+.dark .detail-page-shell :where(.rounded-full),
+.dark .space-y-4.text-right.max-w-7xl :where(.rounded-full) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+}
+
+/* Inputs and form fields */
+.space-y-4.text-right.max-w-7xl :where(input, textarea, select),
+.detail-page-shell :where(input, textarea, select),
+.repairs-page :where(input, textarea, select) {
+  min-height: 42px !important;
+  border-radius: 12px !important;
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+  text-align: right;
+}
+
+.dark .space-y-4.text-right.max-w-7xl :where(input, textarea, select),
+.dark .detail-page-shell :where(input, textarea, select),
+.dark .repairs-page :where(input, textarea, select) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(241 245 249) !important;
+}
+
+/* AddRepair wizard/header: compact enterprise form. */
+.space-y-4.text-right.max-w-7xl form > div:first-of-type {
+  padding-bottom: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.space-y-4.text-right.max-w-7xl h2 {
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+}
+
+.space-y-4.text-right.max-w-7xl h2 i,
+.detail-page-shell h1 i,
+.detail-page-shell h2 i {
+  width: 18px !important;
+  min-width: 18px !important;
+  text-align: center !important;
+}
+
+/* Repair detail edit banner: no colorful promotional block. */
+.detail-page-shell > div[class*="border-amber"],
+.detail-page-shell :where([class*="bg-amber"], [class*="bg-orange"], [class*="bg-rose"], [class*="bg-red"], [class*="bg-green"], [class*="bg-emerald"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-purple"]) {
+  background: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.dark .detail-page-shell > div[class*="border-amber"],
+.dark .detail-page-shell :where([class*="bg-amber"], [class*="bg-orange"], [class*="bg-rose"], [class*="bg-red"], [class*="bg-green"], [class*="bg-emerald"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-purple"]) {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.detail-page-shell > div[class*="border-amber"] > div {
+  gap: 10px !important;
+}
+
+.detail-page-shell > div[class*="border-amber"] [class*="h-11"][class*="w-11"] {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  border: 1px solid rgb(226 232 240) !important;
+}
+
+.dark .detail-page-shell > div[class*="border-amber"] [class*="h-11"][class*="w-11"] {
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+/* Repairs tables: accounting/operations compact table. */
+.repairs-premium-table,
+.repairs-page table,
+.detail-page-shell table {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .repairs-premium-table,
+.dark .repairs-page table,
+.dark .detail-page-shell table {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.repairs-premium-table thead th,
+.repairs-page thead th,
+.detail-page-shell thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: rgb(248 250 252) !important;
+  color: rgb(100 116 139) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  padding: 9px 10px !important;
+  border-bottom: 1px solid rgb(226 232 240) !important;
+}
+
+.dark .repairs-premium-table thead th,
+.dark .repairs-page thead th,
+.dark .detail-page-shell thead th {
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+.repairs-premium-table tbody td,
+.repairs-page tbody td,
+.detail-page-shell tbody td {
+  padding: 9px 10px !important;
+  font-size: 12px !important;
+  border-bottom: 1px solid rgb(241 245 249) !important;
+}
+
+.dark .repairs-premium-table tbody td,
+.dark .repairs-page tbody td,
+.dark .detail-page-shell tbody td {
+  border-color: rgb(30 41 59) !important;
+}
+
+/* Board/cards in repairs list: smaller, operational. */
+.repairs-page :where(.grid) {
+  gap: 10px !important;
+}
+
+.repairs-page :where(.card, .hub-card, [class*="HubCard"], article, a[class*="rounded"], div[class*="rounded"]) {
+  box-shadow: none !important;
+}
+
+/* Receipt screen controls */
+.flex.gap-2.mb-4.print\:hidden button {
+  min-height: 36px !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+}
+
+/* Keep real danger visible but not huge. */
+.detail-page-shell :where(.text-red-500, .text-red-600, .text-rose-600),
+.repairs-page :where(.text-red-500, .text-red-600, .text-rose-600) {
+  color: rgb(190 18 60) !important;
+}
+
+@media (max-width: 768px) {
+  .space-y-4.text-right.max-w-7xl {
+    padding-inline: 10px !important;
+  }
+
+  .app-card.ux-form-shell,
+  .detail-page-shell :where(.app-card, .ux-form-shell, .repair-detail-editor-shell, .repair-detail-softbox) {
+    padding: 12px !important;
+  }
+
+  .detail-page-shell :where(button),
+  .space-y-4.text-right.max-w-7xl :where(button) {
+    min-height: 34px !important;
+  }
+}
+
+
+/* ===== REPAIRS MAIN PAGE APPLE REDESIGN PATCH ===== */
+.repairs-apple-page {
+  padding-inline-start: 8px !important;
+  padding-inline-end: 8px !important;
+  text-align: right !important;
+}
+
+.repairs-apple-page * {
+  text-align: inherit;
+}
+
+.repairs-apple-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 18px;
+  background: #fff;
+  padding: 12px;
+  box-shadow: none;
+}
+
+.dark .repairs-apple-hero {
+  border-color: rgb(30 41 59);
+  background: rgb(2 6 23);
+}
+
+.repairs-apple-hero__title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.repairs-apple-hero__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 12px;
+  background: rgb(248 250 252);
+  color: rgb(51 65 85);
+}
+
+.dark .repairs-apple-hero__icon {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+.repairs-apple-hero__icon i,
+.repairs-apple-status-card__icon i,
+.repair-status-pill i {
+  width: 16px !important;
+  min-width: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  color: currentColor !important;
+}
+
+.repairs-apple-hero h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  line-height: 1.6;
+  color: rgb(15 23 42);
+}
+
+.dark .repairs-apple-hero h1 { color: rgb(241 245 249); }
+
+.repairs-apple-hero p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 650;
+  color: rgb(100 116 139);
+}
+
+.dark .repairs-apple-hero p { color: rgb(148 163 184); }
+
+.repairs-apple-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.repairs-apple-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repairs-apple-status-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  min-height: 76px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  padding: 10px !important;
+  box-shadow: none !important;
+  color: rgb(15 23 42) !important;
+  text-align: right !important;
+}
+
+.repairs-apple-status-card:hover {
+  background: rgb(248 250 252) !important;
+}
+
+.dark .repairs-apple-status-card {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(241 245 249) !important;
+}
+
+.dark .repairs-apple-status-card:hover {
+  background: rgb(15 23 42) !important;
+}
+
+.repairs-apple-status-card__icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 12px;
+  background: rgb(248 250 252);
+  color: rgb(51 65 85);
+}
+
+.dark .repairs-apple-status-card__icon {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+.repairs-apple-status-card__body {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  flex: 1;
+  padding-top: 1px;
+}
+
+.repairs-apple-status-card__label {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  font-size: 12px;
+  font-weight: 950;
+  color: rgb(15 23 42);
+}
+
+.dark .repairs-apple-status-card__label { color: rgb(241 245 249); }
+
+.repairs-apple-status-card__hint {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  font-size: 10px;
+  font-weight: 750;
+  color: rgb(100 116 139);
+}
+
+.dark .repairs-apple-status-card__hint { color: rgb(148 163 184); }
+
+.repairs-apple-status-card__value {
+  direction: ltr;
+  font-size: 18px;
+  font-weight: 950;
+  color: rgb(15 23 42);
+  align-self: center;
+}
+
+.dark .repairs-apple-status-card__value { color: rgb(241 245 249); }
+
+.repairs-apple-panel {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .repairs-apple-panel {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.repairs-page .repairs-saved-views,
+.repairs-page [class*="SavedViews"],
+.repairs-page [data-saved-view],
+.repairs-page [data-saved-views] {
+  display: none !important;
+}
+
+.repairs-page .repair-status-pill {
+  min-height: 26px !important;
+  gap: 6px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 999px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  padding: 0 9px !important;
+  white-space: nowrap !important;
+}
+
+.dark .repairs-page .repair-status-pill {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.repairs-page .repair-mobile-card,
+.repairs-apple-board-column {
+  border-color: rgb(226 232 240) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.dark .repairs-page .repair-mobile-card,
+.dark .repairs-apple-board-column {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+.repairs-apple-board-column__head {
+  padding-inline: 10px !important;
+  background: rgb(248 250 252) !important;
+}
+
+.dark .repairs-apple-board-column__head {
+  background: rgb(15 23 42) !important;
+}
+
+.repairs-page .repairs-link-btn,
+.repairs-page .repairs-link-btn-success {
+  min-height: 32px !important;
+  border-radius: 10px !important;
+  padding: 0 10px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.repairs-page table th,
+.repairs-page table td {
+  text-align: right !important;
+}
+
+.repairs-page table th:last-child,
+.repairs-page table td:last-child {
+  text-align: center !important;
+}
+
+@media (max-width: 768px) {
+  .repairs-apple-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repairs-apple-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .repairs-apple-hero__actions {
+    width: 100%;
+  }
+
+  .repairs-apple-hero__actions button {
+    flex: 1;
+  }
+
+  .repairs-apple-page {
+    padding-inline: 6px !important;
+  }
+}
+
+/* ===== Contract: Repairs operational surfaces ===== */
+.repairs-page,
+.repairs-apple-page,
+.detail-page-shell,
+.repair-detail-editor-shell {
+  --repair-surface: rgb(255 255 255);
+  --repair-surface-muted: rgb(248 250 252);
+  --repair-border: rgba(226, 232, 240, 0.92);
+  --repair-text: rgb(15 23 42);
+  --repair-muted: rgb(100 116 139);
+  --repair-radius: 18px;
+}
+
+.dark .repairs-page,
+.dark .repairs-apple-page,
+.dark .detail-page-shell,
+.dark .repair-detail-editor-shell {
+  --repair-surface: rgb(2 6 23);
+  --repair-surface-muted: rgb(15 23 42);
+  --repair-border: rgba(51, 65, 85, 0.86);
+  --repair-text: rgb(241 245 249);
+  --repair-muted: rgb(148 163 184);
+}
+
+.repairs-page :where(.repairs-apple-hero, .repairs-apple-panel, .repairs-apple-status-card, .repair-mobile-card, .app-card),
+.detail-page-shell :where(.app-card, .repair-detail-editor-shell, .repair-detail-softbox, .ux-form-shell) {
+  border-color: var(--repair-border) !important;
+  background: var(--repair-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.repairs-page :where(input, textarea, select),
+.detail-page-shell :where(input, textarea, select),
+.space-y-4.text-right.max-w-7xl :where(input, textarea, select) {
+  min-height: 40px !important;
+  border-radius: 12px !important;
+  border-color: var(--repair-border) !important;
+  background: var(--repair-surface) !important;
+  color: var(--repair-text) !important;
+  box-shadow: none !important;
+  text-align: right;
+}
+
+.repairs-premium-table {
+  width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.repairs-premium-table :where(th, td) {
+  vertical-align: middle !important;
+}
+
+.repairs-premium-table :where(td, th),
+.repair-mobile-card :where(span, p, div) {
+  overflow-wrap: anywhere;
+}
+
+.repair-status-pill,
+.repairs-link-btn,
+.repairs-link-btn-success {
+  white-space: nowrap !important;
+}
+
+.repairs-page :where(.tabular-nums, [data-numeric]),
+.detail-page-shell :where(.tabular-nums, [data-numeric]) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+  .repairs-apple-hero,
+  .repairs-apple-hero__actions,
+  .detail-page-shell :where(.items-center.justify-between),
+  .space-y-4.text-right.max-w-7xl :where(.items-center.justify-between) {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .repairs-apple-status-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #repairs-print-area,
+  .repairs-page :where(.overflow-x-auto) {
+    -webkit-overflow-scrolling: touch;
+  }
+}

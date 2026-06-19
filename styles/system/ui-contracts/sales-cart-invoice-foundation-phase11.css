@@ -1,0 +1,384 @@
+/* Phase 11 — Sales / Cart / Invoice Foundation
+   Scope: sales hub, cart checkout, line items, summary, invoice list and invoice surfaces.
+   Plain CSS only: no Tailwind utility composition. */
+
+.sales-cart-foundation,
+.sales-hub-foundation,
+.sales-invoices-foundation {
+  --sales-surface: rgba(255, 255, 255, 0.96);
+  --sales-surface-soft: rgba(248, 250, 252, 0.84);
+  --sales-border: rgba(148, 163, 184, 0.26);
+  --sales-border-strong: rgba(100, 116, 139, 0.32);
+  --sales-text: rgb(15, 23, 42);
+  --sales-muted: rgb(100, 116, 139);
+  --sales-radius-lg: 24px;
+  --sales-radius-md: 18px;
+  --sales-shadow: 0 24px 58px -46px rgba(15, 23, 42, 0.34);
+  text-rendering: optimizeLegibility;
+}
+
+.dark .sales-cart-foundation,
+.dark .sales-hub-foundation,
+.dark .sales-invoices-foundation {
+  --sales-surface: rgba(2, 6, 23, 0.88);
+  --sales-surface-soft: rgba(15, 23, 42, 0.64);
+  --sales-border: rgba(51, 65, 85, 0.82);
+  --sales-border-strong: rgba(71, 85, 105, 0.82);
+  --sales-text: rgb(241, 245, 249);
+  --sales-muted: rgb(148, 163, 184);
+  --sales-shadow: 0 24px 58px -46px rgba(0, 0, 0, 0.72);
+}
+
+.sales-cart-foundation [data-ui-sales-surface],
+.sales-section-card,
+.sales-checkout-panel,
+.sales-summary-card,
+.sales-line-card,
+.sales-invoices-card {
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  box-shadow: var(--sales-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+.sales-hero-panel {
+  border-radius: 30px !important;
+}
+
+.sales-hero-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: 29px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.dark .sales-hero-panel::before {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.sales-toolbar-btn,
+.sales-page-btn,
+.sales-payment-chip,
+.sales-submit-btn,
+.sales-invoices-foundation .finance-table-action,
+.sales-cart-foundation [data-ui-button="true"] {
+  min-height: 36px;
+  border-radius: 14px !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.sales-hero-metrics > div,
+.sales-control-tips > div,
+.sales-invoice-stats > div {
+  border-radius: var(--sales-radius-md) !important;
+  border: 1px solid var(--sales-border) !important;
+  background: var(--sales-surface-soft) !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, 0.25);
+}
+
+.sales-workspace {
+  align-items: start;
+}
+
+.sales-section-card > div:first-child h2,
+.sales-section-card > div:first-child h3,
+.sales-checkout-panel h4,
+.sales-summary-card [class*="tracking"],
+.sales-invoices-foundation h1,
+.sales-invoices-foundation h2,
+.sales-invoices-foundation h3 {
+  letter-spacing: -0.01em;
+}
+
+.sales-section-card p,
+.sales-checkout-panel p,
+.sales-summary-card p,
+.sales-line-card p,
+.sales-invoices-card p,
+.sales-invoices-card td,
+.sales-invoices-card th {
+  line-height: 1.75;
+}
+
+.sales-cart-foundation .line-clamp-1,
+.sales-cart-foundation .truncate,
+.sales-invoices-foundation .line-clamp-1,
+.sales-invoices-foundation .line-clamp-2 {
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+}
+
+.sales-cart-lines {
+  isolation: isolate;
+}
+
+.sales-line-card {
+  position: relative;
+  border-radius: 22px !important;
+}
+
+.sales-line-card:hover {
+  border-color: var(--sales-border-strong) !important;
+  transform: translateY(-1px);
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.sales-line-card h3,
+.sales-line-card p,
+.sales-invoice-mobile-card,
+.sales-invoices-card td {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.sales-line-actions button,
+.sales-line-actions [data-ui-button="true"] {
+  width: 32px;
+  height: 32px;
+  min-height: 32px;
+  border-radius: 12px !important;
+}
+
+.sales-line-controls input,
+.sales-line-controls textarea,
+.sales-line-controls select,
+.sales-summary-foundation input,
+.sales-summary-foundation textarea,
+.sales-summary-foundation select,
+.sales-invoices-foundation input[type="search"] {
+  border-radius: 14px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  min-height: 38px;
+  line-height: 1.5;
+}
+
+.sales-line-controls input:focus,
+.sales-line-controls textarea:focus,
+.sales-line-controls select:focus,
+.sales-summary-foundation input:focus,
+.sales-summary-foundation textarea:focus,
+.sales-summary-foundation select:focus,
+.sales-invoices-foundation input[type="search"]:focus {
+  outline: none !important;
+  border-color: rgba(16, 185, 129, 0.56) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
+}
+
+.sales-line-controls input[type="number"],
+.sales-line-controls input[name*="Price" i],
+.sales-line-controls input[name*="discount" i],
+.sales-summary-foundation input[name="globalDiscount"],
+.sales-invoices-foundation td:nth-child(1),
+.sales-invoices-foundation td:nth-child(5),
+.sales-invoices-foundation .text-primary,
+.sales-invoices-foundation .font-mono,
+.sales-invoices-foundation [dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+.sales-line-details {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.66), rgba(255, 255, 255, 0.88));
+}
+
+.dark .sales-line-details {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.54), rgba(2, 6, 23, 0.6));
+}
+
+.sales-summary-card {
+  border-radius: 22px !important;
+}
+
+.sales-summary-foundation [data-ui-sales-summary-card="financial"] > div:last-child > div,
+.sales-summary-foundation [data-ui-sales-summary-card="settings"] > div:last-child > div {
+  border-radius: 16px;
+}
+
+.sales-payment-method-grid [data-ui-button="true"] {
+  min-height: 40px;
+}
+
+.sales-submit-btn {
+  min-height: 46px !important;
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+}
+
+.sales-empty-cart {
+  border-radius: 22px !important;
+  color: var(--sales-muted) !important;
+}
+
+.sales-hub-grid > * {
+  border-radius: var(--sales-radius-lg) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.sales-hub-grid > *:hover {
+  transform: translateY(-2px);
+  border-color: var(--sales-border-strong) !important;
+}
+
+.sales-invoices-card {
+  border-radius: 24px !important;
+}
+
+.sales-invoice-table {
+  border-radius: 18px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+}
+
+.sales-invoice-table table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.sales-invoice-table thead th {
+  background: var(--sales-surface-soft) !important;
+  color: var(--sales-text) !important;
+  font-weight: 900 !important;
+  white-space: nowrap;
+}
+
+.sales-invoice-table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+.sales-invoice-table tbody tr:hover {
+  background: rgba(16, 185, 129, 0.055) !important;
+}
+
+.sales-invoice-table td,
+.sales-invoice-table th {
+  vertical-align: middle;
+}
+
+.sales-invoice-table td:nth-child(3) {
+  min-width: 240px;
+  max-width: 420px;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.sales-invoice-mobile-card {
+  border-radius: 18px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+}
+
+.sales-invoices-foundation .kp-search-field-host,
+.sales-invoices-foundation .ux-toolbar-search {
+  border-radius: 16px !important;
+}
+
+.sales-invoices-foundation .kp-search-field__input,
+.sales-invoices-foundation .ux-toolbar-search__input {
+  min-height: 40px !important;
+  padding-inline-start: 44px !important;
+  padding-inline-end: 14px !important;
+}
+
+@media (max-width: 768px) {
+  .sales-cart-foundation,
+  .sales-hub-foundation,
+  .sales-invoices-foundation {
+    --sales-radius-lg: 20px;
+    --sales-radius-md: 16px;
+  }
+
+  .sales-cart-foundation .max-w-7xl {
+    padding-inline: 10px !important;
+  }
+
+  .sales-hero-panel {
+    border-radius: 24px !important;
+  }
+
+  .sales-hero-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sales-line-card,
+  .sales-section-card,
+  .sales-checkout-panel,
+  .sales-summary-card,
+  .sales-invoices-card {
+    border-radius: 18px !important;
+  }
+
+  .sales-line-actions {
+    align-self: flex-start;
+  }
+
+  .sales-line-controls {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sales-toolbar-btn,
+  .sales-page-btn {
+    flex: 1 1 auto;
+  }
+
+  .sales-invoice-mobile-list {
+    display: grid;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sales-checkout-panel {
+    max-height: calc(100vh - 24px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+}
+
+.sales-invoice-detail-foundation {
+  --sales-surface: rgba(255, 255, 255, 0.96);
+  --sales-border: rgba(148, 163, 184, 0.26);
+  --sales-shadow: 0 24px 58px -46px rgba(15, 23, 42, 0.34);
+}
+
+.dark .sales-invoice-detail-foundation {
+  --sales-surface: rgba(2, 6, 23, 0.88);
+  --sales-border: rgba(51, 65, 85, 0.82);
+  --sales-shadow: 0 24px 58px -46px rgba(0, 0, 0, 0.72);
+}
+
+.sales-invoice-actions {
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  box-shadow: var(--sales-shadow) !important;
+  backdrop-filter: none !important;
+  border-radius: 18px !important;
+}
+
+.sales-invoice-actions [data-ui-button="true"],
+.sales-invoice-actions button {
+  min-height: 36px;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+.sales-invoice-document .inv__sheet {
+  border-color: var(--sales-border, rgba(148, 163, 184, 0.26)) !important;
+  box-shadow: var(--sales-shadow, 0 24px 58px -46px rgba(15, 23, 42, 0.34)) !important;
+}
+
+.sales-invoice-document .inv__table td,
+.sales-invoice-document .inv__table th,
+.sales-invoice-document .inv__meta-v,
+.sales-invoice-document .inv__qr-text {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,160 @@
+/* Stage 77 — Phone sales table tools final cleanup
+   - search becomes a single clean field (no nested border look)
+   - magnifier stays inside the left edge of the search box
+   - page-size value sits correctly inside its frame */
+
+.phone-sales-executive-page .phone-sales-table-tools {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: ltr !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  direction: ltr !important;
+  width: 330px !important;
+  max-width: min(330px, 56vw) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search::before,
+.phone-sales-executive-page .phone-sales-table-search::after {
+  content: none !important;
+  display: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search > i,
+.phone-sales-executive-page .phone-sales-table-search > i.fa-magnifying-glass,
+.phone-sales-executive-page .phone-sales-table-search > i.fa-solid.fa-magnifying-glass {
+  position: static !important;
+  transform: none !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  flex: 0 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search input,
+.phone-sales-executive-page .phone-sales-table-search input[type='text'],
+.phone-sales-executive-page .phone-sales-table-search input[type='search'] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: #0f172a !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 38px !important;
+}
+
+.phone-sales-executive-page .phone-sales-table-search input:focus,
+.phone-sales-executive-page .phone-sales-table-search input:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size {
+  display: inline-grid !important;
+  grid-template-columns: 60px auto !important;
+  align-items: stretch !important;
+  direction: ltr !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  overflow: hidden !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size select {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 60px !important;
+  height: 38px !important;
+  padding: 2px 0 0 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  text-align: center !important;
+  font-size: .8rem !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+.phone-sales-executive-page .phone-sales-page-size span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  padding: 0 12px !important;
+  border-left: 1px solid rgba(226,232,240,.9) !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  .phone-sales-executive-page .phone-sales-table-tools {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-table-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-page-size {
+    width: fit-content !important;
+  }
+}

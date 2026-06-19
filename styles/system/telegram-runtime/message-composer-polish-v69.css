@@ -1,0 +1,375 @@
+
+/* v69 — Message Composer polish: no focus, compact sizing, normal message text weight */
+
+/* 1) Kill every visual focus/ring inside this modal */
+.message-composer-modal-overlay .mc68,
+.message-composer-modal-overlay .mc68 * {
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]),
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]):hover,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]):active,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]):focus,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]):focus-visible,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, a, [role="button"], [tabindex]):focus-within {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-control,
+.message-composer-modal-overlay .mc68 .mc68-control:hover,
+.message-composer-modal-overlay .mc68 .mc68-control:focus,
+.message-composer-modal-overlay .mc68 .mc68-control:focus-within,
+.message-composer-modal-overlay .mc68 .mc68-textarea,
+.message-composer-modal-overlay .mc68 .mc68-textarea:hover,
+.message-composer-modal-overlay .mc68 .mc68-textarea:focus,
+.message-composer-modal-overlay .mc68 .mc68-textarea:focus-visible {
+  border-color: var(--mc68-border) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Keep validation red, but never blue focus */
+.message-composer-modal-overlay .mc68 .mc68-control.is-error,
+.message-composer-modal-overlay .mc68 .mc68-control.is-error:hover,
+.message-composer-modal-overlay .mc68 .mc68-control.is-error:focus-within,
+.message-composer-modal-overlay .mc68 .mc68-textarea.is-error,
+.message-composer-modal-overlay .mc68 .mc68-textarea.is-error:hover,
+.message-composer-modal-overlay .mc68 .mc68-textarea.is-error:focus,
+.message-composer-modal-overlay .mc68 .mc68-textarea.is-error:focus-visible {
+  border-color: rgb(244, 63, 94) !important;
+  box-shadow: none !important;
+}
+
+/* 2) Overall compact pass */
+.message-composer-modal-overlay :where(.inventory-modal-shell, .modal-surface) {
+  width: min(1040px, calc(100vw - 28px)) !important;
+  max-height: min(90vh, 860px) !important;
+  border-radius: 24px !important;
+}
+
+.message-composer-modal-overlay :where(.inventory-modal-header, .modal-premium-header) {
+  min-height: 58px !important;
+  padding: 10px 16px !important;
+}
+
+.message-composer-modal-overlay :where(.inventory-modal-body, .modal-body-premium) {
+  padding: 12px 14px !important;
+}
+
+.message-composer-modal-overlay .mc68-shell {
+  gap: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-readiness-panel,
+.message-composer-modal-overlay .mc68-card,
+.message-composer-modal-overlay .mc68-preview {
+  border-radius: 18px !important;
+  padding: 11px !important;
+}
+
+.message-composer-modal-overlay .mc68-readiness-panel {
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-metric-card {
+  min-height: 62px !important;
+  padding: 8px 9px !important;
+  border-radius: 14px !important;
+}
+
+.message-composer-modal-overlay .mc68-metric-card__icon {
+  width: 26px !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  border-radius: 9px !important;
+  font-size: 9px !important;
+}
+
+.message-composer-modal-overlay .mc68-metric-card strong {
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+.message-composer-modal-overlay .mc68-metric-card small {
+  font-size: 9px !important;
+}
+
+.message-composer-modal-overlay .mc68-readiness-main {
+  gap: 7px !important;
+}
+
+.message-composer-modal-overlay .mc68-readiness-main p {
+  font-size: 10px !important;
+  line-height: 1.65 !important;
+}
+
+.message-composer-modal-overlay .mc68-checks {
+  gap: 5px !important;
+}
+
+.message-composer-modal-overlay .mc68-checks span {
+  min-height: 24px !important;
+  padding: 0 8px !important;
+  font-size: 9px !important;
+}
+
+.message-composer-modal-overlay .mc68-grid {
+  gap: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-card {
+  gap: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-card__head {
+  gap: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.message-composer-modal-overlay .mc68-card__icon {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-card__head h4 {
+  font-size: 13.5px !important;
+}
+
+.message-composer-modal-overlay .mc68-card__head p {
+  font-size: 9.5px !important;
+  line-height: 1.65 !important;
+}
+
+.message-composer-modal-overlay .mc68-segment,
+.message-composer-modal-overlay .mc68-channel-grid,
+.message-composer-modal-overlay .mc68-template-grid,
+.message-composer-modal-overlay .mc68-inline-fields {
+  gap: 7px !important;
+}
+
+.message-composer-modal-overlay .mc68-segment button {
+  min-height: 34px !important;
+  border-radius: 11px !important;
+  font-size: 10px !important;
+  gap: 6px !important;
+}
+
+/* Template buttons: force neutral compact style over older green button CSS */
+.message-composer-modal-overlay .mc68 .mc68-template-grid button,
+.message-composer-modal-overlay .mc68 .mc68-template-grid button:hover,
+.message-composer-modal-overlay .mc68 .mc68-template-grid button:focus,
+.message-composer-modal-overlay .mc68 .mc68-template-grid button:focus-visible {
+  min-height: 30px !important;
+  height: 30px !important;
+  padding: 0 8px !important;
+  border-radius: 11px !important;
+  border: 1px solid var(--mc68-border) !important;
+  background: #fff !important;
+  color: rgb(51, 65, 85) !important;
+  font-size: 9.5px !important;
+  font-weight: 850 !important;
+  gap: 6px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-template-grid button i {
+  font-size: 9.5px !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+/* Channels smaller */
+.message-composer-modal-overlay .mc68-channel {
+  min-height: 48px !important;
+  grid-template-columns: 15px minmax(0, 1fr) 30px !important;
+  gap: 7px !important;
+  padding: 7px 8px !important;
+  border-radius: 12px !important;
+}
+
+.message-composer-modal-overlay .mc68-channel__radio {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.message-composer-modal-overlay .mc68-channel.is-active .mc68-channel__radio {
+  border-width: 3px !important;
+}
+
+.message-composer-modal-overlay .mc68-channel__copy strong {
+  font-size: 10.5px !important;
+}
+
+.message-composer-modal-overlay .mc68-channel__copy small {
+  font-size: 8.5px !important;
+}
+
+.message-composer-modal-overlay .mc68-channel__icon {
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+  font-size: 13px !important;
+}
+
+/* Controls smaller and cleaner */
+.message-composer-modal-overlay .mc68-field {
+  gap: 5px !important;
+}
+
+.message-composer-modal-overlay .mc68-field label,
+.message-composer-modal-overlay .mc68-label-row span {
+  font-size: 10px !important;
+}
+
+.message-composer-modal-overlay .mc68-control {
+  min-height: 36px !important;
+  grid-template-columns: minmax(0, 1fr) 1px 28px !important;
+  gap: 7px !important;
+  padding: 0 7px !important;
+  border-radius: 11px !important;
+}
+
+.message-composer-modal-overlay .mc68-control input,
+.message-composer-modal-overlay .mc68-control select {
+  height: 32px !important;
+  line-height: 32px !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+}
+
+.message-composer-modal-overlay .mc68-control__divider {
+  height: 16px !important;
+}
+
+.message-composer-modal-overlay .mc68-control__icon {
+  width: 26px !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+}
+
+.message-composer-modal-overlay .mc68-error,
+.message-composer-modal-overlay .mc68-help {
+  font-size: 9px !important;
+  line-height: 1.55 !important;
+}
+
+/* Textarea: normal weight, compact, readable */
+.message-composer-modal-overlay .mc68 .mc68-textarea,
+.message-composer-modal-overlay .mc68 .mc68-textarea:hover,
+.message-composer-modal-overlay .mc68 .mc68-textarea:focus,
+.message-composer-modal-overlay .mc68 .mc68-textarea:focus-visible {
+  min-height: 132px !important;
+  padding: 10px !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--mc68-text) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.85 !important;
+  border-color: var(--mc68-border) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-textarea::placeholder {
+  font-weight: 500 !important;
+  color: rgb(148, 163, 184) !important;
+}
+
+.message-composer-modal-overlay .mc68-textarea-meta {
+  margin-top: -28px !important;
+  padding: 0 9px 7px !important;
+  font-size: 9px !important;
+  font-weight: 750 !important;
+}
+
+/* Variable chips smaller */
+.message-composer-modal-overlay .mc68-variables {
+  gap: 6px !important;
+  padding-top: 7px !important;
+}
+
+.message-composer-modal-overlay .mc68-variables > span {
+  font-size: 9.5px !important;
+}
+
+.message-composer-modal-overlay .mc68-variables > div {
+  gap: 5px !important;
+}
+
+.message-composer-modal-overlay .mc68-variables button {
+  min-height: 24px !important;
+  padding: 0 7px !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+}
+
+.message-composer-modal-overlay .mc68-variables small {
+  font-size: 8px !important;
+}
+
+/* Preview compact */
+.message-composer-modal-overlay .mc68-preview-card {
+  min-height: 108px !important;
+  grid-template-columns: 200px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  border-radius: 16px !important;
+}
+
+.message-composer-modal-overlay .mc68-preview-recipient {
+  padding: 8px !important;
+  border-radius: 14px !important;
+}
+
+.message-composer-modal-overlay .mc68-preview-avatar {
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  border-radius: 13px !important;
+}
+
+.message-composer-modal-overlay .mc68-preview-bubble {
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  font-size: 10.5px !important;
+  line-height: 1.8 !important;
+  font-weight: 750 !important;
+}
+
+/* Actions compact */
+.message-composer-modal-overlay .mc68-actions {
+  min-height: 48px !important;
+  padding: 7px 9px !important;
+  border-radius: 16px !important;
+}
+
+.message-composer-modal-overlay .mc68-actions :where(.premium-submit-btn, .premium-cancel-btn, button) {
+  min-height: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  padding-inline: 13px !important;
+  font-size: 10px !important;
+}
+
+@media (max-width: 980px) {
+  .message-composer-modal-overlay .mc68-readiness-panel,
+  .message-composer-modal-overlay .mc68-grid,
+  .message-composer-modal-overlay .mc68-preview-card {
+    grid-template-columns: 1fr !important;
+  }
+}

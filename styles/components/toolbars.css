@@ -1,0 +1,232 @@
+/* --- Unified premium tables & action bars sweep --- */
+@layer components {
+  .ux-action-bar {
+    @apply gap-3 rounded-[24px] px-3.5 py-3.5 md:px-4 md:py-3.5;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.985), rgba(248,250,252,0.94));
+  }
+
+  .dark .ux-action-bar {
+    background-image:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.14), transparent 40%),
+      linear-gradient(180deg, rgba(15,23,42,0.95), rgba(2,6,23,0.9));
+  }
+
+  .ux-action-bar > .ux-toolbar-actions,
+  .ux-action-bar > div:last-child {
+    display: flex;
+    @apply flex-wrap items-center justify-end gap-2;
+  }
+
+  .ux-toolbar-surface,
+  .customers-toolbar,
+  .ux-action-bar,
+  .ux-table-shell,
+  .people-table-shell {
+    backdrop-filter: blur(14px);
+  }
+
+  .ux-toolbar-surface {
+    @apply px-3.5 py-3.5 md:px-5 md:py-4;
+  }
+
+  .ux-toolbar-actions {
+    display: flex;
+    @apply flex-wrap items-center justify-end gap-2;
+  }
+
+  .ux-toolbar-actions > *,
+  .ux-table-shell__actions > * {
+    @apply shrink-0;
+  }
+
+  .ux-toolbar-actions .ux-btn,
+  .ux-table-shell__actions .ux-btn,
+  .customers-toolbar .ux-btn {
+    @apply min-h-[40px] rounded-[16px] px-3.5 text-[12px] font-black shadow-[0_16px_28px_-24px_rgba(15,23,42,0.18)];
+  }
+
+  .ux-toolbar-actions .ux-btn__icon,
+  .ux-table-shell__actions .ux-btn__icon,
+  .customers-toolbar .ux-btn__icon {
+    @apply h-7 w-7 rounded-[12px] border border-slate-200/80 bg-white/80 text-[11px] text-slate-600 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)];
+  }
+
+  .dark .ux-toolbar-actions .ux-btn__icon,
+  .dark .ux-table-shell__actions .ux-btn__icon,
+  .dark .customers-toolbar .ux-btn__icon {
+    @apply border-slate-700/80 text-slate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)];
+    background-color: rgb(15 23 42 / 0.85);
+  }
+
+  .ux-filter-chip-bar {
+    @apply gap-2.5 pb-1.5;
+  }
+
+  .ux-filter-chip {
+    @apply min-h-[42px] gap-2.5 rounded-[20px] px-3.5 py-2 text-[11px] shadow-[0_18px_30px_-24px_rgba(15,23,42,0.2)];
+  }
+
+  .ux-filter-chip__icon {
+    @apply h-6 w-6 rounded-[10px] border-0 bg-transparent text-[12px] shadow-none;
+  }
+
+  .dark .ux-filter-chip__icon {
+    @apply bg-transparent text-slate-300;
+  }
+
+  .ux-filter-chip__count {
+    @apply h-6 min-w-[24px] rounded-[10px] border border-slate-200/80 bg-white/90 px-1.5 text-[10px] shadow-[0_10px_22px_-18px_rgba(15,23,42,0.16)];
+  }
+
+  .dark .ux-filter-chip__count {
+    @apply border-slate-700/80 text-slate-200;
+    background-color: rgb(15 23 42 / 0.85);
+  }
+
+  .ux-filter-chip.is-active .ux-filter-chip__count {
+    @apply border-white/0 text-white shadow-none;
+    background-color: rgb(255 255 255 / 0.16);
+  }
+
+  table:not(.unstyled-table) thead th {
+    @apply px-4 py-3.5 text-[10.5px] font-black;
+  }
+
+  table:not(.unstyled-table) tbody tr {
+    transition: background-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  table:not(.unstyled-table) tbody tr:hover {
+    background-color: rgb(248 250 252 / 0.9);
+  }
+
+  .dark table:not(.unstyled-table) tbody tr:hover {
+    background-color: rgb(15 23 42 / 0.55);
+  }
+
+  table:not(.unstyled-table) tbody td {
+    @apply px-4 py-3.5;
+  }
+
+  .ux-table-shell__body table,
+  .people-table-shell table {
+    @apply min-w-full;
+  }
+
+  .ux-table-shell__body table tbody tr:not(:last-child) td,
+  .people-table-shell table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgb(226 232 240 / 0.72);
+  }
+
+  .dark .ux-table-shell__body table tbody tr:not(:last-child) td,
+  .dark .people-table-shell table tbody tr:not(:last-child) td {
+    border-bottom-color: rgb(51 65 85 / 0.72);
+  }
+
+  .ux-table-row-actions,
+  .inventory-table-row-actions,
+  .installment-table-actions,
+  .installment-card-actions {
+    @apply gap-1.5;
+  }
+
+  .ux-table-row-actions > button,
+  .ux-table-row-actions > a,
+  td .ux-table-row-actions > button,
+  td .ux-table-row-actions > a,
+  .inventory-table-row-actions > button,
+  .inventory-table-row-actions > a,
+  .installment-table-actions > button,
+  .installment-table-actions > a,
+  .installment-card-actions > button,
+  .installment-card-actions > a {
+    @apply min-h-[34px] rounded-[12px] px-2.5 py-1.5 text-[10.5px] shadow-[0_14px_24px_-22px_rgba(15,23,42,0.18)];
+  }
+
+  .ux-table-row-actions > button .ux-btn__icon,
+  .ux-table-row-actions > a .ux-btn__icon,
+  td .ux-table-row-actions > button .ux-btn__icon,
+  td .ux-table-row-actions > a .ux-btn__icon,
+  .inventory-table-row-actions > button .ux-btn__icon,
+  .inventory-table-row-actions > a .ux-btn__icon,
+  .installment-table-actions > button .ux-btn__icon,
+  .installment-table-actions > a .ux-btn__icon,
+  .installment-card-actions > button .ux-btn__icon,
+  .installment-card-actions > a .ux-btn__icon {
+    @apply h-6 w-6 rounded-[10px] border border-slate-200/80 bg-white/90 text-[10px] text-slate-600 shadow-none;
+  }
+
+  .dark .ux-table-row-actions > button .ux-btn__icon,
+  .dark .ux-table-row-actions > a .ux-btn__icon,
+  .dark td .ux-table-row-actions > button .ux-btn__icon,
+  .dark td .ux-table-row-actions > a .ux-btn__icon,
+  .dark .inventory-table-row-actions > button .ux-btn__icon,
+  .dark .inventory-table-row-actions > a .ux-btn__icon,
+  .dark .installment-table-actions > button .ux-btn__icon,
+  .dark .installment-table-actions > a .ux-btn__icon,
+  .dark .installment-card-actions > button .ux-btn__icon,
+  .dark .installment-card-actions > a .ux-btn__icon {
+    @apply border-slate-700/80 text-slate-200;
+    background-color: rgb(15 23 42 / 0.88);
+  }
+
+  .people-table-shell {
+    @apply rounded-[28px];
+  }
+
+  .people-table-shell table thead th,
+  .ux-table-shell table thead th {
+    @apply first:pr-5 last:pl-5;
+  }
+
+  .people-table-shell table tbody td,
+  .ux-table-shell table tbody td {
+    @apply first:pr-5 last:pl-5;
+  }
+}
+
+@media (max-width: 768px) {
+  .ux-toolbar-surface,
+  .customers-toolbar,
+  .ux-action-bar,
+  .ux-table-shell__header {
+    border-radius: 22px;
+  }
+
+  .ux-toolbar-actions,
+  .ux-table-shell__actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .ux-toolbar-actions > *,
+  .ux-table-shell__actions > * {
+    flex-grow: 1;
+  }
+
+  .ux-toolbar-actions .ux-btn,
+  .ux-table-shell__actions .ux-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .ux-filter-chip-bar {
+    gap: 0.5rem;
+  }
+
+  .ux-filter-chip {
+    min-height: 40px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
+  table:not(.unstyled-table) thead th,
+  table:not(.unstyled-table) tbody td {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}

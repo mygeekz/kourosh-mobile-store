@@ -1,0 +1,80 @@
+/* Stage 110 — Partner tabs RTL responsive alignment
+   Scope only main report tabs, not table action wrappers. */
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  direction: rtl !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important; /* flex-start is right when direction is rtl */
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 8px !important;
+  border-radius: 22px !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell::-webkit-scrollbar {
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button {
+  direction: rtl !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  white-space: nowrap !important;
+  min-height: 42px !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  scroll-snap-align: end !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button i {
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  font-size: .82rem !important;
+  line-height: 1 !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button span {
+  display: inline-block !important;
+  white-space: nowrap !important;
+}
+
+@media (min-width: 1180px) {
+  .partner-performance-executive-page .partner-report-tabs-shell {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-report-tabs-shell {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    padding: 7px !important;
+    gap: 7px !important;
+  }
+
+  .partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button {
+    min-height: 40px !important;
+    padding: 0 12px !important;
+    font-size: .78rem !important;
+  }
+}

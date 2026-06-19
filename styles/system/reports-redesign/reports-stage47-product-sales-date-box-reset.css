@@ -1,0 +1,115 @@
+/* Stage 47 — Product sales date fields reset
+   Scope: /reports/product-sales only.
+   Replaces the previous ReportFilterField/date frame stack with one clean label + one input box.
+*/
+
+.product-sales-executive-page .product-sales-date-box {
+  flex: 0 0 11.2rem !important;
+  width: 11.2rem !important;
+  min-width: 11.2rem !important;
+  max-width: 11.2rem !important;
+  height: 46px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 4px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-date-box__label {
+  display: block !important;
+  height: 12px !important;
+  min-height: 12px !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
+  color: #64748b !important;
+  font-size: .63rem !important;
+  font-weight: 850 !important;
+  line-height: 12px !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-box .app-date-field,
+.product-sales-executive-page .product-sales-date-box .app-date-field__control,
+.product-sales-executive-page .product-sales-date-box .app-date-field__control.product-sales-date-input {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-date-box .app-date-field__input,
+.product-sales-executive-page .product-sales-date-box input[data-app-date-input='true'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  direction: ltr !important;
+  text-align: center !important;
+  color: #0f172a !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .83rem !important;
+  font-weight: 900 !important;
+  line-height: 30px !important;
+  letter-spacing: .01em !important;
+  border: 1px solid rgba(148, 163, 184, .46) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-box .app-date-field__input:focus,
+.product-sales-executive-page .product-sales-date-box input[data-app-date-input='true']:focus {
+  border-color: rgba(59, 130, 246, .58) !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, .08) !important;
+}
+
+.product-sales-executive-page .product-sales-date-box .app-date-field__icon {
+  display: none !important;
+}
+
+/* Neutralize old stage 43-46 date-field frame rules after switching to product-sales-date-box. */
+.product-sales-executive-page .product-sales-date-field,
+.product-sales-executive-page .product-sales-date-field::before,
+.product-sales-executive-page .product-sales-date-field::after {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-box {
+    flex: 1 1 10.5rem !important;
+    width: auto !important;
+    min-width: 10.5rem !important;
+    max-width: none !important;
+  }
+}

@@ -1,0 +1,195 @@
+/* Stage 15 — focused sidebar active-submenu clipping fix + compact notifications polish.
+   Scope: Sidebar + Notifications only. No routes or data logic changed. */
+
+/* --- Sidebar: prevent active child border from hiding under the previous row --- */
+.app-sidebar .ux-sidebar-list li {
+  overflow: visible !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-submenu-list,
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"] {
+  margin-top: 0.34rem !important;
+  padding-top: 0.34rem !important;
+  padding-bottom: 0.12rem !important;
+  overflow: hidden !important;
+}
+
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"] > li {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"] .sidebar-nav-row[data-sidebar-active="true"] {
+  position: relative !important;
+  z-index: 3 !important;
+  outline: 1px solid var(--sidebar-active-border) !important;
+  outline-offset: -1px !important;
+}
+
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] + [data-sidebar-submenu="true"] {
+  margin-top: 0.42rem !important;
+}
+
+/* --- Notifications page: make the page feel operational, not oversized --- */
+.notifications-compact-page .page-shell-modern {
+  padding-top: 0.82rem !important;
+  padding-bottom: 0.82rem !important;
+  border-radius: 24px !important;
+  box-shadow: 0 18px 46px -40px rgba(15, 23, 42, 0.28) !important;
+}
+
+.notifications-compact-page .page-shell-kicker {
+  min-height: 24px !important;
+  padding-inline: 0.72rem !important;
+  font-size: 10.5px !important;
+}
+
+.notifications-compact-page .page-shell-kicker-dot {
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+}
+
+.notifications-compact-page .page-shell-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 13px !important;
+}
+
+.notifications-compact-page h1 {
+  font-size: 1.22rem !important;
+  line-height: 1.55 !important;
+}
+
+.notifications-compact-page .page-shell-status-chip {
+  min-height: 26px !important;
+  padding-inline: 0.72rem !important;
+  font-size: 10.5px !important;
+}
+
+.notifications-compact-page .page-shell-header-content {
+  margin-top: 0.65rem !important;
+  padding-top: 0.65rem !important;
+}
+
+.notifications-compact-page .responsive-filter-bar,
+.notifications-compact-page [data-ui-responsive-filter-bar],
+.notifications-compact-page .kp-responsive-filter-bar {
+  gap: 0.5rem !important;
+}
+
+.notifications-compact-page .ux-toolbar-search,
+.notifications-compact-page .kp-search-field-host {
+  min-height: 38px !important;
+}
+
+.notifications-compact-page .ux-toolbar-search__input,
+.notifications-compact-page .kp-search-field__input {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 15px !important;
+  font-size: 12px !important;
+}
+
+.notifications-compact-page .filter-chips-bar,
+.notifications-compact-page [data-ui-filter-chips],
+.notifications-compact-page [class*="FilterChips"] {
+  gap: 0.45rem !important;
+}
+
+.notifications-compact-page .notifications-apple-page {
+  gap: 8px !important;
+}
+
+.notifications-compact-page .notifications-apple-hero {
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+  border-radius: 18px !important;
+}
+
+.notifications-compact-page .notifications-apple-hero__icon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+}
+
+.notifications-compact-page .notifications-apple-hero h1 {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.notifications-compact-page .notifications-apple-hero p {
+  margin-top: 0 !important;
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+}
+
+.notifications-compact-page .notifications-apple-hero__status {
+  min-height: 26px !important;
+  padding-inline: 9px !important;
+  font-size: 10.5px !important;
+}
+
+.notifications-compact-page .notifications-apple-stats {
+  gap: 7px !important;
+}
+
+.notifications-compact-page .notifications-apple-stat-card {
+  min-height: 50px !important;
+  padding: 8px 10px !important;
+  border-radius: 15px !important;
+  gap: 8px !important;
+}
+
+.notifications-compact-page .notifications-apple-stat-card__icon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+}
+
+.notifications-compact-page .notifications-apple-stat-card__label {
+  font-size: 11px !important;
+}
+
+.notifications-compact-page .notifications-apple-stat-card__hint {
+  font-size: 9.5px !important;
+}
+
+.notifications-compact-page .notifications-apple-stat-card__value {
+  font-size: 16px !important;
+}
+
+.notifications-compact-page .notifications-apple-list {
+  padding: 6px !important;
+  border-radius: 16px !important;
+  max-height: 600px !important;
+}
+
+.notifications-compact-page .notifications-apple-section {
+  padding-block: 0.4rem 0.5rem !important;
+}
+
+.notifications-compact-page .notifications-apple-item {
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  margin-bottom: 7px !important;
+}
+
+.notifications-compact-page .notifications-apple-item__description {
+  margin-top: 0.2rem !important;
+  line-height: 1.65 !important;
+}
+
+@media (max-width: 768px) {
+  .notifications-compact-page .page-shell-modern {
+    border-radius: 20px !important;
+    padding: 0.75rem !important;
+  }
+
+  .notifications-compact-page .notifications-apple-hero {
+    align-items: stretch !important;
+  }
+}

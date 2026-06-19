@@ -1,0 +1,54 @@
+/* Stage 44 — Product sales filter date spacing
+   Scope: /reports/product-sales only.
+   Moves the date controls slightly left so they have enough breathing room beside presets. */
+
+.product-sales-executive-page .product-sales-control-panel__row--dates {
+  column-gap: .62rem !important;
+}
+
+/* In RTL this left margin creates breathing room between preset chips (right side)
+   and the date controls, visually shifting the dates a little to the left. */
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+.product-sales-executive-page .report-date-presets,
+.product-sales-executive-page .report-date-presets__chips {
+  margin-left: .9rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field {
+  flex-basis: 10.8rem !important;
+  width: 10.8rem !important;
+  min-width: 10.8rem !important;
+  max-width: 10.8rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  padding-inline: .34rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__label {
+  max-width: 100% !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.product-sales-executive-page .product-sales-date-field input,
+.product-sales-executive-page .product-sales-date-field input[data-app-date-input] {
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-presets,
+  .product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+  .product-sales-executive-page .report-date-presets,
+  .product-sales-executive-page .report-date-presets__chips {
+    margin-left: 0 !important;
+  }
+
+  .product-sales-executive-page .product-sales-date-field {
+    flex: 1 1 10rem !important;
+    width: auto !important;
+    min-width: 10rem !important;
+    max-width: none !important;
+  }
+}

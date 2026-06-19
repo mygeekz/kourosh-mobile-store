@@ -1,0 +1,235 @@
+/* Phase 3: settings data operations, backup cards, restore zone, and log surfaces.
+   This file intentionally avoids @apply to stay safe with the project's Tailwind/PostCSS setup. */
+
+.settings-data-phase3 {
+  --settings-ops-border: rgba(148, 163, 184, 0.24);
+  --settings-ops-surface: rgba(255, 255, 255, 0.94);
+  --settings-ops-muted: rgba(248, 250, 252, 0.9);
+  --settings-ops-text: rgb(15, 23, 42);
+  --settings-ops-subtext: rgb(100, 116, 139);
+}
+
+.dark .settings-data-phase3 {
+  --settings-ops-border: rgba(51, 65, 85, 0.82);
+  --settings-ops-surface: rgba(15, 23, 42, 0.78);
+  --settings-ops-muted: rgba(2, 6, 23, 0.48);
+  --settings-ops-text: rgb(241, 245, 249);
+  --settings-ops-subtext: rgb(148, 163, 184);
+}
+
+.settings-data-phase3 .settings-data-root-card {
+  overflow: visible !important;
+}
+
+.settings-data-hero-action,
+.settings-restore-zone {
+  border: 1px solid var(--settings-ops-border);
+  background: var(--settings-ops-surface);
+  border-radius: 24px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: none;
+}
+
+.settings-data-hero-action__copy,
+.settings-restore-zone__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.settings-data-hero-action__icon,
+.settings-restore-zone__icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid var(--settings-ops-border);
+  background: var(--settings-ops-muted);
+  color: rgb(71, 85, 105);
+}
+
+.dark .settings-data-hero-action__icon,
+.dark .settings-restore-zone__icon {
+  color: rgb(226, 232, 240);
+}
+
+.settings-data-hero-action__title,
+.settings-restore-zone__title {
+  margin: 0;
+  color: var(--settings-ops-text);
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.6;
+}
+
+.settings-data-hero-action__text,
+.settings-restore-zone__text {
+  margin: 4px 0 0;
+  color: var(--settings-ops-subtext);
+  font-size: 12px;
+  line-height: 1.95;
+  max-width: 720px;
+  overflow-wrap: anywhere;
+}
+
+.settings-data-phase3 .backup-scheduler-shell,
+.settings-data-phase3 .backup-auto-card,
+.settings-data-phase3 .settings-backup-list-card {
+  box-shadow: none !important;
+}
+
+.settings-data-phase3 .backup-scheduler-shell [class*="line-clamp"],
+.settings-data-phase3 .settings-backup-list-card [class*="line-clamp"] {
+  display: block !important;
+  overflow: visible !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+}
+
+.settings-data-phase3 .backup-file-card {
+  position: relative;
+  border-radius: 22px !important;
+}
+
+.settings-data-phase3 .backup-file-card__name {
+  display: block;
+  direction: ltr;
+  unicode-bidi: plaintext;
+  text-align: right;
+  max-width: min(100%, 560px);
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+}
+
+.settings-data-phase3 .backup-file-card__actions .app-command-button,
+.settings-data-phase3 .backup-file-card__actions .backup-file-action {
+  min-height: 36px !important;
+  border-radius: 13px !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+.settings-data-phase3 .backup-file-card__meta-pill,
+.settings-data-phase3 .backup-file-card__badge {
+  white-space: nowrap;
+}
+
+.settings-restore-zone {
+  margin-top: 18px;
+  align-items: stretch;
+  flex-direction: column;
+  border-color: rgba(239, 68, 68, 0.26);
+  background: linear-gradient(180deg, rgba(254, 242, 242, 0.82), rgba(255, 255, 255, 0.94));
+}
+
+.dark .settings-restore-zone {
+  border-color: rgba(127, 29, 29, 0.62);
+  background: linear-gradient(180deg, rgba(69, 10, 10, 0.28), rgba(15, 23, 42, 0.72));
+}
+
+.settings-restore-zone__icon {
+  border-color: rgba(239, 68, 68, 0.26);
+  background: rgba(254, 226, 226, 0.9);
+  color: rgb(185, 28, 28);
+}
+
+.dark .settings-restore-zone__icon {
+  border-color: rgba(127, 29, 29, 0.62);
+  background: rgba(69, 10, 10, 0.42);
+  color: rgb(252, 165, 165);
+}
+
+.settings-restore-zone__warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(255, 255, 255, 0.72);
+  color: rgb(153, 27, 27);
+  border-radius: 18px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.9;
+}
+
+.dark .settings-restore-zone__warning {
+  border-color: rgba(127, 29, 29, 0.62);
+  background: rgba(2, 6, 23, 0.32);
+  color: rgb(254, 202, 202);
+}
+
+.settings-restore-zone__warning i {
+  margin-top: 4px;
+  flex: 0 0 auto;
+}
+
+.settings-restore-zone__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Pricing/log surfaces share the same command density and avoid clipped values. */
+.settings-pricing-log-shell .app-command-button {
+  box-shadow: none !important;
+}
+
+.settings-log-filter-grid label,
+.settings-pricing-log-item,
+.settings-pricing-log-item * {
+  min-width: 0;
+}
+
+.settings-pricing-log-list {
+  max-height: none;
+}
+
+.settings-pricing-log-item span,
+.settings-pricing-log-item div {
+  overflow-wrap: anywhere;
+}
+
+.settings-pricing-log-item [class*="truncate"] {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+@media (max-width: 768px) {
+  .settings-data-hero-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-data-hero-action > .app-command-button,
+  .settings-restore-zone__actions > .app-command-button {
+    width: 100%;
+  }
+
+  .settings-data-phase3 .backup-file-card__actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .settings-data-phase3 .backup-file-card__actions .app-command-button,
+  .settings-data-phase3 .backup-file-card__actions .backup-file-action {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .settings-data-phase3 .backup-file-card__actions {
+    grid-template-columns: 1fr;
+  }
+}

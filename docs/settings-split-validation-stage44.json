@@ -1,0 +1,25 @@
+{
+  "stage": 44,
+  "scope": "Settings Telegram model type cleanup",
+  "changedFiles": [
+    "pages/settings/settingsPanelTypes.ts",
+    "pages/settings/SettingsTelegramPanel.tsx",
+    "docs/settings-telegram-model-types-stage44.md",
+    "docs/settings-split-validation-stage44.json"
+  ],
+  "uiChanged": false,
+  "jsxChanged": false,
+  "cssChanged": false,
+  "stateOwnershipChanged": false,
+  "windowsImportFixPreserved": true,
+  "ambiguousSettingsImportPresent": false,
+  "missingLocalImports": 0,
+  "cjsSyntaxChecks": {
+    "scripts/vite-dev.cjs": "passed",
+    "scripts/postcss-warning-filter.cjs": "passed"
+  },
+  "notes": [
+    "TelegramAudience local duplicate type was removed from SettingsTelegramPanel.tsx and imported from settingsPanelTypes.ts.",
+    "Telegram panel model types were narrowed without changing runtime behavior."
+  ]
+}

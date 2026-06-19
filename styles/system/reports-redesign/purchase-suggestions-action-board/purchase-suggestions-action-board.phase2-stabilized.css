@@ -1,0 +1,3728 @@
+/*
+  Stage 236 — Purchase Suggestions + Smart Insight Action Board CSS consolidation phase 2
+  Conservative merge of stage210-stage219 mixed CSS files.
+  IMPORTANT: source order is preserved exactly as previous index.tsx imports.
+*/
+
+
+/* ===== BEGIN reports-stage210-purchase-suggestions-redesign.css ===== */
+
+/* Stage 210 — Purchase Suggestions full redesign */
+
+.purchase210-page {
+  --p210-border: rgba(203, 213, 225, 0.88);
+  --p210-soft: rgba(248, 250, 252, 0.82);
+  --p210-text: #0f172a;
+  --p210-muted: #64748b;
+  display: grid;
+  gap: 16px;
+  padding: 20px 22px 28px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(37, 99, 235, 0.04), transparent 26%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.74), rgba(255,255,255,0.96));
+}
+
+.purchase210-hero,
+.purchase210-kpi-card,
+.purchase210-toolbar,
+.purchase210-table-card,
+.purchase210-note {
+  border: 1px solid var(--p210-border);
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255,255,255,0.92);
+}
+
+.purchase210-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  padding: 20px 24px;
+}
+
+.purchase210-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 16% 28%, rgba(37,99,235,0.06), transparent 30%);
+  pointer-events: none;
+}
+
+.purchase210-hero__topline,
+.purchase210-hero__content,
+.purchase210-status-strip {
+  position: relative;
+  z-index: 1;
+}
+
+.purchase210-hero__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.purchase210-back-btn {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 15px;
+  background: rgba(255,255,255,0.88);
+  padding: 0 16px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 900;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.purchase210-back-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.28);
+  background: #fff;
+}
+
+.purchase210-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.purchase210-hero__content {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 22px;
+  text-align: right;
+}
+
+.purchase210-hero-icon {
+  display: grid;
+  width: 86px;
+  height: 86px;
+  place-items: center;
+  border: 1px solid rgba(147,197,253,0.5);
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(239,246,255,0.92), rgba(245,243,255,0.9));
+  color: #2563eb;
+  font-size: 34px;
+  box-shadow: 0 16px 42px rgba(37,99,235,0.12);
+}
+
+.purchase210-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid rgba(147,197,253,0.55);
+  border-radius: 999px;
+  background: rgba(239,246,255,0.82);
+  padding: 4px 10px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.purchase210-hero h1 {
+  margin: 10px 0 0;
+  color: var(--p210-text);
+  font-size: clamp(24px, 2vw, 34px);
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.purchase210-hero p {
+  margin: 8px 0 0;
+  color: var(--p210-muted);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.8;
+}
+
+.purchase210-status-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.purchase210-status-strip span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(226,232,240,0.95);
+  border-radius: 999px;
+  background: rgba(248,250,252,0.82);
+  padding: 0 12px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.purchase210-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.purchase210-kpi-card {
+  display: flex;
+  min-height: 92px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  border-radius: 22px;
+  padding: 16px 18px;
+}
+
+.purchase210-kpi-card small,
+.purchase210-kpi-card em {
+  display: block;
+}
+
+.purchase210-kpi-card small {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.purchase210-kpi-card strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--p210-text);
+  font-size: 25px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.purchase210-kpi-card em {
+  margin-top: 7px;
+  color: #64748b;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.purchase210-kpi-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  place-items: center;
+  border-radius: 17px;
+  font-size: 16px;
+}
+
+.purchase210-kpi-icon--blue { background: #eff6ff; color: #2563eb; }
+.purchase210-kpi-icon--rose { background: #fff1f2; color: #e11d48; }
+.purchase210-kpi-icon--orange { background: #fff7ed; color: #ea580c; }
+.purchase210-kpi-icon--violet { background: #f5f3ff; color: #7c3aed; }
+
+.purchase210-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  border-radius: 24px;
+  padding: 12px 14px;
+}
+
+.purchase210-searchbox {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(203,213,225,0.95);
+  border-radius: 16px;
+  background: rgba(248,250,252,0.78);
+  padding: 0 13px;
+  color: #64748b;
+}
+
+.purchase210-searchbox input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.purchase210-chip-group,
+.purchase210-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.purchase210-filter-chip,
+.purchase210-toolbar-actions button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(203,213,225,0.95);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.86);
+  padding: 0 13px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+  transition: transform .16s ease, background .16s ease, border-color .16s ease;
+}
+
+.purchase210-filter-chip:hover,
+.purchase210-toolbar-actions button:hover {
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+.purchase210-filter-chip b {
+  display: inline-flex;
+  min-width: 22px;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(241,245,249,0.95);
+  padding: 2px 7px;
+}
+
+.purchase210-filter-chip.is-active {
+  border-color: rgba(37,99,235,0.28);
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.purchase210-filter-chip--urgent.is-active { border-color: rgba(244,63,94,0.32); background: #fff1f2; color: #e11d48; }
+.purchase210-filter-chip--soon.is-active { border-color: rgba(249,115,22,0.32); background: #fff7ed; color: #ea580c; }
+
+.purchase210-table-card {
+  overflow: hidden;
+  border-radius: 26px;
+}
+
+.purchase210-table-headline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(226,232,240,0.88);
+  padding: 16px 18px;
+}
+
+.purchase210-table-headline h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.purchase210-table-headline p,
+.purchase210-table-headline span {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.purchase210-table-wrap {
+  overflow: auto;
+}
+
+.purchase210-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  text-align: right;
+}
+
+.purchase210-table thead {
+  background: rgba(248,250,252,0.9);
+}
+
+.purchase210-table th {
+  border-bottom: 1px solid rgba(226,232,240,0.9);
+  padding: 13px 16px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.purchase210-table td {
+  border-bottom: 1px solid rgba(226,232,240,0.72);
+  padding: 13px 16px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 800;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.purchase210-table tbody tr:hover {
+  background: rgba(248,250,252,0.76);
+}
+
+.purchase210-product-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.purchase210-product-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  place-items: center;
+  border: 1px solid rgba(203,213,225,0.92);
+  border-radius: 15px;
+  background: #fff;
+  color: #64748b;
+}
+
+.purchase210-product-name,
+.purchase210-product-type {
+  display: block;
+}
+
+.purchase210-product-name {
+  overflow: hidden;
+  max-width: 360px;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+}
+
+.purchase210-product-type {
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.purchase210-stock-value {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 950;
+}
+
+.purchase210-stock-value i {
+  color: #059669;
+  font-size: 7px;
+}
+
+.purchase210-muted-number {
+  color: #475569;
+  font-weight: 950;
+}
+
+.purchase210-days-badge {
+  display: inline-flex;
+  min-width: 58px;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.purchase210-days-badge--danger { background: #fff1f2; color: #e11d48; box-shadow: inset 0 0 0 1px rgba(244,63,94,.2); }
+.purchase210-days-badge--warning { background: #fff7ed; color: #ea580c; box-shadow: inset 0 0 0 1px rgba(249,115,22,.22); }
+.purchase210-days-badge--safe { background: #ecfdf5; color: #059669; box-shadow: inset 0 0 0 1px rgba(16,185,129,.2); }
+
+.purchase210-suggested-qty {
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.purchase210-analyze-btn {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(147,197,253,0.65);
+  border-radius: 11px;
+  background: #eff6ff;
+  padding: 0 13px;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.purchase210-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.purchase210-pagination div {
+  display: flex;
+  gap: 8px;
+}
+
+.purchase210-pagination button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(203,213,225,.9);
+  border-radius: 11px;
+  background: #fff;
+  color: #475569;
+}
+
+.purchase210-pagination button:disabled {
+  opacity: .45;
+}
+
+.purchase210-state {
+  padding: 32px;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.purchase210-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-color: rgba(147,197,253,0.55);
+  border-radius: 18px;
+  background: rgba(239,246,255,0.62);
+  padding: 13px 16px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.8;
+}
+
+.purchase210-note i {
+  color: #2563eb;
+}
+
+.purchase210-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2400;
+  display: flex;
+  justify-content: flex-start;
+  background: rgba(15,23,42,0.42);
+  backdrop-filter: blur(8px);
+}
+
+.purchase210-drawer {
+  width: min(450px, 100vw);
+  height: 100%;
+  overflow: hidden;
+  border-left: 1px solid rgba(203,213,225,.9);
+  background: #fff;
+  box-shadow: 0 30px 90px rgba(15,23,42,.2);
+}
+
+.purchase210-drawer header {
+  border-bottom: 1px solid rgba(226,232,240,.9);
+  padding: 22px;
+  background: linear-gradient(180deg, #fff7ed, #fff);
+}
+
+.purchase210-drawer header button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid rgba(203,213,225,.9);
+  border-radius: 14px;
+  background: #fff;
+  color: #475569;
+}
+
+.purchase210-drawer header span {
+  display: inline-flex;
+  margin-top: 16px;
+  border: 1px solid rgba(253,186,116,.55);
+  border-radius: 999px;
+  background: #fff;
+  padding: 4px 10px;
+  color: #ea580c;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.purchase210-drawer h3 {
+  margin: 12px 0 0;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.purchase210-drawer p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.8;
+}
+
+.purchase210-drawer main {
+  padding: 18px;
+}
+
+.purchase210-drawer-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.purchase210-drawer-grid > div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 16px;
+  background: rgba(248,250,252,.74);
+  padding: 12px;
+}
+
+.purchase210-drawer-grid i {
+  color: #2563eb;
+}
+
+.purchase210-drawer-grid small {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.purchase210-drawer-grid strong {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.purchase210-drawer-result {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  border: 1px solid rgba(253,186,116,.55);
+  border-radius: 20px;
+  background: #fff7ed;
+  padding: 15px;
+  color: #9a3412;
+}
+
+.purchase210-drawer-result > i {
+  margin-top: 4px;
+}
+
+.purchase210-drawer-result strong {
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.purchase210-drawer-result p {
+  color: #9a3412;
+  font-size: 12px;
+}
+
+.dark .purchase210-page {
+  --p210-border: rgba(51, 65, 85, 0.92);
+  --p210-soft: rgba(15, 23, 42, 0.72);
+  --p210-text: #f8fafc;
+  --p210-muted: #cbd5e1;
+  background: linear-gradient(180deg, #020617, #0f172a);
+}
+
+.dark .purchase210-hero,
+.dark .purchase210-kpi-card,
+.dark .purchase210-toolbar,
+.dark .purchase210-table-card,
+.dark .purchase210-note,
+.dark .purchase210-table thead,
+.dark .purchase210-product-icon,
+.dark .purchase210-drawer,
+.dark .purchase210-drawer-grid > div {
+  background: rgba(15,23,42,0.74);
+  border-color: rgba(51,65,85,.92);
+}
+
+.dark .purchase210-table td,
+.dark .purchase210-table th,
+.dark .purchase210-table-headline,
+.dark .purchase210-table td {
+  border-color: rgba(51,65,85,.9);
+}
+
+.dark .purchase210-hero h1,
+.dark .purchase210-table-headline h2,
+.dark .purchase210-kpi-card strong,
+.dark .purchase210-product-name,
+.dark .purchase210-drawer h3,
+.dark .purchase210-drawer-grid strong {
+  color: #f8fafc;
+}
+
+.dark .purchase210-table td,
+.dark .purchase210-searchbox input,
+.dark .purchase210-muted-number {
+  color: #cbd5e1;
+}
+
+.dark .purchase210-searchbox,
+.dark .purchase210-filter-chip,
+.dark .purchase210-toolbar-actions button,
+.dark .purchase210-back-btn,
+.dark .purchase210-pagination button,
+.dark .purchase210-drawer header button {
+  border-color: rgba(51,65,85,.92);
+  background: rgba(15,23,42,.78);
+  color: #cbd5e1;
+}
+
+@media (max-width: 1180px) {
+  .purchase210-kpi-grid,
+  .purchase210-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .purchase210-toolbar-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 760px) {
+  .purchase210-page {
+    padding: 14px;
+  }
+  .purchase210-hero__content,
+  .purchase210-kpi-grid,
+  .purchase210-toolbar {
+    grid-template-columns: 1fr;
+  }
+  .purchase210-hero-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 26px;
+  }
+  .purchase210-hero__topline,
+  .purchase210-table-headline,
+  .purchase210-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .purchase210-chip-group,
+  .purchase210-toolbar-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* ===== END reports-stage210-purchase-suggestions-redesign.css ===== */
+
+
+/* ===== BEGIN reports-stage211-smart-insights-action-board.css ===== */
+
+
+/* Stage 211 — Smart Insights action board redesign for the "3 suggested actions" entry point.
+   Data remains sourced from alertManagementItems / insights / todayActions / predictiveEngine. */
+
+.sib211-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2360;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  padding-right: 300px;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(59, 130, 246, 0.08), transparent 34%),
+    rgba(15, 23, 42, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.sib211-shell {
+  width: min(1320px, calc(100vw - 340px));
+  max-height: min(90vh, 860px);
+  overflow: hidden;
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(248,250,252,0.98)),
+    radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.08), transparent 30%);
+  box-shadow:
+    0 34px 96px rgba(15, 23, 42, 0.20),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.sib211-header {
+  display: flex;
+  min-height: 118px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+  padding: 22px 28px 18px;
+}
+
+.sib211-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.sib211-breadcrumb strong {
+  color: #2563eb;
+}
+
+.sib211-header h2 {
+  margin: 9px 0 0;
+  color: #0f172a;
+  font-size: clamp(25px, 2vw, 34px);
+  font-weight: 950;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.sib211-header p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.75;
+}
+
+.sib211-header__meta {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  padding: 8px 12px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.sib211-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.13);
+}
+
+.sib211-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.74);
+  padding: 16px 28px;
+}
+
+.sib211-kpi {
+  display: flex;
+  min-height: 92px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.84);
+  padding: 14px 16px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.035);
+}
+
+.sib211-kpi__icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  place-items: center;
+  border-radius: 17px;
+  font-size: 16px;
+}
+
+.sib211-kpi--emerald .sib211-kpi__icon { background: #ecfdf5; color: #059669; }
+.sib211-kpi--violet .sib211-kpi__icon { background: #f5f3ff; color: #7c3aed; }
+.sib211-kpi--blue .sib211-kpi__icon { background: #eff6ff; color: #2563eb; }
+.sib211-kpi--orange .sib211-kpi__icon { background: #fff7ed; color: #ea580c; }
+
+.sib211-kpi small {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.sib211-kpi strong {
+  display: block;
+  margin-top: 6px;
+  color: #0f172a;
+  font-size: 1.28rem;
+  font-weight: 950;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.sib211-kpi em {
+  display: block;
+  margin-top: 5px;
+  color: #10b981;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.sib211-main {
+  display: grid;
+  direction: ltr;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 16px;
+  max-height: calc(min(90vh, 860px) - 250px);
+  overflow: hidden;
+  padding: 18px 28px 24px;
+}
+
+.sib211-detail,
+.sib211-list {
+  direction: rtl;
+}
+
+.sib211-detail {
+  grid-column: 1;
+  overflow: auto;
+  border: 1px solid rgba(252, 165, 165, 0.62);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(254, 226, 226, 0.58), transparent 40%),
+    rgba(255,255,255,0.88);
+  padding: 18px;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.045);
+}
+
+.sib211-list {
+  grid-column: 2;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sib211-detail__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sib211-severity {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 10.5px;
+  font-weight: 950;
+}
+
+.sib211-severity--critical,
+.sib211-severity--high {
+  border: 1px solid rgba(252, 165, 165, 0.75);
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.sib211-severity--medium {
+  border: 1px solid rgba(253, 186, 116, 0.75);
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.sib211-severity--low,
+.sib211-severity--positive {
+  border: 1px solid rgba(167, 243, 208, 0.78);
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.sib211-pin {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.9);
+  color: #475569;
+}
+
+.sib211-detail h3 {
+  margin: 16px 0 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+  line-height: 1.65;
+}
+
+.sib211-detail p {
+  margin: 9px 0 0;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.9;
+}
+
+.sib211-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.sib211-detail-grid div {
+  min-height: 72px;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 16px;
+  background: rgba(248,250,252,0.72);
+  padding: 11px 12px;
+}
+
+.sib211-detail-grid small,
+.sib211-impact span {
+  display: block;
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 900;
+}
+
+.sib211-detail-grid strong {
+  display: block;
+  margin-top: 7px;
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 950;
+}
+
+.sib211-impact,
+.sib211-reasons {
+  margin-top: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.78);
+  padding: 13px;
+}
+
+.sib211-impact h4,
+.sib211-reasons h4 {
+  margin: 0 0 11px;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.sib211-impact div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid rgba(226, 232, 240, 0.68);
+  padding: 10px 0;
+}
+
+.sib211-impact div:first-of-type {
+  border-top: 0;
+}
+
+.sib211-impact strong {
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 950;
+  text-align: left;
+}
+
+.sib211-reasons div {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+  color: #0f172a;
+  font-size: 11.5px;
+  font-weight: 830;
+  line-height: 1.75;
+}
+
+.sib211-reasons i {
+  color: #059669;
+  margin-top: 5px;
+}
+
+.sib211-empty,
+.sib211-empty-state {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sib211-detail__actions {
+  display: grid;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.sib211-action {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 13px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.sib211-action--primary {
+  border: 1px solid rgba(37, 99, 235, 0.88);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.20);
+}
+
+.sib211-action--secondary {
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  background: rgba(255,255,255,0.86);
+  color: #1d4ed8;
+}
+
+.sib211-action--disabled {
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #f8fafc;
+  color: #94a3b8;
+}
+
+.sib211-list__toolbar {
+  display: flex;
+  min-height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.9);
+  padding: 10px 14px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.035);
+}
+
+.sib211-list__toolbar h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.sib211-list__toolbar span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.sib211-tabs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.sib211-tabs button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 999px;
+  background: rgba(248,250,252,0.82);
+  padding: 0 11px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.sib211-tabs button.is-active {
+  border-color: rgba(37, 99, 235, 0.35);
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.sib211-tabs b {
+  font-weight: 950;
+}
+
+.sib211-tab-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+}
+
+.sib211-tab-dot--blue { background: #2563eb; }
+.sib211-tab-dot--rose { background: #ef4444; }
+.sib211-tab-dot--amber { background: #f59e0b; }
+.sib211-tab-dot--emerald { background: #10b981; }
+.sib211-tab-dot--slate { background: #64748b; }
+
+.sib211-table {
+  overflow: hidden;
+  margin-top: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.035);
+}
+
+.sib211-table__head,
+.sib211-row {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.55fr) minmax(160px, .95fr) 86px 118px 110px;
+  gap: 12px;
+  align-items: center;
+}
+
+.sib211-table__head {
+  min-height: 42px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+  background: rgba(248,250,252,0.9);
+  padding: 0 16px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.sib211-table__body {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.sib211-row {
+  width: 100%;
+  min-height: 74px;
+  border: 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.74);
+  background: transparent;
+  padding: 10px 16px;
+  text-align: right;
+  transition: background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.sib211-row:last-child {
+  border-bottom: 0;
+}
+
+.sib211-row:hover,
+.sib211-row.is-active {
+  background: rgba(239, 246, 255, 0.72);
+}
+
+.sib211-row__title {
+  min-width: 0;
+}
+
+.sib211-row__title strong {
+  display: block;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.55;
+}
+
+.sib211-row__title em,
+.sib211-row small {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 760;
+  line-height: 1.5;
+}
+
+.sib211-type {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 10px;
+  font-weight: 950;
+}
+
+.sib211-type--critical,
+.sib211-type--high {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.sib211-type--medium {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.sib211-type--low {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.sib211-type--positive {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.sib211-row__confidence {
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.sib211-status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 6px;
+  border-radius: 999px;
+}
+
+.sib211-status-dot--done { background: #10b981; }
+.sib211-status-dot--action { background: #f59e0b; }
+.sib211-status-dot--new { background: #2563eb; }
+
+.sib211-related {
+  margin-top: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.88);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.88);
+  padding: 14px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.035);
+}
+
+.sib211-related__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sib211-related__title h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.sib211-related__title button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.sib211-related__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.sib211-related__grid button {
+  min-height: 90px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 18px;
+  background: rgba(248,250,252,0.66);
+  padding: 12px;
+  text-align: right;
+}
+
+.sib211-related__icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 15px;
+  margin-bottom: 8px;
+}
+
+.sib211-related__icon--critical,
+.sib211-related__icon--high { background: #fff1f2; color: #e11d48; }
+.sib211-related__icon--medium { background: #fff7ed; color: #ea580c; }
+.sib211-related__icon--low { background: #eff6ff; color: #2563eb; }
+.sib211-related__icon--positive { background: #ecfdf5; color: #059669; }
+
+.sib211-related strong {
+  display: block;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.55;
+}
+
+.sib211-related small,
+.sib211-related em {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 780;
+}
+
+.dark .sib211-shell,
+.dark .sib211-kpi,
+.dark .sib211-detail,
+.dark .sib211-list__toolbar,
+.dark .sib211-table,
+.dark .sib211-related {
+  border-color: rgba(51,65,85,0.92);
+  background: rgba(15, 23, 42, 0.96);
+}
+
+.dark .sib211-header,
+.dark .sib211-kpis {
+  border-color: rgba(51,65,85,0.92);
+}
+
+.dark .sib211-header h2,
+.dark .sib211-kpi strong,
+.dark .sib211-detail h3,
+.dark .sib211-detail-grid strong,
+.dark .sib211-impact h4,
+.dark .sib211-reasons h4,
+.dark .sib211-list__toolbar h3,
+.dark .sib211-table__head,
+.dark .sib211-row__title strong,
+.dark .sib211-row__confidence,
+.dark .sib211-related__title h3,
+.dark .sib211-related strong {
+  color: #f8fafc;
+}
+
+.dark .sib211-header p,
+.dark .sib211-kpi small,
+.dark .sib211-detail p,
+.dark .sib211-detail-grid small,
+.dark .sib211-impact span,
+.dark .sib211-row__title em,
+.dark .sib211-row small,
+.dark .sib211-related small,
+.dark .sib211-related em {
+  color: #cbd5e1;
+}
+
+@media (max-width: 1320px) {
+  .sib211-overlay {
+    padding-right: 282px;
+  }
+
+  .sib211-shell {
+    width: min(1120px, calc(100vw - 320px));
+  }
+
+  .sib211-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sib211-main {
+    grid-template-columns: 310px minmax(0, 1fr);
+  }
+
+  .sib211-related__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .sib211-overlay {
+    padding: 14px;
+  }
+
+  .sib211-shell {
+    width: min(100%, 1060px);
+  }
+
+  .sib211-main {
+    direction: rtl;
+    grid-template-columns: 1fr;
+    max-height: calc(90vh - 238px);
+    overflow-y: auto;
+  }
+
+  .sib211-detail,
+  .sib211-list {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .sib211-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sib211-kpis {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .sib211-main {
+    padding: 14px;
+  }
+
+  .sib211-table__head {
+    display: none;
+  }
+
+  .sib211-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .sib211-related__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== END reports-stage211-smart-insights-action-board.css ===== */
+
+
+/* ===== BEGIN reports-stage212-purchase-suggestions-compact-header-search.css ===== */
+
+/* Stage 212 — Compact Purchase Suggestions header + single-frame search field */
+
+.purchase210-page {
+  gap: 12px !important;
+  padding: 14px 18px 24px !important;
+}
+
+.purchase210-hero {
+  border-radius: 22px !important;
+  padding: 14px 18px !important;
+}
+
+.purchase210-hero::before {
+  background: radial-gradient(circle at 18% 22%, rgba(37,99,235,0.035), transparent 28%) !important;
+}
+
+.purchase210-hero__topline {
+  min-height: 34px !important;
+  gap: 10px !important;
+}
+
+.purchase210-back-btn {
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  padding: 0 12px !important;
+  font-size: 11.5px !important;
+  gap: 7px !important;
+}
+
+.purchase210-breadcrumb {
+  font-size: 10.5px !important;
+  gap: 6px !important;
+}
+
+.purchase210-hero__content {
+  grid-template-columns: 58px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  margin-top: 10px !important;
+  align-items: center !important;
+}
+
+.purchase210-hero-icon {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 18px !important;
+  font-size: 22px !important;
+  box-shadow: 0 10px 26px rgba(37,99,235,0.08) !important;
+}
+
+.purchase210-eyebrow {
+  padding: 3px 9px !important;
+  font-size: 10px !important;
+  line-height: 1.4 !important;
+}
+
+.purchase210-hero h1 {
+  margin-top: 6px !important;
+  font-size: clamp(20px, 1.55vw, 25px) !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.purchase210-hero p {
+  margin-top: 5px !important;
+  font-size: 11.5px !important;
+  line-height: 1.65 !important;
+}
+
+.purchase210-status-strip {
+  margin-top: 12px !important;
+  gap: 6px !important;
+}
+
+.purchase210-status-strip span {
+  min-height: 26px !important;
+  padding: 0 10px !important;
+  gap: 6px !important;
+  font-size: 10.5px !important;
+}
+
+.purchase210-kpi-grid {
+  gap: 10px !important;
+}
+
+.purchase210-kpi-card {
+  min-height: 76px !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+  gap: 10px !important;
+}
+
+.purchase210-kpi-card small {
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+}
+
+.purchase210-kpi-card strong {
+  margin-top: 5px !important;
+  font-size: 20px !important;
+  line-height: 1.15 !important;
+}
+
+.purchase210-kpi-card em {
+  margin-top: 4px !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+
+.purchase210-kpi-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+}
+
+.purchase210-toolbar {
+  grid-template-columns: minmax(240px, 1fr) auto auto !important;
+  gap: 8px !important;
+  border-radius: 20px !important;
+  padding: 9px 10px !important;
+}
+
+.purchase210-searchbox {
+  min-height: 38px !important;
+  height: 38px !important;
+  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,0.92) !important;
+  box-shadow: none !important;
+  padding: 0 11px !important;
+  overflow: hidden !important;
+}
+
+.purchase210-searchbox input,
+.purchase210-searchbox input[type='text'],
+.purchase210-searchbox input[type='search'] {
+  height: 100% !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+}
+
+.purchase210-searchbox input:focus,
+.purchase210-searchbox input:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.purchase210-filter-chip,
+.purchase210-toolbar-actions button {
+  min-height: 36px !important;
+  border-radius: 13px !important;
+  padding: 0 12px !important;
+  font-size: 11px !important;
+}
+
+.purchase210-table-card {
+  border-radius: 22px !important;
+}
+
+.purchase210-table-headline {
+  padding: 14px 16px !important;
+}
+
+.purchase210-table-headline h2 {
+  font-size: 15px !important;
+}
+
+.purchase210-table-headline p,
+.purchase210-table-headline span {
+  font-size: 10.5px !important;
+}
+
+@media (max-width: 900px) {
+  .purchase210-hero__content {
+    grid-template-columns: 1fr !important;
+  }
+
+  .purchase210-hero-icon {
+    display: none !important;
+  }
+
+  .purchase210-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== END reports-stage212-purchase-suggestions-compact-header-search.css ===== */
+
+
+/* ===== BEGIN reports-stage213-smart-insights-action-board-fit.css ===== */
+
+/* Stage 213 — Smart Insights action board fit & cleanup
+   Removes visual excess from the 3 suggested actions board: no fake "view all", no long source note,
+   shorter header/KPIs, visible lower sections on 1366x768-class screens. */
+
+.sib211-overlay {
+  padding-block: 10px !important;
+}
+
+.sib211-shell {
+  max-height: calc(100vh - 22px) !important;
+  border-radius: 26px !important;
+}
+
+.sib211-header {
+  min-height: 82px !important;
+  padding: 14px 24px 12px !important;
+  gap: 16px !important;
+}
+
+.sib211-breadcrumb {
+  font-size: 10px !important;
+}
+
+.sib211-header h2 {
+  margin-top: 5px !important;
+  font-size: clamp(22px, 1.55vw, 28px) !important;
+  line-height: 1.12 !important;
+}
+
+.sib211-header p {
+  margin-top: 5px !important;
+  font-size: 11.5px !important;
+  line-height: 1.55 !important;
+}
+
+.sib211-header__meta {
+  padding: 6px 10px !important;
+  font-size: 10.5px !important;
+}
+
+.sib211-kpis {
+  gap: 10px !important;
+  padding: 10px 24px !important;
+}
+
+.sib211-kpi {
+  min-height: 70px !important;
+  border-radius: 18px !important;
+  padding: 10px 12px !important;
+}
+
+.sib211-kpi__icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+}
+
+.sib211-kpi small {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+
+.sib211-kpi strong {
+  margin-top: 4px !important;
+  font-size: 1.05rem !important;
+  line-height: 1.18 !important;
+}
+
+.sib211-kpi em {
+  margin-top: 3px !important;
+  font-size: 9.8px !important;
+  line-height: 1.25 !important;
+}
+
+.sib211-main {
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  max-height: calc(100vh - 220px) !important;
+  padding: 12px 24px 16px !important;
+}
+
+.sib211-detail {
+  border-radius: 20px !important;
+  padding: 14px !important;
+}
+
+.sib211-detail h3 {
+  margin-top: 11px !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+}
+
+.sib211-detail p {
+  margin-top: 6px !important;
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+}
+
+.sib211-detail-grid {
+  gap: 7px !important;
+  margin-top: 12px !important;
+}
+
+.sib211-detail-grid div {
+  min-height: 58px !important;
+  border-radius: 14px !important;
+  padding: 9px 10px !important;
+}
+
+.sib211-detail-grid small,
+.sib211-impact span {
+  font-size: 9.8px !important;
+}
+
+.sib211-detail-grid strong {
+  margin-top: 5px !important;
+  font-size: 0.88rem !important;
+}
+
+.sib211-impact,
+.sib211-reasons {
+  margin-top: 10px !important;
+  border-radius: 15px !important;
+  padding: 10px !important;
+}
+
+.sib211-impact h4,
+.sib211-reasons h4 {
+  margin-bottom: 7px !important;
+  font-size: 11px !important;
+}
+
+.sib211-impact div {
+  padding: 7px 0 !important;
+}
+
+.sib211-reasons div {
+  padding: 5px 0 !important;
+  font-size: 10.8px !important;
+  line-height: 1.55 !important;
+}
+
+.sib211-detail__actions {
+  margin-top: 10px !important;
+  gap: 7px !important;
+}
+
+.sib211-action {
+  min-height: 36px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+.sib211-list__toolbar {
+  min-height: 48px !important;
+  border-radius: 18px !important;
+  padding: 8px 11px !important;
+}
+
+.sib211-list__toolbar h3 {
+  font-size: 0.92rem !important;
+}
+
+.sib211-list__toolbar span {
+  margin-top: 2px !important;
+  font-size: 10px !important;
+}
+
+.sib211-tabs {
+  gap: 5px !important;
+}
+
+.sib211-tabs button {
+  min-height: 30px !important;
+  padding-inline: 9px !important;
+  font-size: 10.5px !important;
+}
+
+.sib211-table {
+  margin-top: 9px !important;
+  border-radius: 18px !important;
+}
+
+.sib211-table__head,
+.sib211-row {
+  grid-template-columns: minmax(230px, 1.55fr) minmax(140px, .9fr) 74px 104px 96px !important;
+  gap: 10px !important;
+}
+
+.sib211-table__head {
+  min-height: 34px !important;
+  padding-inline: 13px !important;
+  font-size: 10.3px !important;
+}
+
+.sib211-table__body {
+  max-height: 282px !important;
+}
+
+.sib211-row {
+  min-height: 58px !important;
+  padding: 7px 13px !important;
+}
+
+.sib211-row__title strong {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+.sib211-row__title em,
+.sib211-row small {
+  margin-top: 2px !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+
+.sib211-type {
+  min-height: 21px !important;
+  font-size: 9.5px !important;
+  padding-inline: 7px !important;
+}
+
+.sib211-row__confidence {
+  font-size: 12px !important;
+}
+
+.sib211-related {
+  margin-top: 9px !important;
+  border-radius: 18px !important;
+  padding: 11px !important;
+}
+
+.sib211-related__title h3 {
+  font-size: 12px !important;
+}
+
+.sib211-related__title button {
+  display: none !important;
+}
+
+.sib211-related__grid {
+  gap: 8px !important;
+  margin-top: 9px !important;
+}
+
+.sib211-related__grid button {
+  min-height: 72px !important;
+  border-radius: 15px !important;
+  padding: 9px 10px !important;
+}
+
+.sib211-related__icon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 12px !important;
+  margin-bottom: 6px !important;
+}
+
+.sib211-related strong {
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+}
+
+.sib211-related small,
+.sib211-related em {
+  font-size: 9.5px !important;
+}
+
+@media (max-width: 1320px) {
+  .sib211-main {
+    grid-template-columns: 290px minmax(0, 1fr) !important;
+    max-height: calc(100vh - 208px) !important;
+  }
+
+  .sib211-table__body {
+    max-height: 250px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sib211-main {
+    max-height: calc(100vh - 200px) !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* ===== END reports-stage213-smart-insights-action-board-fit.css ===== */
+
+
+/* ===== BEGIN reports-stage214-purchase-search-single-box-hard-fix.css ===== */
+
+
+/* Stage 214 — Hard fix for Purchase Suggestions search.
+   Goal: one search frame only; icon stays inside frame, never below/outside. */
+
+.purchase210-toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(320px, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+.purchase214-search {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 260px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92) !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+.purchase214-search input,
+.purchase214-search input[type='text'],
+.purchase214-search input[type='search'] {
+  all: unset !important;
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 14px 0 40px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 38px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.purchase214-search input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+}
+
+.purchase214-search i {
+  position: absolute !important;
+  left: 14px !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  width: 14px !important;
+  height: 14px !important;
+  display: grid !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.purchase214-search:focus-within {
+  border-color: rgba(37, 99, 235, 0.42) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08) !important;
+}
+
+/* Neutralize any previous frame rules if an old class is still present somewhere. */
+.purchase210-searchbox {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.purchase210-searchbox > i {
+  position: static !important;
+  transform: none !important;
+}
+
+@media (max-width: 1100px) {
+  .purchase210-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .purchase214-search {
+    min-width: 0 !important;
+  }
+}
+
+.dark .purchase214-search {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+}
+
+.dark .purchase214-search input {
+  color: #f8fafc !important;
+}
+
+.dark .purchase214-search input::placeholder,
+.dark .purchase214-search i {
+  color: #94a3b8 !important;
+}
+
+/* ===== END reports-stage214-purchase-search-single-box-hard-fix.css ===== */
+
+
+/* ===== BEGIN reports-stage215-smart-insights-related-cards-readability.css ===== */
+
+/* Stage 215 — Smart Insights action board lower related cards readability.
+   Fixes overlapping text in the four bottom cards and uses available vertical space
+   so the insights list can show more rows before it starts scrolling. */
+
+.sib211-main {
+  max-height: calc(100vh - 190px) !important;
+  padding-bottom: 12px !important;
+}
+
+.sib211-table__body {
+  max-height: 330px !important;
+}
+
+.sib211-related {
+  margin-top: 12px !important;
+  padding: 10px !important;
+}
+
+.sib211-related__title {
+  min-height: 24px !important;
+}
+
+.sib211-related__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-top: 8px !important;
+}
+
+.sib211-related__grid button {
+  display: grid !important;
+  grid-template-columns: 32px minmax(0, 1fr) !important;
+  grid-template-areas:
+    "icon title"
+    "icon date"
+    "icon category" !important;
+  column-gap: 9px !important;
+  row-gap: 2px !important;
+  min-height: 68px !important;
+  align-items: center !important;
+  padding: 9px 10px !important;
+  text-align: right !important;
+  overflow: hidden !important;
+}
+
+.sib211-related__icon {
+  grid-area: icon !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  border-radius: 12px !important;
+  margin: 0 !important;
+  align-self: center !important;
+}
+
+.sib211-related strong {
+  grid-area: title !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 10.8px !important;
+  font-weight: 950 !important;
+  line-height: 1.45 !important;
+}
+
+.sib211-related small {
+  grid-area: date !important;
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 1px 0 0 !important;
+  color: #64748b !important;
+  font-size: 9.3px !important;
+  font-weight: 820 !important;
+  line-height: 1.25 !important;
+}
+
+.sib211-related em {
+  grid-area: category !important;
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+  color: #64748b !important;
+  font-size: 9.3px !important;
+  font-style: normal !important;
+  font-weight: 850 !important;
+  line-height: 1.25 !important;
+}
+
+@media (max-width: 1320px) {
+  .sib211-main {
+    max-height: calc(100vh - 184px) !important;
+  }
+
+  .sib211-table__body {
+    max-height: 310px !important;
+  }
+
+  .sib211-related__grid button {
+    min-height: 64px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .sib211-related__grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== END reports-stage215-smart-insights-related-cards-readability.css ===== */
+
+
+/* ===== BEGIN reports-stage216-search-table-detail-fixes.css ===== */
+
+
+/* Stage 216 — real fixes for purchase search + Smart Insights table/detail alignment.
+   Applies after stages 210-215 and intentionally overrides broad legacy input/table rules. */
+
+/* Purchase Suggestions search: make it one visual box, icon fixed to LEFT inside the field. */
+.purchase210-toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 9px 10px !important;
+  overflow: visible !important;
+}
+
+.purchase214-search,
+.purchase210-toolbar .purchase214-search {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 260px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.purchase214-search::before,
+.purchase214-search::after {
+  display: none !important;
+  content: none !important;
+}
+
+.purchase214-search input,
+.purchase214-search input[type='text'],
+.purchase214-search input[type='search'] {
+  all: unset !important;
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 14px 0 42px !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+  line-height: 38px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.purchase214-search input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.purchase214-search > i,
+.purchase210-toolbar .purchase214-search > i.fa-magnifying-glass {
+  position: absolute !important;
+  left: 14px !important;
+  right: auto !important;
+  top: 50% !important;
+  bottom: auto !important;
+  z-index: 3 !important;
+  display: grid !important;
+  width: 14px !important;
+  height: 14px !important;
+  min-width: 14px !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.purchase214-search:focus-within {
+  border-color: rgba(37, 99, 235, 0.42) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08) !important;
+}
+
+/* Hide any leftover search icon that a previous CSS/pseudo layout could place outside the input. */
+.purchase210-table-card > .fa-magnifying-glass,
+.purchase210-toolbar > .fa-magnifying-glass {
+  display: none !important;
+}
+
+/* Smart Insights action board table: every text belongs to its own column and is no longer visually centered. */
+.sib211-table__head,
+.sib211-row {
+  grid-template-columns:
+    minmax(260px, 1.55fr)
+    minmax(160px, .9fr)
+    minmax(78px, .45fr)
+    minmax(104px, .55fr)
+    minmax(112px, .62fr) !important;
+  column-gap: 14px !important;
+}
+
+.sib211-table__head > span,
+.sib211-row > span {
+  display: block !important;
+  min-width: 0 !important;
+  text-align: right !important;
+  justify-self: stretch !important;
+  align-self: center !important;
+}
+
+.sib211-row {
+  align-items: center !important;
+  min-height: 66px !important;
+}
+
+.sib211-row__title strong,
+.sib211-row__title em,
+.sib211-row small {
+  text-align: right !important;
+}
+
+.sib211-row__confidence {
+  text-align: right !important;
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+}
+
+.sib211-row > span:nth-child(4) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+}
+
+.sib211-row > span:nth-child(5) {
+  direction: ltr !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  color: #475569 !important;
+}
+
+.sib211-type {
+  width: max-content !important;
+  max-width: 100% !important;
+}
+
+/* Left detail grid: smaller boxes + icons. */
+.sib211-detail-grid {
+  gap: 7px !important;
+  margin-top: 14px !important;
+}
+
+.sib211-detail-grid div {
+  position: relative !important;
+  min-height: 58px !important;
+  border-radius: 14px !important;
+  padding: 9px 38px 8px 9px !important;
+  background: rgba(248,250,252,0.72) !important;
+}
+
+.sib216-detail-icon {
+  position: absolute !important;
+  top: 50% !important;
+  right: 9px !important;
+  display: grid !important;
+  width: 24px !important;
+  height: 24px !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+.sib216-detail-icon--violet { background: #f5f3ff; color: #7c3aed; }
+.sib216-detail-icon--orange { background: #fff7ed; color: #ea580c; }
+.sib216-detail-icon--blue { background: #eff6ff; color: #2563eb; }
+.sib216-detail-icon--emerald { background: #ecfdf5; color: #059669; }
+
+.sib211-detail-grid small {
+  font-size: 9.5px !important;
+  line-height: 1.25 !important;
+}
+
+.sib211-detail-grid strong {
+  margin-top: 4px !important;
+  font-size: 0.82rem !important;
+  line-height: 1.25 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.sib211-detail-grid div:first-child strong {
+  font-size: 0.78rem !important;
+}
+
+/* Give the main list a little more readable width if the viewport allows it. */
+.sib211-main {
+  grid-template-columns: 306px minmax(0, 1fr) !important;
+}
+
+@media (max-width: 1100px) {
+  .purchase210-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .purchase214-search {
+    min-width: 0 !important;
+  }
+
+  .sib211-table__head {
+    display: none !important;
+  }
+
+  .sib211-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .sib211-row > span {
+    text-align: right !important;
+  }
+}
+
+.dark .purchase214-search {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+
+.dark .purchase214-search input {
+  color: #f8fafc !important;
+}
+
+.dark .purchase214-search input::placeholder,
+.dark .purchase214-search > i {
+  color: #94a3b8 !important;
+}
+
+.dark .sib216-detail-icon--violet { background: rgba(124, 58, 237, .16); color: #c4b5fd; }
+.dark .sib216-detail-icon--orange { background: rgba(234, 88, 12, .16); color: #fdba74; }
+.dark .sib216-detail-icon--blue { background: rgba(37, 99, 235, .16); color: #93c5fd; }
+.dark .sib216-detail-icon--emerald { background: rgba(5, 150, 105, .16); color: #6ee7b7; }
+
+/* ===== END reports-stage216-search-table-detail-fixes.css ===== */
+
+
+/* ===== BEGIN reports-stage217-search-and-smart-table-final.css ===== */
+
+
+/* Stage 217 — Final real fix: purchase search single box + Smart Insights table alignment. */
+
+/* ===== Purchase suggestions: single search box, icon locked left ===== */
+.purchase210-toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(300px, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+.purchase217-search {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 280px !important;
+  height: 38px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.purchase217-search input {
+  all: unset !important;
+  position: absolute !important;
+  inset: 0 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 38px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  padding: 0 14px 0 42px !important;
+  color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  font-weight: 760 !important;
+  line-height: 38px !important;
+}
+
+.purchase217-search input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.purchase217-search__icon {
+  position: absolute !important;
+  left: 14px !important;
+  right: auto !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  display: grid !important;
+  width: 14px !important;
+  height: 14px !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  color: #64748b !important;
+  pointer-events: none !important;
+}
+
+.purchase217-search__icon i {
+  font-size: 13px !important;
+  line-height: 1 !important;
+}
+
+.purchase217-search:focus-within {
+  border-color: rgba(37, 99, 235, 0.42) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08) !important;
+}
+
+/* Make sure previous search implementations cannot create a second visual frame/icon. */
+.purchase210-searchbox,
+.purchase214-search {
+  display: none !important;
+}
+
+.purchase210-toolbar > .fa-magnifying-glass,
+.purchase210-table-card > .fa-magnifying-glass {
+  display: none !important;
+}
+
+/* ===== Smart Insights table: hard column contract ===== */
+.sib217-table {
+  overflow: hidden !important;
+}
+
+.sib217-table__head,
+.sib217-row {
+  display: grid !important;
+  grid-template-columns:
+    minmax(285px, 1.65fr)
+    minmax(170px, .9fr)
+    minmax(82px, .45fr)
+    minmax(118px, .58fr)
+    minmax(118px, .62fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+.sib217-table__head {
+  min-height: 42px !important;
+  padding: 0 16px !important;
+}
+
+.sib217-table__head > span {
+  display: block !important;
+  min-width: 0 !important;
+  text-align: right !important;
+  justify-self: stretch !important;
+  white-space: nowrap !important;
+}
+
+.sib217-row {
+  min-height: 70px !important;
+  padding: 10px 16px !important;
+  text-align: right !important;
+}
+
+.sib217-cell,
+.sib217-row > span {
+  min-width: 0 !important;
+  justify-self: stretch !important;
+  align-self: center !important;
+  text-align: right !important;
+}
+
+.sib217-cell--title strong {
+  display: block !important;
+  max-width: 100% !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib217-cell--title em {
+  display: -webkit-box !important;
+  margin-top: 4px !important;
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-style: normal !important;
+  font-weight: 760 !important;
+  line-height: 1.55 !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.sib217-cell--category {
+  display: block !important;
+}
+
+.sib217-cell--category small {
+  display: -webkit-box !important;
+  margin-top: 5px !important;
+  color: #64748b !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1.45 !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.sib217-cell--confidence {
+  direction: ltr !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.sib217-cell--status {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  color: #334155 !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+.sib217-cell--date {
+  direction: ltr !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+  color: #475569 !important;
+  font-size: 11.5px !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+/* ===== Smart Insights left detail grid: compact + icons ===== */
+.sib217-detail-grid {
+  gap: 7px !important;
+  margin-top: 14px !important;
+}
+
+.sib217-detail-grid > div {
+  position: relative !important;
+  min-height: 58px !important;
+  border-radius: 14px !important;
+  padding: 9px 38px 8px 9px !important;
+}
+
+.sib217-detail-icon {
+  position: absolute !important;
+  top: 50% !important;
+  right: 9px !important;
+  display: grid !important;
+  width: 24px !important;
+  height: 24px !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+.sib217-detail-icon--violet { background: #f5f3ff; color: #7c3aed; }
+.sib217-detail-icon--orange { background: #fff7ed; color: #ea580c; }
+.sib217-detail-icon--blue { background: #eff6ff; color: #2563eb; }
+.sib217-detail-icon--emerald { background: #ecfdf5; color: #059669; }
+
+.sib217-detail-grid small {
+  font-size: 9.5px !important;
+  line-height: 1.25 !important;
+}
+
+.sib217-detail-grid strong {
+  display: block !important;
+  margin-top: 4px !important;
+  font-size: 0.82rem !important;
+  line-height: 1.25 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.sib217-detail-grid > div:first-child strong {
+  font-size: 0.78rem !important;
+}
+
+/* A bit more width for the table while keeping the detail panel compact. */
+.sib211-main {
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+}
+
+@media (max-width: 1100px) {
+  .purchase210-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .purchase217-search {
+    min-width: 0 !important;
+  }
+
+  .sib217-table__head {
+    display: none !important;
+  }
+
+  .sib217-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+.dark .purchase217-search {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+
+.dark .purchase217-search input {
+  color: #f8fafc !important;
+}
+
+.dark .purchase217-search input::placeholder,
+.dark .purchase217-search__icon {
+  color: #94a3b8 !important;
+}
+
+.dark .sib217-cell--title strong,
+.dark .sib217-cell--confidence {
+  color: #f8fafc !important;
+}
+
+.dark .sib217-cell--title em,
+.dark .sib217-cell--category small,
+.dark .sib217-cell--date {
+  color: #cbd5e1 !important;
+}
+
+.dark .sib217-detail-icon--violet { background: rgba(124, 58, 237, .16); color: #c4b5fd; }
+.dark .sib217-detail-icon--orange { background: rgba(234, 88, 12, .16); color: #fdba74; }
+.dark .sib217-detail-icon--blue { background: rgba(37, 99, 235, .16); color: #93c5fd; }
+.dark .sib217-detail-icon--emerald { background: rgba(5, 150, 105, .16); color: #6ee7b7; }
+
+/* ===== END reports-stage217-search-and-smart-table-final.css ===== */
+
+
+/* ===== BEGIN reports-stage218-smart-insights-table-column-contract.css ===== */
+
+
+/* Stage 218 — Hard column contract for Smart Insights table.
+   This fixes the mismatch where headers and row text were not visually under the same fields. */
+
+.sib217-table,
+.sib211-table.sib217-table {
+  direction: rtl !important;
+  overflow: hidden !important;
+}
+
+/* Same grid for header and every row, with explicit named classes. */
+.sib218-table__head,
+.sib218-row {
+  display: grid !important;
+  grid-template-columns:
+    minmax(310px, 1.72fr)
+    minmax(185px, .92fr)
+    82px
+    118px
+    122px !important;
+  column-gap: 14px !important;
+  align-items: center !important;
+  direction: rtl !important;
+}
+
+.sib218-table__head {
+  min-height: 42px !important;
+  padding: 0 16px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86) !important;
+  background: rgba(248,250,252,0.94) !important;
+}
+
+.sib218-row {
+  width: 100% !important;
+  min-height: 72px !important;
+  padding: 10px 16px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.74) !important;
+  background: transparent !important;
+  text-align: right !important;
+}
+
+.sib218-row:last-child {
+  border-bottom: 0 !important;
+}
+
+/* Explicit grid-column mapping. Header and body use the exact same columns. */
+.sib218-head-cell--title,
+.sib218-cell--title {
+  grid-column: 1 !important;
+}
+
+.sib218-head-cell--category,
+.sib218-cell--category {
+  grid-column: 2 !important;
+}
+
+.sib218-head-cell--confidence,
+.sib218-cell--confidence {
+  grid-column: 3 !important;
+}
+
+.sib218-head-cell--status,
+.sib218-cell--status {
+  grid-column: 4 !important;
+}
+
+.sib218-head-cell--date,
+.sib218-cell--date {
+  grid-column: 5 !important;
+}
+
+.sib218-head-cell,
+.sib218-cell {
+  min-width: 0 !important;
+  justify-self: stretch !important;
+  align-self: center !important;
+  text-align: right !important;
+}
+
+.sib218-head-cell {
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+}
+
+.sib218-cell--title {
+  display: block !important;
+}
+
+.sib218-cell--title strong {
+  display: block !important;
+  max-width: 100% !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib218-cell--title em {
+  display: -webkit-box !important;
+  max-width: 100% !important;
+  margin-top: 4px !important;
+  color: #64748b !important;
+  font-size: 10.8px !important;
+  font-style: normal !important;
+  font-weight: 760 !important;
+  line-height: 1.55 !important;
+  text-align: right !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.sib218-cell--category {
+  display: block !important;
+  text-align: right !important;
+}
+
+.sib218-cell--category .sib211-type {
+  display: inline-flex !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.sib218-cell--category small {
+  display: -webkit-box !important;
+  max-width: 100% !important;
+  margin-top: 5px !important;
+  color: #64748b !important;
+  font-size: 10.5px !important;
+  font-weight: 760 !important;
+  line-height: 1.45 !important;
+  text-align: right !important;
+  -webkit-line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+.sib218-cell--confidence {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.sib218-cell--status {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  color: #334155 !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.sib218-cell--status .sib211-status-dot {
+  flex: 0 0 auto !important;
+  margin-left: 6px !important;
+  margin-right: 0 !important;
+}
+
+.sib218-cell--date {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  color: #475569 !important;
+  font-size: 11.5px !important;
+  font-weight: 850 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+/* Override older stage selectors that centered or stretched cells differently. */
+.sib211-table__head > span,
+.sib211-row > span,
+.sib217-table__head > span,
+.sib217-row > span {
+  justify-self: stretch !important;
+  text-align: right !important;
+}
+
+.sib211-row__confidence {
+  text-align: right !important;
+}
+
+/* Use more horizontal space for the table by keeping the side detail compact. */
+.sib211-main {
+  grid-template-columns: 292px minmax(0, 1fr) !important;
+}
+
+@media (max-width: 1240px) {
+  .sib218-table__head,
+  .sib218-row {
+    grid-template-columns:
+      minmax(260px, 1.55fr)
+      minmax(150px, .82fr)
+      76px
+      108px
+      106px !important;
+    column-gap: 10px !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .sib218-table__head {
+    display: none !important;
+  }
+
+  .sib218-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    min-height: auto !important;
+  }
+
+  .sib218-cell--title,
+  .sib218-cell--category,
+  .sib218-cell--confidence,
+  .sib218-cell--status,
+  .sib218-cell--date {
+    grid-column: 1 !important;
+  }
+}
+
+.dark .sib218-table__head {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background: rgba(15, 23, 42, 0.76) !important;
+}
+
+.dark .sib218-head-cell,
+.dark .sib218-cell--title em,
+.dark .sib218-cell--category small,
+.dark .sib218-cell--date {
+  color: #cbd5e1 !important;
+}
+
+.dark .sib218-cell--title strong,
+.dark .sib218-cell--confidence {
+  color: #f8fafc !important;
+}
+
+.dark .sib218-cell--status {
+  color: #e2e8f0 !important;
+}
+
+/* ===== END reports-stage218-smart-insights-table-column-contract.css ===== */
+
+
+/* ===== BEGIN reports-stage219-final-search-table-polish.css ===== */
+
+/* Stage 219 — Purchase Suggestions single-search markup + Smart Insights table contract polish.
+   Scope is intentionally narrow: no mock data, no layout duplication, only cascade-last UI fixes. */
+
+/* ===== Purchase Suggestions: real single-box search ===== */
+.purchase210-toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 10px !important;
+  overflow: visible !important;
+}
+
+.purchase219-search {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 40px !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  overflow: hidden !important;
+  direction: rtl !important;
+}
+
+.purchase219-search__input,
+.purchase219-search input.purchase219-search__input,
+.purchase219-search input[type='search'].purchase219-search__input {
+  all: unset !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0 14px 0 44px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: 12px !important;
+  font-weight: 780 !important;
+  line-height: 40px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.purchase219-search__input::-webkit-search-decoration,
+.purchase219-search__input::-webkit-search-cancel-button,
+.purchase219-search__input::-webkit-search-results-button,
+.purchase219-search__input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+.purchase219-search__input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.purchase219-search__icon {
+  position: absolute !important;
+  left: 14px !important;
+  right: auto !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  display: grid !important;
+  width: 16px !important;
+  height: 16px !important;
+  place-items: center !important;
+  transform: translateY(-50%) !important;
+  color: #64748b !important;
+  pointer-events: none !important;
+}
+
+.purchase219-search__icon i {
+  display: block !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+}
+
+.purchase219-search:focus-within {
+  border-color: rgba(37, 99, 235, 0.44) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.075) !important;
+}
+
+/* Old search shells must not create a second visual layer when older CSS is still imported. */
+.purchase210-toolbar > .purchase210-searchbox,
+.purchase210-toolbar > .purchase214-search,
+.purchase210-toolbar > .purchase217-search,
+.purchase210-searchbox,
+.purchase214-search {
+  display: none !important;
+}
+
+.purchase210-toolbar > .fa-magnifying-glass,
+.purchase210-toolbar > i.fa-magnifying-glass,
+.purchase210-toolbar > .purchase217-search__icon {
+  display: none !important;
+}
+
+.purchase210-drawer header {
+  justify-content: flex-start !important;
+}
+
+/* ===== Smart Insights Action Board: one shared grid for header and rows ===== */
+.sib211-table.sib217-table,
+.sib211-table.sib217-table .sib211-table__body {
+  width: 100% !important;
+  min-width: 0 !important;
+  direction: rtl !important;
+}
+
+.sib211-table.sib217-table {
+  --sib219-insight-columns: minmax(300px, 1.72fr) minmax(180px, 0.9fr) 82px 116px 124px;
+  --sib219-insight-gap: 14px;
+  overflow: hidden !important;
+}
+
+.sib219-insight-grid,
+.sib218-table__head.sib219-insight-grid,
+.sib218-row.sib219-insight-grid {
+  display: grid !important;
+  grid-template-columns: var(--sib219-insight-columns) !important;
+  column-gap: var(--sib219-insight-gap) !important;
+  align-items: center !important;
+  direction: rtl !important;
+  width: 100% !important;
+}
+
+.sib218-table__head.sib219-insight-grid {
+  min-height: 42px !important;
+  padding: 0 16px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.88) !important;
+  background: rgba(248, 250, 252, 0.96) !important;
+}
+
+.sib218-row.sib219-insight-grid {
+  min-height: 72px !important;
+  padding: 10px 16px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.74) !important;
+  background: transparent !important;
+  text-align: right !important;
+}
+
+.sib218-row.sib219-insight-grid:last-child {
+  border-bottom: 0 !important;
+}
+
+.sib219-insight-grid .sib218-head-cell,
+.sib219-insight-grid .sib218-cell {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  justify-self: stretch !important;
+  align-self: center !important;
+  text-align: right !important;
+}
+
+.sib218-head-cell--title,
+.sib218-cell--title { grid-column: 1 !important; }
+.sib218-head-cell--category,
+.sib218-cell--category { grid-column: 2 !important; }
+.sib218-head-cell--confidence,
+.sib218-cell--confidence { grid-column: 3 !important; }
+.sib218-head-cell--status,
+.sib218-cell--status { grid-column: 4 !important; }
+.sib218-head-cell--date,
+.sib218-cell--date { grid-column: 5 !important; }
+
+.sib219-insight-grid .sib218-head-cell {
+  color: #64748b !important;
+  font-size: 10.8px !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+}
+
+.sib219-insight-grid .sib218-cell--title {
+  display: block !important;
+  overflow: hidden !important;
+}
+
+.sib219-insight-grid .sib218-cell--title strong {
+  display: block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #0f172a !important;
+  font-size: 12.8px !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+}
+
+.sib219-insight-grid .sib218-cell--title em {
+  display: -webkit-box !important;
+  margin-top: 3px !important;
+  overflow: hidden !important;
+  color: #64748b !important;
+  font-size: 10.6px !important;
+  font-style: normal !important;
+  font-weight: 760 !important;
+  line-height: 1.5 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+.sib219-insight-grid .sib218-cell--category {
+  display: block !important;
+  overflow: hidden !important;
+}
+
+.sib219-insight-grid .sib218-cell--category .sib211-type {
+  display: inline-flex !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.sib219-insight-grid .sib218-cell--category small {
+  display: -webkit-box !important;
+  margin-top: 4px !important;
+  overflow: hidden !important;
+  color: #64748b !important;
+  font-size: 10.4px !important;
+  font-weight: 760 !important;
+  line-height: 1.45 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+}
+
+.sib219-insight-grid .sib218-cell--confidence,
+.sib219-insight-grid .sib218-cell--date {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.sib219-insight-grid .sib218-cell--confidence {
+  color: #0f172a !important;
+  font-size: 12.6px !important;
+  font-weight: 950 !important;
+}
+
+.sib219-insight-grid .sib218-cell--status {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  overflow: hidden !important;
+  color: #334155 !important;
+  font-size: 11.2px !important;
+  font-weight: 900 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.sib219-insight-grid .sib218-cell--status .sib211-status-dot {
+  flex: 0 0 auto !important;
+  margin: 0 0 0 5px !important;
+}
+
+.sib219-insight-grid .sib218-cell--date {
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+}
+
+/* Compact, readable left KPI boxes in the action board. */
+.sib217-detail-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.sib217-detail-grid > div {
+  min-height: 56px !important;
+  padding: 9px 38px 8px 9px !important;
+  overflow: hidden !important;
+}
+
+.sib217-detail-grid small,
+.sib217-detail-grid strong {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib217-detail-grid small {
+  font-size: 9.6px !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+
+.sib217-detail-grid strong {
+  margin-top: 4px !important;
+  font-size: 11.6px !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+}
+
+/* Recent related cards: readable and no fake action button. */
+.sib211-related__title {
+  min-height: 24px !important;
+}
+
+.sib211-related__grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.sib211-related__grid button {
+  min-height: 94px !important;
+  padding: 12px 42px 12px 12px !important;
+  overflow: hidden !important;
+}
+
+.sib211-related__icon {
+  top: 12px !important;
+  right: 12px !important;
+  width: 22px !important;
+  height: 22px !important;
+  font-size: 10px !important;
+}
+
+.sib211-related strong,
+.sib211-related small,
+.sib211-related em {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-align: right !important;
+}
+
+.sib211-related strong {
+  display: -webkit-box !important;
+  font-size: 11.8px !important;
+  line-height: 1.55 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+.sib211-related small,
+.sib211-related em {
+  display: block !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Modal close is click-outside only in this stage. */
+.smart-insight-modal-v185__close {
+  display: none !important;
+}
+
+@media (max-width: 1240px) {
+  .sib211-table.sib217-table {
+    --sib219-insight-columns: minmax(250px, 1.55fr) minmax(150px, 0.82fr) 76px 106px 108px;
+    --sib219-insight-gap: 10px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .purchase210-toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sib218-table__head.sib219-insight-grid {
+    display: none !important;
+  }
+
+  .sib218-row.sib219-insight-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    min-height: auto !important;
+  }
+
+  .sib218-head-cell--title,
+  .sib218-cell--title,
+  .sib218-head-cell--category,
+  .sib218-cell--category,
+  .sib218-head-cell--confidence,
+  .sib218-cell--confidence,
+  .sib218-head-cell--status,
+  .sib218-cell--status,
+  .sib218-head-cell--date,
+  .sib218-cell--date {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sib217-detail-grid,
+  .sib211-related__grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.dark .purchase219-search {
+  border-color: rgba(51, 65, 85, 0.94) !important;
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+
+.dark .purchase219-search__input {
+  color: #f8fafc !important;
+}
+
+.dark .purchase219-search__input::placeholder,
+.dark .purchase219-search__icon {
+  color: #94a3b8 !important;
+}
+
+.dark .sib218-table__head.sib219-insight-grid {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background: rgba(15, 23, 42, 0.76) !important;
+}
+
+.dark .sib219-insight-grid .sib218-head-cell,
+.dark .sib219-insight-grid .sib218-cell--title em,
+.dark .sib219-insight-grid .sib218-cell--category small,
+.dark .sib219-insight-grid .sib218-cell--date {
+  color: #cbd5e1 !important;
+}
+
+.dark .sib219-insight-grid .sib218-cell--title strong,
+.dark .sib219-insight-grid .sib218-cell--confidence {
+  color: #f8fafc !important;
+}
+
+.dark .sib219-insight-grid .sib218-cell--status {
+  color: #e2e8f0 !important;
+}
+
+/* ===== END reports-stage219-final-search-table-polish.css ===== */
+
+/* === STAGE 250 — Smart Insights Action Board containment repair ===
+   Fixes screenshot regression where the board/table exceeds the content width and appears under the right sidebar.
+   This CSS belongs to the consolidated purchase/action-board stylesheet because sib211/sib217/sib219 selectors live there.
+*/
+
+.sib211-overlay,
+.sib211-shell,
+.sib211-surface,
+.sib211-board,
+.sib211-main,
+.sib211-panel {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.sib211-overlay {
+  inset: 0 !important;
+  z-index: 99990 !important;
+  padding: 14px 300px 14px 18px !important;
+  overflow: hidden !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.sib211-shell,
+.sib211-surface {
+  width: min(1120px, calc(100vw - 336px)) !important;
+  max-width: calc(100vw - 336px) !important;
+  max-height: calc(100dvh - 28px) !important;
+  overflow: hidden !important;
+  border-radius: 28px !important;
+}
+
+.sib211-board {
+  display: grid !important;
+  grid-template-columns: minmax(230px, 290px) minmax(0, 1fr) !important;
+  gap: 14px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.sib211-side {
+  min-width: 0 !important;
+  max-width: 290px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.sib211-main {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+.sib211-table,
+.sib217-table,
+.sib218-table,
+.sib211-table-wrap,
+.sib217-table-wrap,
+.sib218-table-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+}
+
+.sib219-insight-grid,
+.sib218-table__head.sib219-insight-grid,
+.sib218-row.sib219-insight-grid {
+  min-width: 760px !important;
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-columns:
+    minmax(230px, 1.55fr)
+    minmax(112px, .76fr)
+    minmax(84px, .54fr)
+    minmax(84px, .54fr)
+    minmax(112px, .72fr) !important;
+}
+
+.sib218-cell,
+.sib218-head-cell {
+  min-width: 0 !important;
+}
+
+.sib218-cell--title strong,
+.sib218-cell--title em {
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sib211-related,
+.sib211-related__grid {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.sib211-related__grid {
+  overflow-x: auto !important;
+}
+
+/* Project viewport with fixed right sidebar */
+@media (max-width: 1320px) {
+  .sib211-overlay {
+    padding: 12px 286px 12px 12px !important;
+  }
+
+  .sib211-shell,
+  .sib211-surface {
+    width: min(980px, calc(100vw - 310px)) !important;
+    max-width: calc(100vw - 310px) !important;
+  }
+
+  .sib211-board {
+    grid-template-columns: minmax(220px, 270px) minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 1080px) {
+  .sib211-overlay {
+    padding: 10px !important;
+  }
+
+  .sib211-shell,
+  .sib211-surface {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+
+  .sib211-board {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sib211-side {
+    max-width: none !important;
+  }
+}
+
+/* === STAGE 253 — Action Board modal/sidebar variable contract ===
+   Uses global --app-sidebar-width instead of hard-coded right padding.
+*/
+@media (min-width: 1081px) {
+  .sib211-overlay {
+    left: 0 !important;
+    right: var(--app-sidebar-width) !important;
+    width: auto !important;
+    padding: var(--app-modal-safe-gap) !important;
+    display: grid !important;
+    place-items: center !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .sib211-shell,
+  .sib211-surface {
+    width: min(1120px, var(--app-modal-content-max-width)) !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - (var(--app-modal-safe-gap) * 2)) !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 1080px) {
+  .sib211-overlay {
+    inset: 0 !important;
+    padding: var(--app-modal-safe-gap) !important;
+  }
+
+  .sib211-shell,
+  .sib211-surface {
+    width: var(--app-modal-content-max-width) !important;
+    max-width: var(--app-modal-content-max-width) !important;
+  }
+}

@@ -1,0 +1,297 @@
+
+/* v56 — Telegram logs final polish.
+   Fixes:
+   - detail modal too wide / washed-out / visually under surrounding UI
+   - modal content cards too compressed and see-through
+   - logs table touching its container and feeling cramped
+   - Apple-base neutral surface for the list and modal */
+
+/* Main logs panel: keep neutral and solid, no colorful wash. */
+.tg-logs-apple {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  box-shadow: 0 18px 46px -34px rgba(15, 23, 42, 0.22) !important;
+}
+
+/* Table safe zone: the table must not touch the outer rounded box. */
+.tg-logs-apple__tableWrap {
+  margin-top: 1rem !important;
+  padding: 0.85rem !important;
+  border-radius: 24px !important;
+  background: rgba(248, 250, 252, 0.78) !important;
+  border-color: rgba(226, 232, 240, 0.94) !important;
+  overflow-x: auto !important;
+}
+
+.tg-logs-apple__table {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.tg-logs-apple__table th,
+.tg-logs-apple__table td {
+  padding: 0.86rem 0.85rem !important;
+}
+
+.tg-logs-apple__table tbody tr td:first-child {
+  padding-right: 1rem !important;
+}
+
+.tg-logs-apple__table tbody tr td:last-child {
+  padding-left: 1rem !important;
+}
+
+.tg-logs-apple__filters {
+  margin-top: 1rem !important;
+  padding: 0.85rem !important;
+}
+
+/* Modal overlay: solid professional overlay above app chrome. */
+.tg-logs-detail-modal-overlay {
+  z-index: 100000 !important;
+  background: rgba(15, 23, 42, 0.48) !important;
+  backdrop-filter: blur(8px) saturate(1.02) !important;
+  padding: 1.25rem !important;
+}
+
+/* The actual modal surface. */
+.tg-logs-detail-modal-overlay .modal-surface {
+  width: min(860px, calc(100vw - 2.5rem)) !important;
+  max-width: min(860px, calc(100vw - 2.5rem)) !important;
+  max-height: calc(100vh - 2.5rem) !important;
+  height: auto !important;
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  box-shadow: 0 28px 90px -42px rgba(15, 23, 42, 0.45) !important;
+  overflow: hidden !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-premium-header {
+  padding: 1rem 1.1rem !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.96) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-body-premium {
+  padding: 1rem 1.05rem 1.1rem !important;
+  background: rgba(248, 250, 252, 0.72) !important;
+}
+
+/* Modal content: no transparent bleed from table behind. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+  display: grid !important;
+  gap: 0.95rem !important;
+}
+
+/* Top detail cards: two columns instead of compressed four columns. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.85rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+  display: grid !important;
+  grid-template-columns: 2.1rem minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 0.7rem !important;
+  min-height: 5.1rem !important;
+  padding: 0.95rem !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon {
+  display: inline-flex !important;
+  width: 2.1rem !important;
+  height: 2.1rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  background: rgba(248, 250, 252, 0.92) !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon i {
+  font-size: 0.86rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard > div {
+  min-width: 0 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard span:not(.tg-logs-apple__detailIcon) {
+  margin-bottom: 0.34rem !important;
+  font-size: 0.72rem !important;
+  line-height: 1.55 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard strong {
+  font-size: 0.8rem !important;
+  line-height: 1.7 !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Error and guidance blocks. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError {
+  border-radius: 22px !important;
+  padding: 0.95rem !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  color: rgb(30, 41, 59) !important;
+  box-shadow: none !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorHero {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  padding: 0.9rem !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(254, 202, 202, 0.82) !important;
+  background: rgba(255, 247, 247, 0.8) !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorIcon {
+  display: inline-flex !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  flex: 0 0 2rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(252, 165, 165, 0.9) !important;
+  background: rgba(254, 242, 242, 0.95) !important;
+  color: rgb(185, 28, 28) !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError p {
+  color: rgb(71, 85, 105) !important;
+  line-height: 1.85 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError {
+  border-radius: 18px !important;
+  border: 1px solid rgba(226, 232, 240, 0.94) !important;
+  background: rgba(248, 250, 252, 0.86) !important;
+  box-shadow: none !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  padding: 0.9rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError {
+  padding: 0.75rem 0.85rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+  margin-top: 0.75rem !important;
+  max-height: 12rem !important;
+  overflow: auto !important;
+  padding: 0.75rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+}
+
+/* Debug boxes: solid and readable. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.85rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  padding: 0.9rem !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre {
+  max-height: 14rem !important;
+  overflow: auto !important;
+  padding: 0.78rem !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  background: rgba(248, 250, 252, 0.9) !important;
+}
+
+/* Dark mode */
+html.dark .tg-logs-apple {
+  background: rgba(15, 23, 42, 0.86) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+html.dark .tg-logs-apple__tableWrap {
+  background: rgba(2, 6, 23, 0.22) !important;
+  border-color: rgba(51, 65, 85, 0.82) !important;
+}
+
+html.dark .tg-logs-apple__table {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: rgba(51, 65, 85, 0.82) !important;
+}
+
+html.dark .tg-logs-detail-modal-overlay .modal-surface {
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-color: rgba(51, 65, 85, 0.95) !important;
+}
+
+html.dark .tg-logs-detail-modal-overlay .modal-premium-header {
+  background: rgba(15, 23, 42, 0.98) !important;
+  border-bottom-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+html.dark .tg-logs-detail-modal-overlay .modal-body-premium {
+  background: rgba(2, 6, 23, 0.36) !important;
+}
+
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__detailCard,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__modalError,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+@media (max-width: 900px) {
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: min(720px, calc(100vw - 1.5rem)) !important;
+    max-width: min(720px, calc(100vw - 1.5rem)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .tg-logs-detail-modal-overlay {
+    padding: 0.75rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: calc(100vw - 1.5rem) !important;
+    max-width: calc(100vw - 1.5rem) !important;
+    border-radius: 22px !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    padding: 0.85rem !important;
+  }
+
+  .tg-logs-apple__tableWrap {
+    padding: 0.65rem !important;
+  }
+}

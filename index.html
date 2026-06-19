@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0d9488" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="مدیریت فروشگاه" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="preload" href="/fonts/Vazir-FD-WOL.woff2" as="font" type="font/woff2" crossorigin />
+    <title>مدیریت فروشگاه</title>
+    <!-- App styles (includes local Vazir font from /public/fonts) -->
+    <link rel="stylesheet" href="/index.css" />
+
+<style>
+      .recharts-tooltip-wrapper {
+        direction: ltr; 
+      }
+      .recharts-tooltip-wrapper .recharts-tooltip-item-list {
+        direction: rtl; 
+      }
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+      }
+      input[type=number] {
+        -moz-appearance: textfield; 
+      }
+
+      /* Print-specific styles */
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #fff !important; /* Ensure white background for print */
+          -webkit-print-color-adjust: exact; /* Chrome, Safari */
+          print-color-adjust: exact; /* Firefox, Edge */
+        }
+        .print\:hidden {
+          display: none !important;
+        }
+        main.print\:p-0 {
+          padding: 0 !important;
+        }
+         main.print\:bg-white {
+          background-color: #fff !important;
+        }
+
+        /* Styles for printing the barcode label modal */
+        .printable-area {
+            visibility: visible !important;
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: white !important;
+        }
+        body > *:not(.printable-area) {
+            display: none !important;
+        }
+        
+
+        #invoice-content {
+          width: 100% !important; /* A4 width */
+          min-height: auto !important; /* A4 height approx */
+          margin: 0 !important;
+          padding: 1cm !important; /* Some padding for printer margins */
+          border: none !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+          font-size: 10pt !important; /* Adjust base font size for print */
+        }
+        /* Ensure specific elements within the invoice are also styled for print */
+        #invoice-content h1, #invoice-content h2, #invoice-content h3, #invoice-content h4 {
+            color: #000 !important; /* Ensure text is black for print */
+        }
+        #invoice-content table, #invoice-content th, #invoice-content td {
+            border-color: #ccc !important; /* Lighter borders for print */
+        }
+         #invoice-content .bg-gray-100 { /* Example of overriding a bg color */
+            background-color: #f8f9fa !important; /* A very light gray or white */
+        }
+         #invoice-content .bg-gray-700 {
+            background-color: #343a40 !important;
+        }
+        #invoice-content .text-white {
+            color: #fff !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Minimal splash (shown before React mounts) -->
+      <div class="app-splash">
+        <div class="app-splash__bg" aria-hidden></div>
+        <div class="app-splash__content" role="status" aria-live="polite">
+          <div class="app-splash__mark" aria-hidden>
+            <div class="app-splash__ring"></div>
+            <div class="app-splash__dot"></div>
+          </div>
+          <div class="mt-5 text-center">
+            <div class="text-sm font-black text-gray-900 dark:text-gray-50">داشبورد کوروش</div>
+            <div class="mt-1 text-[11px] text-gray-600 dark:text-gray-300">در حال آماده‌سازی داشبورد…</div>
+          </div>
+          <div class="mt-5 flex items-center justify-center gap-2" aria-hidden>
+            <span class="app-splash__pulse" style="animation-delay:0ms"></span>
+            <span class="app-splash__pulse" style="animation-delay:120ms"></span>
+            <span class="app-splash__pulse" style="animation-delay:240ms"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

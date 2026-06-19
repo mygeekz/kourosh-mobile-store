@@ -1,0 +1,124 @@
+/* Phase 50: global charts + KPI cards + dashboard widget unification */
+:root {
+  --ux-kpi-radius: 22px;
+  --ux-kpi-border-light: rgba(226, 232, 240, 0.92);
+  --ux-kpi-border-dark: rgba(51, 65, 85, 0.88);
+  --ux-kpi-bg-light: rgba(255, 255, 255, 0.94);
+  --ux-kpi-bg-dark: rgba(2, 6, 23, 0.84);
+  --ux-kpi-shadow-light: 0 20px 46px -34px rgba(15, 23, 42, 0.18);
+  --ux-kpi-shadow-dark: 0 26px 54px -34px rgba(2, 6, 23, 0.62);
+}
+
+.kpi-card,
+.metric-card,
+.dashboard-widget,
+.widget-shell,
+[class*="kpi-card"],
+[class*="metric-card"],
+[class*="dashboard-widget"],
+[class*="widget-shell"] {
+  border-radius: var(--ux-kpi-radius);
+  border: 1px solid var(--ux-kpi-border-light);
+  background: var(--ux-kpi-bg-light);
+  box-shadow: var(--ux-kpi-shadow-light);
+  backdrop-filter: blur(8px);
+}
+
+.dark .kpi-card,
+.dark .metric-card,
+.dark .dashboard-widget,
+.dark .widget-shell,
+.dark [class*="kpi-card"],
+.dark [class*="metric-card"],
+.dark [class*="dashboard-widget"],
+.dark [class*="widget-shell"] {
+  border-color: var(--ux-kpi-border-dark);
+  background: var(--ux-kpi-bg-dark);
+  box-shadow: var(--ux-kpi-shadow-dark);
+}
+
+.kpi-card__label,
+.metric-card__label,
+.dashboard-widget__label,
+[class*="kpi-card"] [class*="label"],
+[class*="metric-card"] [class*="label"],
+[class*="dashboard-widget"] [class*="label"] {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: rgb(100 116 139);
+}
+
+.dark .kpi-card__label,
+.dark .metric-card__label,
+.dark .dashboard-widget__label,
+.dark [class*="kpi-card"] [class*="label"],
+.dark [class*="metric-card"] [class*="label"],
+.dark [class*="dashboard-widget"] [class*="label"] {
+  color: rgb(148 163 184);
+}
+
+.kpi-card__value,
+.metric-card__value,
+.dashboard-widget__value,
+[class*="kpi-card"] [class*="value"],
+[class*="metric-card"] [class*="value"],
+[class*="dashboard-widget"] [class*="value"] {
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.recharts-wrapper,
+[class*="chart-container"],
+[class*="recharts"] {
+  border-radius: 20px;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(226, 232, 240, 0.8);
+}
+
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: rgba(51, 65, 85, 0.8);
+}
+
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip {
+  border-radius: 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 16px 34px -24px rgba(15, 23, 42, 0.18) !important;
+}
+
+.dark .recharts-tooltip-wrapper,
+.dark .recharts-default-tooltip {
+  border-color: rgba(51, 65, 85, 0.88) !important;
+  background: rgba(2, 6, 23, 0.92) !important;
+  box-shadow: 0 20px 38px -24px rgba(2, 6, 23, 0.58) !important;
+}
+
+@media (max-width: 767px) {
+  .kpi-card,
+  .metric-card,
+  .dashboard-widget,
+  .widget-shell,
+  [class*="kpi-card"],
+  [class*="metric-card"],
+  [class*="dashboard-widget"],
+  [class*="widget-shell"] {
+    border-radius: 20px;
+  }
+
+  .kpi-card__label,
+  .metric-card__label,
+  .dashboard-widget__label,
+  [class*="kpi-card"] [class*="label"],
+  [class*="metric-card"] [class*="label"],
+  [class*="dashboard-widget"] [class*="label"] {
+    font-size: 10px;
+  }
+}
+
+

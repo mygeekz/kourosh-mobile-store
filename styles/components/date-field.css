@@ -1,0 +1,186 @@
+/* Centralized Date Field — Stage 103 final
+   Contract:
+   - input itself is the only visible field surface
+   - wrapper/control are layout-only and never draw a second box
+   - calendar icon is an overlay on the physical right
+   - page/report generic input rules cannot style the internal date input
+*/
+
+.app-date-field {
+  position: relative !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  direction: ltr !important;
+}
+
+.app-date-field__control,
+.app-date-field__control:hover,
+.app-date-field__control:focus,
+.app-date-field__control:focus-within,
+.app-date-field__control:active {
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  cursor: pointer !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.app-date-field[data-disabled="true"] .app-date-field__control {
+  cursor: not-allowed !important;
+  opacity: .6 !important;
+}
+
+/* The input is the only visual box. */
+.app-date-field__input,
+.app-date-field__input:hover,
+.app-date-field__input:focus,
+.app-date-field__input:focus-visible,
+.app-date-field__input:active,
+input[data-app-date-input="true"],
+input[data-app-date-input="true"]:hover,
+input[data-app-date-input="true"]:focus,
+input[data-app-date-input="true"]:focus-visible,
+input[data-app-date-input="true"]:active,
+.report-page .app-date-field input[data-app-date-input="true"],
+.report-filter-field__body .app-date-field input[data-app-date-input="true"] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  direction: ltr !important;
+  text-align: center !important;
+  color: rgb(30 41 59) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .92rem !important;
+  font-weight: 850 !important;
+  letter-spacing: .02em !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 18px !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: 0 12px 28px -22px rgba(15,23,42,.28) !important;
+  -webkit-box-shadow: 0 12px 28px -22px rgba(15,23,42,.28) !important;
+  padding: 0 3rem 0 1rem !important;
+  margin: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  z-index: 1 !important;
+  transform: none !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.app-date-field__input:focus,
+.app-date-field__input:focus-visible,
+input[data-app-date-input="true"]:focus,
+input[data-app-date-input="true"]:focus-visible {
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 2px rgba(14,165,233,.10), 0 12px 28px -22px rgba(15,23,42,.28) !important;
+}
+
+.app-date-field__input::placeholder,
+input[data-app-date-input="true"]::placeholder {
+  color: rgb(148 163 184) !important;
+  opacity: 1 !important;
+  font-weight: 700 !important;
+}
+
+/* Calendar icon overlay: no box, no layout disruption. */
+.app-date-field__icon,
+.app-date-field__icon:hover,
+.app-date-field__icon:focus,
+.app-date-field__icon:active {
+  position: absolute !important;
+  right: .95rem !important;
+  left: auto !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 2 !important;
+  width: 2rem !important;
+  height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: rgb(100 116 139) !important;
+  pointer-events: none !important;
+}
+
+.app-date-field__icon i {
+  display: block !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+/* Legacy compatibility: if an old unified date field appears, its inner input must stay flat. */
+.unified-date-field .unified-date-trigger__input,
+.unified-date-field input[data-shamsi-date-input="true"] {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Dark theme */
+html.dark .app-date-field__input,
+html.dark input[data-app-date-input="true"],
+html.dark .report-page .app-date-field input[data-app-date-input="true"],
+html.dark .report-filter-field__body .app-date-field input[data-app-date-input="true"] {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+  color: rgb(248 250 252) !important;
+  box-shadow: 0 12px 28px -22px rgba(2,6,23,.75) !important;
+}
+
+html.dark .app-date-field__input:focus,
+html.dark input[data-app-date-input="true"]:focus,
+html.dark input[data-app-date-input="true"]:focus-visible {
+  border-color: rgba(14,165,233,.72) !important;
+  box-shadow: 0 0 0 2px rgba(14,165,233,.16), 0 12px 28px -22px rgba(2,6,23,.75) !important;
+}
+
+html.dark .app-date-field__input::placeholder,
+html.dark input[data-app-date-input="true"]::placeholder {
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .app-date-field__icon {
+  color: rgb(125 211 252) !important;
+}

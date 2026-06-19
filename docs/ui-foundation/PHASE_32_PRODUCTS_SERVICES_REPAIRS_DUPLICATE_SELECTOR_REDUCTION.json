@@ -1,0 +1,53 @@
+{
+  "phase": 32,
+  "title": "Products / Services / Repairs Duplicate Selector Reduction",
+  "scope_files": [
+    "styles/system/products-services-repairs/products-ui-foundation.css",
+    "styles/system/products-services-repairs/services-inventory-foundation.css",
+    "styles/system/products-services-repairs/repairs-ui-foundation.css"
+  ],
+  "method": "exact-only top-level duplicate qualified-rule removal; selector and declaration body must match exactly",
+  "removed_rules": [
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "selector": "#products-print-area .product-list-table",
+      "declaration": "table-layout: fixed;",
+      "removed_occurrence": "second exact duplicate"
+    }
+  ],
+  "stats_after": [
+    {
+      "file": "styles/system/products-services-repairs/products-ui-foundation.css",
+      "bytes": 18238,
+      "lines": 745,
+      "important": 74,
+      "qualified_rules": 98,
+      "exact_duplicate_extra_occurrences_after": 0
+    },
+    {
+      "file": "styles/system/products-services-repairs/services-inventory-foundation.css",
+      "bytes": 12518,
+      "lines": 495,
+      "important": 114,
+      "qualified_rules": 64,
+      "exact_duplicate_extra_occurrences_after": 0
+    },
+    {
+      "file": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "bytes": 17815,
+      "lines": 641,
+      "important": 168,
+      "qualified_rules": 79,
+      "exact_duplicate_extra_occurrences_after": 0
+    }
+  ],
+  "qa": {
+    "css_files_checked": 152,
+    "css_parse_errors": [],
+    "literal_backslash_n_files": [],
+    "brace_issues": [],
+    "css_import_count_in_index": 58,
+    "missing_css_imports": [],
+    "runtime_override_imports": []
+  }
+}

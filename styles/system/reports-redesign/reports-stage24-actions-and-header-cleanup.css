@@ -1,0 +1,75 @@
+/* Stage 24 — report body cleanup and direct actions
+   Keeps the global ReportsLayout header as the only page title, and turns report rows into action gateways. */
+
+.report-direct-action {
+  display: inline-flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgb(15, 23, 42);
+  box-shadow: 0 12px 28px -24px rgba(15, 23, 42, 0.38);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  white-space: nowrap;
+}
+
+.report-direct-action:hover,
+.report-direct-action:focus-visible {
+  border-color: rgba(37, 99, 235, 0.38);
+  background: rgba(239, 246, 255, 0.96);
+  box-shadow: 0 16px 34px -25px rgba(37, 99, 235, 0.42);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.report-direct-action--muted {
+  color: rgb(71, 85, 105);
+  background: rgba(248, 250, 252, 0.94);
+}
+
+.dark .report-direct-action {
+  border-color: rgba(148, 163, 184, 0.20);
+  background: rgba(15, 23, 42, 0.82);
+  color: rgb(226, 232, 240);
+}
+
+.dark .report-direct-action:hover,
+.dark .report-direct-action:focus-visible {
+  border-color: rgba(96, 165, 250, 0.42);
+  background: rgba(30, 41, 59, 0.95);
+}
+
+/* Remove duplicate in-body hero headings for reports whose title is already rendered by ReportsLayout. */
+.collection-center-hero__head > .flex > div:first-child,
+.smart-brain-hero > .flex > .min-w-0:first-child,
+.report-page > .rounded-2xl:first-child .report-header-title,
+.report-page > .rounded-2xl:first-child .report-header-main > .min-w-0:first-child {
+  display: none !important;
+}
+
+/* Keep KPI/action clusters aligned after removing repeated copy blocks. */
+.collection-center-hero__head > .flex,
+.smart-brain-hero > .flex,
+.report-page > .rounded-2xl:first-child .report-header-main {
+  justify-content: flex-end;
+}
+
+/* Remove remaining decorative color washes in report body shells. */
+.report-page > .rounded-2xl:first-child > .h-1\.5,
+.report-page > .rounded-2xl:first-child > .px-6.py-5.bg-gradient-to-r {
+  background: transparent !important;
+}
+
+@media (max-width: 768px) {
+  .report-direct-action {
+    min-height: 2.5rem;
+    padding-inline: 0.8rem;
+  }
+}

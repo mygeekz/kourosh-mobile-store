@@ -1,0 +1,412 @@
+/* Stage 37 — Product sales compact executive redesign
+   Scope: /reports/product-sales only. Removes bulky table/detail noise without touching API/calculations. */
+
+.product-sales-executive-page {
+  --ps37-border: rgba(148, 163, 184, .32);
+  --ps37-surface: #fff;
+  --ps37-soft: #f8fafc;
+  --ps37-text: #0f172a;
+  --ps37-muted: #64748b;
+  --ps37-blue: #2563eb;
+  --ps37-green: #059669;
+  --ps37-orange: #d97706;
+  --ps37-violet: #7c3aed;
+}
+
+/* The filter panel should be a compact operational control, not a mini-dashboard. */
+.product-sales-control-panel {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: .65rem !important;
+  padding: .72rem !important;
+  border-radius: 20px !important;
+  background: var(--ps37-surface) !important;
+  border: 1px solid var(--ps37-border) !important;
+  box-shadow: none !important;
+}
+.product-sales-control-panel__row {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 100% !important;
+  flex-wrap: wrap !important;
+  align-items: end !important;
+  justify-content: flex-end !important;
+  gap: .55rem !important;
+}
+.product-sales-control-panel__row--modes { margin-right: auto !important; }
+.product-sales-control-panel .report-date-presets__chips {
+  min-height: 40px !important;
+  width: max-content !important;
+  background: #fff !important;
+  border-radius: 16px !important;
+  padding: .28rem !important;
+  box-shadow: none !important;
+}
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 0 11.75rem !important;
+  min-width: 11.75rem !important;
+  max-width: 11.75rem !important;
+}
+.product-sales-refresh-button {
+  height: 40px !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  color: var(--ps37-text) !important;
+  border: 1px solid var(--ps37-border) !important;
+  box-shadow: none !important;
+}
+.product-sales-segment {
+  min-height: 40px !important;
+  background: #fff !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+.product-sales-segment__label { color: #475569 !important; }
+.product-sales-segment button.is-active {
+  background: #f1f5f9 !important;
+  box-shadow: none !important;
+}
+
+/* Executive sections and metric cards, aligned with the newer financial overview standard. */
+.product-sales-metrics-section {
+  margin-top: .9rem;
+  padding: .85rem;
+  border: 1px solid var(--ps37-border);
+  border-radius: 22px;
+  background: var(--ps37-surface);
+  box-shadow: none;
+}
+.product-sales-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .75rem;
+  text-align: right;
+}
+.product-sales-section-head h3 {
+  margin: 0;
+  font-size: .95rem;
+  font-weight: 950;
+  color: var(--ps37-text);
+}
+.product-sales-section-head p {
+  margin: .18rem 0 0;
+  color: var(--ps37-muted);
+  font-size: .74rem;
+  line-height: 1.8;
+  font-weight: 750;
+}
+.product-sales-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .65rem;
+}
+.product-sales-metric-card {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: .7rem;
+  min-height: 92px;
+  padding: .85rem;
+  border: 1px solid var(--ps37-border);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+.product-sales-metric-card::before,
+.product-sales-metric-card::after,
+.product-sales-metric-card *::before,
+.product-sales-metric-card *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.product-sales-metric-card__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  border: 1px solid rgba(37, 99, 235, .15);
+  background: rgba(37, 99, 235, .07);
+  color: var(--ps37-blue);
+  font-size: .9rem;
+}
+.product-sales-metric-card__icon.is-green { color: var(--ps37-green); background: rgba(5,150,105,.08); border-color: rgba(5,150,105,.18); }
+.product-sales-metric-card__icon.is-orange { color: var(--ps37-orange); background: rgba(217,119,6,.08); border-color: rgba(217,119,6,.18); }
+.product-sales-metric-card__icon.is-violet { color: var(--ps37-violet); background: rgba(124,58,237,.07); border-color: rgba(124,58,237,.17); }
+.product-sales-metric-card__icon.is-slate { color: #475569; background: #f8fafc; border-color: rgba(148,163,184,.30); }
+.product-sales-metric-card__body { min-width: 0; text-align: right; }
+.product-sales-metric-card__label {
+  display: block;
+  color: var(--ps37-muted);
+  font-size: .7rem;
+  font-weight: 900;
+  line-height: 1.7;
+}
+.product-sales-metric-card strong {
+  display: block;
+  margin-top: .1rem;
+  color: var(--ps37-text);
+  font-size: 1.18rem;
+  line-height: 1.55;
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+.product-sales-metric-card small,
+.product-sales-metric-card em {
+  display: block;
+  margin-top: .12rem;
+  color: var(--ps37-muted);
+  font-size: .68rem;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.7;
+}
+.product-sales-date-value { font-size: .9rem !important; }
+.product-sales-metric-card.is-compact { min-height: 82px; }
+
+/* Redesign legacy audit/risk/health panels into compact decision panels. */
+.product-sales-executive-page .rounded-\[26px\],
+.product-sales-executive-page .rounded-\[28px\] {
+  border: 1px solid var(--ps37-border) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  padding: .9rem !important;
+}
+.product-sales-executive-page .rounded-\[26px\] span.grid,
+.product-sales-executive-page .rounded-\[28px\] span.grid {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 13px !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+  border: 1px solid var(--ps37-border) !important;
+  box-shadow: none !important;
+}
+.product-sales-executive-page .rounded-\[26px\] h3,
+.product-sales-executive-page .rounded-\[28px\] h3 {
+  font-size: .92rem !important;
+  line-height: 1.7 !important;
+  color: var(--ps37-text) !important;
+}
+.product-sales-executive-page .rounded-\[26px\] p,
+.product-sales-executive-page .rounded-\[28px\] p {
+  color: var(--ps37-muted) !important;
+  line-height: 1.8 !important;
+}
+.product-sales-executive-page .rounded-\[26px\] .rounded-2xl,
+.product-sales-executive-page .rounded-\[28px\] .rounded-2xl {
+  border-color: rgba(148,163,184,.24) !important;
+  background: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+/* Top products: clean product cards, no heavy black squares. */
+.product-sales-executive-page .p-4.grid .bg-slate-900.text-white {
+  background: #eef2ff !important;
+  color: #3730a3 !important;
+  border: 1px solid rgba(99,102,241,.18) !important;
+  box-shadow: none !important;
+}
+
+/* Table search belongs to the table, not the report header. */
+.product-sales-table-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+.product-sales-table-search {
+  position: relative;
+  width: min(100%, 22rem);
+  flex: 1 1 18rem;
+}
+.product-sales-table-search i {
+  position: absolute;
+  left: .85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: .75rem;
+  pointer-events: none;
+}
+.product-sales-table-search input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--ps37-border);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ps37-text);
+  text-align: right;
+  padding: 0 .85rem 0 2.45rem;
+  font-size: .76rem;
+  font-weight: 800;
+  outline: none;
+  box-shadow: none;
+}
+.product-sales-table-search input:focus {
+  border-color: rgba(37,99,235,.42);
+  box-shadow: 0 0 0 2px rgba(37,99,235,.07);
+}
+
+/* Compact table: fewer columns, combined information, stronger readability. */
+.product-sales-compact-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .76rem;
+}
+.product-sales-compact-table thead th {
+  padding: .78rem .9rem;
+  text-align: right;
+  color: #64748b;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(148,163,184,.28);
+  font-weight: 950;
+  white-space: nowrap;
+}
+.product-sales-compact-table tbody td {
+  padding: .82rem .9rem;
+  border-bottom: 1px solid rgba(226,232,240,.92);
+  vertical-align: middle;
+}
+.product-sales-compact-table tbody tr:hover { background: #f8fafc; }
+.product-sales-compact-table tbody tr.is-audit-row { background: rgba(238,242,255,.42); }
+.product-sales-table-main strong,
+.product-sales-table-money strong {
+  display: block;
+  color: var(--ps37-text);
+  font-weight: 950;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.product-sales-table-main span,
+.product-sales-table-money span,
+.product-sales-table-money small {
+  display: block;
+  color: var(--ps37-muted);
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+.product-sales-item-link {
+  display: inline-grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: .55rem;
+  max-width: 23rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: right;
+  color: inherit;
+  cursor: pointer;
+}
+.product-sales-item-link:disabled { cursor: default; }
+.product-sales-item-link__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(148,163,184,.28);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #475569;
+}
+.product-sales-item-link strong {
+  display: block;
+  color: var(--ps37-text);
+  font-size: .78rem;
+  font-weight: 950;
+  line-height: 1.75;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-sales-item-link small {
+  display: block;
+  color: var(--ps37-muted);
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.product-sales-table-tags,
+.product-sales-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+}
+.product-sales-table-tags span {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  border: 1px solid rgba(148,163,184,.26);
+  border-radius: 999px;
+  background: #fff;
+  color: #475569;
+  padding: 0 .6rem;
+  font-size: .68rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.product-sales-row-actions .report-direct-action,
+.product-sales-row-actions button {
+  min-height: 32px !important;
+  height: 32px !important;
+  width: max-content !important;
+  padding: 0 .7rem !important;
+  border-radius: 12px !important;
+  font-size: .68rem !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 1100px) {
+  .product-sales-metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product-sales-control-panel { justify-content: stretch !important; }
+  .product-sales-control-panel__row { width: 100% !important; justify-content: flex-start !important; }
+  .product-sales-control-panel__row--modes { margin-right: 0 !important; }
+}
+@media (max-width: 680px) {
+  .product-sales-metrics-grid { grid-template-columns: 1fr; }
+  .product-sales-executive-page .product-sales-date-field { flex: 1 1 100% !important; max-width: none !important; }
+  .product-sales-segment { width: 100%; overflow-x: auto; }
+}
+
+.dark .product-sales-executive-page {
+  --ps37-border: rgba(148, 163, 184, .20);
+  --ps37-surface: rgba(15, 23, 42, .88);
+  --ps37-soft: rgba(15, 23, 42, .70);
+  --ps37-text: #f8fafc;
+  --ps37-muted: #94a3b8;
+}
+.dark .product-sales-metrics-section,
+.dark .product-sales-metric-card,
+.dark .product-sales-control-panel,
+.dark .product-sales-table-search input,
+.dark .product-sales-table-tags span,
+.dark .product-sales-executive-page .rounded-\[26px\],
+.dark .product-sales-executive-page .rounded-\[28px\] {
+  background: rgba(15, 23, 42, .88) !important;
+  color: #f8fafc !important;
+}
+.dark .product-sales-compact-table thead th,
+.dark .product-sales-compact-table tbody tr:hover,
+.dark .product-sales-item-link__icon,
+.dark .product-sales-executive-page .rounded-\[26px\] .rounded-2xl,
+.dark .product-sales-executive-page .rounded-\[28px\] .rounded-2xl {
+  background: rgba(30, 41, 59, .82) !important;
+}
+.dark .product-sales-compact-table tbody td { border-bottom-color: rgba(51,65,85,.78); }

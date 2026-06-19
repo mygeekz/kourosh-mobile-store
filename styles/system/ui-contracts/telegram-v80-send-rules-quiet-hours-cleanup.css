@@ -1,0 +1,30 @@
+
+/* v80 — Send rules quiet-hours cleanup.
+   Duplicate free-text "ساعات سکوت تلگرام" field removed from JSX.
+   This note clarifies that the two hour fields are the single source of truth. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-send-rules-note-v80 {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.55rem !important;
+  margin-top: 0.75rem !important;
+  padding: 0.72rem 0.82rem !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 18px !important;
+  background: rgba(248, 250, 252, 0.82) !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 0.7rem !important;
+  line-height: 1.8 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-send-rules-note-v80 i {
+  margin-top: 0.22rem !important;
+  color: rgb(14, 165, 233) !important;
+  font-size: 0.78rem !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-send-rules-note-v80 {
+  background: rgba(2, 6, 23, 0.24) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+  color: rgb(203, 213, 225) !important;
+}

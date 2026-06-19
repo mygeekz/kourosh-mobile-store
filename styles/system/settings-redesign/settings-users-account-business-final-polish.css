@@ -1,0 +1,226 @@
+/* Phase 89 — Settings Users / Account / Business Final Polish / QA Pass
+   Scoped polish for the already redesigned Settings inner panels. No behavior or data flow changes. */
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+  --settings-polish-ring: rgba(59, 130, 246, .16);
+  --settings-polish-surface: rgba(255, 255, 255, .94);
+  --settings-polish-card: rgba(248, 250, 252, .82);
+  --settings-polish-border: rgba(148, 163, 184, .26);
+  --settings-polish-text: rgb(15, 23, 42);
+  --settings-polish-muted: rgb(100, 116, 139);
+  --settings-polish-shadow: 0 20px 56px -48px rgba(15, 23, 42, .40);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 {
+  --settings-polish-ring: rgba(96, 165, 250, .18);
+  --settings-polish-surface: rgba(15, 23, 42, .90);
+  --settings-polish-card: rgba(2, 6, 23, .38);
+  --settings-polish-border: rgba(51, 65, 85, .76);
+  --settings-polish-text: rgb(248, 250, 252);
+  --settings-polish-muted: rgb(148, 163, 184);
+  --settings-polish-shadow: 0 24px 62px -50px rgba(0, 0, 0, .82);
+}
+
+.settings-shell.settings-redesign-v1 :is(.settings-account-redesign-v1, .settings-business-redesign-v1, .settings-users-redesign-v1) {
+  isolation: isolate;
+}
+
+.settings-shell.settings-redesign-v1 :is(.settings-account-redesign-v1, .settings-business-redesign-v1, .settings-users-redesign-v1) :is(section, form, .rounded-\[30px\], .rounded-\[28px\], .rounded-\[26px\], .rounded-\[24px\]) {
+  border-color: var(--settings-polish-border) !important;
+}
+
+.settings-shell.settings-redesign-v1 :is(.settings-account-redesign-v1, .settings-business-redesign-v1, .settings-users-redesign-v1) :is(section, .rounded-\[30px\], .rounded-\[28px\], .rounded-\[26px\]) {
+  box-shadow: var(--settings-polish-shadow) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(label, .app-field, .modal-field, .block.text-right) {
+  min-width: 0;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea) {
+  border-radius: 16px !important;
+  color: var(--settings-polish-text) !important;
+  caret-color: rgb(37, 99, 235);
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea)::placeholder {
+  color: rgba(100, 116, 139, .72) !important;
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea)::placeholder {
+  color: rgba(148, 163, 184, .68) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea):focus-visible {
+  outline: none !important;
+  border-color: rgba(37, 99, 235, .44) !important;
+  box-shadow: 0 0 0 4px var(--settings-polish-ring), inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 button:focus-visible,
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 a:focus-visible,
+.settings-user-modal-redesign :is(button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--settings-polish-ring) !important;
+  outline-offset: 3px !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 :is([dir="ltr"], input[type="email"], input[type="url"]),
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 :is([dir="ltr"], input[type="email"], input[type="url"], input[type="tel"]),
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is([dir="ltr"], .font-mono) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: left !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean th,
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td {
+  vertical-align: middle;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr {
+  background: transparent;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean tbody tr:hover {
+  background: rgba(14, 165, 233, .052) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td:first-child .font-black {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: min(260px, 42vw);
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td:last-child > div {
+  min-width: 0;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td:last-child button {
+  min-height: 34px;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+.settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is(button.rounded-full, .rounded-full.border) {
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 img,
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 img {
+  user-select: none;
+}
+
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 :is(.h-24.w-24, .h-11.w-11),
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 :is(.h-24.w-24, .h-11.w-11) {
+  position: relative;
+}
+
+.settings-shell.settings-redesign-v1 .settings-business-redesign-v1 textarea,
+.settings-shell.settings-redesign-v1 .settings-account-redesign-v1 textarea {
+  line-height: 1.85 !important;
+  resize: vertical;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 ::-webkit-scrollbar,
+.settings-user-modal-redesign ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 ::-webkit-scrollbar-thumb,
+.settings-user-modal-redesign ::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, .42);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.settings-user-modal-redesign {
+  --settings-modal-border: rgba(148, 163, 184, .26);
+  --settings-modal-surface: rgba(255, 255, 255, .95);
+  padding-top: 2px;
+}
+
+.dark .settings-user-modal-redesign {
+  --settings-modal-border: rgba(51, 65, 85, .78);
+  --settings-modal-surface: rgba(15, 23, 42, .92);
+}
+
+.settings-user-modal-redesign .modal-field,
+.settings-user-modal-redesign .app-field {
+  min-width: 0;
+}
+
+.settings-user-modal-redesign :is(input, select, textarea) {
+  min-height: 44px;
+  border-radius: 16px !important;
+  border-color: var(--settings-modal-border) !important;
+  background: var(--settings-modal-surface) !important;
+}
+
+.settings-user-modal-redesign--delete {
+  border: 1px solid rgba(248, 113, 113, .24);
+  border-radius: 18px;
+  background: rgba(254, 242, 242, .72);
+  padding: 14px 16px;
+  line-height: 1.8;
+}
+
+.dark .settings-user-modal-redesign--delete {
+  background: rgba(127, 29, 29, .18);
+  border-color: rgba(248, 113, 113, .24);
+}
+
+@media (max-width: 1366px) {
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td:first-child .font-black {
+    max-width: 210px;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-shell.settings-redesign-v1 :is(.settings-account-redesign-v1, .settings-business-redesign-v1, .settings-users-redesign-v1) :is(section, .rounded-\[30px\], .rounded-\[28px\], .rounded-\[26px\]) {
+    border-radius: 22px !important;
+  }
+
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean {
+    table-layout: auto;
+    min-width: 640px;
+  }
+
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 .settings-table-clean td:last-child button {
+    min-width: 72px;
+  }
+}
+
+@media (max-width: 520px) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 :is(input, select, textarea) {
+    min-height: 42px;
+    border-radius: 14px !important;
+  }
+
+  .settings-shell.settings-redesign-v1 .settings-users-redesign-v1 :is(button.rounded-full, .rounded-full.border) {
+    width: 100%;
+  }
+
+  .settings-user-modal-redesign {
+    padding-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-shell.settings-redesign-v1 .settings-inner-panel-redesign-v1 *,
+  .settings-user-modal-redesign * {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+  }
+}

@@ -1,0 +1,151 @@
+/* Phase 48: global toast + alert + status badge unification */
+:root {
+  --ux-toast-radius: 18px;
+  --ux-toast-border-light: rgba(226, 232, 240, 0.92);
+  --ux-toast-border-dark: rgba(51, 65, 85, 0.88);
+  --ux-toast-bg-light: rgba(255, 255, 255, 0.96);
+  --ux-toast-bg-dark: rgba(2, 6, 23, 0.9);
+  --ux-toast-shadow-light: 0 22px 44px -28px rgba(15, 23, 42, 0.24);
+  --ux-toast-shadow-dark: 0 28px 52px -30px rgba(2, 6, 23, 0.66);
+}
+
+.toast,
+[class*="toast"],
+.react-hot-toast,
+[data-sonner-toast] {
+  border-radius: var(--ux-toast-radius) !important;
+  border: 1px solid var(--ux-toast-border-light) !important;
+  background: var(--ux-toast-bg-light) !important;
+  box-shadow: var(--ux-toast-shadow-light) !important;
+  backdrop-filter: blur(8px);
+}
+
+.dark .toast,
+.dark [class*="toast"],
+.dark .react-hot-toast,
+.dark [data-sonner-toast] {
+  border-color: var(--ux-toast-border-dark) !important;
+  background: var(--ux-toast-bg-dark) !important;
+  box-shadow: var(--ux-toast-shadow-dark) !important;
+}
+
+.alert,
+[class*="alert"],
+.notice,
+[class*="notice"],
+.warning-box,
+.error-box,
+.success-box,
+.info-box {
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.16);
+}
+
+.dark .alert,
+.dark [class*="alert"],
+.dark .notice,
+.dark [class*="notice"],
+.dark .warning-box,
+.dark .error-box,
+.dark .success-box,
+.dark .info-box {
+  border-color: rgba(51, 65, 85, 0.88);
+  box-shadow: 0 18px 34px -26px rgba(2, 6, 23, 0.52);
+}
+
+.badge,
+.status-badge,
+[class*="status-badge"],
+[class*="badge-status"],
+[class*="status-pill"] {
+  min-height: 26px;
+  border-radius: 9999px;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  padding-inline: 0.7rem;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+.dark .badge,
+.dark .status-badge,
+.dark [class*="status-badge"],
+.dark [class*="badge-status"],
+.dark [class*="status-pill"] {
+  border-color: rgba(71, 85, 105, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.badge-success,
+.status-badge--success,
+[class*="success-badge"] {
+  background: rgba(236, 253, 245, 0.92);
+  color: rgb(5 150 105);
+}
+
+.badge-warning,
+.status-badge--warning,
+[class*="warning-badge"] {
+  background: rgba(255, 251, 235, 0.92);
+  color: rgb(217 119 6);
+}
+
+.badge-danger,
+.status-badge--danger,
+[class*="danger-badge"],
+[class*="error-badge"] {
+  background: rgba(254, 242, 242, 0.92);
+  color: rgb(220 38 38);
+}
+
+.badge-info,
+.status-badge--info,
+[class*="info-badge"] {
+  background: rgba(239, 246, 255, 0.92);
+  color: rgb(37 99 235);
+}
+
+.dark .badge-success,
+.dark .status-badge--success,
+.dark [class*="success-badge"] {
+  background: rgba(6, 78, 59, 0.28);
+  color: rgb(110 231 183);
+}
+
+.dark .badge-warning,
+.dark .status-badge--warning,
+.dark [class*="warning-badge"] {
+  background: rgba(120, 53, 15, 0.28);
+  color: rgb(253 186 116);
+}
+
+.dark .badge-danger,
+.dark .status-badge--danger,
+.dark [class*="danger-badge"],
+.dark [class*="error-badge"] {
+  background: rgba(127, 29, 29, 0.28);
+  color: rgb(252 165 165);
+}
+
+.dark .badge-info,
+.dark .status-badge--info,
+.dark [class*="info-badge"] {
+  background: rgba(30, 58, 138, 0.28);
+  color: rgb(147 197 253);
+}
+
+@media (max-width: 767px) {
+  .badge,
+  .status-badge,
+  [class*="status-badge"],
+  [class*="badge-status"],
+  [class*="status-pill"] {
+    min-height: 24px;
+    font-size: 10px;
+    padding-inline: 0.6rem;
+  }
+}
+
+

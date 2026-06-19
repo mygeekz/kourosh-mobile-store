@@ -1,0 +1,68 @@
+/* Phase 8: shared detail / people-ledger surfaces extracted from legacy monolith */
+@layer components {
+  .people-ledger-table thead th { @apply bg-slate-50/90 text-slate-600 font-bold; }
+  .people-ledger-table tbody td { @apply align-top; }
+  .people-ledger-table tbody tr { @apply transition-colors; }
+  .people-ledger-table tbody tr:hover { @apply bg-slate-50/70; }
+
+  .people-panel-card {
+    @apply rounded-[30px] border border-slate-200 shadow-[0_18px_48px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900/80;
+    background-color: rgb(255 255 255 / 0.95);
+  }
+
+  .people-section-title { @apply text-xl font-black text-slate-900 dark:text-slate-50; }
+  .people-section-subtitle { @apply mt-1 text-sm text-slate-500 dark:text-slate-400; }
+
+  /* Premium ledger panels for customer/partner detail pages */
+/* Premium ledger panels for customer/partner detail pages */
+#customer-ledger-section + div,
+#partner-ledger-section + div,
+#customer-history-section + div,
+#partner-history-section + div {
+  @apply rounded-[32px] border border-slate-200/80 p-6 shadow-[0_18px_48px_rgba(15,23,42,0.08)] backdrop-blur dark:border-slate-800 dark:bg-slate-900/80;
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+#customer-ledger-section + div .overflow-x-auto,
+#partner-ledger-section + div .overflow-x-auto,
+#customer-history-section + div .overflow-x-auto,
+#partner-history-section + div .overflow-x-auto {
+  @apply rounded-3xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-800;
+  /* dark bg moved below if needed */
+}
+
+#customer-ledger-section + div table,
+#partner-ledger-section + div table,
+#customer-history-section + div table,
+#partner-history-section + div table {
+  @apply min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700;
+}
+
+#customer-ledger-section + div thead th,
+#partner-ledger-section + div thead th,
+#customer-history-section + div thead th,
+#partner-history-section + div thead th {
+  @apply bg-slate-50/95 text-slate-600 font-bold dark:bg-slate-800/70 dark:text-slate-200;
+}
+
+#customer-ledger-section + div tbody td,
+#partner-ledger-section + div tbody td,
+#customer-history-section + div tbody td,
+#partner-history-section + div tbody td {
+  @apply align-top;
+}
+
+#customer-ledger-section + div tbody tr,
+#partner-ledger-section + div tbody tr,
+#customer-history-section + div tbody tr,
+#partner-history-section + div tbody tr {
+  @apply transition-colors;
+}
+
+#customer-ledger-section + div tbody tr:hover,
+#partner-ledger-section + div tbody tr:hover,
+#customer-history-section + div tbody tr:hover,
+#partner-history-section + div tbody tr:hover {
+  @apply bg-slate-50/80 dark:bg-slate-800/40;
+}
+}

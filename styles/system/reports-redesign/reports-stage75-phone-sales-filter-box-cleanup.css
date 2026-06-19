@@ -1,0 +1,143 @@
+/* Stage 75 — Phone sales filter cleanup
+   Fixes: single preset capsule, white preset background, larger centered date inputs, aligned calendar icon. */
+
+.phone-sales-executive-page .phone-sales-filter-panel {
+  background: #ffffff !important;
+  padding: 14px 16px 16px !important;
+}
+
+.phone-sales-executive-page .phone-sales-filter-row--primary {
+  align-items: center !important;
+  gap: 16px !important;
+}
+
+.phone-sales-executive-page .phone-sales-filter-group--presets,
+.phone-sales-executive-page .phone-sales-filter-group--fields {
+  align-items: center !important;
+}
+
+/* Remove the first wrapper frame so only one capsule remains. */
+.phone-sales-executive-page .phone-sales-date-presets,
+.phone-sales-executive-page .report-date-presets {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Keep a single clean white preset capsule. */
+.phone-sales-executive-page .phone-sales-date-presets .report-date-presets__chips,
+.phone-sales-executive-page .report-date-presets__chips {
+  display: inline-flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  height: 56px !important;
+  padding: 8px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.phone-sales-executive-page .report-date-preset-chip {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+}
+
+/* Bigger date fields with enough breathing room. */
+.phone-sales-executive-page .phone-sales-date-box {
+  flex: 0 0 190px !important;
+  width: 190px !important;
+  min-width: 190px !important;
+  max-width: 190px !important;
+  height: 64px !important;
+  gap: 6px !important;
+  justify-content: center !important;
+}
+
+.phone-sales-executive-page .phone-sales-date-box > span {
+  height: auto !important;
+  line-height: 1.2 !important;
+  font-size: 0.68rem !important;
+  padding: 0 8px !important;
+}
+
+.phone-sales-executive-page .phone-sales-date-box .app-date-field,
+.phone-sales-executive-page .phone-sales-date-box .app-date-field__control,
+.phone-sales-executive-page .phone-sales-date-box .app-date-field__control.phone-sales-date-input {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.phone-sales-executive-page .phone-sales-date-box .app-date-field__input,
+.phone-sales-executive-page .phone-sales-date-box input[data-app-date-input='true'] {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 14px 0 40px !important;
+  border-radius: 15px !important;
+  line-height: 42px !important;
+  font-size: 0.86rem !important;
+  background: #ffffff !important;
+}
+
+/* Show and align the calendar icon properly inside the box. */
+.phone-sales-executive-page .phone-sales-date-box .app-date-field__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 18px !important;
+  height: 18px !important;
+  pointer-events: none !important;
+  color: #64748b !important;
+}
+
+.phone-sales-executive-page .phone-sales-date-box .app-date-field__icon i {
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  color: inherit !important;
+}
+
+.phone-sales-executive-page .phone-sales-refresh-button {
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 18px 0 0 0 !important;
+  border-radius: 15px !important;
+  padding: 0 16px !important;
+}
+
+@media (max-width: 980px) {
+  .phone-sales-executive-page .phone-sales-filter-row--primary {
+    align-items: stretch !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-date-box {
+    flex: 1 1 190px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .phone-sales-executive-page .phone-sales-date-presets .report-date-presets__chips,
+  .phone-sales-executive-page .report-date-presets__chips {
+    flex-wrap: wrap !important;
+    height: auto !important;
+  }
+}

@@ -1,0 +1,102 @@
+
+/* v131 — fix ledger metric icon overlap: icon on right, text beside it */
+.partner-ledger-v130 .partner-ledger-v130__metric-box {
+  position: relative !important;
+  min-height: 48px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 8px 10px !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__metric-icon {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  border: 1px solid currentColor !important;
+  font-size: 13px !important;
+  z-index: 1 !important;
+  margin: 0 !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__metric-copy {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  display: block !important;
+  text-align: right !important;
+  direction: rtl !important;
+  font-weight: 850 !important;
+  overflow-wrap: anywhere !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Guarantee the top "آخرین به‌روزرسانی پرونده" box has a visible icon */
+.partner-ledger-v130 .partner-ledger-v130__box-icon.is-calendar-fallback {
+  position: relative !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__box-icon.is-calendar-fallback i {
+  display: inline-block !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__stat-head {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__stat-head > .partner-ledger-v130__box-icon {
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  margin: 0 !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__stat-head > div {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+/* Same right-icon rule for quick summary boxes */
+.partner-ledger-v130 .partner-ledger-v130__quick-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__quick-item > .partner-ledger-v130__box-icon {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  margin: 0 !important;
+}
+
+.partner-ledger-v130 .partner-ledger-v130__quick-item > .min-w-0 {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}

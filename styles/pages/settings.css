@@ -1,0 +1,189 @@
+/* Phase 7: extracted Settings shell and dark-mode domain styles from legacy monolith */
+
+@layer components {
+  .settings-shell {
+    --settings-border: rgba(148,163,184,0.22);
+  }
+
+  .dark .detail-hero-card__icon {
+    border-color: rgb(51 65 85 / 0.85);
+  }
+  .settings-sidebar {
+    @apply rounded-[28px] border border-slate-200/80 bg-white p-3 shadow-[0_14px_34px_-28px_rgba(15,23,42,0.22)];
+  }
+
+  .settings-workspace {
+    @apply rounded-[32px] border border-slate-200/80 bg-white shadow-[0_18px_40px_-32px_rgba(15,23,42,0.24)];
+  }
+
+  .settings-fieldset {
+    @apply rounded-[28px] border border-slate-200/80 bg-slate-50/50 p-5 md:p-6;
+  }
+
+  .settings-mobile-tab {
+    @apply shadow-none;
+  }
+
+  .settings-section-icon {
+    display: inline-flex;
+    @apply h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-600 shadow-sm;
+  }
+
+  .settings-data-block {
+    @apply rounded-2xl border border-slate-200 bg-slate-50/60 p-4;
+  }
+
+  .settings-table-clean thead th {
+    @apply py-3 text-right text-xs font-bold text-slate-500;
+  }
+
+  .settings-table-clean tbody td {
+    @apply py-3 text-sm text-slate-700;
+  }
+
+  .settings-table-clean tbody tr {
+    @apply border-t border-slate-200/80;
+  }
+}
+
+  .dark .settings-shell {
+    --settings-border: rgba(51, 65, 85, 0.7);
+  }
+
+  .dark .settings-sidebar {
+    @apply border-slate-800/80 bg-slate-950/90 shadow-[0_18px_44px_-34px_rgba(2,6,23,0.8)];
+  }
+
+  .dark .settings-workspace {
+    @apply border-slate-800/80 bg-slate-950/90 shadow-[0_22px_50px_-34px_rgba(2,6,23,0.82)];
+  }
+
+  .dark .settings-fieldset {
+    @apply border-slate-800/80 bg-slate-950/70;
+  }
+
+  .dark .settings-section-icon {
+    @apply border-slate-800 bg-slate-900 text-slate-200;
+  }
+
+  .dark .settings-data-block {
+    @apply border-slate-800/80 bg-slate-900/70 text-slate-100;
+  }
+
+  .dark .settings-table-clean thead th {
+    @apply text-slate-400;
+  }
+
+  .dark .settings-table-clean tbody td {
+    @apply text-slate-200;
+  }
+
+  .dark .settings-table-clean tbody tr {
+    @apply border-slate-800/80;
+  }
+
+  .dark .settings-shell [class~="bg-white"],
+  .dark .settings-shell [class*="bg-white/90"],
+  .dark .settings-shell [class*="bg-white/95"] {
+    background-color: rgb(2 6 23);
+    color: rgb(241 245 249);
+  }
+
+  .dark .settings-shell [class~="bg-slate-50"],
+  .dark .settings-shell [class*="bg-slate-50/50"],
+  .dark .settings-shell [class*="bg-slate-50/60"],
+  .dark .settings-shell [class*="bg-slate-50/80"],
+  .dark .settings-shell [class~="bg-gray-50"],
+  .dark .settings-shell [class*="bg-gray-50/60"],
+  .dark .settings-shell [class~="bg-gray-100"],
+  .dark .settings-shell [class~="bg-gray-800"],
+  .dark .settings-shell [class*="bg-gray-900/30"] {
+    background-color: rgba(15, 23, 42, 0.72);
+    color: rgb(241 245 249);
+  }
+
+  .dark .settings-shell [class~="border-gray-200"],
+  .dark .settings-shell [class~="border-slate-200"],
+  .dark .settings-shell [class*="border-slate-200/80"],
+  .dark .settings-shell [class*="border-slate-200/90"],
+  .dark .settings-shell [class*="dark:border-gray-700"] {
+    border-color: rgba(30, 41, 59, 0.8);
+  }
+
+  .dark .settings-shell [class~="text-gray-900"],
+  .dark .settings-shell [class~="text-text"] {
+    color: rgb(241 245 249);
+  }
+
+  .dark .settings-shell [class~="text-gray-700"],
+  .dark .settings-shell [class~="text-gray-600"],
+  .dark .settings-shell [class~="text-gray-500"],
+  .dark .settings-shell [class~="text-slate-700"],
+  .dark .settings-shell [class~="text-slate-600"],
+  .dark .settings-shell [class~="text-slate-500"] {
+    color: rgb(203 213 225);
+  }
+
+  .dark .settings-shell input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  .dark .settings-shell select,
+  .dark .settings-shell textarea {
+    @apply border-slate-700/80 bg-slate-900/80 text-slate-100;
+  }
+
+  .dark .settings-shell input:not([type='checkbox']):not([type='radio']):not([type='range'])::placeholder,
+  .dark .settings-shell textarea::placeholder {
+    color: rgb(100 116 139);
+  }
+
+  .dark .settings-shell .settings-mobile-tab,
+  .dark .settings-shell .settings-action-btn {
+    @apply border-slate-800/80 bg-slate-900 text-slate-100;
+  }
+
+  .dark .settings-shell .shadow-sm,
+  .dark .settings-shell .shadow {
+    box-shadow: 0 16px 36px -28px rgba(2, 6, 23, 0.82);
+  }
+
+  .dark .settings-shell .ux-btn-secondary,
+  .dark .settings-shell .ux-btn-ghost,
+  .dark .settings-shell button.rounded-lg.border:not(.ux-btn),
+  .dark .settings-shell button.rounded-xl.border:not(.ux-btn),
+  .dark .settings-shell button.rounded-2xl.border:not(.ux-btn) {
+    border-color: rgba(51, 65, 85, 0.92);
+    color: rgb(226 232 240);
+    background-image: linear-gradient(180deg, rgba(30,41,59,0.98), rgba(15,23,42,0.96));
+    box-shadow: 0 18px 34px -26px rgba(2, 6, 23, 0.78);
+  }
+
+  .dark .settings-shell .ux-btn-secondary:hover,
+  .dark .settings-shell .ux-btn-secondary:hover .ux-btn__content,
+  .dark .settings-shell .ux-btn-secondary:hover .ux-btn__icon,
+  .dark .settings-shell .ux-btn-secondary:hover i,
+  .dark .settings-shell .ux-btn-secondary:hover svg,
+  .dark .settings-shell .ux-btn-secondary:hover span,
+  .dark .settings-shell .ux-btn-ghost:hover,
+  .dark .settings-shell .ux-btn-ghost:hover .ux-btn__content,
+  .dark .settings-shell .ux-btn-ghost:hover .ux-btn__icon,
+  .dark .settings-shell .ux-btn-ghost:hover i,
+  .dark .settings-shell .ux-btn-ghost:hover svg,
+  .dark .settings-shell .ux-btn-ghost:hover span,
+  .dark .settings-shell button.rounded-lg.border:not(.ux-btn):hover,
+  .dark .settings-shell button.rounded-xl.border:not(.ux-btn):hover,
+  .dark .settings-shell button.rounded-2xl.border:not(.ux-btn):hover {
+    color: rgb(248 250 252);
+    border-color: rgba(71, 85, 105, 0.96);
+    background-image: linear-gradient(180deg, rgba(51,65,85,0.98), rgba(15,23,42,0.98));
+  }
+
+  .dark .settings-shell .bg-primary\/10,
+  .dark .settings-shell .hover\:bg-primary\/5:hover {
+    background-color: rgba(14,165,233,0.14);
+  }
+
+
+.settings-action-btn {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 ux-btn-secondary ux-btn-sm;
+  isolation: isolate;
+}

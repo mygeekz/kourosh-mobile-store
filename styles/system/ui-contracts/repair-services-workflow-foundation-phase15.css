@@ -1,0 +1,258 @@
+/* Phase 15 — Repair / Services / Workflow Foundation
+   Scope-only CSS: no Tailwind utility composition, no global element hijack outside data-ui scopes. */
+
+:where(.repair-workflow-foundation, [data-ui-repair-page], [data-ui-service-page], [data-ui-workflow-wizard]) {
+  --rsw-surface: rgba(255, 255, 255, 0.96);
+  --rsw-surface-muted: rgba(248, 250, 252, 0.92);
+  --rsw-border: rgba(15, 23, 42, 0.10);
+  --rsw-border-strong: rgba(15, 23, 42, 0.16);
+  --rsw-text: rgb(15, 23, 42);
+  --rsw-muted: rgb(100, 116, 139);
+  --rsw-shadow: 0 22px 70px -54px rgba(15, 23, 42, 0.34);
+  --rsw-radius-xl: 24px;
+  --rsw-radius-lg: 18px;
+  --rsw-radius-md: 14px;
+}
+
+.dark :where(.repair-workflow-foundation, [data-ui-repair-page], [data-ui-service-page], [data-ui-workflow-wizard]) {
+  --rsw-surface: rgba(2, 6, 23, 0.96);
+  --rsw-surface-muted: rgba(15, 23, 42, 0.78);
+  --rsw-border: rgba(148, 163, 184, 0.18);
+  --rsw-border-strong: rgba(148, 163, 184, 0.26);
+  --rsw-text: rgb(241, 245, 249);
+  --rsw-muted: rgb(148, 163, 184);
+  --rsw-shadow: 0 22px 70px -54px rgba(0, 0, 0, 0.80);
+}
+
+[data-ui-repair-surface="hero"],
+[data-ui-service-surface="hero"],
+[data-ui-repair-surface="workspace"],
+[data-ui-service-surface="workspace"],
+[data-ui-repair-surface="detail-card"],
+[data-ui-repair-form="intake"],
+[data-ui-workflow-wizard="true"] {
+  border-color: var(--rsw-border) !important;
+  background: var(--rsw-surface) !important;
+  box-shadow: var(--rsw-shadow) !important;
+}
+
+[data-ui-repair-surface="hero"],
+[data-ui-service-surface="hero"] {
+  border-radius: 28px !important;
+  padding: clamp(14px, 2vw, 20px) !important;
+}
+
+[data-ui-repair-surface="workspace"],
+[data-ui-service-surface="workspace"],
+[data-ui-repair-form="intake"] {
+  border-radius: var(--rsw-radius-xl) !important;
+}
+
+[data-ui-repair-metrics="true"],
+[data-ui-service-metrics="true"] {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+[data-ui-repair-card="status"],
+[data-ui-service-card="stat"],
+[data-ui-service-card="quick-sell"] {
+  border-color: var(--rsw-border) !important;
+  background: var(--rsw-surface) !important;
+  box-shadow: 0 18px 52px -44px rgba(15, 23, 42, 0.34) !important;
+  border-radius: var(--rsw-radius-lg) !important;
+  min-width: 0;
+}
+
+[data-ui-repair-card="status"]:hover,
+[data-ui-service-card="quick-sell"]:hover {
+  border-color: var(--rsw-border-strong) !important;
+  transform: translateY(-1px);
+}
+
+[data-ui-repair-table-shell="true"],
+[data-ui-service-table-shell="true"] {
+  overflow: hidden;
+}
+
+[data-ui-repair-table="true"],
+[data-ui-service-table-shell="true"] table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+[data-ui-repair-table="true"] th,
+[data-ui-service-table-shell="true"] th {
+  white-space: nowrap;
+  color: var(--rsw-muted) !important;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+}
+
+[data-ui-repair-table="true"] td,
+[data-ui-service-table-shell="true"] td {
+  vertical-align: middle;
+  line-height: 1.85;
+}
+
+[data-ui-repair-table="true"] tr,
+[data-ui-service-table-shell="true"] tr {
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+[data-ui-repair-table="true"] tbody tr:hover,
+[data-ui-service-table-shell="true"] tbody tr:hover {
+  background: var(--rsw-surface-muted) !important;
+}
+
+[data-ui-repair-page] :where(.truncate, .line-clamp-1),
+[data-ui-service-page] :where(.truncate, .line-clamp-1) {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+}
+
+[data-ui-repair-page] :where(input, select, textarea),
+[data-ui-service-page] :where(input, select, textarea),
+[data-ui-service-form="editor"] :where(input, select, textarea),
+[data-ui-repair-form="intake"] :where(input, select, textarea) {
+  min-height: 42px;
+  border-radius: var(--rsw-radius-md) !important;
+}
+
+[data-ui-repair-page] :where(textarea),
+[data-ui-service-page] :where(textarea) {
+  min-height: 110px;
+  line-height: 1.9;
+  resize: vertical;
+}
+
+[data-ui-repair-control="serial"],
+[data-ui-repair-control="barcode"],
+[data-ui-repair-control="phone"],
+[data-ui-repair-page] :where([dir="ltr"], .font-mono),
+[data-ui-service-page] :where([dir="ltr"], .font-mono) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: left !important;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-ui-repair-form-grid="true"] {
+  gap: 16px !important;
+}
+
+[data-ui-repair-step] {
+  min-width: 0;
+}
+
+[data-ui-repair-surface="form-header"],
+[data-ui-repair-surface="edit-banner"] {
+  border-color: var(--rsw-border) !important;
+}
+
+[data-ui-workflow-wizard="true"] {
+  border-radius: 26px !important;
+  overflow: hidden;
+}
+
+[data-ui-workflow-wizard="true"] [data-ui-workflow-step] {
+  min-width: 0;
+  border-radius: 18px !important;
+}
+
+[data-ui-workflow-wizard="true"] [data-ui-workflow-step="active"] {
+  box-shadow: 0 22px 48px -32px rgba(15, 23, 42, 0.48) !important;
+}
+
+[data-ui-workflow-wizard="true"] [data-ui-workflow-step="done"] {
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+[data-ui-workflow-actions="true"] {
+  border-color: var(--rsw-border) !important;
+  background: var(--rsw-surface) !important;
+}
+
+[data-ui-repair-surface="financial-summary"] {
+  border: 1px solid var(--rsw-border) !important;
+  border-radius: var(--rsw-radius-lg) !important;
+  background: var(--rsw-surface-muted) !important;
+  padding: 14px !important;
+}
+
+[data-ui-repair-modal="add-part"] {
+  min-width: 0;
+}
+
+[data-ui-repair-modal="add-part"] form,
+[data-ui-service-form="editor"] {
+  border-color: var(--rsw-border) !important;
+}
+
+[data-ui-repair-receipt-actions="true"] button {
+  min-height: 40px;
+  border-radius: 14px !important;
+}
+
+[data-ui-repair-receipt="true"] {
+  border-color: var(--rsw-border) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 24px 72px -54px rgba(15, 23, 42, 0.36) !important;
+}
+
+[data-ui-service-quick-sell="true"] {
+  min-width: 0;
+}
+
+[data-ui-service-quick-sell="true"] [data-ui-service-card="quick-sell"] {
+  align-items: center;
+}
+
+[data-ui-service-quick-sell="true"] [data-ui-service-card="quick-sell"] span {
+  min-width: 0;
+}
+
+[data-ui-service-form="editor"] .premium-sticky-footer {
+  border-color: var(--rsw-border) !important;
+  background: var(--rsw-surface) !important;
+}
+
+[data-ui-repair-page] [data-ui-button],
+[data-ui-service-page] [data-ui-button] {
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  [data-ui-repair-metrics="true"],
+  [data-ui-service-metrics="true"] {
+    grid-template-columns: 1fr;
+  }
+
+  [data-ui-repair-surface="hero"],
+  [data-ui-service-surface="hero"] {
+    border-radius: 22px !important;
+  }
+
+  [data-ui-workflow-actions="true"] {
+    align-items: stretch !important;
+  }
+
+  [data-ui-workflow-actions="true"] > div {
+    display: none;
+  }
+
+  [data-ui-workflow-actions="true"] button {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
+
+@media print {
+  .repair-workflow-foundation[data-ui-repair-page="receipt"] {
+    background: white !important;
+    padding: 0 !important;
+  }
+}

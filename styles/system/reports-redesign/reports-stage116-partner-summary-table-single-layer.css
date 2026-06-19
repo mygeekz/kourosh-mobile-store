@@ -1,0 +1,189 @@
+/* Stage 116 — Partner summary table single-layer fix
+   Root cause: older partner table/header rules were making the summary header behave like a side rail over the table.
+   This forces a single vertical stack: header block above, one table shell below. */
+
+.partner-performance-executive-page .partner-summary-table-card {
+  display: block !important;
+  position: relative !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+  border-radius: 26px !important;
+  background: #ffffff !important;
+  isolation: isolate !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-card::before,
+.partner-performance-executive-page .partner-summary-table-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head,
+.partner-performance-executive-page .partner-summary-table-head--v2 {
+  position: relative !important;
+  z-index: 2 !important;
+  inset: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 62px !important;
+  padding: 0 0 14px 0 !important;
+  margin: 0 0 12px 0 !important;
+  gap: 14px !important;
+  border: 0 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+  overflow: visible !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock {
+  position: static !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  text-align: right !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-title-icon {
+  position: static !important;
+  grid-column: 1 !important;
+  grid-row: 1 / span 2 !important;
+  width: 34px !important;
+  height: 34px !important;
+  flex: 0 0 34px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock h3,
+.partner-performance-executive-page .partner-summary-table-titleblock p {
+  position: static !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-chips {
+  position: static !important;
+  z-index: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: 44% !important;
+  min-width: 0 !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-chips span {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-shell {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  clear: both !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid rgba(203, 213, 225, .78) !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-shell::before,
+.partner-performance-executive-page .partner-summary-table-shell::after {
+  content: none !important;
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  min-width: 1080px !important;
+  table-layout: fixed !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background: #ffffff !important;
+}
+
+.partner-performance-executive-page .partner-summary-table thead,
+.partner-performance-executive-page .partner-summary-table tbody,
+.partner-performance-executive-page .partner-summary-table tr,
+.partner-performance-executive-page .partner-summary-table th,
+.partner-performance-executive-page .partner-summary-table td {
+  position: static !important;
+  float: none !important;
+  transform: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table thead th {
+  height: 44px !important;
+  padding: 0 14px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid rgba(203,213,225,.86) !important;
+  vertical-align: middle !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody td {
+  height: 54px !important;
+  padding: 0 14px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(226,232,240,.78) !important;
+  vertical-align: middle !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td {
+  background: #f3f8ff !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td:first-child {
+  box-shadow: inset -4px 0 0 #2563eb !important;
+}
+
+@media (max-width: 920px) {
+  .partner-performance-executive-page .partner-summary-table-head,
+  .partner-performance-executive-page .partner-summary-table-head--v2 {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .partner-performance-executive-page .partner-summary-table-chips {
+    max-width: 100% !important;
+    justify-content: flex-start !important;
+    flex-wrap: wrap !important;
+  }
+}

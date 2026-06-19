@@ -1,0 +1,62 @@
+.report-filter-button,
+button.report-filter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  min-height: 42px;
+  border-radius: 18px;
+  border: 1px solid rgba(203, 213, 225, 0.92);
+  background-image: linear-gradient(135deg, rgb(15 23 42), rgb(51 65 85));
+  color: rgb(255 255 255);
+  padding-inline: 1rem;
+  padding-block: 0.58rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  box-shadow: 0 18px 34px -24px rgba(15, 23, 42, 0.28);
+}
+
+.report-filter-button:hover,
+button.report-filter-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 38px -24px rgba(15, 23, 42, 0.32);
+}
+
+.dark .report-filter-button,
+.dark button.report-filter-button {
+  background-image: linear-gradient(135deg, rgb(241 245 249), rgb(203 213 225));
+  color: rgb(15 23 42);
+  border-color: rgba(148, 163, 184, 0.24);
+}
+
+.sales-hub-card .ux-btn,
+.sales-hub-card .ux-btn--native,
+#sale-step-items .ux-btn,
+#sale-step-cart .ux-btn,
+#sale-step-checkout .ux-btn {
+  width: auto;
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  .ux-btn,
+  .ux-btn--native,
+  .report-filter-button,
+  button.report-filter-button {
+    min-height: 42px;
+  }
+
+  .ux-btn__content {
+    gap: 0.55rem;
+  }
+
+  .ux-btn__icon,
+  .ux-btn__spinner,
+  .ux-btn--native[data-ux-icon-glyph]::before {
+    width: 1.78rem;
+    height: 1.78rem;
+    min-width: 1.78rem;
+  }
+}
+
+

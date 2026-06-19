@@ -1,0 +1,145 @@
+
+/* v134 — ledger table row spacing and transaction-box polish */
+.partner-ledger-v132 .partner-ledger-shell {
+  padding: 10px 10px 12px !important;
+  background: #f8fafc !important;
+  border-radius: 26px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table {
+  border-collapse: separate !important;
+  border-spacing: 0 12px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table__head th {
+  height: 46px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-table__body {
+  background: transparent !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row {
+  background: transparent !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row > td {
+  background: #ffffff !important;
+  border-top: 1px solid rgba(226, 232, 240, .88) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .88) !important;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  vertical-align: middle !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row > td:first-child:not(.hidden) {
+  border-right: 1px solid rgba(226, 232, 240, .88) !important;
+  border-top-right-radius: 22px !important;
+  border-bottom-right-radius: 22px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row > td:last-child {
+  border-left: 1px solid rgba(226, 232, 240, .88) !important;
+  border-top-left-radius: 22px !important;
+  border-bottom-left-radius: 22px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row:hover > td {
+  background: #fbfdff !important;
+  border-color: rgba(203, 213, 225, .96) !important;
+}
+
+.partner-ledger-v132 .partner-ledger-row--expanded > td {
+  background: #f8fafc !important;
+}
+
+.partner-ledger-v132 .partner-ledger-debit-pill,
+.partner-ledger-v132 .partner-ledger-credit-pill,
+.partner-ledger-v132 .partner-ledger-balance-pill,
+.partner-ledger-v132 td span[class*="border-rose-100"],
+.partner-ledger-v132 td span[class*="border-emerald-100"],
+.partner-ledger-v132 td span[class*="border-slate-200"][class*="rounded-2xl"] {
+  min-height: 54px !important;
+  padding: 10px 14px !important;
+  border-radius: 17px !important;
+  align-items: center !important;
+}
+
+.partner-ledger-v132 .partner-system-id-block {
+  min-height: 54px !important;
+  justify-content: center !important;
+}
+
+.partner-ledger-v132 .partner-ledger-description-cell,
+.partner-ledger-v132 td .group {
+  min-height: 58px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.partner-ledger-v132 .ledger-actions-row {
+  min-height: 54px !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.partner-ledger-v132 .finance-table-action {
+  min-height: 40px !important;
+  border-radius: 14px !important;
+  padding-inline: 12px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-expanded-row > td {
+  padding-top: 0 !important;
+  padding-bottom: 14px !important;
+  background: transparent !important;
+}
+
+.partner-ledger-v132 .partner-ledger-expanded-panel {
+  margin-top: -4px !important;
+  border-radius: 22px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-grid {
+  margin-bottom: 16px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-summary-card {
+  min-height: 84px !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-shell {
+  background: rgba(2, 6, 23, .72) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-row > td {
+  background: rgba(15, 23, 42, .92) !important;
+  border-color: rgba(51, 65, 85, .90) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-row:hover > td {
+  background: rgba(30, 41, 59, .78) !important;
+  border-color: rgba(71, 85, 105, .95) !important;
+}
+
+.dark .partner-ledger-v132 .partner-ledger-row--expanded > td {
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+@media (max-width: 980px) {
+  .partner-ledger-v132 .partner-ledger-shell {
+    padding: 8px !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-table {
+    border-spacing: 0 10px !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-row > td {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+  }
+}

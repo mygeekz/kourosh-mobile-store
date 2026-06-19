@@ -1,0 +1,247 @@
+/* Phase 10 — Inventory / Mobile Phones Foundation
+   Scope-only polish for inventory, products, mobile phones and IMEI-heavy UI.
+   Plain CSS only. No Tailwind utility composition. */
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation, [data-ui-inventory-page]) {
+  --inventory-surface: rgba(255, 255, 255, 0.95);
+  --inventory-surface-soft: rgba(248, 250, 252, 0.82);
+  --inventory-border: rgba(148, 163, 184, 0.24);
+  --inventory-border-strong: rgba(100, 116, 139, 0.34);
+  --inventory-text: rgb(15, 23, 42);
+  --inventory-muted: rgb(100, 116, 139);
+  --inventory-radius: 24px;
+  --inventory-radius-sm: 17px;
+  --inventory-shadow: 0 22px 58px -44px rgba(15, 23, 42, 0.34);
+  --inventory-focus: 0 0 0 4px color-mix(in srgb, var(--brand, #2563eb) 18%, transparent);
+}
+
+.dark :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation, [data-ui-inventory-page]) {
+  --inventory-surface: rgba(15, 23, 42, 0.86);
+  --inventory-surface-soft: rgba(2, 6, 23, 0.52);
+  --inventory-border: rgba(71, 85, 105, 0.46);
+  --inventory-border-strong: rgba(100, 116, 139, 0.58);
+  --inventory-text: rgb(248, 250, 252);
+  --inventory-muted: rgb(148, 163, 184);
+  --inventory-shadow: 0 24px 64px -46px rgba(0, 0, 0, 0.78);
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(.app-card, .inventory-card-premium, .inventory-apple-stat, .inventory-pastel-card, .phone-identity-block, .phone-finance-block, .phone-operations-block, .product-modal-apple-section, .product-management-panel, .product-management-table-shell, .product-import-panel) {
+  border-color: var(--inventory-border) !important;
+  box-shadow: var(--inventory-shadow) !important;
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(input, select, textarea, .ux-input, .app-form-field, .inventory-form-control) {
+  min-height: 2.75rem;
+  border-radius: 15px !important;
+  border-color: var(--inventory-border) !important;
+  background: var(--inventory-surface) !important;
+  color: var(--inventory-text) !important;
+  line-height: 1.65 !important;
+  font-weight: 650;
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(input, select, textarea, button, [role="button"]):focus-visible {
+  outline: none !important;
+  box-shadow: var(--inventory-focus) !important;
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(input, textarea)::placeholder {
+  color: rgb(148, 163, 184) !important;
+  opacity: 1 !important;
+}
+
+.dark :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(input, textarea)::placeholder {
+  color: rgb(100, 116, 139) !important;
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(select) {
+  padding-inline-end: 2.6rem !important;
+  background-position: left 0.9rem center !important;
+}
+
+:where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where([dir="ltr"], input[name="imei"], input[name="barcode"], input[name="sku"], input[name="batteryHealth"], input[name="purchasePrice"], input[name="salePrice"], input[name="currentPurchasePrice"], .font-mono) {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.inventory-mobile-foundation input[name="imei"],
+.inventory-mobile-foundation .phone-identity-block__field--imei input,
+.inventory-mobile-foundation .phone-identity-block__field--imei [dir="ltr"] {
+  text-align: left !important;
+  letter-spacing: 0.035em;
+}
+
+.inventory-mobile-foundation :where(label, .phone-identity-block__header, .phone-list-apple-head, .premium-section-header),
+.inventory-products-foundation :where(label, .premium-section-header, .product-management-panel__head) {
+  line-height: 1.75;
+}
+
+.inventory-mobile-foundation :where(.phone-identity-block__field, .phone-finance-block__field, .phone-operations-block__field),
+.inventory-products-foundation :where(.product-modal-apple-field, .product-modal-apple-fields > div, .product-management-panel) {
+  min-width: 0;
+}
+
+.inventory-mobile-foundation :where(.phone-list-shell__table, .inventory-premium-scroll),
+.inventory-products-foundation :where(.overflow-x-auto, .product-management-table-shell) {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand, #2563eb) 34%, rgba(148, 163, 184, 0.58)) transparent;
+}
+
+.inventory-mobile-foundation :where(table),
+.inventory-products-foundation :where(table),
+.inventory-hub-foundation :where(table) {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100%;
+}
+
+.inventory-mobile-foundation :where(th, td),
+.inventory-products-foundation :where(th, td),
+.inventory-hub-foundation :where(th, td) {
+  vertical-align: middle !important;
+  line-height: 1.75 !important;
+  text-align: right;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.inventory-mobile-foundation :where(th),
+.inventory-products-foundation :where(th),
+.inventory-hub-foundation :where(th) {
+  color: var(--inventory-muted) !important;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.inventory-mobile-foundation :where(td),
+.inventory-products-foundation :where(td),
+.inventory-hub-foundation :where(td) {
+  color: var(--inventory-text);
+}
+
+.inventory-mobile-foundation :where(.phone-card-actions, .product-table-actions, .product-management-row-actions),
+.inventory-products-foundation :where(.product-table-actions, .product-management-row-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.38rem !important;
+}
+
+.inventory-mobile-foundation :where(.phone-card-actions button, .phone-card-actions .ux-btn, .phone-list-shell__table button, .phone-list-shell__table .ux-btn),
+.inventory-products-foundation :where(.product-table-actions button, .product-table-actions .ux-btn, .product-management-row-actions button, .product-management-row-actions .ux-btn) {
+  min-height: 2.35rem !important;
+  min-width: 2.35rem;
+  border-radius: 0.9rem !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.inventory-mobile-foundation :where(.phone-list-apple-head__search, .kp-search-field-host, .ux-toolbar-search),
+.inventory-products-foundation :where(.kp-search-field-host, .ux-toolbar-search) {
+  min-width: min(100%, 18rem);
+  border-radius: 17px !important;
+}
+
+.inventory-mobile-foundation :where(.phone-list-apple-head__search-input, input[type="search"]),
+.inventory-products-foundation :where(input[type="search"], .ux-toolbar-search__input) {
+  min-height: 2.65rem !important;
+  text-overflow: ellipsis;
+}
+
+.inventory-mobile-foundation :where(.phone-card-surface, .phone-list-shell__table, .phone-list-shell__controlbar, .phone-list-apple-head),
+.inventory-products-foundation :where(.inventory-pastel-card, .inventory-apple-stat, .product-management-panel, .product-management-table-shell) {
+  background: var(--inventory-surface) !important;
+  border-color: var(--inventory-border) !important;
+}
+
+.inventory-mobile-foundation :where(.phone-card-spec-pill__value, .phone-card-supplier span, .phone-list-shell__table td, .phone-card-surface p, .phone-card-surface span),
+.inventory-products-foundation :where(.inventory-pastel-card, .inventory-apple-stat, .product-management-name-cell, .product-management-table-shell td) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.inventory-mobile-foundation :where(.truncate),
+.inventory-products-foundation :where(.truncate) {
+  min-width: 0;
+}
+
+.inventory-mobile-foundation :where(.phone-card-surface [dir="ltr"], .phone-list-shell__table [dir="ltr"]),
+.inventory-products-foundation :where(table [dir="ltr"], .font-mono) {
+  text-align: left !important;
+}
+
+.inventory-navigation-card,
+.inventory-hub-foundation .premium-tab-pills {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.inventory-hub-foundation .premium-tab-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.inventory-hub-foundation .premium-tab-pill {
+  white-space: nowrap;
+  min-height: 2.45rem !important;
+}
+
+.inventory-modal-foundation :where(input, select, textarea) {
+  min-height: 2.75rem;
+  border-radius: 15px !important;
+}
+
+.phone-model-autocomplete-foundation {
+  isolation: isolate;
+}
+
+.phone-model-autocomplete-foundation :where(input) {
+  padding-inline-start: 0.95rem !important;
+  padding-inline-end: 2.65rem !important;
+}
+
+@media (max-width: 1024px) {
+  :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) {
+    --inventory-radius: 21px;
+  }
+
+  .inventory-mobile-foundation :where(.phone-card-actions, .product-table-actions),
+  .inventory-products-foundation :where(.product-table-actions, .product-management-row-actions) {
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .inventory-mobile-foundation,
+  .inventory-hub-foundation .page-content-stack,
+  .inventory-products-foundation {
+    padding-inline: 0.75rem !important;
+  }
+
+  :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) :where(.app-card, .inventory-card-premium, .phone-card-surface, .phone-identity-block, .phone-finance-block, .phone-operations-block, .product-management-panel, .product-management-table-shell) {
+    border-radius: 20px !important;
+  }
+
+  .inventory-mobile-foundation :where(.phone-list-apple-head__actions, .phone-card-actions),
+  .inventory-products-foundation :where(.product-table-actions, .product-management-row-actions) {
+    width: 100%;
+  }
+
+  .inventory-mobile-foundation :where(.phone-list-apple-head__actions button, .phone-card-actions button, .phone-card-actions .ux-btn),
+  .inventory-products-foundation :where(.product-table-actions button, .product-table-actions .ux-btn) {
+    flex: 1 1 auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) *,
+  :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) *::before,
+  :where(.inventory-mobile-foundation, .inventory-products-foundation, .inventory-hub-foundation) *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -1,0 +1,496 @@
+/* Phase 7 — Reports Foundation contract
+   Single source of visual truth for report shells, report filters, executive headers, report AI bars, and report toolbars.
+   Written as plain CSS to avoid Tailwind/PostCSS circular-dependency risk. */
+
+:root {
+  --report-contract-radius-xl: 22px;
+  --report-contract-radius-lg: 18px;
+  --report-contract-border: rgba(148, 163, 184, 0.28);
+  --report-contract-border-strong: rgba(100, 116, 139, 0.34);
+  --report-contract-surface: rgba(255, 255, 255, 0.94);
+  --report-contract-surface-soft: rgba(248, 250, 252, 0.78);
+  --report-contract-text: #0f172a;
+  --report-contract-muted: #64748b;
+  --report-contract-shadow: 0 16px 38px rgba(15, 23, 42, 0.07);
+  --report-contract-focus: 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+html.dark {
+  --report-contract-border: rgba(148, 163, 184, 0.18);
+  --report-contract-border-strong: rgba(148, 163, 184, 0.24);
+  --report-contract-surface: rgba(15, 23, 42, 0.92);
+  --report-contract-surface-soft: rgba(2, 6, 23, 0.46);
+  --report-contract-text: #f8fafc;
+  --report-contract-muted: #94a3b8;
+  --report-contract-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  --report-contract-focus: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+[data-ui-report-layout="true"],
+[data-ui-report-page="true"] {
+  color: var(--report-contract-text);
+}
+
+[data-ui-report-layout="true"] {
+  max-width: 100%;
+}
+
+[data-ui-report-header="outer"],
+[data-ui-report-header="inner"],
+[data-ui-report-toolbar="true"],
+[data-ui-report-surface="true"],
+.report-filter-grid,
+.report-filter-inline-actions,
+.reports-premium-panel {
+  border: 1px solid var(--report-contract-border) !important;
+  border-radius: var(--report-contract-radius-xl) !important;
+  background: var(--report-contract-surface) !important;
+  box-shadow: var(--report-contract-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+[data-ui-report-header="outer"],
+[data-ui-report-header="inner"] {
+  padding: 16px !important;
+  overflow: hidden;
+}
+
+[data-ui-report-header-main="true"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+[data-ui-report-title-cluster="true"] {
+  min-width: 0;
+  text-align: right;
+}
+
+[data-ui-report-title-cluster="true"] h1,
+.report-shell-v2-title,
+.reports-executive-header h1 {
+  margin: 0;
+  max-width: 100%;
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.65 !important;
+  letter-spacing: -0.015em;
+}
+
+[data-ui-report-title-cluster="true"] p,
+.report-shell-v2-subtitle,
+.reports-executive-header p {
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.9 !important;
+  color: var(--report-contract-muted) !important;
+}
+
+.report-shell-v2-crumbs,
+.reports-executive-header .reports-header-kicker,
+.reports-header-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+}
+
+.reports-header-kicker,
+.report-shell-v2-kicker,
+.report-shell-v2-badge,
+.reports-header-status,
+.reports-health-badge,
+.reports-favorites-bar__label,
+.reports-recent-bar__label {
+  border: 1px solid var(--report-contract-border) !important;
+  border-radius: 999px !important;
+  background: var(--report-contract-surface-soft) !important;
+  color: var(--report-contract-muted) !important;
+  padding: 5px 10px !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  line-height: 1.35 !important;
+}
+
+[data-ui-report-header-actions="true"],
+.report-shell-v2-actions,
+.reports-central-action-bar__group,
+[data-ui-report-toolbar-actions="true"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.reports-workspace-trigger,
+.reports-command-trigger,
+.reports-favorite-pin,
+.reports-header-back-link,
+.report-action-btn,
+.reports-central-action-bar button,
+[data-ui-report-header-actions="true"] button,
+[data-ui-report-toolbar="true"] button,
+[data-ui-report-date-preset="true"] {
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--report-contract-border) !important;
+  background: var(--report-contract-surface) !important;
+  color: var(--report-contract-text) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 12px !important;
+  font-weight: 850 !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+  transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+}
+
+.reports-workspace-trigger:hover,
+.reports-command-trigger:hover,
+.reports-favorite-pin:hover,
+.reports-header-back-link:hover,
+.report-action-btn:hover,
+.reports-central-action-bar button:hover,
+[data-ui-report-toolbar="true"] button:hover,
+[data-ui-report-date-preset="true"]:hover {
+  border-color: var(--report-contract-border-strong) !important;
+  background: var(--report-contract-surface-soft) !important;
+  transform: translateY(-1px);
+}
+
+.reports-favorite-pin.is-active,
+[data-ui-report-date-preset="true"].is-active,
+.reports-view-mode-toggle button.is-active,
+.reports-favorites-bar a.is-active {
+  border-color: rgba(15, 23, 42, 0.8) !important;
+  background: #0f172a !important;
+  color: #fff !important;
+}
+
+html.dark .reports-favorite-pin.is-active,
+html.dark [data-ui-report-date-preset="true"].is-active,
+html.dark .reports-view-mode-toggle button.is-active,
+html.dark .reports-favorites-bar a.is-active {
+  border-color: rgba(248, 250, 252, 0.88) !important;
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+.reports-view-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--report-contract-border);
+  border-radius: 16px;
+  background: var(--report-contract-surface-soft);
+}
+
+.reports-view-mode-toggle button {
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border-radius: 12px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--report-contract-muted) !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+}
+
+[data-ui-report-shortcuts] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+  padding: 10px !important;
+  border: 1px solid var(--report-contract-border) !important;
+  border-radius: 18px !important;
+  background: var(--report-contract-surface-soft) !important;
+}
+
+[data-ui-report-shortcuts] a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  max-width: 220px;
+  border: 1px solid var(--report-contract-border);
+  border-radius: 999px;
+  background: var(--report-contract-surface);
+  color: var(--report-contract-text);
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reports-central-action-bar {
+  margin-top: 12px !important;
+}
+
+.reports-central-action-bar__hint {
+  color: var(--report-contract-muted) !important;
+  font-size: 11px !important;
+  line-height: 1.75 !important;
+}
+
+[data-ui-report-ai-bar] {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+[data-ui-report-ai-summary="true"] {
+  width: 100%;
+  min-height: 46px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding: 10px 12px !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--report-contract-text) !important;
+  text-align: right !important;
+}
+
+.reports-ai-minibar__title {
+  font-weight: 900 !important;
+  color: var(--report-contract-text) !important;
+}
+
+.reports-ai-minibar__meta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid var(--report-contract-border);
+  border-radius: 999px;
+  background: var(--report-contract-surface-soft);
+  color: var(--report-contract-muted) !important;
+  padding: 0 8px;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+}
+
+[data-ui-report-ai-details="true"] {
+  border-top: 1px solid var(--report-contract-border);
+  background: var(--report-contract-surface-soft);
+  padding: 12px !important;
+}
+
+.reports-ai-minibar__grid,
+.reports-auto-action-compact {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px !important;
+}
+
+.reports-ai-minibar__grid > *,
+.reports-auto-action-compact__row {
+  border: 1px solid var(--report-contract-border) !important;
+  border-radius: 16px !important;
+  background: var(--report-contract-surface) !important;
+  padding: 12px !important;
+  min-width: 0;
+  color: var(--report-contract-text) !important;
+}
+
+.reports-ai-minibar__grid p,
+.reports-auto-action-compact__row span,
+.reports-auto-action-compact__row small {
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.8 !important;
+}
+
+[data-ui-report-toolbar="true"] {
+  padding: 12px !important;
+}
+
+[data-ui-report-toolbar-row="true"] {
+  display: grid !important;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  align-items: end;
+  gap: 12px !important;
+}
+
+[data-ui-report-toolbar-search="true"] {
+  min-width: 0;
+}
+
+.ux-report-tools__label,
+.report-filter-field__label,
+[data-ui-report-filter-head="true"] {
+  color: var(--report-contract-muted) !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  line-height: 1.7 !important;
+}
+
+[data-ui-report-filter-field="true"] {
+  min-width: 0 !important;
+}
+
+[data-ui-report-filter-body="true"] input,
+[data-ui-report-filter-body="true"] select,
+[data-ui-report-filter-body="true"] textarea,
+.report-filter-control,
+.report-filter-field .ux-input,
+.report-filter-field input,
+.report-filter-field select,
+.report-filter-field textarea {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+  border: 1px solid var(--report-contract-border) !important;
+  background: var(--report-contract-surface) !important;
+  color: var(--report-contract-text) !important;
+  box-shadow: none !important;
+  line-height: 1.6 !important;
+}
+
+[data-ui-report-filter-body="true"] input:focus,
+[data-ui-report-filter-body="true"] select:focus,
+[data-ui-report-filter-body="true"] textarea:focus,
+.report-filter-control:focus,
+.report-filter-field .ux-input:focus,
+.report-filter-field input:focus,
+.report-filter-field select:focus,
+.report-filter-field textarea:focus {
+  outline: none !important;
+  border-color: rgba(59, 130, 246, 0.56) !important;
+  box-shadow: var(--report-contract-focus) !important;
+}
+
+[data-ui-report-date-presets="true"] {
+  width: 100%;
+}
+
+[data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.report-filter-grid {
+  padding: 12px !important;
+  gap: 12px !important;
+}
+
+.report-filter-inline-actions {
+  padding: 10px !important;
+  gap: 8px !important;
+}
+
+[data-ui-report-body="true"] {
+  min-width: 0;
+}
+
+[data-ui-report-body="true"] .report-shell-v2-head + .report-shell-v2-body,
+[data-ui-report-shell] [data-ui-report-body="true"] {
+  margin-top: 12px;
+}
+
+[data-ui-report-body="true"] .report-page,
+[data-ui-report-body="true"] .report-surface,
+[data-ui-report-body="true"] .ux-report-shell {
+  min-width: 0;
+}
+
+.report-page .premium-kpi-strip,
+.report-page .kpi-grid,
+.report-page .detail-kpi-grid {
+  gap: 12px !important;
+}
+
+.report-page .premium-kpi-card,
+.report-page .kpi-card,
+.report-page [data-ui-surface="kpi-card"] {
+  border-radius: 18px !important;
+  border-color: var(--report-contract-border) !important;
+  background: var(--report-contract-surface) !important;
+}
+
+.report-page table th,
+.report-page table td {
+  line-height: 1.8 !important;
+  vertical-align: middle !important;
+}
+
+.report-page table td,
+.report-page table th,
+.report-page .line-clamp-1,
+.report-page .truncate {
+  overflow-wrap: anywhere;
+}
+
+.report-page .line-clamp-1:not(.allow-line-clamp),
+.report-page .truncate:not(.allow-truncate) {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+@media (max-width: 1024px) {
+  [data-ui-report-header-main="true"],
+  [data-ui-report-toolbar-row="true"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  [data-ui-report-header-actions="true"],
+  .report-shell-v2-actions,
+  [data-ui-report-toolbar-actions="true"] {
+    justify-content: flex-start !important;
+  }
+
+  .reports-ai-minibar__grid,
+  .reports-auto-action-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  [data-ui-report-header="outer"],
+  [data-ui-report-header="inner"],
+  [data-ui-report-toolbar="true"],
+  .report-filter-grid,
+  .report-filter-inline-actions,
+  .reports-premium-panel {
+    border-radius: 18px !important;
+  }
+
+  [data-ui-report-header-actions="true"] > *,
+  .report-shell-v2-actions > *,
+  [data-ui-report-toolbar-actions="true"] > *,
+  .reports-central-action-bar__group > *,
+  [data-ui-report-date-preset="true"] {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .reports-ai-minibar__grid,
+  .reports-auto-action-compact {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-ai-minibar__meta {
+    display: none;
+  }
+
+  [data-ui-report-shortcuts] a {
+    max-width: none;
+    flex: 1 1 100%;
+  }
+}

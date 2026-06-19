@@ -1,0 +1,359 @@
+/* Dashboard Redesign Pass 5 — Final Polish / QA Pass
+   Scope: dashboard only. No behavior/API/layout persistence changes. */
+
+.dashboard-redesign-v1 {
+  --dashboard-polish-border: rgba(203, 213, 225, 0.72);
+  --dashboard-polish-border-strong: rgba(148, 163, 184, 0.42);
+  --dashboard-polish-surface: rgba(255, 255, 255, 0.84);
+  --dashboard-polish-surface-muted: rgba(248, 250, 252, 0.78);
+  --dashboard-polish-text: rgb(15, 23, 42);
+  --dashboard-polish-muted: rgb(100, 116, 139);
+  --dashboard-polish-shadow: 0 24px 70px -54px rgba(15, 23, 42, 0.36);
+  --dashboard-polish-ring: 0 0 0 4px rgba(59, 130, 246, 0.16);
+}
+
+html.dark .dashboard-redesign-v1 {
+  --dashboard-polish-border: rgba(51, 65, 85, 0.86);
+  --dashboard-polish-border-strong: rgba(100, 116, 139, 0.42);
+  --dashboard-polish-surface: rgba(15, 23, 42, 0.82);
+  --dashboard-polish-surface-muted: rgba(2, 6, 23, 0.5);
+  --dashboard-polish-text: rgb(248, 250, 252);
+  --dashboard-polish-muted: rgb(148, 163, 184);
+  --dashboard-polish-shadow: 0 26px 80px -54px rgba(0, 0, 0, 0.78);
+  --dashboard-polish-ring: 0 0 0 4px rgba(96, 165, 250, 0.18);
+}
+
+.dashboard-redesign-v1.dashboard-page {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(14, 165, 233, 0.08), transparent 32%),
+    radial-gradient(circle at 84% 8%, rgba(99, 102, 241, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.42), rgba(255, 255, 255, 0));
+}
+
+html.dark .dashboard-redesign-v1.dashboard-page {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(14, 165, 233, 0.12), transparent 32%),
+    radial-gradient(circle at 84% 8%, rgba(99, 102, 241, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.42), rgba(2, 6, 23, 0));
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card,
+.dashboard-redesign-v1 .dashboard-executive-panel,
+.dashboard-redesign-v1 .dashboard-widget-shell--executive,
+.dashboard-redesign-v1 .dashboard-clock-executive-card,
+.dashboard-redesign-v1 .dashboard-add-widget-modal--executive {
+  border-color: var(--dashboard-polish-border) !important;
+  box-shadow: var(--dashboard-polish-shadow) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card,
+.dashboard-redesign-v1 .dashboard-executive-panel,
+.dashboard-redesign-v1 .dashboard-widget-shell--executive {
+  background:
+    linear-gradient(180deg, var(--dashboard-polish-surface), rgba(255, 255, 255, 0.68)) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-spotlight-card,
+html.dark .dashboard-redesign-v1 .dashboard-executive-panel,
+html.dark .dashboard-redesign-v1 .dashboard-widget-shell--executive {
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(2, 6, 23, 0.68)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card,
+.dashboard-redesign-v1 .dashboard-executive-panel,
+.dashboard-redesign-v1 .dashboard-widget-shell--executive,
+.dashboard-redesign-v1 .dashboard-add-widget-card--executive,
+.dashboard-redesign-v1 .dashboard-clock-executive-card {
+  transform: translateZ(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dashboard-redesign-v1 .dashboard-spotlight-card:hover,
+  .dashboard-redesign-v1 .dashboard-executive-panel:hover,
+  .dashboard-redesign-v1 .dashboard-widget-shell--executive:hover,
+  .dashboard-redesign-v1 .dashboard-add-widget-card--executive:hover {
+    border-color: var(--dashboard-polish-border-strong) !important;
+  }
+}
+
+.dashboard-redesign-v1 :is(button, a, input, select, textarea, [role="button"]):focus-visible {
+  outline: none !important;
+  box-shadow: var(--dashboard-polish-ring) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card :is(span, p, small),
+.dashboard-redesign-v1 .dashboard-executive-panel :is(span, p, small),
+.dashboard-redesign-v1 .dashboard-widget-shell--executive :is(span, p, small) {
+  text-wrap: pretty;
+}
+
+.dashboard-redesign-v1 .dashboard-spotlight-card strong,
+.dashboard-redesign-v1 .dashboard-executive-panel strong,
+.dashboard-redesign-v1 .dashboard-widget-shell--executive strong,
+.dashboard-redesign-v1 .dashboard-clock-executive-card strong {
+  color: var(--dashboard-polish-text);
+}
+
+.dashboard-redesign-v1 .dashboard-widget-local-header {
+  min-height: 54px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.72), rgba(248, 250, 252, 0.36));
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-widget-local-header {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.28));
+}
+
+.dashboard-redesign-v1 .dashboard-widget-content,
+.dashboard-redesign-v1 .dashboard-widget-scrollarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-content::-webkit-scrollbar,
+.dashboard-redesign-v1 .dashboard-widget-scrollarea::-webkit-scrollbar,
+.dashboard-redesign-v1 .dashboard-add-widget-modal__body--executive::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-content::-webkit-scrollbar-thumb,
+.dashboard-redesign-v1 .dashboard-widget-scrollarea::-webkit-scrollbar-thumb,
+.dashboard-redesign-v1 .dashboard-add-widget-modal__body--executive::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.52);
+  background-clip: content-box;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-empty-state,
+.dashboard-redesign-v1 .dashboard-widget-loading-state {
+  border-radius: 22px;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-empty-state {
+  color: var(--dashboard-polish-muted) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-loading-state > div,
+.dashboard-redesign-v1 .dashboard-widget-loading-state [class*="animate-pulse"] {
+  background: linear-gradient(90deg, rgba(226, 232, 240, 0.55), rgba(241, 245, 249, 0.92), rgba(226, 232, 240, 0.55)) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-widget-loading-state > div,
+html.dark .dashboard-redesign-v1 .dashboard-widget-loading-state [class*="animate-pulse"] {
+  background: linear-gradient(90deg, rgba(30, 41, 59, 0.72), rgba(51, 65, 85, 0.86), rgba(30, 41, 59, 0.72)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-widget-edit-header {
+  backdrop-filter: blur(10px) saturate(130%);
+}
+
+.dashboard-redesign-v1 .dashboard-widget-resize-button,
+.dashboard-redesign-v1 .dashboard-widget-remove-button {
+  min-width: 42px;
+  white-space: nowrap;
+}
+
+.dashboard-redesign-v1 .react-grid-item.react-grid-placeholder {
+  border: 1px dashed rgba(59, 130, 246, 0.55) !important;
+  border-radius: 30px !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-executive-card {
+  background:
+    radial-gradient(circle at 16% 16%, rgba(14, 165, 233, 0.1), transparent 28%),
+    linear-gradient(180deg, var(--dashboard-polish-surface), rgba(255, 255, 255, 0.72)) !important;
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-clock-executive-card {
+  background:
+    radial-gradient(circle at 16% 16%, rgba(14, 165, 233, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.72)) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-mode-switcher button {
+  min-height: 32px;
+}
+
+.dashboard-redesign-v1 .dashboard-clock-analog-face {
+  max-width: min(100%, 312px);
+  max-height: min(100%, 312px);
+}
+
+.dashboard-redesign-v1 .dashboard-clock-digital,
+.dashboard-redesign-v1 [dir="ltr"],
+.dashboard-redesign-v1 code {
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-card__id,
+.dashboard-redesign-v1 .dashboard-add-widget-summary__item strong,
+.dashboard-redesign-v1 .dashboard-clock-signal-card p,
+.dashboard-redesign-v1 .dashboard-widget-shell--executive [dir="ltr"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-modal--executive {
+  overflow: hidden;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-card--executive {
+  isolation: isolate;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-card--executive::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 16px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(14, 165, 233, 0.65), rgba(99, 102, 241, 0.55));
+  opacity: 0.62;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-empty {
+  border: 1px dashed rgba(148, 163, 184, 0.48) !important;
+  background: var(--dashboard-polish-surface-muted) !important;
+}
+
+.dashboard-redesign-v1 .dashboard-add-widget-footer--executive {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(248, 250, 252, 0.96));
+  backdrop-filter: blur(10px) saturate(120%);
+}
+
+html.dark .dashboard-redesign-v1 .dashboard-add-widget-footer--executive {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(2, 6, 23, 0.96));
+}
+
+@media (max-width: 1366px) {
+  .dashboard-redesign-v1.dashboard-page {
+    gap: 0.85rem;
+  }
+
+  .dashboard-redesign-v1 .dashboard-spotlight-grid,
+  .dashboard-redesign-v1 .dashboard-executive-grid {
+    gap: 0.75rem !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-spotlight-card,
+  .dashboard-redesign-v1 .dashboard-executive-panel {
+    border-radius: 22px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-widget-shell--executive {
+    border-radius: 26px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboard-redesign-v1 .dashboard-executive-grid,
+  .dashboard-redesign-v1 .dashboard-spotlight-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-header {
+    gap: 0.85rem;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher button {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-redesign-v1.dashboard-page {
+    padding-inline: 0.75rem !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-spotlight-card,
+  .dashboard-redesign-v1 .dashboard-executive-panel,
+  .dashboard-redesign-v1 .dashboard-clock-executive-card {
+    border-radius: 20px !important;
+    padding: 0.85rem !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-widget-shell--executive {
+    border-radius: 22px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-widget-local-header {
+    min-height: 48px;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-digital {
+    font-size: clamp(2rem, 11vw, 3rem) !important;
+    letter-spacing: 0.035em !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-analog-panel {
+    padding: 1rem !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-analog-face {
+    width: min(76vw, 270px) !important;
+    height: min(76vw, 270px) !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-add-widget-summary,
+  .dashboard-redesign-v1 .dashboard-add-widget-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .dashboard-redesign-v1 .dashboard-add-widget-titlebar {
+    align-items: stretch;
+  }
+
+  .dashboard-redesign-v1 .dashboard-add-widget-titlebar__icon {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-add-widget-controls,
+  .dashboard-redesign-v1 .dashboard-add-widget-footer--executive {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-add-widget-category,
+  .dashboard-redesign-v1 .dashboard-add-widget-card__add,
+  .dashboard-redesign-v1 .dashboard-widget-resize-button,
+  .dashboard-redesign-v1 .dashboard-widget-remove-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-redesign-v1 .dashboard-clock-mode-switcher {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-redesign-v1 *,
+  .dashboard-redesign-v1 *::before,
+  .dashboard-redesign-v1 *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .dashboard-redesign-v1 .dashboard-spotlight-card:hover,
+  .dashboard-redesign-v1 .dashboard-executive-panel:hover,
+  .dashboard-redesign-v1 .dashboard-widget-shell--executive:hover,
+  .dashboard-redesign-v1 .dashboard-clock-executive-card:hover,
+  .dashboard-redesign-v1 .dashboard-add-widget-card--executive:hover {
+    transform: none !important;
+  }
+}

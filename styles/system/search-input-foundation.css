@@ -1,0 +1,1980 @@
+/* ==========================================================================
+   Kourosh UI Foundation — Search/Input phase 1
+   --------------------------------------------------------------------------
+   Purpose:
+   - Consolidates the imported search-field hotfix chain into one controlled
+     cascade point.
+   - Preserves the exact legacy rule order from index.tsx to avoid visual
+     regression while making the next cleanup phases safer.
+   - Scope: search controls only. Date/select/modal rules remain untouched.
+   ========================================================================== */
+
+:root {
+  --kourosh-search-height-sm: 40px;
+  --kourosh-search-height-md: 44px;
+  --kourosh-search-height-lg: 48px;
+  --kourosh-search-radius: 18px;
+  --kourosh-search-icon-left: 1rem;
+  --kourosh-search-pad-left: 3.15rem;
+  --kourosh-search-pad-right: 1rem;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10j-search-affix-contract.css =====
+   Legacy Stage 64 — search affix contract
+   ===== */
+/* ===== Stage 64 — Search affix + sidebar clear cleanup =====
+   Goals:
+   1) Standardize search icons on the left side of input shells.
+   2) Remove the sidebar clear button that was colliding with RTL labels.
+   3) Protect text flow in mixed RTL/LTR search boxes.
+*/
+
+:root {
+  --ux-search-affix-size: 2rem;
+  --ux-search-affix-gap: .75rem;
+  --ux-search-pad-left: 3.35rem;
+  --ux-search-pad-right: 1rem;
+}
+
+/* Sidebar search */
+.app-sidebar .ux-sidebar-search__clear,
+.app-sidebar input[aria-label="جستجو در منو"] ~ button[aria-label="پاک کردن جستجو"] {
+  display: none !important;
+}
+
+/* Shared PageKit / report searches */
+.ux-toolbar-search .ux-toolbar-search__icon {
+  inset-inline-start: .85rem !important;
+  inset-inline-end: auto !important;
+}
+
+.ux-toolbar-search .ux-toolbar-search__input,
+.ux-toolbar-search input[type="search"] {
+  padding-inline-start: var(--ux-search-pad-left) !important;
+  padding-inline-end: var(--ux-search-pad-right) !important;
+}
+
+/* Header global search: keep bolt action on the outside, move magnifier button left */
+.header-search-shell {
+  position: relative !important;
+}
+
+/* Unified search page */
+.search-results-search-shell {
+  position: relative !important;
+}
+
+/* Sales item selector: remove ghost loading indicator + keep value text safe */
+.sellable-select__control {
+  min-inline-size: 0 !important;
+}
+
+.sellable-select__value-container {
+  min-inline-size: 0 !important;
+}
+
+.sellable-select__single-value,
+.sellable-select__placeholder,
+.sellable-select__input-container {
+  max-inline-size: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Generic safety for local search shells that still use an absolute magnifier on the right.
+   Move only magnifier icons, not other action buttons. */
+[dir="rtl"] .relative > i.fa-magnifying-glass.absolute[class*="right-"],
+.relative[dir="rtl"] > i.fa-magnifying-glass.absolute[class*="right-"] {
+  inset-inline-start: .85rem !important;
+  inset-inline-end: auto !important;
+}
+
+[dir="rtl"] .relative > i.fa-magnifying-glass.absolute[class*="right-"] ~ input,
+.relative[dir="rtl"] > i.fa-magnifying-glass.absolute[class*="right-"] ~ input {
+  padding-inline-start: 3.15rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10k-search-input-unification.css =====
+   Legacy Stage 65 — unified search input contract
+   ===== */
+/* ===== Stage 65 — Unified search input contract =====
+   Scope: search controls only.
+   Goals:
+   - Magnifier icons always live on the LEFT side of the input shell.
+   - RTL text remains right-aligned and never overlaps search icons.
+   - Search clear buttons that reduce usable text width are hidden by default.
+*/
+
+:root {
+  --ux-search-icon-size: 2rem;
+  --ux-search-icon-left: .75rem;
+  --ux-search-text-pad-start: 3.25rem;
+  --ux-search-text-pad-end: 1rem;
+}
+
+/* TextField/SearchBox based searches */
+.ux-search-field .ux-field-control-wrap {
+  position: relative !important;
+}
+
+.ux-search-field .ux-field-leading-icon,
+.ux-field-control-wrap:has(.ux-field-leading-icon .fa-magnifying-glass) > .ux-field-leading-icon,
+.ux-field-control-wrap:has(.ux-field-leading-icon .fa-search) > .ux-field-leading-icon {
+  inset-inline-start: var(--ux-search-icon-left) !important;
+  inset-inline-end: auto !important;
+}
+
+.ux-search-field input,
+.ux-field-control-wrap:has(.ux-field-leading-icon .fa-magnifying-glass) > input,
+.ux-field-control-wrap:has(.ux-field-leading-icon .fa-search) > input {
+  padding-inline-start: var(--ux-search-text-pad-start) !important;
+  padding-inline-end: var(--ux-search-text-pad-end) !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* Shared toolbar/search components */
+.ux-toolbar-search,
+.search-results-search-shell,
+.ux-table-search-shell,
+.phone-list-apple-head__search,
+.report-local-search-shell,
+.report-local-search-wrap {
+  position: relative !important;
+  min-inline-size: 0 !important;
+}
+
+.ux-toolbar-search .ux-toolbar-search__icon,
+.search-results-search-shell__icon,
+.ux-table-search-icon,
+.phone-list-apple-head__search-icon,
+.report-local-search-icon {
+  position: absolute !important;
+  inset-inline-start: var(--ux-search-icon-left) !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  inline-size: var(--ux-search-icon-size) !important;
+  block-size: var(--ux-search-icon-size) !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.ux-toolbar-search .ux-toolbar-search__input,
+.search-results-search-shell__input,
+.ux-table-search-input,
+.phone-list-apple-head__search-input,
+.report-local-search-input {
+  padding-inline-start: var(--ux-search-text-pad-start) !important;
+  padding-inline-end: var(--ux-search-text-pad-end) !important;
+  text-align: right !important;
+  direction: rtl !important;
+  min-inline-size: 0 !important;
+}
+
+/* Generic fallback: only move magnifier icons, not arbitrary action buttons. */
+[dir="rtl"] .relative > i.fa-magnifying-glass.absolute,
+[dir="rtl"] .relative > i.fa-search.absolute,
+.relative[dir="rtl"] > i.fa-magnifying-glass.absolute,
+.relative[dir="rtl"] > i.fa-search.absolute,
+[dir="rtl"] .relative > span.absolute:has(i.fa-magnifying-glass),
+[dir="rtl"] .relative > span.absolute:has(i.fa-search),
+.relative[dir="rtl"] > span.absolute:has(i.fa-magnifying-glass),
+.relative[dir="rtl"] > span.absolute:has(i.fa-search) {
+  inset-inline-start: var(--ux-search-icon-left) !important;
+  inset-inline-end: auto !important;
+  right: auto !important;
+  left: var(--ux-search-icon-left) !important;
+}
+
+[dir="rtl"] .relative > i.fa-magnifying-glass.absolute ~ input,
+[dir="rtl"] .relative > i.fa-search.absolute ~ input,
+.relative[dir="rtl"] > i.fa-magnifying-glass.absolute ~ input,
+.relative[dir="rtl"] > i.fa-search.absolute ~ input,
+[dir="rtl"] .relative > span.absolute:has(i.fa-magnifying-glass) ~ input,
+[dir="rtl"] .relative > span.absolute:has(i.fa-search) ~ input,
+.relative[dir="rtl"] > span.absolute:has(i.fa-magnifying-glass) ~ input,
+.relative[dir="rtl"] > span.absolute:has(i.fa-search) ~ input {
+  padding-inline-start: var(--ux-search-text-pad-start) !important;
+  padding-inline-end: var(--ux-search-text-pad-end) !important;
+  text-align: right !important;
+}
+
+/* Search clear buttons caused text collisions in compact RTL fields. */
+.ux-sidebar-search__clear,
+button[aria-label="پاک کردن جستجو"],
+button[title="پاک کردن جستجو"],
+button[aria-label="Clear search"],
+button[title="Clear search"] {
+  display: none !important;
+}
+
+/* Keep search tokens stable when Persian/English text is mixed. */
+:where(.ux-toolbar-search__input, .search-results-search-shell__input, .ux-table-search-input, .phone-list-apple-head__search-input, .report-local-search-input, .ux-search-field input) {
+  unicode-bidi: plaintext !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10l-search-position-hardening.css =====
+   Legacy Stage 66 — search position hardening
+   ===== */
+/* ===== Stage 66 — Search position hardening =====
+   This file is intentionally loaded after the previous search contracts.
+   It hardens the actual problematic shells that still had right-side icons or inner indicator bubbles.
+*/
+
+/* Sidebar: force magnifier to the LEFT, remove all clear/action overlap. */
+.app-sidebar .ux-sidebar-search {
+  position: relative !important;
+  direction: rtl !important;
+}
+
+.app-sidebar .ux-sidebar-search__clear,
+.app-sidebar button[aria-label="پاک کردن جستجو"] {
+  display: none !important;
+}
+
+/* Sales react-select: remove the inner oval/indicator lane completely. */
+.sales-select-shell .sellable-select__indicators,
+.sales-select-shell .sellable-select__indicator,
+.sales-select-shell .sellable-select__dropdown-indicator,
+.sales-select-shell .sellable-select__clear-indicator,
+.sales-select-shell .sellable-select__loading-indicator {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.sales-select-shell .sellable-select__control {
+  display: flex !important;
+}
+
+.sales-select-shell .sellable-select__value-container {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-inline: 1rem !important;
+}
+
+/* Absolute magnifier hardening for local/report/search shells that do not carry the PageKit classes. */
+.relative > i.fa-magnifying-glass.absolute,
+.relative > i.fa-search.absolute,
+.relative > span.absolute > i.fa-magnifying-glass,
+.relative > span.absolute > i.fa-search,
+.relative > span.absolute:has(i.fa-magnifying-glass),
+.relative > span.absolute:has(i.fa-search) {
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: .85rem !important;
+  inset-inline-end: auto !important;
+}
+
+.relative > i.fa-magnifying-glass.absolute ~ input,
+.relative > i.fa-search.absolute ~ input,
+.relative > span.absolute:has(i.fa-magnifying-glass) ~ input,
+.relative > span.absolute:has(i.fa-search) ~ input {
+  padding-left: 3.2rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 3.2rem !important;
+  padding-inline-end: 1rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* Common report/local search inputs. */
+.report-local-search-input,
+.phone-list-apple-head__search-input,
+.ux-toolbar-search__input,
+.ux-table-search-input,
+.search-results-search-shell__input {
+  padding-left: 3.2rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 3.2rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.report-local-search-icon,
+.phone-list-apple-head__search-icon,
+.ux-toolbar-search__icon,
+.ux-table-search-icon,
+.search-results-search-shell__icon {
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: .85rem !important;
+  inset-inline-end: auto !important;
+}
+
+/* Header search submit is also the magnifier action. */
+.header-search-submit {
+  left: .45rem !important;
+  right: auto !important;
+  inset-inline-start: .45rem !important;
+  inset-inline-end: auto !important;
+}
+
+.header-search-input {
+  padding-left: 3.45rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 3.45rem !important;
+  padding-inline-end: 1rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+
+/* ===== Stage 67 — direct hardening after screenshots ===== */
+.sales-select-shell .sellable-select__indicators,
+.sales-select-shell .sellable-select__dropdown-indicator,
+.sales-select-shell .sellable-select__clear-indicator,
+.sales-select-shell .sellable-select__loading-indicator {
+  display: none !important;
+}
+.search-results-search-shell__icon,
+.ux-toolbar-search__icon {
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: .85rem !important;
+  inset-inline-end: auto !important;
+}
+.search-results-search-shell__input,
+.ux-toolbar-search__input {
+  padding-left: 3.25rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 3.25rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10m-sidebar-search-left-final.css =====
+   Legacy Stage 68 — sidebar physical-left fix
+   ===== */
+/* ===== Stage 68 — Final physical-left sidebar search icon fix =====
+   Why this file exists:
+   Previous search contracts mixed physical left/right with logical inline-start/end.
+   In RTL, inline-start maps to the right side, which could pull the sidebar search icon
+   back to the right even when left/right were also set. This file uses PHYSICAL positioning only
+   for the sidebar search so the magnifier stays visually on the LEFT. */
+
+.app-sidebar .ux-sidebar-search {
+  position: relative !important;
+}
+
+.app-sidebar .ux-sidebar-search__icon,
+.app-sidebar .ux-sidebar-search > i.fa-magnifying-glass,
+.app-sidebar input[aria-label="جستجو در منو"] + i {
+  position: absolute !important;
+  left: 0.75rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  z-index: 6 !important;
+}
+
+.app-sidebar .ux-sidebar-search__input,
+.app-sidebar input[aria-label="جستجو در منو"] {
+  padding-left: 3.45rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3.45rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10n-sidebar-search-physical-opposite.css =====
+   Legacy Stage 69 — sidebar JSX class fix
+   ===== */
+/* ===== Stage 69 — Sidebar search physical-opposite final fix =====
+   This class is attached directly to the sidebar search JSX.
+   It does not depend on .app-sidebar or RTL logical inset properties.
+   The icon is physically locked to the LEFT side of the search box.
+*/
+
+.kourosh-sidebar-search-final {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  direction: rtl !important;
+}
+
+.kourosh-sidebar-search-final__input {
+  width: 100% !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(226, 232, 240, 0.88) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,245,249,0.96)) !important;
+  color: rgb(30 41 59) !important;
+  font-size: .875rem !important;
+  font-weight: 700 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  padding-right: 1rem !important;
+  padding-left: 3.25rem !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3.25rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-shadow: 0 14px 28px -22px rgba(15,23,42,.2) !important;
+}
+
+.kourosh-sidebar-search-final__input::placeholder {
+  color: rgb(148 163 184) !important;
+}
+
+.kourosh-sidebar-search-final__input:focus {
+  outline: none !important;
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.18), 0 14px 28px -22px rgba(15,23,42,.2) !important;
+}
+
+.kourosh-sidebar-search-final__icon {
+  position: absolute !important;
+  left: .72rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: .75rem !important;
+  border: 1px solid rgba(226, 232, 240, .9) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(100 116 139) !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+}
+
+.kourosh-sidebar-search-final__icon i {
+  display: block !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+html.dark .kourosh-sidebar-search-final__input {
+  border-color: rgba(51,65,85,.9) !important;
+  background: linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.96)) !important;
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .kourosh-sidebar-search-final__input::placeholder {
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .kourosh-sidebar-search-final__icon {
+  border-color: rgba(51,65,85,.85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(125 211 252) !important;
+}
+
+/* Hide any older sidebar search icons if old classes somehow remain nearby. */
+.kourosh-sidebar-search-final ~ .ux-sidebar-search__icon,
+.kourosh-sidebar-search-final .ux-sidebar-search__icon,
+.kourosh-sidebar-search-final .ux-sidebar-search__clear {
+  display: none !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10o-sidebar-search-grid-no-overlap.css =====
+   Legacy Stage 70 — sidebar grid/no-overlap
+   ===== */
+/* ===== Stage 70 — Sidebar search grid/no-overlap final fix =====
+   Root fix: the search icon is no longer absolute-positioned over the input.
+   The wrapper is a real two-column grid:
+   - column 1: input text area
+   - column 2: fixed icon slot on the left side of the visual box
+   Because the icon is outside the input flow, text can never start under it.
+*/
+
+.kourosh-sidebar-search-grid {
+  direction: rtl !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 2.15rem !important;
+  align-items: center !important;
+  gap: .38rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(226, 232, 240, .88) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(241,245,249,.96)) !important;
+  padding: .22rem .4rem .22rem .45rem !important;
+  box-shadow: 0 14px 28px -22px rgba(15,23,42,.2) !important;
+}
+
+.kourosh-sidebar-search-grid__input {
+  grid-column: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: var(--sidebar-search-h) !important;
+  color: rgb(30 41 59) !important;
+  font-size: .875rem !important;
+  font-weight: 700 !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 0 .55rem 0 .15rem !important;
+  padding-inline-start: .55rem !important;
+  padding-inline-end: .15rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.kourosh-sidebar-search-grid__input::placeholder {
+  color: rgb(148 163 184) !important;
+}
+
+.kourosh-sidebar-search-grid__icon {
+  grid-column: 2 !important;
+  position: static !important;
+  transform: none !important;
+  inset: auto !important;
+  left: auto !important;
+  right: auto !important;
+  inline-size: 2rem !important;
+  block-size: 2rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.kourosh-sidebar-search-grid__icon i {
+  display: block !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+
+/* Focus ring belongs to the whole field, not the icon. */
+.kourosh-sidebar-search-grid:focus-within {
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.18), 0 14px 28px -22px rgba(15,23,42,.2) !important;
+}
+
+html.dark .kourosh-sidebar-search-grid {
+  border-color: rgba(51,65,85,.9) !important;
+  background: linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.96)) !important;
+}
+
+html.dark .kourosh-sidebar-search-grid__input {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .kourosh-sidebar-search-grid__input::placeholder {
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .kourosh-sidebar-search-grid__icon {
+  border-color: rgba(51,65,85,.85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(125 211 252) !important;
+}
+
+/* Neutralize older sidebar search classes if they remain in cached CSS. */
+.kourosh-sidebar-search-grid .ux-sidebar-search__icon,
+.kourosh-sidebar-search-grid .kourosh-sidebar-search-final__icon,
+.kourosh-sidebar-search-grid .ux-sidebar-search__clear {
+  display: none !important;
+}
+
+
+/* ===== Stage 71 — Single-surface sidebar search visual refinement =====
+   Keep the no-overlap grid logic, but remove nested boxes.
+   The whole search is one pill; input and icon are flat children.
+*/
+
+.kourosh-sidebar-search-grid {
+  grid-template-columns: minmax(0, 1fr) 1.85rem !important;
+  gap: .28rem !important;
+  padding: .18rem .42rem .18rem .52rem !important;
+  border-radius: 21px !important;
+  overflow: hidden !important;
+}
+
+.kourosh-sidebar-search-grid__input,
+.kourosh-sidebar-search-grid__input:focus,
+.kourosh-sidebar-search-grid__input:hover,
+.kourosh-sidebar-search-grid__input:active {
+  border-radius: 0 !important;
+}
+
+.kourosh-sidebar-search-grid__icon,
+.kourosh-sidebar-search-grid__icon:hover,
+.kourosh-sidebar-search-grid__icon:focus,
+.kourosh-sidebar-search-grid__icon:active {
+  width: 1.72rem !important;
+  height: 1.72rem !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  color: rgb(100 116 139) !important;
+}
+
+html.dark .kourosh-sidebar-search-grid__icon {
+  border: 0 !important;
+  background: transparent !important;
+  color: rgb(125 211 252) !important;
+}
+
+
+/* ===== Stage 72 — Remove inner blue focus box from sidebar search =====
+   Root cause: global input focus rules were still styling the inner input.
+   The input must stay visually flat; focus belongs only to the outer search shell.
+*/
+
+.kourosh-sidebar-search-grid__input,
+.kourosh-sidebar-search-grid__input:hover,
+.kourosh-sidebar-search-grid__input:focus,
+.kourosh-sidebar-search-grid__input:focus-visible,
+.kourosh-sidebar-search-grid__input:active,
+.kourosh-sidebar-search-grid__input:focus-within {
+  border: 0 !important;
+  border-color: transparent !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  ring-width: 0 !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+  -webkit-box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.kourosh-sidebar-search-grid__input::-webkit-search-decoration,
+.kourosh-sidebar-search-grid__input::-webkit-search-cancel-button,
+.kourosh-sidebar-search-grid__input::-webkit-search-results-button,
+.kourosh-sidebar-search-grid__input::-webkit-search-results-decoration {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+/* Keep the premium focus effect only on the single outer surface. */
+.kourosh-sidebar-search-grid:focus-within {
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.16), 0 14px 28px -22px rgba(15,23,42,.2) !important;
+}
+
+
+/* ===== Stage 73 — Hard reset inner sidebar input surface =====
+   The inner blue box was caused by global input styles still winning on the input itself.
+   This hard-resets only this dedicated sidebar search input.
+*/
+
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:hover,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus-visible,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: var(--sidebar-search-h) !important;
+  color: rgb(30 41 59) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .875rem !important;
+  font-weight: 700 !important;
+  line-height: var(--sidebar-search-h) !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 0 .55rem 0 .15rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input::placeholder {
+  color: rgb(148 163 184) !important;
+  opacity: 1 !important;
+}
+
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input,
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:hover,
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus,
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus-visible,
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:active {
+  color: rgb(248 250 252) !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input::placeholder {
+  color: rgb(100 116 139) !important;
+}
+
+/* The icon is also flat; only the outer shell is allowed to look like a field. */
+.kourosh-sidebar-search-grid .kourosh-sidebar-search-grid__icon,
+.kourosh-sidebar-search-grid .kourosh-sidebar-search-grid__icon:hover,
+.kourosh-sidebar-search-grid .kourosh-sidebar-search-grid__icon:focus,
+.kourosh-sidebar-search-grid .kourosh-sidebar-search-grid__icon:active {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+
+/* ===== Stage 74 — Inline-reset companion: kill inner focus surface at every selector level =====
+   The input is now inline-reset in Sidebar.tsx. This CSS is only a backup layer.
+*/
+.kourosh-sidebar-search-grid,
+.kourosh-sidebar-search-grid:focus,
+.kourosh-sidebar-search-grid:focus-within {
+  overflow: hidden !important;
+}
+
+.kourosh-sidebar-search-grid input,
+.kourosh-sidebar-search-grid input:hover,
+.kourosh-sidebar-search-grid input:focus,
+.kourosh-sidebar-search-grid input:focus-visible,
+.kourosh-sidebar-search-grid input:active,
+.kourosh-sidebar-search-grid input[type="text"],
+.kourosh-sidebar-search-grid input[type="text"]:focus {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: var(--sidebar-search-h) !important;
+  line-height: var(--sidebar-search-h) !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  color: inherit !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .875rem !important;
+  font-weight: 700 !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 0 .55rem 0 .15rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+
+/* ===== Stage 75 — DOM-important fallback selector =====
+   Sidebar.tsx now also applies these with element.style.setProperty(..., 'important').
+*/
+input[data-sidebar-search-input="true"],
+input[data-sidebar-search-input="true"]:hover,
+input[data-sidebar-search-input="true"]:focus,
+input[data-sidebar-search-input="true"]:focus-visible,
+input[data-sidebar-search-input="true"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: var(--sidebar-search-h) !important;
+  line-height: var(--sidebar-search-h) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  font-weight: 700 !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 0 .55rem 0 .15rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+
+/* ===== Stage 76 — Sidebar search placeholder typography refinement =====
+   The search mechanics are stable. This only makes the placeholder visually smaller and calmer.
+*/
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:hover,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus,
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input:focus-visible,
+input[data-sidebar-search-input="true"],
+input[data-sidebar-search-input="true"]:hover,
+input[data-sidebar-search-input="true"]:focus,
+input[data-sidebar-search-input="true"]:focus-visible {
+  font-size: .78rem !important;
+  font-weight: 650 !important;
+}
+
+.kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input::placeholder,
+input[data-sidebar-search-input="true"]::placeholder {
+  font-size: .74rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  color: rgb(148 163 184) !important;
+  opacity: 1 !important;
+}
+
+html.dark .kourosh-sidebar-search-grid input.kourosh-sidebar-search-grid__input::placeholder,
+html.dark input[data-sidebar-search-input="true"]::placeholder {
+  color: rgb(100 116 139) !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10p-single-surface-search-system.css =====
+   Legacy Stage 71/77 — single-surface search system
+   ===== */
+/* ===== Stage 77 — Single-surface search system =====
+   Applies the stabilized sidebar model to sales and report/search inputs:
+   - one visible outer surface
+   - no nested input box
+   - no internal indicator bubble
+   - focus ring only on the outer shell
+*/
+
+/* React-select in cash sales: single outer pill, no inner indicator/box. */
+.sales-select-shell {
+  border-radius: 21px !important;
+}
+
+.sales-select-shell .sellable-select__control,
+.sales-select-shell .sellable-select__control:hover,
+.sales-select-shell .sellable-select__control--is-focused {
+  min-height: 54px !important;
+  border-radius: 21px !important;
+  border: 1px solid rgba(226, 232, 240, .92) !important;
+  background: #fff !important;
+  box-shadow: 0 14px 28px -24px rgba(15,23,42,.28) !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.sales-select-shell .sellable-select__control--is-focused {
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.16), 0 14px 28px -24px rgba(15,23,42,.28) !important;
+}
+
+.sales-select-shell .sellable-select__value-container,
+.sales-select-shell .sellable-select__value-container:hover,
+.sales-select-shell .sellable-select__value-container:focus,
+.sales-select-shell .sellable-select__value-container:focus-within {
+  padding: 0 1rem !important;
+  min-height: 52px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+}
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within,
+.sales-select-shell .sellable-select__single-value,
+.sales-select-shell .sellable-select__placeholder {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.sales-select-shell .sellable-select__input,
+.sales-select-shell input[id*="react-select"],
+.sales-select-shell input {
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+}
+
+.sales-select-shell .sellable-select__indicators,
+.sales-select-shell .sellable-select__indicator,
+.sales-select-shell .sellable-select__dropdown-indicator,
+.sales-select-shell .sellable-select__clear-indicator,
+.sales-select-shell .sellable-select__loading-indicator,
+.sales-select-shell .sellable-select__indicator-separator {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.dark .sales-select-shell .sellable-select__control,
+html.dark .sales-select-shell .sellable-select__control:hover,
+html.dark .sales-select-shell .sellable-select__control--is-focused {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(248 250 252) !important;
+}
+
+/* PageKit/report/table searches: use one outer surface, flat inner input. */
+.ux-single-surface-search,
+.ux-toolbar-search,
+.ux-table-search {
+  position: relative !important;
+  border-radius: 21px !important;
+}
+
+.ux-single-surface-search .ux-toolbar-search__input,
+.ux-toolbar-search .ux-toolbar-search__input,
+.ux-table-search input,
+.ux-table-search .ux-table-search-input,
+.search-results-search-shell__input,
+.report-local-search-input {
+  border-radius: 21px !important;
+  border: 1px solid rgba(226, 232, 240, .92) !important;
+  background: #fff !important;
+  min-height: 44px !important;
+  padding-left: 3.15rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3.15rem !important;
+  direction: rtl !important;
+  text-align: right !important;
+  box-shadow: 0 12px 24px -22px rgba(15,23,42,.25) !important;
+}
+
+.ux-single-surface-search .ux-toolbar-search__input:focus,
+.ux-toolbar-search .ux-toolbar-search__input:focus,
+.ux-table-search input:focus,
+.ux-table-search .ux-table-search-input:focus,
+.search-results-search-shell__input:focus,
+.report-local-search-input:focus {
+  outline: 0 !important;
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.16), 0 12px 24px -22px rgba(15,23,42,.25) !important;
+}
+
+.ux-single-surface-search .ux-toolbar-search__icon,
+.ux-toolbar-search .ux-toolbar-search__icon,
+.ux-table-search .ux-table-search-icon,
+.search-results-search-shell__icon,
+.report-local-search-icon {
+  position: absolute !important;
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: grid !important;
+  place-items: center !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgb(100 116 139) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+html.dark .ux-single-surface-search .ux-toolbar-search__input,
+html.dark .ux-toolbar-search .ux-toolbar-search__input,
+html.dark .ux-table-search input,
+html.dark .ux-table-search .ux-table-search-input,
+html.dark .search-results-search-shell__input,
+html.dark .report-local-search-input {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .ux-single-surface-search .ux-toolbar-search__icon,
+html.dark .ux-toolbar-search .ux-toolbar-search__icon,
+html.dark .ux-table-search .ux-table-search-icon,
+html.dark .search-results-search-shell__icon,
+html.dark .report-local-search-icon {
+  color: rgb(125 211 252) !important;
+}
+
+
+/* ===== Stage 78 — Cash sale react-select inner input hard reset =====
+   The remaining inner box in the cash-sale combobox was the actual input inside react-select
+   inheriting global input/focus styling. The outer react-select control is the only visible surface.
+*/
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:hover,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within,
+.sales-select-shell .sellable-select__input,
+.sales-select-shell .sellable-select__input:hover,
+.sales-select-shell .sellable-select__input:focus,
+.sales-select-shell .sellable-select__input:focus-within {
+  border: 0 !important;
+  border-color: transparent !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input-container input:hover,
+.sales-select-shell .sellable-select__input-container input:focus,
+.sales-select-shell .sellable-select__input-container input:focus-visible,
+.sales-select-shell .sellable-select__input-container input:active,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[id^="react-select"]:hover,
+.sales-select-shell input[id^="react-select"]:focus,
+.sales-select-shell input[id^="react-select"]:focus-visible,
+.sales-select-shell input[id^="react-select"]:active,
+.sales-select-shell input[aria-autocomplete="list"],
+.sales-select-shell input[aria-autocomplete="list"]:hover,
+.sales-select-shell input[aria-autocomplete="list"]:focus,
+.sales-select-shell input[aria-autocomplete="list"]:focus-visible,
+.sales-select-shell input[aria-autocomplete="list"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  min-width: 1px !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  direction: rtl !important;
+  text-align: right !important;
+  caret-color: currentColor !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* Make sure only the outer control owns the visible surface and focus ring. */
+.sales-select-shell .sellable-select__control,
+.sales-select-shell .sellable-select__control:hover,
+.sales-select-shell .sellable-select__control--is-focused {
+  overflow: hidden !important;
+}
+
+.sales-select-shell .sellable-select__placeholder,
+.sales-select-shell .sellable-select__single-value {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+
+/* ===== Stage 83 — Keep only reports search icon-left fix after combobox rollback =====
+   Cash-sale combobox has been rolled back to react-select.
+   These selectors are only for reports/search icon placement.
+*/
+
+#root .report-page .fa-magnifying-glass,
+#root .reports-page .fa-magnifying-glass,
+#root .ux-toolbar-search .ux-toolbar-search__icon,
+#root .ux-toolbar-search > span.ux-toolbar-search__icon,
+#root .ux-toolbar-search > i.fa-magnifying-glass,
+#root .report-local-search-icon,
+#root .search-results-search-shell__icon,
+#root .ux-table-search-icon {
+  position: absolute !important;
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: grid !important;
+  place-items: center !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+}
+
+#root .ux-toolbar-search .ux-toolbar-search__input,
+#root .ux-toolbar-search input[type="search"],
+#root .report-local-search-input,
+#root .search-results-search-shell__input,
+#root .ux-table-search-input,
+#root .ux-table-search input {
+  padding-left: 3.2rem !important;
+  padding-right: 1rem !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 3.2rem !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+#root [class*="report"] .relative > i.fa-magnifying-glass.absolute,
+#root [class*="Report"] .relative > i.fa-magnifying-glass.absolute,
+#root [class*="report"] .relative > span.absolute:has(i.fa-magnifying-glass),
+#root [class*="Report"] .relative > span.absolute:has(i.fa-magnifying-glass) {
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+}
+
+#root [class*="report"] .relative > i.fa-magnifying-glass.absolute ~ input,
+#root [class*="Report"] .relative > i.fa-magnifying-glass.absolute ~ input,
+#root [class*="report"] .relative > span.absolute:has(i.fa-magnifying-glass) ~ input,
+#root [class*="Report"] .relative > span.absolute:has(i.fa-magnifying-glass) ~ input {
+  padding-left: 3.2rem !important;
+  padding-right: 1rem !important;
+}
+
+
+/* ===== Stage 84 — Stable react-select combobox: no inner oval + portal priority =====
+   Keep react-select behavior, restore combobox chevron, remove only the nested input surface.
+*/
+
+.sales-select-shell .sellable-select__control,
+.sales-select-shell .sellable-select__control:hover,
+.sales-select-shell .sellable-select__control--is-focused {
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.sales-select-shell .sellable-select__indicators,
+.sales-select-shell .sellable-select__dropdown-indicator,
+.sales-select-shell .sellable-select__indicator,
+.sales-select-shell .sellable-select__indicator:hover,
+.sales-select-shell .sellable-select__indicator:focus,
+.sales-select-shell .sellable-select__dropdown-indicator:hover,
+.sales-select-shell .sellable-select__dropdown-indicator:focus {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.sales-select-shell .sellable-select__dropdown-indicator {
+  width: 2rem !important;
+  height: 2rem !important;
+  display: grid !important;
+  place-items: center !important;
+  color: rgb(100 116 139) !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+.sales-select-shell .sellable-select__chevron {
+  display: block !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+/* Hard-reset the exact react-select inner input without killing the outer combobox. */
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:hover,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within {
+  flex: 1 1 auto !important;
+  min-width: 2px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input-container input:hover,
+.sales-select-shell .sellable-select__input-container input:focus,
+.sales-select-shell .sellable-select__input-container input:focus-visible,
+.sales-select-shell .sellable-select__input-container input:active,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[id^="react-select"]:hover,
+.sales-select-shell input[id^="react-select"]:focus,
+.sales-select-shell input[id^="react-select"]:focus-visible,
+.sales-select-shell input[id^="react-select"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  min-width: 2px !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  line-height: 1.5 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  color: inherit !important;
+  font: inherit !important;
+  direction: rtl !important;
+  text-align: right !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.sales-select-shell .sellable-select__placeholder,
+.sales-select-shell .sellable-select__single-value {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.sellable-select__menu-portal,
+div[class*="sellable-select__menu-portal"] {
+  z-index: 2147483647 !important;
+  pointer-events: auto !important;
+}
+
+.sellable-select__menu,
+div[class*="sellable-select__menu"] {
+  z-index: 2147483647 !important;
+}
+
+html.dark .sales-select-shell .sellable-select__dropdown-indicator {
+  color: rgb(148 163 184) !important;
+}
+
+
+/* ===== Stage 85 — Premium compact react-select polishing for cash-sale combobox =====
+   Fixes visible issues from the screenshot:
+   - removes the inner oval/surface
+   - restores compact 52px height
+   - softens focus ring
+   - styles dropdown as compact premium menu
+   - makes mixed Persian/English item labels readable in two rows
+*/
+
+.sales-select-shell .sellable-select__control,
+.sales-select-shell .sellable-select__control:hover,
+.sales-select-shell .sellable-select__control--is-focused {
+  min-height: 52px !important;
+  height: 52px !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+}
+
+.sales-select-shell .sellable-select__value-container {
+  height: 50px !important;
+  min-height: 50px !important;
+  padding-block: 0 !important;
+  align-items: center !important;
+}
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:hover,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within,
+.sales-select-shell .sellable-select__input,
+.sales-select-shell .sellable-select__input:hover,
+.sales-select-shell .sellable-select__input:focus,
+.sales-select-shell .sellable-select__input:focus-visible,
+.sales-select-shell .sellable-select__input:active,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[id^="react-select"]:hover,
+.sales-select-shell input[id^="react-select"]:focus,
+.sales-select-shell input[id^="react-select"]:focus-visible,
+.sales-select-shell input[id^="react-select"]:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.sales-select-shell input[id^="react-select"] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  min-width: 2px !important;
+  max-width: 100% !important;
+  color: inherit !important;
+  font: inherit !important;
+  direction: rtl !important;
+  text-align: right !important;
+  caret-color: currentColor !important;
+}
+
+.sales-select-shell .sellable-select__placeholder,
+.sales-select-shell .sellable-select__single-value {
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.sales-select-shell .sellable-select__dropdown-indicator {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.sales-select-shell .sellable-select__chevron {
+  display: block !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.sellable-select__menu-list,
+div[class*="sellable-select__menu-list"] {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(148, 163, 184, .65) transparent !important;
+}
+
+.sellable-select__menu-list::-webkit-scrollbar,
+div[class*="sellable-select__menu-list"]::-webkit-scrollbar {
+  width: 7px !important;
+}
+
+.sellable-select__menu-list::-webkit-scrollbar-thumb,
+div[class*="sellable-select__menu-list"]::-webkit-scrollbar-thumb {
+  border-radius: 999px !important;
+  background: rgba(148, 163, 184, .65) !important;
+}
+
+.sellable-select__option-content {
+  display: grid !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.sellable-select__option-title {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  color: inherit !important;
+}
+
+.sellable-select__option-meta {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  color: rgb(100 116 139) !important;
+}
+
+.sellable-select__option--is-selected .sellable-select__option-meta {
+  color: rgba(255,255,255,.82) !important;
+}
+
+html.dark .sellable-select__option-meta {
+  color: rgb(148 163 184) !important;
+}
+
+
+/* ===== Stage 86 — Hide react-select internal input capsule safely =====
+   The remaining oval was the real react-select input container getting global field styling.
+   Keep react-select behavior, but shrink the typing layer to 1px and make it visually flat.
+*/
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:hover,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within {
+  flex: 0 0 1px !important;
+  width: 1px !important;
+  min-width: 1px !important;
+  max-width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input-container input:hover,
+.sales-select-shell .sellable-select__input-container input:focus,
+.sales-select-shell .sellable-select__input-container input:focus-visible,
+.sales-select-shell .sellable-select__input-container input:active,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[id^="react-select"]:hover,
+.sales-select-shell input[id^="react-select"]:focus,
+.sales-select-shell input[id^="react-select"]:focus-visible,
+.sales-select-shell input[id^="react-select"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  flex: 0 0 1px !important;
+  width: 1px !important;
+  min-width: 1px !important;
+  max-width: 1px !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
+  line-height: 1px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  color: transparent !important;
+  caret-color: currentColor !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* Placeholder/single value remain the actual visual text layer. */
+.sales-select-shell .sellable-select__placeholder,
+.sales-select-shell .sellable-select__single-value {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10q-reports-search-left-final.css =====
+   Legacy Stage 87/88/89 — reports search final
+   ===== */
+/* ===== Stage 88 — Reports search grid/no-absolute final fix =====
+   The reports search icon is no longer absolute-positioned.
+   The wrapper is an LTR grid: [icon] [RTL input].
+   This makes the icon physically stay on the left, independent of RTL logical rules.
+*/
+
+.reports-main-search-grid {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: 2.15rem minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .35rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 44px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(226, 232, 240, .95) !important;
+  background: #fff !important;
+  padding: .22rem .45rem .22rem .55rem !important;
+  box-shadow: 0 12px 24px -22px rgba(15,23,42,.24) !important;
+  overflow: hidden !important;
+}
+
+.reports-main-search-grid:focus-within {
+  border-color: rgba(125, 211, 252, .95) !important;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.15), 0 12px 24px -22px rgba(15,23,42,.24) !important;
+}
+
+.reports-main-search-grid__icon {
+  grid-column: 1 !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  display: grid !important;
+  place-items: center !important;
+  color: rgb(100 116 139) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.reports-main-search-grid__input,
+.reports-main-search-grid__input:hover,
+.reports-main-search-grid__input:focus,
+.reports-main-search-grid__input:focus-visible,
+.reports-main-search-grid__input:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 2 !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: rgb(15 23 42) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  padding: 0 .35rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.reports-main-search-grid__input::placeholder {
+  color: rgb(100 116 139) !important;
+  opacity: .78 !important;
+  font-weight: 650 !important;
+}
+
+html.dark .reports-main-search-grid {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgb(2 6 23) !important;
+}
+
+html.dark .reports-main-search-grid__icon {
+  color: rgb(125 211 252) !important;
+}
+
+html.dark .reports-main-search-grid__input {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .reports-main-search-grid__input::placeholder {
+  color: rgb(148 163 184) !important;
+}
+
+/* Old Reports search markup fallback: if any old absolute icon remains, hide it instead of showing it on the right. */
+.reports-main-search > .reports-main-search__icon,
+.reports-main-search > span.absolute,
+.reports-main-search > i.absolute {
+  display: none !important;
+}
+
+.reports-main-search input {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+
+/* ===== Stage 89 — Reports search single-surface/no-inner-focus fix =====
+   The icon placement is correct; this removes the second inner input box.
+   Only the outer reports-main-search-grid shell may draw border/focus.
+*/
+
+.reports-main-search-grid {
+  overflow: hidden !important;
+}
+
+.reports-main-search-grid__input,
+.reports-main-search-grid__input:hover,
+.reports-main-search-grid__input:focus,
+.reports-main-search-grid__input:focus-visible,
+.reports-main-search-grid__input:active,
+input[data-reports-main-search-input="true"],
+input[data-reports-main-search-input="true"]:hover,
+input[data-reports-main-search-input="true"]:focus,
+input[data-reports-main-search-input="true"]:focus-visible,
+input[data-reports-main-search-input="true"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 2 !important;
+  display: block !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: rgb(15 23 42) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  padding: 0 .35rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+.reports-main-search-grid__input::placeholder,
+input[data-reports-main-search-input="true"]::placeholder {
+  color: rgb(100 116 139) !important;
+  opacity: .78 !important;
+  font-size: .82rem !important;
+  font-weight: 650 !important;
+}
+
+html.dark .reports-main-search-grid__input,
+html.dark input[data-reports-main-search-input="true"] {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .reports-main-search-grid__input::placeholder,
+html.dark input[data-reports-main-search-input="true"]::placeholder {
+  color: rgb(148 163 184) !important;
+}
+
+
+/* ===== Consolidated source: styles/components/search-field.css =====
+   Canonical AppSearchField component contract
+   ===== */
+/* Centralized Search Field
+   Canonical contract:
+   - icon always on physical left
+   - input text is RTL and right-aligned
+   - input is the only visible surface
+   - wrapper is layout-only
+*/
+
+.app-search-field {
+  position: relative;
+  display: block;
+  min-width: 0;
+  direction: ltr;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  cursor: text;
+}
+
+.app-search-field__input,
+.app-search-field__input:hover,
+.app-search-field__input:focus,
+.app-search-field__input:focus-visible,
+.app-search-field__input:active {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, .96);
+  background: #fff;
+  color: rgb(30 41 59);
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif;
+  font-weight: 750;
+  direction: rtl;
+  text-align: right;
+  outline: 0;
+  box-shadow: 0 12px 24px -22px rgba(15,23,42,.24);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-color: transparent;
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+.app-search-field__input:focus,
+.app-search-field__input:focus-visible {
+  border-color: rgba(125, 211, 252, .95);
+  box-shadow: 0 0 0 2px rgba(14,165,233,.10), 0 12px 24px -22px rgba(15,23,42,.24);
+}
+
+.app-search-field__input::placeholder {
+  color: rgb(100 116 139);
+  opacity: .72;
+  font-weight: 650;
+}
+
+.app-search-field__input::-webkit-search-decoration,
+.app-search-field__input::-webkit-search-cancel-button,
+.app-search-field__input::-webkit-search-results-button,
+.app-search-field__input::-webkit-search-results-decoration {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.app-search-field__icon {
+  position: absolute;
+  left: 1rem;
+  right: auto;
+  inset-inline-start: auto;
+  inset-inline-end: auto;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  color: rgb(100 116 139);
+}
+
+.app-search-field__icon i {
+  display: block;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.app-search-field__clear {
+  position: absolute;
+  right: .75rem;
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(148 163 184);
+  padding: 0;
+  cursor: pointer;
+}
+
+.app-search-field__clear:hover,
+.app-search-field__clear:focus-visible {
+  background: rgb(241 245 249);
+  color: rgb(51 65 85);
+  outline: 0;
+}
+
+.app-search-field--sm .app-search-field__input {
+  height: 40px;
+  min-height: 40px;
+  line-height: 40px;
+  padding-left: 3rem;
+  padding-right: 1rem;
+  font-size: .8rem;
+}
+
+.app-search-field--md .app-search-field__input {
+  height: 44px;
+  min-height: 44px;
+  line-height: 44px;
+  padding-left: 3.15rem;
+  padding-right: 1rem;
+  font-size: .85rem;
+}
+
+.app-search-field--lg .app-search-field__input {
+  height: 48px;
+  min-height: 48px;
+  line-height: 48px;
+  padding-left: 3.25rem;
+  padding-right: 1rem;
+  font-size: .88rem;
+}
+
+/* Keep room for clear button when enabled and value exists. */
+.app-search-field:has(.app-search-field__clear) .app-search-field__input {
+  padding-right: 3rem;
+}
+
+/* Dark theme */
+html.dark .app-search-field__input {
+  border-color: rgba(51,65,85,.92);
+  background: rgb(2 6 23);
+  color: rgb(248 250 252);
+}
+
+html.dark .app-search-field__input::placeholder {
+  color: rgb(148 163 184);
+}
+
+html.dark .app-search-field__icon {
+  color: rgb(125 211 252);
+}
+
+html.dark .app-search-field__clear:hover,
+html.dark .app-search-field__clear:focus-visible {
+  background: rgb(15 23 42);
+  color: rgb(226 232 240);
+}
+
+/* Legacy neutralization:
+   once a search is migrated to AppSearchField, older page-specific toolbar search rules
+   must not add wrapper borders/focus again.
+*/
+.people-customers-shell .app-search-field,
+.partners-page-shell .app-search-field,
+.report-page .app-search-field {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.people-customers-shell .app-search-field:focus-within,
+.partners-page-shell .app-search-field:focus-within,
+.report-page .app-search-field:focus-within {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+
+/* ===== Consolidated source: styles/runtime-overrides/10z-app-search-field-layout-compat.css =====
+   AppSearchField legacy layout compatibility
+   ===== */
+/* Stage 100 compatibility for centralized AppSearchField layout slots */
+
+.people-customers-shell .app-search-field.customers-toolbar__item--wide,
+.partners-page-shell .app-search-field.partners-toolbar-search-slot {
+  flex: 1 1 360px !important;
+  max-width: 560px !important;
+  min-width: min(100%, 340px) !important;
+}
+
+@media (max-width: 760px) {
+  .people-customers-shell .app-search-field.customers-toolbar__item--wide,
+  .partners-page-shell .app-search-field.partners-toolbar-search-slot {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}

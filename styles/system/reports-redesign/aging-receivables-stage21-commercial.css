@@ -1,0 +1,516 @@
+/* Stage 21 — Aging receivables commercial redesign */
+.aging-receivables {
+  display: grid;
+  gap: 16px;
+}
+
+.aging-receivables__toolbar-btn {
+  gap: 8px;
+  min-height: 38px;
+  padding-inline: 14px;
+}
+
+.aging-receivables__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr);
+  gap: 16px;
+  align-items: stretch;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 78%, transparent);
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,251,255,.86));
+  box-shadow: 0 18px 50px rgba(15, 23, 42, .06);
+}
+
+.dark .aging-receivables__hero {
+  background: linear-gradient(180deg, rgba(15,23,42,.72), rgba(15,23,42,.54));
+  box-shadow: 0 18px 50px rgba(0,0,0,.18);
+}
+
+.aging-receivables__hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  gap: 8px;
+  padding: 4px 2px;
+}
+
+.aging-receivables__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 82%, transparent);
+  border-radius: 999px;
+  color: #475569;
+  background: rgba(255,255,255,.72);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.dark .aging-receivables__eyebrow {
+  color: #cbd5e1;
+  background: rgba(255,255,255,.06);
+}
+
+.aging-receivables__hero h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 950;
+  letter-spacing: -.03em;
+  line-height: 1.35;
+}
+
+.dark .aging-receivables__hero h2 { color: #f8fafc; }
+
+.aging-receivables__hero p {
+  max-width: 760px;
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 2;
+}
+
+.dark .aging-receivables__hero p { color: #cbd5e1; }
+
+.aging-receivables__hero-metrics {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr .8fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.aging-receivables__metric {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 116px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 82%, transparent);
+  border-radius: 22px;
+  background: rgba(255,255,255,.76);
+}
+
+.dark .aging-receivables__metric { background: rgba(255,255,255,.055); }
+
+.aging-receivables__metric span,
+.aging-receivables__metric small {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.dark .aging-receivables__metric span,
+.dark .aging-receivables__metric small { color: #cbd5e1; }
+
+.aging-receivables__metric strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+}
+
+.dark .aging-receivables__metric strong { color: #f8fafc; }
+
+.aging-receivables__metric--primary {
+  border-color: rgba(59,130,246,.22);
+  box-shadow: inset 3px 0 0 rgba(59,130,246,.68);
+}
+
+.aging-receivables__metric--critical {
+  border-color: rgba(245,158,11,.26);
+  box-shadow: inset 3px 0 0 rgba(245,158,11,.72);
+}
+
+.aging-receivables__bucket-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.aging-receivables__bucket {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 84%, transparent);
+  border-radius: 20px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 14px 36px rgba(15,23,42,.045);
+}
+
+.dark .aging-receivables__bucket { background: rgba(255,255,255,.05); }
+
+.aging-receivables__bucket-header,
+.aging-receivables__bucket-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.aging-receivables__bucket-header span,
+.aging-receivables__bucket-footer span,
+.aging-receivables__bucket-footer b {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.dark .aging-receivables__bucket-header span,
+.dark .aging-receivables__bucket-footer span,
+.dark .aging-receivables__bucket-footer b { color: #cbd5e1; }
+
+.aging-receivables__bucket-header i { font-size: 8px; }
+.aging-receivables__bucket strong {
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 950;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.dark .aging-receivables__bucket strong { color: #f8fafc; }
+
+.aging-receivables__bucket--safe { box-shadow: inset 3px 0 0 rgba(16,185,129,.72), 0 14px 36px rgba(15,23,42,.045); }
+.aging-receivables__bucket--safe .aging-receivables__bucket-header i { color: #10b981; }
+.aging-receivables__bucket--watch { box-shadow: inset 3px 0 0 rgba(59,130,246,.72), 0 14px 36px rgba(15,23,42,.045); }
+.aging-receivables__bucket--watch .aging-receivables__bucket-header i { color: #3b82f6; }
+.aging-receivables__bucket--risk { box-shadow: inset 3px 0 0 rgba(245,158,11,.78), 0 14px 36px rgba(15,23,42,.045); }
+.aging-receivables__bucket--risk .aging-receivables__bucket-header i { color: #f59e0b; }
+.aging-receivables__bucket--critical { box-shadow: inset 3px 0 0 rgba(239,68,68,.78), 0 14px 36px rgba(15,23,42,.045); }
+.aging-receivables__bucket--critical .aging-receivables__bucket-header i { color: #ef4444; }
+
+.aging-receivables__insight-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.aging-receivables__insight-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 84%, transparent);
+  border-radius: 18px;
+  background: rgba(255,255,255,.78);
+}
+
+.dark .aging-receivables__insight-card { background: rgba(255,255,255,.05); }
+
+.aging-receivables__insight-card > i {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148,163,184,.22);
+  border-radius: 13px;
+  color: #334155;
+  background: rgba(248,250,252,.86);
+}
+
+.dark .aging-receivables__insight-card > i {
+  color: #e2e8f0;
+  background: rgba(255,255,255,.06);
+}
+
+.aging-receivables__insight-card div { min-width: 0; }
+.aging-receivables__insight-card span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+}
+.aging-receivables__insight-card strong {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dark .aging-receivables__insight-card span { color: #cbd5e1; }
+.dark .aging-receivables__insight-card strong { color: #f8fafc; }
+
+.aging-receivables__table-shell {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 84%, transparent);
+  border-radius: 24px;
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 18px 55px rgba(15, 23, 42, .055);
+}
+
+.dark .aging-receivables__table-shell { background: rgba(255,255,255,.05); }
+
+.aging-receivables__table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 76%, transparent);
+}
+
+.aging-receivables__table-header h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 950;
+}
+.dark .aging-receivables__table-header h3 { color: #f8fafc; }
+
+.aging-receivables__table-header p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 650;
+}
+.dark .aging-receivables__table-header p { color: #cbd5e1; }
+
+.aging-receivables__refresh {
+  min-height: 36px;
+  gap: 8px;
+  padding-inline: 12px;
+}
+
+.aging-receivables__table-scroll {
+  overflow-x: auto;
+}
+
+.aging-receivables__table {
+  min-width: 980px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: #0f172a;
+  font-size: 13px;
+}
+.dark .aging-receivables__table { color: #f8fafc; }
+
+.aging-receivables__table th {
+  padding: 12px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border, #dbe4ef) 80%, transparent);
+  color: #64748b;
+  background: rgba(248,250,252,.88);
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+.dark .aging-receivables__table th {
+  color: #cbd5e1;
+  background: rgba(255,255,255,.045);
+}
+
+.aging-receivables__table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(148,163,184,.16);
+  font-weight: 750;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.aging-receivables__table tr:last-child td { border-bottom: 0; }
+.aging-receivables__table tbody tr { transition: background .18s ease; }
+.aging-receivables__table tbody tr:hover { background: rgba(15,23,42,.025); }
+.dark .aging-receivables__table tbody tr:hover { background: rgba(255,255,255,.04); }
+
+.aging-receivables__customer {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 260px;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.aging-receivables__customer:hover span:last-child { text-decoration: underline; }
+
+.aging-receivables__avatar {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148,163,184,.28);
+  border-radius: 12px;
+  color: #334155;
+  background: rgba(248,250,252,.92);
+  font-size: 12px;
+  font-weight: 950;
+}
+.dark .aging-receivables__avatar {
+  color: #e2e8f0;
+  background: rgba(255,255,255,.06);
+}
+
+.aging-receivables__phone {
+  direction: ltr;
+  color: #475569;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.dark .aging-receivables__phone { color: #cbd5e1; }
+
+.aging-receivables__amount,
+.aging-receivables__total {
+  color: #0f172a;
+  font-weight: 900;
+}
+.dark .aging-receivables__amount,
+.dark .aging-receivables__total { color: #f8fafc; }
+
+.aging-receivables__zero {
+  color: #94a3b8;
+  font-weight: 800;
+}
+
+.aging-receivables__risk-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.aging-receivables__risk-pill--safe {
+  color: #047857;
+  background: rgba(16,185,129,.1);
+}
+.aging-receivables__risk-pill--watch {
+  color: #1d4ed8;
+  background: rgba(59,130,246,.1);
+}
+.aging-receivables__risk-pill--risk {
+  color: #b45309;
+  background: rgba(245,158,11,.12);
+}
+.aging-receivables__risk-pill--critical {
+  color: #b91c1c;
+  background: rgba(239,68,68,.12);
+}
+
+@media (max-width: 1180px) {
+  .aging-receivables__hero {
+    grid-template-columns: 1fr;
+  }
+  .aging-receivables__hero-metrics,
+  .aging-receivables__bucket-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .aging-receivables { gap: 12px; }
+  .aging-receivables__hero,
+  .aging-receivables__table-shell {
+    border-radius: 20px;
+  }
+  .aging-receivables__hero {
+    padding: 14px;
+  }
+  .aging-receivables__hero-metrics,
+  .aging-receivables__bucket-grid,
+  .aging-receivables__insight-row {
+    grid-template-columns: 1fr;
+  }
+  .aging-receivables__metric { min-height: 94px; }
+  .aging-receivables__table-header {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 14px;
+  }
+  .aging-receivables__refresh { width: 100%; justify-content: center; }
+}
+
+/* Stage 23 — remove duplicated inner header and make table actions actionable */
+.aging-receivables__hero,
+.aging-receivables__hero-copy,
+.aging-receivables__eyebrow {
+  display: none !important;
+}
+
+.aging-receivables__summary-strip {
+  display: grid;
+  grid-template-columns: 1.25fr .875fr .875fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.aging-receivables__summary-strip .aging-receivables__metric {
+  min-height: 92px;
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 14px 42px rgba(15,23,42,.045);
+}
+
+.dark .aging-receivables__summary-strip .aging-receivables__metric {
+  background: rgba(255,255,255,.055);
+}
+
+.aging-receivables__risk-pill {
+  border: 0;
+  gap: 7px;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+
+.aging-receivables__risk-pill i {
+  font-size: 10px;
+  opacity: .7;
+}
+
+.aging-receivables__risk-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(15,23,42,.08);
+  filter: saturate(1.04);
+}
+
+.aging-receivables__risk-pill:focus-visible,
+.aging-receivables__customer:focus-visible {
+  outline: 2px solid rgba(59,130,246,.42);
+  outline-offset: 2px;
+}
+
+.aging-receivables__table tbody tr:has(.aging-receivables__risk-pill:hover) {
+  background: rgba(59,130,246,.035);
+}
+
+@media (max-width: 1180px) {
+  .aging-receivables__summary-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .aging-receivables__summary-strip {
+    gap: 10px;
+  }
+
+  .aging-receivables__summary-strip .aging-receivables__metric {
+    min-height: 84px;
+  }
+}

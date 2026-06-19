@@ -1,0 +1,919 @@
+
+/* v141 — Partner ledger edit modal full redesign and true center placement */
+.partner-ledger-edit-modal-v141[data-kourosh-overlay="backdrop"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 24px !important;
+}
+
+.partner-ledger-edit-modal-v141 [data-kourosh-overlay="panel"] {
+  width: min(760px, calc(100vw - 48px)) !important;
+  max-width: min(760px, calc(100vw - 48px)) !important;
+  height: auto !important;
+  max-height: min(90vh, 720px) !important;
+  margin: auto !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: rgba(255, 255, 255, .98) !important;
+  box-shadow: 0 34px 90px -42px rgba(15, 23, 42, .42), 0 18px 42px -34px rgba(15, 23, 42, .22) !important;
+  overflow: hidden !important;
+  transform-origin: center center !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-header {
+  min-height: 82px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .96) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.90)) !important;
+  padding: 18px 24px !important;
+}
+
+.partner-ledger-edit-modal-v141 .app-modal-title-row {
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-kicker {
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  margin: 0 0 2px !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-title {
+  color: #0f172a !important;
+  font-size: 22px !important;
+  font-weight: 950 !important;
+  line-height: 1.45 !important;
+  letter-spacing: -0.045em !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-close-btn {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: #fff !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-body-premium {
+  padding: 0 !important;
+  overflow-y: auto !important;
+  background: linear-gradient(180deg, #fff 0%, #fbfdff 100%) !important;
+}
+
+.partner-ledger-edit-v141 {
+  direction: rtl !important;
+  text-align: right !important;
+  background: transparent !important;
+}
+
+.partner-ledger-edit-v141__content {
+  display: grid !important;
+  grid-template-columns: 280px minmax(0, 1fr) !important;
+  gap: 24px !important;
+  padding: 24px !important;
+  align-items: stretch !important;
+}
+
+.partner-ledger-edit-v141__summary {
+  min-height: 292px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(191, 219, 254, .96) !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(59, 130, 246, .13), transparent 42%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  padding: 22px !important;
+  text-align: center !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88) !important;
+}
+
+.partner-ledger-edit-v141__summary-icon {
+  width: 56px !important;
+  height: 56px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(191, 219, 254, .96) !important;
+  background: #dbeafe !important;
+  color: #2563eb !important;
+  font-size: 22px !important;
+}
+
+.partner-ledger-edit-v141__summary-kicker {
+  margin-top: 8px !important;
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.partner-ledger-edit-v141__summary-title {
+  color: #0f172a !important;
+  font-size: 24px !important;
+  font-weight: 950 !important;
+  line-height: 1.45 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.partner-ledger-edit-v141__summary-text {
+  max-width: 220px !important;
+  margin: 0 !important;
+  color: #475569 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 2 !important;
+}
+
+.partner-ledger-edit-v141__notice {
+  width: 100% !important;
+  min-height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(191, 219, 254, .86) !important;
+  background: linear-gradient(180deg, #eff6ff, #dbeafe) !important;
+  color: #2563eb !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+
+.partner-ledger-edit-v141__form {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  min-width: 0 !important;
+}
+
+.partner-ledger-edit-v141__field {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 9px !important;
+  min-width: 0 !important;
+}
+
+.partner-ledger-edit-v141__field--full {
+  width: 100% !important;
+}
+
+.partner-ledger-edit-v141__label {
+  color: #0f172a !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  line-height: 1.8 !important;
+}
+
+.partner-ledger-edit-v141__input-shell,
+.partner-ledger-edit-v141__price-shell {
+  position: relative !important;
+  width: 100% !important;
+}
+
+.partner-ledger-edit-v141__input {
+  width: 100% !important;
+  height: 52px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  padding: 0 46px 0 14px !important;
+  text-align: right !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-edit-v141__input-icon,
+.partner-ledger-edit-v141__price-icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 30px !important;
+  height: 30px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 11px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
+
+.partner-ledger-edit-v141__money-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input {
+  width: 100% !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input > .mb-2 {
+  display: none !important;
+}
+
+.partner-ledger-edit-v141__price-input,
+.partner-ledger-edit-v141__price-shell input {
+  width: 100% !important;
+  height: 52px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  padding-right: 46px !important;
+  padding-left: 14px !important;
+  text-align: left !important;
+  direction: ltr !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-edit-v141__price-shell .min-h-\[1\.1rem\] {
+  min-height: 18px !important;
+  margin-top: 6px !important;
+  color: #64748b !important;
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+}
+
+.partner-ledger-edit-v141__price-icon.is-credit {
+  color: #059669 !important;
+  background: #ecfdf5 !important;
+  border-color: rgba(167, 243, 208, .96) !important;
+}
+
+.partner-ledger-edit-v141__price-icon.is-debit {
+  color: #2563eb !important;
+  background: #eff6ff !important;
+  border-color: rgba(191, 219, 254, .96) !important;
+}
+
+.partner-ledger-edit-v141__helper {
+  min-height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.partner-ledger-edit-v141__helper i {
+  color: #2563eb !important;
+}
+
+.partner-ledger-edit-v141__footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  border-top: 1px solid rgba(226, 232, 240, .96) !important;
+  background: linear-gradient(180deg, rgba(248,250,252,.72), rgba(255,255,255,.98)) !important;
+  padding: 18px 24px !important;
+}
+
+.partner-ledger-edit-v141__submit,
+.partner-ledger-edit-v141__cancel {
+  min-width: 148px !important;
+  height: 46px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border-radius: 14px !important;
+  padding: 0 16px !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-edit-v141__submit {
+  border: 1px solid rgba(37, 99, 235, .85) !important;
+  background: linear-gradient(135deg, #38bdf8, #2563eb) !important;
+  color: #fff !important;
+  box-shadow: 0 16px 34px -22px rgba(37, 99, 235, .85) !important;
+}
+
+.partner-ledger-edit-v141__submit:disabled {
+  opacity: .55 !important;
+  cursor: not-allowed !important;
+}
+
+.partner-ledger-edit-v141__cancel {
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  color: #334155 !important;
+}
+
+.partner-ledger-edit-v141 :where(input, button):focus,
+.partner-ledger-edit-v141 :where(input, button):focus-visible,
+.partner-ledger-edit-v141 :where(input, button):focus-within,
+.partner-ledger-edit-v141 :where(.price-input):focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+}
+
+.dark .partner-ledger-edit-modal-v141 [data-kourosh-overlay="panel"] {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgb(15, 23, 42) !important;
+}
+
+.dark .partner-ledger-edit-modal-v141 .modal-premium-header,
+.dark .partner-ledger-edit-modal-v141 .modal-body-premium,
+.dark .partner-ledger-edit-v141__footer {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgb(15, 23, 42) !important;
+}
+
+.dark .partner-ledger-edit-v141__summary,
+.dark .partner-ledger-edit-v141__input,
+.dark .partner-ledger-edit-v141__price-shell input,
+.dark .partner-ledger-edit-v141__cancel {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgb(2, 6, 23) !important;
+  color: #f8fafc !important;
+}
+
+.dark .partner-ledger-edit-v141__summary-title,
+.dark .partner-ledger-edit-v141__label,
+.dark .partner-ledger-edit-modal-v141 .modal-premium-title {
+  color: #f8fafc !important;
+}
+
+.dark .partner-ledger-edit-v141__summary-text,
+.dark .partner-ledger-edit-v141__helper,
+.dark .partner-ledger-edit-modal-v141 .modal-premium-kicker {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 860px) {
+  .partner-ledger-edit-modal-v141[data-kourosh-overlay="backdrop"] {
+    padding: 14px !important;
+  }
+
+  .partner-ledger-edit-modal-v141 [data-kourosh-overlay="panel"] {
+    width: min(100%, calc(100vw - 28px)) !important;
+    max-width: min(100%, calc(100vw - 28px)) !important;
+    max-height: calc(100vh - 28px) !important;
+  }
+
+  .partner-ledger-edit-v141__content {
+    grid-template-columns: 1fr !important;
+    padding: 18px !important;
+    gap: 16px !important;
+  }
+
+  .partner-ledger-edit-v141__summary {
+    min-height: 220px !important;
+  }
+
+  .partner-ledger-edit-v141__money-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-ledger-edit-v141__footer {
+    flex-direction: column-reverse !important;
+    padding: 16px 18px !important;
+  }
+
+  .partner-ledger-edit-v141__submit,
+  .partner-ledger-edit-v141__cancel {
+    width: 100% !important;
+  }
+}
+
+
+/* v142 — fix price icons inside fields and tone down summary copy */
+.partner-ledger-edit-v141__price-shell {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  isolation: isolate !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input {
+  width: 100% !important;
+  display: block !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input > div:last-child {
+  position: relative !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input input,
+.partner-ledger-edit-v141__price-shell input[type="text"],
+.partner-ledger-edit-v141__price-shell input[type="tel"],
+.partner-ledger-edit-v141__price-shell input[type="number"] {
+  width: 100% !important;
+  padding-right: 48px !important;
+  padding-left: 14px !important;
+  box-sizing: border-box !important;
+}
+
+.partner-ledger-edit-v141__price-icon {
+  right: 12px !important;
+  left: auto !important;
+  top: 26px !important;
+  transform: translateY(-50%) !important;
+  z-index: 5 !important;
+}
+
+.partner-ledger-edit-v141__summary-text {
+  max-width: 235px !important;
+  font-size: 12px !important;
+  line-height: 1.95 !important;
+}
+
+.partner-ledger-edit-v141__notice {
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+}
+
+
+/* v143 — final compact alignment pass for partner ledger edit modal */
+.partner-ledger-edit-modal-v141 .modal-close-btn {
+  display: none !important;
+}
+
+.partner-ledger-edit-modal-v141 [data-kourosh-overlay="panel"] {
+  width: min(720px, calc(100vw - 48px)) !important;
+  max-width: min(720px, calc(100vw - 48px)) !important;
+  border-radius: 22px !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-header {
+  min-height: 72px !important;
+  padding: 14px 22px !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-title {
+  font-size: 21px !important;
+  line-height: 1.35 !important;
+}
+
+.partner-ledger-edit-modal-v141 .modal-premium-kicker {
+  font-size: 10.5px !important;
+  line-height: 1.5 !important;
+}
+
+.partner-ledger-edit-v141__content {
+  grid-template-columns: 250px minmax(0, 1fr) !important;
+  gap: 20px !important;
+  padding: 20px 22px !important;
+  align-items: center !important;
+}
+
+.partner-ledger-edit-v141__summary {
+  min-height: 258px !important;
+  border-radius: 18px !important;
+  padding: 18px !important;
+  gap: 8px !important;
+}
+
+.partner-ledger-edit-v141__summary-icon {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 16px !important;
+  font-size: 20px !important;
+}
+
+.partner-ledger-edit-v141__summary-kicker {
+  margin-top: 4px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-ledger-edit-v141__summary-title {
+  font-size: 22px !important;
+  line-height: 1.35 !important;
+}
+
+.partner-ledger-edit-v141__summary-text {
+  max-width: 230px !important;
+  font-size: 11.5px !important;
+  line-height: 1.85 !important;
+}
+
+.partner-ledger-edit-v141__notice {
+  min-height: 50px !important;
+  margin-top: 6px !important;
+  border-radius: 14px !important;
+  padding: 0 12px !important;
+  font-size: 11px !important;
+  line-height: 1.75 !important;
+}
+
+.partner-ledger-edit-v141__form {
+  gap: 14px !important;
+  justify-content: center !important;
+}
+
+.partner-ledger-edit-v141__field {
+  gap: 7px !important;
+}
+
+.partner-ledger-edit-v141__label {
+  min-height: 22px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  font-size: 11.5px !important;
+  line-height: 1.5 !important;
+}
+
+.partner-ledger-edit-v141__input,
+.partner-ledger-edit-v141__price-shell input {
+  height: 48px !important;
+  min-height: 48px !important;
+  border-radius: 15px !important;
+  font-size: 12.5px !important;
+}
+
+.partner-ledger-edit-v141__input-icon,
+.partner-ledger-edit-v141__price-icon {
+  width: 28px !important;
+  height: 28px !important;
+  right: 11px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+}
+
+.partner-ledger-edit-v141__money-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input {
+  min-height: 72px !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input .min-h-\[1\.1rem\] {
+  min-height: 17px !important;
+  margin-top: 5px !important;
+  font-size: 10px !important;
+  line-height: 1.6 !important;
+}
+
+.partner-ledger-edit-v141__helper {
+  min-height: 28px !important;
+  justify-content: flex-start !important;
+  font-size: 10.8px !important;
+  line-height: 1.8 !important;
+}
+
+.partner-ledger-edit-v141__footer {
+  min-height: 72px !important;
+  padding: 14px 22px !important;
+  gap: 10px !important;
+  justify-content: flex-end !important;
+}
+
+.partner-ledger-edit-v141__submit,
+.partner-ledger-edit-v141__cancel {
+  height: 44px !important;
+  min-width: 150px !important;
+  border-radius: 14px !important;
+  font-size: 11.8px !important;
+}
+
+.partner-ledger-edit-v141__cancel {
+  order: 1 !important;
+}
+
+.partner-ledger-edit-v141__submit {
+  order: 2 !important;
+}
+
+@media (max-width: 860px) {
+  .partner-ledger-edit-modal-v141 [data-kourosh-overlay="panel"] {
+    width: min(100%, calc(100vw - 28px)) !important;
+    max-width: min(100%, calc(100vw - 28px)) !important;
+  }
+
+  .partner-ledger-edit-v141__content {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 14px !important;
+  }
+
+  .partner-ledger-edit-v141__summary {
+    min-height: 190px !important;
+  }
+
+  .partner-ledger-edit-v141__money-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .partner-ledger-edit-v141__footer {
+    padding: 14px 16px !important;
+    min-height: auto !important;
+  }
+}
+
+
+/* v144 — remove close button at component level and keep record text clear from icon */
+.partner-ledger-edit-modal-v141 .modal-close-btn,
+.partner-ledger-edit-modal-v141 button[aria-label="بستن"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.partner-ledger-edit-v141__input {
+  padding-right: 58px !important;
+  padding-left: 14px !important;
+}
+
+.partner-ledger-edit-v141__input-shell .partner-ledger-edit-v141__input-icon {
+  right: 12px !important;
+}
+
+.partner-ledger-edit-v141__price-shell .price-input input,
+.partner-ledger-edit-v141__price-shell input[type="text"],
+.partner-ledger-edit-v141__price-shell input[type="tel"],
+.partner-ledger-edit-v141__price-shell input[type="number"],
+.partner-ledger-edit-v141__price-input,
+.partner-ledger-edit-v141__price-shell input {
+  padding-right: 58px !important;
+}
+
+
+/* v145 — final hard fix: remove close button and add safe icon/text spacing */
+.partner-ledger-edit-modal-v141 .modal-close-btn,
+.partner-ledger-edit-modal-v141 button.modal-close-btn,
+.partner-ledger-edit-modal-v141 button[aria-label="بستن"],
+.customer-profile-edit-overlay .modal-close-btn,
+.customer-profile-edit-overlay button[aria-label="بستن"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Description field: make a real safe zone for the right icon */
+.partner-ledger-edit-v141 .partner-ledger-edit-v141__input-shell {
+  position: relative !important;
+}
+
+.partner-ledger-edit-v141 input.partner-ledger-edit-v141__input,
+.partner-ledger-edit-v141__input {
+  padding-right: 76px !important;
+  padding-left: 16px !important;
+  text-align: right !important;
+  box-sizing: border-box !important;
+}
+
+.partner-ledger-edit-v141__input-shell .partner-ledger-edit-v141__input-icon {
+  right: 16px !important;
+  left: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* Same spacing contract as lower amount fields */
+.partner-ledger-edit-v141__price-shell .price-input input,
+.partner-ledger-edit-v141__price-shell input[type="text"],
+.partner-ledger-edit-v141__price-shell input[type="tel"],
+.partner-ledger-edit-v141__price-shell input[type="number"],
+.partner-ledger-edit-v141__price-input,
+.partner-ledger-edit-v141__price-shell input {
+  padding-right: 76px !important;
+  padding-left: 16px !important;
+  box-sizing: border-box !important;
+}
+
+.partner-ledger-edit-v141__price-shell .partner-ledger-edit-v141__price-icon {
+  right: 16px !important;
+  left: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* Compact final alignment */
+.partner-ledger-edit-v141__label {
+  margin-bottom: 2px !important;
+}
+
+.partner-ledger-edit-v141__form {
+  gap: 12px !important;
+}
+
+.partner-ledger-edit-v141__money-grid {
+  gap: 12px !important;
+}
+
+.partner-ledger-edit-v141__footer {
+  gap: 10px !important;
+}
+
+.partner-ledger-edit-v141__submit,
+.partner-ledger-edit-v141__cancel {
+  transition: transform .16s ease, background .16s ease, border-color .16s ease !important;
+}
+
+.partner-ledger-edit-v141__submit:hover,
+.partner-ledger-edit-v141__cancel:hover {
+  transform: translateY(-1px) !important;
+}
+
+
+
+/* v146 — hard spacing for description text so it never goes under the icon */
+.partner-ledger-edit-v141 .partner-ledger-edit-v141__input-shell {
+  position: relative !important;
+}
+
+.partner-ledger-edit-v141 input.partner-ledger-edit-v141__input,
+.partner-ledger-edit-v141__input {
+  padding-right: 112px !important;
+  padding-inline-start: 112px !important;
+  padding-left: 16px !important;
+  padding-inline-end: 16px !important;
+  text-align: right !important;
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  box-sizing: border-box !important;
+}
+
+.partner-ledger-edit-v141__input-shell .partner-ledger-edit-v141__input-icon {
+  right: 16px !important;
+  left: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  z-index: 4 !important;
+}
+
+/* extra invisible spacer area between icon and text */
+.partner-ledger-edit-v141__input-shell::after {
+  content: "";
+  position: absolute;
+  right: 54px;
+  top: 9px;
+  bottom: 9px;
+  width: 34px;
+  pointer-events: none;
+  background: transparent;
+}
+
+
+/* v147 — real structural fix for description field: icon is no longer absolute */
+.partner-ledger-edit-v147__description-shell,
+.partner-ledger-edit-v141 .partner-ledger-edit-v147__description-shell {
+  width: 100% !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  direction: rtl !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  padding: 0 10px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-edit-v147__description-icon,
+.partner-ledger-edit-v141 .partner-ledger-edit-v147__description-icon {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  flex: 0 0 30px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+  pointer-events: none !important;
+}
+
+.partner-ledger-edit-v147__description-input,
+.partner-ledger-edit-v141 input.partner-ledger-edit-v147__description-input {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  unicode-bidi: plaintext !important;
+  color: #0f172a !important;
+  font-size: 12.5px !important;
+  font-weight: 850 !important;
+  line-height: 48px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-edit-v147__description-input:focus,
+.partner-ledger-edit-v147__description-input:focus-visible,
+.partner-ledger-edit-v147__description-shell:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: rgba(203, 213, 225, .96) !important;
+}
+
+.dark .partner-ledger-edit-v147__description-shell {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgb(2, 6, 23) !important;
+}
+
+.dark .partner-ledger-edit-v147__description-input {
+  color: #f8fafc !important;
+}
+
+.dark .partner-ledger-edit-v147__description-icon {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .92) !important;
+  color: #cbd5e1 !important;
+}
+
+
+/* v148 — kill focus ring specifically on the structural description field */
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:hover,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:focus,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:focus-visible,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:focus-within,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:active {
+  border-color: rgb(203 213 225) !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:hover,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:focus,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:focus-visible,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:focus-within,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:active {
+  border: 0 !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* Remove browser autofill/focus visual side effects */
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:-webkit-autofill,
+html body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  transition: background-color 999999s ease-in-out 0s !important;
+}
+
+html.dark body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell,
+html.dark body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:hover,
+html.dark body #root .partner-ledger-edit-modal-v141 .partner-ledger-edit-v147__description-shell:focus-within {
+  border-color: rgb(51 65 85) !important;
+}

@@ -1,0 +1,24 @@
+{
+  "checked": [
+    "index.tsx CSS imports",
+    "CSS parser via tinycss2",
+    "literal \\n in CSS",
+    "brace counts",
+    "runtime-overrides absence",
+    "zip integrity will be checked after packaging"
+  ],
+  "results": {
+    "missing_internal_css_imports": [],
+    "external_css_imports_not_checked_as_files": [
+      "react-grid-layout/css/styles.css",
+      "react-resizable/css/styles.css",
+      "@fortawesome/fontawesome-free/css/all.min.css"
+    ],
+    "css_parser_errors": [],
+    "literal_backslash_n_css_files": [],
+    "brace_count_issues": [],
+    "css_internal_import_missing": []
+  },
+  "manual_build_required": true,
+  "reason_build_not_run": "node_modules is not included in the uploaded zip/runtime."
+}

@@ -1,0 +1,321 @@
+
+/* v60 — final pass for screenshots:
+   1) Fix edge-to-edge objects in template/telegram panels.
+   2) Neutral Apple-base colors for template center cards.
+   3) Make log detail modal smaller, centered below header, and 2-column error/action grid. */
+
+/* ---------- General Telegram panel safe padding for edge-to-edge cards ---------- */
+#telegram-settings-form.telegram-redesign-v1 .premium-form-section,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section,
+#telegram-settings-form.telegram-redesign-v1 [id*="tg-anchor"] .premium-form-section {
+  border-radius: 28px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .premium-form-section > .grid,
+#telegram-settings-form.telegram-redesign-v1 .premium-form-section > div[class*="grid"],
+#telegram-settings-form.telegram-redesign-v1 [id*="tg-anchor"] .grid {
+  gap: 1rem !important;
+}
+
+/* Cards inside the template center and similar panels need an inner safe zone. */
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .rounded-3xl,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .rounded-3xl,
+#telegram-settings-form.telegram-redesign-v1 [id*="template"] .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 [id*="template"] .rounded-3xl,
+#telegram-settings-form.telegram-redesign-v1 [id*="pattern"] .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 [id*="pattern"] .rounded-3xl {
+  padding: 1rem !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  box-shadow: 0 14px 32px -30px rgba(15, 23, 42, 0.18) !important;
+}
+
+/* Neutralize colorful template center surfaces/cards without killing tiny status accents. */
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] [class*="bg-gradient"],
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] [class*="bg-gradient"],
+#telegram-settings-form.telegram-redesign-v1 [id*="template"] [class*="bg-gradient"],
+#telegram-settings-form.telegram-redesign-v1 [id*="pattern"] [class*="bg-gradient"] {
+  background: rgba(255, 255, 255, 0.94) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .bg-orange-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .bg-rose-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .bg-sky-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="template"] .bg-violet-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .bg-orange-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .bg-rose-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .bg-sky-50,
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .bg-violet-50 {
+  background: rgba(248, 250, 252, 0.86) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+/* Apply Apple-neutral to template center large summary band seen in screenshot 2. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-center,
+#telegram-settings-form.telegram-redesign-v1 .telegram-pattern-center,
+#telegram-settings-form.telegram-redesign-v1 [class*="template-center"],
+#telegram-settings-form.telegram-redesign-v1 [class*="pattern-center"] {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, 0.18) !important;
+}
+
+/* Broad fallback for the template section: keep visual calm, not colorful. */
+#telegram-settings-form.telegram-redesign-v1 [id*="tg-anchor-templates"],
+#telegram-settings-form.telegram-redesign-v1 [id*="templates"],
+#telegram-settings-form.telegram-redesign-v1 [id*="patterns"] {
+  --tg-v60-card-bg: rgba(255, 255, 255, 0.94);
+  --tg-v60-soft-bg: rgba(248, 250, 252, 0.82);
+}
+
+/* ---------- Logs table compact scale refinement ---------- */
+.tg-logs-apple__tableWrap {
+  padding: 0.72rem !important;
+}
+
+.tg-logs-apple__table th,
+.tg-logs-apple__table td {
+  padding: 0.68rem 0.72rem !important;
+  font-size: 0.72rem !important;
+}
+
+.tg-logs-apple__event strong {
+  font-size: 0.72rem !important;
+}
+
+.tg-logs-apple__event span,
+.tg-logs-apple__muted,
+.tg-logs-apple__code {
+  font-size: 0.65rem !important;
+}
+
+.tg-logs-apple__detailsBtn,
+.tg-logs-apple__retryBtn,
+.tg-logs-apple__quickFixBtn {
+  min-height: 1.72rem !important;
+  padding-inline: 0.55rem !important;
+  font-size: 0.68rem !important;
+}
+
+/* ---------- Log detail modal: smaller, below header, true responsive ---------- */
+.tg-logs-detail-modal-overlay {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: clamp(5.2rem, 8vh, 6.4rem) !important;
+  padding-inline: 1rem !important;
+  padding-bottom: 0.85rem !important;
+}
+
+/* On desktop/smaller monitors keep modal compact and away from settings header. */
+.tg-logs-detail-modal-overlay .modal-surface {
+  width: min(900px, calc(100vw - 2rem)) !important;
+  max-width: min(900px, calc(100vw - 2rem)) !important;
+  max-height: calc(100vh - clamp(6.4rem, 10vh, 7.4rem)) !important;
+  min-width: 0 !important;
+  border-radius: 22px !important;
+  margin: 0 auto !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-premium-header {
+  padding: 0.62rem 0.78rem !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-body-premium {
+  padding: 0.68rem 0.74rem 0.78rem !important;
+  max-height: calc(100vh - clamp(10.5rem, 14vh, 11.8rem)) !important;
+  overflow-y: auto !important;
+}
+
+/* Smaller typography across modal */
+.tg-logs-detail-modal-overlay .modal-premium-title {
+  font-size: 0.9rem !important;
+}
+
+.tg-logs-detail-modal-overlay .modal-premium-kicker,
+.tg-logs-detail-modal-overlay .modal-premium-subtitle {
+  font-size: 0.66rem !important;
+}
+
+/* Detail summary cards compact */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modal {
+  gap: 0.58rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0.55rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+  grid-template-columns: 1.65rem minmax(0, 1fr) !important;
+  min-height: 3.65rem !important;
+  gap: 0.46rem !important;
+  padding: 0.52rem 0.56rem !important;
+  border-radius: 15px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon {
+  width: 1.65rem !important;
+  height: 1.65rem !important;
+  border-radius: 10px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon i,
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailIcon svg {
+  font-size: 0.72rem !important;
+  width: 0.78rem !important;
+  height: 0.78rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard span:not(.tg-logs-apple__detailIcon) {
+  font-size: 0.62rem !important;
+  margin-bottom: 0.12rem !important;
+  line-height: 1.35 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard strong {
+  font-size: 0.68rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Four middle blocks become 2×2 to reduce height. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorGrid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.55rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorHero,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  min-height: 4.25rem !important;
+  padding: 0.58rem 0.62rem !important;
+  border-radius: 15px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(226, 232, 240, 0.94) !important;
+  box-shadow: none !important;
+}
+
+/* Keep error card subtly red but not a giant red banner */
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorHero {
+  border-color: rgba(254, 202, 202, 0.82) !important;
+  background: rgba(255, 247, 247, 0.74) !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__errorIcon {
+  width: 1.55rem !important;
+  height: 1.55rem !important;
+  flex-basis: 1.55rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError strong,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance span,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach strong,
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError summary {
+  font-size: 0.68rem !important;
+  line-height: 1.45 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalError p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__guidance p,
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach p {
+  font-size: 0.66rem !important;
+  line-height: 1.55 !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__technicalError pre {
+  max-height: 5.4rem !important;
+  padding: 0.48rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.45 !important;
+  border-radius: 11px !important;
+}
+
+/* Debug boxes compact */
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.55rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  padding: 0.56rem !important;
+  border-radius: 15px !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox strong {
+  font-size: 0.62rem !important;
+  margin-bottom: 0.32rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre {
+  max-height: 8rem !important;
+  padding: 0.5rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.45 !important;
+  border-radius: 11px !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 [class*="template"] .rounded-2xl,
+html.dark #telegram-settings-form.telegram-redesign-v1 [class*="template"] .rounded-3xl,
+html.dark #telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .rounded-2xl,
+html.dark #telegram-settings-form.telegram-redesign-v1 [class*="pattern"] .rounded-3xl {
+  background: rgba(15, 23, 42, 0.78) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__errorHero,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__guidance,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__technicalError,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach,
+html.dark .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox {
+  background: rgba(15, 23, 42, 0.78) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+/* Responsive: for narrow screens stack everything safely */
+@media (max-width: 1100px) {
+  .tg-logs-detail-modal-overlay {
+    padding-top: 4.6rem !important;
+  }
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: calc(100vw - 1.3rem) !important;
+    max-width: calc(100vw - 1.3rem) !important;
+    max-height: calc(100vh - 5.3rem) !important;
+  }
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__errorGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    grid-template-columns: 1fr !important;
+  }
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    max-height: calc(100vh - 9.2rem) !important;
+  }
+}
+
+@media (max-height: 780px) {
+  .tg-logs-detail-modal-overlay {
+    padding-top: 4.4rem !important;
+    padding-bottom: 0.55rem !important;
+  }
+  .tg-logs-detail-modal-overlay .modal-surface {
+    max-height: calc(100vh - 5rem) !important;
+  }
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    max-height: calc(100vh - 8.9rem) !important;
+  }
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugBox pre {
+    max-height: 5.8rem !important;
+  }
+}

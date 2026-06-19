@@ -1,0 +1,37 @@
+{
+  "stage": 236,
+  "strategy": "conservative phase-2 consolidation",
+  "source_zip": "kourosh-uiux-stage235-smart-insights-css-consolidation-phase1.zip",
+  "merged_into": "styles/system/reports-redesign/purchase-suggestions-action-board/purchase-suggestions-action-board.phase2-stabilized.css",
+  "scope": "PurchaseSuggestionReport + SmartInsightCenter action board/search/table fixes",
+  "preserved_order": [
+    "reports-stage210-purchase-suggestions-redesign.css",
+    "reports-stage211-smart-insights-action-board.css",
+    "reports-stage212-purchase-suggestions-compact-header-search.css",
+    "reports-stage213-smart-insights-action-board-fit.css",
+    "reports-stage214-purchase-search-single-box-hard-fix.css",
+    "reports-stage215-smart-insights-related-cards-readability.css",
+    "reports-stage216-search-table-detail-fixes.css",
+    "reports-stage217-search-and-smart-table-final.css",
+    "reports-stage218-smart-insights-table-column-contract.css",
+    "reports-stage219-final-search-table-polish.css"
+  ],
+  "reason_for_single_file": "Some stage216/217/219 selectors are intentionally mixed between purchase search/table and Smart Insight action board. Keeping one file preserves exact cascade and avoids selector-splitting regression.",
+  "source_hashes": {
+    "reports-stage210-purchase-suggestions-redesign.css": "cf0b6f2ce6360e0db17e5d58e4efbcc781a4137872ef16fbe733d4b447b04aac",
+    "reports-stage211-smart-insights-action-board.css": "fb329043c002a54276f2e521a91e9529b4ff7573a10beea7dd6d40ab889bef2b",
+    "reports-stage212-purchase-suggestions-compact-header-search.css": "d85213edb272ac48ab2e856d456caa1fb7eed372323c5b0b513d7c28bfc9cf03",
+    "reports-stage213-smart-insights-action-board-fit.css": "b3a8c474eb3a19d5623f687a5243c07b0801b0122831573662fbcf243aa6105a",
+    "reports-stage214-purchase-search-single-box-hard-fix.css": "b020a03567d77e035f32605db006a0e9019afe2a50acb345f508f4bab7733f37",
+    "reports-stage215-smart-insights-related-cards-readability.css": "8d49dc72d6525d366c63eaa9e0fc6378164c10168da4fabd1b5ca8cbea07c6a0",
+    "reports-stage216-search-table-detail-fixes.css": "a11bd25d9cdf226342cae79c88b4b6f0003e84dcc2acd85edbe11766562c05b7",
+    "reports-stage217-search-and-smart-table-final.css": "f1379d05b0a8f95faf02b1867c6a7b95dfbaa0164561576969149a9fad2ca3ef",
+    "reports-stage218-smart-insights-table-column-contract.css": "773328c3e1966c5216f9305a527b8d8cb7a9562561d960e6c59df6a60cc11f16",
+    "reports-stage219-final-search-table-polish.css": "1341df2b683c15a2558adcddd670b3dfd0562d3d90e33692d0bee3086aa12acb"
+  },
+  "notes": [
+    "CSS content is concatenated in the exact previous import order.",
+    "No older shared report CSS was touched.",
+    "No JSX/TS business logic was changed."
+  ]
+}

@@ -1,0 +1,150 @@
+/* Phase 49: global navbar + sidebar + topbar unification */
+:root {
+  --ux-nav-surface-light: rgba(255, 255, 255, 0.94);
+  --ux-nav-surface-dark: rgba(2, 6, 23, 0.88);
+  --ux-nav-border-light: rgba(226, 232, 240, 0.9);
+  --ux-nav-border-dark: rgba(51, 65, 85, 0.88);
+  --ux-nav-shadow-light: 0 20px 46px -34px rgba(15, 23, 42, 0.18);
+  --ux-nav-shadow-dark: 0 26px 56px -34px rgba(2, 6, 23, 0.62);
+  --ux-nav-item-radius: 18px;
+}
+
+.sidebar,
+[class*="sidebar"],
+.topbar,
+[class*="topbar"],
+.navbar,
+[class*="navbar"] {
+  border-color: var(--ux-nav-border-light);
+  background: var(--ux-nav-surface-light);
+  box-shadow: var(--ux-nav-shadow-light);
+  backdrop-filter: blur(8px);
+}
+
+.dark .sidebar,
+.dark [class*="sidebar"],
+.dark .topbar,
+.dark [class*="topbar"],
+.dark .navbar,
+.dark [class*="navbar"] {
+  border-color: var(--ux-nav-border-dark);
+  background: var(--ux-nav-surface-dark);
+  box-shadow: var(--ux-nav-shadow-dark);
+}
+
+.sidebar a,
+.sidebar button,
+[class*="sidebar"] a,
+[class*="sidebar"] button,
+.topbar a,
+.topbar button,
+[class*="topbar"] a,
+[class*="topbar"] button,
+.navbar a,
+.navbar button,
+[class*="navbar"] a,
+[class*="navbar"] button {
+  border-radius: var(--ux-nav-item-radius);
+  transition: background-color 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.sidebar a:hover,
+.sidebar button:hover,
+[class*="sidebar"] a:hover,
+[class*="sidebar"] button:hover,
+.topbar a:hover,
+.topbar button:hover,
+[class*="topbar"] a:hover,
+[class*="topbar"] button:hover,
+.navbar a:hover,
+.navbar button:hover,
+[class*="navbar"] a:hover,
+[class*="navbar"] button:hover {
+  transform: translateY(-1px);
+}
+
+.sidebar .active,
+.sidebar [aria-current="page"],
+[class*="sidebar"] .active,
+[class*="sidebar"] [aria-current="page"],
+.navbar .active,
+.navbar [aria-current="page"],
+[class*="navbar"] .active,
+[class*="navbar"] [aria-current="page"] {
+  background: rgba(15, 23, 42, 0.92);
+  color: white;
+  box-shadow: 0 16px 30px -24px rgba(15, 23, 42, 0.28);
+}
+
+.dark .sidebar .active,
+.dark .sidebar [aria-current="page"],
+.dark [class*="sidebar"] .active,
+.dark [class*="sidebar"] [aria-current="page"],
+.dark .navbar .active,
+.dark .navbar [aria-current="page"],
+.dark [class*="navbar"] .active,
+.dark [class*="navbar"] [aria-current="page"] {
+  background: rgba(255, 255, 255, 0.92);
+  color: rgb(15 23 42);
+  box-shadow: 0 18px 34px -24px rgba(255, 255, 255, 0.14);
+}
+
+.sidebar .nav-section-title,
+[class*="sidebar"] .nav-section-title,
+.topbar .nav-section-title,
+[class*="topbar"] .nav-section-title,
+.navbar .nav-section-title,
+[class*="navbar"] .nav-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: rgb(100 116 139);
+}
+
+.dark .sidebar .nav-section-title,
+.dark [class*="sidebar"] .nav-section-title,
+.dark .topbar .nav-section-title,
+.dark [class*="topbar"] .nav-section-title,
+.dark .navbar .nav-section-title,
+.dark [class*="navbar"] .nav-section-title {
+  color: rgb(148 163 184);
+}
+
+.sidebar .nav-item-icon,
+[class*="sidebar"] .nav-item-icon,
+.topbar .nav-item-icon,
+[class*="topbar"] .nav-item-icon,
+.navbar .nav-item-icon,
+[class*="navbar"] .nav-item-icon {
+  width: 1.9rem;
+  height: 1.9rem;
+  min-width: 1.9rem;
+  border-radius: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 767px) {
+  .sidebar,
+  [class*="sidebar"],
+  .topbar,
+  [class*="topbar"],
+  .navbar,
+  [class*="navbar"] {
+    box-shadow: 0 18px 40px -32px rgba(15, 23, 42, 0.16);
+  }
+
+  .sidebar .nav-item-icon,
+  [class*="sidebar"] .nav-item-icon,
+  .topbar .nav-item-icon,
+  [class*="topbar"] .nav-item-icon,
+  .navbar .nav-item-icon,
+  [class*="navbar"] .nav-item-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    min-width: 1.75rem;
+  }
+}
+
+

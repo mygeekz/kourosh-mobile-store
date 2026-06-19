@@ -1,0 +1,680 @@
+/* UI Foundation Phase 02: consolidated modal cascade.
+   Source order is intentionally preserved.
+   Do not reorder chunks without visual regression testing. */
+
+/* ===== Source: styles/runtime-overrides/04d-people-add-edit-modals.css ===== */
+/* ===== People add/edit modal Apple Minimal polish ===== */
+.people-operational-modal {
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 28px !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 28px 72px -42px rgba(15, 23, 42, .38) !important;
+}
+
+html.dark .people-operational-modal {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(241 245 249) !important;
+  box-shadow: 0 28px 72px -42px rgba(0, 0, 0, .72) !important;
+}
+
+.people-operational-modal .modal-premium-header {
+  background: #fff !important;
+  background-image: none !important;
+  border-bottom: 1px solid rgb(226 232 240) !important;
+  padding: 1rem 1.1rem !important;
+}
+
+html.dark .people-operational-modal .modal-premium-header {
+  background: rgb(2 6 23) !important;
+  border-bottom-color: rgb(30 41 59) !important;
+}
+
+.people-operational-modal .modal-premium-kicker {
+  color: rgb(100 116 139) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+}
+
+.people-operational-modal .modal-premium-title {
+  color: rgb(15 23 42) !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em;
+}
+
+html.dark .people-operational-modal .modal-premium-title {
+  color: rgb(241 245 249) !important;
+}
+
+.people-operational-modal .modal-premium-badge {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+html.dark .people-operational-modal .modal-premium-badge {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(51 65 85) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.people-operational-modal .modal-body-premium {
+  background: #fff !important;
+  background-image: none !important;
+  padding: 1rem !important;
+}
+
+html.dark .people-operational-modal .modal-body-premium {
+  background: rgb(2 6 23) !important;
+}
+
+.people-modal-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .9rem;
+  padding: 0 !important;
+}
+
+.people-modal-form__section {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+}
+
+.people-modal-form__section--wide {
+  grid-template-columns: 1fr;
+}
+
+
+.people-modal-form > .modal-field:has(textarea),
+.people-modal-form > .modal-actions {
+  grid-column: 1 / -1;
+}
+
+.people-modal-form > .modal-field,
+.people-modal-form__section > .modal-field {
+  margin: 0 !important;
+}
+
+.people-operational-modal .modal-field-premium {
+  display: grid;
+  gap: .45rem;
+}
+
+.people-operational-modal .modal-field-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .25rem;
+  color: rgb(51 65 85) !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  margin: 0 !important;
+}
+
+html.dark .people-operational-modal .modal-field-label {
+  color: rgb(203 213 225) !important;
+}
+
+.people-operational-modal .premium-input-wrap {
+  position: relative;
+  min-width: 0;
+}
+
+.people-operational-modal .premium-input-leading-chip {
+  position: absolute;
+  top: 50%;
+  right: .7rem;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  color: rgb(100 116 139);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.people-operational-modal textarea ~ .premium-input-leading-chip,
+.people-operational-modal .premium-input-wrap:has(textarea) .premium-input-leading-chip {
+  top: 1rem;
+  transform: none;
+}
+
+html.dark .people-operational-modal .premium-input-leading-chip {
+  background: rgb(15 23 42);
+  border-color: rgb(51 65 85);
+  color: rgb(148 163 184);
+}
+
+.people-operational-modal :where(.modal-control-premium, .app-input, .app-select, .app-textarea) {
+  width: 100% !important;
+  min-height: 42px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  background-image: none !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 22px -22px rgba(15,23,42,.14) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-align: right !important;
+  outline: none !important;
+  padding: .58rem 3rem .58rem .8rem !important;
+}
+
+.people-operational-modal :where(textarea.modal-control-premium, textarea.app-textarea) {
+  min-height: 84px !important;
+  line-height: 1.9 !important;
+  resize: vertical;
+  padding-top: .8rem !important;
+}
+
+html.dark .people-operational-modal :where(.modal-control-premium, .app-input, .app-select, .app-textarea) {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(51 65 85) !important;
+  color: rgb(241 245 249) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.03), 0 10px 22px -22px rgba(0,0,0,.45) !important;
+}
+
+.people-operational-modal :where(.modal-control-premium, .app-input, .app-select, .app-textarea)::placeholder {
+  color: rgb(148 163 184) !important;
+  font-weight: 650;
+}
+
+.people-operational-modal :where(.modal-control-premium, .app-input, .app-select, .app-textarea):focus {
+  border-color: rgb(15 23 42) !important;
+  box-shadow: 0 0 0 4px rgba(15,23,42,.07), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+html.dark .people-operational-modal :where(.modal-control-premium, .app-input, .app-select, .app-textarea):focus {
+  border-color: rgb(226 232 240) !important;
+  box-shadow: 0 0 0 4px rgba(226,232,240,.09), inset 0 1px 0 rgba(255,255,255,.03) !important;
+}
+
+.people-operational-modal .modal-control-error {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: 0 0 0 4px rgba(244,63,94,.08) !important;
+}
+
+.people-operational-modal .app-field-feedback {
+  margin-top: .1rem !important;
+}
+
+.people-operational-modal .app-error {
+  color: rgb(225 29 72) !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+}
+
+.people-operational-modal .premium-sticky-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  margin: .3rem -1rem -1rem !important;
+  padding: .85rem 1rem !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: 0 -14px 30px -28px rgba(15,23,42,.22) !important;
+}
+
+html.dark .people-operational-modal .premium-sticky-footer {
+  background: rgb(2 6 23) !important;
+  border-top-color: rgb(30 41 59) !important;
+}
+
+.people-operational-modal .premium-helper-inline--card {
+  min-height: 34px !important;
+  border-radius: 16px !important;
+  border-color: rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+  color: rgb(100 116 139) !important;
+  padding: .55rem .7rem !important;
+}
+
+html.dark .people-operational-modal .premium-helper-inline--card {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(51 65 85) !important;
+  color: rgb(148 163 184) !important;
+}
+
+.people-operational-modal .modal-btn {
+  min-height: 36px !important;
+  border-radius: 14px !important;
+  padding-inline: .95rem !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+}
+
+@media (max-width: 640px) {
+  .people-modal-form {
+    grid-template-columns: 1fr;
+  }
+  .people-operational-modal {
+    border-radius: 24px 24px 0 0 !important;
+  }
+  .people-modal-form__section {
+    grid-template-columns: 1fr;
+  }
+  .people-operational-modal .modal-body-premium {
+    padding: .85rem !important;
+  }
+  .people-operational-modal .premium-sticky-footer {
+    margin-inline: -.85rem !important;
+    margin-bottom: -.85rem !important;
+    padding: .75rem .85rem !important;
+  }
+  .people-operational-modal .premium-helper-inline--card {
+    display: none !important;
+  }
+  .people-operational-modal .modal-actions > div:last-child {
+    width: 100%;
+  }
+  .people-operational-modal .modal-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/04e-people-finance-transaction-modals.css ===== */
+/* ===== People finance transaction modals — Apple Minimal ===== */
+.people-finance-modal {
+  --people-finance-border: rgb(226 232 240 / .96);
+  --people-finance-surface: #fff;
+  --people-finance-muted: rgb(248 250 252 / .94);
+  --people-finance-text: rgb(15 23 42);
+  --people-finance-subtle: rgb(100 116 139);
+}
+
+.people-finance-modal :where(input, textarea, select) {
+  min-height: 42px;
+  border-radius: 16px !important;
+  background: #fff !important;
+  border-color: rgb(203 213 225 / .92) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 24px -24px rgba(15,23,42,.16) !important;
+}
+
+.people-finance-modal :where(textarea) {
+  min-height: 92px;
+  line-height: 1.9;
+}
+
+
+.people-finance-modal--horizontal {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.15fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.people-finance-modal__side,
+.people-finance-modal__main {
+  min-width: 0;
+  display: grid;
+  gap: .85rem;
+}
+
+.people-finance-modal--horizontal .people-finance-modal__summary {
+  display: grid;
+  gap: .85rem;
+}
+
+.people-finance-modal--horizontal .people-finance-modal__balance {
+  min-width: 0;
+  justify-items: start;
+  text-align: right;
+}
+
+.people-finance-modal--horizontal .people-ledger-type-grid {
+  grid-template-columns: 1fr;
+}
+
+.people-finance-modal--horizontal .people-finance-modal__grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+}
+
+.people-finance-modal :where(input:focus, textarea:focus, select:focus) {
+  border-color: rgb(100 116 139) !important;
+  box-shadow: 0 0 0 4px rgb(148 163 184 / .16), inset 0 1px 0 rgba(255,255,255,.9) !important;
+  outline: none !important;
+}
+
+.people-finance-modal__summary {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--people-finance-border);
+  border-radius: 24px;
+  background: var(--people-finance-muted);
+  padding: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.92), 0 14px 34px -32px rgba(15,23,42,.2);
+}
+
+.people-finance-modal__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(226 232 240 / .92);
+  border-radius: 999px;
+  background: #fff;
+  color: rgb(71 85 105);
+  font-size: .68rem;
+  font-weight: 900;
+  padding: .35rem .65rem;
+}
+
+.people-finance-modal__title {
+  margin-top: .55rem;
+  color: var(--people-finance-text);
+  font-size: 1.08rem;
+  font-weight: 950;
+  line-height: 1.6;
+}
+
+.people-finance-modal__hint {
+  margin-top: .25rem;
+  max-width: 56ch;
+  color: var(--people-finance-subtle);
+  font-size: .78rem;
+  font-weight: 650;
+  line-height: 1.95;
+}
+
+.people-finance-modal__balance {
+  min-width: 172px;
+  display: grid;
+  align-content: center;
+  justify-items: end;
+  border: 1px solid rgb(226 232 240 / .92);
+  border-radius: 20px;
+  background: #fff;
+  padding: .85rem 1rem;
+  text-align: right;
+}
+
+.people-finance-modal__balance span,
+.people-finance-modal__balance small {
+  color: rgb(100 116 139);
+  font-size: .7rem;
+  font-weight: 800;
+}
+
+.people-finance-modal__balance strong {
+  margin-top: .25rem;
+  color: rgb(15 23 42);
+  font-size: 1rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.people-ledger-type-grid,
+.people-finance-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.people-ledger-type-card {
+  width: 100%;
+  min-height: 74px !important;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  border: 1px solid rgb(226 232 240 / .95);
+  border-radius: 22px;
+  background: #fff;
+  color: rgb(15 23 42);
+  padding: .85rem;
+  text-align: right;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+
+.people-ledger-type-card:hover {
+  transform: translateY(-1px);
+  border-color: rgb(148 163 184 / .86);
+  box-shadow: 0 14px 32px -30px rgba(15,23,42,.24);
+}
+
+.people-ledger-type-card.is-active {
+  border-color: rgb(15 23 42 / .38);
+  background: rgb(248 250 252);
+  box-shadow: inset 0 0 0 1px rgb(15 23 42 / .06), 0 14px 32px -30px rgba(15,23,42,.22);
+}
+
+.people-ledger-type-card__icon,
+.people-ledger-type-card__check {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.people-ledger-type-card__icon {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgb(226 232 240 / .92);
+  background: rgb(248 250 252);
+  color: rgb(51 65 85);
+}
+
+.people-ledger-type-card__copy {
+  min-width: 0;
+  display: grid;
+  gap: .18rem;
+  flex: 1;
+}
+
+.people-ledger-type-card__copy strong {
+  color: rgb(15 23 42);
+  font-size: .86rem;
+  font-weight: 950;
+}
+
+.people-ledger-type-card__copy small {
+  color: rgb(100 116 139);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.people-ledger-type-card__check {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgb(203 213 225 / .9);
+  color: transparent;
+  background: #fff;
+  font-size: .7rem;
+}
+
+.people-ledger-type-card.is-active .people-ledger-type-card__check {
+  background: rgb(15 23 42);
+  border-color: rgb(15 23 42);
+  color: #fff;
+}
+
+.people-ledger-type-grid--priority {
+  grid-template-columns: 1fr !important;
+  gap: .85rem !important;
+}
+
+.people-ledger-type-grid--priority .people-ledger-type-card {
+  min-height: 84px !important;
+  padding: 1rem !important;
+  border-radius: 24px !important;
+}
+
+.people-ledger-type-grid--priority .people-ledger-type-card__icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 18px;
+}
+
+.people-ledger-type-grid--priority .people-ledger-type-card__copy strong {
+  font-size: .9rem;
+}
+
+.people-ledger-type-grid--priority .people-ledger-type-card__copy small {
+  font-size: .75rem;
+  line-height: 1.8;
+}
+
+
+.people-amount-chip-row,
+.people-note-template-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin-top: .55rem;
+}
+
+.people-amount-chip,
+.people-note-template {
+  min-height: 32px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(226 232 240 / .95);
+  border-radius: 999px;
+  background: #fff;
+  color: rgb(71 85 105);
+  font-size: .68rem;
+  font-weight: 900;
+  padding: .38rem .78rem;
+  box-shadow: 0 8px 20px -20px rgba(15,23,42,.2);
+  transition: background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease, box-shadow .16s ease;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.people-amount-chip:hover,
+.people-note-template:hover {
+  transform: translateY(-1px);
+  background: rgb(248 250 252);
+  border-color: rgb(148 163 184 / .82);
+  color: rgb(15 23 42);
+}
+
+.people-note-template.is-active,
+.people-amount-chip.is-active {
+  border-color: rgb(15 23 42 / .22);
+  background: rgb(241 245 249);
+  color: rgb(15 23 42);
+  box-shadow: inset 0 0 0 1px rgb(15 23 42 / .06), 0 10px 22px -18px rgba(15,23,42,.18);
+}
+
+.people-finance-modal__footer-note {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  border: 1px solid rgb(226 232 240 / .92);
+  border-radius: 18px;
+  background: rgb(248 250 252 / .94);
+  color: rgb(71 85 105);
+  padding: .75rem .85rem;
+  font-size: .75rem;
+  font-weight: 750;
+  line-height: 1.9;
+}
+
+.people-finance-modal__footer-note i {
+  margin-top: .2rem;
+  color: rgb(71 85 105);
+}
+
+html.dark .people-finance-modal {
+  --people-finance-border: rgb(30 41 59 / .95);
+  --people-finance-surface: rgb(2 6 23);
+  --people-finance-muted: rgb(15 23 42);
+  --people-finance-text: rgb(241 245 249);
+  --people-finance-subtle: rgb(148 163 184);
+}
+
+html.dark .people-finance-modal :where(input, textarea, select),
+html.dark .people-finance-modal__balance,
+html.dark .people-ledger-type-card,
+html.dark .people-amount-chip,
+html.dark .people-note-template,
+html.dark .people-finance-modal__eyebrow,
+html.dark .people-ledger-type-card__check {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(51 65 85 / .9) !important;
+  color: rgb(241 245 249) !important;
+}
+
+html.dark .people-finance-modal__summary,
+html.dark .people-ledger-type-card.is-active,
+html.dark .people-finance-modal__footer-note,
+html.dark .people-note-template.is-active,
+html.dark .people-amount-chip.is-active {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(51 65 85 / .9) !important;
+}
+
+html.dark .people-ledger-type-card__icon {
+  background: rgb(15 23 42);
+  border-color: rgb(51 65 85 / .9);
+  color: rgb(226 232 240);
+}
+
+html.dark .people-ledger-type-card__copy strong,
+html.dark .people-finance-modal__title,
+html.dark .people-finance-modal__balance strong {
+  color: rgb(241 245 249);
+}
+
+html.dark .people-ledger-type-card__copy small,
+html.dark .people-finance-modal__hint,
+html.dark .people-finance-modal__balance span,
+html.dark .people-finance-modal__balance small,
+html.dark .people-finance-modal__footer-note {
+  color: rgb(148 163 184);
+}
+
+html.dark .people-ledger-type-card.is-active .people-ledger-type-card__check {
+  background: rgb(241 245 249) !important;
+  border-color: rgb(241 245 249) !important;
+  color: rgb(15 23 42) !important;
+}
+
+@media (max-width: 980px) {
+  .people-finance-modal--horizontal {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .people-finance-modal__summary,
+  .people-ledger-type-grid,
+  .people-finance-modal__grid {
+    grid-template-columns: 1fr;
+  }
+  .people-finance-modal__summary {
+    display: grid;
+  }
+  .people-finance-modal__balance {
+    justify-items: start;
+    text-align: right;
+  }
+  .people-ledger-type-card {
+    min-height: 68px !important;
+  }
+}

@@ -1,0 +1,498 @@
+/* ===== VISUAL SMOKE FIXES: REPORT READABILITY / MOBILEPHONE DROPDOWN / SETTINGS ICONS ===== */
+
+/* Reports: restore readable header/text after global commercial QA pass. */
+.reports-layout-executive,
+.report-page,
+.reports-page,
+.reports-hub,
+.reports-executive-header {
+  color: rgb(15 23 42) !important;
+}
+
+.dark .reports-layout-executive,
+.dark .report-page,
+.dark .reports-page,
+.dark .reports-hub,
+.dark .reports-executive-header {
+  color: rgb(241 245 249) !important;
+}
+
+.reports-layout-executive :where(h1, h2, h3, h4, .font-black, .font-extrabold, .font-bold),
+.report-page :where(h1, h2, h3, h4, .font-black, .font-extrabold, .font-bold) {
+  color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+}
+
+.dark .reports-layout-executive :where(h1, h2, h3, h4, .font-black, .font-extrabold, .font-bold),
+.dark .report-page :where(h1, h2, h3, h4, .font-black, .font-extrabold, .font-bold) {
+  color: rgb(241 245 249) !important;
+  opacity: 1 !important;
+}
+
+.reports-layout-executive :where(.text-white, .text-slate-50, .text-gray-50),
+.report-page :where(.text-white, .text-slate-50, .text-gray-50) {
+  color: rgb(15 23 42) !important;
+}
+
+.dark .reports-layout-executive :where(.text-white, .text-slate-50, .text-gray-50),
+.dark .report-page :where(.text-white, .text-slate-50, .text-gray-50) {
+  color: rgb(241 245 249) !important;
+}
+
+.reports-layout-executive table thead th,
+.report-page table thead th {
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  border-bottom-color: rgb(226 232 240) !important;
+}
+
+.dark .reports-layout-executive table thead th,
+.dark .report-page table thead th {
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+  border-bottom-color: rgb(30 41 59) !important;
+}
+
+/* MobilePhones: dropdown must float above following fields/cards. */
+.phone-addable-autocomplete {
+  position: relative !important;
+  z-index: 80 !important;
+  isolation: isolate !important;
+}
+
+.phone-addable-autocomplete:focus-within {
+  z-index: 99999 !important;
+}
+
+.phone-addable-autocomplete__menu {
+  position: absolute !important;
+  inset-inline: 0 !important;
+  top: calc(100% + 6px) !important;
+  z-index: 999999 !important;
+  max-height: min(320px, 42vh) !important;
+  overflow-y: auto !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: 0 22px 60px -28px rgba(15,23,42,.44) !important;
+}
+
+.dark .phone-addable-autocomplete__menu {
+  background: rgb(2 6 23) !important;
+  box-shadow: 0 22px 60px -30px rgba(0,0,0,.80) !important;
+}
+
+.mobile-phone-form,
+.device-registration-form,
+.phone-intake-shell,
+.mobile-phone-page,
+.mobile-phones-page {
+  overflow: visible !important;
+}
+
+.mobile-phone-form :where(.grid, .relative, section, article),
+.mobile-phones-page :where(.grid, .relative, section, article) {
+  overflow: visible !important;
+}
+
+/* Settings sidebar icons: monochrome Apple, no all-blue icon tiles. */
+.settings-shell .settings-sidebar i,
+.settings-shell .settings-section-icon i,
+.settings-shell .premium-section-title-icon i,
+.settings-shell [class*="settings"] i {
+  color: currentColor !important;
+}
+
+.settings-shell :where(.settings-section-icon, .premium-section-title-icon, .settings-sidebar [class*="bg-cyan"], .settings-sidebar [class*="bg-sky"], .settings-sidebar [class*="bg-blue"]) {
+  border-color: rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.dark .settings-shell :where(.settings-section-icon, .premium-section-title-icon, .settings-sidebar [class*="bg-cyan"], .settings-sidebar [class*="bg-sky"], .settings-sidebar [class*="bg-blue"]) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+}
+
+.settings-shell :where([class*="text-cyan"], [class*="text-sky"], [class*="text-blue"], [class*="text-indigo"]) {
+  color: rgb(71 85 105) !important;
+}
+
+.dark .settings-shell :where([class*="text-cyan"], [class*="text-sky"], [class*="text-blue"], [class*="text-indigo"]) {
+  color: rgb(203 213 225) !important;
+}
+
+
+
+
+/* ===== COLLECTION NOTIFICATIONS / SIDEBAR ACTIVE / SMART BRAIN REDESIGN ===== */
+
+/* Notifications: collection followups from Collection Center */
+.notifications-apple-page .notifications-category-badge {
+  letter-spacing: -0.01em;
+}
+
+.notifications-apple-page [href*="collection-center"],
+.notifications-apple-page a[href="/reports/collection-center"] {
+  border-color: rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.dark .notifications-apple-page [href*="collection-center"],
+.dark .notifications-apple-page a[href="/reports/collection-center"] {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+/* Sidebar active item: Apple calm active state, not dark block */
+.sidebar-desktop button[aria-current="page"],
+.sidebar-panel button[aria-current="page"],
+.sidebar button[aria-current="page"],
+aside button[aria-current="page"] {
+  border-color: rgb(203 213 225) !important;
+  background: linear-gradient(180deg, #ffffff, rgb(248 250 252)) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.72), 0 10px 28px -24px rgba(15,23,42,.35) !important;
+  ring-width: 0 !important;
+}
+
+.dark .sidebar-desktop button[aria-current="page"],
+.dark .sidebar-panel button[aria-current="page"],
+.dark .sidebar button[aria-current="page"],
+.dark aside button[aria-current="page"] {
+  border-color: rgb(51 65 85) !important;
+  background: linear-gradient(180deg, rgb(30 41 59), rgb(15 23 42)) !important;
+  color: rgb(241 245 249) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 10px 28px -24px rgba(0,0,0,.75) !important;
+}
+
+.sidebar-desktop button[aria-current="page"] > span:first-of-type,
+.sidebar-panel button[aria-current="page"] > span:first-of-type,
+.sidebar button[aria-current="page"] > span:first-of-type,
+aside button[aria-current="page"] > span:first-of-type {
+  border-color: rgb(226 232 240) !important;
+  background: rgb(241 245 249) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+.dark .sidebar-desktop button[aria-current="page"] > span:first-of-type,
+.dark .sidebar-panel button[aria-current="page"] > span:first-of-type,
+.dark .sidebar button[aria-current="page"] > span:first-of-type,
+.dark aside button[aria-current="page"] > span:first-of-type {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.sidebar-desktop button[aria-current="page"]::before,
+.sidebar-panel button[aria-current="page"]::before,
+.sidebar button[aria-current="page"]::before,
+aside button[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 6px;
+  top: 50%;
+  width: 4px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgb(15 23 42);
+  transform: translateY(-50%);
+}
+
+.dark .sidebar-desktop button[aria-current="page"]::before,
+.dark .sidebar-panel button[aria-current="page"]::before,
+.dark .sidebar button[aria-current="page"]::before,
+.dark aside button[aria-current="page"]::before {
+  background: rgb(241 245 249);
+}
+
+/* Smart Brain: heavy redesign into minimal Apple command center */
+.smart-brain-page {
+  --brain-border: rgb(226 232 240);
+  --brain-surface: #fff;
+  --brain-muted: rgb(248 250 252);
+  --brain-text: rgb(15 23 42);
+  --brain-subtle: rgb(100 116 139);
+}
+
+.dark .smart-brain-page {
+  --brain-border: rgb(30 41 59);
+  --brain-surface: rgb(2 6 23);
+  --brain-muted: rgb(15 23 42);
+  --brain-text: rgb(241 245 249);
+  --brain-subtle: rgb(148 163 184);
+}
+
+.smart-brain-hero {
+  border: 1px solid var(--brain-border) !important;
+  border-radius: 22px !important;
+  background: var(--brain-surface) !important;
+  background-image: none !important;
+  padding: 16px !important;
+  box-shadow: none !important;
+}
+
+.smart-brain-kicker {
+  min-height: 28px !important;
+  border-color: var(--brain-border) !important;
+  background: var(--brain-muted) !important;
+  color: var(--brain-subtle) !important;
+  box-shadow: none !important;
+  letter-spacing: .08em !important;
+}
+
+.smart-brain-kicker span {
+  background: rgb(15 23 42) !important;
+}
+
+.dark .smart-brain-kicker span {
+  background: rgb(241 245 249) !important;
+}
+
+.smart-brain-page h1 {
+  font-size: clamp(20px, 2.2vw, 28px) !important;
+  line-height: 1.65 !important;
+  color: var(--brain-text) !important;
+}
+
+.smart-brain-page h1 + p {
+  max-width: 760px !important;
+  color: var(--brain-subtle) !important;
+  font-size: 13px !important;
+  line-height: 2 !important;
+}
+
+.smart-brain-page :where(section, article, .reports-premium-orbit) {
+  border-color: var(--brain-border) !important;
+  background: var(--brain-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.smart-brain-page :where(.rounded-\[30px\], .rounded-\[26px\], .rounded-\[24px\], .rounded-\[22px\]) {
+  border-radius: 18px !important;
+}
+
+.smart-brain-page :where([class*="bg-gradient"], [class*="from-"], [class*="via-"], [class*="to-"]) {
+  background-image: none !important;
+}
+
+.smart-brain-page :where([class*="shadow"]) {
+  box-shadow: none !important;
+}
+
+.smart-brain-page :where(.bg-rose-50, .bg-emerald-50, .bg-indigo-50, .bg-amber-50, .bg-slate-50) {
+  background: var(--brain-muted) !important;
+}
+
+.smart-brain-page :where(.text-indigo-500, .text-indigo-600, .text-indigo-700, .text-rose-500, .text-amber-500, .text-emerald-500) {
+  color: rgb(71 85 105) !important;
+}
+
+.dark .smart-brain-page :where(.text-indigo-500, .text-indigo-600, .text-indigo-700, .text-rose-500, .text-amber-500, .text-emerald-500) {
+  color: rgb(203 213 225) !important;
+}
+
+.smart-brain-page :where(button, a) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.smart-brain-page :where(button:hover, a:hover) {
+  transform: none !important;
+}
+
+.smart-brain-page :where(button[class*="bg-slate-950"], a[class*="bg-slate-950"]) {
+  background: rgb(15 23 42) !important;
+  color: #fff !important;
+}
+
+.dark .smart-brain-page :where(button[class*="bg-slate-950"], a[class*="bg-slate-950"]) {
+  background: rgb(241 245 249) !important;
+  color: rgb(2 6 23) !important;
+}
+
+.smart-brain-page :where(.h-12.w-12, .h-11.w-11, [class*="h-12"][class*="w-12"], [class*="h-11"][class*="w-11"]) {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border: 1px solid var(--brain-border) !important;
+  border-radius: 12px !important;
+  background: var(--brain-muted) !important;
+  color: rgb(51 65 85) !important;
+}
+
+.dark .smart-brain-page :where(.h-12.w-12, .h-11.w-11, [class*="h-12"][class*="w-12"], [class*="h-11"][class*="w-11"]) {
+  color: rgb(226 232 240) !important;
+}
+
+.smart-brain-page :where(.grid > div) {
+  box-shadow: none !important;
+}
+
+.smart-brain-page :where(.text-5xl) {
+  font-size: 40px !important;
+}
+
+.smart-brain-page :where(.text-3xl, .text-2xl) {
+  color: var(--brain-text) !important;
+}
+
+.smart-brain-page :where(.rounded-full) {
+  border-color: var(--brain-border) !important;
+  background: var(--brain-muted) !important;
+  color: var(--brain-subtle) !important;
+}
+
+@media (max-width: 768px) {
+  .smart-brain-hero {
+    padding: 12px !important;
+  }
+
+  .smart-brain-page :where(.text-5xl) {
+    font-size: 32px !important;
+  }
+}
+
+
+
+
+/* ===== Phase 13 — Settings modules / Smart Brain contract =====
+   Scope: Settings modules panel and AI feature control panel only. */
+.settings-modules-panel,
+.settings-smart-brain-panel,
+.settings-shell [data-settings-panel="modules"],
+.settings-shell [data-settings-panel="smart"] {
+  min-width: 0;
+}
+
+.settings-modules-panel :is(section, details, article),
+.settings-smart-brain-panel :is(section, details, article) {
+  min-width: 0;
+}
+
+.settings-modules-panel :is(.module-runtime-card, .module-plan-card, .module-feature-card, .module-child-feature-card),
+.settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-metric, .smart-ai-signal-card) {
+  position: relative;
+  min-width: 0;
+  border-color: rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 45px -38px rgba(15, 23, 42, 0.32);
+}
+
+.settings-modules-panel .module-runtime-card {
+  background-image: none !important;
+  background-color: rgba(248, 250, 252, 0.82);
+}
+
+.settings-modules-panel .module-plan-card,
+.settings-modules-panel .module-feature-card {
+  transform: translateZ(0);
+}
+
+.settings-modules-panel .module-plan-card:hover,
+.settings-modules-panel .module-feature-card:hover,
+.settings-smart-brain-panel .smart-ai-card:hover {
+  border-color: rgba(16, 185, 129, 0.32);
+}
+
+.settings-modules-panel summary,
+.settings-smart-brain-panel summary {
+  min-width: 0;
+  user-select: none;
+}
+
+.settings-modules-panel summary::-webkit-details-marker,
+.settings-smart-brain-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-modules-panel :is(.module-feature-card, .module-child-feature-card) p,
+.settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-guide) p {
+  overflow-wrap: anywhere;
+}
+
+.settings-modules-panel :is(.module-feature-card, .module-child-feature-card) .app-toggle-switch,
+.settings-smart-brain-panel .smart-ai-card .app-toggle-switch {
+  margin-inline-start: 4px;
+}
+
+.settings-modules-panel .module-runtime-grid,
+.settings-modules-panel .module-plan-grid,
+.settings-modules-panel .module-feature-grid,
+.settings-smart-brain-panel .smart-ai-grid {
+  min-width: 0;
+}
+
+.settings-smart-brain-panel .smart-ai-header {
+  background: rgba(248, 250, 252, 0.82);
+}
+
+.settings-smart-brain-panel .smart-ai-progress-track {
+  background: rgba(226, 232, 240, 0.9);
+}
+
+.settings-smart-brain-panel .smart-ai-progress-fill {
+  background: linear-gradient(to left, rgb(99, 102, 241), rgb(16, 185, 129));
+}
+
+.settings-modules-panel .module-status-chip,
+.settings-smart-brain-panel .smart-ai-status-chip {
+  min-height: 28px;
+  white-space: nowrap;
+}
+
+.dark .settings-modules-panel :is(.module-runtime-card, .module-plan-card, .module-feature-card, .module-child-feature-card),
+.dark .settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-metric, .smart-ai-signal-card) {
+  border-color: rgba(51, 65, 85, 0.88);
+  box-shadow: none;
+}
+
+.dark .settings-modules-panel .module-runtime-card,
+.dark .settings-smart-brain-panel .smart-ai-header {
+  background-color: rgba(15, 23, 42, 0.72);
+}
+
+.dark .settings-smart-brain-panel .smart-ai-progress-track {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+@media (max-width: 900px) {
+  .settings-modules-panel .module-action-card,
+  .settings-modules-panel .module-plan-card,
+  .settings-modules-panel .module-feature-card,
+  .settings-smart-brain-panel .smart-ai-card {
+    border-radius: 22px;
+  }
+
+  .settings-modules-panel :is(.module-feature-card, .module-child-feature-card) > .flex,
+  .settings-smart-brain-panel .smart-ai-card > .flex {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-modules-panel .module-hero-row,
+  .settings-smart-brain-panel .smart-ai-header-row {
+    gap: 14px;
+  }
+
+  .settings-modules-panel .module-runtime-grid,
+  .settings-modules-panel .module-plan-grid,
+  .settings-modules-panel .module-feature-grid,
+  .settings-smart-brain-panel .smart-ai-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .settings-modules-panel :is(.module-feature-card, .module-child-feature-card) > .flex,
+  .settings-smart-brain-panel .smart-ai-card > .flex:first-child {
+    align-items: flex-start;
+  }
+
+  .settings-modules-panel .module-status-chip,
+  .settings-smart-brain-panel .smart-ai-status-chip {
+    font-size: 10px;
+  }
+}

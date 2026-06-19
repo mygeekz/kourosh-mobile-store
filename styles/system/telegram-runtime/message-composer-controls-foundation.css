@@ -1,0 +1,2138 @@
+/* ===== Quarantined from styles/runtime-overrides/08b-message-composer-controls.css in Phase 19.
+   Order-sensitive Telegram UI compatibility layer. Do not delete until replaced by component-level contracts. ===== */
+/* V53 — Apple-minimal unified message composer modal */
+.message-composer-apple {
+  --message-border: rgba(226, 232, 240, 0.9);
+  --message-soft: rgba(248, 250, 252, 0.78);
+}
+
+.dark .message-composer-apple {
+  --message-border: rgba(51, 65, 85, 0.88);
+  --message-soft: rgba(15, 23, 42, 0.72);
+}
+
+.message-composer-apple-grid {
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+}
+
+.message-composer-apple-summary .product-modal-apple-summary__item strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.message-composer-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border: 1px solid rgba(251, 113, 133, 0.26);
+  background: rgba(255, 241, 242, 0.9);
+  color: rgb(190, 18, 60);
+  border-radius: 22px;
+  padding: 0.8rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.9;
+}
+
+.dark .message-composer-alert {
+  border-color: rgba(251, 113, 133, 0.28);
+  background: rgba(76, 5, 25, 0.32);
+  color: rgb(253, 164, 175);
+}
+
+.message-composer-segment {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  padding: 0.35rem;
+  border-radius: 22px;
+  border: 1px solid var(--message-border);
+  background: var(--message-soft);
+}
+
+.message-composer-segment button {
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: rgb(71, 85, 105);
+  font-size: 0.78rem;
+  font-weight: 900;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.message-composer-segment button:not(:disabled):hover {
+  transform: translateY(-1px);
+  color: rgb(15, 23, 42);
+}
+
+.message-composer-segment button.is-active {
+  border-color: rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.96);
+  color: rgb(15, 23, 42);
+  box-shadow: 0 16px 34px -28px rgba(15, 23, 42, 0.34);
+}
+
+.message-composer-segment button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.dark .message-composer-segment button {
+  color: rgb(203, 213, 225);
+}
+
+.dark .message-composer-segment button.is-active {
+  border-color: rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.94);
+  color: rgb(248, 250, 252);
+}
+
+.message-composer-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.message-composer-channel {
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: right;
+  border-radius: 22px;
+  border: 1px solid var(--message-border);
+  background: rgba(255, 255, 255, 0.86);
+  padding: 0.8rem;
+  color: rgb(51, 65, 85);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.message-composer-channel:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, 0.72);
+}
+
+.message-composer-channel.is-active {
+  border-color: rgba(15, 23, 42, 0.86);
+  background: rgb(15, 23, 42);
+  color: white;
+  box-shadow: 0 22px 44px -34px rgba(15, 23, 42, 0.72);
+}
+
+.message-composer-channel__icon,
+.message-composer-channel__check {
+  width: 38px;
+  height: 38px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(241, 245, 249, 0.9);
+  color: rgb(71, 85, 105);
+}
+
+.message-composer-channel__check {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  opacity: 0.22;
+}
+
+.message-composer-channel.is-active .message-composer-channel__icon,
+.message-composer-channel.is-active .message-composer-channel__check {
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+  opacity: 1;
+}
+
+.message-composer-channel strong,
+.message-composer-channel small {
+  display: block;
+}
+
+.message-composer-channel strong {
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.message-composer-channel small {
+  margin-top: 0.2rem;
+  color: rgb(100, 116, 139);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.message-composer-channel.is-active small {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.dark .message-composer-channel {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.72);
+  color: rgb(226, 232, 240);
+}
+
+.dark .message-composer-channel.is-active {
+  border-color: rgba(248, 250, 252, 0.9);
+  background: rgb(248, 250, 252);
+  color: rgb(15, 23, 42);
+}
+
+.dark .message-composer-channel__icon,
+.dark .message-composer-channel__check {
+  background: rgba(30, 41, 59, 0.94);
+  color: rgb(203, 213, 225);
+}
+
+.dark .message-composer-channel.is-active .message-composer-channel__icon,
+.dark .message-composer-channel.is-active .message-composer-channel__check {
+  background: rgba(15, 23, 42, 0.1);
+  color: rgb(15, 23, 42);
+}
+
+.dark .message-composer-channel small {
+  color: rgb(148, 163, 184);
+}
+
+.dark .message-composer-channel.is-active small {
+  color: rgb(71, 85, 105);
+}
+
+.message-composer-mini-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgb(100, 116, 139);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.message-composer-mini-actions :where(label, a, button) {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--message-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.35rem 0.75rem;
+  color: inherit;
+}
+
+.dark .message-composer-mini-actions {
+  color: rgb(203, 213, 225);
+}
+
+.dark .message-composer-mini-actions :where(label, a, button) {
+  background: rgba(15, 23, 42, 0.68);
+}
+
+.message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 220px;
+  resize: vertical;
+  line-height: 2;
+}
+
+.message-composer-templates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.95rem;
+}
+
+.message-composer-templates button {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--message-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  padding: 0.45rem 0.8rem;
+  color: rgb(51, 65, 85);
+  font-size: 0.74rem;
+  font-weight: 900;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.message-composer-templates button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, 0.72);
+}
+
+.dark .message-composer-templates button {
+  background: rgba(15, 23, 42, 0.72);
+  color: rgb(226, 232, 240);
+}
+
+.message-composer-preview {
+  margin-top: 1rem;
+  border: 1px solid var(--message-border);
+  border-radius: 24px;
+  background: rgba(248, 250, 252, 0.82);
+  padding: 0.85rem;
+}
+
+.dark .message-composer-preview {
+  background: rgba(15, 23, 42, 0.56);
+}
+
+.message-composer-preview__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: rgb(100, 116, 139);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.message-composer-preview__head span,
+.message-composer-preview__head strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.message-composer-preview__head strong {
+  color: rgb(15, 23, 42);
+}
+
+.dark .message-composer-preview__head {
+  color: rgb(148, 163, 184);
+}
+
+.dark .message-composer-preview__head strong {
+  color: rgb(248, 250, 252);
+}
+
+.message-composer-preview__body {
+  min-height: 90px;
+  margin-top: 0.65rem;
+  white-space: pre-wrap;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.85rem;
+  color: rgb(30, 41, 59);
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 2;
+}
+
+.dark .message-composer-preview__body {
+  background: rgba(2, 6, 23, 0.34);
+  color: rgb(226, 232, 240);
+}
+
+.message-composer-actions .premium-helper-inline--card {
+  max-width: 520px;
+}
+
+@media (max-width: 1024px) {
+  .message-composer-apple-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .message-composer-segment,
+  .message-composer-channel-grid,
+  .message-composer-apple .product-modal-apple-inline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .message-composer-preview__head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* V54 — Reusable Apple choice toggle + stabilized message composer controls */
+.apple-choice-toggle {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.86);
+  color: rgb(51, 65, 85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.apple-choice-toggle:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, 0.72);
+  color: rgb(15, 23, 42);
+}
+
+.apple-choice-toggle.is-active,
+.apple-choice-toggle[aria-pressed="true"],
+.apple-choice-toggle[aria-selected="true"] {
+  border-color: rgba(15, 23, 42, 0.86) !important;
+  background: rgb(15, 23, 42) !important;
+  color: rgb(255, 255, 255) !important;
+  box-shadow: 0 22px 44px -34px rgba(15, 23, 42, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+}
+
+.apple-choice-toggle__icon,
+.apple-choice-toggle__check {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.apple-choice-toggle.is-active .apple-choice-toggle__icon,
+.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__icon,
+.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__icon,
+.apple-choice-toggle.is-active .apple-choice-toggle__check,
+.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__check,
+.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__check {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: rgb(255, 255, 255) !important;
+  opacity: 1 !important;
+}
+
+.dark .apple-choice-toggle {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.72);
+  color: rgb(226, 232, 240);
+}
+
+.dark .apple-choice-toggle.is-active,
+.dark .apple-choice-toggle[aria-pressed="true"],
+.dark .apple-choice-toggle[aria-selected="true"] {
+  border-color: rgba(248, 250, 252, 0.9) !important;
+  background: rgb(248, 250, 252) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.dark .apple-choice-toggle.is-active .apple-choice-toggle__icon,
+.dark .apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__icon,
+.dark .apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__icon,
+.dark .apple-choice-toggle.is-active .apple-choice-toggle__check,
+.dark .apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__check,
+.dark .apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__check {
+  background: rgba(15, 23, 42, 0.1) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+:where(.premium-input-wrap) > :where(.modal-control-premium, .app-input, .app-select, .app-textarea).premium-no-leading-icon {
+  padding-inline-start: .95rem !important;
+}
+
+:where(.premium-input-wrap) > :where(select.modal-control-premium, select.app-select).premium-no-leading-icon {
+  padding-inline-start: .95rem !important;
+  padding-inline-end: 2.35rem !important;
+}
+
+.message-composer-segment button.apple-choice-toggle {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.message-composer-segment button.apple-choice-toggle .apple-choice-toggle__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 12px;
+  background: rgba(241, 245, 249, 0.88);
+  color: rgb(71, 85, 105);
+}
+
+.message-composer-channel.apple-choice-toggle {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.message-composer-channel.apple-choice-toggle.is-active small {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle.is-active small {
+  color: rgb(71, 85, 105) !important;
+}
+
+.message-composer-actions .premium-cancel-btn i.fa-arrow-right,
+.message-composer-actions .premium-submit-btn i.fa-paper-plane {
+  transform: none !important;
+}
+
+
+/* V55 — Stable radio-like segmented selection for message composer */
+.apple-choice-toggle__icon {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.apple-choice-toggle__check {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.82);
+  transition: opacity .18s ease, visibility .18s ease, transform .18s ease;
+}
+
+.apple-choice-toggle.is-active .apple-choice-toggle__check,
+.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__check,
+.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__check,
+.apple-choice-toggle[aria-current="true"] .apple-choice-toggle__check {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: scale(1);
+}
+
+.message-composer-channel.apple-choice-toggle {
+  min-height: 74px;
+  cursor: pointer;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  background: rgba(241, 245, 249, 0.92);
+  color: rgb(51, 65, 85);
+}
+
+.message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__icon,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__icon {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__check {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  margin-inline-start: auto;
+}
+
+.dark .message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  background: rgba(30, 41, 59, 0.9);
+  color: rgb(226, 232, 240);
+}
+
+.dark .message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__icon,
+.dark .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__icon {
+  background: rgba(15, 23, 42, 0.1) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+/* V57 — Final message composer channel polish: stable icons, no phantom select arrow on locked recipient */
+.message-composer-readonly-input {
+  cursor: default !important;
+  background: rgba(248, 250, 252, 0.92) !important;
+  color: rgb(15, 23, 42) !important;
+  font-weight: 850 !important;
+}
+
+.dark .message-composer-readonly-input {
+  background: rgba(15, 23, 42, 0.76) !important;
+  color: rgb(248, 250, 252) !important;
+}
+
+.message-composer-channel.apple-choice-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .72rem !important;
+  min-height: 58px !important;
+  padding: .78rem .9rem !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 14px !important;
+  background: rgba(241, 245, 249, 0.96) !important;
+  color: rgb(30, 41, 59) !important;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__copy {
+  display: grid !important;
+  gap: .14rem !important;
+  text-align: right !important;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__copy strong {
+  font-size: .88rem !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.message-composer-channel.apple-choice-toggle .message-composer-channel__copy small {
+  color: rgb(100, 116, 139) !important;
+  font-size: .72rem !important;
+  font-weight: 750 !important;
+}
+
+.message-composer-channel.apple-choice-toggle.is-active,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"] {
+  border-color: rgba(15, 23, 42, 0.86) !important;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.94)) !important;
+  color: rgb(15, 23, 42) !important;
+  box-shadow: 0 16px 38px -30px rgba(15, 23, 42, 0.55), inset 0 0 0 1px rgba(15, 23, 42, 0.04) !important;
+}
+
+.message-composer-channel.apple-choice-toggle.is-active::after,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"]::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: .82rem;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgb(15, 23, 42);
+  transform: translateY(-50%);
+}
+
+.message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__icon,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__icon {
+  background: rgb(15, 23, 42) !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__copy small,
+.message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__copy small {
+  color: rgb(15, 23, 42) !important;
+}
+
+.message-composer-channel .message-composer-channel__check {
+  display: none !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle {
+  background: rgba(15, 23, 42, 0.72) !important;
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  background: rgba(30, 41, 59, 0.95) !important;
+  color: rgb(226, 232, 240) !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle .message-composer-channel__copy small {
+  color: rgb(148, 163, 184) !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle.is-active,
+.dark .message-composer-channel.apple-choice-toggle[aria-pressed="true"] {
+  border-color: rgba(248, 250, 252, 0.86) !important;
+  background: rgba(248, 250, 252, 0.96) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.dark .message-composer-channel.apple-choice-toggle.is-active::after,
+.dark .message-composer-channel.apple-choice-toggle[aria-pressed="true"]::after {
+  background: rgb(15, 23, 42);
+}
+
+/* V58 - Apple modal header and reusable segmented/choice control */
+.inventory-modal-title-icon {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.86));
+  color: rgb(51, 65, 85);
+  box-shadow: 0 14px 36px -26px rgba(15, 23, 42, 0.46), inset 0 1px 0 rgba(255,255,255,0.86);
+}
+.dark .inventory-modal-title-icon {
+  border-color: rgba(71, 85, 105, 0.62);
+  background: linear-gradient(180deg, rgba(30,41,59,0.94), rgba(15,23,42,0.88));
+  color: rgb(226, 232, 240);
+  box-shadow: 0 18px 46px -28px rgba(0,0,0,0.72), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.apple-choice-toggle {
+  position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 18px;
+  border: 1px solid rgba(203, 213, 225, 0.86);
+  background: rgba(255, 255, 255, 0.82);
+  padding: 9px 13px;
+  color: rgb(71, 85, 105);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.86), 0 10px 28px -24px rgba(15,23,42,0.45);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, color .18s ease;
+}
+.apple-choice-toggle:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, 0.9);
+  background: rgba(248, 250, 252, 0.96);
+  color: rgb(15, 23, 42);
+}
+.apple-choice-toggle.is-active,
+.apple-choice-toggle[aria-pressed="true"],
+.apple-choice-toggle[aria-selected="true"],
+.apple-choice-toggle[aria-current="true"] {
+  border-color: rgba(15, 23, 42, 0.22);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.92));
+  color: rgb(15, 23, 42);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.05), 0 18px 38px -30px rgba(15, 23, 42, 0.42);
+}
+.apple-choice-toggle__icon {
+  display: inline-flex !important;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  background: rgba(248, 250, 252, 0.96);
+  color: currentColor;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.apple-choice-toggle__content {
+  display: inline-flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: right;
+  line-height: 1.25;
+}
+.apple-choice-toggle__content strong {
+  font-size: 12px;
+  font-weight: 950;
+  color: inherit;
+}
+.apple-choice-toggle__content small {
+  margin-top: 2px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 800;
+  color: rgb(100, 116, 139);
+}
+.apple-choice-toggle:disabled {
+  cursor: not-allowed;
+  opacity: .72;
+}
+.dark .apple-choice-toggle {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.78);
+  color: rgb(203, 213, 225);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 12px 30px -26px rgba(0,0,0,0.75);
+}
+.dark .apple-choice-toggle:not(:disabled):hover {
+  border-color: rgba(100, 116, 139, 0.9);
+  background: rgba(30, 41, 59, 0.86);
+  color: rgb(248, 250, 252);
+}
+.dark .apple-choice-toggle.is-active,
+.dark .apple-choice-toggle[aria-pressed="true"],
+.dark .apple-choice-toggle[aria-selected="true"],
+.dark .apple-choice-toggle[aria-current="true"] {
+  border-color: rgba(226, 232, 240, 0.22);
+  background: linear-gradient(180deg, rgba(30,41,59,0.96), rgba(15,23,42,0.92));
+  color: rgb(248, 250, 252);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 18px 44px -32px rgba(0,0,0,0.82);
+}
+.dark .apple-choice-toggle__icon {
+  border-color: rgba(71, 85, 105, 0.9);
+  background: rgba(15, 23, 42, 0.72);
+}
+.dark .apple-choice-toggle__content small {
+  color: rgb(148, 163, 184);
+}
+.message-composer-channel .apple-choice-toggle__content {
+  flex: 1 1 auto;
+}
+.message-composer-channel.is-active .apple-choice-toggle__content small,
+.message-composer-channel[aria-pressed="true"] .apple-choice-toggle__content small {
+  color: rgb(71, 85, 105);
+}
+.dark .message-composer-channel.is-active .apple-choice-toggle__content small,
+.dark .message-composer-channel[aria-pressed="true"] .apple-choice-toggle__content small {
+  color: rgb(203, 213, 225);
+}
+
+
+
+/* v59 — compact customer message composer modal */
+.message-composer-apple--compact .product-modal-apple-hero {
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+.message-composer-apple--compact .product-modal-apple-hero__top {
+  gap: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-badge {
+  min-height: 26px !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-title {
+  font-size: 15px !important;
+  line-height: 1.4 !important;
+}
+.message-composer-apple--compact .product-modal-apple-subtitle {
+  font-size: 11px !important;
+  line-height: 1.9 !important;
+  margin-top: 4px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item {
+  min-width: 120px !important;
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item strong {
+  font-size: 22px !important;
+  line-height: 1.1 !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item span {
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .message-composer-readiness {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__bar {
+  height: 5px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items span {
+  min-height: 28px !important;
+  padding: 4px 9px !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-grid {
+  gap: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section {
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head {
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head h4 {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head p {
+  font-size: 10.5px !important;
+  line-height: 1.75 !important;
+  margin-top: 2px !important;
+}
+.message-composer-apple--compact .product-modal-apple-fields {
+  gap: 12px !important;
+}
+.message-composer-apple--compact .modal-field-label {
+  font-size: 11px !important;
+  margin-bottom: 6px !important;
+}
+.message-composer-apple--compact :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select) {
+  min-height: 42px !important;
+  height: 42px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+}
+.message-composer-apple--compact .premium-input-leading-icon {
+  width: 34px !important;
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .message-composer-segment {
+  gap: 6px !important;
+  padding: 5px !important;
+  border-radius: 18px !important;
+}
+.message-composer-apple--compact .message-composer-segment button.apple-choice-toggle {
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  padding: 7px 10px !important;
+  gap: 8px !important;
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .message-composer-segment button.apple-choice-toggle .apple-choice-toggle__icon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-basis: 24px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .message-composer-channel-grid {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle {
+  min-height: 52px !important;
+  padding: 9px 10px !important;
+  border-radius: 16px !important;
+  gap: 9px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  width: 30px !important;
+  height: 30px !important;
+  flex-basis: 30px !important;
+  border-radius: 11px !important;
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy strong {
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy small {
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-inline-grid {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions {
+  gap: 6px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions :where(label, a, button) {
+  min-height: 30px !important;
+  padding: 4px 10px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-templates {
+  gap: 6px !important;
+  margin-bottom: 12px !important;
+}
+.message-composer-apple--compact .message-composer-templates button {
+  min-height: 32px !important;
+  padding: 5px 10px !important;
+  font-size: 10.5px !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 170px !important;
+  border-radius: 16px !important;
+  font-size: 13px !important;
+  line-height: 1.9 !important;
+}
+.message-composer-apple--compact .message-composer-preview {
+  margin-top: 12px !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+.message-composer-apple--compact .message-composer-preview__head {
+  font-size: 10.5px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header strong {
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header small,
+.message-composer-apple--compact .message-composer-chatbox__header em,
+.message-composer-apple--compact .message-composer-chatbox__footer {
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__avatar {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  font-size: 12px !important;
+  line-height: 1.85 !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions {
+  padding-top: 12px !important;
+  gap: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline--card {
+  max-width: 420px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline__title {
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline__text {
+  font-size: 10px !important;
+  line-height: 1.7 !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions :where(.premium-submit-btn,.premium-cancel-btn) {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  padding-inline: 12px !important;
+}
+@media (max-width: 900px) {
+  .message-composer-apple--compact .product-modal-apple-summary {
+    width: 100% !important;
+  }
+  .message-composer-apple--compact .product-modal-apple-summary__item {
+    flex: 1 1 0;
+    min-width: 0 !important;
+  }
+}
+
+
+/* v60 — compact InventoryModal header for message composer */
+.message-composer-modal-overlay .inventory-modal-foundation {
+  border-radius: 24px !important;
+}
+.message-composer-modal-overlay .inventory-modal-foundation > .shrink-0 {
+  padding: 10px 16px !important;
+  min-height: 60px !important;
+}
+.message-composer-modal-overlay .inventory-modal-title-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  flex-basis: 34px !important;
+  border-radius: 12px !important;
+}
+.message-composer-modal-overlay .inventory-modal-title-icon i {
+  font-size: 13px !important;
+}
+.message-composer-modal-overlay .inventory-modal-foundation > .shrink-0 .text-\[11px\] {
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.12em !important;
+}
+.message-composer-modal-overlay .inventory-modal-foundation > .shrink-0 .text-lg {
+  font-size: 15px !important;
+  line-height: 1.25 !important;
+  margin-top: 2px !important;
+}
+.message-composer-modal-overlay [data-ui-inventory-modal="true"] {
+  padding-top: 12px !important;
+}
+@media (max-width: 768px) {
+  .message-composer-modal-overlay .inventory-modal-foundation > .shrink-0 {
+    padding: 10px 14px !important;
+  }
+}
+
+
+/* v61 — extra compact body for customer message composer */
+.message-composer-modal-overlay .inventory-modal-foundation {
+  max-height: min(780px, calc(100dvh - 18px)) !important;
+}
+.message-composer-modal-overlay [data-ui-inventory-modal="true"] {
+  padding: 10px 14px 12px !important;
+}
+.message-composer-apple--compact {
+  gap: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-hero {
+  padding: 12px !important;
+  border-radius: 20px !important;
+}
+.message-composer-apple--compact .product-modal-apple-hero__top {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item {
+  min-width: 106px !important;
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item strong {
+  font-size: 20px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item span {
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-readiness {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items span {
+  min-height: 26px !important;
+  padding: 4px 8px !important;
+  font-size: 9.5px !important;
+}
+.message-composer-apple--compact .product-modal-apple-grid {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section {
+  padding: 12px !important;
+  border-radius: 20px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head {
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 11px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head h4 {
+  font-size: 13px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head p {
+  font-size: 10px !important;
+  line-height: 1.7 !important;
+}
+.message-composer-apple--compact .product-modal-apple-fields,
+.message-composer-apple--compact .product-modal-apple-inline-grid {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-fields.mt-4 {
+  margin-top: 12px !important;
+}
+.message-composer-apple--compact .modal-field-label {
+  font-size: 10.5px !important;
+  margin-bottom: 5px !important;
+}
+.message-composer-apple--compact :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select) {
+  min-height: 40px !important;
+  height: 40px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .message-composer-segment {
+  gap: 5px !important;
+  padding: 4px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .message-composer-segment button.apple-choice-toggle {
+  min-height: 34px !important;
+  padding: 6px 9px !important;
+  border-radius: 12px !important;
+  font-size: 10.5px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle {
+  min-height: 46px !important;
+  padding: 8px 9px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions {
+  gap: 5px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions :where(label, a, button) {
+  min-height: 28px !important;
+  padding: 4px 9px !important;
+  font-size: 9.5px !important;
+}
+.message-composer-apple--compact .message-composer-templates {
+  gap: 5px !important;
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .message-composer-templates button {
+  min-height: 30px !important;
+  padding: 5px 9px !important;
+  font-size: 10px !important;
+  border-radius: 999px !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 142px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+}
+.message-composer-apple--compact .message-composer-preview {
+  margin-top: 10px !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .message-composer-preview__head {
+  font-size: 10px !important;
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header {
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__avatar {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  font-size: 11.5px !important;
+  line-height: 1.8 !important;
+  padding: 9px 11px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__footer {
+  margin-top: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions {
+  padding-top: 10px !important;
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline--card {
+  padding: 9px 10px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions :where(.premium-submit-btn,.premium-cancel-btn) {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 11px !important;
+  font-size: 10.5px !important;
+  padding-inline: 11px !important;
+}
+
+
+/* v62 — aggressively shrink message composer modal to ~half size */
+.message-composer-modal-overlay .inventory-modal-foundation {
+  max-height: min(700px, calc(100dvh - 14px)) !important;
+  border-radius: 20px !important;
+}
+.message-composer-modal-overlay [data-ui-inventory-modal="true"] {
+  padding: 8px 10px 10px !important;
+}
+.message-composer-apple--compact {
+  gap: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-hero {
+  padding: 10px !important;
+  border-radius: 18px !important;
+}
+.message-composer-apple--compact .product-modal-apple-hero__top {
+  gap: 8px !important;
+  align-items: flex-start !important;
+}
+.message-composer-apple--compact .product-modal-apple-badge {
+  min-height: 22px !important;
+  padding: 3px 8px !important;
+  font-size: 9px !important;
+}
+.message-composer-apple--compact .product-modal-apple-title {
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+.message-composer-apple--compact .product-modal-apple-subtitle {
+  font-size: 9.5px !important;
+  line-height: 1.65 !important;
+  margin-top: 3px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item {
+  min-width: 88px !important;
+  padding: 8px 10px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item strong {
+  font-size: 16px !important;
+  line-height: 1.05 !important;
+}
+.message-composer-apple--compact .product-modal-apple-summary__item span {
+  font-size: 9px !important;
+  margin-top: 2px !important;
+}
+.message-composer-apple--compact .message-composer-readiness {
+  gap: 6px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__bar {
+  height: 4px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items {
+  gap: 6px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items span {
+  min-height: 22px !important;
+  padding: 3px 7px !important;
+  border-radius: 999px !important;
+  font-size: 8.5px !important;
+  gap: 4px !important;
+}
+.message-composer-apple--compact .message-composer-readiness__items span i {
+  font-size: 9px !important;
+}
+.message-composer-apple--compact .product-modal-apple-grid {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section {
+  padding: 10px !important;
+  border-radius: 18px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head {
+  margin-bottom: 8px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__icon {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head h4 {
+  font-size: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section__head p {
+  font-size: 9px !important;
+  line-height: 1.6 !important;
+}
+.message-composer-apple--compact .product-modal-apple-fields,
+.message-composer-apple--compact .product-modal-apple-inline-grid {
+  gap: 8px !important;
+}
+.message-composer-apple--compact .product-modal-apple-fields.mt-4 {
+  margin-top: 10px !important;
+}
+.message-composer-apple--compact .modal-field-label {
+  font-size: 9.5px !important;
+  margin-bottom: 4px !important;
+}
+.message-composer-apple--compact :where(.inventory-premium-input, .inventory-premium-select, .modal-control-premium, .app-input, .app-select) {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .premium-input-leading-icon {
+  width: 30px !important;
+  font-size: 11px !important;
+}
+.message-composer-apple--compact .message-composer-segment {
+  gap: 4px !important;
+  padding: 4px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .message-composer-segment button.apple-choice-toggle {
+  min-height: 30px !important;
+  padding: 5px 8px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+}
+.message-composer-apple--compact .message-composer-segment button.apple-choice-toggle .apple-choice-toggle__icon {
+  width: 20px !important;
+  height: 20px !important;
+  flex-basis: 20px !important;
+  border-radius: 8px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-channel-grid {
+  gap: 6px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle {
+  min-height: 40px !important;
+  padding: 7px 8px !important;
+  border-radius: 12px !important;
+  gap: 7px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  width: 24px !important;
+  height: 24px !important;
+  flex-basis: 24px !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy strong {
+  font-size: 10.5px !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy small {
+  font-size: 8.5px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions {
+  gap: 4px !important;
+}
+.message-composer-apple--compact .message-composer-mini-actions :where(label, a, button) {
+  min-height: 24px !important;
+  padding: 3px 8px !important;
+  font-size: 8.5px !important;
+}
+.message-composer-apple--compact .message-composer-templates {
+  gap: 4px !important;
+  margin-bottom: 8px !important;
+}
+.message-composer-apple--compact .message-composer-templates button {
+  min-height: 26px !important;
+  padding: 4px 8px !important;
+  font-size: 9px !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 110px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  line-height: 1.7 !important;
+}
+.message-composer-apple--compact .message-composer-preview {
+  margin-top: 8px !important;
+  padding: 8px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .message-composer-preview__head {
+  font-size: 9px !important;
+  margin-bottom: 8px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  padding: 8px !important;
+  border-radius: 14px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header strong {
+  font-size: 10.5px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header small,
+.message-composer-apple--compact .message-composer-chatbox__header em,
+.message-composer-apple--compact .message-composer-chatbox__footer {
+  font-size: 8.5px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__avatar {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions {
+  padding-top: 8px !important;
+  gap: 8px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline--card {
+  padding: 8px 9px !important;
+  border-radius: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline__title {
+  font-size: 10px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions .premium-helper-inline__text {
+  font-size: 8.5px !important;
+}
+.message-composer-apple--compact .product-modal-apple-actions :where(.premium-submit-btn,.premium-cancel-btn) {
+  min-height: 32px !important;
+  height: 32px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+  padding-inline: 10px !important;
+}
+@media (max-width: 760px) {
+  .message-composer-apple--compact .product-modal-apple-hero__top {
+    flex-direction: column !important;
+  }
+  .message-composer-apple--compact .product-modal-apple-summary {
+    width: 100% !important;
+  }
+  .message-composer-apple--compact .product-modal-apple-summary__item {
+    flex: 1 1 0;
+    min-width: 0 !important;
+  }
+}
+
+
+/* v63 — force compact side-by-side summary cards with icons */
+.message-composer-apple--compact .message-composer-hero__top {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 220px !important;
+  align-items: start !important;
+  gap: 10px !important;
+}
+.message-composer-apple--compact .message-composer-hero__copy {
+  min-width: 0 !important;
+}
+.message-composer-apple--compact .message-composer-apple-summary {
+  width: 220px !important;
+  min-width: 220px !important;
+  max-width: 220px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+  justify-self: start !important;
+}
+.message-composer-apple--compact .message-composer-summary-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 58px !important;
+  padding: 8px 10px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(203,213,225,.9) !important;
+  background: #fff !important;
+  box-shadow: 0 10px 24px -22px rgba(15,23,42,.18) !important;
+}
+.dark .message-composer-apple--compact .message-composer-summary-card {
+  background: rgba(15,23,42,.72) !important;
+  border-color: rgba(51,65,85,.9) !important;
+}
+.message-composer-apple--compact .message-composer-summary-card__icon {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  background: rgba(241,245,249,.95) !important;
+  color: rgb(51,65,85) !important;
+  font-size: 11px !important;
+}
+.dark .message-composer-apple--compact .message-composer-summary-card__icon {
+  background: rgba(30,41,59,.95) !important;
+  color: rgb(226,232,240) !important;
+}
+.message-composer-apple--compact .message-composer-summary-card__copy {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+}
+.message-composer-apple--compact .message-composer-summary-card__copy strong {
+  font-size: 15px !important;
+  line-height: 1.1 !important;
+  font-weight: 900 !important;
+  color: rgb(15,23,42) !important;
+}
+.dark .message-composer-apple--compact .message-composer-summary-card__copy strong {
+  color: rgb(248,250,252) !important;
+}
+.message-composer-apple--compact .message-composer-summary-card__copy span {
+  font-size: 9px !important;
+  line-height: 1.3 !important;
+  color: rgb(100,116,139) !important;
+  margin-top: 3px !important;
+}
+.dark .message-composer-apple--compact .message-composer-summary-card__copy span {
+  color: rgb(148,163,184) !important;
+}
+@media (max-width: 760px) {
+  .message-composer-apple--compact .message-composer-hero__top {
+    grid-template-columns: 1fr !important;
+  }
+  .message-composer-apple--compact .message-composer-apple-summary {
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
+    justify-self: start !important;
+  }
+}
+
+
+/* v40 — fix composer route controls, tooltip scale, selected icon contrast, and validation messages */
+.message-composer-apple--compact .message-composer-segment {
+  overflow: visible !important;
+}
+
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 5px 9px !important;
+  border-radius: 11px !important;
+  gap: 6px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle__icon,
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle__check {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  flex-basis: 20px !important;
+  border-radius: 8px !important;
+  font-size: 9px !important;
+}
+
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__icon,
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle.is-active .apple-choice-toggle__icon,
+.message-composer-apple--compact .message-composer-segment .apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__icon {
+  background: rgb(15, 23, 42) !important;
+  color: #fff !important;
+  border-color: rgb(15, 23, 42) !important;
+}
+
+.message-composer-apple--compact .message-composer-channel-grid {
+  gap: 7px !important;
+  align-items: stretch !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle {
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: 6px 8px !important;
+  border-radius: 12px !important;
+  gap: 7px !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__icon {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  flex-basis: 24px !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy strong {
+  font-size: 10.5px !important;
+  line-height: 1.15 !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle .message-composer-channel__copy small {
+  font-size: 8.5px !important;
+  line-height: 1.2 !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active::after,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"]::after {
+  width: 6px !important;
+  height: 6px !important;
+  inset-inline-start: 7px !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] {
+  border-color: rgb(37, 99, 235) !important;
+  background: rgba(239, 246, 255, .96) !important;
+  color: rgb(30, 64, 175) !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__icon,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__icon {
+  background: rgb(37, 99, 235) !important;
+  color: #fff !important;
+}
+
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .message-composer-channel__copy small,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .message-composer-channel__copy small {
+  color: rgb(37, 99, 235) !important;
+}
+
+/* Hide/neutralize oversized browser-like tooltip bubbles from controls in this compact composer. */
+.message-composer-apple--compact :where(.app-help, .app-error, .app-field-feedback) {
+  font-size: 10px !important;
+  line-height: 1.55 !important;
+  margin-top: 4px !important;
+}
+
+.message-composer-apple--compact .app-error {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  max-width: 100% !important;
+  border-radius: 12px !important;
+  padding: 6px 8px !important;
+  background: rgba(255, 241, 242, .86) !important;
+  color: rgb(190, 18, 60) !important;
+  border: 1px solid rgba(251, 113, 133, .22) !important;
+  box-shadow: none !important;
+}
+
+/* Replace accidental joined tooltip phrasing visually where native title bubbles appeared too large.
+   Keeps validation compact and stops it from covering the controls. */
+.message-composer-apple--compact .modal-field-premium {
+  position: relative !important;
+}
+
+.message-composer-apple--compact .modal-field-premium [role="tooltip"],
+.message-composer-apple--compact [data-tooltip],
+.message-composer-apple--compact .tooltip,
+.message-composer-apple--compact .app-tooltip {
+  max-width: 210px !important;
+  padding: 6px 9px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  box-shadow: 0 12px 30px -20px rgba(15, 23, 42, .32) !important;
+}
+
+/* Keep channel validation area from overlapping the selected cards. */
+.message-composer-apple--compact .product-modal-apple-inline-grid {
+  margin-top: 2px !important;
+}
+
+.message-composer-apple--compact .message-composer-alert {
+  padding: 7px 9px !important;
+  border-radius: 12px !important;
+  font-size: 10px !important;
+  line-height: 1.6 !important;
+}
+
+/* Compact red telegram warning card if it appears under channel controls. */
+.message-composer-apple--compact :where(.rounded-\[22px\], .rounded-2xl).border-rose-200,
+.message-composer-apple--compact :where(.rounded-\[22px\], .rounded-2xl).border-rose-100 {
+  border-radius: 14px !important;
+  padding: 8px 10px !important;
+  font-size: 10px !important;
+  line-height: 1.6 !important;
+}
+
+
+
+/* v41 — fix selected channel text color and stacked hint text */
+.message-composer-apple--compact .message-composer-channel .apple-choice-toggle__content {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  line-height: 1.2 !important;
+}
+.message-composer-apple--compact .message-composer-channel .apple-choice-toggle__content strong,
+.message-composer-apple--compact .message-composer-channel .apple-choice-toggle__content small {
+  display: block !important;
+  width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.message-composer-apple--compact .message-composer-channel .apple-choice-toggle__content strong {
+  font-size: 10.5px !important;
+  line-height: 1.2 !important;
+  color: rgb(15, 23, 42) !important;
+}
+.message-composer-apple--compact .message-composer-channel .apple-choice-toggle__content small {
+  margin-top: 3px !important;
+  font-size: 8.5px !important;
+  line-height: 1.25 !important;
+  color: rgb(100, 116, 139) !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle {
+  align-items: center !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"],
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-selected="true"] {
+  color: rgb(30, 64, 175) !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .apple-choice-toggle__content strong,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__content strong,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__content strong {
+  color: rgb(30, 64, 175) !important;
+}
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .apple-choice-toggle__content small,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__content small,
+.message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__content small {
+  color: rgb(59, 130, 246) !important;
+}
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .apple-choice-toggle__content strong,
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__content strong,
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__content strong {
+  color: rgb(191, 219, 254) !important;
+}
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle.is-active .apple-choice-toggle__content small,
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-pressed="true"] .apple-choice-toggle__content small,
+.dark .message-composer-apple--compact .message-composer-channel.apple-choice-toggle[aria-selected="true"] .apple-choice-toggle__content small {
+  color: rgb(147, 197, 253) !important;
+}
+
+
+/* v42 — compact validation alerts, larger message textarea and preview */
+.message-composer-apple--compact .modal-field-premium .app-error,
+.message-composer-apple--compact .modal-control-premium + .app-error,
+.message-composer-apple--compact .inventory-premium-input + .app-error,
+.message-composer-apple--compact .inventory-premium-select + .app-error {
+  display: inline-flex !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  width: auto !important;
+  max-width: 240px !important;
+  min-height: 0 !important;
+  margin-top: 6px !important;
+  padding: 6px 8px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+  line-height: 1.6 !important;
+  white-space: normal !important;
+  text-align: right !important;
+  box-shadow: none !important;
+}
+.message-composer-apple--compact .modal-field-premium .app-error i,
+.message-composer-apple--compact .modal-control-premium + .app-error i {
+  font-size: 9px !important;
+  margin-top: 2px !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  min-height: 165px !important;
+  height: auto !important;
+  border-radius: 14px !important;
+  font-size: 11.5px !important;
+  line-height: 1.85 !important;
+  padding: 10px 12px !important;
+  resize: vertical !important;
+}
+.message-composer-apple--compact .message-composer-preview {
+  margin-top: 10px !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .message-composer-preview__head {
+  font-size: 9.5px !important;
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  min-height: 160px !important;
+  padding: 10px !important;
+  border-radius: 16px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__header {
+  margin-bottom: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  font-size: 11px !important;
+  line-height: 1.85 !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  min-height: 74px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__footer {
+  margin-top: 10px !important;
+}
+
+
+/* v43 — widen text/preview column and simplify field-level warnings */
+.message-composer-apple--compact .message-composer-apple-grid {
+  grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr) !important;
+  align-items: start !important;
+}
+.message-composer-apple--compact .message-composer-text-section {
+  min-width: 0 !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium {
+  width: 100% !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium textarea.modal-control-premium {
+  width: 100% !important;
+  min-height: 175px !important;
+}
+.message-composer-apple--compact .message-composer-preview {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 12px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  min-height: 180px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  min-height: 88px !important;
+}
+/* Remove double-box warning feeling: keep only one visual layer under invalid fields */
+.message-composer-apple--compact .modal-field-premium .app-error,
+.message-composer-apple--compact .modal-control-premium + .app-error,
+.message-composer-apple--compact .inventory-premium-input + .app-error,
+.message-composer-apple--compact .inventory-premium-select + .app-error {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin-top: 6px !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: rgb(225, 29, 72) !important;
+  font-size: 9.5px !important;
+  line-height: 1.6 !important;
+}
+.message-composer-apple--compact .modal-field-premium .app-error i,
+.message-composer-apple--compact .modal-control-premium + .app-error i,
+.message-composer-apple--compact .inventory-premium-input + .app-error i,
+.message-composer-apple--compact .inventory-premium-select + .app-error i {
+  font-size: 10px !important;
+  margin-top: 0 !important;
+}
+/* If a channel/telegram warning helper card appears, make it compact and single-layer */
+.message-composer-apple--compact .product-modal-apple-inline-grid + .app-error,
+.message-composer-apple--compact .message-composer-mini-actions + .app-error {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+@media (max-width: 900px) {
+  .message-composer-apple--compact .message-composer-apple-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v44 — final width + single-warning-icon cleanup */
+.message-composer-modal-overlay .inventory-modal-foundation {
+  max-width: min(920px, calc(100vw - 18px)) !important;
+}
+
+/* Give the message/preview side real room while keeping recipient panel compact. */
+.message-composer-apple--compact .message-composer-apple-grid {
+  grid-template-columns: minmax(260px, 0.72fr) minmax(420px, 1.28fr) !important;
+  gap: 12px !important;
+}
+.message-composer-apple--compact .product-modal-apple-section--base {
+  min-width: 0 !important;
+}
+.message-composer-apple--compact .message-composer-text-section {
+  min-width: 420px !important;
+}
+.message-composer-apple--compact .message-composer-text-section .modal-field-premium,
+.message-composer-apple--compact .message-composer-text-section .app-field__control-wrap,
+.message-composer-apple--compact .message-composer-text-section textarea.modal-control-premium,
+.message-composer-apple--compact .message-composer-preview,
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  width: 100% !important;
+  max-width: none !important;
+}
+.message-composer-apple--compact .message-composer-text-section textarea.modal-control-premium {
+  min-height: 185px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__surface {
+  min-height: 190px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  min-height: 98px !important;
+}
+
+/* The global form system adds a pseudo warning icon; ModalField also renders an icon.
+   In this modal keep only the explicit icon, so no duplicated ! appears. */
+.message-composer-apple--compact .app-error::before,
+.message-composer-apple--compact .app-field-feedback--error::before,
+.message-composer-apple--compact .modal-field-premium .app-error::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Make warning copy one clean line/block, not a nested warning card. */
+.message-composer-apple--compact .app-field-feedback {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.message-composer-apple--compact .app-error {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  width: auto !important;
+  max-width: 100% !important;
+  color: rgb(225, 29, 72) !important;
+}
+.message-composer-apple--compact .app-error i {
+  display: inline-flex !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  margin-inline-end: 4px !important;
+}
+
+/* Keep field error border on the input itself as the single visual container. */
+.message-composer-apple--compact .modal-control-error {
+  border-color: rgba(244, 63, 94, .72) !important;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, .08) !important;
+}
+
+@media (max-width: 920px) {
+  .message-composer-apple--compact .message-composer-apple-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .message-composer-apple--compact .message-composer-text-section {
+    min-width: 0 !important;
+  }
+}
+
+
+/* v45 — clean empty-state for preview instead of tiny awkward bubble */
+.message-composer-apple--compact .message-composer-chatbox__body {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  min-height: 150px !important;
+  padding: 10px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__bubble {
+  min-width: 0 !important;
+  width: auto !important;
+  max-width: min(92%, 520px) !important;
+  min-height: 84px !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__empty {
+  width: 100% !important;
+  min-height: 120px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 6px !important;
+  border: 1px dashed rgba(203,213,225,.95) !important;
+  border-radius: 16px !important;
+  background: rgba(248,250,252,.78) !important;
+  padding: 14px !important;
+}
+.dark .message-composer-apple--compact .message-composer-chatbox__empty {
+  border-color: rgba(71,85,105,.95) !important;
+  background: rgba(15,23,42,.52) !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__empty-icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  background: rgba(255,255,255,.95) !important;
+  color: rgb(71,85,105) !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+}
+.dark .message-composer-apple--compact .message-composer-chatbox__empty-icon {
+  background: rgba(30,41,59,.95) !important;
+  color: rgb(226,232,240) !important;
+  border-color: rgba(51,65,85,.95) !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__empty strong {
+  font-size: 11px !important;
+  line-height: 1.6 !important;
+  color: rgb(15,23,42) !important;
+}
+.dark .message-composer-apple--compact .message-composer-chatbox__empty strong {
+  color: rgb(248,250,252) !important;
+}
+.message-composer-apple--compact .message-composer-chatbox__empty small {
+  font-size: 9.5px !important;
+  line-height: 1.7 !important;
+  color: rgb(100,116,139) !important;
+  max-width: 320px !important;
+}
+.dark .message-composer-apple--compact .message-composer-chatbox__empty small {
+  color: rgb(148,163,184) !important;
+}
+
+
+/* v46 — compact polished action bar for message composer footer */
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 5 !important;
+  min-height: 54px !important;
+  padding: 8px 10px !important;
+  margin-top: 8px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(226, 232, 240, .88) !important;
+  background: rgba(255, 255, 255, .94) !important;
+  backdrop-filter: blur(14px) !important;
+  box-shadow: 0 -10px 28px -26px rgba(15, 23, 42, .34) !important;
+  gap: 8px !important;
+}
+
+.dark .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions {
+  border-color: rgba(51, 65, 85, .88) !important;
+  background: rgba(15, 23, 42, .92) !important;
+  box-shadow: 0 -14px 34px -28px rgba(0, 0, 0, .72) !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-helper-inline--card {
+  max-width: 360px !important;
+  min-height: 38px !important;
+  padding: 7px 10px !important;
+  border-radius: 13px !important;
+  background: rgba(248, 250, 252, .72) !important;
+  border-color: rgba(226, 232, 240, .82) !important;
+  box-shadow: none !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-helper-inline__icon {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  border-radius: 9px !important;
+  font-size: 10px !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-helper-inline__title {
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-helper-inline__text {
+  font-size: 8.5px !important;
+  line-height: 1.55 !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .modal-actions__buttons,
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-modal-actions__buttons {
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions :where(.premium-submit-btn, .premium-cancel-btn) {
+  min-height: 36px !important;
+  height: 36px !important;
+  padding-inline: 13px !important;
+  border-radius: 12px !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+  gap: 7px !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions :where(.premium-submit-btn, .premium-cancel-btn) i {
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-submit-btn {
+  background: linear-gradient(180deg, rgb(45, 193, 134), rgb(16, 166, 105)) !important;
+  border: 1px solid rgba(16, 185, 129, .34) !important;
+  box-shadow: 0 14px 26px -20px rgba(16, 185, 129, .72) !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-cancel-btn {
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(71, 85, 105) !important;
+  border: 1px solid rgba(203, 213, 225, .9) !important;
+  box-shadow: none !important;
+}
+
+.message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-cancel-btn:hover {
+  background: rgb(241, 245, 249) !important;
+  color: rgb(15, 23, 42) !important;
+}
+
+.dark .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-cancel-btn {
+  background: rgba(30, 41, 59, .82) !important;
+  color: rgb(203, 213, 225) !important;
+  border-color: rgba(71, 85, 105, .82) !important;
+}
+
+@media (max-width: 760px) {
+  .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions {
+    align-items: stretch !important;
+  }
+
+  .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-helper-inline--card {
+    max-width: none !important;
+  }
+
+  .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .modal-actions__buttons,
+  .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions .premium-modal-actions__buttons {
+    width: 100% !important;
+  }
+
+  .message-composer-apple--compact .product-modal-apple-actions.message-composer-actions :where(.premium-submit-btn, .premium-cancel-btn) {
+    flex: 1 1 0 !important;
+    justify-content: center !important;
+  }
+}

@@ -1,0 +1,225 @@
+/* Phase 17 — Field/Form Contract
+   Purpose: create one semantic contract for input/select/textarea/date/search surfaces.
+   This file is intentionally imported after legacy field CSS so it can normalize
+   existing AppSearchField/AppSelectField/ModalField contracts without touching logic.
+*/
+
+:root {
+  /* Backward-compatible aliases used by older field CSS. */
+  --ux-control-height: var(--ds-control-height-md);
+  --ux-control-height-sm: var(--ds-control-height-sm);
+  --ux-control-height-lg: var(--ds-control-height-lg);
+  --ux-control-radius: var(--ds-control-radius);
+  --ux-control-padding-x: var(--ds-control-padding-x);
+  --ux-control-icon-size: var(--ds-control-icon-size);
+  --ux-control-icon-offset: var(--ds-control-icon-offset);
+  --ux-control-icon-gap: var(--ds-control-icon-gap);
+  --ux-control-border: var(--ds-control-border);
+  --ux-control-bg: var(--ds-control-bg);
+  --ux-control-fg: var(--ds-control-fg);
+  --ux-control-muted: var(--ds-control-muted);
+  --ux-control-shadow: var(--ds-control-shadow);
+  --ux-control-focus: var(--ds-focus-ring);
+}
+
+.app-field,
+.modal-field-premium,
+.report-filter-field,
+.app-search-field,
+.app-select-field,
+.app-date-field {
+  min-width: 0;
+}
+
+.app-field__control-wrap,
+.premium-input-wrap,
+.ux-field-control-wrap,
+.input-with-icon,
+.field-with-icon {
+  position: relative !important;
+  min-width: 0 !important;
+}
+
+.app-field__control,
+.app-input,
+.app-select,
+.app-textarea,
+.modal-control-premium,
+.app-search-field__input,
+.app-select-field__select,
+.app-date-field__input,
+input[data-app-date-input='true'] {
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  text-rendering: geometricPrecision;
+}
+
+.app-input,
+.app-select,
+.app-textarea,
+.modal-control-premium {
+  min-height: var(--ds-control-height-md) !important;
+  border-radius: var(--ds-control-radius) !important;
+  border-color: var(--ds-control-border) !important;
+  background-color: var(--ds-control-bg) !important;
+  color: var(--ds-control-fg) !important;
+  box-shadow: var(--ds-control-shadow) !important;
+}
+
+.app-textarea,
+textarea.modal-control-premium {
+  min-height: 104px !important;
+  line-height: 1.9 !important;
+}
+
+.app-input::placeholder,
+.app-textarea::placeholder,
+.modal-control-premium::placeholder,
+.app-search-field__input::placeholder,
+.app-date-field__input::placeholder,
+input[data-app-date-input='true']::placeholder {
+  color: var(--ds-control-muted) !important;
+  opacity: .82 !important;
+}
+
+.app-input:focus,
+.app-select:focus,
+.app-textarea:focus,
+.modal-control-premium:focus,
+.app-search-field__input:focus,
+.app-select-field__select:focus,
+.app-date-field__input:focus,
+input[data-app-date-input='true']:focus {
+  border-color: var(--ds-focus-border) !important;
+  box-shadow: 0 0 0 4px var(--ds-focus-ring), var(--ds-control-shadow) !important;
+  outline: none !important;
+}
+
+.app-input[aria-invalid='true'],
+.app-select[aria-invalid='true'],
+.app-textarea[aria-invalid='true'],
+.modal-control-premium[aria-invalid='true'],
+.app-field[data-field-state='error'] .app-input,
+.app-field[data-field-state='error'] .app-select,
+.app-field[data-field-state='error'] .app-textarea,
+.modal-field-premium--error .modal-control-premium {
+  border-color: rgba(244, 63, 94, .72) !important;
+  box-shadow: 0 0 0 4px var(--ds-danger-soft), var(--ds-control-shadow) !important;
+}
+
+.app-field__leading-icon,
+.premium-input-leading-icon,
+.ux-field-leading-icon,
+.input-leading-icon,
+.field-leading-icon,
+.search-leading-icon,
+.filter-leading-icon {
+  width: var(--ds-control-icon-size) !important;
+  height: var(--ds-control-icon-size) !important;
+  border-radius: var(--ds-radius-sm) !important;
+}
+
+.premium-input-wrap:has(.app-field__leading-icon) > .app-input,
+.premium-input-wrap:has(.app-field__leading-icon) > .app-select,
+.premium-input-wrap:has(.app-field__leading-icon) > .app-textarea,
+.premium-input-wrap:has(.premium-input-leading-icon) > .app-input,
+.premium-input-wrap:has(.premium-input-leading-icon) > .app-select,
+.premium-input-wrap:has(.premium-input-leading-icon) > .app-textarea,
+.modal-control-premium.premium-has-leading-icon {
+  padding-inline-end: calc(var(--ds-control-icon-size) + var(--ds-control-icon-offset) + var(--ds-control-icon-gap)) !important;
+}
+
+.modal-field-label,
+.report-filter-field__label {
+  color: var(--ds-text-secondary) !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.01em;
+}
+
+.app-help,
+.app-error,
+.app-field-feedback,
+.app-field__feedback {
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+}
+
+.app-help {
+  color: var(--ds-text-muted) !important;
+}
+
+.app-error {
+  color: var(--ds-danger) !important;
+}
+
+/* Search contract: icon on physical left, text remains RTL/right aligned. */
+.app-search-field {
+  border-radius: var(--ds-control-radius) !important;
+}
+
+.app-search-field__input {
+  min-height: var(--ds-control-height-md) !important;
+  border-radius: var(--ds-control-radius) !important;
+  border-color: var(--ds-control-border) !important;
+  background-color: var(--ds-control-bg) !important;
+  color: var(--ds-control-fg) !important;
+  box-shadow: var(--ds-control-shadow) !important;
+  padding-inline-start: calc(var(--ds-control-icon-size) + var(--ds-control-icon-offset) + var(--ds-control-icon-gap)) !important;
+  padding-inline-end: 2.85rem !important;
+}
+
+.app-search-field__icon {
+  color: var(--ds-control-muted) !important;
+}
+
+.app-search-field__clear {
+  min-width: 30px !important;
+  min-height: 30px !important;
+  border-radius: 999px !important;
+}
+
+/* Select/date contract: keep internal components as the single visible box. */
+.app-select-field__select,
+.app-date-field__input,
+input[data-app-date-input='true'] {
+  border-color: var(--ds-control-border) !important;
+  background: var(--ds-control-bg) !important;
+  color: var(--ds-control-fg) !important;
+  box-shadow: var(--ds-control-shadow) !important;
+}
+
+.app-select-field__icon,
+.app-select-field__chevron,
+.app-date-field__icon {
+  color: var(--ds-control-muted) !important;
+}
+
+/* LTR values inside RTL forms: keep visual alignment under Persian labels. */
+.app-input[dir='ltr'],
+.modal-control-premium[dir='ltr'],
+input[data-latin='true'],
+input[data-numeric='true'],
+.ltr-value,
+.imei-value,
+.system-id-value {
+  direction: ltr !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
+}
+
+@media (max-width: 640px) {
+  .app-input,
+  .app-select,
+  .app-textarea,
+  .modal-control-premium,
+  .app-search-field__input,
+  .app-select-field__select,
+  .app-date-field__input,
+  input[data-app-date-input='true'] {
+    font-size: 12.5px !important;
+  }
+
+  .modal-field-label,
+  .report-filter-field__label {
+    font-size: 12px !important;
+  }
+}

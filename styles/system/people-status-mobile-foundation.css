@@ -1,0 +1,321 @@
+/* Auto-generated UI Foundation: people filters mobile cards and financial status badges.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/10c-people-filters-mobile-cards.css ===== */
+
+/* ===== V39 — People list filters/search/sort unification ===== */
+.people-toolbar-select,
+.people-toolbar-reset {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border: 1px solid rgba(226, 232, 240, .95);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .94);
+  color: rgb(51, 65, 85);
+  box-shadow: 0 12px 28px -26px rgba(15,23,42,.25);
+}
+
+.people-toolbar-select {
+  padding-inline: .78rem .55rem;
+}
+
+.people-toolbar-select > i,
+.people-toolbar-reset > i {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(248, 250, 252, .95);
+  color: rgb(71, 85, 105);
+  border: 1px solid rgba(226, 232, 240, .9);
+  font-size: 11px;
+}
+
+.people-toolbar-select select {
+  min-width: 178px;
+  height: 36px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: rgb(15, 23, 42);
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.people-toolbar-reset {
+  padding-inline: .75rem .95rem;
+  font-size: 11px;
+  font-weight: 950;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.people-toolbar-reset:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, .9);
+  background: rgb(248, 250, 252);
+}
+
+.partners-toolbar-summary,
+.customers-toolbar__inline-strip {
+  gap: .7rem !important;
+}
+
+.partners-toolbar-search,
+.customers-toolbar__search {
+  min-width: min(100%, 340px);
+}
+
+.dark .people-toolbar-select,
+.dark .people-toolbar-reset {
+  border-color: rgba(51, 65, 85, .95);
+  background: rgba(15, 23, 42, .88);
+  color: rgb(226, 232, 240);
+}
+
+.dark .people-toolbar-select > i,
+.dark .people-toolbar-reset > i {
+  border-color: rgba(51, 65, 85, .95);
+  background: rgba(2, 6, 23, .82);
+  color: rgb(203, 213, 225);
+}
+
+.dark .people-toolbar-select select {
+  color: rgb(241, 245, 249);
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .people-toolbar-select,
+  .people-toolbar-reset,
+  .partners-toolbar-search,
+  .customers-toolbar__search {
+    width: 100%;
+  }
+
+  .people-toolbar-select select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* V40 — Mobile people cards commercial unification */
+.people-mobile-card--commercial {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px !important;
+  padding: 1rem !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,0.99), rgba(248,250,252,0.95)) !important;
+  box-shadow: 0 22px 52px -42px rgba(15, 23, 42, 0.34) !important;
+}
+
+.people-mobile-card--commercial::before {
+  content: "";
+  position: absolute;
+  inset-inline: 1rem;
+  top: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(59,130,246,.05), rgba(59,130,246,.55), rgba(16,185,129,.45), rgba(59,130,246,.05));
+}
+
+.people-mobile-card__topline {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .9rem;
+}
+
+.people-mobile-card__avatar,
+.people-mobile-card--commercial .customer-row-avatar,
+.people-mobile-card--commercial .partners-row-avatar {
+  width: 2.65rem !important;
+  height: 2.65rem !important;
+  min-width: 2.65rem !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(191, 219, 254, 0.82) !important;
+  background: linear-gradient(180deg, rgba(239,246,255,.95), rgba(255,255,255,.98)) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: 0 16px 34px -28px rgba(37, 99, 235, .55) !important;
+}
+
+.people-mobile-card__balance {
+  max-width: 46%;
+  min-width: 118px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255,255,255,.86);
+  padding: .55rem .65rem;
+  text-align: center;
+  font-size: .78rem;
+  font-weight: 950;
+  line-height: 1.7;
+  color: rgb(15 23 42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 14px 30px -28px rgba(15,23,42,.26);
+}
+
+.people-mobile-card__balance :where(span, strong) {
+  line-height: 1.6 !important;
+}
+
+.people-mobile-card__meta-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .65rem;
+}
+
+.people-mobile-card__meta-item {
+  min-width: 0;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.74);
+  padding: .68rem .75rem;
+}
+
+.people-mobile-card__meta-item span {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  color: rgb(100 116 139);
+  font-size: .66rem;
+  font-weight: 900;
+}
+
+.people-mobile-card__meta-item strong {
+  display: block;
+  margin-top: .25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(15 23 42);
+  font-size: .75rem;
+  font-weight: 950;
+}
+
+.people-mobile-card__actions,
+.partners-mobile-actions.people-mobile-card__actions {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, .9fr) minmax(0, .75fr) !important;
+  gap: .55rem !important;
+  align-items: center !important;
+}
+
+.people-mobile-card__actions :where(a, button, .ux-btn, .people-action-btn, .partners-action-btn) {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 2.55rem !important;
+  border-radius: 17px !important;
+  justify-content: center !important;
+  font-size: 10.5px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.people-mobile-card__actions :where(i, svg) {
+  flex: 0 0 auto !important;
+  font-size: 11px !important;
+}
+
+.dark .people-mobile-card--commercial {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(59, 130, 246, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,0.96)) !important;
+  box-shadow: 0 22px 52px -42px rgba(0,0,0,.75) !important;
+}
+
+.dark .people-mobile-card__avatar,
+.dark .people-mobile-card--commercial .customer-row-avatar,
+.dark .people-mobile-card--commercial .partners-row-avatar {
+  border-color: rgba(59,130,246,.35) !important;
+  background: linear-gradient(180deg, rgba(30,41,59,.96), rgba(15,23,42,.96)) !important;
+  color: rgb(191 219 254) !important;
+}
+
+.dark .people-mobile-card__balance,
+.dark .people-mobile-card__meta-item {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15, 23, 42, 0.78);
+  color: rgb(241 245 249);
+}
+
+.dark .people-mobile-card__meta-item span {
+  color: rgb(148 163 184);
+}
+
+.dark .people-mobile-card__meta-item strong {
+  color: rgb(241 245 249);
+}
+
+@media (max-width: 430px) {
+  .people-mobile-card__topline {
+    display: grid;
+    gap: .85rem;
+  }
+  .people-mobile-card__balance {
+    max-width: 100%;
+    width: 100%;
+  }
+  .people-mobile-card__meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .people-mobile-card__actions,
+  .partners-mobile-actions.people-mobile-card__actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10d-financial-status-badges.css ===== */
+
+/* ===== V46 — Unified financial status badges ===== */
+.financial-status-badge {
+  max-width: 100%;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.financial-status-badge i {
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.financial-status-badge span {
+  min-width: 0;
+}
+
+.finance-table-action .financial-status-badge,
+.people-mobile-card .financial-status-badge,
+.installment-card .financial-status-badge {
+  max-width: 100%;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.people-filter-card,
+.people-mobile-card,
+.financial-status-badge {
+  min-width: 0;
+}
+
+.financial-status-badge {
+  white-space: nowrap;
+}

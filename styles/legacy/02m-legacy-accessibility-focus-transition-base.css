@@ -1,0 +1,10 @@
+
+@layer base {
+  :where(button, [role="button"], a, input, select, textarea):focus-visible {
+    outline: none;
+  }
+
+  :where(button, [role="button"], a, input, select, textarea) {
+    transition: box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease;
+  }
+}

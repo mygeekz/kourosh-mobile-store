@@ -1,0 +1,74 @@
+/* پایه‌ها */
+:root {
+  /* حالت عمومی */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* رنگ‌های هویت */
+  --color-bg: 248 250 252;      /* slate-50 */
+  --color-surface: 255 255 255;
+  --color-text: 15 23 42;       /* slate-900 */
+  --color-muted: 100 116 139;   /* slate-500 */
+
+  /* رنگ‌های اصلی قابل عوض‌شدن با پالت */
+  --primary: 280 70% 50%;    /* brand primary (HSL) */
+  --secondary: 190 90% 45%;  /* secondary (HSL) */
+  --accent: 160 70% 40%;     /* accent (HSL) */
+
+  /* گرادیان اصلی UI */
+  --grad-from: 139 92 246;  /* violet-500 */
+  --grad-to: 34 197 94;     /* green-500 */
+
+  /* Sidebar tokens */
+  --sb-pill-width: 236px;
+  --sb-icon-size: 40px;     /* w/h */
+  --sb-ink-width: 4px;
+
+  /* Chart tokens */
+  --chart-line: 99 102 241;
+  --chart-fill: 99 102 241;
+  --chart-grid: 203 213 225;
+
+  /* Button tokens */
+  --btn-radius: 9999px;
+  --btn-grad-from: var(--grad-from);
+  --btn-grad-to: var(--grad-to);
+}
+
+/* دارک مود */
+:root[data-theme="dark"] {
+  --color-bg: 2 6 23;          /* slate-950 */
+  --color-surface: 15 23 42;   /* slate-900 */
+  --color-text: 241 245 249;   /* slate-100 */
+  --color-muted: 148 163 184;  /* slate-400 */
+
+  /* شدت نمودار و گرادیان در دارک */
+  --chart-grid: 71 85 105;
+}
+
+/* پالت‌ها (پیش‌نمایش) */
+:root[data-palette="aurora"] {
+  /* NOTE: Tailwind in this project uses hsl(var(--primary)), so these must be HSL triplets. */
+  --primary: 239 84% 67%;   /* indigo-500 (#6366f1) */
+  --secondary: 188 86% 53%; /* cyan-500  (#06b6d4) */
+  --accent: 142 71% 45%;    /* green-500 (#22c55e) */
+  --grad-from: 139 92 246; --grad-to: 34 197 94;
+}
+:root[data-palette="sunset"] {
+  --primary: 330 81% 60%;   /* pink-500  (#ec4899) */
+  --secondary: 38 92% 50%;  /* amber-500 (#f59e0b) */
+  --accent: 217 91% 60%;    /* blue-500  (#3b82f6) */
+  --grad-from: 244 63 94;  --grad-to: 234 179 8;
+}
+:root[data-palette="ocean"] {
+  --primary: 199 89% 48%;   /* sky-500   (#0ea5e9) */
+  --secondary: 173 80% 40%; /* teal-500  (#14b8a6) */
+  --accent: 160 84% 39%;    /* emerald-400 (#34d399) */
+  --grad-from: 14 165 233; --grad-to: 52 211 153;
+}:root[data-palette="classic"] {
+  --primary: 158 76% 38%;
+  --secondary: 160 84% 39%;
+  --accent: 142 71% 45%;
+  --grad-from: 16 185 129; --grad-to: 5 150 105;
+}

@@ -1,0 +1,90 @@
+/* Stage 57 — Product sales table tools placement and search icon fix
+   Scope: /reports/product-sales table toolbar only.
+   Fixes: keep page-size and search together in one row, and force search icon to physical left. */
+
+.product-sales-executive-page .product-sales-table-tools {
+  display: grid !important;
+  grid-template-columns: 9.8rem minmax(16rem, 22rem) !important;
+  grid-template-areas: "size search" !important;
+  align-items: center !important;
+  justify-content: start !important;
+  justify-items: stretch !important;
+  gap: .58rem !important;
+  direction: ltr !important;
+  width: auto !important;
+  max-width: 100% !important;
+  flex: 0 1 auto !important;
+}
+
+.product-sales-executive-page .product-sales-table-search {
+  grid-area: search !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 22rem !important;
+  flex: none !important;
+  direction: rtl !important;
+  position: relative !important;
+  padding: 0 !important;
+}
+
+.product-sales-executive-page .product-sales-page-size-control {
+  grid-area: size !important;
+  width: 9.8rem !important;
+  min-width: 9.8rem !important;
+  max-width: 9.8rem !important;
+  flex: none !important;
+  direction: rtl !important;
+}
+
+/* Hard-fix the icon position. Native search type was changed to text; this is the only visible icon. */
+.product-sales-executive-page .product-sales-table-search > i,
+.product-sales-executive-page .product-sales-table-search > i.fa-solid,
+.product-sales-executive-page .product-sales-table-search > i.fa-magnifying-glass {
+  position: absolute !important;
+  left: .85rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #94a3b8 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input,
+.product-sales-executive-page .product-sales-table-search input[type='text'] {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 1rem !important;
+  padding-left: 2.55rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+  .product-sales-executive-page .product-sales-table-tools {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "search"
+      "size" !important;
+    justify-content: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-table-search,
+  .product-sales-executive-page .product-sales-page-size-control {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+}

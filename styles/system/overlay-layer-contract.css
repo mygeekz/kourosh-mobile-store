@@ -1,0 +1,46 @@
+/* Overlay Layer Contract
+   Ensures all drawers, modals, popovers and command overlays stay above the app header/sidebar.
+   Keep this file imported once from index.tsx.
+*/
+
+:root {
+  --kourosh-z-header: 900;
+  --kourosh-z-floating: 1100;
+  --kourosh-z-popover: 5000;
+  --kourosh-z-modal-backdrop: 9000;
+  --kourosh-z-modal-panel: 9010;
+  --kourosh-z-drawer-backdrop: 9990;
+  --kourosh-z-drawer-panel: 10000;
+  --kourosh-z-toast: 11000;
+}
+
+.ux-overlay-backdrop,
+.kourosh-overlay-backdrop,
+[data-kourosh-overlay="backdrop"] {
+  position: fixed;
+  inset: 0;
+  z-index: var(--kourosh-z-drawer-backdrop) !important;
+}
+
+.ux-overlay-panel,
+.kourosh-overlay-panel,
+[data-kourosh-overlay="panel"] {
+  position: relative;
+  z-index: var(--kourosh-z-drawer-panel) !important;
+}
+
+[role="dialog"],
+[data-radix-popper-content-wrapper],
+[data-kourosh-layer="modal"],
+[data-kourosh-layer="popover"],
+[data-kourosh-layer="drawer"] {
+  z-index: var(--kourosh-z-drawer-panel) !important;
+}
+
+.kourosh-header,
+.app-header,
+.header-shell,
+.main-header,
+[data-ui-header="main"] {
+  z-index: var(--kourosh-z-header);
+}

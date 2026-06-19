@@ -1,0 +1,38 @@
+/* Split from 02-legacy-reports-premium-components.css: customers hero + toolbar + mobile cards */
+  .customers-hero-panel {
+    display: flex;
+    flex-direction: column;
+  }
+  .dark .customers-hero-panel {
+    background: linear-gradient(135deg, rgba(15,23,42,0.94), rgba(2,6,23,0.96));
+    box-shadow: 0 30px 70px -48px rgba(2,6,23,0.88);
+  }
+  .customers-hero-copy { }
+  .customers-hero-eyebrow { }
+  .customers-hero-title-row { display: flex; flex-wrap: wrap; }
+  .customers-hero-title { }
+  .customers-hero-badge { display: inline-flex; }
+  .customers-hero-subtitle { }
+  .customers-hero-quickstats { }
+  .customers-hero-mini { background-color: rgb(255 255 255 / 0.90); }
+  .dark .customers-hero-mini { background-color: rgb(15 23 42 / 0.78); }
+  .customers-hero-mini__label { }
+  .customers-hero-mini__value { }
+  .customers-toolbar { display: flex; flex-direction: column; }
+  .customers-toolbar--premium { }
+  .dark .customers-toolbar--premium { background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(2,6,23,0.88)); box-shadow: 0 24px 54px -38px rgba(2,6,23,0.8); }
+  .customers-toolbar__group { display: flex; flex-direction: column; }
+  .customers-toolbar__select-wrap { }
+  .customers-toolbar__icon { }
+  .customers-toolbar__select { }
+  .customers-toolbar__summary { display: inline-flex; }
+  .customers-toolbar__summary--premium i { display: inline-flex; }
+  .customer-row-avatar { display: inline-flex; }
+  .customer-tag-chip { display: inline-flex; }
+  .customers-mobile-card { }
+
+  .dark .customers-mobile-card {
+    background-image:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.16), transparent 42%),
+      linear-gradient(135deg, rgba(15,23,42,0.98), rgba(2,6,23,0.92));
+  }

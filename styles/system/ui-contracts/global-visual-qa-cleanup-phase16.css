@@ -1,0 +1,239 @@
+
+/* Phase 16 — Global Visual QA / Regression Cleanup
+   Final scoped stabilizer after the UI foundations. Plain CSS only; no Tailwind composition. */
+
+:root {
+  --ui-qa-radius-sm: 14px;
+  --ui-qa-radius-md: 18px;
+  --ui-qa-radius-lg: 24px;
+  --ui-qa-border: rgba(148, 163, 184, 0.24);
+  --ui-qa-border-strong: rgba(100, 116, 139, 0.32);
+  --ui-qa-surface: rgba(255, 255, 255, 0.94);
+  --ui-qa-surface-solid: #ffffff;
+  --ui-qa-muted: rgba(248, 250, 252, 0.92);
+  --ui-qa-text: #0f172a;
+  --ui-qa-text-muted: #64748b;
+  --ui-qa-shadow: 0 18px 55px -42px rgba(15, 23, 42, 0.52);
+  --ui-qa-focus: 0 0 0 4px rgba(14, 165, 233, 0.12);
+}
+
+.dark {
+  --ui-qa-border: rgba(148, 163, 184, 0.18);
+  --ui-qa-border-strong: rgba(148, 163, 184, 0.28);
+  --ui-qa-surface: rgba(15, 23, 42, 0.94);
+  --ui-qa-surface-solid: #0f172a;
+  --ui-qa-muted: rgba(30, 41, 59, 0.78);
+  --ui-qa-text: #f8fafc;
+  --ui-qa-text-muted: #cbd5e1;
+  --ui-qa-shadow: 0 22px 64px -44px rgba(0, 0, 0, 0.82);
+  --ui-qa-focus: 0 0 0 4px rgba(56, 189, 248, 0.16);
+}
+
+/* Make the phase foundations act like one design system instead of isolated patches. */
+[data-ui-modal-root],
+[data-ui-report-shell],
+[data-ui-settings-shell],
+[data-ui-ops-panel],
+[data-ui-inventory-page],
+[data-ui-sales-page],
+[data-ui-people-page],
+[data-ui-dashboard-page],
+[data-ui-notifications-page],
+[data-ui-repair-page],
+[data-ui-service-page] {
+  color: var(--ui-qa-text);
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent old decorative glass from lowering contrast on critical operational surfaces. */
+[data-ui-report-surface],
+[data-ui-settings-panel],
+[data-ui-ops-surface],
+[data-ui-inventory-modal],
+[data-ui-sales-summary-card],
+[data-ui-people-surface],
+[data-ui-dashboard-widget-shell],
+[data-ui-notification-item],
+[data-ui-repair-surface],
+[data-ui-service-card],
+[data-ui-feedback-surface="toast"] {
+  border-color: var(--ui-qa-border);
+  box-shadow: var(--ui-qa-shadow);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Final guard for raw buttons left inside migrated scopes. */
+[data-ui-report-layout] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-settings-shell] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-ops-panel] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-inventory-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-sales-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-people-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-dashboard-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-notifications-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-repair-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]),
+[data-ui-service-page] button:not([data-ui-button]):not(.unstyled):not([role="tab"]) {
+  min-height: 2.5rem;
+  border-radius: 0.95rem;
+  border: 1px solid var(--ui-qa-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  line-height: 1.35;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+[data-ui-report-layout] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-settings-shell] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-ops-panel] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-inventory-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-sales-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-people-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-dashboard-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-notifications-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-repair-page] button:not([data-ui-button]):not(.unstyled):focus-visible,
+[data-ui-service-page] button:not([data-ui-button]):not(.unstyled):focus-visible {
+  outline: none;
+  box-shadow: var(--ui-qa-focus);
+}
+
+/* Global field collision guard for old absolute icons. */
+[data-ui-settings-shell] .relative > i.fa-solid + input,
+[data-ui-settings-shell] .relative > i.fa-regular + input,
+[data-ui-report-layout] .relative > i.fa-solid + input,
+[data-ui-report-layout] .relative > i.fa-regular + input,
+[data-ui-inventory-page] .relative > i.fa-solid + input,
+[data-ui-sales-page] .relative > i.fa-solid + input,
+[data-ui-people-page] .relative > i.fa-solid + input,
+[data-ui-dashboard-page] .relative > i.fa-solid + input,
+[data-ui-repair-page] .relative > i.fa-solid + input {
+  padding-inline-start: max(2.75rem, var(--field-icon-offset, 2.75rem));
+}
+
+/* Text safety: important Persian labels/descriptions should not vanish behind one-line clamps. */
+[data-ui-report-layout] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-settings-shell] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-ops-panel] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-inventory-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-sales-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-people-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-dashboard-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-notifications-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-repair-page] .truncate:not(.allow-truncate):not(.font-mono),
+[data-ui-service-page] .truncate:not(.allow-truncate):not(.font-mono) {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  min-width: 0;
+}
+
+[data-ui-report-layout] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-settings-shell] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-ops-panel] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-inventory-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-sales-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-people-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-dashboard-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-notifications-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-repair-page] .line-clamp-1:not(.allow-line-clamp),
+[data-ui-service-page] .line-clamp-1:not(.allow-line-clamp) {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: initial;
+  white-space: normal;
+}
+
+/* Keep identifiers numeric/code-like values stable inside RTL UI. */
+[dir="ltr"],
+.font-mono,
+[data-ui-control-kind="number"],
+[data-ui-control-kind="date"],
+[data-ui-repair-control="phone"],
+[data-ui-repair-control="serial"],
+[data-ui-repair-control="barcode"],
+input[name="imei"],
+input[name="barcode"],
+input[name="sku"],
+input[name="phone"],
+input[type="tel"],
+input[inputmode="numeric"] {
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Modal final stabilizers: compact confirmation stays compact; expansive stays readable. */
+[data-ui-modal-variant="compact"] [data-ui-modal-panel],
+[data-modal-variant="compact"] [data-ui-modal-panel] {
+  max-height: min(86vh, 34rem);
+}
+
+[data-ui-modal-variant="compact"] [data-ui-modal-body],
+[data-modal-variant="compact"] [data-ui-modal-body] {
+  overflow: visible;
+}
+
+[data-ui-modal-actions],
+.modal-actions,
+.modal-footer,
+[data-ui-modal-footer] {
+  gap: 0.75rem;
+}
+
+/* Header alert and global toast final readability. */
+[data-ui-notification-beacon="true"][data-header-alert-active="true"]::after {
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.14), 0 8px 22px -10px rgba(16, 185, 129, 0.8);
+}
+
+[data-ui-feedback-surface="toast"] {
+  background: var(--ui-qa-surface-solid);
+  border-color: var(--ui-qa-border-strong);
+}
+
+/* Tables/lists: final row readability without touching print. */
+@media screen {
+  [data-ui-table] th,
+  [data-ui-table] td,
+  [data-ui-repair-table] th,
+  [data-ui-repair-table] td,
+  [data-ui-sales-table] th,
+  [data-ui-sales-table] td,
+  [data-ui-people-ledger] th,
+  [data-ui-people-ledger] td {
+    vertical-align: middle;
+    line-height: 1.75;
+  }
+}
+
+@media (max-width: 640px) {
+  [data-ui-modal-actions],
+  .modal-actions,
+  .modal-footer,
+  [data-ui-modal-footer] {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  [data-ui-modal-actions] > *,
+  .modal-actions > *,
+  .modal-footer > *,
+  [data-ui-modal-footer] > * {
+    width: 100%;
+  }
+
+  [data-ui-report-layout] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-settings-shell] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-ops-panel] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-inventory-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-sales-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-people-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-dashboard-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-notifications-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-repair-page] button:not([data-ui-button]):not(.unstyled),
+  [data-ui-service-page] button:not([data-ui-button]):not(.unstyled) {
+    min-height: 2.75rem;
+  }
+}
