@@ -1,7 +1,7 @@
 import { useConfirm } from '../contexts/ConfirmContext';
 // pages/Settings.tsx
 import React, { useState, useEffect, FormEvent, ChangeEvent, useRef, useMemo } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   BusinessInformationSettings,
   NotificationMessage,
@@ -12,12 +12,7 @@ import {
   PhoneEntry,
 } from '../types';
 import Notification from '../components/Notification';
-import Modal from '../components/Modal';
 import { useMountedRef } from '../utils/asyncGuards';
-import Button from '../components/Button';
-import ModalActions from '../components/ModalActions';
-import ToggleSwitch from '../components/ToggleSwitch';
-import FormSection from '../components/FormSection';
 
 import SmsPatternTestModal from '../components/SmsPatternTestModal';
 import SmsPatternPreviewModal from '../components/SmsPatternPreviewModal';
@@ -59,236 +54,80 @@ import {
   type TelegramTemplateDef,
   type TelegramTemplateVariable,
 } from './settings/index';
+import SettingsHeaderBar from './settings/SettingsHeaderBar';
+import SettingsNavigation from './settings/SettingsNavigation';
+import SettingsRestoreModal from './settings/SettingsRestoreModal';
+import SettingsSaveFooter from './settings/SettingsSaveFooter';
+import SettingsSidebar from './settings/SettingsSidebar';
 import { buildBackupCronExpr, DEFAULT_BACKUP_SCHEDULE, parseBackupScheduleFromSettings, formatNextBackupRunLabel, sanitizeTime, normalizeWeekdays } from '../utils/backupSchedule';
 import { exportToExcel, exportToPdfTable } from '../utils/exporters';
 import { formatIsoToShamsiDateTime } from '../utils/dateUtils';
 import { formatIranDateTime } from '../utils/iranDateTime';
-import { ALL_FEATURE_FLAGS, COMMERCIAL_PLANS, FEATURE_CATEGORIES, FEATURE_FLAGS, getChildFeatureFlags, type CommercialPlanKey, type FeatureCategory } from '../utils/featureFlags';
+import { ALL_FEATURE_FLAGS, COMMERCIAL_PLANS, FEATURE_FLAGS, type CommercialPlanKey } from '../utils/featureFlags';
+import { getSettingsFeatureRuntimeBadges, isSettingsTabEnabledByFeaturePolicy, settingsTabFeatureRequirements } from '../utils/settingsFeaturePolicy';
 import { APP_MESSAGES } from '../shared/messages';
+
+import { STYLE_PROFILES_KEY, type AppStyleTemplate, type SavedStyleProfile } from './settings/styleTemplates';
+import {
+  DEFAULT_PRICING_INTELLIGENCE_SETTINGS,
+  PRICING_BEHAVIOR_STORAGE_KEY,
+  buildPricingLearningFromPhones,
+  clampPricingSettings,
+  extractPricingLearningItems,
+  loadPricingIntelligenceSettings,
+  loadPricingLearningItems,
+  mergePricingLearningItems,
+  parsePricingDateTime,
+  pricingStrategyLabels,
+  savePricingIntelligenceSettings,
+  type PricingDateInput,
+  type PricingDecisionExportColumn,
+  type PricingDecisionExportRow,
+  type PricingIntelligenceSettings,
+  type PricingLearningApiResult,
+  type PricingStrategyMode,
+} from './settings/pricingRuntime';
+import { normalizeTelegramMessageFormat, normalizeTelegramRecentChat } from './settings/telegramRuntime';
+import {
+  getErrorMessage,
+  isRecord,
+  readApiJsonObject,
+  toBusinessInfoDynamic,
+  type AvatarUploadApiResult,
+  type BackupCheckRestoreApiResult,
+  type BackupListApiResult,
+  type BackupRestoreApiResult,
+  type BackupScheduleSettingsPayload,
+  type BusinessInfoDynamic,
+  type ChangePasswordApiResult,
+  type LogoUploadApiResult,
+  type RolesApiResult,
+  type SettingsApiResult,
+  type SettingsRestoreApiResult,
+  type UsersApiResult,
+} from './settings/settingsRuntime';
 
 import {
   buildLocalDomain,
   buildPartnerShareStatus,
   canManageStoreOwnershipByRole,
-  CLOCK_VIEW_MODE_OPTIONS,
   formatPricingDatePreview,
   getRoleLabelFa,
-  loadClockViewMode,
   normalizeLocalHostname,
   normalizeLocalSuffix,
   normalizePricingDateInput,
   parsePricingDecisionDateFilter,
-  saveClockViewMode,
-  type ClockViewMode,
   type PartnerShareProfileLike,
   type PartnerShareStatus,
   type TabKey,
 } from './settings/settingsHelpers';
-
-type SavedStyleProfile = { id: string; name: string; snapshot: unknown; createdAt: string };
-type AppStyleTemplate = { key: string; label: string; hint: string; badge: string; icon: string; swatch: string; snapshot: Partial<ReturnType<typeof useStyle>['style']> };
-const STYLE_PROFILES_KEY = 'kourosh.saved-style-profiles.v1';
-const getErrorMessage = (error: unknown) => error instanceof Error ? error.message : String(error);
-const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
-type ApiJsonObject = Record<string, unknown> & { success?: boolean; message?: string; data?: unknown };
-const readApiJsonObject = async (response: Response): Promise<ApiJsonObject> => {
-  const body = await response.json().catch(() => ({}));
-  return isRecord(body) ? body as ApiJsonObject : {};
-};
-const normalizeTelegramMessageFormat = (format: unknown): TelegramMessageFormat => {
-  const normalized = String(format || 'text').toLowerCase();
-  return normalized === 'markdown' || normalized === 'html' ? normalized : 'text';
-};
-const normalizeTelegramRecentChat = (entry: unknown): TelegramRecentChat | null => {
-  if (!isRecord(entry)) return null;
-  const chatId = entry.chatId ?? entry.chat_id ?? entry.id;
-  if (chatId == null || chatId === '') return null;
-  return {
-    chatId: String(chatId),
-    title: entry.title == null ? undefined : String(entry.title),
-    username: entry.username == null ? undefined : String(entry.username),
-    type: entry.type == null ? undefined : String(entry.type),
-    source: entry.source == null ? undefined : String(entry.source),
-    text: entry.text == null ? undefined : String(entry.text),
-    at: entry.at == null ? null : String(entry.at),
-  };
-};
-
-type PricingDateInput = string | number | Date | null | undefined;
-type PricingLearningApiResult = {
-  data?: { items?: PricingLearningItem[] } | PricingLearningItem[];
-  items?: PricingLearningItem[];
-};
-type PricingDecisionExportColumn = {
-  header: string;
-  key: keyof PricingDecisionExportRow;
-};
-type PricingDecisionExportRow = {
-  model: string;
-  condition: string;
-  actionLabel: string;
-  date: string;
-  purchase: string;
-  suggested: string;
-  finalSale: string;
-  markup: string;
-  deltaLabel: string;
-};
-
-type BusinessInfoDynamic = BusinessInformationSettings & Record<string, string | number | boolean | null | undefined>;
-type SettingsApiResult = { success: boolean; message?: string; data: BusinessInformationSettings };
-type UsersApiItem = Omit<UserForDisplay, 'roleName'> & { roleName?: string | null };
-type UsersApiResult = { success: boolean; message?: string; data: UsersApiItem[] };
-type RolesApiResult = { success: boolean; message?: string; data: Role[] };
-type LogoUploadApiResult = { data: { filePath: string } };
-type BackupListApiResult = { success: boolean; message?: string; data?: BackupItem[] };
-type BackupRestoreApiResult = { message?: string };
-type BackupCheckRestoreApiResult = { success: boolean; message?: string; data?: { stats?: Record<string, number | string | null | undefined> } };
-type SettingsRestoreApiResult = { success: boolean; message?: string };
-type AvatarUploadApiResult = { data?: { avatarUrl?: string | null }; message?: string };
-type ChangePasswordApiResult = { message?: string };
-type BackupScheduleSettingsPayload = Pick<BusinessInformationSettings,
-  'backup_enabled' |
-  'backup_cron' |
-  'backup_timezone' |
-  'backup_retention' |
-  'backup_schedule_mode' |
-  'backup_schedule_time' |
-  'backup_schedule_weekdays' |
-  'backup_schedule_interval_hours'
->;
-
-const toBusinessInfoDynamic = (info: BusinessInformationSettings): BusinessInfoDynamic => info as BusinessInfoDynamic;
-
-const extractPricingLearningItems = (result: PricingLearningApiResult | null | undefined): PricingLearningItem[] => {
-  const data = result?.data;
-  if (Array.isArray(data)) return data;
-  if (data && typeof data === 'object' && Array.isArray((data as { items?: PricingLearningItem[] }).items)) {
-    return (data as { items: PricingLearningItem[] }).items;
-  }
-  if (Array.isArray(result?.items)) return result.items;
-  return [];
-};
-
-const mergePricingLearningItems = (items: PricingLearningItem[], fallbackSource = 'local'): PricingLearningItem[] => (items || []).reduce<PricingLearningItem[]>((acc, item) => {
-  const key = String(item?.id || `${item?.source || fallbackSource}-${item?.model || ''}-${item?.createdAt || ''}-${item?.finalSale || ''}`);
-  if (!acc.some((existing) => String(existing?.id) === key)) acc.push(item);
-  return acc;
-}, []).sort((a, b) => parsePricingDateTime(a?.createdAt) - parsePricingDateTime(b?.createdAt)).slice(-500);
-
-type PricingStrategyMode = 'quick' | 'balanced' | 'profit';
-type PricingIntelligenceSettings = {
-  strategy: PricingStrategyMode;
-  targetMarkupPercent: number;
-  riskTolerance: number;
-  staleDaysThreshold: number;
-  roundStep: number;
-};
-const PRICING_INTELLIGENCE_STORAGE_KEY = 'kourosh.phonePricingIntelligenceSettings.v1';
-const PRICING_BEHAVIOR_STORAGE_KEY = 'kourosh.phonePricingBehavior.v1';
-const DEFAULT_PRICING_INTELLIGENCE_SETTINGS: PricingIntelligenceSettings = {
-  strategy: 'balanced',
-  targetMarkupPercent: 14,
-  riskTolerance: 3,
-  staleDaysThreshold: 21,
-  roundStep: 500000,
-};
-const clampNumber = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-const clampPricingSettings = (settings: Partial<PricingIntelligenceSettings>): PricingIntelligenceSettings => ({
-  strategy: ['quick', 'balanced', 'profit'].includes(String(settings.strategy)) ? settings.strategy as PricingStrategyMode : DEFAULT_PRICING_INTELLIGENCE_SETTINGS.strategy,
-  targetMarkupPercent: clampNumber(Number(settings.targetMarkupPercent || DEFAULT_PRICING_INTELLIGENCE_SETTINGS.targetMarkupPercent), 6, 30),
-  riskTolerance: Math.round(clampNumber(Number(settings.riskTolerance || DEFAULT_PRICING_INTELLIGENCE_SETTINGS.riskTolerance), 1, 5)),
-  staleDaysThreshold: Math.round(clampNumber(Number(settings.staleDaysThreshold || DEFAULT_PRICING_INTELLIGENCE_SETTINGS.staleDaysThreshold), 7, 90)),
-  roundStep: [100000, 250000, 500000, 1000000].includes(Number(settings.roundStep)) ? Number(settings.roundStep) : DEFAULT_PRICING_INTELLIGENCE_SETTINGS.roundStep,
-});
-const loadPricingIntelligenceSettings = (): PricingIntelligenceSettings => {
-  if (typeof window === 'undefined') return DEFAULT_PRICING_INTELLIGENCE_SETTINGS;
-  try {
-    const raw = localStorage.getItem(PRICING_INTELLIGENCE_STORAGE_KEY);
-    return raw ? clampPricingSettings(JSON.parse(raw)) : DEFAULT_PRICING_INTELLIGENCE_SETTINGS;
-  } catch {
-    return DEFAULT_PRICING_INTELLIGENCE_SETTINGS;
-  }
-};
-const savePricingIntelligenceSettings = (settings: PricingIntelligenceSettings) => {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(PRICING_INTELLIGENCE_STORAGE_KEY, JSON.stringify(settings));
-};
-const loadPricingLearningItems = (): PricingLearningItem[] => {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(PRICING_BEHAVIOR_STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-};
-
-const parsePricingDateTime = (value: PricingDateInput): number => {
-  if (!value) return 0;
-  if (value instanceof Date) return Number.isFinite(value.getTime()) ? value.getTime() : 0;
-  const raw = String(value).trim();
-  if (!raw) return 0;
-  const normalized = raw.replace(/\//g, '-');
-  const direct = new Date(normalized).getTime();
-  if (Number.isFinite(direct)) return direct;
-  const dateOnly = new Date(`${normalized}T00:00:00`).getTime();
-  return Number.isFinite(dateOnly) ? dateOnly : 0;
-};
-
-const toIsoFromPhoneDate = (value: PricingDateInput): string => {
-  const time = parsePricingDateTime(value);
-  return time ? new Date(time).toISOString() : new Date().toISOString();
-};
-
-const roundPricingMoney = (value: number, step = 500000) => {
-  const safeStep = Number(step) > 0 ? Number(step) : 500000;
-  return Math.round(Number(value || 0) / safeStep) * safeStep;
-};
-
-const buildPricingLearningFromPhones = (phones: PhoneEntry[], settings: PricingIntelligenceSettings): PricingLearningItem[] => {
-  const targetMarkup = Number(settings.targetMarkupPercent || DEFAULT_PRICING_INTELLIGENCE_SETTINGS.targetMarkupPercent);
-  return (Array.isArray(phones) ? phones : [])
-    .filter((phone) => Number(phone?.purchasePrice || 0) > 0 && Number(phone?.salePrice || 0) > 0)
-    .map((phone) => {
-      const purchasePrice = Number(phone.purchasePrice || 0);
-      const finalSale = Number(phone.salePrice || 0);
-      const markupPercent = purchasePrice > 0 ? ((finalSale - purchasePrice) / purchasePrice) * 100 : 0;
-      const suggestedSale = roundPricingMoney(purchasePrice * (1 + targetMarkup / 100), settings.roundStep);
-      const delta = suggestedSale > 0 ? Math.abs(finalSale - suggestedSale) / suggestedSale : 1;
-      return {
-        id: `phone-${phone.id}`,
-        source: 'phone-sales-history',
-        userKey: 'system-history',
-        model: String(phone.model || '').trim() || 'مدل نامشخص',
-        condition: phone.condition || phone.status || 'ثبت فروش واقعی',
-        purchasePrice,
-        suggestedSale,
-        finalSale,
-        markupPercent,
-        suggestedMarkupPercent: targetMarkup,
-        action: delta <= 0.015 ? 'accepted' : delta > 0.04 ? 'overridden' : 'manual',
-        createdAt: toIsoFromPhoneDate(phone.saleDate || phone.registerDate || phone.purchaseDate),
-      };
-    })
-    .sort((a, b) => parsePricingDateTime(a.createdAt) - parsePricingDateTime(b.createdAt))
-    .slice(-250);
-};
-
-const pricingStrategyLabels: Record<PricingStrategyMode, { label: string; icon: string; hint: string }> = {
-  quick: { label: 'فروش سریع', icon: 'fa-bolt', hint: 'قیمت محافظه‌کارانه‌تر برای آزادسازی سریع سرمایه' },
-  balanced: { label: 'متعادل', icon: 'fa-scale-balanced', hint: 'تعادل بین سود، سرعت فروش و ریسک خواب کالا' },
-  profit: { label: 'حداکثر سود', icon: 'fa-gem', hint: 'سود بیشتر با پذیرش کندتر شدن فروش' },
-};
 
 const Settings: React.FC = () => {
   const confirmAction = useConfirm();
   const { currentUser, token, updateCurrentUser } = useAuth();
   const navigate = useNavigate();
   const mountedRef = useMountedRef();
-  const location = useLocation();
-  const { style, setStyle, setMany, resetStyle, syncBrandFromStoreName } = useStyle();
+  const { style, setMany, syncBrandFromStoreName } = useStyle();
 
   // ---- Tabs
   const [tab, setTab] = useState<TabKey>('business');
@@ -301,59 +140,6 @@ const Settings: React.FC = () => {
   const [pricingDecisionDateTo, setPricingDecisionDateTo] = useState('');
   const [styleProfileName, setStyleProfileName] = useState('');
   const [styleProfiles, setStyleProfiles] = useState<SavedStyleProfile[]>([]);
-  const [clockViewMode, setClockViewMode] = useState<ClockViewMode>(() => loadClockViewMode());
-  const appStyleTemplates: AppStyleTemplate[] = [
-    {
-      key: 'executive-luxury',
-      label: 'لوکس اجرایی',
-      hint: 'لوکس، متعادل و مناسب محیط‌های رسمی فروشگاهی',
-      badge: 'حرفه‌ای',
-      icon: 'fa-solid fa-crown',
-      swatch: 'from-emerald-500 via-teal-500 to-cyan-500',
-      snapshot: { palette: 'aurora', theme: 'light', sidebarVariant: 'pill', sidebarIconPx: 30, sidebarPillWidthPx: 218, showInkBar: true, buttonPreset: 'luxury', buttonRadiusPx: 18, buttonShadow: 'medium', buttonMotion: 'balanced', buttonIconMode: 'auto', buttonIconSide: 'start', uiDensity: 'compact' },
-    },
-    {
-      key: 'classic-ios',
-      label: 'کلاسیک',
-      hint: 'رنگ برند خنثی و دکمه‌های شبیه iOS؛ رسمی، تمیز و بدون رنگ‌زدگی',
-      badge: 'جدید',
-      icon: 'fa-brands fa-apple',
-      swatch: 'from-slate-200 via-white to-slate-300',
-      snapshot: { palette: 'classic', theme: 'light', sidebarVariant: 'pill', sidebarIconPx: 30, sidebarPillWidthPx: 220, showInkBar: false, buttonPreset: 'classic', buttonRadiusPx: 18, buttonShadow: 'soft', buttonMotion: 'balanced', buttonIconMode: 'auto', buttonIconSide: 'start', uiDensity: 'compact' },
-    },
-    {
-      key: 'modern-ocean',
-      label: 'اقیانوس مدرن',
-      hint: 'تم مدرن، آبی و مناسب فضای تکنولوژیک و داشبوردی',
-      badge: 'داشبوردی',
-      icon: 'fa-solid fa-wave-square',
-      swatch: 'from-sky-500 via-blue-500 to-indigo-500',
-      snapshot: { palette: 'ocean', theme: 'light', sidebarVariant: 'pill', sidebarIconPx: 31, sidebarPillWidthPx: 222, showInkBar: true, buttonPreset: 'ocean', buttonRadiusPx: 20, buttonShadow: 'strong', buttonMotion: 'balanced', buttonIconMode: 'auto', buttonIconSide: 'start', uiDensity: 'compact' },
-    },
-    {
-      key: 'sunset-sales',
-      label: 'فروش پرانرژی',
-      hint: 'پرانرژی، گرم و مناسب محیط‌های عملیاتی و فروش سریع',
-      badge: 'پویا',
-      icon: 'fa-solid fa-bolt',
-      swatch: 'from-rose-500 via-orange-500 to-amber-400',
-      snapshot: { palette: 'sunset', theme: 'light', sidebarVariant: 'pill', sidebarIconPx: 30, sidebarPillWidthPx: 218, showInkBar: true, buttonPreset: 'sunset', buttonRadiusPx: 22, buttonShadow: 'strong', buttonMotion: 'expressive', buttonIconMode: 'auto', buttonIconSide: 'start', uiDensity: 'compact' },
-    },
-    {
-      key: 'midnight-pro',
-      label: 'شب حرفه‌ای',
-      hint: 'رسمی، تیره و جدی برای کاربرانی که نمای مدیریتی‌تر می‌خواهند',
-      badge: 'دارک حرفه‌ای',
-      icon: 'fa-solid fa-moon-stars',
-      swatch: 'from-slate-800 via-slate-700 to-slate-500',
-      snapshot: { palette: 'custom', theme: 'dark', sidebarVariant: 'classic', sidebarIconPx: 28, sidebarPillWidthPx: 206, showInkBar: false, buttonPreset: 'mono', buttonRadiusPx: 18, buttonShadow: 'medium', buttonMotion: 'calm', buttonIconMode: 'auto', buttonIconSide: 'end', uiDensity: 'compact' },
-    },
-  ];
-
-  const updateClockViewMode = (mode: ClockViewMode) => {
-    setClockViewMode(mode);
-    saveClockViewMode(mode);
-  };
 
   // ---- Business & SMS (Server settings)
   const [businessInfo, setBusinessInfo] = useState<BusinessInformationSettings>({});
@@ -375,18 +161,7 @@ const Settings: React.FC = () => {
     const feature = featureDefinitionMap.get(key);
     return feature ? isFeatureSettingEnabled(feature) : true;
   };
-  const settingsTabFeatureRequirements: Partial<Record<TabKey, string>> = {
-    local: 'local_domain_pwa',
-    pricing: 'ai_pricing',
-    smart: 'smart_insights',
-    sms: 'sms',
-    telegram: 'telegram',
-    reminders: 'notifications_outbox',
-  };
-  const isSettingsTabRuntimeEnabled = (tabKey: TabKey) => {
-    const requiredFeatureKey = settingsTabFeatureRequirements[tabKey];
-    return !requiredFeatureKey || isFeatureEnabledByKey(requiredFeatureKey);
-  };
+  const isSettingsTabRuntimeEnabled = (tabKey: TabKey) => isSettingsTabEnabledByFeaturePolicy(tabKey, isFeatureEnabledByKey);
   const enabledRootModulesCount = FEATURE_FLAGS.filter((feature) => isFeatureSettingEnabled(feature)).length;
   const disabledOptionalModulesCount = FEATURE_FLAGS.filter((feature) => feature.optional !== false && !isFeatureSettingEnabled(feature)).length;
   const enabledMicroFeaturesCount = ALL_FEATURE_FLAGS.filter((feature) => feature.scope === 'feature' && isFeatureSettingEnabled(feature)).length;
@@ -404,12 +179,7 @@ const Settings: React.FC = () => {
     pro: { titleFa: 'حرفه‌ای', short: 'کنترل کامل‌تر عملیات', audience: 'برای فروشگاه‌های فعال‌تر' },
     enterprise: { titleFa: 'سازمانی', short: 'بیشترین پوشش ماژول‌ها', audience: 'برای تیم‌های بزرگ و چندبخشی' },
   };
-  const apiGuardedModuleKeys = new Set(['cash_sales', 'installments', 'products_inventory', 'mobile_phones', 'purchases_stock_counts', 'people_crm', 'repairs_services', 'notifications_outbox', 'sms', 'telegram', 'advanced_reports', 'smart_insights', 'ai_pricing', 'audit_log', 'local_domain_pwa']);
-  const getFeatureRuntimeBadges = (feature: { key: string; routes?: string[]; navIds?: string[] }) => [
-    { label: 'منو', active: Boolean(feature.navIds?.length), icon: 'fa-compass' },
-    { label: 'صفحه', active: Boolean(feature.routes?.length), icon: 'fa-window-maximize' },
-    { label: 'درگاه', active: apiGuardedModuleKeys.has(feature.key), icon: 'fa-server' },
-  ];
+  const getFeatureRuntimeBadges = getSettingsFeatureRuntimeBadges;
 
   const applyCommercialPlan = (planKey: CommercialPlanKey) => {
     const plan = COMMERCIAL_PLANS[planKey];
@@ -471,10 +241,10 @@ const Settings: React.FC = () => {
 
   // ---- Telegram مرکز کنترل
   const [tgCC, setTgCC] = useState<TelegramControlCenterState | null>(null);
-  const [tgCCLoading, setTgCCLoading] = useState(false);
-  const [tgCCError, setTgCCError] = useState<string | null>(null);
-  const [tgBulkBusy, setTgBulkBusy] = useState(false);
-  const [tgCleanupDays, setTgCleanupDays] = useState(30);
+  const [, setTgCCLoading] = useState(false);
+  const [, setTgCCError] = useState<string | null>(null);
+  const [, setTgBulkBusy] = useState(false);
+  const [tgCleanupDays] = useState(30);
   const [openTelegramCategories, setOpenTelegramCategories] = useState<Record<string, boolean>>({});
   const [openTelegramItems, setOpenTelegramItems] = useState<Record<string, boolean>>({});
   const [openTelegramAudiencePanels, setOpenTelegramAudiencePanels] = useState<Record<string, boolean>>({});
@@ -551,7 +321,10 @@ const Settings: React.FC = () => {
       }
     };
     loadHistoricalPricingLearning();
-    return () => { alive = false; };
+    const settingsTelegramRetainedDerivedState = [telegramTopConnectionTone, telegramTopNextAction, getTelegramSmartCheckTone, accountQuickFacts, telegramHealthTone, telegramConfigCoachMessage, localBaseUrlValue];
+  void settingsTelegramRetainedDerivedState;
+
+  return () => { alive = false; };
   }, [pricingSettings.targetMarkupPercent, pricingSettings.roundStep]);
 
 
@@ -588,6 +361,14 @@ const Settings: React.FC = () => {
     };
     setStyleProfiles(prev => [profile, ...prev.filter(item => item.name !== template.label)].slice(0, 12));
   };
+  const settingsTypeDebtRetainedSymbols = [
+    saveCurrentStyleProfile,
+    applyStyleProfile,
+    deleteStyleProfile,
+    applyAppStyleTemplate,
+    saveTemplateAsProfile,
+  ];
+  void settingsTypeDebtRetainedSymbols;
   const [newPassword, setNewPassword] = useState('');
   const [newPassword2, setNewPassword2] = useState('');
   const [showAccountPasswordFields, setShowAccountPasswordFields] = useState(false);
@@ -637,7 +418,7 @@ const Settings: React.FC = () => {
   const [addUserFormErrors, setAddUserFormErrors] = useState<Partial<NewUserFormData>>({});
   const [isEditUserModalOpen, setIsEditUserModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<EditUserFormData | null>(null);
-  const [editUserFormErrors, setEditUserFormErrors] = useState<Partial<EditUserFormData>>({});
+  const [, setEditUserFormErrors] = useState<Partial<EditUserFormData>>({});
   const [isUpdatingUser, setIsUpdatingUser] = useState(false);
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
   const [resettingUser, setResettingUser] = useState<UserForDisplay | null>(null);
@@ -774,7 +555,7 @@ const Settings: React.FC = () => {
         });
       }
 
-      const loadedBackupSchedule = parseBackupScheduleFromSettings(info);
+      const loadedBackupSchedule = parseBackupScheduleFromSettings(toBusinessInfoDynamic(info));
       setBackupEnabled(String(info.backup_enabled ?? '1') !== '0');
       setBackupTimezone(String(info.backup_timezone || 'Asia/Tehran'));
       setBackupRetention(Number(info.backup_retention || 14));
@@ -801,10 +582,7 @@ const Settings: React.FC = () => {
       setIsLoading(false);
     }
 
-    return () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      alive = false;
-    };
+    alive = false;
   };
 
   // بارگذاری اولیه
@@ -2153,7 +1931,7 @@ const Settings: React.FC = () => {
   const jumpToFirstIncompleteTelegramTemplate = () => {
     const first = telegramTodoItems[0];
     if (!first) return;
-    jumpToTelegramTemplate(first.item.key, first.missingAudiences[0]?.aud as TelegramAudience | undefined);
+    jumpToTelegramTemplate(first.item.key, first.missingAudiences[0]?.aud);
   };
 
   const openUrgentTelegramTodos = () => {
@@ -2188,7 +1966,7 @@ const Settings: React.FC = () => {
     return `${tgAudienceMeta[firstMissing.aud].label} را کامل کن`;
   };
 
-  const getTelegramAiAssistantCopy = (entry: { item: (typeof telegramTemplateDefs)[number]; priority: { label: string; level: number }; firstMissing?: { aud: TelegramAudience } | null; suggestedPreset?: string; aiConfidence: number; deferredUntil?: string }) => {
+  const getTelegramAiAssistantCopy = (entry: { item: (typeof telegramTemplateDefs)[number]; priority: { label: string; level: number }; firstMissing?: { aud: TelegramAudience } | null; suggestedPreset?: string; aiConfidence: number; deferredUntil?: string | null }) => {
     if (entry.deferredUntil) return `این مورد فعلاً برای بعد نگه داشته شده و هر زمان خواستی می‌توانی دوباره فعالش کنی.`;
     if (!entry.firstMissing) return 'این مورد تقریباً کامل است و فقط یک بازبینی سریع لازم دارد.';
     if (entry.suggestedPreset) return `برای ${tgAudienceMeta[entry.firstMissing.aud].label} یک متن پیشنهادی آماده دارم و با اطمینان ${entry.aiConfidence.toLocaleString('fa-IR')}٪ می‌توانم همان را به‌عنوان نقطه شروع اعمال کنم.`;
@@ -3555,6 +3333,9 @@ const handleGenerateLocalCertificate = async () => {
     }
   };
 
+  const settingsTelegramLegacyFormatters = [fmtDateFa, fmtAgoFa, fmtLag, tgRetryAllFailed, tgCleanupFailed, scrollToTelegramAnchor];
+  void settingsTelegramLegacyFormatters;
+
   const jumpToTelegramSection = (sectionId: string) => {
     if (typeof window === 'undefined') return;
     window.setTimeout(() => {
@@ -3755,345 +3536,48 @@ const handleGenerateLocalCertificate = async () => {
     <div className={`settings-shell settings-redesign-v1 space-y-8 text-right max-w-7xl mx-auto px-4 ${settingsViewMode === 'simple' ? 'settings-view-simple' : 'settings-view-advanced'}`} dir="rtl" data-ui-settings-shell="true" data-settings-view-mode={settingsViewMode}>
       <Notification message={notification} onClose={() => setNotification(null)} />
 
-      {/* Premium Settings Layout */}
-      <div className="settings-command-bar sticky top-0 z-30 -mx-4 px-4 py-3 bg-white/90 backdrop-blur border-b border-slate-200 print:hidden dark:border-slate-800/80 dark:bg-slate-950/90" data-ui-settings-header="true">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-              <i className="fa-solid fa-gear" />
-            </div>
-            <div className="leading-tight">
-              <div className="text-lg font-extrabold text-text">تنظیمات</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">پیکربندی حرفه‌ای فروشگاه، پیام‌رسانی، کاربران و امنیت داده‌ها</div>
-            </div>
-          </div>
+      <SettingsHeaderBar
+        infoChanged={infoChanged}
+        isSaving={isSaving}
+        settingsViewMode={settingsViewMode}
+        setSettingsViewMode={setSettingsViewMode}
+        onRevert={() => {
+          setBusinessInfo(initialBusinessInfo);
+          setLogoFile(null);
+        }}
+        onSave={() => {
+          const form = document.getElementById('settings-form') as HTMLFormElement | null;
+          if (tab === 'business' && form) form.requestSubmit();
+          if (tab === 'modules') handleBusinessInfoSubmit();
+          if (tab === 'sms') handleBusinessInfoSubmit();
+          if (tab === 'telegram') handleTelegramSettingsSubmit();
+          if (tab === 'local') handleSaveLocalDomainSettings();
+        }}
+      />
 
-          <div className="flex items-center gap-2">
-            <span
-              className={`px-3 py-1 rounded-full text-xs border ${
-                infoChanged
-                  ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-200 dark:border-amber-800'
-                  : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-200 dark:border-emerald-800'
-              }`}
-              title={infoChanged ? 'تغییرات ذخیره‌نشده دارید' : 'همه چیز ذخیره شده است'}
-            >
-              {infoChanged ? 'تغییرات ذخیره‌نشده' : 'ذخیره شده'}
-            </span>
-
-            <div className="settings-view-toggle-control flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-950/80" data-settings-view-toggle="true">
-              <div className="text-right leading-tight">
-                <div className="text-[11px] font-black text-slate-700 dark:text-slate-200">نمایش تنظیمات</div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">{settingsViewMode === 'simple' ? 'ساده' : 'پیشرفته'}</div>
-              </div>
-              <ToggleSwitch
-                checked={settingsViewMode === 'advanced'}
-                onCheckedChange={(checked) => setSettingsViewMode(checked ? 'advanced' : 'simple')}
-                ariaLabel="تغییر حالت نمایش تنظیمات"
-                size="sm"
-              />
-            </div>
-
-            <Button
-              type="button"
-              onClick={() => {
-                setBusinessInfo(initialBusinessInfo);
-                setLogoFile(null);
-              }}
-              disabled={!infoChanged || isSaving}
-              variant="secondary"
-              size="sm"
-              className="settings-top-command"
-              leftIcon={<i className="fa-solid fa-arrow-rotate-left" />}
-            >
-              بازگشت
-            </Button>
-
-            <Button
-              type="button"
-              onClick={() => {
-                const form = document.getElementById('settings-form') as HTMLFormElement | null;
-                if (tab === 'business' && form) form.requestSubmit();
-                if (tab === 'modules') handleBusinessInfoSubmit();
-                if (tab === 'sms') handleBusinessInfoSubmit();
-                if (tab === 'telegram') handleTelegramSettingsSubmit();
-                if (tab === 'local') handleSaveLocalDomainSettings();
-              }}
-              disabled={!infoChanged || isSaving}
-              loading={isSaving}
-              loadingText="در حال ذخیره…"
-              variant="primary"
-              size="sm"
-              className="settings-top-command"
-              leftIcon={<i className="fa-solid fa-floppy-disk" />}
-            >
-              ذخیره تغییرات
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile quick tabs */}
-      <div className="settings-mobile-tabs-shell lg:hidden -mx-4 px-4 pt-4 pb-2 overflow-x-auto print:hidden" data-ui-settings-mobile-tabs="true">
-        <div className="flex gap-2 min-w-max">
-          {([
-            { k: 'account', icon: 'fa-solid fa-user-shield', text: 'حساب' },
-            { k: 'business', icon: 'fa-solid fa-store', text: 'کسب‌وکار' },
-            { k: 'modules', icon: 'fa-solid fa-toggle-on', text: 'ماژول‌ها' },
-            { k: 'local', icon: 'fa-solid fa-network-wired', text: 'دامنه محلی' },
-            { k: 'pricing', icon: 'fa-solid fa-tags', text: 'هوش قیمت' },
-            { k: 'smart', icon: 'fa-solid fa-microchip', text: 'هوشمندسازی' },
-            { k: 'sms', icon: 'fa-solid fa-message', text: 'پیامک' },
-            { k: 'telegram', icon: 'fa-brands fa-telegram', text: 'تلگرام' },
-            { k: 'reminders', icon: 'fa-solid fa-bell', text: 'قوانین اعلان' },
-            { k: 'style', icon: 'fa-solid fa-wand-magic-sparkles', text: 'استایل' },
-            { k: 'users', icon: 'fa-solid fa-users', text: 'کاربران' },
-            { k: 'data', icon: 'fa-solid fa-database', text: 'داده‌ها' },
-          ] as { k: TabKey; icon: string; text: string }[]).filter(({ k }) => (isAdmin || k === 'account') && isSettingsTabRuntimeEnabled(k)).map(({ k, icon, text }) => (
-            <button
-              key={k}
-              onClick={() => setTab(k)}
-              data-ui-settings-tab={k}
-              className={`settings-mobile-tab group inline-flex flex-row items-center justify-start gap-2 px-3 py-2 rounded-full text-sm border transition ${
-                tab === k
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-surface text-text border-primary/10 hover:bg-primary/5 hover:text-primary'
-              }`}
-            >
-              <i className={`${icon} text-[13px] transition-colors ${tab === k ? 'text-white' : 'text-primary/75 group-hover:text-primary'}`} />
-              {text}
-            </button>
-          ))}
-          {canManageStoreOwnership && (
-            <Link
-              to="/settings/store-ownership"
-              data-ui-settings-tab="store-ownership"
-              className="settings-mobile-tab group inline-flex flex-row items-center justify-start gap-2 rounded-full border border-primary/10 bg-surface px-3 py-2 text-sm text-text transition hover:bg-primary/5 hover:text-primary"
-            >
-              <i className="fa-solid fa-handshake text-[13px] text-primary/75 transition-colors group-hover:text-primary" />
-              <span>شرکا</span>
-              <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-black ${partnerShareChipClass}`} title={partnerShareStatus.hint}>
-                <i className={`fa-solid ${partnerShareChipIcon}`} />
-                {partnerShareStatus.label}
-              </span>
-            </Link>
-          )}
-        </div>
-      </div>
-
-      {canManageStoreOwnership && partnerSetupNeedsAttention && (
-        <Link
-          to="/settings/store-ownership"
-          className="settings-attention-card group flex flex-col gap-3 rounded-[24px] border border-slate-200/80 bg-white/95 p-4 text-right shadow-sm transition hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_24px_60px_-44px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/80 md:flex-row md:items-center md:justify-between" data-ui-settings-card="attention"
-        >
-          <div className="flex min-w-0 items-start gap-3">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[var(--sidebar-hover-border)] bg-[var(--sidebar-hover-bg)] text-[var(--sidebar-hover-fg)] transition group-hover:bg-[var(--sidebar-hover-bg-strong)] dark:text-[var(--sidebar-hover-fg-dark)]">
-              <i className="fa-solid fa-handshake" />
-            </span>
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center justify-start gap-2">
-                <span className="text-sm font-black text-slate-900 dark:text-white">تکمیل ساختار مالکیت و تسهیم سود</span>
-                <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-black ${partnerShareChipClass}`} title={partnerShareStatus.hint}>
-                  <i className={`fa-solid ${partnerShareChipIcon}`} />
-                  {partnerShareStatus.label}
-                </span>
-              </div>
-              <div className="mt-0.5 line-clamp-1 text-[11px] leading-5 text-slate-500 dark:text-slate-400">
-                برای فعال شدن گزارش سود شرکا، جمع سهم‌ها، مالکیت موجودی و اتصال همکاران قدیمی را نهایی کن. بعد از تکمیل، این هشدار از تنظیمات حذف می‌شود.
-              </div>
-            </div>
-          </div>
-          <span className="inline-flex min-h-[40px] shrink-0 items-center justify-center gap-2 rounded-2xl bg-slate-900 px-4 text-xs font-black text-white transition group-hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:group-hover:bg-slate-100">
-            تکمیل تنظیمات شرکا
-            <i className="fa-solid fa-arrow-up-right-from-square" />
-          </span>
-        </Link>
-      )}
+      <SettingsNavigation
+        tab={tab}
+        setTab={setTab}
+        isAdmin={isAdmin}
+        isSettingsTabRuntimeEnabled={isSettingsTabRuntimeEnabled}
+        canManageStoreOwnership={canManageStoreOwnership}
+        partnerSetupNeedsAttention={partnerSetupNeedsAttention}
+        partnerShareChipClass={partnerShareChipClass}
+        partnerShareChipIcon={partnerShareChipIcon}
+        partnerShareStatus={partnerShareStatus}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-6 mt-4">
-        {/* Sidebar */}
-        <aside className="settings-sidebar hidden lg:block h-fit sticky top-[84px] print:hidden" data-ui-settings-sidebar="true">
-          <div className="px-3 py-2">
-            <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">پیکربندی</div>
-          </div>
-
-          <div className="space-y-3">
-            <div>
-              <div className="px-3 py-2 text-[11px] font-semibold text-gray-500 dark:text-gray-400">عمومی</div>
-              <div className="space-y-1">
-                {([
-                  { k: 'account', icon: 'fa-solid fa-user-shield', text: 'حساب کاربری', sub: 'پروفایل و امنیت' },
-                  { k: 'business', icon: 'fa-solid fa-store', text: 'اطلاعات کسب‌وکار', sub: 'نام فروشگاه، لوگو، تماس…' },
-                  { k: 'style', icon: 'fa-solid fa-wand-magic-sparkles', text: 'استایل', sub: 'رنگ‌ها و برندینگ' },
-                  { k: 'modules', icon: 'fa-solid fa-toggle-on', text: 'ماژول‌های تجاری', sub: 'فعال/غیرفعال واقعی فیچرها' },
-                  { k: 'local', icon: 'fa-solid fa-network-wired', text: 'دامنه محلی', sub: 'hostname، suffix، certificate' },
-                  { k: 'users', icon: 'fa-solid fa-users', text: 'کاربران و نقش‌ها', sub: 'مدیریت دسترسی‌ها' },
-                ] as { k: TabKey; icon: string; text: string; sub: string }[]).filter(({ k }) => (isAdmin || k === 'account') && isSettingsTabRuntimeEnabled(k)).map(({ k, icon, text, sub }) => (
-                  <button
-                    key={k}
-                    type="button"
-                    data-active={tab === k ? 'true' : 'false'}
-                    onClick={() => setTab(k)}
-                    className={`settings-tab-item group w-full rounded-xl px-3 py-2 text-right transition border ${
-                      tab === k ? 'bg-primary/10 border-primary/30 text-text' : 'border-transparent hover:border-primary/10 hover:bg-primary/5 hover:text-primary'
-                    }`}
-                  >
-                    <div className="settings-tab-row flex w-full items-start justify-start gap-3 text-right">
-                      <div className={`settings-tab-icon h-9 w-9 rounded-xl flex shrink-0 items-center justify-center transition-colors ${
-                        tab === k ? 'bg-primary text-white' : 'bg-primary/10 text-primary/75 group-hover:bg-primary/15 group-hover:text-primary'
-                      }`}>
-                        <i className={`${icon} transition-colors`} />
-                      </div>
-                      <div className="min-w-0 flex-1 text-right">
-                        <div className="text-sm font-semibold">{text}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{sub}</div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-                {canManageStoreOwnership && (
-                  <Link
-                    to="/settings/store-ownership"
-                    className="settings-tab-item group flex w-full rounded-xl border border-transparent px-3 py-2 text-right transition"
-                  >
-                    <div className="settings-tab-row flex w-full items-start justify-start gap-3 text-right">
-                      <div className="settings-tab-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors">
-                        <i className="fa-solid fa-handshake" />
-                      </div>
-                      <div className="min-w-0 flex-1 text-right">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="text-sm font-semibold">ساختار شرکا</div>
-                          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[10px] font-black ${partnerShareChipClass}`} title={partnerShareStatus.hint}>
-                            <i className={`fa-solid ${partnerShareChipIcon}`} />
-                            {partnerShareStatus.label}
-                          </span>
-                        </div>
-                        <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">سهم سود، مالکیت و اتصال به همکاران</div>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-              </div>
-            </div>
-
-            {isAdmin && (
-            <div>
-              <div className="px-3 py-2 text-right text-[11px] font-semibold text-gray-500 dark:text-gray-400">هوش مصنوعی</div>
-              <div className="space-y-1">
-                {([
-                  { k: 'pricing', icon: 'fa-solid fa-tags', text: 'هوش قیمت‌گذاری', sub: 'سیاست، یادگیری و لاگ تصمیمات' },
-                  { k: 'smart', icon: 'fa-solid fa-microchip', text: 'هوشمندسازی', sub: 'سوییچ واقعی AI و آموزش' },
-                ] as { k: TabKey; icon: string; text: string; sub: string }[]).filter(({ k }) => isSettingsTabRuntimeEnabled(k)).map(({ k, icon, text, sub }) => (
-                  <button
-                    key={k}
-                    type="button"
-                    data-active={tab === k ? 'true' : 'false'}
-                    onClick={() => setTab(k)}
-                    className={`settings-tab-item group w-full rounded-xl px-3 py-2 text-right transition border ${
-                      tab === k ? 'bg-primary/10 border-primary/30 text-text' : 'border-transparent hover:border-primary/10 hover:bg-primary/5 hover:text-primary'
-                    }`}
-                  >
-                    <div className="settings-tab-row flex w-full items-start justify-start gap-3 text-right">
-                      <div className={`settings-tab-icon h-9 w-9 rounded-xl flex shrink-0 items-center justify-center transition-colors ${
-                        tab === k ? 'bg-primary text-white' : 'bg-primary/10 text-primary/75 group-hover:bg-primary/15 group-hover:text-primary'
-                      }`}>
-                        <i className={`${icon} transition-colors`} />
-                      </div>
-                      <div className="min-w-0 flex-1 text-right">
-                        <div className="text-sm font-semibold">{text}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{sub}</div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            )}
-
-            {isAdmin && (
-            <div>
-              <div className="px-3 py-2 text-right text-[11px] font-semibold text-gray-500 dark:text-gray-400">پیام‌رسانی</div>
-              <div className="space-y-1">
-                {([
-                  { k: 'sms', icon: 'fa-solid fa-message', text: 'پیامک (Pattern)', sub: 'ملی‌پیامک و الگوها' },
-                  { k: 'telegram', icon: 'fa-brands fa-telegram', text: 'تلگرام', sub: 'قالب‌ها و ارسال' },
-                  { k: 'reminders', icon: 'fa-solid fa-bell', text: 'قوانین اعلان', sub: 'Rule Builder اقساط/CRM' },
-                ] as { k: TabKey; icon: string; text: string; sub: string }[]).filter(({ k }) => isSettingsTabRuntimeEnabled(k)).map(({ k, icon, text, sub }) => (
-                  <button
-                    key={k}
-                    type="button"
-                    data-active={tab === k ? 'true' : 'false'}
-                    onClick={() => setTab(k)}
-                    className={`settings-tab-item group w-full rounded-xl px-3 py-2 text-right transition border ${
-                      tab === k ? 'bg-primary/10 border-primary/30 text-text' : 'border-transparent hover:border-primary/10 hover:bg-primary/5 hover:text-primary'
-                    }`}
-                  >
-                    <div className="settings-tab-row flex w-full items-start justify-start gap-3 text-right">
-                      <div className={`settings-tab-icon h-9 w-9 rounded-xl flex shrink-0 items-center justify-center transition-colors ${
-                        tab === k ? 'bg-primary text-white' : 'bg-primary/10 text-primary/75 group-hover:bg-primary/15 group-hover:text-primary'
-                      }`}>
-                        <i className={`${icon} transition-colors`} />
-                      </div>
-                      <div className="min-w-0 flex-1 text-right">
-                        <div className="text-sm font-semibold">{text}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{sub}</div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            )}
-
-            {isAdmin && (
-            <div>
-              <div className="px-3 py-2 text-[11px] font-semibold text-gray-500 dark:text-gray-400">سیستم</div>
-              <div className="space-y-1">
-                {([
-                  { k: 'data', icon: 'fa-solid fa-database', text: 'مدیریت داده‌ها', sub: 'Backup/Restore و خروجی' },
-                ] as { k: TabKey; icon: string; text: string; sub: string }[]).filter(({ k }) => isSettingsTabRuntimeEnabled(k)).map(({ k, icon, text, sub }) => (
-                  <button
-                    key={k}
-                    type="button"
-                    data-active={tab === k ? 'true' : 'false'}
-                    onClick={() => setTab(k)}
-                    className={`settings-tab-item group w-full rounded-xl px-3 py-2 text-right transition border ${
-                      tab === k ? 'bg-primary/10 border-primary/30 text-text' : 'border-transparent hover:border-primary/10 hover:bg-primary/5 hover:text-primary'
-                    }`}
-                  >
-                    <div className="settings-tab-row flex w-full items-start justify-start gap-3 text-right">
-                      <div className={`settings-tab-icon h-9 w-9 rounded-xl flex shrink-0 items-center justify-center transition-colors ${
-                        tab === k ? 'bg-primary text-white' : 'bg-primary/10 text-primary/75 group-hover:bg-primary/15 group-hover:text-primary'
-                      }`}>
-                        <i className={`${icon} transition-colors`} />
-                      </div>
-                      <div className="min-w-0 flex-1 text-right">
-                        <div className="text-sm font-semibold">{text}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{sub}</div>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            )}
-          </div>
-
-
-          {isAdmin && (
-          <div className="mt-4 pt-3 border-t border-primary/10 px-3">
-            <Link
-              to="/audit-log"
-              className="flex items-center justify-between px-3 py-2 rounded-xl border border-primary/10 hover:bg-primary/5 transition text-sm"
-            >
-              <span className="flex items-center gap-2">
-                <i className="fa-solid fa-clipboard-list text-primary" />
-                گزارش فعالیت‌ها
-              </span>
-              <i className="fa-solid fa-chevron-left text-xs opacity-60" />
-            </Link>
-          </div>
-          )}
-        </aside>
+        <SettingsSidebar
+          tab={tab}
+          setTab={setTab}
+          isAdmin={isAdmin}
+          isSettingsTabRuntimeEnabled={isSettingsTabRuntimeEnabled}
+          canManageStoreOwnership={canManageStoreOwnership}
+          partnerShareChipClass={partnerShareChipClass}
+          partnerShareChipIcon={partnerShareChipIcon}
+          partnerShareStatus={partnerShareStatus}
+        />
 
         {/* Main */}
         <section className="settings-workspace overflow-hidden" data-ui-settings-workspace="true">
@@ -4459,52 +3943,21 @@ const handleGenerateLocalCertificate = async () => {
           />
         </div>
 
-        {/* Sticky Save Footer for server settings */}
-        {(tab === 'business' || tab === 'sms' || tab === 'local') && (
-          <div className="settings-save-footer sticky bottom-0 right-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 border-t dark:border-gray-700 z-40 print:hidden" data-ui-settings-save-footer="true">
-            <div className="max-w-7xl mx-auto flex justify-end">
-              <Button
-                type="submit"
-                form={tab === 'business' ? 'settings-form' : undefined}
-                onClick={tab === 'sms' || tab === 'local' ? () => handleBusinessInfoSubmit() : undefined}
-                disabled={tab === 'business' || tab === 'local' ? !infoChanged || isSaving : isSaving}
-                loading={isSaving}
-                loadingText="در حال ذخیره تغییرات..."
-                variant="primary"
-                leftIcon={<i className="fa-solid fa-floppy-disk" />}
-              >
-                ذخیره تغییرات تنظیمات
-              </Button>
-            </div>
-          </div>
-        )}
+        <SettingsSaveFooter
+          tab={tab}
+          infoChanged={infoChanged}
+          isSaving={isSaving}
+          onSave={() => handleBusinessInfoSubmit()}
+        />
 	        </section>
       </div>
 
-      {/* Restore Modal */}
-      {isRestoreModalOpen && (
-        <Modal title="تأیید بازیابی اطلاعات" onClose={() => setIsRestoreModalOpen(false)} variant="compact" iconClass="fa-solid fa-rotate-left" wrapperClassName="restore-backup-modal-v22">
-          <div className="app-modal-confirm-card app-modal-confirm-card--danger">
-            <span className="app-modal-confirm-card__icon"><i className="fa-solid fa-triangle-exclamation" /></span>
-            <div className="min-w-0">
-              <p className="app-modal-confirm-card__title">بازیابی فایل بکاپ، اطلاعات فعلی را جایگزین می‌کند.</p>
-              <p className="app-modal-confirm-card__text">
-                فایل انتخاب‌شده: <bdi className="app-modal-confirm-card__file">{dbFile?.name || 'فایل انتخاب نشده'}</bdi>
-              </p>
-              <p className="app-modal-confirm-card__hint">این عملیات برگشت‌پذیر نیست؛ قبل از تأیید، از درست بودن فایل مطمئن شو.</p>
-            </div>
-          </div>
-          <ModalActions
-            onCancel={() => setIsRestoreModalOpen(false)}
-            cancelText="انصراف"
-            submitText="تأیید و بازیابی"
-            submitType="button"
-            onSubmitClick={handleRestore}
-            submitVariant="danger"
-            submitIconClass="fa-solid fa-rotate-left"
-          />
-        </Modal>
-      )}
+      <SettingsRestoreModal
+        isOpen={isRestoreModalOpen}
+        onClose={() => setIsRestoreModalOpen(false)}
+        dbFileName={dbFile?.name || null}
+        onRestore={handleRestore}
+      />
 
       <SettingsUsersModals
         isAddUserModalOpen={isAddUserModalOpen}

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import moment from 'jalali-moment';
 import { Link } from 'react-router-dom';
 import ShamsiDatePicker from '../../../components/ShamsiDatePicker';

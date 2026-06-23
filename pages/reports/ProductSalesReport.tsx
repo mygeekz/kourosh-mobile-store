@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import moment from 'jalali-moment';
@@ -553,7 +553,7 @@ export default function ProductSalesReport() {
     const received = Math.max(0, Number(r.receivedAmount || 0));
     const collectionRate = afterDiscount > 0 ? Math.min(100, (received / afterDiscount) * 100) : Number(r.collectionRate || 0);
     const profit = getRowProfitBreakdown(r);
-    return { quantity, unitPrice, gross, itemDiscount, beforeGlobal, invoiceShare, invoiceDiscountBase, orderDiscount, shareRate, effectiveDiscountRate, totalDiscount, afterDiscount, received, collectionRate, ...profit };
+    return { quantity, unitPrice, gross, itemDiscount, beforeGlobal, invoiceShare, invoiceDiscountBase, orderDiscount, shareRate, effectiveDiscountRate, totalDiscount, afterDiscount, received, ...profit, collectionRate };
   };
 
   const fetchData = async () => {

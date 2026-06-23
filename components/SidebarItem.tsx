@@ -1,6 +1,8 @@
 // SidebarItem.tsx
 import React from 'react';
 import clsx from 'clsx';
+import type { NavigationIconMetadata } from '../types/iconMetadata';
+import FontAwesomeIcon from './ui/FontAwesomeIcon';
 
 type AccentKey = 'indigo' | 'purple' | 'emerald' | 'blue' | 'orange' | 'rose';
 
@@ -15,7 +17,7 @@ const ACCENTS: Record<AccentKey, { active: string; subtle: string; icon: string;
 
 export interface SidebarItemProps {
   label: string;
-  icon: string;
+  icon: NavigationIconMetadata;
   active?: boolean;
   accent?: AccentKey;
   onClick?: () => void;
@@ -47,7 +49,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         )}
         aria-hidden
       >
-        <i className={clsx(icon, 'fa-fw')} />
+        <FontAwesomeIcon icon={icon} fixedWidth />
       </span>
 
       <span className="min-w-0 flex-1 truncate text-sm font-medium">{label}</span>

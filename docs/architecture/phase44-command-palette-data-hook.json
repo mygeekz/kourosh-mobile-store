@@ -1,0 +1,28 @@
+{
+  "phase": 44,
+  "name": "CommandPalette Data Search Hook Extraction",
+  "added": [
+    "components/command-palette/useCommandPaletteDataSearch.ts",
+    "scripts/audit-command-palette-data-hook.mjs",
+    "docs/architecture/phase44-command-palette-data-hook.md",
+    "docs/architecture/phase44-command-palette-data-hook.json"
+  ],
+  "changed": [
+    "components/CommandPalette.tsx",
+    "components/command-palette/index.ts",
+    "package.json"
+  ],
+  "preservedBehavior": [
+    "keyboard navigation",
+    "portal rendering",
+    "navigation policy checks",
+    "favorites/recents/popular/related suggestions",
+    "220ms data search debounce",
+    "/api/search endpoint",
+    "abort lifecycle"
+  ],
+  "audits": [
+    "audit:command-palette",
+    "audit:command-palette-data-hook"
+  ]
+}

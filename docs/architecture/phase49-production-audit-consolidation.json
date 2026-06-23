@@ -1,0 +1,17 @@
+{
+  "phase": 49,
+  "title": "Production Audit Command Consolidation",
+  "commands": {
+    "audit:production": "node scripts/audit-production.mjs",
+    "audit:production:strict": "node scripts/audit-production.mjs --strict",
+    "verify:production": "npm run audit:production:strict && npm run build"
+  },
+  "groups": [
+    "access-policy",
+    "shell",
+    "ui-contracts",
+    "targeted-typescript"
+  ],
+  "runtimeBehaviorChanged": false,
+  "releaseRecommendation": "npm install && npm run verify:production"
+}

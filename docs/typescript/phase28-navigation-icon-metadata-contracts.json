@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-06-22T18:13:17.962Z",
+  "status": "passed",
+  "contractResults": [
+    {
+      "file": "types/iconMetadata.ts",
+      "exists": true,
+      "snippets": {
+        "export type FontAwesomeIconClass": true,
+        "export type NavigationIconMetadata": true,
+        "export type ReportIconMetadata": true,
+        "export type FeatureIconMetadata": true,
+        "isFontAwesomeIconClass": true
+      }
+    },
+    {
+      "file": "types.ts",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "ReportIconMetadata": true,
+        "icon?: NavigationIconMetadata": true,
+        "icon: ReportIconMetadata": true
+      }
+    },
+    {
+      "file": "utils/nav.ts",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "icon?: NavigationIconMetadata": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/mobileBottomNavTypes.ts",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "icon: NavigationIconMetadata": true
+      }
+    },
+    {
+      "file": "components/SidebarItem.tsx",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "icon: NavigationIconMetadata": true
+      }
+    },
+    {
+      "file": "utils/featureFlags.ts",
+      "exists": true,
+      "snippets": {
+        "FeatureIconMetadata": true,
+        "icon: FeatureIconMetadata": true
+      }
+    }
+  ],
+  "primitiveResults": [
+    {
+      "file": "components/ui/ControlShell.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    },
+    {
+      "file": "components/ui/EmptyState.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": true
+    },
+    {
+      "file": "components/ui/PageKit.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    },
+    {
+      "file": "components/ui/PageShell.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    },
+    {
+      "file": "components/ui/PanelCard.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    },
+    {
+      "file": "components/ui/SurfaceHeader.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    },
+    {
+      "file": "components/ui/TextField.tsx",
+      "canonicalReactNode": true,
+      "legacyStringUnion": false,
+      "legacyStringProp": false
+    }
+  ],
+  "navigationIconLiteralCount": 66,
+  "reportIconLiteralCount": 234,
+  "invalidNavigationIconLiterals": [],
+  "invalidReportIconLiterals": [],
+  "emptyStateLegacyIconConsumers": [],
+  "policy": {
+    "sharedUiPrimitiveIcons": "ReactNode only at public component boundaries.",
+    "navigationIcons": "FontAwesome class strings are allowed only as metadata registries.",
+    "reportIcons": "FontAwesome class strings are allowed only as local/report metadata until a dedicated registry migration."
+  }
+}

@@ -82,19 +82,6 @@ const getCurrentBasis = (item: CartItem) => {
   return 0;
 };
 
-const getProfitBasisLabel = (item: CartItem, currentBasis: number, initialBasis: number) => {
-  if (item.itemType === 'service') return 'خدمت / بدون بهای خرید';
-  if (item.profitShareProfileTitle) return item.profitShareProfileTitle;
-  if (item.ownershipTitle) return `بر پایه ${item.ownershipTitle}`;
-  if (item.ownershipType === 'store') return 'بر پایه مالکیت فروشگاه';
-  if (item.ownershipType === 'personal') return 'بر پایه مالکیت شخصی';
-  if (item.ownershipType === 'shared') return 'بر پایه مالکیت مشترک';
-  if (currentBasis > 0 && initialBasis > 0) return 'بر پایه خرید روز و بهای اولیه';
-  if (currentBasis > 0) return 'بر پایه قیمت خرید روز';
-  if (initialBasis > 0) return 'بر پایه قیمت خرید اولیه';
-  return 'نامشخص';
-};
-
 const infoTone = (value: number) => {
   if (value > 0) return 'text-emerald-700 dark:text-emerald-300';
   if (value < 0) return 'text-rose-700 dark:text-rose-300';
@@ -213,7 +200,7 @@ const CartTable: React.FC<CartTableProps> = ({ items, dispatch }) => {
                 <div className="min-w-0 flex-1">
                   <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
                     <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[9px] font-black tracking-[0.12em] text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
-                      ردیف {String(index + 1).toLocaleString('fa-IR')}
+                      ردیف {Number(index + 1).toLocaleString('fa-IR')}
                     </span>
                     <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9px] font-bold text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
                       {getItemTypeLabel(item.itemType)}

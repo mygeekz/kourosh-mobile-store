@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import type { NumberFormatter, PercentFormatter, SalesPerformanceMetric, SalesPerformanceRow, SeverityMetaMap, ShamsiFormatter, SmartInsightLike } from './types/smartInsightContracts';
+import type { NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike } from './types/smartInsightContracts';
 
 type SalesPerformanceModalProps = {
   selected: SmartInsightLike;

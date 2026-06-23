@@ -1,0 +1,313 @@
+{
+  "project": "Kourosh Partner",
+  "phase": 50,
+  "title": "Release Readiness Report",
+  "generatedAt": "2026-06-22",
+  "behaviorChanges": "No intentional business-logic or route behavior changes in Phase 50.",
+  "primaryVerificationCommand": "npm run verify:production",
+  "addedScripts": [
+    "docs:release-readiness"
+  ],
+  "coreAuditScripts": [
+    "audit:shell",
+    "audit:production",
+    "audit:production:strict",
+    "verify:production"
+  ],
+  "phaseCount": 51,
+  "phaseSummaries": [
+    {
+      "phase": 0,
+      "title": "Reference standards extraction and engineering contract",
+      "summary": "Defined standards-first refactor rules."
+    },
+    {
+      "phase": 1,
+      "title": "Architecture baseline and roadmap",
+      "summary": "Established initial safe refactor order."
+    },
+    {
+      "phase": 2,
+      "title": "Type system split",
+      "summary": "Split type monolith into domain modules with compatibility surface."
+    },
+    {
+      "phase": 3,
+      "title": "Entrypoint cleanup",
+      "summary": "Centralized style/bootstrap imports."
+    },
+    {
+      "phase": 4,
+      "title": "Route extraction",
+      "summary": "Moved routes out of App shell."
+    },
+    {
+      "phase": 5,
+      "title": "Design system foundation",
+      "summary": "Added semantic token layer and Tailwind-compatible token contract."
+    },
+    {
+      "phase": 6,
+      "title": "Modal standardization",
+      "summary": "Introduced shared dialog shell and consistent modal behavior."
+    },
+    {
+      "phase": 7,
+      "title": "Table/form consistency",
+      "summary": "Added shared control grammar and aligned field primitives."
+    },
+    {
+      "phase": 8,
+      "title": "Surface grammar",
+      "summary": "Standardized PageShell/PanelCard/ActionBar surface language."
+    },
+    {
+      "phase": 9,
+      "title": "Component duplication cleanup",
+      "summary": "Converted duplicate search wrappers and removed demo/unused component."
+    },
+    {
+      "phase": 10,
+      "title": "Unused utils and legacy CSS quarantine",
+      "summary": "Moved CSS stack to bootstrap and quarantined unused candidates."
+    },
+    {
+      "phase": 11,
+      "title": "Provider shell extraction",
+      "summary": "Moved provider composition out of entrypoint."
+    },
+    {
+      "phase": 12,
+      "title": "App shell cleanup",
+      "summary": "Reduced App.tsx to thin composition shell."
+    },
+    {
+      "phase": 13,
+      "title": "Route manifest hardening",
+      "summary": "Created route manifest/lazy page/renderer separation."
+    },
+    {
+      "phase": 14,
+      "title": "Access matrix",
+      "summary": "Generated route access matrix and audit script."
+    },
+    {
+      "phase": 15,
+      "title": "RBAC alignment",
+      "summary": "Aligned RBAC path checks with route access matrix."
+    },
+    {
+      "phase": 16,
+      "title": "Feature flag alignment",
+      "summary": "Aligned feature access policy with route matrix."
+    },
+    {
+      "phase": 17,
+      "title": "Navigation policy cleanup",
+      "summary": "Unified sidebar/command/bottom-nav/header navigation policy."
+    },
+    {
+      "phase": 18,
+      "title": "Settings feature toggles hardening",
+      "summary": "Centralized settings feature-impact policy."
+    },
+    {
+      "phase": 19,
+      "title": "Settings decomposition",
+      "summary": "Split Settings runtime/UI helpers and stabilized PWA build limit."
+    },
+    {
+      "phase": 20,
+      "title": "Settings type debt cleanup",
+      "summary": "Fixed Settings-specific type contracts."
+    },
+    {
+      "phase": 21,
+      "title": "Reports type debt cleanup",
+      "summary": "Fixed report/smart-insight type contracts."
+    },
+    {
+      "phase": 22,
+      "title": "TypeScript debt triage",
+      "summary": "Added typed triage buckets and corrected low-risk contracts."
+    },
+    {
+      "phase": 23,
+      "title": "noUnused cleanup",
+      "summary": "Removed confirmed unused imports only."
+    },
+    {
+      "phase": 24,
+      "title": "Legacy UI prop mismatch cleanup",
+      "summary": "Added safe UI primitive adapters for legacy mismatches."
+    },
+    {
+      "phase": 25,
+      "title": "EmptyState consumer migration",
+      "summary": "Migrated legacy EmptyState text consumers to title."
+    },
+    {
+      "phase": 26,
+      "title": "EmptyState adapter removal",
+      "summary": "Removed legacy EmptyState text alias after migration."
+    },
+    {
+      "phase": 27,
+      "title": "Icon compatibility audit",
+      "summary": "Tightened EmptyState icon contract to ReactNode."
+    },
+    {
+      "phase": 28,
+      "title": "Navigation icon metadata contract",
+      "summary": "Typed FontAwesome metadata for nav/report/feature icons."
+    },
+    {
+      "phase": 29,
+      "title": "FontAwesome renderer registry",
+      "summary": "Centralized FontAwesome rendering."
+    },
+    {
+      "phase": 30,
+      "title": "Static icon cleanup",
+      "summary": "Moved selected static icons to central renderer."
+    },
+    {
+      "phase": 31,
+      "title": "Header decomposition",
+      "summary": "Split header search/title/theme/profile surfaces."
+    },
+    {
+      "phase": 32,
+      "title": "Header quick actions extraction",
+      "summary": "Extracted quick action UI/panels."
+    },
+    {
+      "phase": 33,
+      "title": "Header data hook extraction",
+      "summary": "Extracted header quick-data refresh logic."
+    },
+    {
+      "phase": 34,
+      "title": "Header search hook extraction",
+      "summary": "Extracted global header search behavior."
+    },
+    {
+      "phase": 35,
+      "title": "Header currency hook extraction",
+      "summary": "Extracted currency sync/formatting behavior."
+    },
+    {
+      "phase": 36,
+      "title": "Header final orchestrator cleanup",
+      "summary": "Reduced Header to orchestration shell."
+    },
+    {
+      "phase": 37,
+      "title": "Header barrel/import hygiene",
+      "summary": "Added header barrel and import boundary."
+    },
+    {
+      "phase": 38,
+      "title": "Sidebar module decomposition",
+      "summary": "Split sidebar branding/search/favorites/support/hooks."
+    },
+    {
+      "phase": 39,
+      "title": "Sidebar row/flyout extraction",
+      "summary": "Extracted nav tree and flyout rendering."
+    },
+    {
+      "phase": 40,
+      "title": "Sidebar state hook extraction",
+      "summary": "Extracted sidebar navigation state/hovers/search."
+    },
+    {
+      "phase": 41,
+      "title": "MainLayout orchestrator cleanup",
+      "summary": "Split main layout shell, content frame and hooks."
+    },
+    {
+      "phase": 42,
+      "title": "Shell boundary audit",
+      "summary": "Added shell public barrel and shell boundary audit."
+    },
+    {
+      "phase": 43,
+      "title": "CommandPalette decomposition",
+      "summary": "Split command palette rendering/data modules."
+    },
+    {
+      "phase": 44,
+      "title": "CommandPalette data hook",
+      "summary": "Extracted API search debounce/fetch logic."
+    },
+    {
+      "phase": 45,
+      "title": "CommandPalette state hook",
+      "summary": "Extracted query/keyboard/focus state."
+    },
+    {
+      "phase": 46,
+      "title": "CommandPalette final orchestrator",
+      "summary": "Extracted results/actions hooks."
+    },
+    {
+      "phase": 47,
+      "title": "MobileBottomNav decomposition",
+      "summary": "Moved mobile nav to dedicated module."
+    },
+    {
+      "phase": 48,
+      "title": "Shell audit consolidation",
+      "summary": "Added single audit:shell command."
+    },
+    {
+      "phase": 49,
+      "title": "Production audit command consolidation",
+      "summary": "Added audit:production, audit:production:strict, verify:production."
+    },
+    {
+      "phase": 50,
+      "title": "Release readiness report",
+      "summary": "Adds final release-readiness docs and handoff checklist."
+    }
+  ],
+  "remainingRisks": [
+    {
+      "area": "Full TypeScript strictness",
+      "status": "triaged",
+      "risk": "medium",
+      "note": "Settings and reports target debt were cleaned, but full-project legacy TypeScript debt may still exist outside completed scopes."
+    },
+    {
+      "area": "Legacy CSS quarantine",
+      "status": "pending visual sign-off",
+      "risk": "medium",
+      "note": "Do not delete styles/system/legacy-quarantine yet. Only unused-css-candidates may be deleted after visual QA confirms no regressions."
+    },
+    {
+      "area": "PWA/service worker bundle size",
+      "status": "hardened",
+      "risk": "low-medium",
+      "note": "Workbox max cache file size was increased earlier because current CSS/bundle output is large."
+    },
+    {
+      "area": "Report-heavy surfaces",
+      "status": "partially hardened",
+      "risk": "medium",
+      "note": "Report type contracts were cleaned, but visual/report workflow QA is still required."
+    },
+    {
+      "area": "Runtime integration",
+      "status": "requires local environment",
+      "risk": "medium",
+      "note": "Some audits skip TypeScript-backed checks when node_modules/tsc is unavailable. Run strict commands locally."
+    }
+  ],
+  "recommendedReleaseGate": [
+    "npm install",
+    "npm run audit:production:strict",
+    "npm run build",
+    "Manual QA on auth, sales, reports, settings, mobile navigation, command palette and PWA install/update."
+  ]
+}

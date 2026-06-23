@@ -1,0 +1,23 @@
+{
+  "phase": 38,
+  "name": "Sidebar Module Decomposition",
+  "risk": "low-medium",
+  "changedAreas": [
+    "components/Sidebar.tsx",
+    "components/sidebar/*",
+    "scripts/audit-sidebar-decomposition.mjs",
+    "package.json"
+  ],
+  "preservedBehavior": [
+    "route paths",
+    "RBAC policy",
+    "feature policy",
+    "active route highlighting",
+    "open group state",
+    "flyout navigation",
+    "favorites removal",
+    "badge refresh events",
+    "store branding"
+  ],
+  "newAudit": "npm run audit:sidebar-decomposition"
+}

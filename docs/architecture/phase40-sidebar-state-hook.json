@@ -1,0 +1,31 @@
+{
+  "phase": 40,
+  "name": "Sidebar State Hook Extraction",
+  "risk": "low-medium",
+  "behaviorChanged": false,
+  "filesAdded": [
+    "components/sidebar/useSidebarNavigationState.ts",
+    "scripts/audit-sidebar-state-hook.mjs",
+    "docs/architecture/phase40-sidebar-state-hook.md",
+    "docs/architecture/phase40-sidebar-state-hook.json"
+  ],
+  "filesUpdated": [
+    "components/Sidebar.tsx",
+    "components/sidebar/index.ts",
+    "scripts/audit-sidebar-decomposition.mjs",
+    "package.json"
+  ],
+  "checks": [
+    "audit:routes",
+    "audit:rbac",
+    "audit:features",
+    "audit:navigation",
+    "audit:settings-features",
+    "audit:unused-imports",
+    "audit:navigation-icons",
+    "audit:fontawesome-renderer",
+    "audit:sidebar-decomposition",
+    "audit:sidebar-row-flyout",
+    "audit:sidebar-state-hook"
+  ]
+}

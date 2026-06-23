@@ -1,0 +1,17 @@
+{
+  "phase": 35,
+  "name": "Header Currency Hook Extraction",
+  "risk": "low",
+  "businessLogicChanged": false,
+  "filesAdded": [
+    "components/header/useHeaderCurrency.ts",
+    "scripts/audit-header-currency-hook.mjs",
+    "docs/header/phase35-header-currency-hook-extraction.md",
+    "docs/header/phase35-header-currency-hook-extraction.json"
+  ],
+  "filesChanged": [
+    "components/Header.tsx",
+    "package.json"
+  ],
+  "auditScript": "npm run audit:header-currency-hook"
+}

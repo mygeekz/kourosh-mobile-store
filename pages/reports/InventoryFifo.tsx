@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'jalali-moment';
 import Notification from '../../components/Notification';
 import { useAuth } from '../../contexts/AuthContext';
@@ -115,7 +115,7 @@ export default function InventoryFifo() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               className="px-3 py-2 rounded-xl border bg-white/70 backdrop-blur dark:bg-slate-900/50 dark:border-slate-700 text-sm"
-              preview="جستجوی محصول…"
+              placeholder="جستجوی محصول…"
             />
             <span className="inline-flex min-h-[40px] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-bold text-slate-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400" title="خروجی Excel از نوار مرکزی بالای گزارش انجام می‌شود.">
               <i className="fa-solid fa-arrow-up-right-from-square ml-2" /> خروجی از نوار بالا

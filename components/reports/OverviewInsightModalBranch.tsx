@@ -12,6 +12,11 @@ import type {
   SmartInsightSummary,
   ProfitSummaryLike,
   SuspiciousAuditLike,
+  SeverityMetaMap,
+  SmartInsightLearning,
+  CustomerIntelligenceCard,
+  SalesAgentLeadRow,
+  LocalizedNumberParser,
 } from './types/smartInsightContracts';
 
 const OVERVIEW_MODAL_TYPES = new Set([
@@ -30,6 +35,11 @@ type OverviewInsightModalBranchProps = {
   profitSummary: ProfitSummaryLike | null;
   summary: SmartInsightSummary;
   suspiciousAudit: SuspiciousAuditLike[];
+  severityMeta: SeverityMetaMap;
+  learning: SmartInsightLearning;
+  customerIntelligence: CustomerIntelligenceCard[];
+  salesAgentLeads: SalesAgentLeadRow[];
+  parseLocalizedNumber: LocalizedNumberParser;
   num: NumberFormatter;
   percent: PercentFormatter;
   shamsi: ShamsiFormatter;
@@ -45,6 +55,11 @@ function OverviewInsightModalBranch({
   profitSummary,
   summary,
   suspiciousAudit,
+  severityMeta,
+  learning,
+  customerIntelligence,
+  salesAgentLeads,
+  parseLocalizedNumber,
   num,
   percent,
   shamsi,
@@ -89,6 +104,13 @@ function OverviewInsightModalBranch({
         profitSummary={profitSummary}
         summary={summary}
         suspiciousAudit={suspiciousAudit}
+        insights={insights}
+        typeLabels={typeLabels}
+        severityMeta={severityMeta}
+        learning={learning}
+        customerIntelligence={customerIntelligence}
+        salesAgentLeads={salesAgentLeads}
+        parseLocalizedNumber={parseLocalizedNumber}
         num={num}
         percent={percent}
         onClose={onClose}

@@ -40,6 +40,7 @@ const TableToolbar: React.FC<Props> = ({
                   placeholder={searchPlaceholder}
                   ariaLabel={searchPlaceholder}
                   size="lg"
+                  clearable={Boolean(search)}
                 />
               ) : undefined}
               actions={actions ? <div className="ux-toolbar-actions flex flex-wrap items-center justify-start gap-2">{actions}</div> : undefined}
@@ -52,7 +53,7 @@ const TableToolbar: React.FC<Props> = ({
               <div className="flex items-center justify-end gap-2 text-right">
                 <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"><i className="fa-solid fa-list-check" /></span>
                 <div className="min-w-0 text-right">
-                  <div className="text-sm font-semibold text-slate-900 dark:text-slate-50 md:text-base break-words">{title}</div>
+                  <div className="break-words text-sm font-semibold text-slate-900 dark:text-slate-50 md:text-base">{title}</div>
                 </div>
               </div>
             ) : null}

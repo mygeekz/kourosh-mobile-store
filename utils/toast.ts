@@ -1,13 +1,6 @@
 import { cleanAppMessage } from '../shared/messages';
 type AppToastType = "success" | "error" | "info" | "loading";
 
-type AppToastDetail = {
-  id: string;
-  type: Exclude<AppToastType, "loading">;
-  message: string;
-  duration?: number;
-};
-
 const DEFAULT_DURATIONS: Record<Exclude<AppToastType, "loading">, number> = {
   success: 3200,
   error: 5200,

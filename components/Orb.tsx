@@ -135,9 +135,11 @@ export default function Orb({
     const mesh = new Mesh(gl, { geometry, program });
 
     function resize() {
+      const currentContainer = ctnDom.current;
+      if (!currentContainer) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 1.8);
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = currentContainer.clientWidth;
+      const height = currentContainer.clientHeight;
       renderer.setSize(width * dpr, height * dpr);
       gl.canvas.style.width = width + 'px';
       gl.canvas.style.height = height + 'px';
@@ -150,8 +152,9 @@ export default function Orb({
     const rotationSpeed = 0.3;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!container) return;
-      const rect = container.getBoundingClientRect();
+      const currentContainer = ctnDom.current;
+      if (!currentContainer) return;
+      const rect = currentContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const size = Math.min(rect.width, rect.height);
@@ -162,14 +165,17 @@ export default function Orb({
     };
     const handleLeaveLocal = () => { targetHover = 0; };
     const handleLeaveWindow = (e: MouseEvent) => {
-      if (!e.relatedTarget && !e.toElement) targetHover = 0; // خروج از پنجره
+      if (!e.relatedTarget) targetHover = 0; // خروج از پنجره
     };
 
     // ⬅️ این‌جا انتخاب منبع هاور
-    const target: any = hoverGlobal ? window : container;
-    target.addEventListener('mousemove', handleMouseMove);
-    if (hoverGlobal) window.addEventListener('mouseout', handleLeaveWindow);
-    else container.addEventListener('mouseleave', handleLeaveLocal);
+    if (hoverGlobal) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseout', handleLeaveWindow);
+    } else {
+      container.addEventListener('mousemove', handleMouseMove);
+      container.addEventListener('mouseleave', handleLeaveLocal);
+    }
 
     let rafId = 0;
     const update = (t: number) => {
@@ -192,10 +198,16 @@ export default function Orb({
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
-      if (hoverGlobal) window.removeEventListener('mouseout', handleLeaveWindow);
-      else container.removeEventListener('mouseleave', handleLeaveLocal);
-      target.removeEventListener('mousemove', handleMouseMove);
-      container.removeChild(gl.canvas);
+      if (hoverGlobal) {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseout', handleLeaveWindow);
+      } else {
+        container.removeEventListener('mousemove', handleMouseMove);
+        container.removeEventListener('mouseleave', handleLeaveLocal);
+      }
+      if (gl.canvas.parentNode === container) {
+        container.removeChild(gl.canvas);
+      }
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
   }, [hue, hoverIntensity, rotateOnHover, forceHoverState, hoverGlobal]);

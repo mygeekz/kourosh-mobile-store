@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import type { GetDecisionActionState, GetDecisionStatusMeta, LocalizedNumberParser, MoneyFormatter, NumberFormatter, PercentFormatter, ProfitSignalMode, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, SmartInsightMetric, UpdateDecisionMemory } from './types/smartInsightContracts';
 
@@ -77,7 +76,6 @@ export default function ProfitSignalModal({
     'fa-money-bill-trend-up': 'fa-sack-dollar',
     'fa-chart-mixed': 'fa-chart-line',
     'fa-chart-simple': 'fa-chart-line',
-    'fa-chart-line': 'fa-chart-line',
     'fa-chart-line': 'fa-chart-line',
     'fa-analytics': 'fa-chart-line',
     'fa-credit-card': 'fa-credit-card',
@@ -231,6 +229,10 @@ export default function ProfitSignalModal({
     routes: { icon: 'fa-route', title: headerCopy.routesTitle, text: headerCopy.routesText },
   };
 
+  const selectedTarget = selected.target && typeof selected.target === 'object'
+    ? selected.target as { name?: string; label?: string; productName?: string; customerName?: string }
+    : {};
+
   return (
     <div className={`profit244-overlay profit244-overlay--${mode}`} onClick={() => onClose()}>
       <section className={`profit244-surface profit244-surface--${mode}`} onClick={(e) => e.stopPropagation()} dir="rtl">
@@ -247,7 +249,7 @@ export default function ProfitSignalModal({
             <span className="profit244-header__hero-icon"><i className={`fa-solid ${headerCopy.heroIcon}`} /></span>
             <small>{headerCopy.heroLabel}</small>
             <strong>{mode === 'real_profit' ? metricDisplay(realProfitMetric || estimatedProfitMetric, 'money') : metricDisplay(qualityMetric || marginMetric, 'percent')}</strong>
-            <span>{selected.target?.name || selected.target?.label || selected.target?.productName || selected.target?.customerName || selected.category || 'Smart Insight'}</span>
+            <span>{selectedTarget.name || selectedTarget.label || selectedTarget.productName || selectedTarget.customerName || selected.category || 'Smart Insight'}</span>
           </div>
         </header>
 

@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-06-22T18:13:18.085Z",
+  "status": "passed",
+  "targetSurfaces": [
+    "components/header/HeaderRiskBadge.tsx",
+    "components/header/HeaderQuickActions.tsx",
+    "components/header/HeaderSearch.tsx",
+    "components/header/HeaderProfileMenu.tsx",
+    "components/command-palette/CommandPaletteSearchHeader.tsx",
+    "components/command-palette/CommandPaletteDiscoverySections.tsx",
+    "components/command-palette/CommandPaletteRows.tsx",
+    "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+    "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+    "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx"
+  ],
+  "findings": [
+    {
+      "file": "components/header/HeaderRiskBadge.tsx",
+      "canonicalRenderCount": 1,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/header/HeaderQuickActions.tsx",
+      "canonicalRenderCount": 5,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/header/HeaderSearch.tsx",
+      "canonicalRenderCount": 11,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/header/HeaderProfileMenu.tsx",
+      "canonicalRenderCount": 4,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/command-palette/CommandPaletteSearchHeader.tsx",
+      "canonicalRenderCount": 3,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/command-palette/CommandPaletteDiscoverySections.tsx",
+      "canonicalRenderCount": 4,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/command-palette/CommandPaletteRows.tsx",
+      "canonicalRenderCount": 8,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+      "canonicalRenderCount": 1,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+      "canonicalRenderCount": 1,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx",
+      "canonicalRenderCount": 1,
+      "rawIconCount": 0,
+      "rawIconLines": []
+    }
+  ],
+  "snippetResults": [
+    {
+      "file": "components/header/HeaderRiskBadge.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon={getHeaderRiskIcon(riskLevel)}": true
+      }
+    },
+    {
+      "file": "components/header/HeaderQuickActions.tsx",
+      "snippets": {
+        "icon=\"fa-solid fa-angle-down\"": true,
+        "<FontAwesomeIcon icon={action.icon}": true
+      }
+    },
+    {
+      "file": "components/header/HeaderSearch.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fa-solid fa-bolt\"": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-search\"": true
+      }
+    },
+    {
+      "file": "components/header/HeaderProfileMenu.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fas fa-sign-out-alt\"": true
+      }
+    },
+    {
+      "file": "components/command-palette/CommandPaletteSearchHeader.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fa-solid fa-magnifying-glass\"": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-xmark\"": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-wand-magic-sparkles\"": true
+      }
+    },
+    {
+      "file": "components/command-palette/CommandPaletteDiscoverySections.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fa-solid fa-star\"": true
+      }
+    },
+    {
+      "file": "components/command-palette/CommandPaletteRows.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon={icon ??": true,
+        "<FontAwesomeIcon icon={badge.icon}": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon={item.icon}": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fa-solid fa-plus\"": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx",
+      "snippets": {
+        "<FontAwesomeIcon icon=\"fa-solid fa-bars\"": true
+      }
+    }
+  ],
+  "policy": {
+    "goal": "Static FontAwesome icons in navigation/search shell surfaces should render through components/ui/FontAwesomeIcon.tsx.",
+    "scope": "Header, CommandPalette, and MobileBottomNav only. Report-heavy and chart-heavy surfaces remain out of scope for Phase 30.",
+    "allowedMetadata": "FontAwesome class strings may remain in metadata registries; UI surfaces should use the canonical renderer when rendering them."
+  }
+}

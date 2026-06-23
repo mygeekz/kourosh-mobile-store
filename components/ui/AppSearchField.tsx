@@ -1,4 +1,6 @@
 import React from 'react';
+import { cn } from '../../utils/cn';
+import ControlShell from './ControlShell';
 
 type AppSearchFieldSize = 'sm' | 'md' | 'lg';
 
@@ -13,6 +15,8 @@ type AppSearchFieldProps = {
   clearable?: boolean;
   autoFocus?: boolean;
   id?: string;
+  hint?: React.ReactNode;
+  error?: React.ReactNode;
 };
 
 const AppSearchField: React.FC<AppSearchFieldProps> = ({
@@ -26,22 +30,22 @@ const AppSearchField: React.FC<AppSearchFieldProps> = ({
   clearable = false,
   autoFocus = false,
   id,
+  hint,
+  error,
 }) => {
   const hasValue = value.trim().length > 0;
 
   return (
-    <label
-      className={['app-field app-form-field app-form-field--search app-form-field--with-leading-icon app-field--search app-search-field', `app-search-field--${size}`, className].filter(Boolean).join(' ')}
+    <ControlShell
+      className={['app-field app-form-field app-form-field--search app-search-field', `app-search-field--${size}`, className].filter(Boolean).join(' ')}
+      kind="search"
       dir="ltr"
-      aria-label={ariaLabel}
-      data-ui-field="true"
-      data-ui-field-kind="search"
-      data-has-leading-icon="true"
+      hasLeadingIcon
+      label={undefined}
+      hint={hint}
+      error={error}
+      icon={<i className="fa-solid fa-magnifying-glass" />}
     >
-      <span className="app-field__leading-icon app-form-field__leading-icon app-search-field__icon" aria-hidden="true">
-        <i className="fa-solid fa-magnifying-glass" />
-      </span>
-
       <input
         id={id}
         value={value}
@@ -52,9 +56,11 @@ const AppSearchField: React.FC<AppSearchFieldProps> = ({
         autoFocus={autoFocus}
         autoComplete="off"
         spellCheck={false}
+        aria-label={ariaLabel}
+        aria-invalid={Boolean(error) || undefined}
         data-ui-control="true"
         data-ui-control-kind="search"
-        className={['app-field__control app-form-field__control app-form-field__control--with-leading-icon app-search-field__input', inputClassName].filter(Boolean).join(' ')}
+        className={cn('app-field__control app-form-field__control app-form-field__control--with-leading-icon app-search-field__input', inputClassName)}
       />
 
       {clearable && hasValue ? (
@@ -68,7 +74,7 @@ const AppSearchField: React.FC<AppSearchFieldProps> = ({
           <i className="fa-solid fa-xmark" />
         </button>
       ) : null}
-    </label>
+    </ControlShell>
   );
 };
 

@@ -641,7 +641,7 @@ const ReminderRulesBuilder: React.FC = () => {
                   <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800 dark:bg-slate-900/40">
                     <span className={`text-[11px] font-black ${r.enabled ? 'text-emerald-600 dark:text-emerald-300' : 'text-slate-500 dark:text-slate-400'}`}>{r.enabled ? 'فعال' : 'خاموش'}</span>
                     <ToggleSwitch
-                      checked={r.enabled}
+                      checked={Boolean(r.enabled)}
                       onCheckedChange={() => toggleEnabled(r)}
                       ariaLabel={r.enabled ? 'خاموش‌سازی قانون' : 'روشن‌سازی قانون'}
                       size="sm"

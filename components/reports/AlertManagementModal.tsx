@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import type { AlertAction, AlertDecision, AlertManagementSource, AlertMetric, AlertReason, SeverityVisualMeta, SmartInsightLike } from './types/smartInsightContracts';
+import type { AlertAction, AlertDecision, AlertManagementSource, AlertMetric, AlertReason, SeverityVisualMeta, SmartInsightExecutiveBrain, SmartInsightLearning, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
 
 export type AlertBoardFilter = 'all' | 'critical' | 'suggestion' | 'action' | 'done';
 
@@ -28,7 +27,7 @@ export type AlertManagementItemData = {
 
 type AlertManagementModalProps = {
   selected: SmartInsightLike;
-  payload: Record<string, unknown>;
+  payload: SmartInsightPayload;
   alertManagementItems: AlertManagementItemData[];
   alertsBoardFilter: AlertBoardFilter;
   alertsBoardSelectedId: string | null;
@@ -41,8 +40,8 @@ type AlertManagementModalProps = {
   shamsi: (value: unknown) => string;
   severityMeta: Record<string, SeverityVisualMeta>;
   topExecutiveAction?: SmartInsightLike | null;
-  executiveBrain: Record<string, unknown>;
-  learning: Record<string, unknown>;
+  executiveBrain: SmartInsightExecutiveBrain;
+  learning: SmartInsightLearning;
 };
 
 export default function AlertManagementModal({
@@ -268,7 +267,7 @@ export default function AlertManagementModal({
               <button
                 key={tab.key}
                 type="button"
-                onClick={() => { setAlertsBoardFilter(tab.key); setAlertsBoardSelectedId(null); }}
+                onClick={() => { setAlertsBoardFilter(tab.key); setAlertsBoardSelectedId(''); }}
                 className={alertsBoardFilter === tab.key ? 'is-active' : ''}
               >
                 <span className={`sib211-tab-dot sib211-tab-dot--${tab.dot}`} />

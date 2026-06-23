@@ -3,12 +3,21 @@ import React from 'react';
 type Props = {
   title: string;
   subtitle?: string;
-  icon?: string;
+  icon?: React.ReactNode;
   actions?: React.ReactNode;
+  toolbarRight?: React.ReactNode;
+  className?: string;
+  backAction?: () => void;
+  isLoading?: boolean;
+  isEmpty?: boolean;
+  emptyTitle?: string;
+  emptyDescription?: string;
+  emptyActionLabel?: string;
+  onEmptyAction?: () => void | Promise<void>;
   children: React.ReactNode;
 };
 
-export default function ModernReportShell({ title, subtitle, icon, actions, children }: Props) {
+export default function ModernReportShell({ title, subtitle, icon, actions, toolbarRight, children }: Props) {
   return (
     <div className="ux-report-shell report-page space-y-3 report-shell-v2-page reports-redesign-v1" dir="rtl" data-ui-report-shell="modern" data-ui-report-page="true">
       <header className="ux-toolbar-surface ux-toolbar-surface--premium ux-report-shell-head reports-shell-compact-head report-shell-v2-head" data-ui-report-header="inner">
@@ -25,7 +34,7 @@ export default function ModernReportShell({ title, subtitle, icon, actions, chil
             </div>
           </div>
 
-          {actions ? <div className="report-shell-v2-actions">{actions}</div> : null}
+          {(actions || toolbarRight) ? <div className="report-shell-v2-actions">{actions || toolbarRight}</div> : null}
         </div>
       </header>
 

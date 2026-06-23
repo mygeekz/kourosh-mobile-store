@@ -86,7 +86,7 @@ export type SettingsBusinessPanelProps = {
   labelClass: string;
   inputClass: string;
   settingsSectionCard: string;
-  logoInputRef: RefObject<HTMLInputElement | null>;
+  logoInputRef: RefObject<HTMLInputElement>;
   logoPreview: string | null;
   logoFile: File | null;
   isUploadingLogo: boolean;
@@ -393,7 +393,7 @@ export type TelegramAudience = 'customer' | 'partner' | 'manager';
 export type TelegramTemplateFilter = 'all' | 'configured' | 'incomplete' | string;
 export type TelegramStudioMode = 'simple' | 'advanced' | 'quick' | 'all' | 'todo' | 'incomplete' | string;
 export type TelegramConnectionMode = 'Proxy Active' | 'VPN / Direct' | 'direct' | 'proxy' | 'unset' | string;
-export type TelegramTone = 'emerald' | 'rose' | 'amber' | 'slate' | 'sky' | string;
+export type TelegramTone = 'emerald' | 'rose' | 'amber' | 'slate' | 'sky';
 
 export type TelegramMessageFormat = 'text' | 'markdown' | 'html';
 export type TelegramTemplatePolicy = 'formal' | 'friendly' | 'short' | string;
@@ -465,7 +465,7 @@ export type TelegramFieldInsight = {
   chip: string;
   message: React.ReactNode;
   cta?: string;
-  target?: string;
+  target: string;
 };
 
 export type TelegramFieldInsights = {
@@ -545,7 +545,7 @@ export type TelegramTodoEntry = {
   firstMissing?: TelegramAudienceStatus;
   suggestedPreset: string;
   aiConfidence: number;
-  deferredUntil?: unknown;
+  deferredUntil?: string | null;
   isDone: boolean;
 };
 
@@ -680,7 +680,7 @@ export type SettingsTelegramPanelProps = {
   openTelegramAudiencePanels: Record<string, boolean>;
   openTelegramCategories: Record<string, boolean>;
   openTelegramItems: Record<string, boolean>;
-  openUrgentTelegramTodos: boolean;
+  openUrgentTelegramTodos: () => void;
   filteredTelegramGroupedDefs: TelegramGroupedTemplateDefs;
 
   handleBusinessInfoSubmit: (event?: React.FormEvent) => void | Promise<void>;
@@ -696,12 +696,12 @@ export type SettingsTelegramPanelProps = {
   deferTelegramTodo: (itemKey: string) => void;
   fetchTelegramRecentChats: () => void | Promise<void>;
   focusTelegramAudience: (itemKey: string, audience: TelegramAudience) => void;
-  getTelegramAiAssistantCopy: (entry: TelegramTodoEntry) => React.ReactNode;
+  getTelegramAiAssistantCopy: (entry: TelegramTodoEntry | { item: TelegramTemplateDef; priority: { label: string; level: number }; firstMissing?: { aud: TelegramAudience } | null; suggestedPreset?: string; aiConfidence: number; deferredUntil?: string | null }) => React.ReactNode;
   getTelegramAudienceFormatKey: (itemKey: string, audience: TelegramAudience) => string;
   getTelegramAudienceKey: (itemKey: string, audience: TelegramAudience) => string;
   getTelegramCategoryStatus: (items: TelegramTemplateDef[]) => TelegramCategoryStatus;
   getTelegramItemStatus: (itemKey: string) => TelegramItemStatus;
-  getTelegramMiniStatusClasses: (tone: TelegramTone) => string;
+  getTelegramMiniStatusClasses: (tone: 'emerald' | 'rose' | 'amber' | 'slate' | 'sky') => string;
   getTelegramPriorityMeta: (itemKey: string) => TelegramPriorityMeta;
   getTelegramProgressTone: (ratio: number) => TelegramProgressTone;
   getTelegramTodoNextStep: (entry: TelegramTodoEntry) => React.ReactNode;
@@ -714,11 +714,11 @@ export type SettingsTelegramPanelProps = {
   openSmsPatternCheck: (title: string, bodyId: string, tokenLabels: string[]) => void;
   openTelegramTemplateCheck: (title: string, template: string, format?: TelegramMessageFormat, allowedVars?: TelegramTemplateVariable[], audience?: TelegramAudience) => void;
   reactivateTelegramTodo: (itemKey: string) => void;
-  renderTelegramFieldLabel: (label: string, insight: TelegramFieldInsight, icon: string) => React.ReactNode;
+  renderTelegramFieldLabel: (label: string, insight: TelegramFieldInsight & { target: string; tone: 'emerald' | 'rose' | 'amber' | 'slate' | 'sky' }, icon?: string) => React.ReactNode;
   renderTelegramPlainFieldLabel: (label: string, icon: string) => React.ReactNode;
   resetTelegramQuickActionPersonalization: () => void;
   resetTelegramTodoAssistant: () => void;
-  runTelegramAdminAction: (action: string) => void | Promise<void>;
+  runTelegramAdminAction: (action: 'enable-polling' | 'reset-bot-menu' | 'send-guest-menu-test' | 'send-real-menu' | 'send-customer-menu' | 'send-partner-menu') => void | Promise<void>;
   runTelegramDiagnostics: () => void | Promise<void>;
   sendTelegramQuickCheck: () => void | Promise<void>;
   toggleTelegramAudiencePanel: (panelKey: string) => void;
@@ -726,12 +726,12 @@ export type SettingsTelegramPanelProps = {
   toggleTelegramItem: (itemKey: string) => void;
   toggleTelegramQuickActionPin: (actionKey: string) => void;
 
-  setAllTelegramCategories: React.Dispatch<React.SetStateAction<boolean>>;
-  setAllTelegramItems: React.Dispatch<React.SetStateAction<boolean>>;
+  setAllTelegramCategories: (isOpen: boolean) => void;
+  setAllTelegramItems: (isOpen: boolean) => void;
   setOpenTelegramItems: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   setShowTelegramToken: React.Dispatch<React.SetStateAction<boolean>>;
-  setTelegramStudioMode: React.Dispatch<React.SetStateAction<TelegramStudioMode>>;
-  setTelegramTemplateFilter: React.Dispatch<React.SetStateAction<TelegramTemplateFilter>>;
+  setTelegramStudioMode: React.Dispatch<React.SetStateAction<'quick' | 'all' | 'incomplete' | 'todo'>>;
+  setTelegramTemplateFilter: React.Dispatch<React.SetStateAction<'all' | 'configured' | 'incomplete'>>;
   setTelegramTemplateSearch: React.Dispatch<React.SetStateAction<string>>;
   setTgQuickMsg: React.Dispatch<React.SetStateAction<string>>;
 };

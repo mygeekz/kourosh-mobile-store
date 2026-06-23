@@ -1,5 +1,5 @@
 import React from 'react';
-import type { NumberFormatter, SideKpisOverviewData, SmartInsightLearning, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
+import type { DecisionMemoryOverviewState, NumberFormatter, SideKpisOverviewData, SmartInsightLearning, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
 
 type OverviewCardsSectionProps = {
   payload: SmartInsightPayload;

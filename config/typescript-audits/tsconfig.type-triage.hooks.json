@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true
+  },
+  "include": ["hooks/**/*.ts", "hooks/**/*.tsx", "types.ts", "types/**/*.d.ts", "constants.tsx", "vite-env.d.ts"],
+  "exclude": ["node_modules", "dist", "server"]
+}

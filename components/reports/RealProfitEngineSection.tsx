@@ -1,4 +1,5 @@
 import React from 'react';
+import type { ProfitSummaryLike } from './types/smartInsightContracts';
 import type { RealProfitRiskInvoice, RealProfitQualityTone, MoneyFormatter, NumberFormatter, PercentFormatter } from './types/smartInsightContracts';
 import { Link } from 'react-router-dom';
 

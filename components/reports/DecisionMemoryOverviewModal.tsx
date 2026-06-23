@@ -1,5 +1,4 @@
-import React from 'react';
-import type { SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
+import type { DecisionMemoryOverviewState, GetDecisionStatusMeta, NumberFormatter, ShamsiFormatter, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
 
 type DecisionMemoryOverviewModalProps = {
   selected: SmartInsightLike;
@@ -22,6 +21,7 @@ export default function DecisionMemoryOverviewModal({
   shamsi,
   onClose,
 }: DecisionMemoryOverviewModalProps) {
+  const decisionMemory = ((payload.summary?.decisionMemory || payload.decisionMemory || {}) as DecisionMemoryOverviewState);
   const memoryRows = insights
     .filter((insight) => insight.decision)
     .map((insight) => {

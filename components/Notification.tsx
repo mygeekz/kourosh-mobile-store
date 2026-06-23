@@ -111,7 +111,7 @@ const normalizeNotificationMessage = (input: NotificationMessage | string | null
 
   if (typeof input !== 'object') return null;
 
-  const record = input as Record<string, unknown>;
+  const record = input as unknown as Record<string, unknown>;
   const rawType = typeof record.type === 'string' ? record.type : fallbackType || 'info';
   const text = cleanAppMessage(typeof record.text === 'string' ? record.text : typeof record.message === 'string' ? record.message : fallbackText);
 

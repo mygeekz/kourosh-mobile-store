@@ -1,5 +1,4 @@
-import React from 'react';
-import type { RepetitionOverviewRow, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
+import type { GetDecisionStatusMeta, NumberFormatter, ShamsiFormatter, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';
 
 type RepetitionOverviewModalProps = {
   selected: SmartInsightLike;

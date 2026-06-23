@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'jalali-moment';
 import ShamsiDatePicker from '../components/ShamsiDatePicker';
@@ -586,7 +586,7 @@ export default function ExpensesPage() {
                   <div className="p-6"><Skeleton className="h-28 w-full" rounded="xl" /></div>
                 ) : recurring.length === 0 ? (
                   <div className="p-6">
-                    <EmptyState title="هزینه تکرارشونده‌ای ثبت نشده است" description="اولین مورد را ثبت کنید تا سررسیدها و پیگیری ماهانه فعال شوند." icon="fa-solid fa-arrows-rotate" />
+                    <EmptyState title="هزینه تکرارشونده‌ای ثبت نشده است" description="اولین مورد را ثبت کنید تا سررسیدها و پیگیری ماهانه فعال شوند." icon={<i className="fa-solid fa-arrows-rotate" aria-hidden="true" />} />
                   </div>
                 ) : (
                   <div className="max-h-[640px] overflow-auto">

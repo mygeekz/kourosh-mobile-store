@@ -1,7 +1,8 @@
+import type { NavigationIconMetadata } from '../types/iconMetadata';
 export type RecentItem = {
   path: string;
   title: string;
-  icon?: string;
+  icon?: NavigationIconMetadata;
   parentTitle?: string;
   ts: number;
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { DashboardWidgetContext, DashboardWidgetProps } from '../types';
 import { formatIranGregorianShortDate, formatIranLongDate, formatIranWeekday, getIranDateTimeParts } from '../../../utils/iranDateTime';
 

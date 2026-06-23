@@ -9,7 +9,7 @@ import { apiFetch } from '../../utils/apiFetch';
 import { exportToExcel } from '../../utils/exporters';
 import { useReportsExports } from '../../contexts/ReportsExportsContext';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../../utils/currency';
-import { APP_MESSAGES, getCostBasisLabel as getSharedCostBasisLabel } from '../../shared/messages';
+import { APP_MESSAGES } from '../../shared/messages';
 import AppSearchField from '../../components/ui/AppSearchField';
 import { formatShamsiDate, toShamsiInputValue } from '../../utils/shamsiDate';
 
@@ -577,7 +577,14 @@ export default function RealizedProfitReport() {
       return haystack.includes(normalizedDocSearch);
     });
   }, [docFilter, docs, normalizedDocSearch, phoneDocKeys]);
-  const filteredDocsSummary = useMemo(() => filteredDocs.reduce((acc, doc) => {
+  type FilteredDocsSummary = {
+    contractualTotal: number;
+    receivedInRange: number;
+    realizedProfit: number;
+    unrecognizedProfit: number;
+  };
+
+  const filteredDocsSummary = useMemo<FilteredDocsSummary>(() => filteredDocs.reduce<FilteredDocsSummary>((acc, doc) => {
     acc.contractualTotal += safeNumber(doc.contractualTotal);
     acc.receivedInRange += safeNumber(doc.receivedInRange);
     acc.realizedProfit += safeNumber(doc.realizedProfit);

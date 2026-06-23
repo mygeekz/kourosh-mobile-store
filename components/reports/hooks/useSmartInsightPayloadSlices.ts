@@ -1,20 +1,5 @@
 import { useMemo } from 'react';
-import type {
-  CustomerIntelligenceCard,
-  DecisionMemoryOverviewState,
-  HiddenProfitOpportunity,
-  PricingRecommendationRow,
-  ProfitSummaryLike,
-  RealProfitQualityTone,
-  RealProfitRiskInvoice,
-  SalesAgentLeadRow,
-  SmartInsightExecutiveBrain,
-  SmartInsightLearning,
-  SmartInsightPayload,
-  SmartInsightPayloadSlices,
-  SmartInsightSummary,
-  SuspiciousAuditLike,
-} from '../types/smartInsightContracts';
+import type { CustomerIntelligenceCard, DecisionMemoryOverviewState, HiddenProfitOpportunity, PricingRecommendationRow, ProfitSummaryLike, RealProfitQualityTone, RealProfitRiskInvoice, SalesAgentLeadRow, SmartInsightExecutiveBrain, SmartInsightLearning, SmartInsightPayload, SmartInsightPayloadSlices, SuspiciousAuditLike } from '../types/smartInsightContracts';
 
 type UseSmartInsightPayloadSlicesArgs = {
   payload: SmartInsightPayload;
@@ -41,7 +26,7 @@ export default function useSmartInsightPayloadSlices({
     const customerIntelligence = Array.isArray(payload.customerIntelligence) ? payload.customerIntelligence as CustomerIntelligenceCard[] : [];
     const pricingRecommendations = Array.isArray(payload.pricingRecommendations) ? payload.pricingRecommendations as PricingRecommendationRow[] : [];
     const salesAgentLeads = Array.isArray(payload.salesAgentLeads) ? payload.salesAgentLeads as SalesAgentLeadRow[] : [];
-    const profitEngine = payload.profitEngine || {};
+    const profitEngine = (payload.profitEngine || {}) as Record<string, unknown> & { summary?: ProfitSummaryLike; riskyInvoices?: RealProfitRiskInvoice[] };
     const profitSummary = (profitEngine.summary || {}) as ProfitSummaryLike;
     const profitRiskyInvoices = Array.isArray(profitEngine.riskyInvoices) ? profitEngine.riskyInvoices as RealProfitRiskInvoice[] : [];
     const profitRealizedShare = num(profitSummary.realProfit) > 0
@@ -62,7 +47,7 @@ export default function useSmartInsightPayloadSlices({
       : 0;
 
     const criticalCount = num(summary.critical) + num(summary.high);
-    const executiveBrain = payload.executiveBrain || {};
+    const executiveBrain = (payload.executiveBrain || {}) as SmartInsightExecutiveBrain;
     const executiveTone = executiveBrain.status === 'excellent' ? 'emerald' : executiveBrain.status === 'healthy' ? 'indigo' : executiveBrain.status === 'watch' ? 'amber' : 'rose';
     const decisionMemory = summary.decisionMemory || {};
 

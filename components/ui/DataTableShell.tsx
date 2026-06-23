@@ -10,12 +10,20 @@ interface DataTableShellProps {
 }
 
 export default function DataTableShell({ title, subtitle, actions, children, className }: DataTableShellProps) {
+  const hasHeader = Boolean(title || actions || subtitle);
+
   return (
-    <section className={cn('ux-table-shell report-data-table-shell', className)} data-ui-surface="table-shell" data-ui-table-shell="true" dir="rtl">
-      {(title || actions) ? (
+    <section
+      className={cn('ux-table-shell report-data-table-shell', className)}
+      data-ui-surface="table-shell"
+      data-ui-table-shell="true"
+      data-ui-card="true"
+      dir="rtl"
+    >
+      {hasHeader ? (
         <header className="ux-table-shell__header" data-ui-table-toolbar="true">
           <div className="ux-table-shell__heading">
-            <span className="ux-table-shell__kicker">جدول حسابداری</span>
+            <span className="ux-table-shell__kicker">جدول داده</span>
             {title ? <h3 className="ux-table-shell__title">{title}</h3> : null}
             {subtitle ? <p className="ux-table-shell__subtitle">{subtitle}</p> : null}
           </div>

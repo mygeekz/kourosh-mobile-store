@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import moment from 'jalali-moment';
 import { apiFetch } from '../../utils/apiFetch';
@@ -20,6 +20,14 @@ type AutoAction = {
 type SmartInsightsAutoActionPayload = {
   executiveBrain?: {
     score?: number;
+    nextBestActions?: Array<{
+      id?: string;
+      title?: string;
+      summary?: string;
+      severity?: string;
+      actionLabel?: string;
+      to?: string;
+    }>;
   };
 };
 

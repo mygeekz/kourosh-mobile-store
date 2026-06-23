@@ -1,10 +1,11 @@
 import { NavItem } from '../types';
+import type { NavigationIconMetadata } from '../types/iconMetadata';
 
 export type FlatNavItem = {
   id: string;
   title: string;
   path: string;
-  icon?: string;
+  icon?: NavigationIconMetadata;
   parentTitle?: string;
 };
 

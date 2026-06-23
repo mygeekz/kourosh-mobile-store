@@ -1,0 +1,33 @@
+{
+  "phase": 33,
+  "name": "Header Data Hook Extraction",
+  "riskLevel": "medium-low",
+  "businessLogicChanged": false,
+  "filesChanged": [
+    "components/Header.tsx",
+    "components/header/useHeaderQuickData.ts",
+    "scripts/audit-header-decomposition.mjs",
+    "scripts/audit-header-data-hook.mjs",
+    "package.json"
+  ],
+  "headerResponsibilitiesRemoved": [
+    "quick-stat data fetching",
+    "risky-customer data fetching",
+    "quick panel refresh event listeners",
+    "quick panel refresh intervals"
+  ],
+  "headerResponsibilitiesPreserved": [
+    "global search",
+    "favorite/title area",
+    "profile menu",
+    "theme toggle",
+    "currency unit state",
+    "risk badge presentation",
+    "quick action rendering orchestration"
+  ],
+  "audits": [
+    "audit:header-data-hook",
+    "audit:header-decomposition",
+    "audit:header-quick-actions"
+  ]
+}

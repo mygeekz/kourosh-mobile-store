@@ -1,0 +1,51 @@
+{
+  "generatedBy": "Phase 18 Settings Feature Toggles UX Hardening",
+  "source": {
+    "routeImpact": "utils/featureFlags.ts featureAccessPolicyByKey derived from app/routes/routeAccessMatrix.ts",
+    "settingsTabs": "utils/settingsFeaturePolicy.ts settingsTabFeatureRequirements",
+    "apiRuntime": "utils/settingsFeaturePolicy.ts apiGuardedFeatureKeys"
+  },
+  "settingsTabFeatureRequirements": [
+    {
+      "tab": "local",
+      "requiredFeature": "local_domain_pwa"
+    },
+    {
+      "tab": "pricing",
+      "requiredFeature": "ai_pricing"
+    },
+    {
+      "tab": "smart",
+      "requiredFeature": "smart_insights"
+    },
+    {
+      "tab": "sms",
+      "requiredFeature": "sms"
+    },
+    {
+      "tab": "telegram",
+      "requiredFeature": "telegram"
+    },
+    {
+      "tab": "reminders",
+      "requiredFeature": "notifications_outbox"
+    }
+  ],
+  "apiGuardedFeatureKeys": [
+    "cash_sales",
+    "installments",
+    "products_inventory",
+    "mobile_phones",
+    "purchases_stock_counts",
+    "people_crm",
+    "repairs_services",
+    "notifications_outbox",
+    "sms",
+    "telegram",
+    "advanced_reports",
+    "smart_insights",
+    "ai_pricing",
+    "audit_log",
+    "local_domain_pwa"
+  ]
+}

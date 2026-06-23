@@ -1,4 +1,3 @@
-import React from 'react';
 import BasicInsightModalBranch, { isBasicInsightModalType } from './BasicInsightModalBranch';
 import GenericSmartInsightModal from './GenericSmartInsightModal';
 import ProfitInsightModalBranch, { isProfitInsightModalType } from './ProfitInsightModalBranch';
@@ -109,6 +108,11 @@ export default function SelectedInsightModalRouter({
         profitSummary={profitSummary}
         summary={summary}
         suspiciousAudit={suspiciousAudit}
+        severityMeta={severityMeta}
+        learning={learning}
+        customerIntelligence={Array.isArray(payload.customerIntelligence) ? payload.customerIntelligence : []}
+        salesAgentLeads={Array.isArray(payload.salesAgentLeads) ? payload.salesAgentLeads : []}
+        parseLocalizedNumber={parseLocalizedNumber}
         num={num}
         percent={percent}
         shamsi={shamsi}

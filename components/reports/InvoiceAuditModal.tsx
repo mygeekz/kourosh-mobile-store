@@ -1,5 +1,4 @@
-import React from 'react';
-import type { InvoiceAuditIndicator, InvoiceAuditRow, NumberFormatter, PercentFormatter, SeverityMetaMap, SmartInsightLike } from './types/smartInsightContracts';
+import type { InvoiceAuditRow, NumberFormatter, PercentFormatter, SeverityMetaMap, SmartInsightLike } from './types/smartInsightContracts';
 
 type InvoiceAuditModalProps = {
   selected: SmartInsightLike;

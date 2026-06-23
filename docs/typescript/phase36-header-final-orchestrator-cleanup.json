@@ -1,0 +1,14 @@
+{
+  "phase": 36,
+  "name": "Header Final Orchestrator Cleanup",
+  "changedFiles": [
+    "components/Header.tsx",
+    "components/header/HeaderShell.tsx",
+    "components/header/HeaderRiskBadge.tsx",
+    "components/header/useHeaderProfileMenu.ts",
+    "scripts/audit-header-final-orchestrator.mjs",
+    "package.json"
+  ],
+  "behaviorChanged": false,
+  "auditCommand": "npm run audit:header-final-orchestrator"
+}

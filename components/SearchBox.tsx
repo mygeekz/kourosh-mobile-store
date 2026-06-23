@@ -1,5 +1,4 @@
-import React from "react";
-import TextField from "./ui/TextField";
+import AppSearchField from './ui/AppSearchField';
 
 type SearchBoxProps = {
   value: string;
@@ -8,19 +7,21 @@ type SearchBoxProps = {
   className?: string;
 };
 
+/**
+ * Backward-compatible wrapper around the canonical AppSearchField.
+ *
+ * Keep this shim so any legacy imports of components/SearchBox continue to work,
+ * while all search rendering is owned by one UI primitive.
+ */
 export default function SearchBox({ value, onChange, preview, className }: SearchBoxProps) {
   return (
-    <TextField
-      type="search"
-      inputMode="search"
-      enterKeyHint="search"
-      dir="rtl"
+    <AppSearchField
       value={value}
-      preview={preview || "جستجو..."}
-      onChange={(e) => onChange(e.target.value)}
-      icon={<i className="fa-solid fa-magnifying-glass" />}
-      wrapperClassName="ux-search-field app-form-field--search"
-      className={className || "h-14 w-full rounded-[22px] text-[15px] shadow-sm md:text-base"}
+      onChange={onChange}
+      placeholder={preview || 'جستجو...'}
+      className={className}
+      size="lg"
+      clearable
     />
   );
 }

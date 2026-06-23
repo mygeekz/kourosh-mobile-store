@@ -1,10 +1,10 @@
-import React from 'react';
+import type { NavigationIconMetadata, ReportIconMetadata } from './types/iconMetadata';
 
 export interface NavItem {
   id: string;
   name: string; // Persian label
   /** FontAwesome class (optional for children) */
-  icon?: string;
+  icon?: NavigationIconMetadata;
   /** Route path (optional for purely-collapsible groups) */
   path?: string;
   /** Optional commercial module key used by feature-flag gating */
@@ -82,7 +82,9 @@ export interface NewProduct {
 
 export interface NotificationMessage {
   type: 'success' | 'error' | 'warning' | 'info';
-  text: string;
+  text?: string;
+  message?: string;
+  closeMs?: number;
   title?: string;
   detail?: string;
   nextStep?: string;
@@ -734,7 +736,7 @@ export interface ReportCardItem {
   id: string;
   title: string;
   description: string;
-  icon: string;
+  icon: ReportIconMetadata;
   path: string;
 }
 
@@ -884,6 +886,8 @@ export interface BusinessInformationSettings {
    * Example: https://your-public-site.com
    */
   qr_public_base_url?: string;
+  /** Public base URL used by Telegram deep links and customer-facing actions. */
+  app_base_url?: string;
   /**
    * Local-only hostname used inside the shop network.
    * Example: kourosh
@@ -1098,7 +1102,14 @@ export interface BusinessInformationSettings {
    * should send notifications. The chat_id parameter must be supplied when
    * calling the sendMessage endpoint【616386538948696†L4327-L4346】.
    */
-  telegram_chat_id?: string;
+  telegram_chat_id?: string | number;
+  /** Optional per-domain Telegram destinations. Multiple ids can be newline/comma separated. */
+  telegram_chat_ids_reports?: string;
+  telegram_chat_ids_installments?: string;
+  telegram_chat_ids_sales?: string;
+  telegram_chat_ids_notifications?: string;
+  /** Optional human-readable silent hours policy summary for Telegram. */
+  telegram_silent_hours?: string;
   /**
    * Message template for a 7‑days‑before installment payment reminder. Placeholders
    * like {name}, {amount} and {dueDate} will be replaced with actual values.
@@ -1424,7 +1435,7 @@ export interface ActivityItem {
   typeDescription: string; // e.g., "فروش جدید", "محصول جدید"
   details: string; // e.g., "آیفون ۱۴ به علی رضایی", "کابل شارژ USB-C اضافه شد"
   timestamp: string; // ISO date string
-  icon: string; // FontAwesome icon class
+  icon: ReportIconMetadata; // FontAwesome icon class
   color?: string; // Tailwind background color class, e.g., "bg-green-500"
   link?: string; // Optional path for navigation
 }
@@ -1504,7 +1515,7 @@ export interface PurchaseSuggestionItem {
 
 
 // --- Repair Center Types ---
-export type RepairStatus = "پذیرش شده" | "در حال بررسی" | "منتظر قطعه" | "در حال تعمیر" | "آماده تحویل" | "تحویل داده شده" | "تعمیر نشد" | "مرجوع شد";export interface RepairPart {
+export type RepairStatus = "پذیرش شده" | "در حال بررسی" | "در حال بررسی و ادامه" | "منتظر قطعه" | "در حال تعمیر" | "آماده تحویل" | "تحویل داده شده" | "تعمیر نشد" | "مرجوع شد";export interface RepairPart {
     id: number;
     repairId: number;
     productId: number;

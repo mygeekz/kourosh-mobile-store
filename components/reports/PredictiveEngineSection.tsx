@@ -1,5 +1,5 @@
 import React from 'react';
-import type { PredictiveEnginePayload, SmartInsightPayload, MoneyFormatter, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter } from './types/smartInsightContracts';
+import type { SmartInsightPayload, MoneyFormatter, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter } from './types/smartInsightContracts';
 import { Link } from 'react-router-dom';
 
 type PredictiveEngineSectionProps = {
@@ -20,6 +20,7 @@ function PredictiveEngineSection({
   severityMeta,
 }: PredictiveEngineSectionProps) {
   if (!payload.predictiveEngine) return null;
+  const predictiveMethod = typeof payload.predictiveEngine.method === 'string' ? { label: payload.predictiveEngine.method } : payload.predictiveEngine.method;
 
   return (
 
@@ -144,8 +145,8 @@ function PredictiveEngineSection({
 
         <footer className="smart-predictive-v182__footer">
           <span>آخرین بروزرسانی: {payload.generatedAt ? shamsi(payload.generatedAt) : '—'}</span>
-          <span>{payload.predictiveEngine.method?.label || 'پیش‌بینی هر ۳۰ دقیقه با داده‌های جدید به‌روزرسانی می‌شود.'}</span>
-          {payload.predictiveEngine.method?.warning ? <strong><i className="fa-solid fa-circle-info" /> {payload.predictiveEngine.method.warning}</strong> : null}
+          <span>{predictiveMethod?.label || 'پیش‌بینی هر ۳۰ دقیقه با داده‌های جدید به‌روزرسانی می‌شود.'}</span>
+          {predictiveMethod?.warning ? <strong><i className="fa-solid fa-circle-info" /> {predictiveMethod.warning}</strong> : null}
         </footer>
       </section>
   );

@@ -1,0 +1,16 @@
+{
+  "phase": 37,
+  "title": "Header Module Barrel + Import Hygiene",
+  "changedFiles": [
+    "components/header/index.ts",
+    "components/Header.tsx",
+    "scripts/audit-header-barrel.mjs",
+    "package.json",
+    "docs/architecture/phase37-header-module-barrel.md",
+    "docs/architecture/phase37-header-module-barrel.json",
+    "PHASE_37_HEADER_MODULE_BARREL_IMPORT_HYGIENE.md"
+  ],
+  "behaviorChanged": false,
+  "auditCommand": "npm run audit:header-barrel",
+  "risk": "low"
+}

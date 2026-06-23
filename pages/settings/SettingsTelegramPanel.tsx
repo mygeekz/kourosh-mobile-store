@@ -425,7 +425,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                         <div className="mt-2 leading-7 text-slate-600 dark:text-slate-300">{telegramSetupCoachMessage}</div>
                         <div className="mt-2 flex flex-wrap gap-1.5">
                           {telegramMissingItems[0] ? (
-                            <Button type="button" onClick={() => jumpToTelegramSetupField(telegramMissingItems[0].target)} size="sm" leftIcon={<i className="fa-solid fa-bolt" />}>
+                            <Button type="button" onClick={() => jumpToTelegramSetupField(telegramMissingItems[0].target || 'telegram_bot_token')} size="sm" leftIcon={<i className="fa-solid fa-bolt" />}>
                               برو به {telegramMissingItems[0].title}
                             </Button>
                           ) : (
@@ -498,7 +498,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                       <button
                         key={item.key}
                         type="button"
-                        onClick={() => jumpToTelegramSetupField(item.target)}
+                        onClick={() => jumpToTelegramSetupField(item.target || 'telegram_bot_token')}
                         className={`tg-apple-setup-card telegram-control-merged-card group w-full text-right ${mergedOk ? 'is-done' : 'is-pending'}`}
                         data-telegram-control-card={item.key}
                       >
@@ -674,7 +674,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                 </div>
 
                 <div className="telegram-detail-core-grid telegram-connection-bundle-v73__core grid grid-cols-1 gap-4 md:grid-cols-2 items-stretch">
-                  <ModalField label={renderTelegramFieldLabel('توکن ربات تلگرام', telegramFieldInsights.token, 'fa-key')} iconClass="fa-solid fa-key" hint={<span className="flex flex-wrap items-center gap-2"><span>{telegramFieldInsights.token.message}</span>{!telegramFieldInsights.token.ok ? <Button type="button" onClick={() => jumpToTelegramSetupField(telegramFieldInsights.token.target)} variant="warning" size="xs" className="rounded-full !px-2.5 !py-1 !text-[10px]" leftIcon={<i className="fa-solid fa-wand-magic-sparkles" />}>{telegramFieldInsights.token.cta}</Button> : null}<span className="basis-full h-0" aria-hidden="true" /><Button type="button" variant="ghost" size="xs" className="rounded-lg" onClick={() => setShowTelegramToken((s) => !s)} leftIcon={<i className={`fa-solid ${showTelegramToken ? 'fa-eye-slash' : 'fa-eye'}`} />}>{showTelegramToken ? 'پنهان کن' : 'نمایش توکن'}</Button><span>برای امنیت، توکن به صورت پیش‌فرض مخفی است.</span></span>}>
+                  <ModalField label={renderTelegramFieldLabel('توکن ربات تلگرام', telegramFieldInsights.token, 'fa-key')} iconClass="fa-solid fa-key" hint={<span className="flex flex-wrap items-center gap-2"><span>{telegramFieldInsights.token.message}</span>{!telegramFieldInsights.token.ok ? <Button type="button" onClick={() => jumpToTelegramSetupField(telegramFieldInsights.token.target || 'telegram_bot_token')} variant="warning" size="xs" className="rounded-full !px-2.5 !py-1 !text-[10px]" leftIcon={<i className="fa-solid fa-wand-magic-sparkles" />}>{telegramFieldInsights.token.cta}</Button> : null}<span className="basis-full h-0" aria-hidden="true" /><Button type="button" variant="ghost" size="xs" className="rounded-lg" onClick={() => setShowTelegramToken((s) => !s)} leftIcon={<i className={`fa-solid ${showTelegramToken ? 'fa-eye-slash' : 'fa-eye'}`} />}>{showTelegramToken ? 'پنهان کن' : 'نمایش توکن'}</Button><span>برای امنیت، توکن به صورت پیش‌فرض مخفی است.</span></span>}>
                     <input type={showTelegramToken ? 'text' : 'password'} id="telegram_bot_token" name="telegram_bot_token" value={businessInfo.telegram_bot_token || ''} onChange={handleBusinessInfoChange} className={`${inputClass} ux-ltr-token`} dir="ltr" placeholder="123456:ABC-DEF..." />
                   </ModalField>
 
@@ -1168,7 +1168,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                       </div>
                       <div className="flex flex-wrap gap-2">
                         <Button type="button" onClick={jumpToFirstIncompleteTelegramTemplate} variant="ghost" size="xs" className="rounded-2xl" leftIcon={<i className="fa-solid fa-location-crosshairs" />}>اولین ناقص</Button>
-                        <Button type="button" onClick={openUrgentTelegramTodos} variant="secondary" size="xs" className="rounded-2xl" leftIcon={<i className="fa-solid fa-bolt" />}>فقط مهم‌ها</Button>
+                        <Button type="button" onClick={() => openUrgentTelegramTodos()} variant="secondary" size="xs" className="rounded-2xl" leftIcon={<i className="fa-solid fa-bolt" />}>فقط مهم‌ها</Button>
                       </div>
                     </div>
                   </div>
@@ -1205,7 +1205,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                             <div className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-violet-500 transition-all" style={{ width: `${telegramReadinessScore}%` }} />
                           </div>
                         </button>
-                        <button type="button" onClick={telegramTodoSummary.urgent > 0 ? openUrgentTelegramTodos : jumpToFirstIncompleteTelegramTemplate} className="telegram-studio-stat-card rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 text-right shadow-sm transition hover:-translate-y-0.5 hover:bg-white dark:border-slate-800/80 dark:bg-slate-950/50">
+                        <button type="button" onClick={() => { if (telegramTodoSummary.urgent > 0) openUrgentTelegramTodos(); else jumpToFirstIncompleteTelegramTemplate(); }} className="telegram-studio-stat-card rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 text-right shadow-sm transition hover:-translate-y-0.5 hover:bg-white dark:border-slate-800/80 dark:bg-slate-950/50">
                           <div className="text-xs font-bold text-slate-500 dark:text-slate-400">پیشنهاد بعدی</div>
                           <div className="mt-1 text-sm font-black text-slate-900 dark:text-slate-50">{telegramTodoSummary.urgent > 0 ? 'تکمیل اولویت‌بالاها' : telegramسراسریSummary.empty > 0 ? 'پر کردن رویدادهای خالی' : 'بهینه‌سازی متن‌ها'}</div>
                           <div className="mt-1 text-[11px] leading-6 text-slate-500 dark:text-slate-400">{telegramTodoSummary.urgent > 0 ? `الان ${telegramTodoSummary.urgent.toLocaleString('fa-IR')} رویداد مهم هنوز ناقص است.` : telegramسراسریSummary.empty > 0 ? `هنوز ${telegramسراسریSummary.empty.toLocaleString('fa-IR')} رویداد کاملاً خالی مانده است.` : 'تمرکز روی بررسی و ادامه ارسال و یکنواخت‌سازی لحن پیام‌ها.'}</div>
@@ -1339,7 +1339,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                           </Button>
                           <Button
                             type="button"
-                            onClick={openUrgentTelegramTodos}
+                            onClick={() => openUrgentTelegramTodos()}
                             variant="danger"
                             size="xs"
                             leftIcon={<i className="fa-solid fa-bolt" />}
@@ -1386,7 +1386,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                             <div className="mt-2 flex flex-wrap gap-1.5">
                               <Button
                                 type="button"
-                                onClick={() => applyTelegramAiSuggestion(entry.item.key, entry.firstMissing?.aud as TelegramAudience | undefined)}
+                                onClick={() => { const audience = entry.firstMissing?.aud; if (audience) applyTelegramAiSuggestion(entry.item.key, audience); }}
                                 variant="primary"
                                 size="xs"
                                 leftIcon={<i className="fa-solid fa-wand-magic-sparkles" />}

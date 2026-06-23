@@ -22,16 +22,13 @@ import PriceInput from '../components/PriceInput';
 import Button from '../components/Button';
 import ModalActions from '../components/ModalActions';
 import FinancialProgressBar from '../components/FinancialProgressBar';
-import FinancialStatusBadge from '../components/FinancialStatusBadge';
-import ToggleSwitch from '../components/ToggleSwitch';
 import { formatIsoToShamsi, formatIsoToShamsiDateTime } from '../utils/dateUtils';
 import { useAuth } from '../contexts/AuthContext';
 import { getAuthHeaders } from '../utils/apiUtils';
 import { apiFetch } from '../utils/apiFetch';
 import { parseApiResult, runWithFeedback, humanizeErrorMessage } from '../utils/feedback';
 import { PARTNER_TYPES } from '../constants';
-import { getBalanceActionLabel, getBalanceBadgeClass, getBalanceLabel, getBalanceState } from '../utils/adaptiveUi';
-import { focusFirstError } from '../utils/focusFirstError';
+import { getBalanceBadgeClass, getBalanceLabel, getBalanceState } from '../utils/adaptiveUi';
 import { focusErrorsSoon, isDuplicateMessage, toSafeNumber } from '../utils/formBehavior';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../utils/currency';
 

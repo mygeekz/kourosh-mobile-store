@@ -1,0 +1,192 @@
+{
+  "phase": 23,
+  "changedFiles": 29,
+  "changedImports": 37,
+  "changes": [
+    {
+      "file": "components/MessageComposerModal.tsx",
+      "before": "import ModalField from './ModalField';",
+      "after": null
+    },
+    {
+      "file": "components/MessageComposerModal.tsx",
+      "before": "import AppleChoiceToggle from './AppleChoiceToggle';",
+      "after": null
+    },
+    {
+      "file": "components/SmsBulkTestModal.tsx",
+      "before": "import ModalActions from './ModalActions';",
+      "after": null
+    },
+    {
+      "file": "components/reports/HiddenProfitModal.tsx",
+      "before": "import type { GetDecisionActionState, HiddenProfitOpportunity, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, SmartInsightPayload, UpdateDecisionMemory } from './types/smartInsightContracts';",
+      "after": "import type { GetDecisionActionState, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, SmartInsightPayload, UpdateDecisionMemory } from './types/smartInsightContracts';"
+    },
+    {
+      "file": "components/reports/InvoiceAuditModal.tsx",
+      "before": "import type { InvoiceAuditIndicator, InvoiceAuditRow, NumberFormatter, PercentFormatter, SeverityMetaMap, SmartInsightLike } from './types/smartInsightContracts';",
+      "after": "import type { InvoiceAuditRow, NumberFormatter, PercentFormatter, SeverityMetaMap, SmartInsightLike } from './types/smartInsightContracts';"
+    },
+    {
+      "file": "components/reports/PredictiveEngineSection.tsx",
+      "before": "import type { PredictiveEnginePayload, SmartInsightPayload, MoneyFormatter, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter } from './types/smartInsightContracts';",
+      "after": "import type { SmartInsightPayload, MoneyFormatter, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter } from './types/smartInsightContracts';"
+    },
+    {
+      "file": "components/reports/RepetitionOverviewModal.tsx",
+      "before": "import type { GetDecisionStatusMeta, NumberFormatter, ShamsiFormatter, RepetitionOverviewRow, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';",
+      "after": "import type { GetDecisionStatusMeta, NumberFormatter, ShamsiFormatter, SmartInsightLike, SmartInsightPayload } from './types/smartInsightContracts';"
+    },
+    {
+      "file": "components/reports/SalesPerformanceModal.tsx",
+      "before": "import type { NumberFormatter, PercentFormatter, SalesPerformanceMetric, SalesPerformanceRow, SeverityMetaMap, ShamsiFormatter, SmartInsightLike } from './types/smartInsightContracts';",
+      "after": "import type { NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike } from './types/smartInsightContracts';"
+    },
+    {
+      "file": "components/reports/hooks/useSmartInsightPayloadSlices.ts",
+      "before": "import type {\n  CustomerIntelligenceCard,\n  DecisionMemoryOverviewState,\n  HiddenProfitOpportunity,\n  PricingRecommendationRow,\n  ProfitSummaryLike,\n  RealProfitQualityTone,\n  RealProfitRiskInvoice,\n  SalesAgentLeadRow,\n  SmartInsightExecutiveBrain,\n  SmartInsightLearning,\n  SmartInsightPayload,\n  SmartInsightPayloadSlices,\n  SmartInsightSummary,\n  SuspiciousAuditLike,\n} from '../types/smartInsightContracts';",
+      "after": "import type { CustomerIntelligenceCard, DecisionMemoryOverviewState, HiddenProfitOpportunity, PricingRecommendationRow, ProfitSummaryLike, RealProfitQualityTone, RealProfitRiskInvoice, SalesAgentLeadRow, SmartInsightExecutiveBrain, SmartInsightLearning, SmartInsightPayload, SmartInsightPayloadSlices, SuspiciousAuditLike } from '../types/smartInsightContracts';"
+    },
+    {
+      "file": "pages/CustomerDetail.tsx",
+      "before": "import FinancialProgressBar from '../components/FinancialProgressBar';",
+      "after": null
+    },
+    {
+      "file": "pages/CustomerDetail.tsx",
+      "before": "import { focusFirstError } from '../utils/focusFirstError';",
+      "after": null
+    },
+    {
+      "file": "pages/Customers.tsx",
+      "before": "import HubCard from '../components/HubCard';",
+      "after": null
+    },
+    {
+      "file": "pages/Customers.tsx",
+      "before": "import { focusFirstError } from '../utils/focusFirstError';",
+      "after": null
+    },
+    {
+      "file": "pages/Dashboard.tsx",
+      "before": "import LiquidGlassPanel from '../components/LiquidGlassPanel';",
+      "after": null
+    },
+    {
+      "file": "pages/InstallmentSalesPage.tsx",
+      "before": "import React, { useState, useEffect, ChangeEvent, useMemo } from 'react';",
+      "after": "import React, { useState, useEffect, useMemo } from 'react';"
+    },
+    {
+      "file": "pages/MobilePhones.tsx",
+      "before": "import { exportToExcel } from '../utils/exporters';",
+      "after": null
+    },
+    {
+      "file": "pages/MobilePhones.tsx",
+      "before": "import { focusFirstError } from '../utils/focusFirstError';",
+      "after": null
+    },
+    {
+      "file": "pages/Outbox.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/PartnerDetail.tsx",
+      "before": "import FinancialStatusBadge from '../components/FinancialStatusBadge';",
+      "after": null
+    },
+    {
+      "file": "pages/PartnerDetail.tsx",
+      "before": "import ToggleSwitch from '../components/ToggleSwitch';",
+      "after": null
+    },
+    {
+      "file": "pages/PartnerDetail.tsx",
+      "before": "import { getBalanceActionLabel, getBalanceBadgeClass, getBalanceLabel, getBalanceState } from '../utils/adaptiveUi';",
+      "after": "import { getBalanceBadgeClass, getBalanceLabel, getBalanceState } from '../utils/adaptiveUi';"
+    },
+    {
+      "file": "pages/PartnerDetail.tsx",
+      "before": "import { focusFirstError } from '../utils/focusFirstError';",
+      "after": null
+    },
+    {
+      "file": "pages/Partners.tsx",
+      "before": "import { focusFirstError } from '../utils/focusFirstError';",
+      "after": null
+    },
+    {
+      "file": "pages/SalesCartPage.tsx",
+      "before": "import { formatCurrencyText, readStoredCurrencyUnit } from '../utils/currency';",
+      "after": null
+    },
+    {
+      "file": "pages/inventoryPro/InventoryProPage.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from \"react\";",
+      "after": "import { useEffect, useMemo, useState } from \"react\";"
+    },
+    {
+      "file": "pages/reports/AbcAnalysisReport.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/AgingReceivablesReport.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/CashflowReport.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/CollectionFollowupCenter.tsx",
+      "before": "import ReportDatePresetChips from '../../components/reports/ReportDatePresetChips';",
+      "after": null
+    },
+    {
+      "file": "pages/reports/CollectionFollowupCenter.tsx",
+      "before": "import KpiDefinitionNote from '../../components/reports/KpiDefinitionNote';",
+      "after": null
+    },
+    {
+      "file": "pages/reports/CompareSales.tsx",
+      "before": "import React, { useEffect, useMemo, useRef, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useRef, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/DeadStockReport.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/InventoryFifo.tsx",
+      "before": "import React, {useEffect, useMemo, useRef, useState} from 'react';",
+      "after": "import { useEffect, useMemo, useRef, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/InventoryTurnoverReport.tsx",
+      "before": "import React, { useEffect, useMemo, useState } from 'react';",
+      "after": "import { useEffect, useMemo, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/ProductMargins.tsx",
+      "before": "import React, {useEffect, useMemo, useRef, useState} from 'react';",
+      "after": "import { useEffect, useMemo, useRef, useState } from 'react';"
+    },
+    {
+      "file": "pages/reports/RealizedProfitReport.tsx",
+      "before": "import { APP_MESSAGES, getCostBasisLabel as getSharedCostBasisLabel } from '../../shared/messages';",
+      "after": "import { APP_MESSAGES } from '../../shared/messages';"
+    },
+    {
+      "file": "pages/reports/SalesProfit.tsx",
+      "before": "import React, {useEffect, useMemo, useRef, useState} from 'react';",
+      "after": "import { useEffect, useMemo, useRef, useState } from 'react';"
+    }
+  ]
+}

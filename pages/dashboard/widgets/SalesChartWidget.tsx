@@ -1,4 +1,4 @@
-import React, { useId, useMemo } from 'react';
+import { useId, useMemo } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { CHART_TIMEFRAMES } from '../../../constants';
 import type { SalesDataPoint, ChartTimeframe } from '../../../types';

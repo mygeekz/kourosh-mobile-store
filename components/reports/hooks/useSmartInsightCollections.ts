@@ -5,6 +5,7 @@ import type {
   SmartInsightLike,
   SmartInsightPayload,
   SmartInsightSeverityFilter,
+  TodayActionItem,
 } from '../types/smartInsightContracts';
 
 type UseSmartInsightCollectionsArgs = {

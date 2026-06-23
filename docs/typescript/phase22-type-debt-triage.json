@@ -1,0 +1,31 @@
+{
+  "phase": 22,
+  "name": "Full TypeScript Debt Triage",
+  "scope": "Structural TypeScript triage after Settings and Reports cleanup",
+  "auditedBuckets": [
+    { "bucket": "components", "config": "config/typescript-audits/tsconfig.type-triage.components.json", "status": "pass" },
+    { "bucket": "utils", "config": "config/typescript-audits/tsconfig.type-triage.utils.json", "status": "pass" },
+    { "bucket": "hooks", "config": "config/typescript-audits/tsconfig.type-triage.hooks.json", "status": "pass" },
+    { "bucket": "contexts", "config": "config/typescript-audits/tsconfig.type-triage.contexts.json", "status": "pass" },
+    { "bucket": "dashboard", "config": "config/typescript-audits/tsconfig.type-triage.dashboard.json", "status": "pass" },
+    { "bucket": "settings", "config": "config/typescript-audits/tsconfig.settings.audit.json", "status": "pass", "script": "npm run audit:settings-types" },
+    { "bucket": "reports", "config": "config/typescript-audits/tsconfig.reports.audit.json", "status": "pass", "script": "npm run audit:reports-types" }
+  ],
+  "fixesApplied": [
+    "Added a typed react-grid-layout declaration instead of leaving Dashboard dependent on implicit any module typing.",
+    "Normalized Dashboard loading state to a strict boolean contract.",
+    "Typed Dashboard layout id normalization to avoid implicit-any filter callbacks.",
+    "Aligned Customers installment status comparison with the Persian OverallInstallmentStatus union.",
+    "Repaired StylePanel against the real StyleContext contract: theme, setTheme and buttonRadiusPx.",
+    "Fixed Orb nullability and MouseEvent listener typing without changing runtime animation behavior.",
+    "Restored Sidebar collapsed flyout pointer handlers and removed dead accent-only variables.",
+    "Aligned SmsHealthCheckPanel with the actual SmsBulkTestModal export surface.",
+    "Hardened backup schedule parsing against unknown settings payloads.",
+    "Removed safe unused default React imports where the automatic JSX runtime makes them unnecessary."
+  ],
+  "remainingDebtTrackedSeparately": [
+    "Project-wide noUnusedLocals/noUnusedParameters cleanup remains a separate cleanup phase because many report/demo variables are intentionally present but currently unused.",
+    "Full AppRoutes/page-root typecheck remains expensive because importing the route manifest pulls most pages at once; route behavior is covered by route/RBAC/feature/navigation audits.",
+    "Build still needs to be run on the developer machine because this environment uses --ignore-scripts for sqlite3 and cannot fully emulate the native install/build path."
+  ]
+}

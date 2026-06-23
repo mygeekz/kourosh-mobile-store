@@ -19,7 +19,6 @@ import type {
 } from '../types';
 
 import Notification from '../components/Notification';
-import LiquidGlassPanel from '../components/LiquidGlassPanel';
 import Skeleton from '../components/ui/Skeleton';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -558,7 +557,7 @@ const Dashboard: React.FC = () => {
   const [dueRange, setDueRange] = useState<{ from: string; to: string } | null>(null);
 
   const isDark = theme === 'dark';
-  const showLoadingSkeletons = authProcessLoading || (!authReady && !token) || (localIsLoading && authReady && token);
+  const showLoadingSkeletons = Boolean(authProcessLoading || (!authReady && !token) || (localIsLoading && authReady && token));
 
   // --- Dashboard customization state ---
   const [editing, setEditing] = useState(false);
@@ -1038,7 +1037,7 @@ const ctx: DashboardWidgetContext = useMemo(
     const def = DEFAULT_DASHBOARD_LAYOUT;
 
     if (raw && typeof raw === 'object' && raw.version === 2) {
-      const order = Array.isArray(raw.order) ? raw.order.map(String) : [];
+      const order: string[] = Array.isArray(raw.order) ? raw.order.map(String) : [];
       const cleaned = order.filter((id) => Boolean(WIDGET_REGISTRY[id as WidgetId]) && isManagedDashboardWidget(id as WidgetId)) as WidgetId[];
       const unique = uniq(cleaned);
       const withMust = ensureMandatory(unique);

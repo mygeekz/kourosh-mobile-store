@@ -1,0 +1,21 @@
+{
+  "phase": 41,
+  "name": "MainLayout Orchestrator Cleanup",
+  "risk": "low-medium",
+  "businessLogicChanged": false,
+  "routePolicyChanged": false,
+  "files": {
+    "orchestrator": "components/MainLayout.tsx",
+    "moduleRoot": "components/main-layout/",
+    "audit": "scripts/audit-main-layout-shell.mjs"
+  },
+  "acceptanceCriteria": [
+    "MainLayout.tsx remains below 180 lines",
+    "MainLayout.tsx imports layout modules from ./main-layout",
+    "mobile sidebar overlay is owned by MainLayoutShell",
+    "Outlet and MobileBottomNav are owned by MainContentFrame",
+    "recent-page tracking is owned by useRecentPageTracker",
+    "current-page title resolution is owned by useCurrentPageTitle",
+    "Ctrl/Cmd+K shortcut is owned by useCommandPaletteShortcut"
+  ]
+}

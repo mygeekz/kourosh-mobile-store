@@ -1,0 +1,17 @@
+{
+  "phase": 46,
+  "name": "CommandPalette Final Orchestrator Cleanup",
+  "status": "applied",
+  "lineCounts": {
+    "components/CommandPalette.tsx": 137,
+    "components/command-palette/useCommandPaletteResults.ts": 99,
+    "components/command-palette/useCommandPaletteActions.ts": 59
+  },
+  "behaviorChanged": false,
+  "newAudit": "npm run audit:command-palette-final",
+  "boundaries": {
+    "CommandPalette.tsx": "composition only",
+    "useCommandPaletteResults.ts": "derived result model",
+    "useCommandPaletteActions.ts": "navigation/data/favorite dispatch"
+  }
+}

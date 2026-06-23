@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { SmsPatternDef } from './SmsBulkCheckModal';
+import { SmsPatternDef } from './SmsBulkTestModal';
 import Button from './Button';
 
 type HealthItem = {

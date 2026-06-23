@@ -1,6 +1,6 @@
 import { useConfirm } from '../contexts/ConfirmContext';
 // src/pages/InstallmentSalesPage.tsx
-import React, { useState, useEffect, ChangeEvent, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { InstallmentSale, NotificationMessage, OverallInstallmentStatus } from '../types';
 import Notification from '../components/Notification';

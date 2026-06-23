@@ -2,17 +2,19 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "skipLibCheck": true,
-
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -20,24 +22,45 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-
     "baseUrl": ".",
     "paths": {
-      "lucide-react": ["components/lucide-react.tsx"],
-      "@/*": ["./*"],
-      "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
-      "@contexts/*": ["contexts/*"],
-      "@utils/*": ["utils/*"],
-      "@types/*": ["types/*"],
-      "@assets/*": ["assets/*"],
-      "@styles/*": ["styles/*"],
-      "@hooks/*": ["hooks/*"]
+      "lucide-react": [
+        "components/lucide-react.tsx"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ]
     }
   },
   "include": [
     "App.tsx",
     "index.tsx",
+    "app/**/*.tsx",
+    "app/**/*.ts",
     "components/**/*.ts",
     "components/**/*.tsx",
     "contexts/**/*.ts",
@@ -51,7 +74,13 @@
     "utils/**/*.ts",
     "utils/**/*.tsx",
     "types.ts",
-    "constants.tsx"
+    "types/**/*.d.ts",
+    "constants.tsx",
+    "vite-env.d.ts"
   ],
-  "exclude": ["node_modules", "dist", "server"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "server"
+  ]
 }

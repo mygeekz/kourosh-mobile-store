@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-06-22T18:13:17.831Z",
+  "status": "passed",
+  "canonicalIconContracts": [
+    {
+      "file": "components/ui/ControlShell.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/EmptyState.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/PageKit.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/PageShell.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/PanelCard.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/SurfaceHeader.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    },
+    {
+      "file": "components/ui/TextField.tsx",
+      "hasCanonicalContract": true,
+      "exposesLegacyStringUnion": false
+    }
+  ],
+  "legacyEmptyStateIconConsumers": [],
+  "canonicalEmptyStateIconConsumerCount": 5,
+  "canonicalEmptyStateIconConsumers": [
+    {
+      "file": "pages/AuditLog.tsx",
+      "line": 142
+    },
+    {
+      "file": "pages/Expenses.tsx",
+      "line": 589
+    },
+    {
+      "file": "pages/MobilePhones.tsx",
+      "line": 3361
+    },
+    {
+      "file": "pages/MobilePhones.tsx",
+      "line": 3367
+    },
+    {
+      "file": "pages/MobilePhones.tsx",
+      "line": 3373
+    }
+  ],
+  "toleratedStringIconSurfaces": [
+    "Navigation metadata and FontAwesome class registries intentionally remain string-based until a dedicated navigation-icon migration.",
+    "Report-local KPI cards and smart-insight contracts intentionally remain string-based because they render FontAwesome classes internally.",
+    "This audit only hardens canonical shared UI primitives and EmptyState call sites."
+  ]
+}

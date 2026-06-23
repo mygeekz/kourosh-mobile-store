@@ -1,5 +1,5 @@
 // pages/Outbox.tsx
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PageKit from '../components/ui/PageKit';
 import MessageComposerModal from '../components/MessageComposerModal';
 import { apiFetch } from '../utils/apiFetch';

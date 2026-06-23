@@ -1,0 +1,23 @@
+{
+  "phase": 43,
+  "name": "CommandPalette Module Decomposition",
+  "source": "components/CommandPalette.tsx",
+  "module": "components/command-palette",
+  "behaviorChanged": false,
+  "allowedResponsibilitiesInCommandPalette": [
+    "auth context",
+    "feature flag context",
+    "navigation dispatch",
+    "active index orchestration",
+    "server search fetch orchestration"
+  ],
+  "extractedResponsibilities": [
+    "search header rendering",
+    "discovery search chips",
+    "result list composition",
+    "nav/data rows",
+    "footer keyboard hints",
+    "data result path utilities"
+  ],
+  "audit": "npm run audit:command-palette"
+}

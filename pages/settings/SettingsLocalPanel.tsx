@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import Button from '../../components/Button';
 import type { SettingsLocalPanelProps } from './settingsPanelTypes';
 
@@ -147,7 +147,7 @@ const SettingsLocalPanel = ({
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={handleBusinessInfoSubmit}
+                  onClick={(event) => { void handleBusinessInfoSubmit(event as unknown as React.FormEvent<HTMLFormElement>); }}
                   disabled={!infoChanged || isSaving}
                   className="inline-flex items-center gap-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-white shadow-lg transition-colors hover:brightness-110     disabled:opacity-60"
                 >

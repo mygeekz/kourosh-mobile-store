@@ -1,0 +1,150 @@
+{
+  "checkedAt": "2026-06-22T18:13:14.821Z",
+  "status": "passed",
+  "files": {
+    "legacyExport": "components/MobileBottomNav.tsx",
+    "moduleBarrel": "components/mobile-bottom-nav/index.ts",
+    "orchestrator": "components/mobile-bottom-nav/MobileBottomNav.tsx",
+    "shell": "components/mobile-bottom-nav/MobileBottomNavShell.tsx",
+    "itemLink": "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+    "activePill": "components/mobile-bottom-nav/MobileBottomNavActivePill.tsx",
+    "primaryAction": "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+    "menuButton": "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx",
+    "hook": "components/mobile-bottom-nav/useMobileBottomNavigation.ts",
+    "items": "components/mobile-bottom-nav/mobileBottomNavItems.ts",
+    "labels": "components/mobile-bottom-nav/mobileBottomNavLabels.ts",
+    "types": "components/mobile-bottom-nav/mobileBottomNavTypes.ts",
+    "shellBarrel": "components/shell/index.ts"
+  },
+  "lineCounts": {
+    "legacyExport": 3,
+    "moduleBarrel": 4,
+    "orchestrator": 30,
+    "shell": 24,
+    "itemLink": 35,
+    "activePill": 22,
+    "primaryAction": 29,
+    "menuButton": 25,
+    "hook": 40,
+    "items": 12,
+    "labels": 14,
+    "types": 13,
+    "shellBarrel": 5
+  },
+  "snippetResults": [
+    {
+      "file": "components/MobileBottomNav.tsx",
+      "snippets": {
+        "export { default } from './mobile-bottom-nav/index'": true,
+        "MobileBottomNavProps": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/index.ts",
+      "snippets": {
+        "export { default } from './MobileBottomNav'": true,
+        "BOTTOM_NAV_ITEMS": true,
+        "MobileBottomNavProps": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNav.tsx",
+      "snippets": {
+        "useMobileBottomNavigation()": true,
+        "<MobileBottomNavShell>": true,
+        "<MobileBottomNavItemLink": true,
+        "<MobileBottomNavPrimaryAction": true,
+        "<MobileBottomNavMenuButton": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavShell.tsx",
+      "snippets": {
+        "data-ui-navigation=\"mobile-bottom\"": true,
+        "grid h-full grid-cols-5": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+      "snippets": {
+        "NavLink": true,
+        "<MobileBottomNavActivePill": true,
+        "<FontAwesomeIcon icon={item.icon}": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavActivePill.tsx",
+      "snippets": {
+        "layoutId=\"bottomNavActivePill\"": true,
+        "AnimatePresence": true,
+        "motion.div": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+      "snippets": {
+        "canUseQuickSale": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-plus\"": true,
+        "ثبت اطلاعات فروش سریع": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx",
+      "snippets": {
+        "onMenuClick": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-bars\"": true,
+        "نقشه": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/useMobileBottomNavigation.ts",
+      "snippets": {
+        "canAccessNavigationPath": true,
+        "BOTTOM_NAV_ITEMS": true,
+        "QUICK_SALE_PATH": true,
+        "navigate(QUICK_SALE_PATH)": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/mobileBottomNavItems.ts",
+      "snippets": {
+        "BOTTOM_NAV_ITEMS": true,
+        "path: '/'": true,
+        "path: '/products'": true,
+        "path: '/reports'": true,
+        "QUICK_SALE_PATH = '/sales/cash'": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/mobileBottomNavLabels.ts",
+      "snippets": {
+        "getMobileBottomNavAriaLabel": true,
+        "getMobileBottomNavTitle": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/mobileBottomNavTypes.ts",
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "MobileBottomNavItem": true,
+        "MobileBottomNavProps": true
+      }
+    },
+    {
+      "file": "components/shell/index.ts",
+      "snippets": {
+        "export { default as MobileBottomNav } from '../MobileBottomNav';": true
+      }
+    }
+  ],
+  "policy": {
+    "goal": "MobileBottomNav is now a shell module with separate metadata, access hook, shell surface, item renderer, primary action, and menu button.",
+    "behaviorPreserved": [
+      "navigation policy",
+      "quick sale route",
+      "active pill animation",
+      "safe-area shell",
+      "menu callback"
+    ]
+  }
+}

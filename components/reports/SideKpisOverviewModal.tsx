@@ -1,5 +1,4 @@
-import React from 'react';
-import type { SideKpisOverviewData, ProfitSummaryLike, SmartInsightPayload, SmartInsightSummary, SuspiciousAuditLike } from './types/smartInsightContracts';
+import type { InsightSeverity, LocalizedNumberParser, NumberFormatter, PercentFormatter, ProfitSummaryLike, SeverityMetaMap, SmartInsightLearning, SmartInsightLike, SmartInsightPayload, SmartInsightSummary, SuspiciousAuditLike, CustomerIntelligenceCard, SalesAgentLeadRow } from './types/smartInsightContracts';
 
 type SideKpisOverviewModalProps = {
   selected: SmartInsightLike;
@@ -7,6 +6,13 @@ type SideKpisOverviewModalProps = {
   profitSummary: ProfitSummaryLike | null;
   summary: SmartInsightSummary;
   suspiciousAudit: SuspiciousAuditLike[];
+  insights: SmartInsightLike[];
+  typeLabels: Record<string, string>;
+  severityMeta: SeverityMetaMap;
+  learning: SmartInsightLearning;
+  customerIntelligence: CustomerIntelligenceCard[];
+  salesAgentLeads: SalesAgentLeadRow[];
+  parseLocalizedNumber: LocalizedNumberParser;
   num: NumberFormatter;
   percent: PercentFormatter;
   onClose: () => void;
@@ -18,6 +24,13 @@ export default function SideKpisOverviewModal({
   profitSummary,
   summary,
   suspiciousAudit,
+  insights,
+  typeLabels,
+  severityMeta,
+  learning,
+  customerIntelligence,
+  salesAgentLeads,
+  parseLocalizedNumber,
   num,
   percent,
   onClose,
@@ -26,7 +39,7 @@ export default function SideKpisOverviewModal({
   const collectionCount = num(payload.predictiveEngine?.risks?.collection?.overdueCount) + num(payload.predictiveEngine?.risks?.collection?.dueSoonCount);
   const operationalKpis = [
     { label: 'ریسک موجودی', value: stockoutCount.toLocaleString('fa-IR'), icon: 'fa-cube', tone: stockoutCount > 0 ? 'rose' : 'emerald' },
-    { label: 'کیفیت سود', value: profitSummary.qualityScore != null ? percent(profitSummary.qualityScore) : percent(summary.profitQualityScore || 0), icon: 'fa-arrow-trend-up', tone: 'emerald' },
+    { label: 'کیفیت سود', value: profitSummary?.qualityScore != null ? percent(profitSummary?.qualityScore) : percent(summary.profitQualityScore || 0), icon: 'fa-arrow-trend-up', tone: 'emerald' },
     { label: 'ریسک اختلاف', value: num(summary.auditRiskCount || suspiciousAudit.length).toLocaleString('fa-IR'), icon: 'fa-chart-line', tone: num(summary.auditRiskCount || suspiciousAudit.length) > 0 ? 'orange' : 'emerald' },
     { label: 'اعتماد تحلیل', value: percent(learning.confidence || payload.predictiveEngine?.confidence || 0), icon: 'fa-shield-halved', tone: 'violet' },
     { label: 'کالاهای در خطر', value: stockoutCount.toLocaleString('fa-IR'), icon: 'fa-triangle-exclamation', tone: stockoutCount > 0 ? 'rose' : 'emerald' },
@@ -36,7 +49,7 @@ export default function SideKpisOverviewModal({
   ];
   const dependentAlerts = [
     ...insights.slice(0, 6).map((insight) => ({ title: insight.title, category: typeLabels[String(insight.type)] || insight.category, severity: insight.severity })),
-    ...(payload.predictiveEngine?.alerts || []).slice(0, 3).map((alert) => ({ title: alert.title, category: 'پیش‌بینی', severity: (alert.severity || 'medium') as Severity })),
+    ...(payload.predictiveEngine?.alerts || []).slice(0, 3).map((alert) => ({ title: alert.title, category: 'پیش‌بینی', severity: (alert.severity || 'medium') as InsightSeverity })),
   ].slice(0, 6);
 
   return (

@@ -1,13 +1,16 @@
 export type InsightSeverity = 'low' | 'medium' | 'high' | 'critical' | string;
 
 export type SeverityVisualMeta = {
-  label?: string;
-  icon?: string;
-  badge?: string;
-  border?: string;
+  label: string;
+  icon: string;
+  badge: string;
+  border: string;
   text?: string;
   bg?: string;
   tone?: string;
+  dot: string;
+  soft: string;
+  [key: string]: unknown;
 };
 
 export type SeverityMetaMap = Record<string, SeverityVisualMeta>;
@@ -58,28 +61,32 @@ export type SmartInsightLike = {
   id: string;
   type: string;
   category?: string;
-  severity?: InsightSeverity;
+  severity: InsightSeverity;
   score?: number;
   confidence?: number;
-  title?: string;
-  summary?: string;
+  title: string;
+  summary: string;
   icon?: string;
   tone?: string;
-  reasons?: string[];
-  actions?: SmartInsightAction[];
+  reasons: string[];
+  actions: SmartInsightAction[];
   decision?: SmartInsightDecision;
   target?: unknown;
-  metrics?: SmartInsightMetric[];
+  metrics: SmartInsightMetric[];
+  actionLabel?: string;
+  impactLabel?: string;
+  to?: string;
+  priority?: number;
   [key: string]: unknown;
 };
 
 export type UpdateDecisionMemory = (
-  insight: SmartInsightLike | unknown,
+  insight: SmartInsightLike,
   patch: DecisionMemoryPatch
 ) => Promise<void> | void;
 
-export type GetDecisionStatusMeta = (decision: unknown) => DecisionStatusMeta;
-export type GetDecisionActionState = (insight: unknown) => DecisionActionState;
+export type GetDecisionStatusMeta = (decision?: SmartInsightDecision) => DecisionStatusMeta;
+export type GetDecisionActionState = (insight: SmartInsightLike) => DecisionActionState;
 
 export type ReportFormatters = {
   money: MoneyFormatter;
@@ -101,25 +108,48 @@ export type SmartInsightSummary = {
 
 export type SmartInsightLearning = {
   level?: string;
+  label?: string;
+  description?: string;
   confidence?: number;
   status?: string;
+  signals?: SmartInsightSignal[];
+  [key: string]: unknown;
+};
+
+export type SmartInsightSignal = {
+  label?: string;
+  value?: unknown;
   [key: string]: unknown;
 };
 
 export type SmartInsightExecutiveBrain = {
   score?: number;
   tone?: string;
-  actions?: unknown[];
+  command?: string;
+  narrative?: string;
+  status?: string;
+  statusLabel?: string;
+  confidence?: number;
+  actions?: SmartInsightLike[];
+  nextBestActions?: SmartInsightLike[];
   [key: string]: unknown;
 };
 
 export type SmartInsightPayload = {
   dailyBrief?: string[];
-  todayActions?: unknown[];
-  predictiveEngine?: unknown;
+  todayActions?: TodayActionItem[];
+  predictiveEngine?: PredictiveEnginePayload;
   executiveBrain?: SmartInsightExecutiveBrain;
   learning?: SmartInsightLearning;
-  summary?: SmartInsightSummary;
+  summary?: SmartInsightSummary & { decisionMemory?: DecisionMemoryOverviewState };
+  insights?: SmartInsightLike[];
+  hiddenProfit?: HiddenProfitOpportunity[];
+  suspiciousAudit?: SuspiciousAuditLike[];
+  customerIntelligence?: CustomerIntelligenceCard[];
+  pricingRecommendations?: PricingRecommendationRow[];
+  salesAgentLeads?: SalesAgentLeadRow[];
+  profitEngine?: SmartInsightProfitEnginePayload;
+  generatedAt?: string;
   [key: string]: unknown;
 };
 
@@ -149,8 +179,8 @@ export type AlertSelectionState = {
 export type UnknownRecord = Record<string, unknown>;
 
 export type SmartInsightMetric = {
-  label?: string;
-  value?: unknown;
+  label: string;
+  value: string | number;
   icon?: string;
   tone?: string;
   [key: string]: unknown;
@@ -162,7 +192,7 @@ export type SmartInsightActionPatch = DecisionMemoryPatch;
 
 export type InsightModalPayload = SmartInsightPayload & UnknownRecord;
 
-export type AlertReason = {
+export type AlertReason = string | {
   label?: string;
   text?: string;
   value?: unknown;
@@ -216,7 +246,7 @@ export type ProfitSignalMetric = SmartInsightMetric;
 
 export type ProfitRiskInvoice = {
   orderId?: string | number;
-  customerName?: string;
+  customerName: string;
   label?: string;
   transactionDate?: string;
   riskScore?: number;
@@ -225,15 +255,19 @@ export type ProfitRiskInvoice = {
 };
 
 export type BoardKpiItem = {
+  key?: string | number;
   label?: string;
   value?: unknown;
   icon?: string;
   tone?: string;
-  trend?: unknown;
+  delta?: unknown;
+  deltaTone?: string;
+  trend?: number[];
   [key: string]: unknown;
 };
 
 export type BoardFocusArea = {
+  key?: string | number;
   label?: string;
   value?: unknown;
   icon?: string;
@@ -245,19 +279,20 @@ export type ExecutiveActionGuide = {
   title?: string;
   description?: string;
   label?: string;
+  metric?: string;
   icon?: string;
   [key: string]: unknown;
 };
 
-export type ExecutiveActionOutcomeGuideFactory = (action: unknown) => ExecutiveActionGuide;
+export type ExecutiveActionOutcomeGuideFactory = (action?: Partial<SmartInsightLike> | Record<string, unknown>) => ExecutiveActionGuide;
 
-export type SparklinePointFactory = (trend: unknown) => string;
+export type SparklinePointFactory = (trend?: number[]) => string;
 
 export type LearningToneFactory = (level: unknown) => string;
 
 export type PricingRecommendationRow = {
   productId?: string | number;
-  productName?: string;
+  productName: string;
   currentPrice?: number;
   purchasePrice?: number;
   safeMinPrice?: number;
@@ -278,7 +313,10 @@ export type PricingRecommendationRow = {
 
 export type CustomerRiskRow = {
   customerId?: string | number;
-  customerName?: string;
+  title?: string;
+  recommendation?: string;
+  expectedImpact?: string;
+  customerName: string;
   phoneNumber?: string;
   segment?: string;
   segments?: string[];
@@ -305,9 +343,20 @@ export type ModalReason = {
 export type ModalMetric = SmartInsightMetric;
 
 export type SalesAgentLeadRow = {
-  id?: string;
+  id: string;
+  title: string;
+  status?: string;
+  intentLabel?: string;
+  recommendedChannel?: string;
+  expectedImpact?: string;
+  ctaLabel?: string;
+  action?: string;
+  opportunityValue?: number;
+  totalSpend?: number;
+  lastInteractionAt?: string;
+  updatedAt?: string;
   customerId?: string | number;
-  customerName?: string;
+  customerName: string;
   phoneNumber?: string;
   priority?: number;
   segment?: string;
@@ -317,21 +366,40 @@ export type SalesAgentLeadRow = {
   [key: string]: unknown;
 };
 
+export type HiddenProfitRow = {
+  productId?: string | number;
+  title?: string;
+  metric?: string;
+  reason?: string;
+  [key: string]: unknown;
+};
+
 export type HiddenProfitOpportunity = {
   id?: string;
+  subtitle?: string;
+  riskScore?: number;
   title?: string;
   label?: string;
   impact?: number;
   confidence?: number;
   action?: string;
-  rows?: unknown[];
-  metrics?: unknown[];
+  rows?: HiddenProfitRow[];
+  metrics?: SmartInsightMetric[];
   [key: string]: unknown;
 };
 
 export type CollectionRiskRow = {
   customerId?: string | number;
-  customerName?: string;
+  outstandingAmount?: number;
+  dueInDays?: number;
+  lastActionAt?: string;
+  kanbanStageLabel?: string;
+  nextFollowupDate?: string;
+  sourceType?: string;
+  orderId?: string | number;
+  touchedToday?: boolean;
+  label?: string;
+  customerName: string;
   phoneNumber?: string;
   overdueAmount?: number;
   dueAmount?: number;
@@ -348,6 +416,8 @@ export type CollectionRiskRow = {
 
 export type StockReorderRow = {
   productId?: string | number;
+  title?: string;
+  subtitle?: string;
   productName?: string;
   sku?: string;
   stock?: number;
@@ -366,6 +436,10 @@ export type StockReorderRow = {
 
 export type InvoiceAuditRow = {
   invoiceId?: string | number;
+  subtitle?: string;
+  riskyItems?: unknown[];
+  reasons?: unknown[];
+  metrics?: InvoiceAuditIndicator[];
   orderId?: string | number;
   title?: string;
   customerName?: string;
@@ -392,6 +466,7 @@ export type SuspiciousAuditCard = InvoiceAuditRow & {
   title?: string;
   invoiceId?: string | number;
   riskyItems?: unknown[];
+  reasons?: unknown[];
   metrics?: InvoiceAuditIndicator[];
 };
 
@@ -493,13 +568,41 @@ export type RealProfitQualityTone = string;
 
 export type DailyBriefItem = string;
 
+export type PredictiveCollectionRisk = {
+  overdueAmount?: number;
+  overdueCount?: number;
+  dueSoonCount?: number;
+  [key: string]: unknown;
+};
+
+export type PredictiveRiskBuckets = {
+  collection?: PredictiveCollectionRisk;
+  stockout?: PredictiveStockoutItem[];
+  [key: string]: unknown;
+};
+
+export type PredictiveForecastPayload = {
+  label?: string;
+  warning?: string;
+  [key: string]: unknown;
+};
+
 export type PredictiveEnginePayload = {
   confidence?: number;
+  forecast?: PredictiveForecastPayload;
+  risks?: PredictiveRiskBuckets;
+  alerts?: PredictiveAlertItem[];
   salesForecast?: unknown;
   stockoutItems?: StockReorderRow[];
   futureAlerts?: unknown[];
   updatedAt?: string;
-  method?: string;
+  method?: { label?: string; warning?: string } | string;
+  [key: string]: unknown;
+};
+
+export type SmartInsightProfitEnginePayload = {
+  summary?: ProfitSummaryLike;
+  riskyInvoices?: RealProfitRiskInvoice[];
   [key: string]: unknown;
 };
 
@@ -515,9 +618,15 @@ export type FinancialAuditApiResponse = {
   [key: string]: unknown;
 };
 
-export type SmartInsightSelection = SmartInsightLike | Record<string, unknown> | null;
+export type SmartInsightSelection = SmartInsightLike | TodayActionItem | SuspiciousAuditCard | Record<string, unknown> | null;
 
 export type SmartInsightSetSelected = (value: SmartInsightSelection) => void;
+
+export type PredictiveStockoutItem = StockReorderRow & {
+  stockQuantity?: number;
+  soldQty14?: number;
+  suggestedBuyQty?: number;
+};
 
 export type PredictiveAlertItem = {
   id?: string;

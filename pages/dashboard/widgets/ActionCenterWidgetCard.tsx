@@ -1,4 +1,3 @@
-import React from 'react';
 import ActionCenterWidget from '../../../components/ActionCenterWidget';
 import type { DashboardWidgetProps } from '../types';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import type { MoneyFormatter, NumberFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, StockReorderRow } from './types/smartInsightContracts';
 

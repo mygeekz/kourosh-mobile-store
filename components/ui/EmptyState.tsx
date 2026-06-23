@@ -5,8 +5,8 @@ import { cn } from '../../utils/cn';
 type EmptyStateTone = 'neutral' | 'info' | 'success' | 'warning' | 'violet';
 
 type EmptyStateProps = {
-  icon?: string;
-  title: string;
+  icon?: React.ReactNode;
+  title?: string;
   description?: string;
   actionLabel?: string;
   onAction?: () => void;
@@ -102,6 +102,11 @@ const inferContent = (title: string, actionLabel?: string): InferredEmptyState =
   };
 };
 
+
+const renderFontAwesomeIcon = (iconClassName: string): React.ReactNode => (
+  <i className={cn(iconClassName, 'text-2xl')} aria-hidden="true" />
+);
+
 const EmptyState: React.FC<EmptyStateProps> = ({
   icon,
   title,
@@ -111,7 +116,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   className,
   tone,
 }) => {
-  const inferred = inferContent(title, actionLabel);
+  const resolvedTitle = title || 'داده‌ای برای نمایش وجود ندارد';
+  const inferred = inferContent(resolvedTitle, actionLabel);
   const resolvedIcon = icon || inferred.icon;
   const resolvedDescription = description || inferred.description;
   const resolvedActionLabel = actionLabel || inferred.actionLabel;
@@ -120,10 +126,10 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className={cn('empty-state-modern premium-no-result premium-empty-state-card', `premium-empty-state-card--${resolvedTone}`, className)} data-ui-surface="empty-state" data-ui-card="true" dir="rtl">
       <div className={cn('premium-empty-state-card__icon empty-state-modern__icon', `premium-empty-state-card__icon--${resolvedTone}`)}>
-        <i className={cn(resolvedIcon, 'text-2xl')} />
+        {icon ? resolvedIcon : renderFontAwesomeIcon(inferred.icon)}
       </div>
       <div className="premium-empty-state-card__body">
-        <div className="premium-empty-state-card__title">{title}</div>
+        <div className="premium-empty-state-card__title">{resolvedTitle}</div>
         {resolvedDescription && <div className="premium-empty-state-card__description">{resolvedDescription}</div>}
       </div>
 

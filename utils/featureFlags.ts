@@ -1,3 +1,6 @@
+import { routeAccessMatrix } from '../app/routes/routeAccessMatrix';
+import type { FeatureIconMetadata } from '../types/iconMetadata';
+
 export type FeatureCategory = 'core' | 'sales' | 'inventory' | 'crm' | 'services' | 'messaging' | 'reports' | 'ai' | 'system';
 
 export type FeatureFlagScope = 'module' | 'feature';
@@ -10,7 +13,7 @@ export type FeatureFlagDefinition = {
   tier: 'core' | 'commercial' | 'advanced' | 'enterprise';
   defaultEnabled: boolean;
   optional: boolean;
-  icon: string;
+  icon: FeatureIconMetadata;
   scope?: FeatureFlagScope;
   parentKey?: string;
   groupTitle?: string;
@@ -20,7 +23,7 @@ export type FeatureFlagDefinition = {
   settingKey: string;
 };
 
-export const FEATURE_CATEGORIES: Record<FeatureCategory, { title: string; description: string; icon: string }> = {
+export const FEATURE_CATEGORIES: Record<FeatureCategory, { title: string; description: string; icon: FeatureIconMetadata }> = {
   core: { title: 'هسته برنامه', description: 'بخش‌هایی که برای کارکرد پایه سیستم لازم هستند.', icon: 'fa-solid fa-layer-group' },
   sales: { title: 'فروش و فاکتور', description: 'ثبت فروش، فاکتور، اقساط و عملیات صندوق.', icon: 'fa-solid fa-cart-shopping' },
   inventory: { title: 'کالا و انبار', description: 'مدیریت کالا، موبایل، خرید، انبارگردانی و چاپ لیبل.', icon: 'fa-solid fa-boxes-stacked' },
@@ -65,7 +68,7 @@ export const MICRO_FEATURE_FLAGS: FeatureFlagDefinition[] = [
 
 export type CommercialPlanKey = 'lite' | 'standard' | 'pro' | 'enterprise';
 
-export const COMMERCIAL_PLANS: Record<CommercialPlanKey, { title: string; description: string; icon: string; enable: string[]; disable: string[] }> = {
+export const COMMERCIAL_PLANS: Record<CommercialPlanKey, { title: string; description: string; icon: FeatureIconMetadata; enable: string[]; disable: string[] }> = {
   lite: { title: 'Lite', description: 'نسخه سبک برای فروشگاه ساده؛ بدون موبایل، تعمیرات، پیام‌رسانی و AI سنگین.', icon: 'fa-solid fa-feather', enable: ['cash_sales', 'dashboard_experience', 'products_inventory', 'people_crm', 'dashboard_clock_widget'], disable: ['installments', 'mobile_phones', 'purchases_stock_counts', 'repairs_services', 'notifications_outbox', 'sms', 'telegram', 'advanced_reports', 'ai_pricing', 'smart_insights', 'audit_log', 'local_domain_pwa', 'phone_ai_pricing_settings', 'phone_ai_price_signal', 'phone_ai_strategy_advisor', 'phone_pricing_behavior_learning', 'phone_smart_warnings', 'phone_inventory_drilldown', 'settings_ai_control_panel'] },
   standard: { title: 'Standard', description: 'نسخه تجاری عمومی با فروش، موجودی، خرید، CRM و گزارش‌های لازم؛ AI ریزدانه خاموش می‌ماند.', icon: 'fa-solid fa-store', enable: ['cash_sales', 'dashboard_experience', 'installments', 'products_inventory', 'purchases_stock_counts', 'people_crm', 'advanced_reports', 'audit_log', 'dashboard_clock_widget'], disable: ['mobile_phones', 'repairs_services', 'notifications_outbox', 'sms', 'telegram', 'ai_pricing', 'smart_insights', 'local_domain_pwa', 'phone_ai_pricing_settings', 'phone_ai_price_signal', 'phone_ai_strategy_advisor', 'phone_pricing_behavior_learning', 'phone_smart_warnings', 'phone_inventory_drilldown', 'settings_ai_control_panel'] },
   pro: { title: 'Pro', description: 'نسخه کامل‌تر برای فروشگاه موبایل/چندبخشی؛ موبایل، اقساط، گزارش‌ها، پیام‌رسانی و فیچرهای کاربردی روشن.', icon: 'fa-solid fa-gem', enable: ['cash_sales', 'dashboard_experience', 'installments', 'products_inventory', 'mobile_phones', 'purchases_stock_counts', 'people_crm', 'repairs_services', 'notifications_outbox', 'sms', 'advanced_reports', 'audit_log', 'phone_smart_warnings', 'phone_inventory_drilldown', 'dashboard_clock_widget'], disable: ['telegram', 'ai_pricing', 'smart_insights', 'local_domain_pwa', 'phone_ai_pricing_settings', 'phone_ai_price_signal', 'phone_ai_strategy_advisor', 'phone_pricing_behavior_learning', 'settings_ai_control_panel'] },
@@ -94,16 +97,115 @@ export const buildFeatureFlagsFromSettings = (settings: Record<string, unknown> 
   ) as Record<string, boolean>;
 };
 
-export const isFeatureEnabledForPath = (flags: Record<string, boolean>, path: string) => {
-  const matched = FEATURE_FLAGS.find((feature) => feature.routes?.some((route) => path === route || path.startsWith(route + '/')));
-  if (!matched) return true;
-  return flags[matched.key] !== false;
+export type FeatureAccessPolicySource = 'route-access-matrix' | 'feature-definition';
+
+export type FeatureAccessPolicyEntry = {
+  featureKey: string;
+  routes: readonly string[];
+  navIds: readonly string[];
+  sources: readonly FeatureAccessPolicySource[];
+};
+
+const normalizeFeaturePath = (path: string): string => {
+  const clean = path.split('?')[0]?.split('#')[0]?.trim() ?? path;
+  if (!clean || clean === '*') return clean;
+  const absolute = clean.startsWith('/') ? clean : `/${clean}`;
+  return absolute.length > 1 ? absolute.replace(/\/+$/, '') : absolute;
+};
+
+const routePathToMatcher = (path: string): RegExp | null => {
+  if (!path || path === '*') return null;
+
+  const normalizedPath = normalizeFeaturePath(path);
+  const segments = normalizedPath.split('/').filter(Boolean);
+  const pattern = segments
+    .map((segment) => {
+      if (segment === '*') return '.*';
+      if (segment.startsWith(':')) return '[^/]+';
+      return segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    })
+    .join('/');
+
+  if (!pattern) return /^\/$/;
+  return new RegExp(`^/${pattern}(?:/.*)?$`);
+};
+
+const featureDefinitionsByKey = Object.fromEntries(
+  ALL_FEATURE_FLAGS.map((feature) => [feature.key, feature]),
+) as Readonly<Partial<Record<string, FeatureFlagDefinition>>>;
+
+const featureKeysFromRouteMatrix = Array.from(new Set(
+  routeAccessMatrix.flatMap((entry) => [...entry.featureFlags]),
+));
+
+const featureKeysFromDefinitions = ALL_FEATURE_FLAGS.map((feature) => feature.key);
+
+const allPolicyFeatureKeys = Array.from(new Set([
+  ...featureKeysFromDefinitions,
+  ...featureKeysFromRouteMatrix,
+]));
+
+export const featureAccessPolicy = allPolicyFeatureKeys.map((featureKey): FeatureAccessPolicyEntry => {
+  const definition = featureDefinitionsByKey[featureKey];
+  const routesFromMatrix = routeAccessMatrix
+    .filter((entry) => (entry.featureFlags as readonly string[]).includes(featureKey))
+    .map((entry) => entry.effectivePath)
+    .filter((routePath) => routePath && routePath !== '*');
+
+  const routesFromDefinition = definition?.routes ?? [];
+  const routes = Array.from(new Set([...routesFromMatrix, ...routesFromDefinition].map(normalizeFeaturePath)));
+  const navIds = definition?.navIds ?? [];
+  const sources = [
+    ...(routesFromMatrix.length > 0 ? ['route-access-matrix' as const] : []),
+    ...(definition ? ['feature-definition' as const] : []),
+  ];
+
+  return { featureKey, routes, navIds, sources };
+}).sort((a, b) => a.featureKey.localeCompare(b.featureKey));
+
+export const featureAccessPolicyByKey = Object.fromEntries(
+  featureAccessPolicy.map((entry) => [entry.featureKey, entry]),
+) as Readonly<Record<string, FeatureAccessPolicyEntry>>;
+
+const featureRouteMatchers = featureAccessPolicy.flatMap((entry) => entry.routes.map((routePath) => ({
+  featureKey: entry.featureKey,
+  routePath,
+  matcher: routePathToMatcher(routePath),
+}))).filter((entry) => Boolean(entry.matcher));
+
+export const featureAccessPolicySource = {
+  routeFeatures: 'app/routes/routeAccessMatrix.ts',
+  navFeatures: 'utils/featureFlags.ts FEATURE_FLAGS.navIds',
+  definitionFallbackRoutes: 'utils/featureFlags.ts FEATURE_FLAGS.routes',
+} as const;
+
+export const getFeatureFlagsForPath = (path: string): string[] => {
+  const normalizedPath = normalizeFeaturePath(path);
+  return Array.from(new Set(
+    featureRouteMatchers
+      .filter((entry) => Boolean(entry.matcher?.test(normalizedPath)))
+      .map((entry) => entry.featureKey),
+  ));
+};
+
+export const getFeatureFlagForNavItem = (itemId: string): string | undefined => {
+  return featureAccessPolicy.find((entry) => entry.navIds.includes(itemId))?.featureKey;
+};
+
+export const areFeatureFlagsEnabled = (flags: Record<string, boolean>, featureKeys: readonly string[]): boolean => {
+  return featureKeys.every((featureKey) => flags[featureKey] !== false);
+};
+
+export const isFeatureEnabledForPath = (flags: Record<string, boolean>, path: string): boolean => {
+  const featureKeys = getFeatureFlagsForPath(path);
+  if (featureKeys.length === 0) return true;
+  return areFeatureFlagsEnabled(flags, featureKeys);
 };
 
 export const filterNavItemsByFeatures = <T extends { id: string; path?: string; children?: T[]; featureKey?: string }>(items: T[], flags: Record<string, boolean>): T[] => {
   const walk = (list: T[]): T[] => list
     .map((item) => {
-      const directFeature = item.featureKey || FEATURE_FLAGS.find((feature) => feature.navIds?.includes(item.id))?.key;
+      const directFeature = item.featureKey || getFeatureFlagForNavItem(item.id);
       if (directFeature && flags[directFeature] === false) return null;
       if (item.path && !isFeatureEnabledForPath(flags, item.path)) return null;
       const children = item.children?.length ? walk(item.children) : undefined;

@@ -33,8 +33,6 @@ import { canManageProducts } from '../utils/rbac';
 import { getAuthHeaders } from '../utils/apiUtils';
 import { useStyle } from '../contexts/StyleContext';
 import { useFeatureFlags } from '../contexts/FeatureFlagsContext';
-import { exportToExcel } from '../utils/exporters';
-import { focusFirstError } from '../utils/focusFirstError';
 import { getImportCell, isoToday, isImportBlank, normalizeImportText, parseImportInteger, parseImportNumber, readSpreadsheetRows, ImportSheetRow, exportRoundtripExcel } from '../utils/dataImportExport';
 import { focusErrorsSoon, isDuplicateMessage, normalizeNumericInput, toSafeNumber } from '../utils/formBehavior';
 
@@ -3361,19 +3359,19 @@ const renderBar = (value: number, max: number, tone: 'violet' | 'sky' | 'amber' 
  </div></div>
  ) : phones.length === 0 ? (
  <div className="p-6"><EmptyState
- icon="fa-solid fa-mobile-screen"
+ icon={<i className="fa-solid fa-mobile-screen" aria-hidden="true" />}
  title="هنوز هیچ گوشی ثبت اطلاعات نشده است"
  description="برای شروع، از فرم بالای صفحه یک گوشی جدید ثبت اطلاعات کنید."
  /></div>
  ) : inventoryExplorerPhones.length === 0 && searchTerm ? (
  <div className="p-6"><EmptyState
- icon="fa-solid fa-magnifying-glass"
+ icon={<i className="fa-solid fa-magnifying-glass" aria-hidden="true" />}
  title="چیزی پیدا نشد"
  description="عبارت جستجو را تغییر دهید یا پاک کنید."
  /></div>
  ) : inventoryExplorerPhones.length === 0 ? (
  <div className="p-6"><EmptyState
- icon={workspace === 'stale' ? 'fa-solid fa-hourglass-half' : workspace === 'returns' ? 'fa-solid fa-rotate-left' : 'fa-solid fa-box-open'}
+ icon={<i className={workspace === 'stale' ? 'fa-solid fa-hourglass-half' : workspace === 'returns' ? 'fa-solid fa-rotate-left' : 'fa-solid fa-box-open'} aria-hidden="true" />}
  title={workspace === 'stale' ? 'فعلاً گوشی راکدی دیده نمی‌شود' : workspace === 'returns' ? 'مرجوعی فعالی پیدا نشد' : 'موردی برای نمایش نیست'}
  description="با تغییر فضای کاری یا جستجو، نماهای دیگری را بررسی و ادامه کنید."
  /></div>

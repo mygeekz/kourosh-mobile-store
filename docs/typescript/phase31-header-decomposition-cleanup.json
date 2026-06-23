@@ -1,0 +1,22 @@
+{
+  "phase": 31,
+  "name": "Header Decomposition Cleanup",
+  "status": "applied",
+  "newFiles": [
+    "components/header/HeaderSearch.tsx",
+    "components/header/HeaderTitleArea.tsx",
+    "components/header/HeaderThemeToggle.tsx",
+    "components/header/HeaderProfileMenu.tsx",
+    "components/header/headerTypes.ts",
+    "scripts/audit-header-decomposition.mjs"
+  ],
+  "modifiedFiles": [
+    "components/Header.tsx",
+    "package.json",
+    "scripts/audit-fontawesome-renderer.mjs",
+    "scripts/audit-static-icon-surface.mjs"
+  ],
+  "behaviorChanged": false,
+  "businessLogicChanged": false,
+  "nextPhase": "Phase 32 — Header Quick Actions Extraction"
+}

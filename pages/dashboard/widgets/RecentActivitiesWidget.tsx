@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'jalali-moment';
 import type { ActivityItem } from '../../../types';
 import type { DashboardWidgetProps } from '../types';

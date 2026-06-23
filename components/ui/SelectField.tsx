@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
+import ControlShell from './ControlShell';
 
 interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: React.ReactNode;
@@ -10,12 +11,21 @@ interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement>
 
 export default function SelectField({ label, hint, error, className, wrapperClassName, children, ...props }: SelectFieldProps) {
   return (
-    <label className={cn('ux-field-shell', wrapperClassName)}>
-      {label ? <span className="ux-field-label">{label}</span> : null}
-      <select className={cn('ux-select h-11 w-full', error ? 'ux-control-error' : '', className)} {...props}>
+    <ControlShell
+      label={label}
+      hint={hint}
+      error={error}
+      kind="select"
+      className={wrapperClassName}
+      data-ui-control-kind="select"
+    >
+      <select
+        aria-invalid={Boolean(error) || undefined}
+        className={cn('ux-select h-11 w-full', error ? 'ux-control-error' : '', className)}
+        {...props}
+      >
         {children}
       </select>
-      {error ? <span className="ux-field-error">{error}</span> : hint ? <span className="ux-field-hint">{hint}</span> : null}
-    </label>
+    </ControlShell>
   );
 }

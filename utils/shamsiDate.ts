@@ -8,12 +8,12 @@ const normalizeDateDigits = (value: unknown) => String(value ?? '')
 
 const isMomentLike = (value: any) => Boolean(value && typeof value === 'object' && typeof value.isValid === 'function' && typeof value.format === 'function');
 
-const getMoment = (value: unknown) => {
+const getMoment = (value: unknown): any => {
   if (value === null || value === undefined || value === '') return null;
 
   if (isMomentLike(value)) return value;
 
-  if (value instanceof Date) return moment(value);
+  if (value instanceof Date) return (moment as any)(value);
 
   const raw = normalizeDateDigits(value);
   if (!raw) return null;
@@ -38,10 +38,10 @@ const getMoment = (value: unknown) => {
     'jYYYY-jM-jD',
   ];
 
-  const strictMoment = moment(raw, knownFormats, true);
+  const strictMoment = (moment as any)(raw, knownFormats, true);
   if (strictMoment && typeof strictMoment.isValid === 'function' && strictMoment.isValid()) return strictMoment;
 
-  const looseMoment = moment(raw);
+  const looseMoment = (moment as any)(raw);
   if (looseMoment && typeof looseMoment.isValid === 'function' && looseMoment.isValid()) return looseMoment;
 
   return null;

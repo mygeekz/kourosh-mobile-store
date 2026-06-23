@@ -228,7 +228,7 @@ function ExecutiveBrainHeroSection({
             <div className="smart-insights-filter-group__label">اهمیت</div>
             <div className="smart-insights-filter-chips">
               {(['all', 'critical', 'high', 'medium', 'low', 'positive'] as const).map((s) => (
-                <button key={s} type="button" onClick={() => setSeverity(s as unknown)} className={`smart-insights-filter-chip smart-insights-filter-chip--severity ${severity === s ? 'is-active' : ''}`}>
+                <button key={s} type="button" onClick={() => setSeverity(s as SmartInsightSeverityFilter)} className={`smart-insights-filter-chip smart-insights-filter-chip--severity ${severity === s ? 'is-active' : ''}`}>
                   {s === 'all' ? 'همه' : severityMeta[s]?.label}
                 </button>
               ))}
@@ -469,7 +469,7 @@ function ExecutiveBrainHeroSection({
               <strong>{num(kpi.value).toLocaleString('fa-IR')}</strong>
               <span className={`smart-kpi-reference-card-v166__delta is-${kpi.deltaTone}`}>
                 <i className={`fa-solid ${kpi.deltaTone === 'down' ? 'fa-arrow-down' : 'fa-arrow-up'}`} />
-                {kpi.delta}
+                {String(kpi.delta ?? '')}
               </span>
             </div>
 

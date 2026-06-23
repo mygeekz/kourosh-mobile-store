@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import Modal from './Modal';
-import ModalActions from './ModalActions';
 import Button from './Button';
 import { useAuth } from '../contexts/AuthContext';
 import { humanizeSmsError } from '../utils/smsErrorMessage';

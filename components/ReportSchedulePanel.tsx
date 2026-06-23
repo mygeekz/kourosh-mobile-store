@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import moment from 'jalali-moment';
 import Notification from './Notification';
 import ShamsiDatePicker from './ShamsiDatePicker';

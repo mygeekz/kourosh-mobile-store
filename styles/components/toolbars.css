@@ -230,3 +230,179 @@
     padding-bottom: 0.75rem;
   }
 }
+
+/* Phase 8 — Unified surface grammar for page headers, action bars and panel cards. */
+.ux-surface-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  min-width: 0;
+  text-align: right;
+}
+
+.ux-surface-header__lead {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.ux-surface-header__body {
+  min-width: 0;
+}
+
+.ux-surface-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem 0.75rem;
+  min-width: 0;
+}
+
+.ux-surface-header__title,
+.ux-surface-header__subtitle,
+.ux-surface-header__kicker,
+.ux-surface-header__status {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ux-surface-header__subtitle {
+  margin: 0;
+}
+
+.ux-surface-header__actions,
+.ux-action-bar__cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.ux-surface-header__actions {
+  justify-content: flex-end;
+}
+
+.ux-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.ux-action-bar__cluster--start {
+  justify-content: flex-start;
+}
+
+.ux-action-bar__cluster--end {
+  justify-content: flex-end;
+  margin-inline-start: auto;
+}
+
+.ux-action-bar[data-ui-align='start'] {
+  justify-content: flex-start;
+}
+
+.ux-action-bar[data-ui-align='start'] .ux-action-bar__cluster--end {
+  margin-inline-start: 0;
+}
+
+.ux-action-bar[data-ui-align='end'] {
+  justify-content: flex-end;
+}
+
+.ux-action-bar[data-ui-density='compact'] {
+  padding: 0.55rem 0.65rem;
+  border-radius: 18px;
+  gap: 0.45rem;
+}
+
+.ux-action-bar--sticky {
+  position: sticky;
+  top: 0.75rem;
+  z-index: 20;
+}
+
+.page-shell-surface-header {
+  align-items: flex-start;
+}
+
+.page-shell-surface-header .ux-surface-header__lead {
+  flex: 1 1 auto;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.page-shell-surface-header .ux-surface-header__body {
+  flex: 1 1 auto;
+}
+
+.page-shell-surface-header .ux-surface-header__actions {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+@media (min-width: 1280px) {
+  .page-shell-surface-header .ux-surface-header__actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+}
+
+.ux-panel-card__body {
+  min-width: 0;
+}
+
+.ux-panel-card__header + .ux-panel-card__body {
+  margin-top: 0.9rem;
+}
+
+.ux-panel-card--flush {
+  padding: 0 !important;
+}
+
+.ux-panel-card__footer {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.78);
+}
+
+.dark .ux-panel-card__footer {
+  border-top-color: rgba(51, 65, 85, 0.82);
+}
+
+.ux-panel-card__header--plain {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .ux-surface-header,
+  .page-shell-surface-header,
+  .page-shell-surface-header .ux-surface-header__lead {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ux-surface-header__actions,
+  .ux-action-bar__cluster,
+  .ux-action-bar__cluster > * {
+    width: 100%;
+  }
+
+  .ux-action-bar {
+    align-items: stretch;
+  }
+
+  .ux-action-bar,
+  .ux-action-bar__cluster {
+    flex-direction: column;
+  }
+
+  .ux-action-bar__cluster--end {
+    margin-inline-start: 0;
+  }
+}

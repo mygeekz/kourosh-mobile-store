@@ -53,7 +53,7 @@ const getTooltipText = (el: HTMLElement): string => {
 
   if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement) {
     const label = getLabelText(el);
-    const preview = normalize((el as HTMLInputElement).preview);
+    const preview = normalize(el.getAttribute('data-preview') || el.getAttribute('placeholder'));
     if (label && preview) return `${label} — ${preview}`;
     if (label) return label;
     if (preview) return preview;

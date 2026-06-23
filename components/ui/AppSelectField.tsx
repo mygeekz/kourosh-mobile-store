@@ -1,4 +1,6 @@
 import React from 'react';
+import { cn } from '../../utils/cn';
+import ControlShell from './ControlShell';
 
 type AppSelectFieldSize = 'sm' | 'md' | 'lg';
 
@@ -15,6 +17,8 @@ type AppSelectFieldProps<T extends string> = {
   className?: string;
   size?: AppSelectFieldSize;
   iconClassName?: string;
+  hint?: React.ReactNode;
+  error?: React.ReactNode;
 };
 
 const AppSelectField = <T extends string>({
@@ -25,22 +29,27 @@ const AppSelectField = <T extends string>({
   className = '',
   size = 'md',
   iconClassName = 'fa-solid fa-arrow-down-wide-short',
+  hint,
+  error,
 }: AppSelectFieldProps<T>) => {
   return (
-    <label
+    <ControlShell
       className={['app-field app-field--select app-select-field', `app-select-field--${size}`, className].filter(Boolean).join(' ')}
+      kind="select"
       dir="ltr"
-      aria-label={ariaLabel}
+      hasLeadingIcon
+      hasTrailingIcon
+      hint={hint}
+      error={error}
+      icon={<i className={iconClassName} />}
     >
-      <span className="app-field__leading-icon app-select-field__icon" aria-hidden="true">
-        <i className={iconClassName} />
-      </span>
-
       <select
         value={value}
         onChange={(event) => onChange(event.target.value as T)}
-        className="app-field__control app-select-field__select"
+        className={cn('app-field__control app-select-field__select', error ? 'ux-control-error' : '')}
         dir="rtl"
+        aria-label={ariaLabel}
+        aria-invalid={Boolean(error) || undefined}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>
@@ -50,7 +59,7 @@ const AppSelectField = <T extends string>({
       <span className="app-select-field__chevron" aria-hidden="true">
         <i className="fa-solid fa-chevron-down" />
       </span>
-    </label>
+    </ControlShell>
   );
 };
 

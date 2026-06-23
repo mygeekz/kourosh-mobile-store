@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'jalali-moment';
 import { ResponsiveContainer, PieChart, Pie, Tooltip, Cell } from 'recharts';
 import jsPDF from 'jspdf';

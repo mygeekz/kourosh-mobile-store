@@ -1,5 +1,5 @@
 // pages/reports/AbcAnalysisReport.tsx
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageKit from '../../components/ui/PageKit';
 import { apiFetch } from '../../utils/apiFetch';

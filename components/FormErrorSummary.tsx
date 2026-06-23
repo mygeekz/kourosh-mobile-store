@@ -13,16 +13,13 @@ type Props = {
   className?: string;
 };
 
-const scrollToField = (id: string) => {
-  focusFirstError({ [id]: 'error' });
-};
 
 const FormErrorSummary: React.FC<Props> = ({ errors, labels, fieldIdMap, className }) => {
   const keys = Object.keys(errors || {});
   if (keys.length === 0) return null;
 
   return (
-    <div role="alert" aria-live="polite" className={`app-card form-error-summary ux-validation-summary rounded-[26px] border border-red-200/70 bg-red-50/70 p-4 md:p-5 dark:border-red-900/40 dark:bg-red-950/20 ${className || ''}`.trim()}>
+    <div role="alert" aria-live="polite" data-ui-surface="form-error-summary" data-ui-card="true" className={`app-card form-error-summary ux-validation-summary rounded-[26px] border border-red-200/70 bg-red-50/70 p-4 md:p-5 dark:border-red-900/40 dark:bg-red-950/20 ${className || ''}`.trim()}>
       <div className="flex items-start justify-between gap-3">
         <div className="text-right">
           <div className="flex items-center justify-end gap-2 text-red-700 dark:text-red-200 text-sm font-black">
@@ -42,7 +39,6 @@ const FormErrorSummary: React.FC<Props> = ({ errors, labels, fieldIdMap, classNa
         {keys.map((k) => {
           const label = labels?.[k] || k;
           const msg = errors[k];
-          const fieldId = fieldIdMap?.[k] || k;
           return (
             <li key={k}>
               <button

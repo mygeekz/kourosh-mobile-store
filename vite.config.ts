@@ -115,6 +115,9 @@ export default defineConfig({
       workbox: {
         navigateFallback: '/index.html',
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest}'],
+        // The current legacy CSS bundle is above Workbox's default 2 MiB precache limit.
+        // Keep PWA generation stable until the legacy stylesheet is split in a later CSS phase.
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
       },
     }),
   ],

@@ -11,6 +11,7 @@ import {
   type CommercialPlanKey,
   type FeatureCategory,
 } from '../../utils/featureFlags';
+import { getSettingsFeatureImpactText } from '../../utils/settingsFeaturePolicy';
 
 
 const SettingsModulesPanel: React.FC<SettingsModulesPanelProps> = ({
@@ -184,6 +185,7 @@ const SettingsModulesPanel: React.FC<SettingsModulesPanelProps> = ({
             const enabled = isFeatureSettingEnabled(feature);
             const children = getChildFeatureFlags(feature.key);
             const runtimeBadges = getFeatureRuntimeBadges(feature);
+            const impactText = getSettingsFeatureImpactText(feature);
             return (
               <div key={feature.key} className={`module-feature-card rounded-[22px] border p-4 transition ${enabled ? 'border-slate-200 bg-slate-50/75 dark:border-slate-800 dark:bg-slate-900/55' : 'border-slate-200 bg-white/70 dark:border-slate-800 dark:bg-slate-950/40'}`}>
                 <div className="flex items-start justify-between gap-3">
@@ -196,13 +198,16 @@ const SettingsModulesPanel: React.FC<SettingsModulesPanelProps> = ({
                         {!feature.optional && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-bold text-amber-700 dark:bg-amber-900/30 dark:text-amber-200">هسته</span>}
                       </div>
                       <p className="mt-1 text-[11px] leading-5 text-slate-600 dark:text-slate-300">{feature.description}</p>
-                      <div className="mt-3 flex flex-wrap gap-1.5">
+                      <div className="mt-3 flex flex-wrap gap-1.5" aria-label={`اثر ماژول ${feature.title}`}>
                         {runtimeBadges.map((badge) => (
                           <span key={badge.label} className={`module-status-chip inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-black ${badge.active ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-300' : 'border-slate-200 bg-white text-slate-400 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-500'}`}>
                             <i className={`fa-solid ${badge.icon}`} />
                             {badge.label}
                           </span>
                         ))}
+                      </div>
+                      <div className="mt-2 rounded-2xl border border-slate-200/70 bg-white/70 px-3 py-2 text-[10px] font-bold leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-400">
+                        اثر خاموش/روشن شدن: {impactText}
                       </div>
                     </div>
                   </div>

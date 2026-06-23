@@ -64,7 +64,7 @@ function SuspiciousAuditSection({
                     <div className="mt-3 rounded-2xl border border-rose-100 bg-rose-50/55 p-3 dark:border-rose-500/20 dark:bg-rose-500/10">
                       <div className="text-[11px] font-black text-rose-700 dark:text-rose-200">اقلام حساس</div>
                       <div className="mt-2 flex flex-wrap gap-1.5">
-                        {(card.riskyItems || []).slice(0, 4).map((item, index) => <span key={`${card.id}-item-${index}`} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-black text-rose-700 ring-1 ring-rose-100 dark:bg-slate-950 dark:text-rose-200 dark:ring-rose-500/20">{item}</span>)}
+                        {(card.riskyItems || []).slice(0, 4).map((item, index) => <span key={`${card.id}-item-${index}`} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-black text-rose-700 ring-1 ring-rose-100 dark:bg-slate-950 dark:text-rose-200 dark:ring-rose-500/20">{String(item)}</span>)}
                       </div>
                     </div>
                   ) : null}

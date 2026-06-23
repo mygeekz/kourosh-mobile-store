@@ -1,0 +1,151 @@
+{
+  "phase": "Phase 17 - Navigation Policy Cleanup",
+  "sources": {
+    "navigationTree": "constants.tsx SIDEBAR_ITEMS",
+    "routeAccess": "app/routes/routeAccessMatrix.ts",
+    "rbacComposer": "utils/rbac.ts",
+    "featureComposer": "utils/featureFlags.ts",
+    "navigationComposer": "utils/navigationPolicy.ts"
+  },
+  "consumerFiles": [
+    "components/Sidebar.tsx",
+    "components/CommandPalette.tsx",
+    "components/MobileBottomNav.tsx",
+    "components/Header.tsx"
+  ],
+  "navigationItemsSampled": [
+    {
+      "id": "dashboard",
+      "name": "پیشخوان مدیریتی",
+      "path": "/"
+    },
+    {
+      "id": "sales-cash",
+      "name": "فروش نقدی",
+      "path": "/sales/cash",
+      "featureKey": "cash_sales"
+    },
+    {
+      "id": "installment-sales",
+      "name": "فروش اقساطی",
+      "path": "/installment-sales",
+      "featureKey": "installments"
+    },
+    {
+      "id": "invoices",
+      "name": "فاکتورها",
+      "path": "/invoices",
+      "featureKey": "cash_sales"
+    },
+    {
+      "id": "expenses",
+      "name": "هزینه‌ها",
+      "path": "/sales/expenses"
+    },
+    {
+      "id": "products",
+      "name": "کالاها",
+      "path": "/products",
+      "featureKey": "products_inventory"
+    },
+    {
+      "id": "mobile-phones",
+      "name": "انبار گوشی",
+      "path": "/mobile-phones",
+      "featureKey": "mobile_phones"
+    },
+    {
+      "id": "repairs",
+      "name": "تعمیرات",
+      "path": "/repairs",
+      "featureKey": "repairs_services",
+      "roles": [
+        "Admin",
+        "Manager",
+        "Technician"
+      ]
+    },
+    {
+      "id": "services",
+      "name": "خدمات",
+      "path": "/services",
+      "featureKey": "repairs_services",
+      "roles": [
+        "Admin",
+        "Manager",
+        "Technician"
+      ]
+    },
+    {
+      "id": "customers",
+      "name": "مشتریان",
+      "path": "/customers",
+      "featureKey": "people_crm"
+    },
+    {
+      "id": "partners",
+      "name": "همکاران",
+      "path": "/partners",
+      "featureKey": "people_crm"
+    },
+    {
+      "id": "reports-home",
+      "name": "مرکز گزارش‌ها",
+      "path": "/reports"
+    },
+    {
+      "id": "financial-overview",
+      "name": "نمای کلی مالی",
+      "path": "/reports/financial-overview"
+    },
+    {
+      "id": "sales-summary",
+      "name": "فروش و سود",
+      "path": "/reports/sales-summary"
+    },
+    {
+      "id": "collection-center",
+      "name": "وصول و اقساط",
+      "path": "/reports/collection-center"
+    },
+    {
+      "id": "notifications",
+      "name": "اعلان‌ها",
+      "path": "/notifications",
+      "featureKey": "notifications_outbox"
+    },
+    {
+      "id": "outbox",
+      "name": "مرکز پیام‌رسانی",
+      "path": "/outbox",
+      "featureKey": "notifications_outbox"
+    },
+    {
+      "id": "settings-home",
+      "name": "تنظیمات سیستم",
+      "path": "/settings",
+      "roles": [
+        "Admin",
+        "Manager"
+      ]
+    },
+    {
+      "id": "store-ownership",
+      "name": "ساختار شرکا",
+      "path": "/settings/store-ownership",
+      "roles": [
+        "Admin"
+      ]
+    },
+    {
+      "id": "audit-log",
+      "name": "گزارش فعالیت‌ها",
+      "path": "/audit-log",
+      "featureKey": "audit_log",
+      "roles": [
+        "Admin",
+        "Manager"
+      ]
+    }
+  ]
+}

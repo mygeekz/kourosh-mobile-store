@@ -17,7 +17,6 @@ import Button from '../components/Button';
 import SmartSalesAdvisor, { SmartSalesInsight } from '../components/SmartSalesAdvisor';
 import { Search, Save, RefreshCw } from '../components/lucide-react';
 import { useMountedRef, useTimeoutGuards } from '../utils/asyncGuards';
-import { formatCurrencyText, readStoredCurrencyUnit } from '../utils/currency';
 
 /* ---------- reducer ---------- */
 interface CartState {

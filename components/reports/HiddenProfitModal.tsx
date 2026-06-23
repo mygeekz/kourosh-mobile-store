@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import type { GetDecisionActionState, HiddenProfitOpportunity, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, SmartInsightPayload, UpdateDecisionMemory } from './types/smartInsightContracts';
+import type { GetDecisionActionState, NumberFormatter, PercentFormatter, SeverityMetaMap, ShamsiFormatter, SmartInsightLike, SmartInsightPayload, UpdateDecisionMemory } from './types/smartInsightContracts';
 
 type HiddenProfitModalProps = {
   selected: SmartInsightLike;

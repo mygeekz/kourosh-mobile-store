@@ -92,9 +92,9 @@ export const parseBackupScheduleFromSettings = (settings: Record<string, unknown
   const hasExplicit = String(settings.backup_schedule_mode || '').trim() || String(settings.backup_schedule_time || '').trim() || String(settings.backup_schedule_weekdays || '').trim() || String(settings.backup_schedule_interval_hours || '').trim();
   if (hasExplicit) {
     const mode = String(settings.backup_schedule_mode || 'daily').trim() as BackupScheduleMode;
-    const time = sanitizeTime(settings.backup_schedule_time || DEFAULT_BACKUP_SCHEDULE.time);
-    const weekdays = normalizeWeekdays(settings.backup_schedule_weekdays);
-    const intervalHours = Math.max(1, Math.min(24, Number(settings.backup_schedule_interval_hours || DEFAULT_BACKUP_SCHEDULE.intervalHours)));
+    const time = sanitizeTime(typeof settings.backup_schedule_time === 'string' ? settings.backup_schedule_time : DEFAULT_BACKUP_SCHEDULE.time);
+    const weekdays = normalizeWeekdays(Array.isArray(settings.backup_schedule_weekdays) || typeof settings.backup_schedule_weekdays === 'string' ? settings.backup_schedule_weekdays : undefined);
+    const intervalHours = Math.max(1, Math.min(24, Number(settings.backup_schedule_interval_hours ?? DEFAULT_BACKUP_SCHEDULE.intervalHours)));
     return { mode: mode === 'weekly' || mode === 'interval' ? mode : 'daily', time, weekdays, intervalHours };
   }
   if (String(settings.backup_cron || '').trim()) return parseBackupScheduleFromCron(String(settings.backup_cron));

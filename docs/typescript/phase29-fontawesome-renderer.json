@@ -1,0 +1,111 @@
+{
+  "checkedAt": "2026-06-22T18:13:18.024Z",
+  "status": "passed",
+  "contractResults": [
+    {
+      "file": "components/ui/FontAwesomeIcon.tsx",
+      "exists": true,
+      "snippets": {
+        "FontAwesomeIconProps": true,
+        "FontAwesomeIconClass": true,
+        "fixedWidth": true,
+        "aria-hidden": true
+      }
+    },
+    {
+      "file": "components/ui/index.ts",
+      "exists": true,
+      "snippets": {
+        "FontAwesomeIcon": true
+      }
+    },
+    {
+      "file": "components/SidebarItem.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon={icon} fixedWidth": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavItemLink.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon={item.icon}": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavPrimaryAction.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-plus\"": true
+      }
+    },
+    {
+      "file": "components/mobile-bottom-nav/MobileBottomNavMenuButton.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon=\"fa-solid fa-bars\"": true
+      }
+    },
+    {
+      "file": "components/command-palette/CommandPaletteRows.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "FontAwesomeIconClass": true,
+        "<FontAwesomeIcon icon={icon ??": true
+      }
+    },
+    {
+      "file": "components/header/HeaderRiskBadge.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon={getHeaderRiskIcon(riskLevel)}": true
+      }
+    },
+    {
+      "file": "components/header/HeaderQuickActions.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "<FontAwesomeIcon icon={action.icon}": true
+      }
+    },
+    {
+      "file": "components/header/HeaderSearch.tsx",
+      "exists": true,
+      "snippets": {
+        "import FontAwesomeIcon": true,
+        "FontAwesomeIconClass": true,
+        "<FontAwesomeIcon icon={meta.icon}": true
+      }
+    },
+    {
+      "file": "contexts/FavoritesContext.tsx",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "icon?: NavigationIconMetadata": true
+      }
+    },
+    {
+      "file": "utils/recents.ts",
+      "exists": true,
+      "snippets": {
+        "NavigationIconMetadata": true,
+        "icon?: NavigationIconMetadata": true
+      }
+    }
+  ],
+  "rawMetadataRenderFindings": [],
+  "policy": {
+    "metadataStorage": "FontAwesome class strings may remain in navigation/report/feature metadata registries.",
+    "rendering": "Navigation/search/header surfaces should render metadata through components/ui/FontAwesomeIcon.tsx.",
+    "publicPrimitives": "Shared UI primitives should continue to accept ReactNode icons at public boundaries unless explicitly documented as metadata renderers."
+  }
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SettingsDataPanelProps } from './settingsPanelTypes';
 import type { BackupScheduleMode } from '../../utils/backupSchedule';
 import Button from '../../components/Button';

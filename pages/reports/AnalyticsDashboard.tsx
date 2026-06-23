@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import moment from 'jalali-moment';
 import {
   ResponsiveContainer,
@@ -236,8 +236,9 @@ export default function AnalyticsDashboard() {
     const prevAvg = compareData?.salesTrend?.length ? Math.round(prevRevenue / compareData.salesTrend.length) : 0;
     const avgDeltaPct = prevAvg ? ((avgDaily - prevAvg) / prevAvg) * 100 : 0;
 
-    const prevDebt = (compareData?.debtDailyTrend || []).length
-      ? Number(compareData.debtDailyTrend[compareData.debtDailyTrend.length - 1]?.debt || 0)
+    const compareDebtTrend = compareData?.debtDailyTrend || [];
+    const prevDebt = compareDebtTrend.length
+      ? Number(compareDebtTrend[compareDebtTrend.length - 1]?.debt || 0)
       : 0;
     const debtDeltaPct = prevDebt ? ((lastDebt - prevDebt) / prevDebt) * 100 : 0;
 

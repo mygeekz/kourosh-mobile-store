@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import InventoryModal from './InventoryModal';
 import ModalActions from './ModalActions';
-import ModalField from './ModalField';
-import AppleChoiceToggle from './AppleChoiceToggle';
 import ToggleSwitch from './ToggleSwitch';
 import { apiFetch } from '../utils/apiFetch';
 import { humanizeTelegramErrorText } from '../utils/telegramErrorMessage';

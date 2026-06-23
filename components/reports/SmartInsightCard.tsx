@@ -1,30 +1,8 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import type { SeverityVisualMeta, SmartInsightLike } from './types/smartInsightContracts';
 
-export type SmartInsightCardMetric = { label: string; value: string | number; tone?: string };
-export type SmartInsightCardAction = { label: string; to?: string; intent?: string; icon?: string };
-export type SmartInsightCardDecision = { decisionLabel?: string };
-export type SmartInsightCardInsight = {
-  id: string;
-  type: string;
-  category?: string;
-  title: string;
-  summary: string;
-  confidence?: number;
-  icon?: string;
-  metrics?: SmartInsightCardMetric[];
-  actions?: SmartInsightCardAction[];
-  decision?: SmartInsightCardDecision;
-};
-
-export type SmartInsightCardMeta = {
-  label: string;
-  dot: string;
-  badge: string;
-  border: string;
-  soft: string;
-  icon: string;
-};
+export type SmartInsightCardInsight = SmartInsightLike;
+export type SmartInsightCardMeta = SeverityVisualMeta;
 
 export type SmartInsightCardActionState = {
   isActing: boolean;

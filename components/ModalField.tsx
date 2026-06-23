@@ -10,6 +10,21 @@ type Props = {
   className?: string;
 };
 
+type ChildProps = Record<string, unknown> & {
+  id?: string;
+  name?: string;
+  className?: string;
+  placeholder?: string;
+  preview?: string;
+  title?: string;
+  'aria-describedby'?: string;
+  'data-ui-control'?: string;
+  'data-ui-control-kind'?: string;
+  'data-field-key'?: string;
+  'data-error-key'?: string;
+  'data-tooltip'?: string;
+};
+
 const mergeClasses = (...parts: Array<string | undefined | null | false>) => parts.filter(Boolean).join(' ');
 
 const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, children, className }) => {
@@ -17,12 +32,13 @@ const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, 
   const helpId = `${fieldId}-help`;
   const errorId = `${fieldId}-error`;
   const describedBy = error ? errorId : hint ? helpId : undefined;
-  const childProps = React.isValidElement(children) ? ((children.props as any) || {}) : {};
-  const childId = React.isValidElement(children) ? (childProps.id || childProps.name || fieldId) : fieldId;
-  const fieldKey = React.isValidElement(children) ? (childProps.name || childProps.id || childId) : childId;
+  const isElement = React.isValidElement(children);
+  const childProps = isElement ? ((children.props as ChildProps) || {}) : {};
+  const childId = isElement ? (childProps.id || childProps.name || fieldId) : fieldId;
+  const fieldKey = isElement ? (childProps.name || childProps.id || childId) : childId;
   let renderedChild = children;
 
-  if (React.isValidElement(children)) {
+  if (isElement) {
     const existingClass = childProps.className || '';
     const tag = typeof children.type === 'string' ? children.type : '';
     const fieldKind = tag === 'textarea' ? 'textarea' : tag === 'select' ? 'select' : 'text';
@@ -34,17 +50,16 @@ const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, 
       ? `app-select modal-control-premium premium-select-control ${iconClassName}`
       : `app-input modal-control-premium ${iconClassName}`;
 
-    renderedChild = React.cloneElement(children as React.ReactElement<any>, {
+    renderedChild = React.cloneElement(children as React.ReactElement<ChildProps>, {
       id: childId,
       className: mergeClasses(existingClass, baseClass, 'app-form-field__control', error && 'modal-control-error app-form-field__control--error'),
       'data-ui-control': childProps['data-ui-control'] || 'true',
       'data-ui-control-kind': childProps['data-ui-control-kind'] || fieldKind,
       placeholder: childProps.placeholder || childProps.preview || undefined,
-      preview: undefined,
       'data-tooltip': childProps['data-tooltip'] || childProps.preview || (typeof label === 'string' ? label : undefined),
       title: childProps.title || undefined,
       'aria-invalid': error ? 'true' : undefined,
-      'aria-describedby': mergeClasses(childProps['aria-describedby'], describedBy),
+      'aria-describedby': mergeClasses(childProps['aria-describedby'] as string | undefined, describedBy),
       'data-field-state': error ? 'error' : hint ? 'hint' : undefined,
       'data-field-key': childProps['data-field-key'] || fieldKey,
       'data-error-key': error ? (childProps['data-error-key'] || fieldKey) : childProps['data-error-key'],

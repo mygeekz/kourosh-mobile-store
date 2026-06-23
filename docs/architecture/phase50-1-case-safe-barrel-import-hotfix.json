@@ -1,0 +1,14 @@
+{
+  "phase": "50.1",
+  "title": "Case-Safe Barrel Import Hotfix",
+  "rootCause": "Bare relative imports like ./header can resolve to Header.tsx instead of header/index.ts on case-insensitive filesystems or dev-server paths.",
+  "fixedImports": [
+    "./header/index",
+    "./main-layout/index",
+    "./sidebar/index",
+    "./command-palette/index",
+    "./mobile-bottom-nav/index"
+  ],
+  "audit": "npm run audit:case-safe-imports",
+  "includedIn": "npm run audit:shell"
+}

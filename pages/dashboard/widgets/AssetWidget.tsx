@@ -1,4 +1,3 @@
-import React from 'react';
 import type { DashboardWidgetProps } from '../types';
 
 export default function AssetWidget({ ctx, container }: DashboardWidgetProps) {

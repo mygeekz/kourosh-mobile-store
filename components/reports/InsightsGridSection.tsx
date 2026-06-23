@@ -1,4 +1,5 @@
 import React from 'react';
+import type { GetDecisionActionState, PercentFormatter, SeverityMetaMap, SmartInsightLike, UpdateDecisionMemory } from './types/smartInsightContracts';
 
 import SmartInsightCard from './SmartInsightCard';
 import SmartInsightEmptyState from './SmartInsightEmptyState';
@@ -56,7 +57,7 @@ function InsightsGridSection({
             key={insight.id}
             insight={insight}
             meta={meta}
-            typeLabel={typeLabels[insight.type] || insight.category}
+            typeLabel={typeLabels[insight.type] || insight.category || 'Insight'}
             confidenceLabel={percent(insight.confidence)}
             actionState={insightActionState}
             onOpen={(item) => setSelected(item as SmartInsightLike)}

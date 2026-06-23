@@ -1,10 +1,11 @@
+import type { NavigationIconMetadata } from '../types/iconMetadata';
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type FavoriteItem = {
   key: string;
   title: string;
   path: string;
-  icon?: string;
+  icon?: NavigationIconMetadata;
   parentTitle?: string;
 };
 

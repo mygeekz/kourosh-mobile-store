@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Notification from '../../components/Notification';
 import Button from '../../components/Button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -17,7 +17,7 @@ const fmtSize = (n: number) => {
 };
 
 export default function Backups() {
-  const { token, user } = useAuth();
+  const { token, currentUser } = useAuth();
   const [rows, setRows] = useState<BackupRow[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState<NotificationMessage | null>(null);
@@ -32,7 +32,7 @@ export default function Backups() {
       if (!res.ok || js?.success === false) throw new Error(js?.message || 'خطا در دریافت لیست بکاپ‌ها');
       setRows(js.data || []);
     } catch (e: unknown) {
-      setNotification({ message: getErrorMessage(e), type: 'error' });
+      setNotification({ text: getErrorMessage(e), type: 'error' });
     } finally { setIsLoading(false); }
   };
 
@@ -44,10 +44,10 @@ export default function Backups() {
       const res = await fetch('/api/admin/backups', { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
       const js = await res.json();
       if (!res.ok || js?.success === false) throw new Error(js?.message || 'خطا در ایجاد بکاپ');
-      setNotification({ message: 'بکاپ ایجاد شد.', type: 'success' });
+      setNotification({ text: 'بکاپ ایجاد شد.', type: 'success' });
       await fetchList();
     } catch (e: unknown) {
-      setNotification({ message: getErrorMessage(e), type: 'error' });
+      setNotification({ text: getErrorMessage(e), type: 'error' });
     } finally { setIsLoading(false); }
   };
 
@@ -64,13 +64,13 @@ export default function Backups() {
       a.click();
       a.remove();
     } catch (e: unknown) {
-      setNotification({ message: getErrorMessage(e), type: 'error' });
+      setNotification({ text: getErrorMessage(e), type: 'error' });
     }
   };
 
   useEffect(() => { fetchList(); /* eslint-disable-next-line */ }, [token]);
 
-  if (user?.role !== 'Admin' && user?.role !== 'Manager') {
+  if (currentUser?.roleName !== 'Admin' && currentUser?.roleName !== 'Manager') {
     return <div className="p-6 text-gray-600 dark:text-gray-300" dir="rtl">دسترسی غیرمجاز</div>;
   }
 
@@ -94,7 +94,7 @@ export default function Backups() {
         </div>
       </div>
 
-      {notification ? <Notification message={notification.message} type={notification.type} /> : null}
+      {notification ? <Notification message={notification} /> : null}
 
       <div className="rounded-[28px] border border-slate-200/80 bg-white shadow-sm overflow-hidden dark:bg-slate-900/70 dark:border-slate-800">
         {isLoading ? (

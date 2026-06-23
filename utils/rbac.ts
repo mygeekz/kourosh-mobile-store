@@ -1,5 +1,7 @@
 // utils/rbac.ts
-import { NavItem } from '../types';
+import { routeAccessMatrix } from '../app/routes/routeAccessMatrix';
+import type { RouteAccessMatrixEntry } from '../app/routes/routeAccessMatrix';
+import type { NavItem } from '../types';
 
 /** نقش‌های شناخته‌شده در سیستم (از سمت سرور) */
 export type RoleName =
@@ -11,69 +13,108 @@ export type RoleName =
   | 'Marketer'
   | (string & {});
 
-/** قوانین دسترسی بر اساس prefix مسیر (هرچه بالاتر، اولویت بیشتر) */
-const PATH_RULES: Array<{ prefix: string; roles: RoleName[] }> = [
-  // تنظیمات و لاگ
-  // مسیر مالکیت/شرکا عمداً قبل از /settings آمده تا در آینده اگر بخشی از تنظیمات بازتر شد،
-  // این بخش حساس همچنان با نقش Admin هم‌راستا با APIهای /api/store-ownership محافظت شود.
-  { prefix: '/settings/store-ownership', roles: ['Admin'] },
-  { prefix: '/settings', roles: ['Admin'] },
-  { prefix: '/notifications', roles: ['Admin'] },
-  { prefix: '/audit-log', roles: ['Admin', 'Manager'] },
+type RouteRule = RouteAccessMatrixEntry & {
+  normalizedPath: string;
+  isExactPath: boolean;
+  matcher: RegExp | null;
+};
 
-  // فروش و فاکتور و اقساط
-  { prefix: '/sales', roles: ['Admin', 'Manager', 'Salesperson'] },
-  { prefix: '/invoices', roles: ['Admin', 'Manager', 'Salesperson'] },
-  { prefix: '/installment-sales', roles: ['Admin', 'Manager', 'Salesperson'] },
+const APP_ROUTE_ACCESS_SOURCE = 'app/routes/routeAccessMatrix.ts';
+const CATCH_ALL_PATH = '*';
 
-  // تعمیرات و خدمات
-  { prefix: '/repairs', roles: ['Admin', 'Manager', 'Technician'] },
-  { prefix: '/services', roles: ['Admin', 'Manager', 'Technician'] },
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  // محصولات / انبار
-  { prefix: '/products', roles: ['Admin', 'Manager', 'Warehouse', 'Salesperson', 'Technician', 'Marketer'] },
-  { prefix: '/mobile-phones', roles: ['Admin', 'Manager', 'Warehouse', 'Salesperson', 'Technician', 'Marketer'] },
-
-  // اشخاص
-  { prefix: '/customers', roles: ['Admin', 'Manager', 'Salesperson', 'Marketer'] },
-  { prefix: '/partners', roles: ['Admin', 'Manager', 'Salesperson', 'Marketer'] },
-
-  // ابزارها
-  { prefix: '/tools', roles: ['Admin', 'Manager', 'Warehouse'] },
-
-  // گزارش‌ها
-  { prefix: '/reports', roles: ['Admin', 'Manager', 'Salesperson', 'Marketer'] },
-];
+const toAbsolutePath = (path: string): string => {
+  if (!path || path === CATCH_ALL_PATH) return path;
+  return path.startsWith('/') ? path : `/${path}`;
+};
 
 /** نرمال‌سازی مسیر (حذف query/hash و اسلش انتهایی) */
 export function normalizeAppPath(path: string): string {
   const clean = path.split('?')[0]?.split('#')[0] ?? path;
-  return clean.length > 1 ? clean.replace(/\/+$/, '') : clean;
+  const absolute = toAbsolutePath(clean.trim());
+  return absolute.length > 1 ? absolute.replace(/\/+$/, '') : absolute;
+}
+
+const toRouteMatcher = (path: string): RegExp | null => {
+  if (path === CATCH_ALL_PATH) return null;
+
+  const normalized = normalizeAppPath(path);
+  const segments = normalized.split('/').filter(Boolean);
+  const pattern = segments
+    .map((segment) => {
+      if (segment === '*') return '.*';
+      if (segment.startsWith(':')) return '[^/]+';
+      return escapeRegExp(segment);
+    })
+    .join('/');
+
+  if (!pattern) return /^\/$/;
+  return new RegExp(`^/${pattern}$`);
+};
+
+const hasDynamicSegment = (path: string): boolean => path.includes('/:') || path.includes('*');
+
+const routeAccessRules: readonly RouteRule[] = routeAccessMatrix
+  .filter((entry) => entry.effectivePath !== CATCH_ALL_PATH)
+  .map((entry) => {
+    const normalizedPath = normalizeAppPath(entry.effectivePath);
+    return {
+      ...entry,
+      normalizedPath,
+      isExactPath: !hasDynamicSegment(normalizedPath),
+      matcher: toRouteMatcher(normalizedPath),
+    };
+  })
+  .sort((a, b) => {
+    if (a.isExactPath !== b.isExactPath) return a.isExactPath ? -1 : 1;
+    return b.normalizedPath.length - a.normalizedPath.length;
+  });
+
+const isPrefixMatch = (rule: RouteRule, path: string): boolean => {
+  if (!rule.isExactPath) return false;
+  if (rule.normalizedPath === '/') return path === '/';
+  return path.startsWith(`${rule.normalizedPath}/`);
+};
+
+export function getRouteAccessEntryForPath(path: string): RouteAccessMatrixEntry | undefined {
+  const normalizedPath = normalizeAppPath(path);
+
+  const exactMatch = routeAccessRules.find(
+    (rule) => rule.isExactPath && rule.normalizedPath === normalizedPath,
+  );
+  if (exactMatch) return exactMatch;
+
+  const patternMatch = routeAccessRules.find(
+    (rule) => !rule.isExactPath && Boolean(rule.matcher?.test(normalizedPath)),
+  );
+  if (patternMatch) return patternMatch;
+
+  return routeAccessRules.find((rule) => isPrefixMatch(rule, normalizedPath));
 }
 
 /** آیا این نقش اجازه ورود به مسیر را دارد؟ */
 export function canAccessPath(roleName: RoleName | undefined | null, path: string): boolean {
   if (!roleName) return false;
-  const p = normalizeAppPath(path);
 
-  for (const rule of PATH_RULES) {
-    if (p === rule.prefix || p.startsWith(rule.prefix + '/')) {
-      return rule.roles.includes(roleName);
-    }
+  const entry = getRouteAccessEntryForPath(path);
+  if (!entry) {
+    // Backward-compatible fallback: مسیرهای داخل اپ که در matrix نیامده‌اند، برای کاربر لاگین‌شده باز می‌مانند.
+    return true;
   }
-  // مسیرهای عمومی داخل اپ (مثل داشبورد، پروفایل، 404) → همهٔ نقش‌های لاگین کرده
-  return true;
+
+  if (entry.access === 'public' || entry.access === 'authenticated') return true;
+  return entry.allowedRoles.includes(roleName);
 }
 
-
-export function hasAnyRole(roleName: RoleName | undefined | null, roles: RoleName[] | undefined | null): boolean {
+export function hasAnyRole(roleName: RoleName | undefined | null, roles: readonly RoleName[] | undefined | null): boolean {
   if (!roles || roles.length === 0) return true;
   if (!roleName) return false;
   return roles.includes(roleName);
 }
 
 export function canPerformAction(roleName: RoleName | undefined | null, options?: {
-  roles?: RoleName[];
+  roles?: readonly RoleName[];
   path?: string;
 }): boolean {
   if (!roleName) return false;
@@ -101,5 +142,7 @@ export function filterNavItemsByRole(items: NavItem[], roleName: RoleName | unde
 
 /** دسترسی‌های سطح عملیات (UI) */
 export function canManageProducts(roleName: RoleName | undefined | null): boolean {
-  return roleName === 'Admin' || roleName === 'Manager' || roleName === 'Warehouse';
+  return hasAnyRole(roleName, ['Admin', 'Manager', 'Warehouse']);
 }
+
+export const rbacAccessPolicySource = APP_ROUTE_ACCESS_SOURCE;

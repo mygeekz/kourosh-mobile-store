@@ -14,7 +14,6 @@ import PageKit from '../components/ui/PageKit';
 import MessageComposerModal from '../components/MessageComposerModal';
 import Button from '../components/Button';
 import { PeopleZeroStateLanding } from '../components/ui/PeopleUiKit';
-import { focusFirstError } from '../utils/focusFirstError';
 import { focusErrorsSoon, isDuplicateMessage } from '../utils/formBehavior';
 import { getBalanceBadgeClass, getBalanceLabel, getBalanceRowClass, getBalanceState } from '../utils/adaptiveUi';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../utils/currency';

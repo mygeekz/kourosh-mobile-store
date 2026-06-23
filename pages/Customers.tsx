@@ -11,7 +11,6 @@ import FormErrorSummary from '../components/FormErrorSummary';
 import { useAuth } from '../contexts/AuthContext';
 import { getAuthHeaders } from '../utils/apiUtils';
 import { apiFetch } from '../utils/apiFetch';
-import HubCard from '../components/HubCard';
 import ExportMenu from '../components/ExportMenu';
 import { exportToExcel, exportToPdfTable } from '../utils/exporters';
 import Skeleton from '../components/ui/Skeleton';
@@ -20,7 +19,6 @@ import { printArea } from '../utils/printArea';
 import MessageComposerModal from '../components/MessageComposerModal';
 import Button from '../components/Button';
 import { parseApiResult, runWithFeedback, humanizeErrorMessage } from '../utils/feedback';
-import { focusFirstError } from '../utils/focusFirstError';
 import { focusErrorsSoon, isDuplicateMessage } from '../utils/formBehavior';
 import { getBalanceBadgeClass, getBalanceLabel, getBalanceRowClass, getBalanceState } from '../utils/adaptiveUi';
 import { PeopleZeroStateLanding } from '../components/ui/PeopleUiKit';
@@ -113,7 +111,7 @@ const getCustomerDueRowStateClass = (badge?: CustomerDueBadge | null): string =>
 
 const buildCustomerDueBadge = (sales: InstallmentSale[]): CustomerDueBadge | null => {
   const openSales = sales
-    .filter((sale) => sale && sale.overallStatus !== 'paid' && sale.nextDueDate)
+    .filter((sale) => sale && sale.overallStatus !== 'تکمیل شده' && sale.nextDueDate)
     .sort((a, b) => moment(a.nextDueDate || '', 'jYYYY/jMM/jDD').valueOf() - moment(b.nextDueDate || '', 'jYYYY/jMM/jDD').valueOf());
 
   if (openSales.length === 0) return null;

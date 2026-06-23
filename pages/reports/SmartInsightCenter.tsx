@@ -70,6 +70,8 @@ export default function SmartInsightCenter() {
   });
   const [lastResetAt, setLastResetAt] = useState<string | null>(() => localStorage.getItem('smartInsightLearningResetAt'));
 
+  const selectInsight = (value: unknown) => setSelected(value as SmartInsightLike | null);
+
   const { payload, setPayload, loading, fetchData } = useSmartInsightDataLoader({
     fromDate,
     toDate,
@@ -238,7 +240,7 @@ export default function SmartInsightCenter() {
         resetLearning={resetLearning}
         setActiveType={setActiveType}
         setSeverity={setSeverity}
-        setSelected={setSelected}
+        setSelected={selectInsight}
       />
 
       <PredictiveEngineSection
@@ -258,9 +260,9 @@ export default function SmartInsightCenter() {
         learning={learning}
         getDecisionActionState={getDecisionActionState}
         updateDecisionMemory={updateDecisionMemory}
-        setAlertsBoardFilter={setAlertsBoardFilter}
+        setAlertsBoardFilter={(value) => setAlertsBoardFilter(value as AlertBoardFilter)}
         setAlertsBoardSelectedId={setAlertsBoardSelectedId}
-        setSelected={setSelected}
+        setSelected={selectInsight}
         num={num}
       />
 
@@ -272,7 +274,7 @@ export default function SmartInsightCenter() {
         criticalCount={criticalCount}
         activeInsightCount={activeInsightCount}
         num={num}
-        setSelected={setSelected}
+        setSelected={selectInsight}
       />
 
       <HiddenProfitSection hiddenProfit={hiddenProfit} />
@@ -282,7 +284,7 @@ export default function SmartInsightCenter() {
         insights={insights}
         severityMeta={severityMeta}
         num={num}
-        setSelected={setSelected}
+        setSelected={selectInsight}
       />
 
       <RealProfitEngineSection
@@ -337,7 +339,7 @@ export default function SmartInsightCenter() {
         percent={percent}
         getDecisionActionState={getDecisionActionState}
         updateDecisionMemory={updateDecisionMemory}
-        setSelected={setSelected}
+        setSelected={selectInsight}
       />
 
       <MessageComposerModal

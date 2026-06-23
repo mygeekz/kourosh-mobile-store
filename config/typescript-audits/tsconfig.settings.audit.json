@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true
+  },
+  "include": [
+    "pages/Settings.tsx",
+    "pages/settings/**/*.ts",
+    "pages/settings/**/*.tsx",
+    "utils/settingsFeaturePolicy.ts",
+    "app/feedback/GlobalAppFeedbackBridge.tsx",
+    "components/Notification.tsx",
+    "components/Modal.tsx",
+    "components/ModalField.tsx",
+    "components/ui/TextField.tsx",
+    "app/bootstrap/localRuntime.ts",
+    "utils/toast.ts",
+    "types.ts",
+    "constants.tsx",
+    "vite-env.d.ts",
+    "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "server"
+  ]
+}

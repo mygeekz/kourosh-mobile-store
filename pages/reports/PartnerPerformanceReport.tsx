@@ -24,6 +24,8 @@ type ProfitSummaryRow = {
   colorTag?: string | null;
   ownerGainAmount: number;
   sharedProfitAmount: number;
+  capitalReturnAmount?: number;
+  settlementEntitlementAmount?: number;
   totalAmount: number;
   documentsCount: number;
   phoneLinesCount: number;
@@ -226,6 +228,11 @@ const PartnerPerformanceReport: React.FC = () => {
     const t = window.setTimeout(() => { void loadPartnerReports(selectedPartnerId); }, 120);
     return () => window.clearTimeout(t);
   }, [selectedPartnerId, loadPartnerReports]);
+
+  const reload = useCallback(async () => {
+    await loadBaseReport();
+    await loadPartnerReports(selectedPartnerId || null);
+  }, [loadBaseReport, loadPartnerReports, selectedPartnerId]);
 
   const selectedProfitRow = useMemo(() => {
     if (!profitData) return null;
@@ -533,7 +540,7 @@ const PartnerPerformanceReport: React.FC = () => {
         </select>
       </ReportFilterField>
       <button
-        onClick={() => void load()}
+        onClick={() => void reload()}
         className="report-filter-button report-filter-button--primary basis-full sm:basis-auto"
       >
         <i className={`fa-solid fa-bolt ${isLoading ? 'fa-fade' : ''}`} />
@@ -569,7 +576,7 @@ const PartnerPerformanceReport: React.FC = () => {
       emptyTitle="هنوز شریک فعالی برای گزارش وجود ندارد"
       emptyDescription="ابتدا از بخش تنظیمات ← مرکز مالکیت و تسهیم سود، هسته شراکت را ایجاد و فعال کن."
       emptyActionLabel="بازخوانی"
-      onEmptyAction={() => void load()}
+      onEmptyAction={() => void reload()}
     >
       {tab === 'profit' ? (
         <div className="space-y-5">
@@ -651,10 +658,10 @@ const PartnerPerformanceReport: React.FC = () => {
                         <td className={tdCls}>
                           <button className="partner-table-name-button font-bold hover:underline" onClick={() => setSelectedPartnerId(row.storePartnerId)}>{row.partnerName}</button>
                         </td>
-                        <td className={tdCls}>{money(row.capitalReturnAmount)}</td>
+                        <td className={tdCls}>{money(row.capitalReturnAmount || 0)}</td>
                         <td className={tdCls}>{money(row.ownerGainAmount)}</td>
                         <td className={tdCls}>{money(row.sharedProfitAmount)}</td>
-                        <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount)}</td>
+                        <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount || 0)}</td>
                         <td className={tdCls}>{row.documentsCount.toLocaleString('fa-IR')}</td>
                         <td className={tdCls}>{row.phoneLinesCount.toLocaleString('fa-IR')}</td>
                         <td className={tdCls}>{row.accessoryLinesCount.toLocaleString('fa-IR')}</td>
@@ -748,10 +755,10 @@ const PartnerPerformanceReport: React.FC = () => {
                         <div className={mutedCls}>تعداد: {qty(row.quantity)} | سهم مالکیت: {qty(row.ownershipSharePercent)}٪</div>
                       </td>
                       <td className={tdCls}>{money(row.attributedSaleAmount)}</td>
-                      <td className={tdCls}>{money(row.capitalReturnAmount)}</td>
+                      <td className={tdCls}>{money(row.capitalReturnAmount || 0)}</td>
                       <td className={tdCls}>{money(row.ownerGainAmount)}</td>
                       <td className={tdCls}>{money(row.sharedProfitAmount)}</td>
-                      <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount)}</td>
+                      <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount || 0)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -842,13 +849,13 @@ const PartnerPerformanceReport: React.FC = () => {
                         <div className="font-semibold">{row.model}</div>
                         <div className={mutedCls} dir="ltr">{row.imei}</div>
                       </td>
-                      <td className={tdCls}>{money(row.capitalReturnAmount)}</td>
+                      <td className={tdCls}>{money(row.capitalReturnAmount || 0)}</td>
                       <td className={tdCls}>{money(row.initialCostAmount)}</td>
                       <td className={tdCls}>{money(row.marketCostAmount)}</td>
                       <td className={tdCls}>{money(row.attributedSaleAmount)}</td>
                       <td className={tdCls}>{money(row.ownerGainAmount)}</td>
                       <td className={tdCls}>{money(row.sharedProfitAmount)}</td>
-                      <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount)}</td>
+                      <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlementAmount || 0)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1218,7 +1225,7 @@ const PartnerPerformanceReport: React.FC = () => {
                   {((settlementData?.settlements || []) as any[]).length ? ((settlementData?.settlements || []) as any[]).map((row: any) => (
                     <tr key={`settlement-${row.storePartnerId}`}>
                       <td className={tdCls}><div className="font-bold">{row.partnerName}</div></td>
-                      <td className={tdCls}>{money(row.capitalReturnAmount)}</td>
+                      <td className={tdCls}>{money(row.capitalReturnAmount || 0)}</td>
                       <td className={tdCls}>{money(row.ownerGainAmount)}</td>
                       <td className={tdCls}>{money(row.sharedProfitAmount)}</td>
                       <td className={`${tdCls} font-extrabold`}>{money(row.settlementEntitlement)}</td>

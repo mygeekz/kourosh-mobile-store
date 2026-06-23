@@ -1,4 +1,5 @@
 import React from 'react';
+import type { GetDecisionActionState, NumberFormatter, SmartInsightExecutiveBrain, SmartInsightLearning, SmartInsightLike, SmartInsightPayload, TodayActionItem, UpdateDecisionMemory } from './types/smartInsightContracts';
 
 import { Link } from 'react-router-dom';
 

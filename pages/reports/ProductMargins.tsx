@@ -1,6 +1,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import moment from 'jalali-moment';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import Notification from '../../components/Notification';
 import { useAuth } from '../../contexts/AuthContext';
@@ -111,7 +112,7 @@ export default function ProductMargins() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               className="px-3 py-2 rounded-xl border bg-white/70 backdrop-blur dark:bg-slate-900/50 dark:border-slate-700 text-sm"
-              preview="جستجو…"
+              placeholder="جستجو…"
             />
             <select
               value={monthsBack}

@@ -1,5 +1,5 @@
 // pages/reports/CompareSalesPage.tsx
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import moment from 'jalali-moment';
 import ShamsiDatePicker from '../../components/ShamsiDatePicker';

@@ -1,0 +1,31 @@
+{
+  "phase": 39,
+  "name": "Sidebar Row/Flyout Extraction",
+  "scope": [
+    "Extract sidebar recursive row renderer",
+    "Extract collapsed mini-sidebar flyout panel",
+    "Move active route/flyout helper functions out of Sidebar.tsx",
+    "Keep sidebar state, RBAC, feature policy, badge loading, favorite behavior, and route behavior unchanged"
+  ],
+  "filesAdded": [
+    "components/sidebar/SidebarNavTree.tsx",
+    "components/sidebar/SidebarFlyoutPanel.tsx",
+    "components/sidebar/sidebarNavUtils.ts",
+    "scripts/audit-sidebar-row-flyout.mjs",
+    "docs/architecture/phase39-sidebar-row-flyout.md",
+    "docs/architecture/phase39-sidebar-row-flyout.json"
+  ],
+  "filesChanged": [
+    "components/Sidebar.tsx",
+    "components/sidebar/index.ts",
+    "package.json"
+  ],
+  "acceptance": [
+    "Sidebar.tsx remains an orchestrator under 350 lines",
+    "Row renderer no longer lives in Sidebar.tsx",
+    "Collapsed flyout rendering no longer lives in Sidebar.tsx",
+    "Route active/open behavior is preserved",
+    "Favorites, badges, search, branding, support footer, RBAC and feature policy are untouched"
+  ],
+  "auditCommand": "npm run audit:sidebar-row-flyout"
+}

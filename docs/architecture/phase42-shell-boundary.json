@@ -1,0 +1,32 @@
+{
+  "phase": 42,
+  "name": "MainLayout Barrel + App Shell Boundary Audit",
+  "publicShellModule": "components/shell/index.ts",
+  "publicShellExports": [
+    "MainLayout",
+    "Header",
+    "Sidebar",
+    "MobileBottomNav"
+  ],
+  "routeLayerEntrypoint": "app/routes/AppRoutes.tsx",
+  "boundaryRules": {
+    "allowed": [
+      "app layout composition",
+      "navigation shell wiring",
+      "route outlet placement",
+      "desktop/mobile sidebar orchestration",
+      "header/sidebar/mobile-bottom-nav composition",
+      "command palette shortcut wiring"
+    ],
+    "forbidden": [
+      "page-level data fetching",
+      "sales/report/settings business logic",
+      "route policy duplication",
+      "feature flag duplication",
+      "direct page imports",
+      "hardcoded role policy outside policy utilities"
+    ]
+  },
+  "auditScript": "scripts/audit-shell-boundary.mjs",
+  "npmScript": "audit:shell-boundary"
+}

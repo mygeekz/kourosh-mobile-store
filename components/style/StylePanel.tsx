@@ -1,43 +1,40 @@
-import React from 'react';
 import ToggleSwitch from '../ToggleSwitch';
 import { useStyle } from '../../hooks/useStyle';
 
-const palettes = [
-  { id:'aurora',  label:'Aurora',  from:'bg-[rgb(var(--grad-from))]', to:'bg-[rgb(var(--grad-to))]' },
-  { id:'sunset',  label:'Sunset' },
-  { id:'ocean',   label:'Ocean' },
-];
-
 export default function StylePanel() {
-  const { style, setStyle, applyMode } = useStyle();
+  const { style, setStyle, setTheme } = useStyle();
 
   return (
     <div className="space-y-6">
       {/* Mode */}
       <div>
-        <h3 className="font-semibold mb-2">حالت نمایش</h3>
+        <h3 className="mb-2 font-semibold">حالت نمایش</h3>
         <div className="flex gap-2">
-          {(['light','dark','system'] as const).map(m => (
+          {(['light', 'dark', 'system'] as const).map((theme) => (
             <button
-              key={m}
-              onClick={() => applyMode(m)}
-              className={`px-3 py-1.5 rounded-md border ${style.mode===m?'bg-primary/10 border-primary text-primary':'border-gray-300 dark:border-gray-600'}`}
-            >{m==='light'?'لایت':m==='dark'?'دارک':'سیستم'}</button>
+              key={theme}
+              type="button"
+              onClick={() => setTheme(theme)}
+              className={`rounded-md border px-3 py-1.5 ${style.theme === theme ? 'border-primary bg-primary/10 text-primary' : 'border-gray-300 dark:border-gray-600'}`}
+            >
+              {theme === 'light' ? 'لایت' : theme === 'dark' ? 'دارک' : 'سیستم'}
+            </button>
           ))}
         </div>
       </div>
 
       {/* Palette */}
       <div>
-        <h3 className="font-semibold mb-2">پالت رنگی</h3>
+        <h3 className="mb-2 font-semibold">پالت رنگی</h3>
         <div className="flex gap-3">
-          {(['aurora','sunset','ocean'] as const).map(p => (
+          {(['aurora', 'sunset', 'ocean', 'classic', 'custom'] as const).map((palette) => (
             <button
-              key={p}
-              onClick={() => setStyle('palette', p)}
-              className={`w-20 h-10 rounded-lg border ${style.palette===p?'border-primary':'border-gray-300 dark:border-gray-600'}`}
+              key={palette}
+              type="button"
+              onClick={() => setStyle('palette', palette)}
+              className={`h-10 w-20 rounded-lg border ${style.palette === palette ? 'border-primary' : 'border-gray-300 dark:border-gray-600'}`}
             >
-              {p}
+              {palette}
             </button>
           ))}
         </div>
@@ -46,10 +43,10 @@ export default function StylePanel() {
       {/* Sidebar */}
       <div className="grid gap-3 md:grid-cols-2">
         <div>
-          <h3 className="font-semibold mb-2">استایل سایدبار</h3>
+          <h3 className="mb-2 font-semibold">استایل سایدبار</h3>
           <select
             value={style.sidebarVariant}
-            onChange={e => setStyle('sidebarVariant', e.target.value as any)}
+            onChange={(event) => setStyle('sidebarVariant', event.target.value as typeof style.sidebarVariant)}
             className="w-full rounded-md border bg-surface text-text"
           >
             <option value="pill">Pill (قرصی)</option>
@@ -57,17 +54,27 @@ export default function StylePanel() {
           </select>
         </div>
         <div>
-          <h3 className="font-semibold mb-2">اندازه آیکون</h3>
-          <input type="range" min={32} max={52} value={style.sidebarIconPx}
-            onChange={e => setStyle('sidebarIconPx', Number(e.target.value))}
-            className="w-full" />
-          <div className="text-xs mt-1">{style.sidebarIconPx}px</div>
+          <h3 className="mb-2 font-semibold">اندازه آیکون</h3>
+          <input
+            type="range"
+            min={24}
+            max={44}
+            value={style.sidebarIconPx}
+            onChange={(event) => setStyle('sidebarIconPx', Number(event.target.value))}
+            className="w-full"
+          />
+          <div className="mt-1 text-xs">{style.sidebarIconPx}px</div>
         </div>
         <div>
-          <h3 className="font-semibold mb-2">عرض قرص</h3>
-          <input type="range" min={200} max={300} value={style.sidebarPillWidthPx}
-            onChange={e => setStyle('sidebarPillWidthPx', Number(e.target.value))}
-            className="w-full" />
+          <h3 className="mb-2 font-semibold">عرض قرص</h3>
+          <input
+            type="range"
+            min={360}
+            max={390}
+            value={style.sidebarPillWidthPx}
+            onChange={(event) => setStyle('sidebarPillWidthPx', Number(event.target.value))}
+            className="w-full"
+          />
         </div>
         <div className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white/80 px-4 py-3 dark:border-gray-700 dark:bg-slate-900/45">
           <div className="text-right">
@@ -80,25 +87,16 @@ export default function StylePanel() {
 
       {/* Buttons */}
       <div>
-        <h3 className="font-semibold mb-2">دکمه‌ها</h3>
-        <select value={style.buttonRadius} onChange={e => setStyle('buttonRadius', e.target.value as any)}
-          className="rounded-md border bg-surface text-text">
-          <option value="sm">گوشه‌گرد کم</option>
-          <option value="md">متوسط</option>
-          <option value="lg">زیاد</option>
-          <option value="pill">قرصی</option>
-        </select>
-      </div>
-
-      {/* Invoice */}
-      <div>
-        <h3 className="font-semibold mb-2">فاکتور</h3>
-        <select value={style.invoiceTemplate} onChange={e => setStyle('invoiceTemplate', e.target.value as any)}
-          className="rounded-md border bg-surface text-text">
-          <option value="clean">ساده</option>
-          <option value="compact">فشرده</option>
-          <option value="bold">بولد/گرادیانی</option>
-        </select>
+        <h3 className="mb-2 font-semibold">گردی دکمه‌ها</h3>
+        <input
+          type="range"
+          min={14}
+          max={28}
+          value={style.buttonRadiusPx}
+          onChange={(event) => setStyle('buttonRadiusPx', Number(event.target.value))}
+          className="w-full max-w-xs"
+        />
+        <div className="mt-1 text-xs">{style.buttonRadiusPx}px</div>
       </div>
     </div>
   );

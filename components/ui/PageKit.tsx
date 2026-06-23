@@ -24,6 +24,7 @@ type Props = {
   title: string;
   subtitle?: string;
   icon?: React.ReactNode;
+  backAction?: () => void;
 
   // toolbar
   query?: string;
@@ -47,7 +48,7 @@ type Props = {
   emptyTitle?: string;
   emptyDescription?: string;
   emptyActionLabel?: string;
-  onEmptyAction?: () => void;
+  onEmptyAction?: () => void | Promise<void>;
 
   error?: string;
   loadingTone?: SkeletonTone;
@@ -108,18 +109,15 @@ const PageKit: React.FC<Props> = ({
           {hasFilterBar ? (
             <ResponsiveFilterBar
               search={(query !== undefined && onQueryChange) ? (
-                <div className="kp-search-field-host ux-toolbar-search ux-single-surface-search relative w-full min-w-0" >
-                  <span className="kp-search-field__icon ux-toolbar-search__icon absolute left-3 right-auto" aria-hidden="true"><i className="fa-solid fa-magnifying-glass" /></span>
-                  <input
-                    value={query ?? ''}
-                    onChange={(e) => onQueryChange?.(e.target.value)}
-                    placeholder={searchPlaceholder}
-                    data-tooltip={searchPlaceholder}
-                    type="search"
-                    dir="rtl"
-                    className="kp-search-field__input ux-input ux-toolbar-search__input w-full min-w-0 pr-4 pl-12 text-right"
-                  />
-                </div>
+                <AppSearchField
+                  value={query ?? ''}
+                  onChange={(v) => onQueryChange?.(v)}
+                  placeholder={searchPlaceholder}
+                  ariaLabel={searchPlaceholder}
+                  clearable={Boolean(query)}
+                  size="lg"
+                  className="ux-single-surface-search w-full min-w-0"
+                />
               ) : undefined}
               filters={filtersSlot ? <div className="flex w-full flex-wrap items-center justify-start gap-2">{filtersSlot}</div> : undefined}
               secondaryRow={resolvedSecondaryRow}

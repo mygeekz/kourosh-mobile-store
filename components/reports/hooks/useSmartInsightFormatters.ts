@@ -44,7 +44,7 @@ const num: NumberFormatter = (value: unknown) => Number.isFinite(Number(value)) 
 
 const smartInsightCurrencyContract = (payload?: SmartInsightPayload | null): CurrencyContract => {
   const base = String(payload?.currencyBase || 'IRR').toUpperCase();
-  const displayCurrency = payload?.displayCurrency || (base === 'IRR' ? 'تومان' : 'تومان');
+  const displayCurrency = String(payload?.displayCurrency || (base === 'IRR' ? 'تومان' : 'تومان'));
   const divisor = Number.isFinite(Number(payload?.moneyDivisor))
     ? Math.max(1, Number(payload?.moneyDivisor))
     : (base === 'IRR' && displayCurrency === 'تومان' ? 10 : 1);

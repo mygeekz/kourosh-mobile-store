@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import type { GetDecisionActionState, NumberFormatter, PercentFormatter, PricingMoneyFormatter, PricingRecommendationRow, ShamsiFormatter, SmartInsightLike, UpdateDecisionMemory } from './types/smartInsightContracts';
 

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import moment from 'jalali-moment';
 
 type PresetKey = 'today' | 'yesterday' | 'week' | 'month' | 'last30' | 'custom';
