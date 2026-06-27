@@ -291,3 +291,847 @@
   .modal-body-premium,
   .premium-drawer-panel__body { padding: .9rem !important; }
 }
+
+/* Phase 50.3: unified production modal system primitives. */
+:root {
+  --app-modal-radius: 30px;
+  --app-modal-overlay-z: var(--kourosh-z-modal-backdrop, 9000);
+  --app-modal-panel-z: var(--kourosh-z-modal-panel, 9010);
+  --app-modal-action-border: rgba(148, 163, 184, 0.22);
+  --app-modal-alert-bg: rgba(248, 250, 252, 0.96);
+  --app-modal-alert-border: rgba(203, 213, 225, 0.9);
+  --app-modal-alert-icon-bg: rgba(226, 232, 240, 0.92);
+  --app-modal-alert-icon-color: rgb(51, 65, 85);
+  --app-modal-alert-title: rgb(15, 23, 42);
+  --app-modal-alert-text: rgb(71, 85, 105);
+}
+
+.dark {
+  --app-modal-action-border: rgba(51, 65, 85, 0.78);
+  --app-modal-alert-bg: rgba(15, 23, 42, 0.82);
+  --app-modal-alert-border: rgba(51, 65, 85, 0.9);
+  --app-modal-alert-icon-bg: rgba(30, 41, 59, 0.94);
+  --app-modal-alert-icon-color: rgb(203, 213, 225);
+  --app-modal-alert-title: rgb(248, 250, 252);
+  --app-modal-alert-text: rgb(203, 213, 225);
+}
+
+[data-kourosh-layer="modal-backdrop"] {
+  z-index: var(--app-modal-overlay-z) !important;
+}
+
+[data-kourosh-layer="modal"] {
+  z-index: var(--app-modal-panel-z) !important;
+}
+
+.app-modal {
+  color: rgb(15, 23, 42);
+  isolation: isolate;
+  transform-origin: center;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.dark .app-modal {
+  color: rgb(248, 250, 252);
+}
+
+.app-modal:focus,
+.app-modal:focus-visible {
+  outline: none !important;
+  box-shadow: 0 34px 90px -48px rgba(15, 23, 42, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.78) !important;
+}
+
+.app-modal--compact {
+  max-height: min(720px, calc(100dvh - 32px)) !important;
+}
+
+.app-modal--layout-horizontal .modal-body-premium,
+.app-modal--layout-horizontal .premium-drawer-panel__body,
+.confirm-dialog-body,
+.settings-restore-modal__body {
+  gap: 0 !important;
+}
+
+.app-modal-alert {
+  --app-modal-alert-bg: rgba(248, 250, 252, 0.96);
+  --app-modal-alert-border: rgba(203, 213, 225, 0.9);
+  --app-modal-alert-icon-bg: rgba(226, 232, 240, 0.92);
+  --app-modal-alert-icon-color: rgb(51, 65, 85);
+  --app-modal-alert-title: rgb(15, 23, 42);
+  --app-modal-alert-text: rgb(71, 85, 105);
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 16px;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--app-modal-alert-border);
+  border-radius: 24px;
+  background: var(--app-modal-alert-bg);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 18px 48px -42px rgba(15, 23, 42, 0.36);
+}
+
+.dark .app-modal-alert {
+  --app-modal-alert-bg: rgba(15, 23, 42, 0.82);
+  --app-modal-alert-border: rgba(51, 65, 85, 0.9);
+  --app-modal-alert-icon-bg: rgba(30, 41, 59, 0.94);
+  --app-modal-alert-icon-color: rgb(203, 213, 225);
+  --app-modal-alert-title: rgb(248, 250, 252);
+  --app-modal-alert-text: rgb(203, 213, 225);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 48px -42px rgba(2, 6, 23, 0.86);
+}
+
+.app-modal-alert[data-modal-alert-tone="danger"],
+.app-modal--tone-danger .app-modal-alert {
+  --app-modal-alert-bg: rgb(255, 247, 247);
+  --app-modal-alert-border: rgba(251, 113, 133, 0.46);
+  --app-modal-alert-icon-bg: rgb(255, 228, 230);
+  --app-modal-alert-icon-color: rgb(190, 18, 60);
+  --app-modal-alert-title: rgb(136, 19, 55);
+  --app-modal-alert-text: rgb(71, 85, 105);
+}
+
+.dark .app-modal-alert[data-modal-alert-tone="danger"],
+.dark .app-modal--tone-danger .app-modal-alert {
+  --app-modal-alert-bg: rgba(69, 10, 10, 0.72);
+  --app-modal-alert-border: rgba(248, 113, 113, 0.42);
+  --app-modal-alert-icon-bg: rgba(127, 29, 29, 0.78);
+  --app-modal-alert-icon-color: rgb(254, 202, 202);
+  --app-modal-alert-title: rgb(254, 226, 226);
+  --app-modal-alert-text: rgb(226, 232, 240);
+}
+
+.app-modal-alert[data-modal-alert-tone="warning"],
+.app-modal--tone-warning .app-modal-alert {
+  --app-modal-alert-bg: rgb(255, 251, 235);
+  --app-modal-alert-border: rgba(245, 158, 11, 0.42);
+  --app-modal-alert-icon-bg: rgb(254, 243, 199);
+  --app-modal-alert-icon-color: rgb(180, 83, 9);
+  --app-modal-alert-title: rgb(146, 64, 14);
+}
+
+.app-modal-alert[data-modal-alert-tone="info"],
+.app-modal--tone-info .app-modal-alert,
+.app-modal-alert[data-modal-alert-tone="violet"],
+.app-modal--tone-violet .app-modal-alert {
+  --app-modal-alert-bg: rgb(239, 246, 255);
+  --app-modal-alert-border: rgba(96, 165, 250, 0.42);
+  --app-modal-alert-icon-bg: rgb(219, 234, 254);
+  --app-modal-alert-icon-color: rgb(37, 99, 235);
+  --app-modal-alert-title: rgb(30, 64, 175);
+}
+
+.app-modal-alert[data-modal-alert-tone="success"],
+.app-modal--tone-success .app-modal-alert {
+  --app-modal-alert-bg: rgb(240, 253, 244);
+  --app-modal-alert-border: rgba(34, 197, 94, 0.38);
+  --app-modal-alert-icon-bg: rgb(220, 252, 231);
+  --app-modal-alert-icon-color: rgb(22, 101, 52);
+  --app-modal-alert-title: rgb(20, 83, 45);
+}
+
+.app-modal-alert__icon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  border-radius: 20px;
+  background: var(--app-modal-alert-icon-bg);
+  color: var(--app-modal-alert-icon-color);
+  font-size: 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.app-modal-alert__content {
+  min-width: 0;
+  text-align: right;
+}
+
+.app-modal-alert__eyebrow {
+  margin: 0 0 6px !important;
+  color: var(--app-modal-alert-icon-color) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.04em;
+  line-height: 1.6 !important;
+}
+
+.app-modal-alert__title {
+  margin: 0 !important;
+  color: var(--app-modal-alert-title) !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  line-height: 1.85 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.app-modal-alert__text {
+  margin: 8px 0 0 !important;
+  color: var(--app-modal-alert-text) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.9 !important;
+}
+
+.app-modal-alert__fileRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.dark .app-modal-alert__fileRow {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(2, 6, 23, 0.26);
+}
+
+.app-modal-alert__fileRow span,
+.app-modal-alert__summaryLabel {
+  color: var(--app-modal-alert-text);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.7;
+}
+
+.app-modal-alert__fileRow bdi,
+.app-modal-alert__summaryValue {
+  min-width: 0;
+  color: var(--app-modal-alert-title);
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  direction: ltr;
+  text-align: left;
+}
+
+.app-modal-alert__summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.app-modal-alert__summaryItem {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dark .app-modal-alert__summaryItem {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: rgba(2, 6, 23, 0.24);
+}
+
+.app-modal-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100%;
+  margin-top: 18px !important;
+  padding: 14px 0 0 !important;
+  border-top: 1px solid var(--app-modal-action-border) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-modal-actions--end {
+  justify-content: flex-end !important;
+}
+
+.app-modal-actions__helper {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.app-modal-actions .app-modal-command-row {
+  width: auto !important;
+  min-width: min(100%, 300px);
+  flex: 0 0 auto;
+  justify-content: flex-end !important;
+}
+
+.app-modal-actions .app-command-button {
+  min-width: 128px;
+}
+
+.settings-restore-modal .modal-surface,
+.settings-restore-modal .app-modal {
+  max-width: min(720px, calc(100vw - 32px)) !important;
+}
+
+.settings-restore-modal .modal-premium-header,
+.settings-restore-modal .premium-drawer-panel__header {
+  min-height: 74px !important;
+}
+
+.settings-restore-modal__actions {
+  margin-top: 18px !important;
+}
+
+@media (max-width: 640px) {
+  .app-modal-alert {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 15px;
+    border-radius: 21px;
+  }
+
+  .app-modal-alert__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 18px;
+  }
+
+  .app-modal-alert__fileRow {
+    grid-template-columns: 1fr;
+  }
+
+  .app-modal-alert__fileRow bdi {
+    text-align: right;
+  }
+
+  .app-modal-actions,
+  .app-modal-actions .app-modal-command-row {
+    width: 100% !important;
+    min-width: 0;
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+
+  .app-modal-actions .app-command-button {
+    width: 100% !important;
+    min-width: 0;
+  }
+}
+
+/* Phase 50.4: inventory/product/mobile/partner modal compatibility layer. */
+.inventory-modal-overlay.app-modal-backdrop,
+.message-composer-modal-overlay.app-modal-backdrop {
+  padding-inline: clamp(0.65rem, 2vw, 1.25rem) !important;
+}
+
+.inventory-modal-foundation.app-modal {
+  max-height: min(860px, calc(100dvh - 24px)) !important;
+}
+
+.inventory-modal-foundation .modal-premium-header {
+  min-height: 76px !important;
+}
+
+.inventory-modal-body {
+  gap: 1rem !important;
+  padding: clamp(0.85rem, 1.8vw, 1.2rem) !important;
+  overscroll-behavior: contain;
+}
+
+.inventory-confirm-modal-body,
+.mobile-phone-delete-modal-body,
+.mobile-phone-bulk-confirm-modal-body {
+  gap: 0 !important;
+}
+
+.inventory-confirm-modal-actions {
+  margin-top: 18px !important;
+}
+
+.mobile-phone-detail-modal-body,
+.mobile-phone-edit-modal-body,
+.partner-edit-modal-body,
+.partner-ledger-modal-body,
+.partner-full-settlement-modal-body,
+.partner-phone-settlement-modal-body,
+.partner-ledger-edit-modal-body {
+  overscroll-behavior: contain;
+}
+
+.app-modal--layout-split .modal-body-premium,
+.app-modal--layout-split .premium-drawer-panel__body {
+  gap: 1rem !important;
+}
+
+.app-modal--layout-split.app-modal--expansive,
+.app-modal--layout-split.app-modal--operational {
+  width: min(100%, var(--app-modal-split-width, 1180px));
+}
+
+.partner-edit-modal-panel,
+.partner-ledger-edit-modal-panel {
+  --app-modal-split-width: 980px;
+}
+
+.app-modal--tone-warning .modal-premium-kicker,
+.app-modal--tone-warning .premium-modal-title-icon,
+.app-modal--tone-warning .people-modal-icon,
+.app-modal--tone-warning .modal-premium-title i {
+  color: rgb(180, 83, 9) !important;
+}
+
+.app-modal--tone-success .modal-premium-kicker,
+.app-modal--tone-success .premium-modal-title-icon,
+.app-modal--tone-success .people-modal-icon,
+.app-modal--tone-success .modal-premium-title i {
+  color: rgb(22, 101, 52) !important;
+}
+
+.app-modal--tone-info .modal-premium-kicker,
+.app-modal--tone-info .premium-modal-title-icon,
+.app-modal--tone-info .people-modal-icon,
+.app-modal--tone-violet .modal-premium-kicker,
+.app-modal--tone-violet .premium-modal-title-icon,
+.app-modal--tone-violet .people-modal-icon {
+  color: rgb(37, 99, 235) !important;
+}
+
+.app-modal--tone-danger .modal-premium-kicker,
+.app-modal--tone-danger .premium-modal-title-icon,
+.app-modal--tone-danger .people-modal-icon {
+  color: rgb(190, 18, 60) !important;
+}
+
+@media (min-width: 768px) {
+  .inventory-modal-foundation.app-modal--layout-split .modal-body-premium,
+  .inventory-modal-foundation.app-modal--layout-split .premium-drawer-panel__body {
+    padding: 1.1rem !important;
+  }
+
+  .app-modal--compact.app-modal--layout-horizontal .modal-premium-header {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .inventory-modal-overlay.app-modal-backdrop,
+  .message-composer-modal-overlay.app-modal-backdrop {
+    align-items: flex-end !important;
+    padding: 0.75rem !important;
+  }
+
+  .inventory-modal-foundation.app-modal {
+    max-height: min(92dvh, 760px) !important;
+  }
+
+  .inventory-modal-body {
+    padding: 0.85rem !important;
+  }
+
+  .app-modal--layout-split .modal-body-premium,
+  .app-modal--layout-split .premium-drawer-panel__body {
+    gap: 0.85rem !important;
+  }
+}
+
+/* Phase 50.6: report overlays and side drawers on the shared DialogShell layer. */
+.reports-premium-modal-overlay.app-modal-backdrop,
+.reports-command--dialog-shell.app-modal-backdrop,
+.reports-workspace--dialog-shell.app-modal-backdrop,
+.report-side-drawer-backdrop.app-modal-backdrop,
+.purchase210-drawer-overlay--dialog-shell.app-modal-backdrop {
+  z-index: var(--app-modal-overlay-z) !important;
+}
+
+.reports-premium-modal-panel.app-modal {
+  max-height: min(860px, calc(100dvh - 28px)) !important;
+}
+
+.reports-premium-modal-body {
+  gap: 0 !important;
+  overscroll-behavior: contain;
+}
+
+.reports-premium-modal-card {
+  min-width: 0;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 24px;
+  background: rgba(248, 250, 252, 0.72);
+  padding: 14px;
+}
+
+.dark .reports-premium-modal-card {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.44);
+}
+
+.reports-premium-modal-summary {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid rgba(203, 213, 225, 0.78);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.dark .reports-premium-modal-summary {
+  border-color: rgba(51, 65, 85, 0.82);
+  background: rgba(2, 6, 23, 0.26);
+}
+
+.reports-premium-modal-summary__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 18px;
+  background: rgb(239, 246, 255);
+  color: rgb(37, 99, 235);
+  font-weight: 950;
+}
+
+.dark .reports-premium-modal-summary__icon {
+  background: rgba(30, 64, 175, 0.2);
+  color: rgb(147, 197, 253);
+}
+
+.reports-premium-modal-summary p {
+  margin: 0 !important;
+  color: rgb(71, 85, 105);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.85;
+}
+
+.dark .reports-premium-modal-summary p {
+  color: rgb(203, 213, 225);
+}
+
+.reports-premium-modal-content {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(226, 232, 240, 0.84);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.74);
+  padding: 14px;
+}
+
+.dark .reports-premium-modal-content {
+  border-color: rgba(51, 65, 85, 0.82);
+  background: rgba(2, 6, 23, 0.24);
+}
+
+.reports-command__panel--dialog-shell {
+  width: min(760px, 100%) !important;
+  max-height: min(76dvh, 760px);
+  display: flex;
+  flex-direction: column;
+}
+
+.reports-command__panel--dialog-shell .reports-command__list {
+  min-height: 0;
+}
+
+.reports-workspace__drawer--dialog-shell {
+  width: min(520px, calc(100vw - 18px)) !important;
+  height: 100dvh !important;
+  padding: 10px;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.report-side-drawer-backdrop {
+  background: rgba(15, 23, 42, 0.55) !important;
+  backdrop-filter: blur(10px) saturate(1.06) !important;
+}
+
+.report-side-drawer-panel {
+  display: flex;
+  width: min(100vw, var(--report-side-drawer-width, 620px)) !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  flex-direction: column;
+  overflow: hidden;
+  border-inline-start: 1px solid rgba(226, 232, 240, 0.94);
+  background: rgb(255, 255, 255);
+  box-shadow: -34px 0 80px -48px rgba(15, 23, 42, 0.55);
+}
+
+.report-side-drawer-panel--sm { --report-side-drawer-width: 540px; }
+.report-side-drawer-panel--md { --report-side-drawer-width: 620px; }
+.report-side-drawer-panel--wide { --report-side-drawer-width: 680px; }
+
+.dark .report-side-drawer-panel {
+  border-inline-start-color: rgba(51, 65, 85, 0.94);
+  background: rgb(2, 6, 23);
+  box-shadow: -36px 0 88px -48px rgba(0, 0, 0, 0.82);
+}
+
+.purchase210-drawer-overlay--dialog-shell {
+  justify-content: flex-end !important;
+  background: rgba(15, 23, 42, 0.46) !important;
+  backdrop-filter: blur(10px) saturate(1.06) !important;
+}
+
+.purchase210-drawer--dialog-shell {
+  width: min(450px, 100vw) !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  border-left: 0 !important;
+  border-inline-start: 1px solid rgba(203, 213, 225, 0.9) !important;
+  overflow: hidden !important;
+}
+
+.purchase210-drawer--dialog-shell main {
+  max-height: calc(100dvh - 148px);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 768px) {
+  .reports-premium-modal-panel.app-modal {
+    max-height: min(92dvh, 760px) !important;
+  }
+
+  .reports-premium-modal-card,
+  .reports-premium-modal-content {
+    padding: 11px;
+    border-radius: 20px;
+  }
+
+  .reports-premium-modal-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-workspace__drawer--dialog-shell,
+  .report-side-drawer-panel,
+  .purchase210-drawer--dialog-shell {
+    width: 100vw !important;
+    padding: 0;
+  }
+
+  .report-side-drawer-panel,
+  .purchase210-drawer--dialog-shell {
+    border-inline-start: 0 !important;
+  }
+}
+
+/* Phase 50.7: Smart Sales Advisor drawer and SMS auto-send sheet on shared DialogShell. */
+.smart-sales-advisor-drawer-overlay.app-modal-backdrop,
+.sms-auto-send-sheet-overlay.app-modal-backdrop {
+  z-index: var(--app-modal-overlay-z) !important;
+}
+
+.smart-sales-advisor-drawer-overlay {
+  align-items: stretch !important;
+  justify-content: flex-end !important;
+  padding: clamp(0.65rem, 1.7vw, 1rem) !important;
+  background: rgba(15, 23, 42, 0.48) !important;
+  backdrop-filter: blur(10px) saturate(1.06) !important;
+}
+
+.smart-sales-advisor-drawer-panel {
+  display: flex;
+  width: min(440px, calc(100vw - 1.5rem)) !important;
+  height: min(100%, calc(100dvh - clamp(1.3rem, 3.4vw, 2rem))) !important;
+  max-height: calc(100dvh - clamp(1.3rem, 3.4vw, 2rem)) !important;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-radius: 28px;
+  background: rgb(255, 255, 255);
+  color: rgb(15, 23, 42);
+  box-shadow: -34px 0 88px -50px rgba(15, 23, 42, 0.62), 0 24px 70px -52px rgba(15, 23, 42, 0.7);
+  transform-origin: right center;
+}
+
+.dark .smart-sales-advisor-drawer-panel {
+  border-color: rgba(51, 65, 85, 0.94);
+  background: rgb(2, 6, 23);
+  color: rgb(248, 250, 252);
+  box-shadow: -36px 0 90px -50px rgba(0, 0, 0, 0.86);
+}
+
+.smart-sales-advisor-drawer-panel[data-smart-sales-severity="critical"] {
+  border-color: rgba(251, 113, 133, 0.54);
+}
+
+.smart-sales-advisor-drawer-panel[data-smart-sales-severity="warning"] {
+  border-color: rgba(245, 158, 11, 0.48);
+}
+
+.smart-sales-advisor-drawer-panel[data-smart-sales-severity="success"] {
+  border-color: rgba(34, 197, 94, 0.42);
+}
+
+.smart-sales-advisor-drawer__header,
+.sms-auto-send-sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.85rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.72);
+}
+
+.dark .smart-sales-advisor-drawer__header,
+.dark .sms-auto-send-sheet__header {
+  border-bottom-color: rgba(51, 65, 85, 0.84);
+}
+
+.smart-sales-advisor-drawer__header {
+  padding: 1rem;
+}
+
+.smart-sales-advisor-drawer__body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 1rem;
+}
+
+.smart-sales-advisor-drawer__footer {
+  flex: 0 0 auto;
+  border-top: 1px solid rgba(226, 232, 240, 0.72);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 0.85rem 1rem 1rem;
+}
+
+.dark .smart-sales-advisor-drawer__footer {
+  border-top-color: rgba(51, 65, 85, 0.84);
+  background: rgba(2, 6, 23, 0.96);
+}
+
+.sms-auto-send-sheet-overlay {
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 0.75rem 0.75rem 0 !important;
+  background: rgba(15, 23, 42, 0.42) !important;
+  backdrop-filter: blur(10px) saturate(1.04) !important;
+}
+
+.sms-auto-send-sheet-panel {
+  display: flex;
+  width: min(640px, 100%) !important;
+  max-height: min(420px, calc(100dvh - 1rem)) !important;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-bottom: 0;
+  border-radius: 26px 26px 0 0;
+  background: rgb(255, 255, 255);
+  color: rgb(15, 23, 42);
+  box-shadow: 0 -28px 82px -56px rgba(15, 23, 42, 0.72);
+  transform-origin: bottom center;
+}
+
+.dark .sms-auto-send-sheet-panel {
+  border-color: rgba(51, 65, 85, 0.94);
+  background: rgb(2, 6, 23);
+  color: rgb(248, 250, 252);
+  box-shadow: 0 -30px 88px -58px rgba(0, 0, 0, 0.86);
+}
+
+.sms-auto-send-sheet__handle {
+  width: 48px;
+  height: 6px;
+  margin: 0.75rem auto 0;
+  border-radius: 999px;
+  background: rgba(203, 213, 225, 0.95);
+}
+
+.dark .sms-auto-send-sheet__handle {
+  background: rgba(51, 65, 85, 0.95);
+}
+
+.sms-auto-send-sheet__header {
+  padding: 1rem 1rem 0.85rem;
+}
+
+.sms-auto-send-sheet__icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  border-radius: 18px;
+  background: rgb(248, 250, 252);
+  color: rgb(51, 65, 85);
+  font-size: 15px;
+}
+
+.sms-auto-send-sheet-panel[data-sms-auto-status="sent"] .sms-auto-send-sheet__icon {
+  border-color: rgba(34, 197, 94, 0.38);
+  background: rgb(240, 253, 244);
+  color: rgb(22, 101, 52);
+}
+
+.sms-auto-send-sheet-panel[data-sms-auto-status="failed"] .sms-auto-send-sheet__icon {
+  border-color: rgba(251, 113, 133, 0.46);
+  background: rgb(255, 247, 247);
+  color: rgb(190, 18, 60);
+}
+
+.sms-auto-send-sheet-panel[data-sms-auto-status="not_sent"] .sms-auto-send-sheet__icon {
+  border-color: rgba(245, 158, 11, 0.42);
+  background: rgb(255, 251, 235);
+  color: rgb(180, 83, 9);
+}
+
+.sms-auto-send-sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.sms-auto-send-sheet__actions .ux-btn:first-child {
+  min-width: min(100%, 220px);
+}
+
+@media (max-width: 768px) {
+  .smart-sales-advisor-drawer-overlay {
+    padding: 0.75rem !important;
+  }
+
+  .smart-sales-advisor-drawer-panel {
+    width: 100% !important;
+    height: calc(100dvh - 1.5rem) !important;
+    max-height: calc(100dvh - 1.5rem) !important;
+    border-radius: 26px;
+  }
+
+  .smart-sales-advisor-drawer__header,
+  .smart-sales-advisor-drawer__body,
+  .smart-sales-advisor-drawer__footer {
+    padding-inline: 0.85rem;
+  }
+
+  .sms-auto-send-sheet-overlay {
+    padding-inline: 0 !important;
+  }
+
+  .sms-auto-send-sheet-panel {
+    width: 100vw !important;
+    max-height: min(86dvh, 460px) !important;
+    border-inline: 0;
+  }
+
+  .sms-auto-send-sheet__header {
+    padding-inline: 0.85rem;
+  }
+
+  .sms-auto-send-sheet__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    padding-inline: 0.85rem;
+  }
+
+  .sms-auto-send-sheet__actions .ux-btn {
+    width: 100%;
+  }
+}

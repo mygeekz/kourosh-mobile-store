@@ -8,7 +8,7 @@
 .tg-logs-detail-modal-overlay {
   position: fixed !important;
   inset: 0 !important;
-  z-index: 2147483000 !important;
+  z-index: var(--kourosh-z-modal-backdrop, 9000) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;

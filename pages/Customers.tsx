@@ -292,7 +292,7 @@ const CustomersPage: React.FC = () => {
   const fetchCustomerTrustProfiles = async () => {
     if (!token) return;
     try {
-      const res = await fetch('/api/customers/trust-profiles', { headers: getAuthHeaders(token) });
+      const res = await fetch('/api/customers/trust-profiles?ts=' + Date.now(), { headers: getAuthHeaders(token), cache: 'no-store' });
       const json = await res.json();
       if (!res.ok || !json?.success || !Array.isArray(json?.data)) throw new Error(json?.message || 'خطا در دریافت امتیاز اعتماد مشتریان');
       const next: Record<number, CustomerTrustListItem> = {};
@@ -539,14 +539,6 @@ const CustomersPage: React.FC = () => {
       searchPlaceholder="جستجو بر اساس نام یا شماره تماس..."
       toolbarRight={
         <>
-          <ExportMenu
-            className="shrink-0"
-            items={[
-              { key: 'excel', label: 'Excel (XLSX)', icon: 'fa-file-excel', onClick: doExportExcel, disabled: filteredCustomers.length === 0 },
-              { key: 'pdf', label: 'PDF (جدول)', icon: 'fa-file-pdf', onClick: doExportPdf, disabled: filteredCustomers.length === 0 },
-              { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#customers-print-area', { title: 'لیست مشتریان' }), disabled: filteredCustomers.length === 0 },
-            ]}
-          />
           <Button
             onClick={() => setIsAddModalOpen(true)}
             variant="primary"
@@ -588,14 +580,6 @@ const CustomersPage: React.FC = () => {
               </Link>
             </div>
             <div className="people-unified-hero__actions">
-              <ExportMenu
-                className="shrink-0"
-                items={[
-                  { key: 'excel', label: 'Excel (XLSX)', icon: 'fa-file-excel', onClick: doExportExcel, disabled: filteredCustomers.length === 0 },
-                  { key: 'pdf', label: 'PDF (جدول)', icon: 'fa-file-pdf', onClick: doExportPdf, disabled: filteredCustomers.length === 0 },
-                  { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#customers-print-area', { title: 'لیست مشتریان' }), disabled: filteredCustomers.length === 0 },
-                ]}
-              />
               <Button
                 onClick={() => setIsAddModalOpen(true)}
                 variant="primary"
@@ -760,6 +744,14 @@ const CustomersPage: React.FC = () => {
                 { value: 'balanceDesc', label: 'بیشترین مانده مالی' },
                 { value: 'balanceAsc', label: 'کمترین مانده مالی' },
                 { value: 'recent', label: 'جدیدترین پرونده' },
+              ]}
+            />
+            <ExportMenu
+              className="customers-toolbar__item customers-toolbar__export"
+              items={[
+                { key: 'excel', label: 'Excel (XLSX)', icon: 'fa-file-excel', onClick: doExportExcel, disabled: filteredCustomers.length === 0 },
+                { key: 'pdf', label: 'PDF (جدول)', icon: 'fa-file-pdf', onClick: doExportPdf, disabled: filteredCustomers.length === 0 },
+                { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#customers-print-area', { title: 'لیست مشتریان' }), disabled: filteredCustomers.length === 0 },
               ]}
             />
             {(searchTerm || tagFilter || balanceFilter !== 'all' || riskFilter !== 'all' || sortMode !== 'name') ? (
@@ -1086,24 +1078,24 @@ const CustomersPage: React.FC = () => {
       {/* مودال افزودن مورد جدید مشتری */}
       {isAddModalOpen && (
         <Modal title="افزودن مشتری" onClose={() => setIsAddModalOpen(false)} widthClass="max-w-4xl" iconClass="fa-solid fa-user-plus" variant="operational">
-          <form onSubmit={handleAddCustomerSubmit} className="people-modal-form people-modal-form--horizontal people-modal-form--customer">
+          <form onSubmit={handleAddCustomerSubmit} className="modal-template-form modal-template-form--split modal-template-form--customer">
             <FormErrorSummary errors={formErrors as any} labels={{ fullName: 'نام کامل', phoneNumber: 'شماره تماس' }} fieldIdMap={{ fullName: 'fullName', phoneNumber: 'phoneNumber' }} />
-            <div className="people-modal-form__side">
-              <div className="people-modal-summary-card">
-                <span className="people-modal-summary-card__eyebrow"><i className="fa-solid fa-user-plus" /> پرونده مشتری جدید</span>
-                <div className="people-modal-summary-card__title">{newCustomer.fullName || 'تعریف مشتری جدید'}</div>
-                <p className="people-modal-summary-card__text">این اطلاعات مبنای فاکتورها، اقساط، تعمیرات، یادآوری‌ها و ارتباطات بعدی با مشتری خواهد بود.</p>
-                <div className="people-modal-summary-metrics">
-                  <div className="people-modal-summary-metric">
-                    <span className="people-modal-summary-metric__icon"><i className="fa-solid fa-phone" /></span>
-                    <div className="people-modal-summary-metric__copy">
+            <div className="modal-template-side">
+              <div className="modal-template-card modal-template-summary">
+                <span className="modal-template-eyebrow"><i className="fa-solid fa-user-plus" /> پرونده مشتری جدید</span>
+                <div className="modal-template-title">{newCustomer.fullName || 'تعریف مشتری جدید'}</div>
+                <p className="modal-template-text">این اطلاعات مبنای فاکتورها، اقساط، تعمیرات، یادآوری‌ها و ارتباطات بعدی با مشتری خواهد بود.</p>
+                <div className="modal-template-metric-list">
+                  <div className="modal-template-metric">
+                    <span className="modal-template-metric__icon"><i className="fa-solid fa-phone" /></span>
+                    <div className="modal-template-metric__copy">
                       <span>شماره تماس</span>
                       <strong dir="ltr">{newCustomer.phoneNumber || 'ثبت نشده'}</strong>
                     </div>
                   </div>
-                  <div className="people-modal-summary-metric">
-                    <span className="people-modal-summary-metric__icon"><i className="fa-solid fa-location-dot" /></span>
-                    <div className="people-modal-summary-metric__copy">
+                  <div className="modal-template-metric">
+                    <span className="modal-template-metric__icon"><i className="fa-solid fa-location-dot" /></span>
+                    <div className="modal-template-metric__copy">
                       <span>آدرس پرونده</span>
                       <strong>{newCustomer.address || 'ثبت نشده'}</strong>
                     </div>
@@ -1112,8 +1104,8 @@ const CustomersPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="people-modal-form__main">
-              <div className="people-modal-form__section people-modal-form__section--primary">
+            <div className="modal-template-main">
+              <div className="modal-template-section modal-template-section--grid">
                 <ModalField label="نام کامل" iconClass="fa-solid fa-user" required error={formErrors.fullName}>
                   <input type="text" id="fullName" name="fullName" value={newCustomer.fullName}
                          onChange={handleInputChange} className={inputClass('fullName')} required placeholder="نام و نام خانوادگی مشتری" />
@@ -1125,7 +1117,7 @@ const CustomersPage: React.FC = () => {
                 </ModalField>
               </div>
 
-              <div className="people-modal-form__section people-modal-form__section--wide">
+              <div className="modal-template-section modal-template-section--stack">
                 <ModalField label="آدرس" iconClass="fa-solid fa-location-dot">
                   <textarea id="address" name="address" rows={2} value={newCustomer.address}
                             onChange={handleInputChange} className={inputClass('address', true)} placeholder="آدرس ثبت‌شده مشتری" />

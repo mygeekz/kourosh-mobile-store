@@ -10,7 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { apiFetch } from '../utils/apiFetch';
 import { REPAIR_STATUSES } from '../constants';
 import { useStyle } from '../contexts/StyleContext';
-import TableToolbar from '../components/TableToolbar';
+import AppSearchField from '../components/ui/AppSearchField';
 import FilterChipsBar from '../components/FilterChipsBar';
 import ExportMenu from '../components/ExportMenu';
 import { exportToExcel, exportToPdfTable } from '../utils/exporters';
@@ -18,6 +18,112 @@ import { printArea } from '../utils/printArea';
 import Skeleton from '../components/ui/Skeleton';
 import EmptyState from '../components/ui/EmptyState';
 import Button from '../components/Button';
+
+
+const REPAIRS_PRINT_REPORT_CSS = `
+  @page { size: A4 landscape; margin: 10mm; }
+  html, body {
+    direction: rtl;
+    background: #fff !important;
+    color: #0f172a;
+    font-family: Vazirmatn, Vazir, Tahoma, Arial, sans-serif !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #__print_root {
+    padding: 0 !important;
+    text-align: initial !important;
+  }
+  .repair-print-report {
+    width: 100%;
+    box-sizing: border-box;
+    direction: rtl;
+  }
+  .repair-print-report__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    border: 1px solid #dbe4f0;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  }
+  .repair-print-report__title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: 900;
+    color: #0f172a;
+  }
+  .repair-print-report__subtitle {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .repair-print-report__meta {
+    min-width: 185px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 8px 10px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 11px;
+    line-height: 1.9;
+    text-align: right;
+  }
+  .repair-print-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    border: 1px solid #dbe4f0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .repair-print-table th,
+  .repair-print-table td {
+    border-bottom: 1px solid #e2e8f0;
+    border-left: 1px solid #e2e8f0;
+    padding: 9px 10px;
+    vertical-align: middle;
+    text-align: right;
+    font-size: 11px;
+    line-height: 1.65;
+    color: #0f172a;
+    word-break: break-word;
+  }
+  .repair-print-table th:last-child,
+  .repair-print-table td:last-child { border-left: 0; }
+  .repair-print-table tbody tr:last-child td { border-bottom: 0; }
+  .repair-print-table thead th {
+    background: #f1f5f9;
+    color: #334155;
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .repair-print-table tbody tr:nth-child(even) td { background: #f8fafc; }
+  .repair-print-table .is-id { width: 46px; text-align: center; }
+  .repair-print-table .is-date { width: 132px; }
+  .repair-print-table .is-cost { width: 92px; }
+  .repair-print-table .is-status { width: 104px; }
+  .repair-print-table .repair-print-status {
+    display: inline-block;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-weight: 800;
+    color: #334155;
+    background: #f8fafc;
+    white-space: nowrap;
+  }
+  @media print {
+    .no-print, .repair-print-report .no-print { display: none !important; }
+  }
+`;
 
 const Repairs: React.FC = () => {
   const navigate = useNavigate();
@@ -81,11 +187,13 @@ const Repairs: React.FC = () => {
   const exportRows = filteredRepairs.map((r) => ({
     id: r.id,
     customer: r.customerFullName ?? '—',
-    device: `${r.deviceModel}${r.deviceColor ? ` (${r.deviceColor})` : ''}`,
-    status: r.status,
+    device: `${r.deviceModel || '—'}${r.deviceColor ? ` (${r.deviceColor})` : ''}`,
+    serial: r.serialNumber || '—',
+    issue: r.problemDescription || '—',
+    status: r.status || '—',
     received: formatIsoToShamsiDateTime(r.dateReceived),
-    est: r.estimatedCost ?? '',
-    final: r.finalCost ?? '',
+    est: r.estimatedCost != null ? Number(r.estimatedCost).toLocaleString('fa-IR') : '—',
+    final: r.finalCost != null ? Number(r.finalCost).toLocaleString('fa-IR') : '—',
   }));
 
   const doExportExcel = () => {
@@ -109,13 +217,17 @@ const Repairs: React.FC = () => {
     exportToPdfTable({
       filename: `${exportFilenameBase}.pdf`,
       title: 'لیست تعمیرات',
-      head: ['شناسه', 'مشتری', 'دستگاه', 'وضعیت', 'پذیرش'],
+      subtitle: `${filteredRepairs.length.toLocaleString('fa-IR')} پرونده تعمیر در خروجی فعلی`,
+      orientation: 'landscape',
+      head: ['شناسه', 'مشتری', 'دستگاه', 'شرح مشکل', 'وضعیت', 'تاریخ پذیرش', 'هزینه تخمینی'],
       body: exportRows.map((x) => [
         Number(x.id).toLocaleString('fa-IR'),
         x.customer,
         x.device,
+        x.issue,
         x.status,
         x.received,
+        x.est,
       ]),
     });
   };
@@ -293,7 +405,8 @@ const Repairs: React.FC = () => {
             onClick={() => navigate('/services')}
             variant="secondary"
             size="sm"
-            leftIcon={<i className="fa-solid fa-bell-concierge" />}
+            className="repairs-hero-services-btn"
+            leftIcon={<i className="fa-solid fa-clipboard-list" />}
           >
             خدمات
           </Button>
@@ -319,19 +432,33 @@ const Repairs: React.FC = () => {
       </section>
 
 <div className="repairs-apple-panel overflow-hidden rounded-[26px] border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900" data-ui-repair-surface="workspace" data-ui-repair-table-shell="true">
-  <TableToolbar
-    title="مرکز تعمیرات"
-    search={searchTerm}
-    onSearchChange={setSearchTerm}
-    searchPlaceholder="جستجو (شناسه، مشتری، مدل)…"
-    actions={
-      <>
-        <div className="inline-flex rounded-xl border border-black/10 dark:border-white/10 overflow-hidden">
+  <div className="repairs-table-toolbar" dir="rtl" data-ui-repair-toolbar="true">
+    <div className="repairs-table-toolbar__title">
+      <span className="repairs-table-toolbar__titleIcon" aria-hidden="true"><i className="fa-solid fa-list-check" /></span>
+      <div className="repairs-table-toolbar__titleText">
+        <strong>مرکز تعمیرات</strong>
+      </div>
+    </div>
+
+    <div className="repairs-table-toolbar__controlRow">
+      <div className="repairs-table-toolbar__searchRow">
+        <AppSearchField
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="جستجو (شناسه، مشتری، مدل)…"
+          ariaLabel="جستجوی تعمیرات"
+          size="lg"
+          clearable={Boolean(searchTerm)}
+        />
+      </div>
+
+      <div className="repairs-table-toolbar__actionsRow">
+        <div className="repairs-view-toggle" aria-label="تغییر حالت نمایش">
           <Button
             onClick={() => setViewMode('list')}
             variant={viewMode === 'list' ? 'primary' : 'secondary'}
             size="sm"
-            className="rounded-none border-none shadow-none"
+            className="repairs-view-toggle__button"
             tooltip="نمایش لیستی"
             leftIcon={<i className="fa-solid fa-table-list" />}
           />
@@ -339,7 +466,7 @@ const Repairs: React.FC = () => {
             onClick={() => setViewMode('board')}
             variant={viewMode === 'board' ? 'primary' : 'secondary'}
             size="sm"
-            className="rounded-none border-none shadow-none"
+            className="repairs-view-toggle__button"
             tooltip="نمایش کانبان"
             leftIcon={<i className="fa-solid fa-table-cells-large" />}
           />
@@ -350,29 +477,22 @@ const Repairs: React.FC = () => {
           items={[
             { key: 'excel', label: 'Excel (XLSX)', icon: 'fa-file-excel', onClick: doExportExcel, disabled: filteredRepairs.length === 0 },
             { key: 'pdf', label: 'PDF (جدول)', icon: 'fa-file-pdf', onClick: doExportPdf, disabled: filteredRepairs.length === 0 },
-            { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#repairs-print-area', { title: 'لیست تعمیرات' }), disabled: filteredRepairs.length === 0 },
+            { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#repairs-print-area', { title: 'لیست تعمیرات', extraCss: REPAIRS_PRINT_REPORT_CSS }), disabled: filteredRepairs.length === 0 },
           ]}
         />
 
-        <Button
-          onClick={() => navigate('/repairs/new')}
-          variant="primary"
-          size="md"
-          leftIcon={<i className="fa-solid fa-plus" />}
-        >
-          پذیرش جدید
-        </Button>
-      </>
-    }
-    secondaryRow={
+
+      </div>
+    </div>
+
+    <div className="repairs-table-toolbar__chipsRow">
       <FilterChipsBar
         chips={filterChips}
         value={statusFilter}
         onChange={(k) => setStatusFilter(k)}
-        className="mt-1"
       />
-    }
-  />
+    </div>
+  </div>
 
         {/* Content */}
         {viewMode === 'list' ? (
@@ -433,7 +553,7 @@ const Repairs: React.FC = () => {
           ) : (
             <>
               {/* Desktop: Table */}
-              <div className="hidden md:block overflow-x-auto" id="repairs-print-area">
+              <div className="hidden md:block overflow-x-auto">
                 <table className="repairs-premium-table min-w-full text-sm" data-ui-repair-table="true">
                   <thead className="bg-gray-50 dark:bg-gray-700/60">
                     <tr className="text-gray-600 dark:text-gray-200">
@@ -506,6 +626,53 @@ const Repairs: React.FC = () => {
                     })}
                   </tbody>
                 </table>
+              </div>
+
+              <div
+                id="repairs-print-area"
+                aria-hidden="true"
+                className="repair-print-source"
+                style={{ position: 'fixed', insetInlineStart: '-20000px', top: 0, width: '1120px', height: 1, overflow: 'hidden', pointerEvents: 'none' }}
+              >
+                <section className="repair-print-report">
+                  <header className="repair-print-report__header">
+                    <div>
+                      <h1 className="repair-print-report__title">لیست تعمیرات</h1>
+                      <p className="repair-print-report__subtitle">گزارش خروجی پرونده‌های تعمیرات فروشگاه کوروش</p>
+                    </div>
+                    <div className="repair-print-report__meta">
+                      <div>تاریخ خروجی: {new Date().toLocaleString('fa-IR')}</div>
+                      <div>تعداد پرونده‌ها: {filteredRepairs.length.toLocaleString('fa-IR')}</div>
+                    </div>
+                  </header>
+
+                  <table className="repair-print-table">
+                    <thead>
+                      <tr>
+                        <th className="is-id">شناسه</th>
+                        <th>مشتری</th>
+                        <th>دستگاه</th>
+                        <th>شرح مشکل</th>
+                        <th className="is-status">وضعیت</th>
+                        <th className="is-date">تاریخ پذیرش</th>
+                        <th className="is-cost">هزینه تخمینی</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRepairs.map((r) => (
+                        <tr key={`print-${r.id}`}>
+                          <td className="is-id">{Number(r.id).toLocaleString('fa-IR')}</td>
+                          <td>{r.customerFullName || '—'}</td>
+                          <td>{`${r.deviceModel || '—'}${r.deviceColor ? ` (${r.deviceColor})` : ''}`}</td>
+                          <td>{r.problemDescription || '—'}</td>
+                          <td className="is-status"><span className="repair-print-status">{r.status || '—'}</span></td>
+                          <td className="is-date">{formatIsoToShamsiDateTime(r.dateReceived)}</td>
+                          <td className="is-cost">{r.estimatedCost != null ? Number(r.estimatedCost).toLocaleString('fa-IR') : '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </section>
               </div>
 
               {/* Mobile: Cards */}

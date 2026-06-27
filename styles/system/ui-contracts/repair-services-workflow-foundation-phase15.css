@@ -256,3 +256,1000 @@
     padding: 0 !important;
   }
 }
+
+/* Phase 51.26 — Canonical repair intake redesign */
+.repair-intake-page {
+  padding-block: 14px 28px !important;
+}
+
+.repair-intake-shell[data-ui-repair-form="intake"] {
+  width: min(100%, 1180px) !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(203, 213, 225, 0.74) !important;
+  border-radius: 26px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 28px 86px -64px rgba(15, 23, 42, 0.38) !important;
+  overflow: hidden !important;
+}
+
+.dark .repair-intake-shell[data-ui-repair-form="intake"] {
+  background: rgba(2, 6, 23, 0.96) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+}
+
+.repair-intake-hero {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  gap: 16px !important;
+  align-items: center !important;
+  padding: 22px 24px 18px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.74)) !important;
+}
+
+.repair-intake-backButton {
+  justify-self: start !important;
+}
+
+.repair-intake-titleBlock {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+.repair-intake-titleIcon,
+.repair-intake-section__icon,
+.repair-intake-summaryCard header > span,
+.repair-intake-guideCard header > span,
+.repair-intake-trustCard > span {
+  display: grid !important;
+  place-items: center !important;
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(147, 197, 253, 0.72) !important;
+  background: rgba(239, 246, 255, 0.92) !important;
+  color: rgb(37, 99, 235) !important;
+}
+
+.repair-intake-titleBlock h2 {
+  margin: 0 !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 19px !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.repair-intake-titleBlock p {
+  margin: 2px 0 0 !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1.9 !important;
+}
+
+.repair-intake-contentGrid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important;
+  gap: 18px !important;
+  align-items: start !important;
+  padding: 18px 20px 0 !important;
+}
+
+.repair-intake-main {
+  display: grid !important;
+  gap: 14px !important;
+  min-width: 0 !important;
+}
+
+.repair-intake-side {
+  display: grid !important;
+  gap: 14px !important;
+  min-width: 0 !important;
+  position: sticky !important;
+  top: 88px !important;
+}
+
+.repair-intake-stepper {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 22px !important;
+  background: rgba(248, 250, 252, 0.72) !important;
+}
+
+.repair-intake-step {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 36px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-height: 62px !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(203, 213, 225, 0.78) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: rgb(51, 65, 85) !important;
+  text-align: right !important;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease !important;
+}
+
+.repair-intake-step:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(96, 165, 250, 0.55) !important;
+}
+
+.repair-intake-step__number {
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  background: rgba(226, 232, 240, 0.92) !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+
+.repair-intake-step__copy {
+  min-width: 0 !important;
+}
+
+.repair-intake-step__copy strong,
+.repair-intake-step__copy small {
+  display: block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.repair-intake-step__copy strong {
+  color: rgb(15, 23, 42) !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+}
+
+.repair-intake-step__copy small {
+  margin-top: 2px !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10.5px !important;
+  font-weight: 750 !important;
+}
+
+.repair-intake-step--active {
+  border-color: rgba(37, 99, 235, 0.38) !important;
+  background: rgba(239, 246, 255, 0.94) !important;
+  box-shadow: inset 0 -2px 0 rgba(37, 99, 235, 0.58), 0 22px 42px -36px rgba(37, 99, 235, 0.45) !important;
+}
+
+.repair-intake-step--active .repair-intake-step__number {
+  background: rgb(29, 78, 216) !important;
+  color: white !important;
+}
+
+.repair-intake-step--done .repair-intake-step__number {
+  background: rgba(209, 250, 229, 0.96) !important;
+  color: rgb(4, 120, 87) !important;
+}
+
+.repair-intake-section,
+.repair-intake-summaryCard,
+.repair-intake-guideCard,
+.repair-intake-trustCard {
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.90) !important;
+  box-shadow: 0 22px 56px -48px rgba(15, 23, 42, 0.32) !important;
+  overflow: hidden !important;
+}
+
+.repair-intake-section__header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 14px 16px 10px !important;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.98) !important;
+}
+
+.repair-intake-section__icon {
+  width: 34px !important;
+  height: 34px !important;
+  flex-basis: 34px !important;
+  border-radius: 13px !important;
+}
+
+.repair-intake-section__header h3,
+.repair-intake-summaryCard h3,
+.repair-intake-guideCard h3,
+.repair-intake-trustCard h3 {
+  margin: 0 !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.repair-intake-section__header p {
+  margin: 1px 0 0 !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1.8 !important;
+}
+
+.repair-intake-section__body {
+  padding: 14px 16px 16px !important;
+}
+
+.repair-intake-grid {
+  display: grid !important;
+  gap: 14px !important;
+}
+
+.repair-intake-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.repair-intake-grid--issue {
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.2fr) minmax(0, 1fr) !important;
+}
+
+.repair-intake-fieldGroup {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+}
+
+.repair-intake-label {
+  display: block !important;
+  color: rgb(51, 65, 85) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 1.6 !important;
+}
+
+.repair-intake-required {
+  color: rgb(225, 29, 72) !important;
+}
+
+.repair-intake-field {
+  display: grid !important;
+  grid-template-columns: 42px 1px minmax(0, 1fr) !important;
+  align-items: stretch !important;
+  min-height: 46px !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 14px 32px -28px rgba(15, 23, 42, 0.24) !important;
+  overflow: hidden !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+
+.repair-intake-field:focus-within {
+  border-color: rgba(37, 99, 235, 0.45) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08), 0 18px 38px -30px rgba(37, 99, 235, 0.34) !important;
+}
+
+.repair-intake-field--error {
+  border-color: rgba(244, 63, 94, 0.68) !important;
+}
+
+.repair-intake-field__icon {
+  display: grid !important;
+  place-items: center !important;
+  color: rgb(37, 99, 235) !important;
+  background: rgba(239, 246, 255, 0.76) !important;
+}
+
+.repair-intake-field__divider {
+  align-self: center !important;
+  height: 24px !important;
+  width: 1px !important;
+  background: rgba(203, 213, 225, 0.92) !important;
+}
+
+.repair-intake-field__control {
+  display: grid !important;
+  min-width: 0 !important;
+  align-items: center !important;
+}
+
+.repair-intake-field :where(input, select, textarea),
+.repair-intake-field .price-input__field {
+  width: 100% !important;
+  min-height: 44px !important;
+  height: 100% !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 12px !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 12.5px !important;
+  font-weight: 850 !important;
+  line-height: 1.8 !important;
+  border-radius: 0 !important;
+}
+
+.repair-intake-field :where(input, select, textarea)::placeholder,
+.repair-intake-field .price-input__field::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 700 !important;
+}
+
+.repair-intake-field :where(input, select, textarea):focus,
+.repair-intake-field .price-input__field:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.repair-intake-field textarea {
+  min-height: 92px !important;
+  padding-block: 10px !important;
+  resize: vertical !important;
+}
+
+.repair-intake-fieldGroup--textarea .repair-intake-field {
+  min-height: 112px !important;
+  align-items: stretch !important;
+}
+
+.repair-intake-priceInput.price-input__field,
+.repair-intake-field .price-input__field {
+  direction: ltr !important;
+  text-align: left !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.repair-intake-field .price-input {
+  width: 100% !important;
+}
+
+.repair-intake-field .price-input > div:first-child,
+.repair-intake-field .price-input > div:last-child {
+  display: none !important;
+}
+
+.repair-intake-error {
+  margin: 0 !important;
+  color: rgb(225, 29, 72) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.repair-intake-accessories {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.repair-intake-accessory {
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) 18px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 42px !important;
+  padding: 7px 10px !important;
+  border: 1px solid rgba(203, 213, 225, 0.84) !important;
+  border-radius: 15px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: rgb(51, 65, 85) !important;
+  text-align: right !important;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease !important;
+}
+
+.repair-intake-accessory:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(96, 165, 250, 0.48) !important;
+}
+
+.repair-intake-accessory > span {
+  display: grid !important;
+  place-items: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 11px !important;
+  color: rgb(37, 99, 235) !important;
+  background: rgba(239, 246, 255, 0.88) !important;
+}
+
+.repair-intake-accessory strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+}
+
+.repair-intake-accessory--active {
+  border-color: rgba(16, 185, 129, 0.42) !important;
+  background: rgba(236, 253, 245, 0.88) !important;
+  color: rgb(5, 95, 70) !important;
+}
+
+.repair-intake-side :where(.repair-intake-summaryCard, .repair-intake-guideCard, .repair-intake-trustCard) {
+  padding: 14px !important;
+}
+
+.repair-intake-summaryCard header,
+.repair-intake-guideCard header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+.repair-intake-summaryCard header > span,
+.repair-intake-guideCard header > span,
+.repair-intake-trustCard > span {
+  width: 34px !important;
+  height: 34px !important;
+  flex-basis: 34px !important;
+  border-radius: 13px !important;
+}
+
+.repair-intake-statusChip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  background: rgba(209, 250, 229, 0.86) !important;
+  color: rgb(4, 120, 87) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.repair-intake-statusChip span {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: rgb(16, 185, 129) !important;
+}
+
+.repair-intake-summaryRows {
+  display: grid !important;
+  gap: 0 !important;
+  margin-top: 10px !important;
+}
+
+.repair-intake-summaryRows > div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-height: 38px !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.86) !important;
+}
+
+.repair-intake-summaryRows span {
+  color: rgb(100, 116, 139) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.repair-intake-summaryRows strong {
+  min-width: 0 !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 950 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.repair-intake-guideCard ul {
+  display: grid !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.repair-intake-guideCard li {
+  position: relative !important;
+  padding-right: 18px !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  line-height: 1.9 !important;
+}
+
+.repair-intake-guideCard li::before {
+  content: "" !important;
+  position: absolute !important;
+  right: 2px !important;
+  top: 0.78em !important;
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: rgb(37, 99, 235) !important;
+}
+
+.repair-intake-trustCard {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+}
+
+.repair-intake-trustCard p {
+  margin: 3px 0 0 !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 11px !important;
+  font-weight: 760 !important;
+  line-height: 1.9 !important;
+}
+
+.repair-intake-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin-top: 18px !important;
+  padding: 16px 20px 18px !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+}
+
+.repair-intake-actions__main {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+.repair-intake-submitButton {
+  min-width: 220px !important;
+  background: rgb(15, 23, 42) !important;
+  color: white !important;
+}
+
+@media (max-width: 1180px) {
+  .repair-intake-contentGrid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .repair-intake-side {
+    position: static !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .repair-intake-trustCard {
+    grid-column: span 1 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .repair-intake-hero,
+  .repair-intake-contentGrid,
+  .repair-intake-actions {
+    padding-inline: 14px !important;
+  }
+  .repair-intake-grid--3,
+  .repair-intake-grid--issue,
+  .repair-intake-stepper,
+  .repair-intake-side {
+    grid-template-columns: 1fr !important;
+  }
+  .repair-intake-accessories {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .repair-intake-actions,
+  .repair-intake-actions__main {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+  .repair-intake-actions button,
+  .repair-intake-submitButton {
+    width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===== Phase 51.27 — Repair intake root field hardening ===== */
+.repair-intake-page .repair-intake-grid--customer {
+  grid-template-columns: minmax(0, 1.45fr) minmax(240px, 0.75fr) !important;
+  align-items: start !important;
+}
+
+.repair-intake-page .repair-intake-field,
+.repair-intake-page .repair-intake-field:focus,
+.repair-intake-page .repair-intake-field:focus-within,
+.repair-intake-page .repair-intake-field:active {
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  box-shadow: 0 14px 32px -28px rgba(15, 23, 42, 0.24) !important;
+  outline: 0 !important;
+  background: #fff !important;
+}
+
+.repair-intake-page .repair-intake-field--error,
+.repair-intake-page .repair-intake-field--error:focus-within {
+  border-color: rgba(244, 63, 94, 0.68) !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page .repair-intake-field :where(input, select, textarea),
+.repair-intake-page .repair-intake-field :where(input, select, textarea):focus,
+.repair-intake-page .repair-intake-field :where(input, select, textarea):focus-visible,
+.repair-intake-page .repair-intake-field :where(input, select, textarea):active,
+.repair-intake-page .repair-intake-field .price-input__field,
+.repair-intake-page .repair-intake-field .price-input__field:focus,
+.repair-intake-page .repair-intake-field .price-input__field:focus-visible {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  ring-width: 0 !important;
+}
+
+.repair-intake-page .repair-intake-field :where(input, textarea, select):-webkit-autofill,
+.repair-intake-page .repair-intake-field :where(input, textarea, select):-webkit-autofill:hover,
+.repair-intake-page .repair-intake-field :where(input, textarea, select):-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+  transition: background-color 999999s ease-out 0s !important;
+}
+
+.repair-intake-page .repair-intake-field .price-input,
+.repair-intake-page .repair-intake-field .app-form-field,
+.repair-intake-page .repair-intake-field [data-ui-field="true"],
+.repair-intake-page .repair-intake-field [data-ui-control="true"] {
+  width: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.repair-intake-page .repair-intake-field .price-input > div:first-child,
+.repair-intake-page .repair-intake-field .price-input > div:last-child {
+  display: none !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker {
+  position: relative !important;
+  min-width: 0 !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__menu {
+  position: absolute !important;
+  z-index: var(--kourosh-z-popover, 80) !important;
+  top: calc(100% + 8px) !important;
+  right: -43px !important;
+  left: -1px !important;
+  display: grid !important;
+  gap: 6px !important;
+  max-height: 270px !important;
+  padding: 8px !important;
+  overflow-y: auto !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 24px 64px -32px rgba(15, 23, 42, 0.34) !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__option {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-height: 48px !important;
+  padding: 7px 9px !important;
+  border: 1px solid transparent !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  text-align: right !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__option:hover,
+.repair-intake-page .repair-intake-customerPicker__option[aria-selected="true"] {
+  border-color: rgba(147, 197, 253, 0.65) !important;
+  background: rgba(239, 246, 255, 0.78) !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__avatar {
+  display: grid !important;
+  width: 34px !important;
+  height: 34px !important;
+  place-items: center !important;
+  border-radius: 12px !important;
+  background: rgba(219, 234, 254, 0.9) !important;
+  color: rgb(37, 99, 235) !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__copy {
+  display: grid !important;
+  min-width: 0 !important;
+  gap: 2px !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__copy strong,
+.repair-intake-page .repair-intake-customerPicker__copy small {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__copy strong {
+  color: rgb(15, 23, 42) !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__copy small,
+.repair-intake-page .repair-intake-customerPicker__empty {
+  color: rgb(100, 116, 139) !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+}
+
+.repair-intake-page .repair-intake-customerPicker__empty {
+  padding: 12px !important;
+  text-align: center !important;
+}
+
+.repair-intake-page .repair-intake-accessories {
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  gap: 9px !important;
+}
+
+.repair-intake-page .repair-intake-accessory {
+  min-width: 0 !important;
+}
+
+.repair-intake-page .repair-intake-accessory strong {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.repair-intake-page .repair-intake-grid--issue {
+  grid-template-columns: minmax(260px, 0.52fr) minmax(0, 1fr) minmax(0, 1fr) !important;
+  align-items: start !important;
+}
+
+.repair-intake-page .repair-intake-fieldGroup--cost {
+  max-width: 360px !important;
+}
+
+.repair-intake-page .repair-intake-fieldGroup--textarea .repair-intake-field {
+  min-height: 172px !important;
+}
+
+.repair-intake-page .repair-intake-fieldGroup--textarea textarea {
+  min-height: 168px !important;
+  line-height: 2 !important;
+}
+
+.repair-intake-page .repair-intake-actions .ux-btn__icon,
+.repair-intake-page .repair-intake-actions .ux-btn__spinner,
+.repair-intake-page .repair-intake-actions .button-loading-stage-icon,
+.repair-intake-page .repair-intake-actions .ux-btn__content > span:first-child:not(.ux-btn__label) {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page .repair-intake-actions .ux-btn__icon i,
+.repair-intake-page .repair-intake-actions .ux-btn__spinner svg,
+.repair-intake-page .repair-intake-actions .button-loading-stage-icon svg {
+  display: block !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1180px) {
+  .repair-intake-page .repair-intake-grid--customer,
+  .repair-intake-page .repair-intake-grid--issue {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .repair-intake-page .repair-intake-fieldGroup--customerPicker,
+  .repair-intake-page .repair-intake-fieldGroup--cost {
+    grid-column: 1 / -1 !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .repair-intake-page .repair-intake-grid--customer,
+  .repair-intake-page .repair-intake-grid--issue {
+    grid-template-columns: 1fr !important;
+  }
+  .repair-intake-page .repair-intake-accessories {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ===== Phase 51.28 — Repair intake combobox, field reset, accessory other note ===== */
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field:focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field:focus-within,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field:active {
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field--error,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field--error:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field--error:focus-within {
+  border-color: rgba(244, 63, 94, 0.72) !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field *,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field *:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field *:focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field *:focus-visible,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field *:active {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field__control,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field__control > :not(.repair-intake-customerPicker__menu),
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input > div,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input > span,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input label {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, select, textarea),
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input__field,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, select, textarea):hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, select, textarea):focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, select, textarea):focus-visible,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, select, textarea):active,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input__field:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input__field:focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input__field:focus-visible,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field .price-input__field:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  filter: none !important;
+  border-radius: 0 !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, textarea, select):-webkit-autofill,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, textarea, select):-webkit-autofill:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, textarea, select):-webkit-autofill:focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input, textarea, select):-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+  transition: background-color 999999s ease-out 0s !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field :where(input[readonly], input:disabled, textarea:disabled, select:disabled) {
+  color: rgb(15, 23, 42) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-field__icon {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-fieldGroup--customerPicker {
+  grid-column: span 1 !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker input {
+  cursor: text !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__menu,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__menu:hover,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__menu:focus-within {
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 24px 64px -32px rgba(15, 23, 42, 0.34) !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__option,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__option:focus,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-customerPicker__option:focus-visible {
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-accessories {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-fieldGroup--otherAccessory {
+  margin-top: 12px !important;
+  max-width: none !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-grid--issue {
+  grid-template-columns: minmax(220px, 0.44fr) minmax(0, 1.18fr) minmax(0, 1.18fr) !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-fieldGroup--textarea .repair-intake-field {
+  min-height: 190px !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-fieldGroup--textarea textarea {
+  min-height: 186px !important;
+}
+
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-actions button :where(.ux-btn__icon, .button-loading-stage-icon, .ux-btn__spinner),
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-actions button :where(.ux-btn__icon, .button-loading-stage-icon, .ux-btn__spinner) > *,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-actions button :where(.ux-btn__icon, .button-loading-stage-icon, .ux-btn__spinner)::before,
+.repair-intake-page[data-ui-repair-page="add"] .repair-intake-actions button :where(.ux-btn__icon, .button-loading-stage-icon, .ux-btn__spinner)::after {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1180px) {
+  .repair-intake-page[data-ui-repair-page="add"] .repair-intake-fieldGroup--customerPicker {
+    grid-column: 1 / -1 !important;
+  }
+  .repair-intake-page[data-ui-repair-page="add"] .repair-intake-grid--issue {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .repair-intake-page[data-ui-repair-page="add"] .repair-intake-grid--issue {
+    grid-template-columns: 1fr !important;
+  }
+  .repair-intake-page[data-ui-repair-page="add"] .repair-intake-accessories {
+    grid-template-columns: 1fr !important;
+  }
+}

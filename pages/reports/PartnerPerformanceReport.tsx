@@ -8,6 +8,7 @@ import ReportDatePresetChips from '../../components/reports/ReportDatePresetChip
 import { apiFetch } from '../../utils/apiFetch';
 import { formatIsoToShamsi } from '../../utils/dateUtils';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../../utils/currency';
+import { useConfirm } from '../../contexts/ConfirmContext';
 
 const money = (value: number) => formatCurrencyText(value || 0, readStoredCurrencyUnit());
 const qty = (value: number) => (Number(value) || 0).toLocaleString('fa-IR', { maximumFractionDigits: 2 });
@@ -124,6 +125,7 @@ const MetricCard = ({ title, value, hint }: { title: string; value: string; hint
 );
 
 const PartnerPerformanceReport: React.FC = () => {
+  const confirmAction = useConfirm();
   const [fromDate, setFromDate] = useState<Date>(moment().subtract(30, 'day').toDate());
   const [toDate, setToDate] = useState<Date>(new Date());
   const [tab, setTab] = useState<TabKey>(() => readInitialPartnerReportTab());
@@ -348,7 +350,20 @@ const PartnerPerformanceReport: React.FC = () => {
   };
 
   const cancelSettlement = async (id: number) => {
-    if (!window.confirm('این ثبت اطلاعات تسویه باطل شود؟')) return;
+    const tx = settlementTransactions.find((item) => Number(item?.id) === Number(id));
+    const approved = await confirmAction({
+      title: 'ابطال تسویه شریک',
+      description: 'این ثبت اطلاعات تسویه باطل شود؟ این عملیات روی گزارش تسویه شرکا اثر می‌گذارد.',
+      confirmText: 'ابطال تسویه',
+      cancelText: 'انصراف',
+      tone: 'danger',
+      summaryItems: [
+        { label: 'مبلغ', value: money(Number(tx?.amount) || 0) },
+        { label: 'پرداخت‌کننده', value: tx?.fromPartnerName || 'نامشخص' },
+        { label: 'دریافت‌کننده', value: tx?.destinationKind === 'partner' ? (tx?.toPartnerName || 'نامشخص') : 'صندوق / مغازه' },
+      ],
+    });
+    if (!approved) return;
     try {
       const response = await apiFetch(`/api/reports/partners/settlement-transactions/${id}`, { method: 'DELETE' });
       const json = await response.json();

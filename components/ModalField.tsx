@@ -32,15 +32,20 @@ const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, 
   const helpId = `${fieldId}-help`;
   const errorId = `${fieldId}-error`;
   const describedBy = error ? errorId : hint ? helpId : undefined;
-  const isElement = React.isValidElement(children);
-  const childProps = isElement ? ((children.props as ChildProps) || {}) : {};
+  const childItems = React.Children.toArray(children);
+  const primaryChild = childItems.find((child) => React.isValidElement(child));
+  const extraChildren = childItems.filter((child) => child !== primaryChild);
+  const isElement = React.isValidElement(primaryChild);
+  const childProps = isElement ? ((primaryChild.props as ChildProps) || {}) : {};
   const childId = isElement ? (childProps.id || childProps.name || fieldId) : fieldId;
   const fieldKey = isElement ? (childProps.name || childProps.id || childId) : childId;
-  let renderedChild = children;
+  let renderedChild: React.ReactNode = isElement ? primaryChild : children;
 
   if (isElement) {
-    const existingClass = childProps.className || '';
-    const tag = typeof children.type === 'string' ? children.type : '';
+    // Canonical modal fields own their visual styling. Caller classes are intentionally
+    // not forwarded to the native control because legacy Tailwind border/ring/bg
+    // classes caused nested boxes and blue focus halos inside modals.
+    const tag = typeof primaryChild.type === 'string' ? primaryChild.type : '';
     const fieldKind = tag === 'textarea' ? 'textarea' : tag === 'select' ? 'select' : 'text';
     const hasLeadingIcon = Boolean(iconClass);
     const iconClassName = hasLeadingIcon ? 'premium-has-leading-icon' : 'premium-no-leading-icon';
@@ -50,9 +55,9 @@ const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, 
       ? `app-select modal-control-premium premium-select-control ${iconClassName}`
       : `app-input modal-control-premium ${iconClassName}`;
 
-    renderedChild = React.cloneElement(children as React.ReactElement<ChildProps>, {
+    renderedChild = React.cloneElement(primaryChild as React.ReactElement<ChildProps>, {
       id: childId,
-      className: mergeClasses(existingClass, baseClass, 'app-form-field__control', error && 'modal-control-error app-form-field__control--error'),
+      className: mergeClasses(baseClass, 'app-form-field__control', error && 'modal-control-error app-form-field__control--error'),
       'data-ui-control': childProps['data-ui-control'] || 'true',
       'data-ui-control-kind': childProps['data-ui-control-kind'] || fieldKind,
       placeholder: childProps.placeholder || childProps.preview || undefined,
@@ -78,8 +83,10 @@ const ModalField: React.FC<Props> = ({ label, iconClass, required, error, hint, 
             <i className={iconClass} />
           </span>
         ) : null}
+        {iconClass ? <span className="app-field__control-divider app-form-field__control-divider premium-input-divider" aria-hidden="true" /> : null}
         {renderedChild}
       </div>
+      {extraChildren.length ? <div className="app-form-field__extras modal-field-premium__extras">{extraChildren}</div> : null}
       {error || hint ? (
         <div className={mergeClasses('app-field__feedback app-field-feedback', error ? 'app-field-feedback--error' : 'app-field-feedback--hint')}>
           {error ? <p id={errorId} className="app-error"><i className="fa-solid fa-circle-exclamation" aria-hidden="true" /> <span>{error}</span></p> : null}

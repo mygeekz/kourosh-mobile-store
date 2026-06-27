@@ -496,6 +496,7 @@ export interface SalesTransactionEntry {
   pricePerItem: number;
   discount?: number;       // Discount amount applied
   totalPrice: number;      // Final price after discount
+  grandTotal?: number;     // Sales order grand total when row comes from sales_orders
   notes?: string | null;
   customerId?: number | null; 
   customerFullName?: string | null; 
@@ -860,7 +861,12 @@ export interface InvoiceData {
   invoiceMetadata: {
     invoiceNumber: string; 
     transactionDate: string; // Shamsi date YYYY/MM/DD (formatted for display from ISO)
-    dueDate?: string; 
+    dueDate?: string;
+    paymentMethod?: 'cash' | 'credit' | 'installment';
+    paymentMethodLabel?: string;
+    status?: string | null;
+    canceledAt?: string | null;
+    cancelReason?: string | null;
   };
   lineItems: InvoiceLineItem[]; 
   financialSummary: InvoiceFinancialSummary;

@@ -24,6 +24,7 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
   const [allItems, setAllItems] = useState<SellableItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState('');
   const [isDark, setIsDark] = useState<boolean>(
     typeof document !== 'undefined' ? document.documentElement.classList.contains('dark') : false
   );
@@ -72,7 +73,20 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
   }, [allItems]);
 
   const handleChange = (selectedOption: OnChangeValue<SelectOption, false>) => {
-    if (selectedOption) onAddItem(selectedOption.value);
+    if (selectedOption) {
+      onAddItem(selectedOption.value);
+      setInputValue('');
+    }
+  };
+
+  const handleInputChange = (nextValue: string, meta: { action: string }) => {
+    if (meta.action === 'input-change') {
+      setInputValue(nextValue);
+    }
+    if (meta.action === 'set-value' || meta.action === 'clear') {
+      setInputValue('');
+    }
+    return nextValue;
   };
   const selectComponents = {
     LoadingIndicator: () => null,
@@ -107,12 +121,12 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
     }),
     menuPortal: (base) => ({
       ...base,
-      zIndex: 2147483647,
+      zIndex: 'var(--kourosh-z-popover)',
       pointerEvents: 'auto',
     }),
     menu: (base) => ({
       ...base,
-      zIndex: 2147483647,
+      zIndex: 'var(--kourosh-z-popover)',
       backgroundColor: isDark ? '#020617' : '#ffffff',
       color: isDark ? '#e2e8f0' : '#0f172a',
       borderRadius: 18,
@@ -168,10 +182,12 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
     }),
     input: (base) => ({
       ...base,
-      width: 1,
-      minWidth: 1,
-      maxWidth: 1,
-      color: 'transparent',
+      width: inputValue ? Math.max(96, inputValue.length * 12) : '100%',
+      minWidth: inputValue ? Math.max(96, inputValue.length * 12) : 96,
+      maxWidth: '100%',
+      flex: '1 1 auto',
+      color: isDark ? '#e2e8f0' : '#0f172a',
+      WebkitTextFillColor: isDark ? '#e2e8f0' : '#0f172a',
       caretColor: isDark ? '#e2e8f0' : '#0f172a',
       textAlign: 'right',
       direction: 'rtl',
@@ -181,9 +197,12 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
       outline: 0,
       boxShadow: 'none',
       background: 'transparent',
-      minHeight: 0,
-      height: 1,
-      overflow: 'hidden',
+      minHeight: 22,
+      height: 'auto',
+      lineHeight: 1.6,
+      overflow: 'visible',
+      opacity: 1,
+      visibility: 'visible',
     }),
     indicatorsContainer: (base) => ({
       ...base,
@@ -288,6 +307,8 @@ const SellableItemSelect: React.FC<SellableItemSelectProps> = ({ onAddItem }) =>
         classNamePrefix="sellable-select"
         options={selectOptions}
         onChange={handleChange}
+        inputValue={inputValue}
+        onInputChange={handleInputChange}
         value={null}
         placeholder={loading ? "در حال دریافت اطلاعات…" : "جستجو و انتخاب کالا یا خدمات…"}
         isSearchable

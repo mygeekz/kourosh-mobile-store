@@ -19,7 +19,10 @@ export function validateSalesOrderPayload(payload: any): string[] {
     errors.push('درخواست نامعتبر است.');
     return errors;
   }
-  const { items, paymentMethod } = payload as SalesOrderPayload;
+  const { items, paymentMethod, customerId } = payload as SalesOrderPayload;
+  if (paymentMethod === 'credit' && (!Number(customerId) || Number(customerId) <= 0)) {
+    errors.push('برای فروش اعتباری انتخاب مشتری الزامی است.');
+  }
   if (!Array.isArray(items) || items.length === 0) {
     errors.push('سبد خرید نمی‌تواند خالی باشد.');
   }

@@ -148,12 +148,12 @@ html.dark .smart-tooltip-bubble::after {
 
 /* Stage 440 - Tooltip top layer + Apple-base header popovers */
 .smart-tooltip-layer {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   isolation: isolate !important;
 }
 
 .smart-tooltip-bubble {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
 }
 
 /* Apple-base: remove gradient/aura visual noise from header quick popovers. */
@@ -198,7 +198,7 @@ html.dark .smart-tooltip-bubble::after {
 
 /* Keep the tooltip visually above open menus and avoid it being visually muted by menu layers. */
 .smart-tooltip-layer--visible {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   filter: none !important;
 }
 
@@ -221,7 +221,7 @@ html.dark .header-smart-popover .header-quick-role-pill {
 /* Stage 441 - Body portal tooltip top-layer enforcement */
 .smart-tooltip-layer[data-tooltip-layer-root="body-portal"] {
   position: fixed !important;
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   isolation: isolate !important;
   contain: layout style paint !important;
   pointer-events: none !important;
@@ -229,7 +229,7 @@ html.dark .header-smart-popover .header-quick-role-pill {
 
 .smart-tooltip-layer[data-tooltip-layer-root="body-portal"] .smart-tooltip-bubble {
   position: relative !important;
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   isolation: isolate !important;
   transform: translateZ(0) !important;
 }

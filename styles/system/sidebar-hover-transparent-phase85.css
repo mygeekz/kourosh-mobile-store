@@ -1,0 +1,84 @@
+/* Phase 51.85 — Sidebar hover background cleanup
+   Removes accidental white/gray hover slabs from sidebar menu rows.
+   Active/current route styling remains intact. */
+
+[data-ui-navigation="sidebar"] .ux-sidebar-list > li,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li,
+.app-sidebar .ux-sidebar-list > li,
+.app-sidebar .ux-sidebar-list li {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > button:hover,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > button:focus,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > button:focus-visible,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > a:hover,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > a:focus,
+[data-ui-navigation="sidebar"] .ux-sidebar-list li > a:focus-visible,
+.app-sidebar .ux-sidebar-list li > button:hover,
+.app-sidebar .ux-sidebar-list li > button:focus,
+.app-sidebar .ux-sidebar-list li > button:focus-visible,
+.app-sidebar .ux-sidebar-list li > a:hover,
+.app-sidebar .ux-sidebar-list li > a:focus,
+.app-sidebar .ux-sidebar-list li > a:focus-visible {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]:hover,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]:focus,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]:focus-visible,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-open="true"],
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-open="true"]:hover,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]:hover,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]:focus,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]:focus-visible,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"]:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]::before,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]::after,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]::before,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="false"]:hover .icon-bubble,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-open="true"]:hover .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="false"]:hover .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-open="true"]:hover .icon-bubble {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Keep the current page distinct, but prevent hover from adding a separate white slab. */
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-active="true"]:hover,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-active="true"]:hover {
+  background-image: none !important;
+}

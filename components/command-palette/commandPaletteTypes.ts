@@ -40,4 +40,4 @@ export type SearchInsightChip = {
   count?: number;
 };
 
-export type CommandPaletteInputRef = RefObject<HTMLInputElement | null>;
+export type CommandPaletteInputRef = RefObject<HTMLInputElement>;

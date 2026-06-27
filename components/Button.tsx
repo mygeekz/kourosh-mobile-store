@@ -207,19 +207,22 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
 
   React.useEffect(() => {
     let timeoutId: number | undefined;
+    const shouldShowSuccessPulse = Boolean(successPulseText || successPulseHint);
 
     if (loading) {
       setShowSuccessPulse(false);
-    } else if (prevLoadingRef.current) {
+    } else if (prevLoadingRef.current && shouldShowSuccessPulse) {
       setShowSuccessPulse(true);
       timeoutId = window.setTimeout(() => setShowSuccessPulse(false), successPulseDuration);
+    } else if (!shouldShowSuccessPulse) {
+      setShowSuccessPulse(false);
     }
 
     prevLoadingRef.current = loading;
     return () => {
       if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [loading, successPulseDuration]);
+  }, [loading, successPulseDuration, successPulseHint, successPulseText]);
 
 
   return (

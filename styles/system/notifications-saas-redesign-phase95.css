@@ -1,0 +1,3449 @@
+/* Phase 51.95 — SaaS notification center redesign. */
+
+.notifications-saas-page-shell .page-shell__body,
+.notifications-saas-page-shell [data-ui-page-body] {
+  overflow: visible !important;
+}
+
+.notifications-saas-page {
+  display: grid;
+  gap: 14px;
+  direction: rtl;
+  text-align: right;
+}
+
+.notifications-saas-page *,
+.notifications-saas-page *::before,
+.notifications-saas-page *::after {
+  box-sizing: border-box;
+}
+
+.notifications-saas-hero,
+.notifications-saas-kpi,
+.notifications-saas-toolbar,
+.notifications-saas-categories,
+.notifications-saas-main,
+.notifications-saas-detail,
+.notifications-saas-outbox,
+.notifications-saas-sms-modal {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 18px 45px -38px rgba(15, 23, 42, 0.32) !important;
+}
+
+.dark .notifications-saas-hero,
+.dark .notifications-saas-kpi,
+.dark .notifications-saas-toolbar,
+.dark .notifications-saas-categories,
+.dark .notifications-saas-main,
+.dark .notifications-saas-detail,
+.dark .notifications-saas-outbox,
+.dark .notifications-saas-sms-modal {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  box-shadow: none !important;
+}
+
+.notifications-saas-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 88px;
+  padding: 18px 20px;
+  border-radius: 28px;
+}
+
+.notifications-saas-hero__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.notifications-saas-hero__title > span,
+.notifications-saas-detail__icon,
+.notifications-saas-card__icon,
+.notifications-saas-kpi > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  background: #f8fafc;
+  color: #0f766e;
+}
+
+.dark .notifications-saas-hero__title > span,
+.dark .notifications-saas-detail__icon,
+.dark .notifications-saas-card__icon,
+.dark .notifications-saas-kpi > span {
+  border-color: rgba(71, 85, 105, 0.9);
+  background: rgba(30, 41, 59, 0.82);
+  color: #5eead4;
+}
+
+.notifications-saas-hero__title > span {
+  width: 46px;
+  height: 46px;
+  border-radius: 18px;
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.notifications-saas-hero h1,
+.notifications-saas-main h2,
+.notifications-saas-categories h2,
+.notifications-saas-detail h2 {
+  margin: 0;
+  color: #0f172a;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.dark .notifications-saas-hero h1,
+.dark .notifications-saas-main h2,
+.dark .notifications-saas-categories h2,
+.dark .notifications-saas-detail h2 {
+  color: #f8fafc;
+}
+
+.notifications-saas-hero h1 { font-size: 20px; line-height: 1.7; }
+.notifications-saas-hero p,
+.notifications-saas-main p,
+.notifications-saas-detail__description,
+.notifications-saas-category-summary p,
+.notifications-saas-outbox p {
+  margin: 2px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.9;
+}
+
+.dark .notifications-saas-hero p,
+.dark .notifications-saas-main p,
+.dark .notifications-saas-detail__description,
+.dark .notifications-saas-category-summary p,
+.dark .notifications-saas-outbox p {
+  color: #cbd5e1;
+}
+
+.notifications-saas-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #f0fdf4;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.notifications-saas-live i { font-size: 8px; }
+
+.notifications-saas-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.notifications-saas-kpi {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "icon value"
+    "icon label"
+    "icon hint";
+  align-items: center;
+  gap: 1px 10px;
+  min-height: 96px;
+  padding: 14px;
+  border-radius: 24px;
+  text-align: right;
+  cursor: pointer;
+  transform: none !important;
+}
+
+.notifications-saas-kpi:hover,
+.notifications-saas-kpi:focus-visible {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  background: #ffffff !important;
+  outline: none;
+}
+
+.dark .notifications-saas-kpi:hover,
+.dark .notifications-saas-kpi:focus-visible { background: rgba(15, 23, 42, 0.98) !important; }
+
+.notifications-saas-kpi > span {
+  grid-area: icon;
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+}
+
+.notifications-saas-kpi strong {
+  grid-area: value;
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 950;
+  line-height: 1.3;
+}
+
+.dark .notifications-saas-kpi strong { color: #f8fafc; }
+.notifications-saas-kpi em {
+  grid-area: label;
+  color: #334155;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 950;
+}
+.dark .notifications-saas-kpi em { color: #e2e8f0; }
+.notifications-saas-kpi small {
+  grid-area: hint;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.notifications-saas-toolbar {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) 170px auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 24px;
+}
+
+.notifications-saas-search {
+  position: relative;
+  min-width: 0;
+}
+
+.notifications-saas-search i {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.notifications-saas-search input,
+.notifications-saas-toolbar select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  border-radius: 18px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 850;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.notifications-saas-search input {
+  padding: 0 44px 0 14px;
+}
+
+.notifications-saas-toolbar select {
+  padding: 0 14px;
+}
+
+.dark .notifications-saas-search input,
+.dark .notifications-saas-toolbar select {
+  border-color: rgba(71, 85, 105, 0.95);
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.notifications-saas-search input:focus,
+.notifications-saas-toolbar select:focus {
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08) !important;
+}
+
+.notifications-saas-queues {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.notifications-saas-queues button,
+.notifications-saas-detail__actions button,
+.notifications-saas-outbox__row button,
+.notifications-saas-sms-modal button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  border-radius: 15px;
+  background: #ffffff;
+  color: #334155;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-queues button,
+.dark .notifications-saas-detail__actions button,
+.dark .notifications-saas-outbox__row button,
+.dark .notifications-saas-sms-modal button {
+  border-color: rgba(71, 85, 105, 0.95);
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.notifications-saas-queues button[data-active="true"] {
+  border-color: rgba(16, 185, 129, 0.36);
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.notifications-saas-workbench {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr) 340px;
+  gap: 14px;
+  align-items: start;
+}
+
+.notifications-saas-categories,
+.notifications-saas-main,
+.notifications-saas-detail,
+.notifications-saas-outbox {
+  border-radius: 26px;
+}
+
+.notifications-saas-categories {
+  display: grid;
+  gap: 9px;
+  padding: 14px;
+  position: sticky;
+  top: 88px;
+}
+
+.notifications-saas-categories h2,
+.notifications-saas-main h2 { font-size: 15px; }
+
+.notifications-saas-categories > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 52px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background: transparent;
+  color: #334155;
+  padding: 0 10px;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-categories > button { color: #e2e8f0; }
+
+.notifications-saas-categories > button span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.notifications-saas-categories > button span i {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 13px;
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.notifications-saas-categories > button strong {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.notifications-saas-categories > button[data-active="true"] {
+  border-color: rgba(16, 185, 129, 0.18);
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.notifications-saas-categories > button[data-active="true"] span i,
+.notifications-saas-categories > button[data-active="true"] strong {
+  background: #ffffff;
+  color: #059669;
+}
+
+.notifications-saas-category-summary {
+  margin-top: 6px;
+  border-top: 1px solid rgba(226, 232, 240, 0.9);
+  padding-top: 12px;
+}
+.dark .notifications-saas-category-summary { border-color: rgba(51, 65, 85, 0.9); }
+.notifications-saas-category-summary span {
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 950;
+}
+.dark .notifications-saas-category-summary span { color: #f8fafc; }
+
+.notifications-saas-main {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.notifications-saas-main__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 72px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.92);
+}
+.dark .notifications-saas-main__head { border-color: rgba(51, 65, 85, 0.92); }
+.notifications-saas-main__head > span {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #475569;
+  padding: 0 12px;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.notifications-saas-list {
+  display: grid;
+  max-height: 690px;
+  overflow: auto;
+}
+
+.notifications-saas-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "side content icon";
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  min-height: 108px;
+  border: 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  background: transparent;
+  color: inherit;
+  padding: 14px 18px;
+  text-align: right;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-card { border-bottom-color: rgba(51, 65, 85, 0.85); }
+.notifications-saas-card:hover,
+.notifications-saas-card[data-active="true"] {
+  background: linear-gradient(90deg, rgba(240, 253, 244, 0.8), rgba(255, 255, 255, 0.98));
+}
+.dark .notifications-saas-card:hover,
+.dark .notifications-saas-card[data-active="true"] {
+  background: linear-gradient(90deg, rgba(6, 78, 59, 0.22), rgba(15, 23, 42, 0.98));
+}
+
+.notifications-saas-card__dot {
+  position: absolute;
+  top: 22px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #3b82f6;
+}
+.notifications-saas-card[data-severity="critical"] .notifications-saas-card__dot { background: #e11d48; }
+.notifications-saas-card[data-severity="warning"] .notifications-saas-card__dot { background: #f59e0b; }
+.notifications-saas-card[data-severity="low"] .notifications-saas-card__dot { background: #94a3b8; }
+
+.notifications-saas-card__icon {
+  grid-area: icon;
+  width: 50px;
+  height: 50px;
+  border-radius: 20px;
+  color: #2563eb;
+}
+.notifications-saas-card[data-severity="critical"] .notifications-saas-card__icon { color: #e11d48; background: #fff1f2; border-color: #ffe4e6; }
+.notifications-saas-card[data-severity="warning"] .notifications-saas-card__icon { color: #d97706; background: #fffbeb; border-color: #fde68a; }
+.notifications-saas-card__content {
+  grid-area: content;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.notifications-saas-card__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+.notifications-saas-card__topline strong {
+  min-width: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dark .notifications-saas-card__topline strong { color: #f8fafc; }
+.notifications-saas-card__topline small {
+  flex: 0 0 auto;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+.notifications-saas-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.9;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.dark .notifications-saas-card__desc { color: #cbd5e1; }
+.notifications-saas-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.notifications-saas-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 25px;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #475569;
+  padding: 0 8px;
+  font-size: 10px;
+  font-weight: 850;
+}
+.dark .notifications-saas-card__meta span { background: rgba(30, 41, 59, 0.8); color: #cbd5e1; }
+.notifications-saas-card__side {
+  grid-area: side;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+.notifications-saas-pill {
+  display: inline-flex;
+  min-height: 27px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 9px;
+  font-size: 10px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+.notifications-saas-pill[data-severity="critical"] { background: #fff1f2; color: #be123c; }
+.notifications-saas-pill[data-severity="warning"] { background: #fffbeb; color: #b45309; }
+.notifications-saas-pill[data-severity="normal"] { background: #eff6ff; color: #1d4ed8; }
+.notifications-saas-pill[data-severity="low"] { background: #f1f5f9; color: #475569; }
+
+.notifications-saas-side {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  position: sticky;
+  top: 88px;
+}
+
+.notifications-saas-detail {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+.notifications-saas-detail--empty {
+  min-height: 320px;
+  place-items: center;
+  color: #94a3b8;
+  text-align: center;
+}
+.notifications-saas-detail__header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.notifications-saas-detail__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+}
+.notifications-saas-detail__header span {
+  display: block;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+.notifications-saas-detail h2 {
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.notifications-saas-detail__facts {
+  display: grid;
+  gap: 8px;
+}
+.notifications-saas-detail__facts div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 42px;
+  border-radius: 16px;
+  background: #f8fafc;
+  padding: 0 12px;
+}
+.dark .notifications-saas-detail__facts div { background: rgba(30, 41, 59, 0.75); }
+.notifications-saas-detail__facts span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+.notifications-saas-detail__facts strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 950;
+  min-width: 0;
+}
+.dark .notifications-saas-detail__facts strong { color: #f8fafc; }
+
+.notifications-saas-detail__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.notifications-saas-detail__actions button,
+.notifications-saas-primary-action {
+  min-height: 44px !important;
+  border-radius: 16px !important;
+  font-size: 12px !important;
+  text-decoration: none !important;
+  transform: none !important;
+}
+.notifications-saas-primary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  grid-column: 1 / -1;
+  border: 1px solid rgba(16, 185, 129, 0.36);
+  background: #ecfdf5;
+  color: #047857;
+  font-weight: 950;
+}
+.notifications-saas-recommendation {
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 20px;
+  background: #f0fdf4;
+  padding: 12px;
+}
+.notifications-saas-recommendation span {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: #047857;
+  font-size: 12px;
+  font-weight: 950;
+}
+.notifications-saas-recommendation p {
+  margin: 6px 0 0;
+  color: #065f46;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.9;
+}
+
+.notifications-saas-outbox {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+.notifications-saas-outbox__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.notifications-saas-outbox__head strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 950;
+}
+.dark .notifications-saas-outbox__head strong { color: #f8fafc; }
+.notifications-saas-outbox__head p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.8;
+}
+.notifications-saas-outbox__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.notifications-saas-outbox__stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 0 12px;
+}
+.notifications-saas-outbox__stat span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+.notifications-saas-outbox__stat strong {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+}
+.notifications-saas-outbox__stat[data-status="failed"] {
+  background: #fff1f2;
+}
+.notifications-saas-outbox__stat[data-status="failed"] strong {
+  color: #be123c;
+}
+.notifications-saas-outbox__row {
+  display: grid;
+  gap: 8px;
+  border-radius: 16px;
+  background: #f8fafc;
+  padding: 10px 12px;
+}
+.dark .notifications-saas-outbox__row,
+.dark .notifications-saas-outbox__stat { background: rgba(30, 41, 59, 0.75); }
+.notifications-saas-outbox__row-head,
+.notifications-saas-outbox__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.notifications-saas-outbox__meta {
+  flex-wrap: wrap;
+}
+.notifications-saas-outbox__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 850;
+}
+.notifications-saas-outbox__row strong {
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dark .notifications-saas-outbox__row strong,
+.dark .notifications-saas-outbox__stat strong { color: #f8fafc; }
+.notifications-saas-outbox__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 0 8px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 10px;
+  font-weight: 900;
+}
+.notifications-saas-outbox__badge[data-status="pending"] { background: #fffbeb; color: #b45309; }
+.notifications-saas-outbox__badge[data-status="failed"] { background: #fff1f2; color: #be123c; }
+.notifications-saas-outbox__badge[data-status="sent"] { background: #ecfdf5; color: #047857; }
+.notifications-saas-outbox__row button {
+  min-height: 34px !important;
+}
+
+.notifications-saas-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(226, 232, 240, 0.92);
+  background: #ffffff;
+}
+.dark .notifications-saas-pagination {
+  border-top-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15, 23, 42, 0.96);
+}
+.notifications-saas-pagination__summary {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+}
+.notifications-saas-pagination__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.notifications-saas-pagination__actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  border-radius: 14px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+}
+.notifications-saas-pagination__actions button[data-active="true"] {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: #ecfdf5;
+  color: #047857;
+}
+.notifications-saas-pagination__actions button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.notifications-saas-state {
+  display: grid;
+  gap: 10px;
+  min-height: 320px;
+  place-items: center;
+  align-content: center;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 900;
+}
+.notifications-saas-state i { font-size: 26px; color: #10b981; }
+.notifications-saas-state--error { color: #be123c; }
+.notifications-saas-state--error i { color: #e11d48; }
+
+.notifications-saas-sms-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.42);
+  backdrop-filter: blur(10px);
+}
+.notifications-saas-sms-modal {
+  width: min(680px, 100%);
+  border-radius: 28px;
+  padding: 18px;
+}
+.notifications-saas-sms-modal__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.notifications-saas-sms-modal__head span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 850;
+}
+.notifications-saas-sms-modal__head strong {
+  display: block;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 950;
+}
+.dark .notifications-saas-sms-modal__head strong { color: #f8fafc; }
+.notifications-saas-sms-modal__head button {
+  width: 38px;
+  padding: 0;
+}
+.notifications-saas-sms-modal textarea {
+  width: 100%;
+  min-height: 190px;
+  margin-top: 14px;
+  border: 1px solid rgba(203, 213, 225, 0.95);
+  border-radius: 20px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.9;
+  resize: vertical;
+  outline: none;
+}
+.dark .notifications-saas-sms-modal textarea {
+  border-color: rgba(71, 85, 105, 0.95);
+  background: #0f172a;
+  color: #f8fafc;
+}
+.notifications-saas-sms-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.notifications-saas-page i {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: currentColor !important;
+}
+
+@media (max-width: 1280px) {
+  .notifications-saas-workbench { grid-template-columns: 220px minmax(0, 1fr); }
+  .notifications-saas-side { grid-column: 1 / -1; position: static; grid-template-columns: minmax(0, 1fr) minmax(280px, 360px); align-items: start; }
+}
+
+@media (max-width: 900px) {
+  .notifications-saas-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .notifications-saas-toolbar { grid-template-columns: 1fr; }
+  .notifications-saas-queues { justify-content: stretch; }
+  .notifications-saas-queues button { flex: 1 1 auto; }
+  .notifications-saas-workbench { grid-template-columns: 1fr; }
+  .notifications-saas-categories,
+  .notifications-saas-side { position: static; }
+  .notifications-saas-side { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .notifications-saas-hero { align-items: stretch; flex-direction: column; }
+  .notifications-saas-kpis { grid-template-columns: 1fr; }
+  .notifications-saas-card { grid-template-columns: auto minmax(0, 1fr); }
+  .notifications-saas-card__side { grid-column: 1 / -1; display: flex; justify-content: flex-end; }
+  .notifications-saas-detail__actions { grid-template-columns: 1fr; }
+}
+
+/* Phase 51.96 — visual parity with approved notifications mockup. */
+.notifications-saas-page-shell--mockup {
+  width: min(100%, 1500px) !important;
+  margin: 0 auto !important;
+  padding: 4px 12px 24px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.notifications-saas-frame {
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 24px 70px -52px rgba(15, 23, 42, 0.38);
+}
+.dark .notifications-saas-frame {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: none;
+}
+
+.notifications-saas-frame__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 104px;
+  padding: 22px 26px 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+  background: linear-gradient(180deg, rgba(255,255,255,0.99), rgba(248,250,252,0.72));
+}
+.dark .notifications-saas-frame__header {
+  border-bottom-color: rgba(51,65,85,0.95);
+  background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.82));
+}
+
+.notifications-saas-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.notifications-saas-brand__icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  background: #dcfce7;
+  color: #059669;
+  font-size: 18px;
+}
+.notifications-saas-brand h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 950;
+  line-height: 1.45;
+  letter-spacing: -0.025em;
+}
+.dark .notifications-saas-brand h1 { color: #f8fafc; }
+.notifications-saas-brand p {
+  margin: 3px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.9;
+}
+.dark .notifications-saas-brand p { color: #cbd5e1; }
+.notifications-saas-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.notifications-saas-header-tabs {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  min-width: min(100%, 410px);
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.98);
+  border-radius: 20px;
+  background: #f8fafc;
+}
+.dark .notifications-saas-header-tabs {
+  border-color: rgba(51, 65, 85, 0.95);
+  background: rgba(30, 41, 59, 0.72);
+}
+.notifications-saas-header-tabs button {
+  position: relative;
+  display: inline-flex;
+  min-height: 54px;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-left: 1px solid rgba(226,232,240,0.95);
+  background: transparent;
+  color: #64748b;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.notifications-saas-header-tabs button:last-child { border-left: 0; }
+.notifications-saas-header-tabs button[data-active="true"] {
+  background: #ffffff;
+  color: #047857;
+}
+.notifications-saas-header-tabs button[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  left: 18px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 999px 999px 0 0;
+  background: #22c55e;
+}
+.notifications-saas-header-tabs strong {
+  display: grid;
+  min-width: 26px;
+  height: 24px;
+  place-items: center;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #047857;
+  font-size: 11px;
+}
+
+.notifications-saas-commandbar,
+.notifications-saas-filterbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 26px;
+  border-bottom: 1px solid rgba(226,232,240,0.92);
+  background: rgba(255,255,255,0.96);
+}
+.dark .notifications-saas-commandbar,
+.dark .notifications-saas-filterbar {
+  border-bottom-color: rgba(51,65,85,0.92);
+  background: rgba(15,23,42,0.92);
+}
+.notifications-saas-commandbar__actions,
+.notifications-saas-commandbar__tools,
+.notifications-saas-mini-queues {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.notifications-saas-command {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border: 1px solid rgba(203,213,225,0.95);
+  border-radius: 16px;
+  background: #ffffff;
+  color: #334155;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.notifications-saas-command:hover,
+.notifications-saas-command:focus-visible {
+  border-color: rgba(16,185,129,0.35);
+  outline: none;
+}
+.notifications-saas-command:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+.notifications-saas-command--primary {
+  border-color: rgba(5,150,105,0.26);
+  background: linear-gradient(135deg, #059669, #16a34a);
+  color: #ffffff;
+}
+.notifications-saas-command--danger {
+  border-color: rgba(248,113,113,0.28);
+  background: #fff1f2;
+  color: #be123c;
+}
+.notifications-saas-command--soft,
+.notifications-saas-command--ghost {
+  background: #f8fafc;
+}
+
+.notifications-saas-filterbar {
+  display: grid;
+  grid-template-columns: minmax(360px, 1fr) minmax(150px, 190px) minmax(150px, 190px) auto;
+  align-items: center;
+}
+.notifications-saas-search--wide {
+  min-width: 0;
+}
+.notifications-saas-filterbar select,
+.notifications-saas-mini-queues button {
+  min-height: 48px;
+  border: 1px solid rgba(203,213,225,0.95);
+  border-radius: 17px;
+  background: #ffffff;
+  color: #334155;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 950;
+  outline: none;
+}
+.notifications-saas-mini-queues button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.notifications-saas-mini-queues button[data-active="true"] {
+  border-color: rgba(16,185,129,0.35);
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.notifications-saas-workbench--mockup {
+  display: grid !important;
+  grid-template-columns: 250px minmax(520px, 1fr) 330px !important;
+  gap: 16px !important;
+  align-items: start !important;
+  padding: 18px 20px 20px !important;
+  background: #ffffff;
+}
+.dark .notifications-saas-workbench--mockup { background: rgba(15,23,42,0.96); }
+.notifications-saas-categories--mockup,
+.notifications-saas-main--mockup,
+.notifications-saas-side--mockup .notifications-saas-detail,
+.notifications-saas-side--mockup .notifications-saas-outbox {
+  border: 1px solid rgba(226,232,240,0.95) !important;
+  background: rgba(255,255,255,0.98) !important;
+  box-shadow: 0 18px 44px -40px rgba(15,23,42,.32) !important;
+}
+.notifications-saas-categories--mockup {
+  position: static !important;
+  min-height: 560px;
+  border-radius: 24px !important;
+  padding: 14px !important;
+}
+.notifications-saas-categories--mockup h2 {
+  padding: 4px 4px 10px;
+  font-size: 15px;
+  font-weight: 950;
+}
+.notifications-saas-categories--mockup > button {
+  min-height: 56px !important;
+  padding: 0 10px !important;
+  border-radius: 18px !important;
+}
+.notifications-saas-categories--mockup > button strong {
+  order: 2;
+}
+.notifications-saas-categories--mockup > button span {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+}
+.notifications-saas-category-summary--mockup {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 14px 10px 2px;
+}
+.notifications-saas-category-summary--mockup span {
+  margin-bottom: 2px;
+}
+.notifications-saas-category-summary--mockup p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 !important;
+  min-height: 34px;
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 0 10px;
+}
+
+.notifications-saas-main--mockup {
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+.notifications-saas-main--mockup .notifications-saas-list {
+  max-height: none !important;
+  overflow: visible !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card {
+  grid-template-columns: 82px minmax(0, 1fr) 58px !important;
+  grid-template-areas: "side content icon" !important;
+  min-height: 98px !important;
+  padding: 14px 22px !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card__dot {
+  right: 18px !important;
+  left: auto !important;
+  top: 22px !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card__icon {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 999px !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card__topline strong {
+  font-size: 15px !important;
+  white-space: normal !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card__desc {
+  font-size: 12.5px !important;
+}
+.notifications-saas-side--mockup {
+  position: static !important;
+  display: grid !important;
+  gap: 14px !important;
+}
+.notifications-saas-side--mockup .notifications-saas-detail,
+.notifications-saas-side--mockup .notifications-saas-outbox {
+  border-radius: 24px !important;
+}
+.notifications-saas-side--mockup .notifications-saas-detail {
+  min-height: 410px;
+}
+
+@media (max-width: 1280px) {
+  .notifications-saas-workbench--mockup {
+    grid-template-columns: 220px minmax(0, 1fr) !important;
+  }
+  .notifications-saas-side--mockup {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .notifications-saas-frame__header,
+  .notifications-saas-commandbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .notifications-saas-header-tabs {
+    width: 100%;
+  }
+  .notifications-saas-filterbar {
+    grid-template-columns: 1fr !important;
+  }
+  .notifications-saas-workbench--mockup,
+  .notifications-saas-side--mockup {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Phase 51.99 — Notifications category summary + collection icon polish. */
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 22px !important;
+  background: #fff1f2 !important;
+  border-color: #ffe4e6 !important;
+  color: #e11d48 !important;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon i,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon i {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card[data-category="customers"] .notifications-saas-card__icon,
+.notifications-saas-main--mockup .notifications-saas-card[data-severity="critical"][data-category="customers"] .notifications-saas-card__icon {
+  display: grid !important;
+  place-items: center !important;
+  background: #fff1f2 !important;
+  border-color: #ffe4e6 !important;
+  color: #e11d48 !important;
+}
+.notifications-saas-main--mockup .notifications-saas-card[data-category="customers"] .notifications-saas-card__icon i {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+.notifications-saas-category-summary--mockup {
+  border-top: 1px solid rgba(226,232,240,.92) !important;
+}
+.notifications-saas-category-summary--mockup > span {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+}
+.notifications-saas-category-summary--mockup > span::before {
+  content: "\f0e7";
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 13px;
+}
+.notifications-saas-category-summary--mockup p {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 44px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  padding: 0 10px 0 8px !important;
+  box-shadow: 0 14px 30px -28px rgba(15,23,42,.28) !important;
+}
+.notifications-saas-category-summary--mockup p > span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  color: #334155 !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  text-align: right !important;
+}
+.notifications-saas-category-summary--mockup p > span i {
+  display: grid !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  place-items: center !important;
+  border-radius: 11px !important;
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+}
+.notifications-saas-category-summary--mockup p > strong {
+  display: grid !important;
+  min-width: 34px !important;
+  height: 30px !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  border-radius: 999px !important;
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+.notifications-saas-category-summary--mockup p:nth-of-type(2) > span i,
+.notifications-saas-category-summary--mockup p:nth-of-type(2) > strong {
+  background: #fff1f2 !important;
+  color: #be123c !important;
+}
+.notifications-saas-category-summary--mockup p:nth-of-type(3) > span i,
+.notifications-saas-category-summary--mockup p:nth-of-type(3) > strong {
+  background: #eef2ff !important;
+  color: #4338ca !important;
+}
+
+.dark .notifications-saas-category-summary--mockup p {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgba(30,41,59,.72) !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-category-summary--mockup p > span,
+.dark .notifications-saas-category-summary--mockup > span {
+  color: #f8fafc !important;
+}
+
+/* Phase 52.00 — Notifications collection card + top status tabs redesign. */
+.notifications-saas-header-tabs {
+  gap: 10px !important;
+  min-width: min(100%, 540px) !important;
+  padding: 8px !important;
+  border-radius: 24px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+  box-shadow: 0 20px 44px -36px rgba(15, 23, 42, 0.28) !important;
+}
+.notifications-saas-header-tabs button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  min-height: 68px !important;
+  padding: 10px 12px !important;
+  border: 1px solid transparent !important;
+  border-left: 0 !important;
+  border-radius: 18px !important;
+  text-align: right !important;
+}
+.notifications-saas-header-tabs button::after { display: none !important; }
+.notifications-saas-header-tabs__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 14px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 14px;
+}
+.notifications-saas-header-tabs__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.notifications-saas-header-tabs__label {
+  color: #0f172a;
+  font-size: 12.5px;
+  font-weight: 950;
+  line-height: 1.45;
+}
+.notifications-saas-header-tabs__copy small {
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+.notifications-saas-header-tabs button strong {
+  margin-inline-start: auto;
+  min-width: 34px !important;
+  height: 34px !important;
+  padding: 0 10px !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  background: #eef2ff !important;
+  color: #4338ca !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+.notifications-saas-header-tabs button[data-active="true"] {
+  border-color: rgba(16, 185, 129, 0.18) !important;
+  background: linear-gradient(135deg, #ecfdf5 0%, #ffffff 100%) !important;
+  color: #047857 !important;
+  box-shadow: 0 16px 34px -28px rgba(34, 197, 94, 0.45) !important;
+}
+.notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: #dcfce7;
+  color: #047857;
+}
+.notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__copy small {
+  color: #65a30d;
+}
+.notifications-saas-header-tabs button:nth-child(2) strong {
+  background: #fff1f2 !important;
+  color: #be123c !important;
+}
+.notifications-saas-header-tabs button:nth-child(3) strong {
+  background: #eef2ff !important;
+  color: #4338ca !important;
+}
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] {
+  border-color: rgba(244, 63, 94, 0.18) !important;
+  background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%) !important;
+  color: #be123c !important;
+  box-shadow: 0 16px 34px -28px rgba(244, 63, 94, 0.45) !important;
+}
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: #ffe4e6;
+  color: #e11d48;
+}
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] .notifications-saas-header-tabs__copy small {
+  color: #fb7185;
+}
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] {
+  border-color: rgba(99, 102, 241, 0.18) !important;
+  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%) !important;
+  color: #4338ca !important;
+  box-shadow: 0 16px 34px -28px rgba(99, 102, 241, 0.4) !important;
+}
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] .notifications-saas-header-tabs__copy small {
+  color: #818cf8;
+}
+
+.notifications-saas-detail__hero {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+.notifications-saas-detail__hero-copy {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.notifications-saas-detail__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 950;
+}
+.notifications-saas-detail__hero-copy h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.9;
+}
+.notifications-saas-detail__hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.notifications-saas-detail__hero-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  color: #475569;
+  font-size: 11px;
+  font-weight: 900;
+}
+.notifications-saas-detail__hero-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.notifications-saas-detail__hero-stats > div {
+  display: grid;
+  gap: 8px;
+  min-height: 82px;
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: #f8fafc;
+}
+.notifications-saas-detail__hero-stats > div > span {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 900;
+}
+.notifications-saas-detail__hero-stats > div > strong {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.8;
+}
+.notifications-saas-detail__hero-stats > div .notifications-saas-pill {
+  width: fit-content;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  border-color: #ffe4e6;
+  background: linear-gradient(135deg, #fff1f2 0%, #ffffff 52%, #f8fafc 100%);
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  display: grid !important;
+  width: 84px !important;
+  height: 84px !important;
+  place-items: center !important;
+  margin-inline-start: auto;
+  border-radius: 28px !important;
+  background: linear-gradient(180deg, #fb7185 0%, #e11d48 100%) !important;
+  border: 0 !important;
+  color: #ffffff !important;
+  box-shadow: 0 22px 36px -28px rgba(225, 29, 72, 0.56) !important;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon i,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon i {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  font-size: 34px !important;
+  line-height: 1 !important;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__eyebrow,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__eyebrow {
+  background: #ffffff;
+  color: #be123c;
+  border: 1px solid #ffe4e6;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div:first-child,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero-stats > div:first-child {
+  background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%);
+  border-color: #ffe4e6;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div:last-child,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero-stats > div:last-child {
+  background: linear-gradient(135deg, #fefce8 0%, #ffffff 100%);
+  border-color: #fde68a;
+}
+
+@media (max-width: 980px) {
+  .notifications-saas-header-tabs {
+    min-width: 100% !important;
+  }
+  .notifications-saas-header-tabs button {
+    min-height: 60px !important;
+  }
+  .notifications-saas-header-tabs__copy small {
+    display: none;
+  }
+  .notifications-saas-detail__hero,
+  .notifications-saas-detail__hero-stats {
+    grid-template-columns: 1fr;
+  }
+  .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+  .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+    margin-inline-start: 0;
+  }
+}
+
+/* Phase 51.101 — Clean notification header tabs + neutral collection detail.
+   Rule: no colored boxes in notification header/detail surfaces. */
+
+/* Remove the container/box under the three top status buttons. */
+.notifications-saas-header-tabs {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+.dark .notifications-saas-header-tabs {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Clean neutral buttons only; no colored boxes. */
+.notifications-saas-header-tabs button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  min-height: 48px !important;
+  min-width: 148px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  box-shadow: 0 12px 24px -22px rgba(15, 23, 42, 0.28) !important;
+  transform: none !important;
+}
+.dark .notifications-saas-header-tabs button {
+  border-color: rgba(51, 65, 85, 0.94) !important;
+  background: rgba(15, 23, 42, 0.94) !important;
+  color: #e2e8f0 !important;
+  box-shadow: none !important;
+}
+.notifications-saas-header-tabs button::after { display: none !important; }
+.notifications-saas-header-tabs button:hover,
+.notifications-saas-header-tabs button:focus-visible {
+  border-color: rgba(148, 163, 184, 0.95) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.08) !important;
+}
+.notifications-saas-header-tabs button[data-active="true"],
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"],
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] {
+  border-color: rgba(15, 23, 42, 0.22) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08), 0 14px 28px -24px rgba(15, 23, 42, 0.38) !important;
+}
+.dark .notifications-saas-header-tabs button[data-active="true"],
+.dark .notifications-saas-header-tabs button:nth-child(2)[data-active="true"],
+.dark .notifications-saas-header-tabs button:nth-child(3)[data-active="true"] {
+  border-color: rgba(226, 232, 240, 0.22) !important;
+  background: rgba(30, 41, 59, 0.94) !important;
+  color: #f8fafc !important;
+}
+.notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] .notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] .notifications-saas-header-tabs__icon {
+  display: grid !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  place-items: center !important;
+  border-radius: 12px !important;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: 13px !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-header-tabs__icon,
+.dark .notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: rgba(30, 41, 59, 0.95) !important;
+  color: #cbd5e1 !important;
+}
+.notifications-saas-header-tabs__copy {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  gap: 0 !important;
+}
+.notifications-saas-header-tabs__label {
+  color: inherit !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+.notifications-saas-header-tabs__copy small { display: none !important; }
+.notifications-saas-header-tabs button strong,
+.notifications-saas-header-tabs button:nth-child(2) strong,
+.notifications-saas-header-tabs button:nth-child(3) strong {
+  display: grid !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  margin-inline-start: auto !important;
+  padding: 0 8px !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+.dark .notifications-saas-header-tabs button strong {
+  background: rgba(51, 65, 85, 0.94) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Neutral premium collection card, no colored box backgrounds. */
+.notifications-saas-detail__hero,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  display: grid !important;
+  grid-template-columns: 72px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: center !important;
+  padding: 14px !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 36px -32px rgba(15, 23, 42, 0.24) !important;
+}
+.dark .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  display: grid !important;
+  width: 72px !important;
+  height: 72px !important;
+  min-width: 72px !important;
+  place-items: center !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  box-shadow: 0 18px 32px -28px rgba(15, 23, 42, 0.32) !important;
+}
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(30, 41, 59, 0.94) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon i,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon i {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  font-size: 30px !important;
+  line-height: 1 !important;
+}
+.notifications-saas-detail__eyebrow,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__eyebrow,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__eyebrow {
+  width: fit-content !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: #f8fafc !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail__hero-meta span {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+}
+.notifications-saas-detail__hero-stats > div,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div:first-child,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero-stats > div:first-child,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div:last-child,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero-stats > div:last-child {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: #ffffff !important;
+  box-shadow: 0 14px 30px -28px rgba(15, 23, 42, 0.2) !important;
+}
+.dark .notifications-saas-detail__hero-stats > div,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div {
+  border-color: rgba(51, 65, 85, 0.95) !important;
+  background: rgba(15, 23, 42, 0.96) !important;
+  box-shadow: none !important;
+}
+
+/* Keep summary elegant but neutral. */
+.notifications-saas-category-summary--mockup p {
+  background: #ffffff !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.24) !important;
+}
+.notifications-saas-category-summary--mockup p > span i,
+.notifications-saas-category-summary--mockup p:nth-of-type(2) > span i,
+.notifications-saas-category-summary--mockup p:nth-of-type(3) > span i {
+  background: #f8fafc !important;
+  color: #64748b !important;
+}
+.notifications-saas-category-summary--mockup p > strong,
+.notifications-saas-category-summary--mockup p:nth-of-type(2) > strong,
+.notifications-saas-category-summary--mockup p:nth-of-type(3) > strong {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+@media (max-width: 980px) {
+  .notifications-saas-header-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .notifications-saas-header-tabs button {
+    min-width: 0 !important;
+    padding: 0 8px !important;
+  }
+  .notifications-saas-header-tabs__icon {
+    display: none !important;
+  }
+  .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Phase 51.102 — remove header icon gray fill + full left detail sidebar redesign */
+
+/* 1) Header top 3 buttons: remove gray fill behind icons */
+.notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] .notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] .notifications-saas-header-tabs__icon {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+}
+
+.dark .notifications-saas-header-tabs__icon,
+.dark .notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon,
+.dark .notifications-saas-header-tabs button:nth-child(2)[data-active="true"] .notifications-saas-header-tabs__icon,
+.dark .notifications-saas-header-tabs button:nth-child(3)[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: transparent !important;
+  color: #cbd5e1 !important;
+}
+
+/* 2) Full redesign for left detail sidebar */
+.notifications-saas-side--mockup .notifications-saas-detail,
+.notifications-saas-workbench--mockup .notifications-saas-detail {
+  gap: 14px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 30px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%) !important;
+  box-shadow: 0 30px 60px -48px rgba(15, 23, 42, 0.34) !important;
+}
+
+.dark .notifications-saas-side--mockup .notifications-saas-detail,
+.dark .notifications-saas-workbench--mockup .notifications-saas-detail {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.97) 0%, rgba(15, 23, 42, 0.93) 100%) !important;
+  box-shadow: none !important;
+}
+
+.notifications-saas-detail__hero,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  grid-template-columns: 76px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 26px !important;
+  background: #ffffff !important;
+  box-shadow: 0 22px 42px -34px rgba(15, 23, 42, 0.24) !important;
+}
+
+.dark .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  box-shadow: none !important;
+}
+
+.notifications-saas-detail__icon,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  display: grid !important;
+  width: 76px !important;
+  height: 76px !important;
+  min-width: 76px !important;
+  place-items: center !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 24px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+  color: #334155 !important;
+  box-shadow: 0 20px 36px -32px rgba(15, 23, 42, 0.34) !important;
+}
+
+.notifications-saas-detail__icon i,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon i,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon i {
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+
+.dark .notifications-saas-detail__icon,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(30, 41, 59, 0.95) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.notifications-saas-detail__eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: fit-content !important;
+  min-height: 30px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 999px !important;
+  background: #f8fafc !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.dark .notifications-saas-detail__eyebrow {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(30, 41, 59, 0.95) !important;
+  color: #cbd5e1 !important;
+}
+
+.notifications-saas-detail__hero-copy h2 {
+  margin-top: 6px !important;
+  font-size: 28px !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+
+.dark .notifications-saas-detail__hero-copy h2 {
+  color: #f8fafc !important;
+}
+
+.notifications-saas-detail__hero-meta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+}
+
+.notifications-saas-detail__hero-meta span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+.notifications-saas-detail__hero-stats {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.notifications-saas-detail__hero-stats > div {
+  padding: 14px 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 30px -28px rgba(15, 23, 42, 0.2) !important;
+}
+
+.notifications-saas-detail__hero-stats > div > span {
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.notifications-saas-detail__hero-stats > div > strong {
+  margin-top: 8px !important;
+  color: #0f172a !important;
+  font-size: 22px !important;
+  font-weight: 950 !important;
+}
+
+.dark .notifications-saas-detail__hero-stats > div {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-detail__hero-stats > div > strong {
+  color: #f8fafc !important;
+}
+
+.notifications-saas-detail__description {
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  border: 1px dashed rgba(203, 213, 225, 0.96) !important;
+  border-radius: 22px !important;
+  background: #fbfdff !important;
+  color: #475569 !important;
+  font-size: 13px !important;
+  line-height: 2 !important;
+}
+
+.dark .notifications-saas-detail__description {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: #cbd5e1 !important;
+}
+
+.notifications-saas-detail__facts {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.notifications-saas-detail__facts div {
+  display: grid !important;
+  gap: 8px !important;
+  min-height: 92px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  box-shadow: 0 18px 34px -32px rgba(15, 23, 42, 0.18) !important;
+}
+
+.notifications-saas-detail__facts span {
+  color: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+.notifications-saas-detail__facts strong {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #0f172a !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1.8 !important;
+}
+
+.dark .notifications-saas-detail__facts div {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-detail__facts strong {
+  color: #f8fafc !important;
+}
+
+.notifications-saas-detail__actions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.notifications-saas-primary-action,
+.notifications-saas-detail__actions button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  min-height: 48px !important;
+  width: 100% !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  color: #334155 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 16px 30px -30px rgba(15, 23, 42, 0.25) !important;
+}
+
+.notifications-saas-primary-action {
+  grid-column: 1 / -1 !important;
+  background: #0f172a !important;
+  border-color: #0f172a !important;
+  color: #ffffff !important;
+  box-shadow: 0 22px 40px -30px rgba(15, 23, 42, 0.42) !important;
+}
+
+.notifications-saas-primary-action:hover,
+.notifications-saas-detail__actions button:hover {
+  transform: translateY(-1px) !important;
+}
+
+.notifications-saas-detail__actions button:last-child {
+  grid-column: 1 / -1 !important;
+}
+
+.dark .notifications-saas-primary-action,
+.dark .notifications-saas-detail__actions button {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  color: #e2e8f0 !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-primary-action {
+  background: rgba(248, 250, 252, 0.96) !important;
+  border-color: rgba(248, 250, 252, 0.96) !important;
+  color: #0f172a !important;
+}
+
+.notifications-saas-recommendation {
+  padding: 14px 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  border-radius: 24px !important;
+  background: linear-gradient(180deg, #f8fffb 0%, #fdfefe 100%) !important;
+  box-shadow: 0 18px 30px -30px rgba(15, 23, 42, 0.18) !important;
+}
+
+.notifications-saas-recommendation span {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #0f766e !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+}
+
+.notifications-saas-recommendation p {
+  margin-top: 10px !important;
+  color: #475569 !important;
+  font-size: 13px !important;
+  line-height: 2 !important;
+}
+
+.dark .notifications-saas-recommendation {
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  box-shadow: none !important;
+}
+
+.dark .notifications-saas-recommendation span {
+  color: #5eead4 !important;
+}
+
+.dark .notifications-saas-recommendation p {
+  color: #cbd5e1 !important;
+}
+
+@media (max-width: 980px) {
+  .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+    grid-template-columns: 1fr !important;
+  }
+
+  .notifications-saas-detail__hero-stats,
+  .notifications-saas-detail__facts,
+  .notifications-saas-detail__actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .notifications-saas-detail__facts div,
+  .notifications-saas-detail__actions button,
+  .notifications-saas-primary-action {
+    min-height: auto !important;
+  }
+}
+
+
+/* Phase 51.103 — Compact SaaS notification detail sidebar + remove header count chip background. */
+.notifications-saas-header-tabs button strong,
+.notifications-saas-header-tabs button:nth-child(2) strong,
+.notifications-saas-header-tabs button:nth-child(3) strong,
+.notifications-saas-header-tabs button[data-active="true"] strong,
+.notifications-saas-header-tabs button:nth-child(2)[data-active="true"] strong,
+.notifications-saas-header-tabs button:nth-child(3)[data-active="true"] strong {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin-inline-start: 4px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #334155 !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-header-tabs button strong,
+.dark .notifications-saas-header-tabs button[data-active="true"] strong {
+  background: transparent !important;
+  color: #e2e8f0 !important;
+}
+.notifications-saas-header-tabs__icon,
+.notifications-saas-header-tabs button[data-active="true"] .notifications-saas-header-tabs__icon {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.notifications-saas-side--mockup .notifications-saas-detail,
+.notifications-saas-workbench--mockup .notifications-saas-detail {
+  gap: 10px !important;
+  padding: 12px !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  box-shadow: 0 20px 46px -42px rgba(15, 23, 42, 0.28) !important;
+}
+.dark .notifications-saas-side--mockup .notifications-saas-detail,
+.dark .notifications-saas-workbench--mockup .notifications-saas-detail {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail__hero,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  grid-template-columns: 48px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 10px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: rgba(51, 65, 85, 0.96) !important;
+}
+.notifications-saas-detail__icon,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+.dark .notifications-saas-detail__icon,
+.dark .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon,
+.dark .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon {
+  background: rgba(30, 41, 59, 0.94) !important;
+  border-color: rgba(51, 65, 85, 0.96) !important;
+  color: #f8fafc !important;
+}
+.notifications-saas-detail__icon i,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__icon i,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__icon i {
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+.notifications-saas-detail__hero-copy { gap: 4px !important; }
+.notifications-saas-detail__eyebrow,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__eyebrow,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__eyebrow {
+  min-height: 22px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #64748b !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+}
+.notifications-saas-detail__hero-copy h2 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0 !important;
+}
+.dark .notifications-saas-detail__hero-copy h2 { color: #f8fafc !important; }
+.notifications-saas-detail__hero-meta { gap: 5px !important; margin-top: 4px !important; }
+.notifications-saas-detail__hero-meta span {
+  min-height: 24px !important;
+  padding: 0 8px !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  background: #ffffff !important;
+  color: #64748b !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  gap: 5px !important;
+}
+.dark .notifications-saas-detail__hero-meta span {
+  border-color: rgba(51, 65, 85, 0.9) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  color: #cbd5e1 !important;
+}
+.notifications-saas-detail__hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; }
+.notifications-saas-detail__hero-stats > div,
+.notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero-stats > div,
+.notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero-stats > div {
+  min-height: 58px !important;
+  padding: 9px 10px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.94) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail__hero-stats > div > span { color: #64748b !important; font-size: 10px !important; font-weight: 800 !important; }
+.notifications-saas-detail__hero-stats > div > strong {
+  margin-top: 4px !important;
+  color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+}
+.dark .notifications-saas-detail__hero-stats > div { border-color: rgba(51,65,85,.94) !important; background: rgba(15,23,42,.92) !important; }
+.dark .notifications-saas-detail__hero-stats > div > strong { color: #f8fafc !important; }
+.notifications-saas-detail__description {
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+  font-size: 11.5px !important;
+  font-weight: 750 !important;
+  line-height: 1.9 !important;
+}
+.dark .notifications-saas-detail__description { border-color: rgba(51,65,85,.92) !important; background: rgba(15,23,42,.92) !important; color:#cbd5e1 !important; }
+.notifications-saas-detail__facts { display: grid !important; grid-template-columns: 1fr !important; gap: 6px !important; }
+.notifications-saas-detail__facts div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 36px !important;
+  padding: 0 10px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+}
+.notifications-saas-detail__facts span { color:#64748b !important; font-size:10.5px !important; font-weight:800 !important; }
+.notifications-saas-detail__facts strong {
+  color:#0f172a !important;
+  font-size:11.5px !important;
+  font-weight:900 !important;
+  line-height:1.5 !important;
+  gap:5px !important;
+  text-align:left !important;
+  justify-content:flex-end !important;
+  min-width:0 !important;
+}
+.dark .notifications-saas-detail__facts div { border-color:rgba(51,65,85,.86) !important; background:rgba(15,23,42,.92) !important; }
+.dark .notifications-saas-detail__facts strong { color:#f8fafc !important; }
+.notifications-saas-detail__actions { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 7px !important; }
+.notifications-saas-primary-action,
+.notifications-saas-detail__actions button {
+  min-height: 38px !important;
+  padding: 0 9px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(203,213,225,.94) !important;
+  background:#ffffff !important;
+  color:#334155 !important;
+  font-size:10.8px !important;
+  font-weight:900 !important;
+  box-shadow:none !important;
+  gap:6px !important;
+  transform:none !important;
+}
+.notifications-saas-primary-action { grid-column: 1 / -1 !important; background:#0f172a !important; border-color:#0f172a !important; color:#fff !important; }
+.notifications-saas-primary-action:hover,
+.notifications-saas-detail__actions button:hover { transform:none !important; border-color:rgba(100,116,139,.65) !important; }
+.notifications-saas-detail__actions button:last-child { grid-column: auto !important; }
+.dark .notifications-saas-primary-action,
+.dark .notifications-saas-detail__actions button { border-color: rgba(51,65,85,.94) !important; background: rgba(15,23,42,.92) !important; color:#e2e8f0 !important; }
+.dark .notifications-saas-primary-action { border-color:rgba(248,250,252,.92) !important; background:rgba(248,250,252,.92) !important; color:#0f172a !important; }
+.notifications-saas-recommendation {
+  padding: 10px 12px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+  background:#ffffff !important;
+  box-shadow:none !important;
+}
+.notifications-saas-recommendation span { color:#334155 !important; font-size:11px !important; font-weight:950 !important; gap:6px !important; }
+.notifications-saas-recommendation p { margin-top:6px !important; color:#64748b !important; font-size:11px !important; line-height:1.85 !important; }
+.dark .notifications-saas-recommendation { border-color:rgba(51,65,85,.92) !important; background:rgba(15,23,42,.92) !important; }
+.dark .notifications-saas-recommendation span { color:#e2e8f0 !important; }
+.notifications-saas-detail .notifications-saas-pill { min-height:22px !important; padding:0 8px !important; font-size:10px !important; border-radius:999px !important; }
+@media (max-width: 980px) {
+  .notifications-saas-header-tabs button strong { display:none !important; }
+  .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-type="CollectionFollowup"] .notifications-saas-detail__hero,
+  .notifications-saas-detail[data-category="customers"] .notifications-saas-detail__hero { grid-template-columns:48px minmax(0,1fr) !important; }
+  .notifications-saas-detail__hero-stats { grid-template-columns:1fr !important; }
+}
+
+/* Phase 51.112 — Outbox approved table mockup date stability */
+.outbox-date-input,
+.outbox-date-input:hover,
+.outbox-date-input:focus,
+.outbox-date-input:focus-visible {
+  height: 44px !important;
+  min-height: 44px !important;
+  line-height: 44px !important;
+  transform: none !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  box-shadow: none;
+}
+.outbox-date-input:focus,
+.outbox-date-input:focus-visible {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08) !important;
+}
+
+
+/* Phase 51.115 — Outbox direct source polish: date control stability */
+.outbox-date-field .app-date-field,
+.outbox-date-field.app-date-field {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.outbox-date-field .app-date-field__control.outbox-date-control,
+.app-date-field__control.outbox-date-control,
+.outbox-date-control {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: border-color .18s ease, box-shadow .18s ease !important;
+}
+.outbox-date-field .app-date-field__control.outbox-date-control:hover,
+.outbox-date-field .app-date-field__control.outbox-date-control:focus-within,
+.app-date-field[data-open="true"] .outbox-date-control {
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  transform: none !important;
+  border-color: rgba(59, 130, 246, .38) !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, .07) !important;
+}
+.outbox-date-field .outbox-date-control .app-date-field__input,
+.outbox-date-control .app-date-field__input,
+.outbox-date-control input[data-app-date-input="true"] {
+  position: static !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  max-height: 46px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 46px !important;
+  text-align: center !important;
+  font-weight: 900 !important;
+  font-size: 13px !important;
+  color: #334155 !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.dark .outbox-date-control {
+  border-color: rgba(71, 85, 105, .95) !important;
+  background: #0f172a !important;
+}
+.dark .outbox-date-control .app-date-field__input,
+.dark .outbox-date-control input[data-app-date-input="true"] {
+  color: #e2e8f0 !important;
+}
+
+
+/* Phase 51.117 — Outbox full responsive tables */
+.outbox-table-shell {
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+.outbox-responsive-table {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+.outbox-responsive-table th,
+.outbox-responsive-table td {
+  min-width: 0 !important;
+}
+.outbox-responsive-table td > * {
+  min-width: 0;
+}
+
+/* On medium/tight table containers, keep it as a real table but more compact. */
+@container (max-width: 880px) {
+  .outbox-responsive-table thead {
+    display: none !important;
+  }
+  .outbox-responsive-table,
+  .outbox-responsive-table tbody,
+  .outbox-responsive-table tr,
+  .outbox-responsive-table td {
+    display: block !important;
+    width: 100% !important;
+  }
+  .outbox-responsive-table tbody {
+    display: grid !important;
+    gap: 10px !important;
+    padding: 12px !important;
+  }
+  .outbox-responsive-table tr {
+    border: 1px solid rgba(226, 232, 240, .95) !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    overflow: hidden !important;
+    box-shadow: 0 14px 34px -30px rgba(15, 23, 42, .28) !important;
+  }
+  .dark .outbox-responsive-table tr {
+    border-color: rgba(51, 65, 85, .95) !important;
+    background: rgba(15, 23, 42, .92) !important;
+    box-shadow: none !important;
+  }
+  .outbox-responsive-table td {
+    position: relative !important;
+    min-height: 44px !important;
+    padding: 10px 118px 10px 12px !important;
+    border-bottom: 1px solid rgba(241, 245, 249, .95) !important;
+    text-align: right !important;
+  }
+  .dark .outbox-responsive-table td {
+    border-bottom-color: rgba(51, 65, 85, .75) !important;
+  }
+  .outbox-responsive-table td:last-child {
+    border-bottom: 0 !important;
+  }
+  .outbox-responsive-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 92px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .outbox-responsive-table td > * {
+    max-width: 100% !important;
+  }
+  .outbox-responsive-table .outbox-table-chip {
+    height: 30px !important;
+    font-size: 11px !important;
+  }
+  .outbox-responsive-table .outbox-action-button span {
+    display: inline !important;
+  }
+}
+
+/* On semi-tight containers, reduce button/chip pressure before card mode. */
+@container (min-width: 881px) and (max-width: 1080px) {
+  .outbox-responsive-table th,
+  .outbox-responsive-table td {
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+  }
+  .outbox-responsive-table .outbox-table-chip {
+    height: 30px !important;
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+    font-size: 10.5px !important;
+  }
+  .outbox-responsive-table .outbox-action-button span {
+    display: none !important;
+  }
+  .outbox-responsive-table .outbox-action-button {
+    width: 32px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* If browser does not support container queries, still protect smaller viewports. */
+@media (max-width: 1100px) {
+  .outbox-responsive-table {
+    min-width: 0 !important;
+  }
+}
+
+
+/* Phase 51.118 — Outbox detail panel redesign */
+.outbox-detail-card {
+  display: grid;
+  gap: 14px;
+  padding: 2px;
+  min-width: 0;
+}
+
+.outbox-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(226, 232, 240, .95);
+}
+
+.dark .outbox-detail-header {
+  border-bottom-color: rgba(51, 65, 85, .95);
+}
+
+.outbox-detail-icon {
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid rgba(191, 219, 254, .9);
+  background: linear-gradient(180deg, #eff6ff, #fff);
+  color: #2563eb;
+  font-size: 18px;
+  box-shadow: 0 18px 34px -30px rgba(37, 99, 235, .5);
+}
+
+.dark .outbox-detail-icon {
+  border-color: rgba(30, 64, 175, .75);
+  background: rgba(30, 58, 138, .22);
+  color: #bfdbfe;
+  box-shadow: none;
+}
+
+.outbox-detail-title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.45;
+  font-weight: 950;
+  letter-spacing: -.02em;
+  color: #0f172a;
+}
+
+.dark .outbox-detail-title {
+  color: #f8fafc;
+}
+
+.outbox-detail-subtitle {
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.9;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.outbox-detail-summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(226, 232, 240, .95);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+}
+
+.dark .outbox-detail-summary {
+  border-color: rgba(51, 65, 85, .95);
+  background: rgba(15, 23, 42, .72);
+}
+
+.outbox-detail-summary-main {
+  min-width: 0;
+}
+
+.outbox-detail-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 950;
+  color: #64748b;
+}
+
+.outbox-detail-kicker i {
+  color: #8b5cf6;
+}
+
+.outbox-detail-message-type {
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.75;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.dark .outbox-detail-message-type {
+  color: #f8fafc;
+}
+
+.outbox-detail-reason {
+  margin-top: 3px;
+  font-size: 12px;
+  line-height: 2;
+  font-weight: 800;
+  color: #64748b;
+}
+
+.outbox-detail-status {
+  display: inline-flex;
+  height: 34px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 7px;
+  border-radius: 999px;
+  padding-inline: 11px;
+  font-size: 11px;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.outbox-detail-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.outbox-detail-meta {
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid rgba(226, 232, 240, .82);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.dark .outbox-detail-meta {
+  border-color: rgba(51, 65, 85, .9);
+  background: rgba(15, 23, 42, .74);
+}
+
+.outbox-detail-meta span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  line-height: 1.8;
+  font-weight: 950;
+  color: #64748b;
+}
+
+.outbox-detail-meta span i {
+  color: #94a3b8;
+}
+
+.outbox-detail-meta strong {
+  display: block;
+  min-width: 0;
+  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.8;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.dark .outbox-detail-meta strong {
+  color: #f8fafc;
+}
+
+.outbox-detail-message-box {
+  padding-top: 2px;
+}
+
+.outbox-detail-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 950;
+  color: #334155;
+}
+
+.dark .outbox-detail-section-title {
+  color: #e2e8f0;
+}
+
+.outbox-detail-section-title i {
+  color: #2563eb;
+}
+
+.outbox-detail-message-text {
+  max-height: 340px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid rgba(226, 232, 240, .95);
+  border-radius: 22px;
+  background: #fff;
+  padding: 15px 16px;
+  font-size: 13px;
+  line-height: 2.25;
+  font-weight: 800;
+  color: #334155;
+}
+
+.dark .outbox-detail-message-text {
+  border-color: rgba(51, 65, 85, .95);
+  background: rgba(15, 23, 42, .92);
+  color: #e2e8f0;
+}
+
+.outbox-detail-error {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  border: 1px solid rgba(254, 205, 211, .95);
+  border-radius: 18px;
+  background: rgba(255, 241, 242, .82);
+  padding: 11px 12px;
+  font-size: 12px;
+  line-height: 2;
+  font-weight: 850;
+  color: #be123c;
+}
+
+.outbox-detail-error i {
+  margin-top: 7px;
+}
+
+.dark .outbox-detail-error {
+  border-color: rgba(136, 19, 55, .7);
+  background: rgba(76, 5, 25, .22);
+  color: #fecdd3;
+}
+
+.outbox-detail-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+@media (min-width: 1536px) {
+  .outbox-detail-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 980px) {
+  .outbox-detail-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .outbox-detail-summary {
+    flex-direction: column;
+  }
+  .outbox-detail-meta-grid,
+  .outbox-detail-actions {
+    grid-template-columns: 1fr;
+  }
+  .outbox-detail-message-text {
+    max-height: 280px;
+    font-size: 12px;
+  }
+}
+
+
+/* Phase 51.119 — Outbox detail modal + phone/name fixes */
+.outbox-detail-modal-card {
+  width: min(860px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+}
+.outbox-detail-modal-card .outbox-detail-card {
+  padding: 0;
+}
+.outbox-detail-modal-meta-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.outbox-detail-modal-message-text {
+  max-height: 46vh;
+}
+@media (max-width: 900px) {
+  .outbox-detail-modal-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .outbox-detail-modal-meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .outbox-detail-modal-card {
+    width: calc(100vw - 20px);
+    padding: 14px !important;
+    border-radius: 24px !important;
+  }
+}
+
+
+/* Phase 51.121 — Rollback to 119 + centered horizontal modal only */
+.outbox-detail-modal-card {
+  width: min(1060px, calc(100vw - 40px)) !important;
+  max-height: calc(100vh - 48px) !important;
+  margin: auto !important;
+  overflow: hidden !important;
+  border-radius: 32px !important;
+}
+
+.outbox-detail-modal-card > .mb-4 {
+  margin-bottom: 14px !important;
+  padding-bottom: 14px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .95) !important;
+}
+
+.dark .outbox-detail-modal-card > .mb-4 {
+  border-bottom-color: rgba(51, 65, 85, .95) !important;
+}
+
+.outbox-detail-modal-landscape {
+  display: grid !important;
+  gap: 14px !important;
+  max-height: calc(100vh - 150px) !important;
+  overflow: auto !important;
+  padding-inline: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+/* Outbox modal: right-side information/actions, left-side main message body */
+.outbox-detail-modal-outbox {
+  grid-template-columns: minmax(290px, 340px) minmax(0, 1fr) !important;
+  grid-template-areas:
+    "summary message"
+    "meta message"
+    "actions message"
+    "error error" !important;
+  align-items: start !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-summary {
+  grid-area: summary !important;
+  min-width: 0 !important;
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-modal-meta-grid {
+  grid-area: meta !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-message-box {
+  grid-area: message !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-error {
+  grid-area: error !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-actions {
+  grid-area: actions !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+}
+
+.outbox-detail-modal-outbox .outbox-detail-modal-message-text {
+  min-height: 360px !important;
+  max-height: calc(100vh - 245px) !important;
+  line-height: 2.25 !important;
+}
+
+/* Inbox modal: compact horizontal layout */
+.outbox-detail-modal-inbox {
+  grid-template-columns: minmax(290px, 340px) minmax(0, 1fr) !important;
+  grid-template-areas:
+    "meta message"
+    "actions message" !important;
+  align-items: start !important;
+}
+
+.outbox-detail-modal-inbox .outbox-detail-modal-meta-grid {
+  grid-area: meta !important;
+  grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-inbox .outbox-detail-message-box {
+  grid-area: message !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-inbox .outbox-detail-actions {
+  grid-area: actions !important;
+  grid-template-columns: 1fr !important;
+}
+
+.outbox-detail-modal-inbox .outbox-detail-modal-message-text {
+  min-height: 360px !important;
+  max-height: calc(100vh - 230px) !important;
+  line-height: 2.25 !important;
+}
+
+/* Keep the modal truly centered and landscape only while there is enough room. */
+@media (max-width: 940px) {
+  .outbox-detail-modal-card {
+    width: min(720px, calc(100vw - 24px)) !important;
+    max-height: calc(100vh - 28px) !important;
+    overflow: auto !important;
+  }
+
+  .outbox-detail-modal-landscape,
+  .outbox-detail-modal-outbox,
+  .outbox-detail-modal-inbox {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "summary"
+      "meta"
+      "message"
+      "error"
+      "actions" !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .outbox-detail-modal-inbox {
+    grid-template-areas:
+      "meta"
+      "message"
+      "actions" !important;
+  }
+
+  .outbox-detail-modal-outbox .outbox-detail-modal-meta-grid,
+  .outbox-detail-modal-inbox .outbox-detail-modal-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .outbox-detail-modal-outbox .outbox-detail-modal-message-text,
+  .outbox-detail-modal-inbox .outbox-detail-modal-message-text {
+    min-height: 260px !important;
+    max-height: 42vh !important;
+  }
+
+  .outbox-detail-modal-outbox .outbox-detail-actions,
+  .outbox-detail-modal-inbox .outbox-detail-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .outbox-detail-modal-card {
+    width: calc(100vw - 16px) !important;
+    border-radius: 24px !important;
+    padding: 14px !important;
+  }
+
+  .outbox-detail-modal-outbox .outbox-detail-modal-meta-grid,
+  .outbox-detail-modal-inbox .outbox-detail-modal-meta-grid,
+  .outbox-detail-modal-outbox .outbox-detail-actions,
+  .outbox-detail-modal-inbox .outbox-detail-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* Phase 51.122 — Rollback 119, modal portal + true centered compact landscape */
+.outbox-detail-modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  right: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  z-index: 2147483000 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+  isolation: isolate !important;
+}
+
+.outbox-detail-modal-card-compact {
+  position: relative !important;
+  width: min(960px, calc(100vw - 44px)) !important;
+  max-width: min(960px, calc(100vw - 44px)) !important;
+  max-height: calc(100vh - 44px) !important;
+  margin: auto !important;
+  overflow: hidden !important;
+  border-radius: 30px !important;
+  transform: none !important;
+}
+
+.outbox-detail-modal-card-compact > .mb-4 {
+  margin: 0 !important;
+  padding: 16px 18px 14px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .96) !important;
+  background: linear-gradient(180deg, rgba(248,250,252,.96), rgba(255,255,255,1)) !important;
+}
+
+.dark .outbox-detail-modal-card-compact > .mb-4 {
+  border-bottom-color: rgba(51, 65, 85, .95) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(2,6,23,.96)) !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-title {
+  font-size: 17px !important;
+  line-height: 1.6 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-subtitle {
+  font-size: 10.5px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-modal-landscape {
+  display: grid !important;
+  gap: 12px !important;
+  padding: 16px 18px 18px !important;
+  max-height: calc(100vh - 124px) !important;
+  overflow: auto !important;
+}
+
+/* Right info side is intentionally compact; main message side gets the space. */
+.outbox-detail-modal-card-compact .outbox-detail-modal-outbox {
+  grid-template-columns: minmax(245px, 285px) minmax(0, 1fr) !important;
+  grid-template-areas:
+    "summary message"
+    "meta message"
+    "actions message"
+    "error error" !important;
+  align-items: start !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-modal-inbox {
+  grid-template-columns: minmax(245px, 285px) minmax(0, 1fr) !important;
+  grid-template-areas:
+    "meta message"
+    "actions message" !important;
+  align-items: start !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-summary {
+  grid-area: summary !important;
+  padding: 12px !important;
+  border-radius: 20px !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-modal-meta-grid {
+  grid-area: meta !important;
+  grid-template-columns: 1fr !important;
+  gap: 7px !important;
+  min-width: 0 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-message-box {
+  grid-area: message !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-actions {
+  grid-area: actions !important;
+  grid-template-columns: 1fr !important;
+  gap: 7px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-error {
+  grid-area: error !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-message-type {
+  margin-top: 5px !important;
+  font-size: 14px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-reason {
+  font-size: 11px !important;
+  line-height: 1.9 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-status {
+  height: 30px !important;
+  padding-inline: 10px !important;
+  font-size: 10.5px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-meta {
+  padding: 9px 10px !important;
+  border-radius: 16px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-meta span {
+  font-size: 10px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-meta strong {
+  margin-top: 3px !important;
+  font-size: 11.5px !important;
+  line-height: 1.7 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-section-title {
+  margin-bottom: 8px !important;
+  font-size: 11.5px !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-modal-message-text {
+  flex: 1 1 auto !important;
+  min-height: 350px !important;
+  max-height: calc(100vh - 210px) !important;
+  border-radius: 22px !important;
+  padding: 16px 18px !important;
+  font-size: 13px !important;
+  line-height: 2.25 !important;
+}
+
+.outbox-detail-modal-card-compact .outbox-detail-actions button {
+  width: 100% !important;
+  min-height: 40px !important;
+}
+
+@media (max-width: 900px) {
+  .outbox-detail-modal-card-compact {
+    width: min(720px, calc(100vw - 24px)) !important;
+    max-width: min(720px, calc(100vw - 24px)) !important;
+    overflow: auto !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-modal-landscape,
+  .outbox-detail-modal-card-compact .outbox-detail-modal-outbox,
+  .outbox-detail-modal-card-compact .outbox-detail-modal-inbox {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "summary"
+      "meta"
+      "message"
+      "error"
+      "actions" !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-modal-inbox {
+    grid-template-areas:
+      "meta"
+      "message"
+      "actions" !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-modal-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-modal-message-text {
+    min-height: 260px !important;
+    max-height: 42vh !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .outbox-detail-modal-backdrop {
+    padding: 8px !important;
+  }
+
+  .outbox-detail-modal-card-compact {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    border-radius: 24px !important;
+  }
+
+  .outbox-detail-modal-card-compact .outbox-detail-modal-meta-grid,
+  .outbox-detail-modal-card-compact .outbox-detail-actions {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -547,24 +547,24 @@ const PartnersPage: React.FC = () => {
       {/* Add Partner Modal */}
       {isAddModalOpen && (
         <Modal title="افزودن همکار" onClose={() => setIsAddModalOpen(false)} widthClass="max-w-4xl" iconClass="fa-solid fa-handshake">
-          <form onSubmit={handleAddPartnerSubmit} className="people-modal-form people-modal-form--horizontal people-modal-form--partner">
+          <form onSubmit={handleAddPartnerSubmit} className="modal-template-form modal-template-form--split modal-template-form--partner">
             <FormErrorSummary errors={formErrors as any} labels={{ partnerName: 'نام همکار', partnerType: 'نوع همکار', phoneNumber: 'شماره تماس', email: 'ایمیل' }} fieldIdMap={{ partnerName: 'partnerName', partnerType: 'partnerType', phoneNumber: 'phoneNumber', email: 'email' }} />
-            <div className="people-modal-form__side">
-              <div className="people-modal-summary-card">
-                <span className="people-modal-summary-card__eyebrow"><i className="fa-solid fa-handshake" /> پرونده همکار جدید</span>
-                <div className="people-modal-summary-card__title">{newPartner.partnerName || 'تعریف همکار جدید'}</div>
-                <p className="people-modal-summary-card__text">اطلاعات پایه همکار را کامل وارد کن تا بعداً دفتر حساب، خریدها، تسویه‌ها و اتصال تلگرام با همین پروفایل مدیریت شود.</p>
-                <div className="people-modal-summary-metrics">
-                  <div className="people-modal-summary-metric">
-                    <span className="people-modal-summary-metric__icon"><i className="fa-solid fa-diagram-project" /></span>
-                    <div className="people-modal-summary-metric__copy">
+            <div className="modal-template-side">
+              <div className="modal-template-card modal-template-summary">
+                <span className="modal-template-eyebrow"><i className="fa-solid fa-handshake" /> پرونده همکار جدید</span>
+                <div className="modal-template-title">{newPartner.partnerName || 'تعریف همکار جدید'}</div>
+                <p className="modal-template-text">اطلاعات پایه همکار را کامل وارد کن تا بعداً دفتر حساب، خریدها، تسویه‌ها و اتصال تلگرام با همین پروفایل مدیریت شود.</p>
+                <div className="modal-template-metric-list">
+                  <div className="modal-template-metric">
+                    <span className="modal-template-metric__icon"><i className="fa-solid fa-diagram-project" /></span>
+                    <div className="modal-template-metric__copy">
                       <span>نوع همکاری</span>
                       <strong>{PARTNER_TYPES.find((t) => t.value === newPartner.partnerType)?.label || 'انتخاب نشده'}</strong>
                     </div>
                   </div>
-                  <div className="people-modal-summary-metric">
-                    <span className="people-modal-summary-metric__icon"><i className="fa-solid fa-phone" /></span>
-                    <div className="people-modal-summary-metric__copy">
+                  <div className="modal-template-metric">
+                    <span className="modal-template-metric__icon"><i className="fa-solid fa-phone" /></span>
+                    <div className="modal-template-metric__copy">
                       <span>شماره تماس</span>
                       <strong dir="ltr">{newPartner.phoneNumber || 'ثبت نشده'}</strong>
                     </div>
@@ -573,8 +573,8 @@ const PartnersPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="people-modal-form__main">
-              <div className="people-modal-form__section people-modal-form__section--primary">
+            <div className="modal-template-main">
+              <div className="modal-template-section modal-template-section--grid">
                 <ModalField label="نام همکار" iconClass="fa-solid fa-building-user" required error={formErrors.partnerName}>
                   <input type="text" id="partnerName" name="partnerName" value={newPartner.partnerName} onChange={handleInputChange} className={inputClass('partnerName')} required placeholder="مثلاً: تأمین‌کننده کوروش" />
                 </ModalField>
@@ -590,7 +590,7 @@ const PartnersPage: React.FC = () => {
                   <input type="tel" id="phoneNumber" name="phoneNumber" value={newPartner.phoneNumber} onChange={handleInputChange} className={inputClass('phoneNumber')} placeholder="مثال: 09123456789" />
                 </ModalField>
               </div>
-              <div className="people-modal-form__section people-modal-form__section--wide">
+              <div className="modal-template-section modal-template-section--stack">
                 <ModalField label="ایمیل" iconClass="fa-solid fa-envelope" error={formErrors.email}>
                   <input type="email" id="email" name="email" value={newPartner.email} onChange={handleInputChange} className={inputClass('email')} placeholder="example@domain.com" />
                 </ModalField>

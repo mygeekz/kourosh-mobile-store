@@ -184,7 +184,7 @@ export const useHeaderQuickData = ({
 
     const loadRiskyCustomers = async () => {
       try {
-        const res = await apiFetch('/api/customers/trust-profiles');
+        const res = await apiFetch('/api/customers/trust-profiles?ts=' + Date.now());
         const json = await res.json().catch(() => ({}));
         if (!res.ok || !json?.success || !Array.isArray(json?.data)) throw new Error(json?.message || 'خطا در دریافت مشتریان پرریسک');
 

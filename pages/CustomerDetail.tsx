@@ -508,7 +508,7 @@ const fetchCustomerTrustProfile = async (customerId: number) => {
     if (!token || !customerId) return;
     setCustomerTrustLoading(true);
     try {
-      const res = await fetch(`/api/customers/${customerId}/trust-profile`, { headers: getAuthHeaders(token) });
+      const res = await fetch(`/api/customers/${customerId}/trust-profile?ts=${Date.now()}`, { headers: getAuthHeaders(token), cache: 'no-store' });
       const js = await res.json();
       if (!res.ok || js?.success === false) throw new Error(js?.message || 'خطا در دریافت امتیاز اعتماد مشتری');
       setCustomerTrustProfile(js.data || null);
@@ -524,7 +524,7 @@ const fetchCustomerTrustHistory = async (customerId: number) => {
     if (!token || !customerId) return;
     setCustomerTrustHistoryLoading(true);
     try {
-      const res = await fetch(`/api/customers/${customerId}/trust-profile/history`, { headers: getAuthHeaders(token) });
+      const res = await fetch(`/api/customers/${customerId}/trust-profile/history?ts=${Date.now()}`, { headers: getAuthHeaders(token), cache: 'no-store' });
       const js = await res.json();
       if (!res.ok || js?.success === false) throw new Error(js?.message || 'خطا در دریافت تاریخچه امتیاز اعتماد');
       setCustomerTrustHistory(js.data || null);
@@ -1214,8 +1214,18 @@ const latestLedgerEntry = ledger[0] ?? null;
   })();
   const firstInstallmentSaleId = Number(lacheckOpenInstallmentDue?.saleId || customerInstallmentSales[0]?.id || 0);
 
-  const trustTone = getTrustTone(customerTrustProfile?.score);
-  const trustScore = Number(customerTrustProfile?.score || 0);
+  const rawTrustScore = Number(customerTrustProfile?.score || 0);
+  const effectiveTrustScore = (() => {
+    if (!customerTrustProfile || !profile) return rawTrustScore;
+    const balance = Number(profile.currentBalance || customerTrustProfile.currentBalance || 0);
+    const hasReturnedCheck = Number(customerTrustProfile.returnedCheckCount || 0) > 0;
+    const hasActivity = Number(customerTrustProfile.purchaseCount || 0) > 0 || Number(customerTrustProfile.ledgerPaymentCount || 0) > 0 || Math.abs(balance) > 0;
+    if (balance < 0 && !hasReturnedCheck) return Math.max(rawTrustScore, Math.abs(balance) >= 5000000 ? 76 : 72);
+    if (balance === 0 && hasActivity && !hasReturnedCheck) return Math.max(rawTrustScore, 70);
+    return rawTrustScore;
+  })();
+  const trustTone = getTrustTone(effectiveTrustScore);
+  const trustScore = effectiveTrustScore;
   const trustProgressWidth = `${Math.max(0, Math.min(100, trustScore))}%`;
 
   const getLedgerEntryKind = (entry: any): 'debit' | 'credit' | 'balanced' => {
@@ -1791,13 +1801,13 @@ const parseSaleItemMeta = (sale: any) => {
                   {[
                     {
                       label: 'سقف اعتبار پیشنهادی',
-                      value: customerTrustProfile ? formatLedgerCurrency(customerTrustProfile.suggestedCreditLimit, 'balance') : '—',
+                      value: customerTrustProfile ? formatCurrencyText(customerTrustProfile.suggestedCreditLimit, readStoredCurrencyUnit()) : '—',
                       icon: 'fa-regular fa-credit-card',
                       tone: 'text-blue-600 bg-blue-50 dark:text-blue-200 dark:bg-blue-950/30',
                     },
                     {
                       label: 'ظرفیت باقی‌مانده',
-                      value: customerTrustProfile ? formatLedgerCurrency(customerTrustProfile.remainingSuggestedCredit, 'balance') : '—',
+                      value: customerTrustProfile ? formatCurrencyText(customerTrustProfile.remainingSuggestedCredit, readStoredCurrencyUnit()) : '—',
                       icon: 'fa-solid fa-wallet',
                       tone: 'text-emerald-600 bg-emerald-50 dark:text-emerald-200 dark:bg-emerald-950/30',
                     },
@@ -1911,7 +1921,8 @@ const parseSaleItemMeta = (sale: any) => {
                       const paddingY = 26;
                       const points = chartEvents.map((event, index) => {
                         const x = paddingX + (index * (width - paddingX * 2)) / Math.max(1, chartEvents.length - 1);
-                        const score = Math.max(0, Math.min(100, Number(event.scoreAfter || 0)));
+                        const rawPointScore = Number(event.scoreAfter || 0);
+                        const score = Math.max(0, Math.min(100, index === chartEvents.length - 1 ? Math.max(rawPointScore, trustScore) : rawPointScore));
                         const y = paddingY + ((100 - score) * (height - paddingY * 2)) / 100;
                         return { x, y, score, event };
                       });
@@ -3496,7 +3507,7 @@ const parseSaleItemMeta = (sale: any) => {
           iconClass="fa-solid fa-user-pen"
           variant="operational"
         >
-          <form onSubmit={handleEditSubmit} className="customer-edit-v2" dir="rtl">
+          <form onSubmit={handleEditSubmit} className="customer-edit-v2 modal-template-form modal-template-form--profile-edit" dir="rtl">
             <FormErrorSummary
               errors={editFormErrors as any}
               labels={{ fullName: 'نام کامل', phoneNumber: 'شماره تماس' }}
@@ -3504,9 +3515,9 @@ const parseSaleItemMeta = (sale: any) => {
               className="customer-edit-v2__errors"
             />
 
-            <div className="customer-edit-v2__layout">
-              <aside className="customer-edit-v2__summary">
-                <div className="customer-edit-v2-card customer-edit-v2-card--hero customer-edit-v2-card--hero-side">
+            <div className="customer-edit-v2__layout modal-template-form__layout">
+              <aside className="customer-edit-v2__summary modal-template-side">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--hero customer-edit-v2-card--hero-side">
                   <div className="customer-edit-v2-hero">
                     <div className="customer-edit-v2-hero__copy">
                       <span className="customer-edit-v2-hero__eyebrow"><i className="fa-solid fa-user-gear" /> فرم بازبینی پرونده مشتری</span>
@@ -3521,7 +3532,7 @@ const parseSaleItemMeta = (sale: any) => {
                   </div>
                 </div>
 
-                <div className="customer-edit-v2-card customer-edit-v2-card--summary">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--summary">
                   <div className="customer-edit-v2-card__head">
                     <div>
                       <h4>خلاصه وضعیت اطلاعات</h4>
@@ -3530,39 +3541,39 @@ const parseSaleItemMeta = (sale: any) => {
                     <span className="customer-edit-v2-card__head-icon"><i className="fa-solid fa-chart-column" /></span>
                   </div>
 
-                  <div className="customer-edit-v2-status-list">
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                  <div className="customer-edit-v2-status-list modal-template-metric-list">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>شماره تماس</span>
                         <strong dir="ltr">{editingCustomer.phoneNumber || 'ثبت نشده'}</strong>
                         <em className={editingCustomer.phoneNumber?.trim() ? 'is-positive' : 'is-neutral'}><i className={`fa-solid ${editingCustomer.phoneNumber?.trim() ? 'fa-circle-check' : 'fa-circle-minus'}`} /> {editingCustomer.phoneNumber?.trim() ? 'تأیید شده' : 'نیازمند ثبت'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon"><i className="fa-solid fa-phone" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon"><i className="fa-solid fa-phone" /></span>
                     </div>
 
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>آدرس</span>
                         <strong>{editingCustomer.address?.trim() ? 'آدرس ثبت شده' : 'آدرس ثبت نشده'}</strong>
                         <em className={editingCustomer.address?.trim() ? 'is-positive' : 'is-neutral'}><i className={`fa-solid ${editingCustomer.address?.trim() ? 'fa-circle-check' : 'fa-circle-minus'}`} /> {editingCustomer.address?.trim() ? 'تکمیل شده' : 'نیازمند تکمیل'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon"><i className="fa-solid fa-location-dot" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon"><i className="fa-solid fa-location-dot" /></span>
                     </div>
 
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>یادداشت داخلی</span>
                         <strong>{editingCustomer.notes?.trim() ? 'یادداشت موجود' : 'بدون یادداشت'}</strong>
                         <em className={editingCustomer.notes?.trim() ? 'is-info' : 'is-neutral'}><i className={`fa-solid ${editingCustomer.notes?.trim() ? 'fa-circle-info' : 'fa-circle-minus'}`} /> {editingCustomer.notes?.trim() ? 'نیازمند بازبینی' : 'در صورت نیاز ثبت شود'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon is-indigo"><i className="fa-regular fa-note-sticky" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon is-indigo"><i className="fa-regular fa-note-sticky" /></span>
                     </div>
                   </div>
                 </div>
               </aside>
 
-              <section className="customer-edit-v2__main">
-                <div className="customer-edit-v2-card customer-edit-v2-card--panel">
+              <section className="customer-edit-v2__main modal-template-main">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--panel">
                   <div className="customer-edit-v2-panel__head">
                     <h4>هویت و ارتباط</h4>
                     <span><i className="fa-solid fa-user" /></span>
@@ -3629,7 +3640,7 @@ const parseSaleItemMeta = (sale: any) => {
                   </div>
                 </div>
 
-                <div className="customer-edit-v2-card customer-edit-v2-card--panel">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--panel">
                   <div className="customer-edit-v2-panel__head">
                     <h4>اطلاعات تکمیلی</h4>
                     <span><i className="fa-solid fa-file-lines" /></span>
@@ -3671,162 +3682,176 @@ const parseSaleItemMeta = (sale: any) => {
               </section>
             </div>
 
-            <div className="customer-edit-v2__footer">
-              <div className="customer-edit-v2__footer-note">
-                <i className="fa-solid fa-shield-halved" />
-                <span>اطلاعات شما با بالاترین سطح امنیت ذخیره می‌شود.</span>
-              </div>
-              <div className="customer-edit-v2__footer-actions">
-                <Button
-                  type="button"
-                  onClick={() => setIsEditModalOpen(false)}
-                  variant="ghost"
-                  className="customer-edit-v2__cancel-btn"
-                >
-                  انصراف
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={!token || isSubmittingEdit}
-                  loading={Boolean(isSubmittingEdit)}
-                  loadingText="در حال ذخیره تغییرات..."
-                  variant="primary"
-                  className="customer-edit-v2__submit-btn"
-                  leftIcon={!isSubmittingEdit ? <i className="fa-solid fa-floppy-disk" /> : undefined}
-                >
-                  ذخیره تغییرات مشتری
-                </Button>
-              </div>
-            </div>
+            <ModalActions
+              onCancel={() => setIsEditModalOpen(false)}
+              submitText="ذخیره تغییرات مشتری"
+              submittingText="در حال ذخیره تغییرات..."
+              isSubmitting={isSubmittingEdit}
+              submitDisabled={!token || isSubmittingEdit}
+              submitIconClass="fa-solid fa-floppy-disk"
+              helperIconClass="fa-solid fa-shield-halved"
+              helperText="اطلاعات شما با بالاترین سطح امنیت ذخیره می‌شود."
+              hideHelper={false}
+            />
           </form>
         </Modal>
       )}
       {/* مودال ثبت تراکنش مالی */}
       {isLedgerModalOpen && (
-        <Modal title={`ثبت تراکنش مالی ${profile.fullName}`} onClose={() => setIsLedgerModalOpen(false)} widthClass="max-w-4xl" iconClass="fa-solid fa-money-bill-transfer" variant="operational">
-          <form onSubmit={handleLedgerSubmit} className="people-finance-modal people-finance-modal--horizontal premium-modal-stack p-1">
-            <div className="people-finance-modal__side">
-              <div className="people-finance-modal__summary">
-              <div className="min-w-0">
-                <div className="people-finance-modal__eyebrow">دفتر حساب مشتری</div>
-                <div className="people-finance-modal__title">{profile.fullName}</div>
-                <div className="people-finance-modal__hint">
-                  دریافت از مشتری بدهی او را کم می‌کند؛ پرداخت/شارژ حساب زمانی استفاده می‌شود که مشتری بستانکار یا حسابش شارژ شود.
+        <Modal title={`ثبت تراکنش مالی ${profile.fullName}`} onClose={() => setIsLedgerModalOpen(false)} widthClass="max-w-5xl" iconClass="fa-solid fa-money-bill-transfer" variant="operational" layout="split">
+          <form onSubmit={handleLedgerSubmit} className="people-finance-modal modal-template-form modal-template-form--finance ledger-payment-modal ledger-payment-modal--customer premium-modal-stack p-1" data-ledger-direction={transactionType}>
+            <section className="ledger-payment-modal__type-strip" aria-label="نوع تراکنش مشتری">
+              <div className="ledger-payment-modal__type-head">
+                <span className="ledger-payment-modal__type-head-icon"><i className="fa-solid fa-shuffle" /></span>
+                <div>
+                  <div className="people-finance-modal__eyebrow">نوع تراکنش</div>
+                  <strong>اول مشخص کن این عملیات دریافت است یا پرداخت</strong>
+                  <p>نوع تراکنش روی مانده حساب و متن پیشنهادی ثبت مالی اثر مستقیم دارد.</p>
                 </div>
               </div>
-              <div className="people-finance-modal__balance">
-                <span className="people-finance-modal__balance-icon" aria-hidden="true"><i className="fa-solid fa-wallet" /></span>
-                <div className="people-finance-modal__balance-copy">
-                  <span>مانده فعلی</span>
-                  <strong>{Math.abs(Number(profile.currentBalance || 0)).toLocaleString('fa-IR')} تومان</strong>
-                  <small>{getBalanceLabel(getBalanceState(profile.currentBalance), 'customer')}</small>
-                </div>
-              </div>
-            </div>
-
-              <div className="people-ledger-type-grid" role="radiogroup" aria-label="نوع تراکنش مشتری">
-              {[
-                { key: 'credit', title: 'دریافت از مشتری', sub: 'کاهش بدهی یا ثبت وصول', icon: 'fa-hand-holding-dollar' },
-                { key: 'debit', title: 'پرداخت / شارژ حساب', sub: 'افزایش طلب مشتری یا اصلاح حساب', icon: 'fa-wallet' },
-              ].map((item) => {
-                const active = transactionType === item.key;
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    onClick={() => handleTransactionTypeChange({ target: { value: item.key } } as ChangeEvent<HTMLInputElement>)}
-                    className={["people-ledger-type-card", active ? 'is-active' : ''].join(' ')}
-                    aria-pressed={active}
-                  >
-                    <span className="people-ledger-type-card__icon"><i className={`fa-solid ${item.icon}`} /></span>
-                    <span className="people-ledger-type-card__copy">
-                      <strong>{item.title}</strong>
-                      <small>{item.sub}</small>
-                    </span>
-                    <span className="people-ledger-type-card__check"><i className="fa-solid fa-check" /></span>
-                  </button>
-                );
-              })}
-              </div>
-            </div>
-
-            <div className="people-finance-modal__main">
-              <FormErrorSummary errors={ledgerFormErrors as any} labels={{ amountType: 'مبلغ تراکنش', transactionDate: 'تاریخ تراکنش', description: 'شرح تراکنش' }} fieldIdMap={{ amountType: 'ledgerAmount', transactionDate: 'ledgerDatePicker', description: 'ledgerDescription' }} className="people-form-error-summary" />
-
-              <div className="people-finance-modal__grid">
-              <ModalField label="مبلغ تراکنش" iconClass="fa-solid fa-coins" required error={ledgerFormErrors.amountType} className="people-finance-field people-finance-field--amount">
-                <PriceInput
-                  id="ledgerAmount" name="amount"
-                  value={transactionType === 'credit' ? String(newLedgerEntry.credit || '') : String(newLedgerEntry.debit || '')}
-                  onChange={handleLedgerInputChange}
-                  className={inputClass(!!ledgerFormErrors.amountType)}
-                  preview="مثال: ۵۰۰۰۰۰۰"
-                />
-                <div className="people-amount-chip-row">
-                  {[
-                    { label: '۱ میلیون', value: 1000000 },
-                    { label: '۵ میلیون', value: 5000000 },
-                    { label: '۱۰ میلیون', value: 10000000 },
-                    { label: 'کل مانده', value: Math.max(0, Math.abs(Number(profile.currentBalance || 0))) },
-                  ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index).map((chip) => (
-                    <button
-                      key={chip.label}
-                      type="button"
-                      className="people-amount-chip"
-                      onClick={() => handleLedgerInputChange({ target: { name: 'amount', value: String(chip.value) } })}
-                    >
-                      {chip.label}
-                    </button>
-                  ))}
-                </div>
-              </ModalField>
-
-              <ModalField label="تاریخ تراکنش" iconClass="fa-solid fa-calendar-day" required error={ledgerFormErrors.transactionDate} className="people-finance-field people-finance-field--date">
-                <ShamsiDatePicker
-                  id="ledgerDatePicker"
-                  selectedDate={ledgerDateSelected}
-                  onDateChange={setLedgerDateSelected}
-                  inputClassName={inputClass(!!ledgerFormErrors.transactionDate)}
-                />
-              </ModalField>
-            </div>
-
-            <ModalField label="شرح تراکنش" iconClass="fa-solid fa-note-sticky" required error={ledgerFormErrors.description} className="people-finance-field people-finance-field--description">
-              <textarea
-                id="ledgerDescription" name="description" rows={3}
-                value={newLedgerEntry.description || ''} onChange={handleLedgerInputChange}
-                className={inputClass(!!ledgerFormErrors.description, true)} required
-                placeholder="مثلاً: دریافت کارت‌به‌کارت بابت بدهی فاکتور / شارژ حساب مشتری"
-              />
-              <div key={`customer-note-templates-${transactionType}`} className="people-note-template-row">
+              <div className="people-ledger-type-grid ledger-payment-modal__type-grid" role="radiogroup" aria-label="نوع تراکنش مشتری">
                 {[
-                  { id: transactionType === 'credit' ? 'card' : 'charge', value: transactionType === 'credit' ? 'دریافت کارت‌به‌کارت بابت بدهی' : 'شارژ حساب مشتری' },
-                  { id: 'cash', value: 'پرداخت نقدی' },
-                  { id: 'adjust', value: 'اصلاح حساب' },
-                  { id: 'tracking', value: 'شماره پیگیری: ' },
-                ].map((note) => {
-                  const isActive = String(newLedgerEntry.description || '').trim() === note.value.trim();
+                  { key: 'credit', title: 'دریافت از مشتری', sub: 'کاهش بدهی یا ثبت وصول', icon: 'fa-hand-holding-dollar', tone: 'success' },
+                  { key: 'debit', title: 'پرداخت / شارژ حساب', sub: 'افزایش طلب مشتری یا اصلاح حساب', icon: 'fa-wallet', tone: 'warning' },
+                ].map((item) => {
+                  const active = transactionType === item.key;
                   return (
                     <button
-                      key={`${transactionType}-${note.id}`}
+                      key={item.key}
                       type="button"
-                      className={["people-note-template", isActive ? 'is-active' : ''].join(' ')}
-                      onClick={() => handleLedgerInputChange({ target: { name: 'description', value: note.value } })}
+                      onClick={() => handleTransactionTypeChange({ target: { value: item.key } } as ChangeEvent<HTMLInputElement>)}
+                      className={["people-ledger-type-card ledger-payment-modal__type-card", active ? 'is-active' : '', `ledger-payment-modal__type-card--${item.tone}`].join(' ')}
+                      aria-pressed={active}
                     >
-                      {note.value}
+                      <span className="people-ledger-type-card__icon ledger-payment-modal__type-icon"><i className={`fa-solid ${item.icon}`} /></span>
+                      <span className="people-ledger-type-card__copy ledger-payment-modal__type-copy">
+                        <strong>{item.title}</strong>
+                        <small>{item.sub}</small>
+                      </span>
+                      <span className="people-ledger-type-card__check ledger-payment-modal__type-check"><i className="fa-solid fa-check" /></span>
                     </button>
                   );
                 })}
               </div>
-            </ModalField>
+            </section>
 
-              <ModalActions
-                onCancel={() => setIsLedgerModalOpen(false)}
-                submitText="ثبت تراکنش مالی"
-                submittingText="در حال ثبت تراکنش..."
-                isSubmitting={isSubmittingLedger}
-                submitDisabled={!token}
-              />
+            <div className="ledger-payment-modal__workspace">
+              <aside className="ledger-payment-modal__account-panel">
+                <section className="people-finance-modal__summary modal-template-card ledger-payment-modal__account-card">
+                  <div className="min-w-0">
+                    <div className="people-finance-modal__eyebrow">دفتر حساب مشتری</div>
+                    <div className="people-finance-modal__title">{profile.fullName}</div>
+                    <div className="people-finance-modal__hint">
+                      دریافت از مشتری بدهی او را کم می‌کند؛ پرداخت/شارژ حساب زمانی استفاده می‌شود که مشتری بستانکار یا حسابش شارژ شود.
+                    </div>
+                  </div>
+                </section>
+
+                <section className="people-finance-modal__balance modal-template-card ledger-payment-modal__balance-card">
+                  <span className="people-finance-modal__balance-icon ledger-payment-modal__metric-icon" aria-hidden="true"><i className="fa-solid fa-wallet" /></span>
+                  <div className="people-finance-modal__balance-copy">
+                    <span>مانده فعلی</span>
+                    <strong>{Math.abs(Number(profile.currentBalance || 0)).toLocaleString('fa-IR')} تومان</strong>
+                    <small>{getBalanceLabel(getBalanceState(profile.currentBalance), 'customer')}</small>
+                  </div>
+                </section>
+
+                {(() => {
+                  const current = Math.abs(Number(profile.currentBalance || 0));
+                  const amount = Number(String(transactionType === 'credit' ? newLedgerEntry.credit || '' : newLedgerEntry.debit || '').replace(/[^\d.-]/g, '')) || 0;
+                  const nextBalance = transactionType === 'credit' ? Math.max(0, current - amount) : current + amount;
+                  const previewTone = nextBalance <= 0 ? 'settled' : nextBalance >= 50000000 ? 'danger' : nextBalance >= 10000000 ? 'warning' : 'ok';
+                  return (
+                    <section className={`ledger-payment-modal__preview-card ledger-payment-modal__preview-card--${previewTone}`}>
+                      <span className="ledger-payment-modal__metric-icon"><i className="fa-solid fa-calculator" /></span>
+                      <div>
+                        <span>مانده بعد از ثبت</span>
+                        <strong>{nextBalance.toLocaleString('fa-IR')} تومان</strong>
+                        <small>{transactionType === 'credit' ? 'بعد از دریافت از مشتری' : 'بعد از پرداخت/شارژ حساب'}</small>
+                      </div>
+                    </section>
+                  );
+                })()}
+              </aside>
+
+              <section className="ledger-payment-modal__entry-panel">
+                <FormErrorSummary errors={ledgerFormErrors as any} labels={{ amountType: 'مبلغ تراکنش', transactionDate: 'تاریخ تراکنش', description: 'شرح تراکنش' }} fieldIdMap={{ amountType: 'ledgerAmount', transactionDate: 'ledgerDatePicker', description: 'ledgerDescription' }} className="people-form-error-summary ledger-payment-modal__errors" />
+
+                <div className="people-finance-modal__grid ledger-payment-modal__field-grid">
+                  <ModalField label="مبلغ تراکنش" iconClass="fa-solid fa-coins" required error={ledgerFormErrors.amountType} className="people-finance-field people-finance-field--amount ledger-payment-modal__field">
+                    <PriceInput
+                      id="ledgerAmount" name="amount"
+                      value={transactionType === 'credit' ? String(newLedgerEntry.credit || '') : String(newLedgerEntry.debit || '')}
+                      onChange={handleLedgerInputChange}
+                      className={inputClass(!!ledgerFormErrors.amountType)}
+                      preview="مثال: ۵۰۰۰۰۰۰"
+                    />
+                    <div className="people-amount-chip-row">
+                      {[
+                        { label: '۱ میلیون', value: 1000000 },
+                        { label: '۵ میلیون', value: 5000000 },
+                        { label: '۱۰ میلیون', value: 10000000 },
+                        { label: 'کل مانده', value: Math.max(0, Math.abs(Number(profile.currentBalance || 0))) },
+                      ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index).map((chip) => (
+                        <button
+                          key={chip.label}
+                          type="button"
+                          className="people-amount-chip"
+                          onClick={() => handleLedgerInputChange({ target: { name: 'amount', value: String(chip.value) } })}
+                        >
+                          {chip.label}
+                        </button>
+                      ))}
+                    </div>
+                  </ModalField>
+
+                  <ModalField label="تاریخ تراکنش" iconClass="fa-solid fa-calendar-day" required error={ledgerFormErrors.transactionDate} className="people-finance-field people-finance-field--date ledger-payment-modal__field">
+                    <ShamsiDatePicker
+                      id="ledgerDatePicker"
+                      selectedDate={ledgerDateSelected}
+                      onDateChange={setLedgerDateSelected}
+                      inputClassName={inputClass(!!ledgerFormErrors.transactionDate)}
+                    />
+                  </ModalField>
+                </div>
+
+                <ModalField label="شرح تراکنش" iconClass="fa-solid fa-note-sticky" required error={ledgerFormErrors.description} className="people-finance-field people-finance-field--description ledger-payment-modal__field ledger-payment-modal__field--description">
+                  <textarea
+                    id="ledgerDescription" name="description" rows={3}
+                    value={newLedgerEntry.description || ''} onChange={handleLedgerInputChange}
+                    className={inputClass(!!ledgerFormErrors.description, true)} required
+                    placeholder="مثلاً: دریافت کارت‌به‌کارت بابت بدهی فاکتور / شارژ حساب مشتری"
+                  />
+                  <div key={`customer-note-templates-${transactionType}`} className="people-note-template-row">
+                    {[
+                      { id: transactionType === 'credit' ? 'card' : 'charge', value: transactionType === 'credit' ? 'دریافت کارت‌به‌کارت بابت بدهی' : 'شارژ حساب مشتری' },
+                      { id: 'cash', value: 'پرداخت نقدی' },
+                      { id: 'adjust', value: 'اصلاح حساب' },
+                      { id: 'tracking', value: 'شماره پیگیری: ' },
+                    ].map((note) => {
+                      const isActive = String(newLedgerEntry.description || '').trim() === note.value.trim();
+                      return (
+                        <button
+                          key={`${transactionType}-${note.id}`}
+                          type="button"
+                          className={["people-note-template", isActive ? 'is-active' : ''].join(' ')}
+                          onClick={() => handleLedgerInputChange({ target: { name: 'description', value: note.value } })}
+                        >
+                          {note.value}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </ModalField>
+
+                <ModalActions
+                  onCancel={() => setIsLedgerModalOpen(false)}
+                  submitText="ثبت تراکنش مالی"
+                  submittingText="در حال ثبت تراکنش..."
+                  isSubmitting={isSubmittingLedger}
+                  submitDisabled={!token}
+                />
+              </section>
             </div>
           </form>
         </Modal>

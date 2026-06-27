@@ -9,8 +9,8 @@ export type UseCommandPaletteStateOptions = {
 };
 
 export type CommandPaletteStateController = {
-  inputRef: RefObject<HTMLInputElement | null>;
-  listRef: RefObject<HTMLDivElement | null>;
+  inputRef: RefObject<HTMLInputElement>;
+  listRef: RefObject<HTMLDivElement>;
   query: string;
   activeIndex: number;
   setActiveIndex: Dispatch<SetStateAction<number>>;
@@ -22,7 +22,7 @@ export type CommandPaletteStateController = {
 export type UseCommandPaletteKeyboardNavigationOptions = {
   open: boolean;
   onClose: () => void;
-  listRef: RefObject<HTMLDivElement | null>;
+  listRef: RefObject<HTMLDivElement>;
   activeIndex: number;
   setActiveIndex: Dispatch<SetStateAction<number>>;
   combinedItems: CommandPaletteCombinedItem[];
@@ -30,20 +30,15 @@ export type UseCommandPaletteKeyboardNavigationOptions = {
   onOpenData: (item: DataSearchItem, action?: CommandPaletteDataQuickAction) => void;
 };
 
-export function useCommandPaletteState({ open, onClose }: UseCommandPaletteStateOptions): CommandPaletteStateController {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const listRef = useRef<HTMLDivElement | null>(null);
-  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+export function useCommandPaletteState({ open }: UseCommandPaletteStateOptions): CommandPaletteStateController {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!open) {
-      previouslyFocusedRef.current?.focus?.();
-      return;
-    }
+    if (!open) return;
 
-    previouslyFocusedRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     let seeded = '';
     try {
       seeded = localStorage.getItem('commandPaletteInitialQuery') || '';
@@ -54,14 +49,6 @@ export function useCommandPaletteState({ open, onClose }: UseCommandPaletteState
     setTimeout(() => inputRef.current?.focus(), 0);
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, onClose]);
 
   const setQueryAndReset = (nextQuery: string) => {
     setQuery(nextQuery);

@@ -37,6 +37,116 @@ const columnHelper = createColumnHelper<Product>();
 const PRODUCT_UNIT_OPTIONS = ['عدد', 'دستگاه', 'کارتن'] as const;
 
 
+const PRODUCTS_PRINT_REPORT_CSS = `
+  @page { size: A4 landscape; margin: 9mm; }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; color: #0f172a !important; direction: rtl; }
+  #__print_root { padding: 0 !important; text-align: initial !important; width: 100% !important; }
+  .product-print-report {
+    width: 100%;
+    direction: rtl;
+    font-family: Vazir, Tahoma, Arial, sans-serif;
+    color: #0f172a;
+  }
+  .product-print-report__header {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 10mm;
+    margin-bottom: 6mm;
+    padding: 5mm 6mm;
+    border: 1px solid #dbe4ef;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  }
+  .product-print-report__title {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.5;
+    font-weight: 900;
+    color: #0f172a;
+  }
+  .product-print-report__subtitle {
+    margin: 1mm 0 0;
+    font-size: 10px;
+    line-height: 1.8;
+    font-weight: 700;
+    color: #64748b;
+  }
+  .product-print-report__meta {
+    min-width: 52mm;
+    display: grid;
+    align-content: center;
+    gap: 1.5mm;
+    padding: 3mm 4mm;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+    color: #475569;
+    font-size: 9px;
+    font-weight: 800;
+    text-align: right;
+  }
+  .product-print-report__table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    overflow: hidden;
+    border: 1px solid #dbe4ef;
+    border-radius: 12px;
+  }
+  .product-print-report__table th,
+  .product-print-report__table td {
+    padding: 3mm 2.4mm;
+    border-left: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .product-print-report__table th:last-child,
+  .product-print-report__table td:last-child { border-left: 0; }
+  .product-print-report__table tbody tr:last-child td { border-bottom: 0; }
+  .product-print-report__table thead th {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 9px;
+    line-height: 1.4;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+  .product-print-report__table tbody td {
+    background: #fff;
+    color: #0f172a;
+    font-size: 9.5px;
+    line-height: 1.65;
+    font-weight: 700;
+  }
+  .product-print-report__table tbody tr:nth-child(even) td { background: #f8fafc; }
+  .product-print-report__table .is-id { width: 9mm; text-align: center; }
+  .product-print-report__table .is-name { width: 48mm; }
+  .product-print-report__table .is-category { width: 30mm; }
+  .product-print-report__table .is-supplier { width: 28mm; }
+  .product-print-report__table .is-price { width: 28mm; text-align: center; }
+  .product-print-report__table .is-stock { width: 18mm; text-align: center; }
+  .product-print-report__table .is-date { width: 26mm; text-align: center; }
+  .product-print-report__name {
+    display: block;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-weight: 900;
+  }
+  .product-print-report__money,
+  .product-print-report__stock,
+  .product-print-report__date {
+    direction: rtl;
+    unicode-bidi: plaintext;
+    white-space: nowrap;
+    font-weight: 900;
+  }
+`;
+
 type InventoryStatCardProps = {
   title: string;
   value: string;
@@ -923,7 +1033,7 @@ const Products: React.FC = () => {
             items={[
               { key: 'excel', label: 'Excel (XLSX)', icon: 'fa-file-excel', onClick: doExportExcel, disabled: visibleProducts.length === 0 },
               { key: 'pdf', label: 'PDF (جدول)', icon: 'fa-file-pdf', onClick: doExportPdf, disabled: visibleProducts.length === 0 },
-              { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#products-print-area', { title: 'لیست محصولات' }), disabled: visibleProducts.length === 0 },
+              { key: 'print', label: 'چاپ لیست', icon: 'fa-print', onClick: () => printArea('#products-print-report-area', { title: 'لیست محصولات', extraCss: PRODUCTS_PRINT_REPORT_CSS }), disabled: visibleProducts.length === 0 },
             ]}
           />
           <ColumnPicker table={table} storageKey="products.columns" />
@@ -1159,56 +1269,114 @@ const Products: React.FC = () => {
             </div>
           </>
 
-        <div className="ux-pagination-bar">
-          <div className="flex items-center gap-2">
+        <div className="products-pagination-shell" aria-label="صفحه‌بندی کالاها">
+          <div className="products-pagination-summary">
+            <span className="products-pagination-summary__icon" aria-hidden="true"><i className="fa-solid fa-layer-group" /></span>
+            <div>
+              <span className="products-pagination-summary__label">نمایش صفحه</span>
+              <strong className="products-pagination-summary__value">
+                {table.getState().pagination.pageIndex + 1} از {table.getPageCount().toLocaleString('fa-IR')}
+              </strong>
+            </div>
+          </div>
+          <div className="products-pagination-controls" dir="rtl">
             <button type="button"
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
-              className="ux-pagination-btn"
+              className="products-pagination-btn"
+              aria-label="اولین صفحه"
+              title="اولین صفحه"
             >
-              «
+              <i className="fa-solid fa-angles-right" aria-hidden="true" />
             </button>
             <button type="button"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="ux-pagination-btn"
+              className="products-pagination-btn"
+              aria-label="صفحه قبلی"
+              title="صفحه قبلی"
             >
-              ‹
+              <i className="fa-solid fa-chevron-right" aria-hidden="true" />
             </button>
             <button type="button"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="ux-pagination-btn"
+              className="products-pagination-btn"
+              aria-label="صفحه بعدی"
+              title="صفحه بعدی"
             >
-              ›
+              <i className="fa-solid fa-chevron-left" aria-hidden="true" />
             </button>
             <button type="button"
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
-              className="ux-pagination-btn"
+              className="products-pagination-btn"
+              aria-label="آخرین صفحه"
+              title="آخرین صفحه"
             >
-              »
+              <i className="fa-solid fa-angles-left" aria-hidden="true" />
             </button>
           </div>
-          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
-            <span>صفحه</span>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} از {table.getPageCount().toLocaleString('fa')}
-            </strong>
-          </div>
-          <select
-            value={table.getState().pagination.pageSize}
-            onChange={e => table.setPageSize(Number(e.target.value))}
-            className="ux-select ux-pagination-select"
-          >
-            {[10, 20, 30, 40, 50].map(pageSize => (
-              <option key={pageSize} value={pageSize}>
-                نمایش {pageSize}
-              </option>
-            ))}
-          </select>
+          <label className="products-pagination-size">
+            <span className="products-pagination-size__label">تعداد نمایش</span>
+            <span className="products-pagination-size__separator" aria-hidden="true">|</span>
+            <select
+              value={table.getState().pagination.pageSize}
+              onChange={e => table.setPageSize(Number(e.target.value))}
+              className="products-pagination-select"
+            >
+              {[10, 20, 30, 40, 50].map(pageSize => (
+                <option key={pageSize} value={pageSize}>
+                  {pageSize.toLocaleString('fa-IR')} ردیف
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
         </div>
+      </div>
+
+      <div id="products-print-report-area" className="hidden" aria-hidden="true">
+        <section className="product-print-report" dir="rtl">
+          <header className="product-print-report__header">
+            <div>
+              <h1 className="product-print-report__title">لیست کالاهای انبار</h1>
+              <p className="product-print-report__subtitle">گزارش رسمی موجودی، قیمت و دسته‌بندی کالاهای فروشگاه کوروش</p>
+            </div>
+            <div className="product-print-report__meta">
+              <span>تاریخ خروجی: {new Date().toLocaleDateString('fa-IR')} - {new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span>تعداد ردیف‌ها: {visibleProducts.length.toLocaleString('fa-IR')}</span>
+            </div>
+          </header>
+          <table className="product-print-report__table">
+            <thead>
+              <tr>
+                <th className="is-id">#</th>
+                <th className="is-name">نام محصول</th>
+                <th className="is-category">دسته‌بندی</th>
+                <th className="is-supplier">تأمین‌کننده</th>
+                <th className="is-price">قیمت خرید</th>
+                <th className="is-price">قیمت فروش</th>
+                <th className="is-stock">موجودی</th>
+                <th className="is-date">تاریخ ثبت</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleProducts.map((product, index) => (
+                <tr key={`print-product-${product.id}`}>
+                  <td className="is-id">{(index + 1).toLocaleString('fa-IR')}</td>
+                  <td className="is-name"><span className="product-print-report__name">{product.name || '—'}</span></td>
+                  <td className="is-category">{product.categoryName || '—'}</td>
+                  <td className="is-supplier">{product.supplierName || '—'}</td>
+                  <td className="is-price"><span className="product-print-report__money">{formatPrice(product.purchasePrice)}</span></td>
+                  <td className="is-price"><span className="product-print-report__money">{formatPrice(product.sellingPrice)}</span></td>
+                  <td className="is-stock"><span className="product-print-report__stock">{Number(product.stock_quantity ?? 0).toLocaleString('fa-IR')}</span></td>
+                  <td className="is-date"><span className="product-print-report__date">{formatIsoToShamsi(product.date_added)}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
       </div>
 
     </PageKit>
@@ -1598,17 +1766,51 @@ const Products: React.FC = () => {
         </div>
       </InventoryModal>
 
-      <InventoryModal open={!!deletingItem} title={deletingItem ? `تایید حذف مورد "${deletingItem.name}"` : ''} onClose={() => setDeletingItem(null)} iconClassName="fa-solid fa-trash-can" eyebrow="حذف امن">
-          <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">آیا از حذف مورد این آیتم مطمئن هستید؟ این عمل قابل بازگشت نیست.</p>
-          <div className="flex justify-end pt-3 space-x-3 space-x-reverse">
-            <Button type="button" onClick={() => setDeletingItem(null)} variant="secondary" size="sm" leftIcon={<i className="fa-solid fa-xmark" />}>
-              انصراف
-            </Button>
-            <Button type="button" onClick={handleConfirmDelete} disabled={isSubmittingDelete} loading={isSubmittingDelete} loadingText="در حال حذف مورد..." variant="danger" size="sm" leftIcon={<i className="fa-solid fa-trash" />}>
-              تایید و حذف مورد
-            </Button>
+      <InventoryModal
+        open={!!deletingItem}
+        title={deletingItem ? `تایید حذف مورد "${deletingItem.name}"` : 'تایید حذف مورد'}
+        onClose={() => setDeletingItem(null)}
+        widthClassName="max-w-2xl"
+        iconClassName="fa-solid fa-trash-can"
+        eyebrow="حذف امن"
+        tone="danger"
+        variant="compact"
+        layout="horizontal"
+        bodyClassName="inventory-confirm-modal-body"
+      >
+        <div className="app-modal-alert" data-modal-alert-tone="danger">
+          <span className="app-modal-alert__icon" aria-hidden="true"><i className="fa-solid fa-trash-can" /></span>
+          <div className="app-modal-alert__content">
+            <p className="app-modal-alert__eyebrow">عملیات غیرقابل بازگشت</p>
+            <h3 className="app-modal-alert__title">آیا از حذف این مورد مطمئن هستید؟</h3>
+            <p className="app-modal-alert__text">این مورد از لیست پایه انبار حذف می‌شود و برای بازیابی باید دوباره ثبت شود.</p>
+            {deletingItem ? (
+              <div className="app-modal-alert__summaryGrid">
+                <div className="app-modal-alert__summaryItem">
+                  <div className="app-modal-alert__summaryLabel">نام مورد</div>
+                  <div className="app-modal-alert__summaryValue" dir="rtl">{deletingItem.name}</div>
+                </div>
+                <div className="app-modal-alert__summaryItem">
+                  <div className="app-modal-alert__summaryLabel">نوع</div>
+                  <div className="app-modal-alert__summaryValue" dir="rtl">{deletingItem.type === 'category' ? 'دسته‌بندی' : 'تأمین‌کننده'}</div>
+                </div>
+              </div>
+            ) : null}
           </div>
-        </InventoryModal>
+        </div>
+        <ModalActions
+          onCancel={() => setDeletingItem(null)}
+          cancelText="انصراف"
+          submitText="تایید و حذف مورد"
+          submittingText="در حال حذف مورد..."
+          isSubmitting={isSubmittingDelete}
+          submitVariant="danger"
+          submitType="button"
+          onSubmitClick={handleConfirmDelete}
+          submitIconClass="fa-solid fa-trash"
+          className="inventory-confirm-modal-actions"
+        />
+      </InventoryModal>
 
       {/* Barcode Modal */}
       <InventoryModal open={isBarcodeModalOpen && !!selectedProductForBarcode} title={selectedProductForBarcode ? `بارکد برای: ${selectedProductForBarcode.name}` : ''} onClose={() => setIsBarcodeModalOpen(false)} widthClassName="max-w-sm" iconClassName="fa-solid fa-barcode" eyebrow="چاپ بارکد">          {selectedProductForBarcode ? (

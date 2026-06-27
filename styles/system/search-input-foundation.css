@@ -1329,13 +1329,13 @@ html.dark .report-local-search-icon {
 
 .sellable-select__menu-portal,
 div[class*="sellable-select__menu-portal"] {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-popover, 9400) !important;
   pointer-events: auto !important;
 }
 
 .sellable-select__menu,
 div[class*="sellable-select__menu"] {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-popover, 9400) !important;
 }
 
 html.dark .sales-select-shell .sellable-select__dropdown-indicator {
@@ -1977,4 +1977,83 @@ html.dark .app-search-field__clear:focus-visible {
     width: 100% !important;
     max-width: none !important;
   }
+}
+
+/* ===== Phase 51.74 — Visible typed text inside cash-sale SellableItemSelect =====
+   Stage 86 intentionally collapsed the react-select input to hide the inner capsule,
+   but it also hid the user's typed search text. Keep the visual surface flat while
+   restoring the real input as the visible typing layer.
+*/
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input-container:hover,
+.sales-select-shell .sellable-select__input-container:focus,
+.sales-select-shell .sellable-select__input-container:focus-within {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 4rem !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 1.45rem !important;
+  max-height: none !important;
+  overflow: visible !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  line-height: 1.55 !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input-container input:hover,
+.sales-select-shell .sellable-select__input-container input:focus,
+.sales-select-shell .sellable-select__input-container input:focus-visible,
+.sales-select-shell .sellable-select__input-container input:active,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[id^="react-select"]:hover,
+.sales-select-shell input[id^="react-select"]:focus,
+.sales-select-shell input[id^="react-select"]:focus-visible,
+.sales-select-shell input[id^="react-select"]:active {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 4rem !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 1.45rem !important;
+  max-height: none !important;
+  line-height: 1.55 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  caret-color: rgb(15 23 42) !important;
+  font: inherit !important;
+  direction: rtl !important;
+  text-align: right !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container,
+html.dark .sales-select-shell .sellable-select__input-container input,
+html.dark .sales-select-shell input[id^="react-select"] {
+  color: rgb(226 232 240) !important;
+  -webkit-text-fill-color: rgb(226 232 240) !important;
+  caret-color: rgb(226 232 240) !important;
 }

@@ -1,0 +1,112 @@
+/* Phase 51.84 — Sidebar submenu transparent surface fix
+   Scope: sidebar submenu only. Removes the accidental white/gray panel under expanded children
+   while preserving routing, accordion behavior, badges, support card and main active item logic. */
+
+[data-ui-navigation="sidebar"] [data-sidebar-submenu="true"],
+[data-ui-navigation="sidebar"] .sidebar-submenu-list,
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"],
+.app-sidebar .ux-sidebar-list .sidebar-submenu-list,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row + ul,
+.app-sidebar .ux-sidebar-list li > ul[data-sidebar-submenu="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+[data-ui-navigation="sidebar"] [data-sidebar-submenu="true"]::before,
+[data-ui-navigation="sidebar"] [data-sidebar-submenu="true"]::after,
+[data-ui-navigation="sidebar"] .sidebar-submenu-list::before,
+[data-ui-navigation="sidebar"] .sidebar-submenu-list::after,
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"]::before,
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"]::after,
+.app-sidebar .ux-sidebar-list .sidebar-submenu-list::before,
+.app-sidebar .ux-sidebar-list .sidebar-submenu-list::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="sidebar"] [data-sidebar-submenu="true"] > li,
+[data-ui-navigation="sidebar"] .sidebar-submenu-list > li,
+.app-sidebar .ux-sidebar-list [data-sidebar-submenu="true"] > li,
+.app-sidebar .ux-sidebar-list .sidebar-submenu-list > li {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Child rows must not create white/gray slabs. The selected submenu is still distinct via border/text/icon, not filled background. */
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"],
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"]:hover,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"]:hover,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"]:hover,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"]:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"],
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"],
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: rgba(59, 130, 246, 0.45) !important;
+  color: rgb(30, 64, 175) !important;
+  box-shadow: none !important;
+}
+
+html.dark [data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"],
+html.dark [data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"],
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"],
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] {
+  border-color: rgba(96, 165, 250, 0.55) !important;
+  color: rgb(147, 197, 253) !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"] .icon-bubble,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"] .icon-bubble {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"] .icon-bubble,
+[data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"] .icon-bubble,
+.app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] .icon-bubble {
+  background: rgba(239, 246, 255, 0.54) !important;
+  border-color: rgba(59, 130, 246, 0.34) !important;
+  color: rgb(30, 64, 175) !important;
+}
+
+html.dark [data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"] .icon-bubble,
+html.dark [data-ui-navigation="sidebar"] .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] .icon-bubble,
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="1"][data-sidebar-active="true"] .icon-bubble,
+html.dark .app-sidebar .ux-sidebar-list .sidebar-nav-row[data-sidebar-depth="2"][data-sidebar-active="true"] .icon-bubble {
+  background: rgba(30, 41, 59, 0.35) !important;
+  border-color: rgba(96, 165, 250, 0.38) !important;
+  color: rgb(147, 197, 253) !important;
+}

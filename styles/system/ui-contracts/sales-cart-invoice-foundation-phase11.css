@@ -382,3 +382,419 @@
 .sales-invoice-document .inv__qr-text {
   font-variant-numeric: tabular-nums;
 }
+
+
+/* Phase 51.73 — cash sales microfixes: visible combobox input, payment state, risk CTA, no date icon */
+.sales-select-shell .sellable-select__input-container {
+  flex: 1 1 auto !important;
+  min-width: 8rem !important;
+  width: auto !important;
+  max-width: 100% !important;
+  color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container {
+  color: rgb(226 232 240) !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  caret-color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  min-width: 8rem !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  line-height: 1.6 !important;
+  overflow: visible !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container input,
+html.dark .sales-select-shell input[id^="react-select"],
+html.dark .sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(226 232 240) !important;
+  -webkit-text-fill-color: rgb(226 232 240) !important;
+  caret-color: rgb(226 232 240) !important;
+}
+
+.sales-payment-chip[data-selected="true"] {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px -24px rgba(15, 23, 42, 0.45) !important;
+}
+
+.sales-payment-chip[data-selected="true"] .ux-btn__label-main {
+  font-weight: 950 !important;
+}
+
+.sales-payment-chip[data-selected="true"][data-payment-method="cash"] {
+  border: 1px solid rgb(16 185 129) !important;
+  background: linear-gradient(180deg, rgb(236 253 245), rgb(209 250 229)) !important;
+  color: rgb(4 120 87) !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,.16), 0 16px 34px -24px rgba(5,150,105,.55) !important;
+}
+
+.sales-payment-chip[data-selected="true"][data-payment-method="credit"] {
+  border: 1px solid rgb(59 130 246) !important;
+  background: linear-gradient(180deg, rgb(239 246 255), rgb(219 234 254)) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.16), 0 16px 34px -24px rgba(37,99,235,.55) !important;
+}
+
+.sales-payment-chip[data-selected="false"] {
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+}
+
+.sales-payment-chip[data-selected="false"] .ux-btn__icon {
+  opacity: .62 !important;
+}
+
+html.dark .sales-payment-chip[data-selected="false"] {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .sales-payment-chip[data-selected="true"][data-payment-method="cash"] {
+  border-color: rgb(52 211 153) !important;
+  background: rgba(6, 78, 59, .62) !important;
+  color: rgb(167 243 208) !important;
+}
+
+html.dark .sales-payment-chip[data-selected="true"][data-payment-method="credit"] {
+  border-color: rgb(96 165 250) !important;
+  background: rgba(30, 64, 175, .62) !important;
+  color: rgb(191 219 254) !important;
+}
+
+.app-date-field--no-icon .app-date-field__control,
+.app-date-field--no-icon .app-date-field__input,
+.sales-date-input--no-icon {
+  padding-inline-end: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.app-date-field--no-icon .app-date-field__icon {
+  display: none !important;
+}
+
+.sales-risk-cash-suggestion {
+  border-width: 2px !important;
+  border-color: rgb(251 113 133) !important;
+  background: linear-gradient(180deg, rgb(255 241 242), rgb(255 228 230)) !important;
+  box-shadow: 0 18px 42px -34px rgba(225, 29, 72, .55) !important;
+}
+
+.sales-risk-switch-cash-btn {
+  min-height: 42px !important;
+  padding-inline: 1rem !important;
+  border: 1px solid rgb(225 29 72) !important;
+  background: rgb(225 29 72) !important;
+  color: #fff !important;
+  box-shadow: 0 16px 34px -24px rgba(225, 29, 72, .78) !important;
+}
+
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(190 18 60) !important;
+  border-color: rgb(190 18 60) !important;
+  color: #fff !important;
+}
+
+.sales-risk-switch-cash-btn .ux-btn__icon,
+.sales-risk-switch-cash-btn .ux-btn__label-main {
+  color: #fff !important;
+}
+
+html.dark .sales-risk-cash-suggestion {
+  border-color: rgb(244 63 94) !important;
+  background: rgba(76, 5, 25, .72) !important;
+}
+
+/* Phase 51.75 — force cash-sale react-select typed query to remain visible */
+.sales-select-shell .sellable-select__value-container {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input,
+.sales-select-shell .sellable-select__input-container > div {
+  display: inline-flex !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 8rem !important;
+  max-width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  direction: rtl !important;
+  text-align: right !important;
+  overflow: visible !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input input,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[aria-autocomplete="list"] {
+  display: inline-block !important;
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  caret-color: rgb(15 23 42) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.6 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  min-width: 8rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container,
+html.dark .sales-select-shell .sellable-select__input,
+html.dark .sales-select-shell .sellable-select__input-container > div,
+html.dark .sales-select-shell .sellable-select__input-container input,
+html.dark .sales-select-shell .sellable-select__input input,
+html.dark .sales-select-shell input[id^="react-select"],
+html.dark .sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(226 232 240) !important;
+  -webkit-text-fill-color: rgb(226 232 240) !important;
+  caret-color: rgb(226 232 240) !important;
+}
+
+
+/* Phase 51.77 — explicit payment chips and risk CTA visibility */
+.sales-payment-choice {
+  min-height: 44px !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(51 65 85) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+  transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease !important;
+}
+.sales-payment-choice small {
+  display: inline-flex !important;
+  align-items: center !important;
+  border-radius: 999px !important;
+  padding: .12rem .42rem !important;
+  font-size: 9px !important;
+  font-weight: 950 !important;
+  background: rgba(255,255,255,.24) !important;
+  color: inherit !important;
+}
+.sales-payment-choice.is-active {
+  transform: translateY(-1px) !important;
+  border-width: 2px !important;
+}
+.sales-payment-choice.is-active-cash {
+  border-color: rgb(5 150 105) !important;
+  background: linear-gradient(180deg, rgb(16 185 129), rgb(5 150 105)) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18), 0 18px 38px -28px rgba(5,150,105,.9) !important;
+}
+.sales-payment-choice.is-active-credit {
+  border-color: rgb(37 99 235) !important;
+  background: linear-gradient(180deg, rgb(59 130 246), rgb(37 99 235)) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.18), 0 18px 38px -28px rgba(37,99,235,.9) !important;
+}
+.sales-payment-choice:not(.is-active):hover {
+  border-color: rgb(148 163 184) !important;
+  background: rgb(248 250 252) !important;
+}
+html.dark .sales-payment-choice {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+html.dark .sales-payment-choice.is-active-cash {
+  border-color: rgb(52 211 153) !important;
+  background: linear-gradient(180deg, rgba(16,185,129,.95), rgba(4,120,87,.95)) !important;
+  color: #fff !important;
+}
+html.dark .sales-payment-choice.is-active-credit {
+  border-color: rgb(96 165 250) !important;
+  background: linear-gradient(180deg, rgba(59,130,246,.95), rgba(30,64,175,.95)) !important;
+  color: #fff !important;
+}
+.sales-risk-switch-cash-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  border-radius: 16px !important;
+  background: rgb(225 29 72) !important;
+  border: 1px solid rgb(190 18 60) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  min-height: 42px !important;
+  padding: .55rem 1rem !important;
+  box-shadow: 0 16px 34px -24px rgba(225, 29, 72, .78) !important;
+}
+.sales-risk-switch-cash-btn,
+.sales-risk-switch-cash-btn * {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(190 18 60) !important;
+  border-color: rgb(159 18 57) !important;
+}
+
+
+/* Phase 51.78 — sales payment/invoice clarity fixes */
+.sales-payment-choice.is-active,
+.sales-payment-choice[data-selected="true"] {
+  transform: translateY(-1px) !important;
+  font-weight: 950 !important;
+}
+.sales-payment-choice.is-active-cash,
+.sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border: 1px solid rgb(16 185 129) !important;
+  background: linear-gradient(180deg, rgb(16 185 129), rgb(4 120 87)) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,.18), 0 18px 38px -26px rgba(5,150,105,.72) !important;
+}
+.sales-payment-choice.is-active-credit,
+.sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border: 1px solid rgb(59 130 246) !important;
+  background: linear-gradient(180deg, rgb(59 130 246), rgb(29 78 216)) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.18), 0 18px 38px -26px rgba(37,99,235,.72) !important;
+}
+.sales-payment-choice.is-active *,
+.sales-payment-choice[data-selected="true"] * {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+.sales-risk-switch-cash-btn,
+.sales-risk-switch-cash-btn span,
+.sales-risk-switch-cash-btn i {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+
+/* Phase 51.79 — final readable payment chips + cash-switch CTA text fix
+   Keep active state clearly visible without forcing the Persian labels to white. */
+.sales-payment-choice.is-active-cash,
+.sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border: 2px solid rgb(5 150 105) !important;
+  background: linear-gradient(180deg, rgb(236 253 245), rgb(209 250 229)) !important;
+  color: rgb(4 120 87) !important;
+  -webkit-text-fill-color: rgb(4 120 87) !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18), 0 18px 38px -28px rgba(5,150,105,.55) !important;
+}
+.sales-payment-choice.is-active-credit,
+.sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border: 2px solid rgb(37 99 235) !important;
+  background: linear-gradient(180deg, rgb(239 246 255), rgb(219 234 254)) !important;
+  color: rgb(29 78 216) !important;
+  -webkit-text-fill-color: rgb(29 78 216) !important;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.18), 0 18px 38px -28px rgba(37,99,235,.55) !important;
+}
+.sales-payment-choice.is-active *,
+.sales-payment-choice[data-selected="true"] * {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.sales-payment-choice[data-selected="true"] small {
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid currentColor !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.sales-payment-choice[data-selected="true"]::after {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: currentColor;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-size: .75rem;
+  font-weight: 950;
+}
+html.dark .sales-payment-choice.is-active-cash,
+html.dark .sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border-color: rgb(52 211 153) !important;
+  background: rgba(6, 78, 59, .42) !important;
+  color: rgb(167 243 208) !important;
+  -webkit-text-fill-color: rgb(167 243 208) !important;
+}
+html.dark .sales-payment-choice.is-active-credit,
+html.dark .sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border-color: rgb(96 165 250) !important;
+  background: rgba(30, 64, 175, .42) !important;
+  color: rgb(191 219 254) !important;
+  -webkit-text-fill-color: rgb(191 219 254) !important;
+}
+.sales-risk-switch-cash-btn {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(251 113 133) !important;
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+}
+.sales-risk-switch-cash-btn span,
+.sales-risk-switch-cash-btn i {
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+}
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(255 228 230) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(136 19 55) !important;
+  -webkit-text-fill-color: rgb(136 19 55) !important;
+}
+.sales-risk-switch-cash-btn:hover span,
+.sales-risk-switch-cash-btn:hover i,
+.sales-risk-switch-cash-btn:focus-visible span,
+.sales-risk-switch-cash-btn:focus-visible i {
+  color: rgb(136 19 55) !important;
+  -webkit-text-fill-color: rgb(136 19 55) !important;
+}
+html.dark .sales-risk-switch-cash-btn {
+  background: rgba(76, 5, 25, .62) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}
+html.dark .sales-risk-switch-cash-btn span,
+html.dark .sales-risk-switch-cash-btn i {
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}

@@ -638,3 +638,469 @@ body:has([href="#/repairs"]) {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* Phase 51.23 — Repairs toolbar alignment: search and controls must start from the right edge. */
+.repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.dark .repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+  border-bottom-color: rgba(30, 41, 59, 0.88);
+  background: rgba(2, 6, 23, 0.96);
+}
+
+.repairs-table-toolbar__title,
+.repairs-table-toolbar__searchRow,
+.repairs-table-toolbar__actionsRow,
+.repairs-table-toolbar__chipsRow {
+  width: 100%;
+  min-width: 0;
+}
+
+.repairs-table-toolbar__title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  text-align: right;
+}
+
+.repairs-table-toolbar__titleIcon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  border-radius: 14px;
+  background: rgb(248, 250, 252);
+  color: rgb(51, 65, 85);
+}
+
+.dark .repairs-table-toolbar__titleIcon {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgb(15, 23, 42);
+  color: rgb(226, 232, 240);
+}
+
+.repairs-table-toolbar__titleText {
+  min-width: 0;
+}
+
+.repairs-table-toolbar__titleText strong {
+  display: block;
+  color: rgb(15, 23, 42);
+  font-size: 16px;
+  font-weight: 950;
+  line-height: 1.7;
+}
+
+.dark .repairs-table-toolbar__titleText strong {
+  color: rgb(241, 245, 249);
+}
+
+.repairs-table-toolbar__searchRow,
+.repairs-table-toolbar__actionsRow,
+.repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.repairs-table-toolbar__searchRow .app-search-field {
+  width: min(520px, 100%);
+  max-width: 100%;
+}
+
+.repairs-table-toolbar__actionsRow {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.repairs-table-toolbar__actionsRow > * {
+  flex: 0 0 auto;
+}
+
+.repairs-table-toolbar__chipsRow {
+  padding-top: 12px;
+  border-top: 1px solid rgba(226, 232, 240, 0.72);
+}
+
+.dark .repairs-table-toolbar__chipsRow {
+  border-top-color: rgba(30, 41, 59, 0.78);
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  width: 100%;
+  padding-bottom: 2px;
+  overflow-x: auto;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+    padding: 12px;
+  }
+
+  .repairs-table-toolbar__searchRow .app-search-field,
+  .repairs-table-toolbar__actionsRow > *,
+  .repairs-table-toolbar__actionsRow .export-menu-root,
+  .repairs-table-toolbar__actionsRow .export-menu-root > button {
+    width: 100%;
+  }
+}
+
+/* Phase 51.24 — Repairs toolbar two-row responsive controls.
+   The search field and action buttons share one control row; status filters become compact and wrapping-safe. */
+.repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 520px) !important;
+  grid-template-areas:
+    "title title"
+    "actions search"
+    "chips chips" !important;
+  align-items: center !important;
+  column-gap: 12px !important;
+  row-gap: 12px !important;
+}
+
+.repairs-table-toolbar__title { grid-area: title !important; }
+.repairs-table-toolbar__searchRow { grid-area: search !important; }
+.repairs-table-toolbar__actionsRow { grid-area: actions !important; }
+.repairs-table-toolbar__chipsRow { grid-area: chips !important; }
+
+.repairs-table-toolbar__searchRow {
+  justify-content: flex-start !important;
+}
+
+.repairs-table-toolbar__searchRow .app-search-field {
+  width: 100% !important;
+  max-width: 520px !important;
+}
+
+.repairs-table-toolbar__actionsRow {
+  justify-content: flex-end !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.repairs-table-toolbar__actionsRow :where(button, .export-menu-root > button) {
+  min-height: 34px !important;
+  padding-inline: 12px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+.repairs-table-toolbar__chipsRow {
+  padding-top: 10px !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  overflow-x: visible !important;
+  padding-bottom: 0 !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip {
+  flex: 1 1 126px !important;
+  min-width: 0 !important;
+  max-width: 176px !important;
+  min-height: 34px !important;
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) 24px !important;
+  align-items: center !important;
+  justify-content: stretch !important;
+  gap: 6px !important;
+  padding: 0 8px !important;
+  border-radius: 14px !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip > span:not(.ux-filter-chip__icon):not(.ux-filter-chip__count) {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip__icon,
+.repairs-table-toolbar__chipsRow .ux-filter-chip__count {
+  width: 22px !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 1100px) {
+  .repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "title"
+      "search"
+      "actions"
+      "chips" !important;
+  }
+
+  .repairs-table-toolbar__actionsRow {
+    justify-content: flex-start !important;
+  }
+
+  .repairs-table-toolbar__searchRow .app-search-field {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .repairs-table-toolbar__actionsRow,
+  .repairs-table-toolbar__actionsRow > *,
+  .repairs-table-toolbar__actionsRow .export-menu-root,
+  .repairs-table-toolbar__actionsRow .export-menu-root > button {
+    width: 100% !important;
+  }
+
+  .repairs-table-toolbar__chipsRow .ux-filter-chip {
+    flex-basis: calc(50% - 4px) !important;
+    max-width: none !important;
+  }
+}
+
+/* Phase 51.25 — Repairs toolbar final geometry polish.
+   Root fix: search + actions are one right-aligned row, and visual helper boxes under icon-only controls are removed. */
+.repairs-page [data-ui-repair-toolbar="true"].repairs-table-toolbar {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "title"
+    "controls"
+    "chips" !important;
+  justify-items: stretch !important;
+  gap: 12px !important;
+}
+
+.repairs-table-toolbar__title { grid-area: title !important; }
+.repairs-table-toolbar__controlRow { grid-area: controls !important; }
+.repairs-table-toolbar__chipsRow { grid-area: chips !important; }
+
+.repairs-table-toolbar__controlRow {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  direction: rtl !important;
+}
+
+.repairs-table-toolbar__searchRow {
+  width: min(520px, 100%) !important;
+  flex: 0 1 520px !important;
+  min-width: 260px !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
+.repairs-table-toolbar__searchRow .app-search-field {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.repairs-table-toolbar__actionsRow {
+  width: auto !important;
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  direction: rtl !important;
+}
+
+.repairs-table-toolbar__actionsRow > *,
+.repairs-table-toolbar__actionsRow .export-menu-root,
+.repairs-table-toolbar__actionsRow .export-menu-root > button {
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
+
+.repairs-view-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+.repairs-view-toggle__button,
+.repairs-view-toggle :where(button) {
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.repairs-page .repairs-table-toolbar__searchRow .app-search-field .app-form-field__leading-icon,
+.repairs-page .repairs-table-toolbar__searchRow .app-search-field .ux-field-leading-icon {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 0 !important;
+  color: rgb(71, 85, 105) !important;
+  inset-inline-start: 10px !important;
+  inset-inline-end: auto !important;
+  left: 10px !important;
+  right: auto !important;
+}
+
+.repairs-page .repairs-table-toolbar__searchRow .app-search-field__input {
+  min-height: 40px !important;
+  height: 40px !important;
+  border-radius: 16px !important;
+  padding-inline-start: 48px !important;
+  padding-inline-end: 16px !important;
+}
+
+.repairs-table-toolbar__chipsRow {
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.72) !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  justify-content: flex-start !important;
+  direction: rtl !important;
+}
+
+.repairs-table-toolbar__chipsRow .ux-filter-chip {
+  flex: 1 1 112px !important;
+  max-width: 160px !important;
+}
+
+@media (max-width: 980px) {
+  .repairs-table-toolbar__controlRow {
+    flex-wrap: wrap !important;
+  }
+  .repairs-table-toolbar__searchRow {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .repairs-table-toolbar__actionsRow {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .repairs-table-toolbar__actionsRow > *,
+  .repairs-table-toolbar__actionsRow .export-menu-root,
+  .repairs-table-toolbar__actionsRow .export-menu-root > button {
+    width: auto !important;
+  }
+  .repairs-table-toolbar__chipsRow .ux-filter-chip {
+    flex: 1 1 calc(50% - 6px) !important;
+    max-width: none !important;
+  }
+}
+
+/* Phase 51.45 — Repairs toolbar cleanup: remove duplicate CTA and make status filters readable. */
+.repairs-page .repairs-table-toolbar__actionsRow {
+  justify-content: flex-start !important;
+}
+
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip {
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  min-height: 36px !important;
+  grid-template-columns: 22px max-content 24px !important;
+  padding-inline: 10px !important;
+  white-space: nowrap !important;
+}
+
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip > span:not(.ux-filter-chip__icon):not(.ux-filter-chip__count),
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip .leading-6 {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  max-width: none !important;
+}
+
+@media (max-width: 900px) {
+  .repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip {
+    flex: 1 1 calc(33.333% - 8px) !important;
+    min-width: 128px !important;
+    grid-template-columns: 22px minmax(0, 1fr) 24px !important;
+  }
+
+  .repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip > span:not(.ux-filter-chip__icon):not(.ux-filter-chip__count),
+  .repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip .leading-6 {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip {
+    flex: 1 1 calc(50% - 6px) !important;
+    min-width: 0 !important;
+  }
+}
+
+/* Phase 51.46 — Repair export popover and status filter readability guard. */
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip-bar {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  overflow: visible !important;
+}
+
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip {
+  flex: 0 1 auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  white-space: nowrap !important;
+}
+
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip > span:not(.ux-filter-chip__icon):not(.ux-filter-chip__count),
+.repairs-page .repairs-table-toolbar__chipsRow .ux-filter-chip .leading-6 {
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+}

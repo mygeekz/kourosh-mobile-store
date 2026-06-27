@@ -1,0 +1,600 @@
+/* Phase 51.89 — Expense modal title combobox + no-tooltip + stable date/action polish. */
+
+body .kourosh-modal__panel.expense-modal87-panel {
+  --kourosh-modal-width: 1060px !important;
+}
+
+/* Disable the generic smart tooltip behavior inside this operational modal. */
+.expense-modal87[data-no-tooltip="true"] *,
+.expense-modal87[data-no-tooltip="true"] *::before,
+.expense-modal87[data-no-tooltip="true"] *::after {
+  --tooltip-opacity: 0 !important;
+}
+
+/* Make label/content alignment truly RTL/right-aligned. */
+.expense-modal87,
+.expense-modal87__field,
+.expense-modal87__label,
+.expense-modal87__controlWrap,
+.expense-modal87__paymentGroup,
+.expense-modal89__combobox,
+.expense-modal89__comboboxMenu,
+.expense-modal89__comboboxItem,
+.expense-modal87__actions {
+  direction: rtl !important;
+}
+
+.expense-modal87__label {
+  justify-content: flex-start !important;
+  text-align: right !important;
+}
+
+.expense-modal87__control,
+.expense-modal87__select,
+.expense-modal87__textarea,
+.expense-modal89__comboboxInput {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Make the date input immovable: hover/focus/open must never change text position. */
+.expense-modal87__dateField .app-date-field,
+.expense-modal87__dateField .app-date-field:hover,
+.expense-modal87__dateField .app-date-field:focus-within,
+.expense-modal87__dateField .app-date-field[data-open="true"] {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expense-modal87__dateField .app-date-field__control,
+.expense-modal87__dateField .app-date-field__control:hover,
+.expense-modal87__dateField .app-date-field__control:focus-within,
+.expense-modal87__dateField .app-date-field[data-open="true"] .app-date-field__control {
+  position: relative !important;
+  display: block !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expense-modal87__dateField .app-date-field__input,
+.expense-modal87__dateField .app-date-field__input:hover,
+.expense-modal87__dateField .app-date-field__input:focus,
+.expense-modal87__dateField .app-date-field__input:focus-visible,
+.expense-modal87__dateField .app-date-field[data-open="true"] .app-date-field__input {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 52px !important;
+  margin: 0 !important;
+  line-height: 52px !important;
+  text-align: center !important;
+  direction: ltr !important;
+  vertical-align: middle !important;
+  transform: none !important;
+  translate: none !important;
+  letter-spacing: 0 !important;
+}
+
+.expense-modal87__dateField .app-date-field__icon {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* Real combobox visually matching the category field: simple chevron, no extra CSS button. */
+.expense-modal87__field--combo { position: relative !important; z-index: 24 !important; }
+.expense-modal89__combobox { position: relative; min-width: 0; }
+.expense-modal89__comboboxControl {
+  overflow: visible !important;
+  cursor: text !important;
+}
+.expense-modal89__comboboxInput {
+  padding-left: 44px !important;
+  padding-right: 48px !important;
+}
+.expense-modal89__comboboxChevron {
+  position: absolute !important;
+  left: 16px !important;
+  top: 50% !important;
+  z-index: 3 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+  pointer-events: none !important;
+  transform: translateY(-50%) !important;
+  transition: transform 0.18s ease, color 0.18s ease !important;
+}
+.expense-modal89__combobox[data-open="true"] .expense-modal89__comboboxChevron {
+  transform: translateY(-50%) rotate(180deg) !important;
+  color: #059669 !important;
+}
+
+.expense-modal89__comboboxMenu {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  right: 0 !important;
+  left: 0 !important;
+  z-index: 90 !important;
+  max-height: 314px !important;
+  overflow: auto !important;
+  padding: 8px !important;
+  border: 1px solid rgba(203, 213, 225, .95) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.99) !important;
+  box-shadow: 0 28px 65px -34px rgba(15,23,42,.42) !important;
+}
+.dark .expense-modal89__comboboxMenu {
+  border-color: rgba(51,65,85,.96) !important;
+  background: rgba(15,23,42,.99) !important;
+}
+.expense-modal89__comboboxItem {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+  border: 1px solid transparent !important;
+  border-radius: 17px !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  text-align: right !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.expense-modal89__comboboxItem:hover,
+.expense-modal89__comboboxItem:focus,
+.expense-modal89__comboboxItem[data-active="true"] {
+  border-color: rgba(16,185,129,.18) !important;
+  background: #f0fdf4 !important;
+  color: #065f46 !important;
+  transform: none !important;
+  outline: none !important;
+}
+.dark .expense-modal89__comboboxItem { color: #f8fafc !important; }
+.dark .expense-modal89__comboboxItem:hover,
+.dark .expense-modal89__comboboxItem:focus,
+.dark .expense-modal89__comboboxItem[data-active="true"] {
+  border-color: rgba(16,185,129,.32) !important;
+  background: rgba(6,78,59,.32) !important;
+  color: #bbf7d0 !important;
+}
+.expense-modal89__comboText {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  text-align: right;
+}
+.expense-modal89__comboText strong { color: inherit; font-size: 13px; font-weight: 950; line-height: 1.6; }
+.expense-modal89__comboText small { color: #64748b; font-size: 11px; font-weight: 850; line-height: 1.6; }
+.dark .expense-modal89__comboText small { color: #cbd5e1; }
+.expense-modal89__comboIcon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #64748b;
+}
+.expense-modal89__comboboxItem[data-active="true"] .expense-modal89__comboIcon,
+.expense-modal89__comboboxItem:hover .expense-modal89__comboIcon { background: #ffffff; color: #059669; }
+.expense-modal89__comboboxItem--create {
+  border-color: rgba(16,185,129,.24) !important;
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+}
+.expense-modal89__comboboxItem--create:hover,
+.expense-modal89__comboboxItem--create[data-active="true"] {
+  background: #d1fae5 !important;
+  color: #065f46 !important;
+}
+.expense-modal89__comboboxEmpty {
+  padding: 16px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 850;
+  text-align: center;
+}
+
+/* Lock the note field height on hover/focus so it never jumps. */
+.expense-modal87__textareaWrap,
+.expense-modal87__textareaWrap:hover,
+.expense-modal87__textareaWrap:focus-within {
+  height: 92px !important;
+  min-height: 92px !important;
+  max-height: 92px !important;
+  align-items: flex-start !important;
+  overflow: hidden !important;
+}
+
+.expense-modal87__textarea,
+.expense-modal87__textarea:hover,
+.expense-modal87__textarea:focus,
+.expense-modal87__textarea:focus-visible {
+  height: 100% !important;
+  min-height: 92px !important;
+  max-height: 92px !important;
+  line-height: 1.8 !important;
+  padding-top: 14px !important;
+  padding-bottom: 12px !important;
+}
+
+/* Remove the unwanted outer box behind payment buttons. */
+.expense-modal87__paymentGroup {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.dark .expense-modal87__paymentGroup {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.expense-modal87__paymentBtn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-left: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  color: #475569 !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  transform: none !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.22) !important;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+.expense-modal87__paymentBtn:last-child { border-left: 1px solid rgba(203, 213, 225, 0.96) !important; }
+.dark .expense-modal87__paymentBtn {
+  border-color: rgba(71, 85, 105, 0.95) !important;
+  background: #0f172a !important;
+  color: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+
+.expense-modal87__paymentBtn:hover,
+.expense-modal87__paymentBtn:focus,
+.expense-modal87__paymentBtn:focus-visible {
+  height: 52px !important;
+  min-height: 52px !important;
+  background: rgba(248, 250, 252, 0.92) !important;
+  color: #0f172a !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+  transform: none !important;
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.06) !important;
+}
+
+.dark .expense-modal87__paymentBtn:hover,
+.dark .expense-modal87__paymentBtn:focus,
+.dark .expense-modal87__paymentBtn:focus-visible {
+  background: rgba(30, 41, 59, 0.88) !important;
+  color: #f8fafc !important;
+}
+
+.expense-modal87__paymentBtn--active,
+.expense-modal87__paymentBtn--active:hover,
+.expense-modal87__paymentBtn--active:focus {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.08) !important;
+}
+
+.dark .expense-modal87__paymentBtn--active,
+.dark .expense-modal87__paymentBtn--active:hover,
+.dark .expense-modal87__paymentBtn--active:focus {
+  background: rgba(6, 78, 59, 0.45) !important;
+  color: #bbf7d0 !important;
+}
+
+/* Action buttons must be visually obvious at the bottom of the modal, but completely stable on hover. */
+.expense-modal87__actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 120 !important;
+  min-height: 84px !important;
+  padding: 16px 20px !important;
+  border-top: 1px solid rgba(226,232,240,.96) !important;
+  background: rgba(255,255,255,.98) !important;
+  backdrop-filter: blur(14px) !important;
+}
+.dark .expense-modal87__actions {
+  border-top-color: rgba(51,65,85,.96) !important;
+  background: rgba(15,23,42,.96) !important;
+}
+.expense-modal89__actionBtn {
+  min-width: 160px !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  border-radius: 18px !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  transform: none !important;
+  translate: none !important;
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease !important;
+}
+.expense-modal89__actionBtn:hover,
+.expense-modal89__actionBtn:focus,
+.expense-modal89__actionBtn:focus-visible,
+.expense-modal89__actionBtn:active {
+  transform: none !important;
+  translate: none !important;
+}
+.expense-modal89__actionBtn .ux-btn__icon,
+.expense-modal89__actionBtn .ux-btn__spinner,
+.expense-modal89__actionBtn:hover .ux-btn__icon,
+.expense-modal89__actionBtn:hover .ux-btn__spinner {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  transform: none !important;
+}
+.expense-modal89__actionBtn.ux-btn:active,
+.expense-modal89__actionBtn.app-command-button:active {
+  transform: none !important;
+}
+.expense-modal89__actionBtn--submit,
+.expense-modal89__actionBtn--submit:hover,
+.expense-modal89__actionBtn--submit:focus {
+  border-color: #059669 !important;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 18px 34px -24px rgba(5,150,105,.85) !important;
+}
+.expense-modal89__actionBtn--cancel,
+.expense-modal89__actionBtn--cancel:hover,
+.expense-modal89__actionBtn--cancel:focus {
+  border-color: rgba(203,213,225,.95) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 14px 26px -24px rgba(15,23,42,.35) !important;
+}
+
+@media (max-width: 720px) {
+  .expense-modal89__actionBtn { min-width: 0 !important; flex: 1 1 0 !important; }
+  .expense-modal87__paymentGroup { grid-template-columns: 1fr !important; }
+}
+
+
+/* Phase 51.91 — Recurring expense modal primitives */
+.recurring-expense-modal91__typeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.recurring-expense-modal91__typeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 14px;
+  border: 1px solid rgba(203, 213, 225, 0.96);
+  border-radius: 20px;
+  background: #fff;
+  color: #334155;
+  text-align: right;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.22);
+  transform: none !important;
+  transition: border-color .18s ease, background-color .18s ease, box-shadow .18s ease, color .18s ease;
+}
+
+.recurring-expense-modal91__typeBtn:hover,
+.recurring-expense-modal91__typeBtn:focus,
+.recurring-expense-modal91__typeBtn:focus-visible {
+  border-color: rgba(16, 185, 129, .28);
+  background: #f8fafc;
+  outline: none;
+  transform: none !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.06);
+}
+
+.recurring-expense-modal91__typeBtn.is-active {
+  border-color: rgba(16, 185, 129, .42);
+  background: #ecfdf5;
+  color: #047857;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.08);
+}
+
+.recurring-expense-modal91__typeBtn > i {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.recurring-expense-modal91__typeBtn.is-active > i {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.recurring-expense-modal91__typeBtn span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.recurring-expense-modal91__typeBtn strong {
+  color: inherit;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.recurring-expense-modal91__typeBtn small {
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.recurring-expense-modal91__typeBtn.is-active small {
+  color: #047857;
+}
+
+.recurring-expense-modal91__readonlyBox,
+.recurring-expense-modal91__statusToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 14px;
+  border: 1px solid rgba(203, 213, 225, 0.96);
+  border-radius: 18px;
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 900;
+  text-align: right;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.22);
+  transform: none !important;
+}
+
+.recurring-expense-modal91__statusToggle {
+  cursor: pointer;
+}
+
+.recurring-expense-modal91__statusToggle:hover,
+.recurring-expense-modal91__statusToggle:focus,
+.recurring-expense-modal91__statusToggle:focus-visible {
+  border-color: rgba(16,185,129,.28);
+  background: #f8fafc;
+  outline: none;
+  transform: none !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.06);
+}
+
+.recurring-expense-modal91__statusToggle.is-active {
+  border-color: rgba(16,185,129,.38);
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.dark .recurring-expense-modal91__typeBtn,
+.dark .recurring-expense-modal91__readonlyBox,
+.dark .recurring-expense-modal91__statusToggle {
+  border-color: rgba(71, 85, 105, 0.95);
+  background: #0f172a;
+  color: #cbd5e1;
+  box-shadow: none;
+}
+
+.dark .recurring-expense-modal91__typeBtn.is-active,
+.dark .recurring-expense-modal91__statusToggle.is-active {
+  border-color: rgba(16,185,129,.38);
+  background: rgba(6,78,59,.42);
+  color: #bbf7d0;
+}
+
+.dark .recurring-expense-modal91__typeBtn > i {
+  background: rgba(30,41,59,.92);
+  color: #cbd5e1;
+}
+
+.dark .recurring-expense-modal91__typeBtn.is-active > i {
+  background: rgba(16,185,129,.14);
+  color: #bbf7d0;
+}
+
+@media (max-width: 720px) {
+  .recurring-expense-modal91__typeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phase 51.92 — recurring payment flow + date hover stability */
+.expenses-page-date-stable .app-date-field,
+.expenses-page-date-stable .app-date-field:hover,
+.expenses-page-date-stable .app-date-field:focus-within,
+.expenses-page-date-stable .app-date-field[data-open="true"] {
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expenses-page-date-stable .app-date-field__control,
+.expenses-page-date-stable .app-date-field__control:hover,
+.expenses-page-date-stable .app-date-field__control:focus-within,
+.expenses-page-date-stable .app-date-field[data-open="true"] .app-date-field__control {
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expenses-page-date-stable .app-date-field__input,
+.expenses-page-date-stable .app-date-field__input:hover,
+.expenses-page-date-stable .app-date-field__input:focus,
+.expenses-page-date-stable .app-date-field[data-open="true"] .app-date-field__input {
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  line-height: 44px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.recurring-payment-modal92-panel {
+  --kourosh-modal-width: 960px !important;
+}
+
+.recurring-payment-modal92 .expense-modal87__main {
+  padding-bottom: 18px !important;
+}
+
+.recurring-payment-modal92__tips li {
+  line-height: 2.1 !important;
+}

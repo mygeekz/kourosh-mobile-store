@@ -1,0 +1,445 @@
+/* Phase 51.87 — Expenses modal horizontal rebuild + stable field geometry.
+   Scoped to the Expenses modal only. It prevents hover/focus from changing size or position. */
+
+body .kourosh-modal__panel.expense-modal87-panel {
+  --kourosh-modal-width: 1040px !important;
+  max-height: min(86dvh, 760px) !important;
+}
+
+body .kourosh-modal__panel.expense-modal87-panel .kourosh-modal__body.expense-modal87-body {
+  padding: 0 !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+.expense-modal87 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  min-width: 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.dark .expense-modal87 {
+  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
+.expense-modal87__main {
+  min-width: 0;
+  padding: 22px 24px 18px;
+}
+
+.expense-modal87__side {
+  min-width: 0;
+  padding: 22px 18px 18px;
+  border-right: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(248, 250, 252, 0.78);
+}
+
+.dark .expense-modal87__side {
+  border-right-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.expense-modal87__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 18px;
+  align-items: start;
+}
+
+.expense-modal87__field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expense-modal87__field--full {
+  grid-column: 1 / -1;
+}
+
+.expense-modal87__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  min-height: 21px;
+  margin: 0;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.dark .expense-modal87__label { color: #e2e8f0; }
+.expense-modal87__required { color: #e11d48; }
+
+.expense-modal87__controlWrap,
+.expense-modal87__dateControl.app-date-field__control,
+.expense-modal87 .app-date-field__control.expense-modal87__dateControl {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(203, 213, 225, 0.96) !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.22) !important;
+  transform: none !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease !important;
+}
+
+.dark .expense-modal87__controlWrap,
+.dark .expense-modal87__dateControl.app-date-field__control,
+.dark .expense-modal87 .app-date-field__control.expense-modal87__dateControl {
+  border-color: rgba(71, 85, 105, 0.95) !important;
+  background: #0f172a !important;
+  box-shadow: none !important;
+}
+
+.expense-modal87__controlWrap:hover,
+.expense-modal87__controlWrap:focus-within,
+.expense-modal87__dateControl.app-date-field__control:hover,
+.expense-modal87__dateControl.app-date-field__control:focus-within,
+.expense-modal87 .app-date-field:hover .expense-modal87__dateControl,
+.expense-modal87 .app-date-field[data-open="true"] .expense-modal87__dateControl {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-color: rgba(16, 185, 129, 0.55) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08), 0 10px 22px -20px rgba(15, 23, 42, 0.22) !important;
+  transform: none !important;
+}
+
+.dark .expense-modal87__controlWrap:hover,
+.dark .expense-modal87__controlWrap:focus-within,
+.dark .expense-modal87__dateControl.app-date-field__control:hover,
+.dark .expense-modal87__dateControl.app-date-field__control:focus-within,
+.dark .expense-modal87 .app-date-field:hover .expense-modal87__dateControl,
+.dark .expense-modal87 .app-date-field[data-open="true"] .expense-modal87__dateControl {
+  background: #0f172a !important;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12) !important;
+}
+
+.expense-modal87__control,
+.expense-modal87 .app-date-field__input {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 52px !important;
+  padding: 0 48px 0 16px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.dark .expense-modal87__control,
+.dark .expense-modal87 .app-date-field__input { color: #f8fafc !important; }
+
+.expense-modal87__control::placeholder,
+.expense-modal87 .app-date-field__input::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 700 !important;
+}
+
+.expense-modal87__control:hover,
+.expense-modal87__control:focus,
+.expense-modal87__control:focus-visible,
+.expense-modal87__controlWrap:hover .expense-modal87__control,
+.expense-modal87 .app-date-field__input:hover,
+.expense-modal87 .app-date-field__input:focus,
+.expense-modal87 .app-date-field__input:focus-visible {
+  height: 100% !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  background: transparent !important;
+}
+
+.expense-modal87__icon,
+.expense-modal87 .app-date-field__icon {
+  position: absolute !important;
+  right: 15px !important;
+  top: 50% !important;
+  z-index: 2;
+  display: grid !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  place-items: center !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+}
+
+.expense-modal87__icon--top {
+  top: 18px !important;
+  transform: none !important;
+}
+
+.expense-modal87__dateField .app-date-field,
+.expense-modal87__dateField .app-form-field,
+.expense-modal87 .app-date-field {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  transform: none !important;
+}
+
+.expense-modal87__dateField .app-date-field:hover,
+.expense-modal87__dateField .app-date-field:focus-within {
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.expense-modal87__dateField .app-date-field__input {
+  direction: ltr !important;
+  text-align: center !important;
+  padding-right: 48px !important;
+  padding-left: 48px !important;
+}
+
+.expense-modal87__selectWrap select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  cursor: pointer;
+}
+
+.expense-modal87__selectArrow {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.expense-modal87__amountWrap .expense-modal87__control { padding-left: 70px !important; }
+.expense-modal87__suffix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.expense-modal87__textareaWrap {
+  height: 92px !important;
+  min-height: 92px !important;
+  max-height: 92px !important;
+  align-items: flex-start !important;
+}
+
+.expense-modal87__textarea {
+  height: 100% !important;
+  min-height: 92px !important;
+  line-height: 1.8 !important;
+  resize: none !important;
+  padding-top: 14px !important;
+}
+
+.expense-modal87__textarea:hover,
+.expense-modal87__textarea:focus { min-height: 92px !important; padding-top: 14px !important; }
+
+.expense-modal87__paymentGroup {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  height: 52px;
+  min-height: 52px;
+  overflow: hidden;
+  border: 1px solid rgba(203, 213, 225, 0.96);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.22);
+}
+
+.dark .expense-modal87__paymentGroup {
+  border-color: rgba(71, 85, 105, 0.95);
+  background: #0f172a;
+  box-shadow: none;
+}
+
+.expense-modal87__paymentBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 52px;
+  min-height: 52px;
+  padding: 0 10px;
+  border: 0;
+  border-left: 1px solid rgba(226, 232, 240, 0.95);
+  background: transparent;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transform: none !important;
+  transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.expense-modal87__paymentBtn:last-child { border-left: 0; }
+.dark .expense-modal87__paymentBtn { border-left-color: rgba(51, 65, 85, 0.9); color: #cbd5e1; }
+
+.expense-modal87__paymentBtn:hover,
+.expense-modal87__paymentBtn:focus,
+.expense-modal87__paymentBtn:focus-visible {
+  height: 52px !important;
+  min-height: 52px !important;
+  background: rgba(241, 245, 249, 0.92) !important;
+  color: #0f172a !important;
+  transform: none !important;
+  outline: none !important;
+  box-shadow: inset 0 0 0 999px rgba(248, 250, 252, 0.28) !important;
+}
+
+.dark .expense-modal87__paymentBtn:hover,
+.dark .expense-modal87__paymentBtn:focus,
+.dark .expense-modal87__paymentBtn:focus-visible { background: rgba(30, 41, 59, 0.88) !important; color: #f8fafc !important; }
+
+.expense-modal87__paymentBtn--active,
+.expense-modal87__paymentBtn--active:hover,
+.expense-modal87__paymentBtn--active:focus {
+  background: #ecfdf5 !important;
+  color: #047857 !important;
+  box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.36) !important;
+}
+
+.dark .expense-modal87__paymentBtn--active,
+.dark .expense-modal87__paymentBtn--active:hover,
+.dark .expense-modal87__paymentBtn--active:focus {
+  background: rgba(6, 78, 59, 0.45) !important;
+  color: #bbf7d0 !important;
+}
+
+.expense-modal87__notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: 18px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.dark .expense-modal87__notice {
+  border-color: rgba(16, 185, 129, 0.36);
+  background: rgba(6, 78, 59, 0.32);
+  color: #bbf7d0;
+}
+
+.expense-modal87__summaryCard,
+.expense-modal87__tips {
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  border-radius: 22px;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 18px 36px -32px rgba(15, 23, 42, 0.32);
+}
+
+.dark .expense-modal87__summaryCard,
+.dark .expense-modal87__tips {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15, 23, 42, 0.78);
+  box-shadow: none;
+}
+
+.expense-modal87__summaryIcon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 16px;
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.expense-modal87__summaryTitle { margin-top: 10px; text-align: center; color: #334155; font-size: 12px; font-weight: 900; }
+.dark .expense-modal87__summaryTitle { color: #cbd5e1; }
+.expense-modal87__summaryAmount { margin-top: 6px; text-align: center; color: #0f172a; font-size: 19px; font-weight: 950; }
+.dark .expense-modal87__summaryAmount { color: #f8fafc; }
+
+.expense-modal87__summaryRows { margin-top: 14px; display: grid; gap: 8px; }
+.expense-modal87__summaryRows div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: #f8fafc;
+  font-size: 12px;
+}
+.dark .expense-modal87__summaryRows div { background: rgba(2, 6, 23, 0.48); }
+.expense-modal87__summaryRows span { color: #64748b; font-weight: 800; }
+.expense-modal87__summaryRows strong { min-width: 0; color: #0f172a; font-weight: 950; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dark .expense-modal87__summaryRows strong { color: #f8fafc; }
+
+.expense-modal87__tips { margin-top: 12px; }
+.expense-modal87__tipsTitle { display: flex; align-items: center; gap: 8px; color: #334155; font-size: 13px; font-weight: 950; }
+.dark .expense-modal87__tipsTitle { color: #e2e8f0; }
+.expense-modal87__tips ul { margin: 10px 0 0; padding: 0 18px 0 0; color: #64748b; font-size: 12px; font-weight: 800; line-height: 2; }
+.dark .expense-modal87__tips ul { color: #cbd5e1; }
+
+.expense-modal87__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.95);
+}
+.dark .expense-modal87__actions { border-top-color: rgba(51, 65, 85, 0.92); background: rgba(15, 23, 42, 0.92); }
+
+@media (max-width: 980px) {
+  .expense-modal87 { grid-template-columns: 1fr; }
+  .expense-modal87__side { border-right: 0; border-top: 1px solid rgba(226, 232, 240, 0.92); }
+}
+
+@media (max-width: 720px) {
+  .expense-modal87__grid { grid-template-columns: 1fr; }
+  .expense-modal87__field--full { grid-column: auto; }
+  .expense-modal87__paymentGroup { grid-template-columns: 1fr; height: auto; min-height: 0; }
+  .expense-modal87__paymentBtn { border-left: 0; border-bottom: 1px solid rgba(226,232,240,0.95); }
+  .expense-modal87__paymentBtn:last-child { border-bottom: 0; }
+}

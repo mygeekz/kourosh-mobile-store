@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '../../components/Modal';
 import ModalActions from '../../components/ModalActions';
+import { ModalAlert } from '../../components/modals';
 
 type SettingsRestoreModalProps = {
   isOpen: boolean;
@@ -12,18 +13,32 @@ type SettingsRestoreModalProps = {
 const SettingsRestoreModal: React.FC<SettingsRestoreModalProps> = ({ isOpen, dbFileName, onClose, onRestore }) => {
   if (!isOpen) return null;
 
+  const selectedFile = dbFileName || 'فایل انتخاب نشده';
+
   return (
-    <Modal title="تأیید بازیابی اطلاعات" onClose={onClose} variant="compact" iconClass="fa-solid fa-rotate-left" wrapperClassName="restore-backup-modal-v22">
-      <div className="app-modal-confirm-card app-modal-confirm-card--danger">
-        <span className="app-modal-confirm-card__icon"><i className="fa-solid fa-triangle-exclamation" /></span>
-        <div className="min-w-0">
-          <p className="app-modal-confirm-card__title">بازیابی فایل بکاپ، اطلاعات فعلی را جایگزین می‌کند.</p>
-          <p className="app-modal-confirm-card__text">
-            فایل انتخاب‌شده: <bdi className="app-modal-confirm-card__file">{dbFileName || 'فایل انتخاب نشده'}</bdi>
-          </p>
-          <p className="app-modal-confirm-card__hint">این عملیات برگشت‌پذیر نیست؛ قبل از تأیید، از درست بودن فایل مطمئن شو.</p>
-        </div>
-      </div>
+    <Modal
+      title="تأیید بازیابی اطلاعات"
+      onClose={onClose}
+      isOpen={isOpen}
+      variant="compact"
+      size="md"
+      layout="horizontal"
+      tone="danger"
+      iconClass="fa-solid fa-rotate-left"
+      kicker="بازیابی بکاپ"
+      ariaDescription="بازیابی فایل بکاپ، اطلاعات فعلی را جایگزین می‌کند."
+    >
+      <ModalAlert
+        tone="danger"
+        iconClass="fa-solid fa-triangle-exclamation"
+        eyebrow="عملیات حساس و غیرقابل بازگشت"
+        title="بازیابی فایل بکاپ، اطلاعات فعلی را جایگزین می‌کند."
+        text="قبل از تأیید، مطمئن شو فایل انتخاب‌شده مربوط به همین سیستم و نسخه درست پایگاه داده است."
+        fileLabel="فایل انتخاب‌شده"
+        fileName={selectedFile}
+        fileMode="inline"
+      />
+
       <ModalActions
         onCancel={onClose}
         cancelText="انصراف"

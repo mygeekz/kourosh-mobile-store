@@ -1,8 +1,8 @@
 // src/components/ShamsiDatePicker.tsx
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import moment from 'jalali-moment';
 import { useStyle } from '../contexts/StyleContext';
+import PortalLayer from './ui/PortalLayer';
 
 type Props = {
   id?: string;
@@ -15,6 +15,7 @@ type Props = {
   inputClassName?: string;
   preview?: string;
   disabled?: boolean;
+  hideIcon?: boolean;
 };
 
 /**
@@ -32,6 +33,7 @@ const ShamsiDatePicker: React.FC<Props> = ({
   inputClassName = '',
   preview = 'انتخاب تاریخ',
   disabled = false,
+  hideIcon = false,
 }) => {
   const { style } = useStyle();
   const brand = `hsl(${style.primaryHue} 90% 55%)`;
@@ -189,7 +191,7 @@ const ShamsiDatePicker: React.FC<Props> = ({
   // کلاس‌های تم (دارک/لایت)
   // Panel as a portal so it won't be clipped inside scrollable modals
   const panelCls =
-    'fixed z-[9999] w-[22rem] rounded-[28px] border border-slate-200/90 bg-white p-4 text-slate-800 shadow-[0_28px_70px_-28px_rgba(15,23,42,0.45)] ' +
+    'app-date-popover-panel fixed w-[22rem] rounded-[28px] border border-slate-200/90 bg-white p-4 text-slate-800 shadow-[0_28px_70px_-28px_rgba(15,23,42,0.45)] ' +
     'dark:border-slate-800 dark:bg-slate-950 dark:text-gray-100 dark:shadow-[0_30px_80px_-30px_rgba(2,6,23,0.88)]';
   const cellBase =
     'h-11 w-11 inline-flex items-center justify-center rounded-2xl text-base font-black select-none transition-all duration-200';
@@ -250,8 +252,13 @@ const ShamsiDatePicker: React.FC<Props> = ({
     };
   }, [open]);
 
+  const rootClassName = [
+    'app-date-field app-form-field app-form-field--date',
+    hideIcon ? 'app-date-field--no-icon' : 'app-form-field--with-trailing-icon',
+  ].join(' ');
+
   return (
-    <div className="app-date-field app-form-field app-form-field--date app-form-field--with-trailing-icon" ref={wrapperRef} dir="ltr" data-ui-field="true" data-ui-field-kind="date" data-open={open ? 'true' : 'false'} data-disabled={disabled ? 'true' : 'false'}>
+    <div className={rootClassName} ref={wrapperRef} dir="ltr" data-ui-field="true" data-ui-field-kind="date" data-open={open ? 'true' : 'false'} data-disabled={disabled ? 'true' : 'false'}>
       <div
         className={['app-date-field__control', inputClassName].filter(Boolean).join(' ')}
         onClick={() => !disabled && setOpen(true)}
@@ -272,13 +279,16 @@ const ShamsiDatePicker: React.FC<Props> = ({
           className="app-date-field__input app-form-field__control"
         />
 
-        <span className="app-date-field__icon" aria-hidden="true">
-          <i className="fa-regular fa-calendar" style={open ? undefined : { color: brand }} />
-        </span>
+        {!hideIcon ? (
+          <span className="app-date-field__icon" aria-hidden="true">
+            <i className="fa-regular fa-calendar" style={open ? undefined : { color: brand }} />
+          </span>
+        ) : null}
       </div>
 
-      {open && panelPos && createPortal(
-        <div ref={panelRef} role="dialog" aria-modal="false" className={panelCls} style={{ top: panelPos.top, left: panelPos.left }} onPointerDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+      {open && panelPos ? (
+        <PortalLayer layer="popover" className="app-date-popover-layer">
+          <div ref={panelRef} role="dialog" aria-modal="false" aria-label="تقویم شمسی" className={panelCls} style={{ top: panelPos.top, left: panelPos.left }} onPointerDown={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
           {/* هدر ماه/سال */}
           <div className="mb-3 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50/90 px-2 py-2 dark:border-slate-800 dark:bg-slate-900">
             <button
@@ -394,9 +404,9 @@ const ShamsiDatePicker: React.FC<Props> = ({
               تایید
             </button>
           </div>
-        </div>,
-        document.body
-      )}
+          </div>
+        </PortalLayer>
+      ) : null}
 
       {/* CSS متغیر برند برای رینگ امروز */}
       <style>{`:root { --brand: ${brand}; }`}</style>

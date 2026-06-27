@@ -3744,7 +3744,7 @@ html.dark .installment-payment-modal-shell-v444 .installment-payment-modal__main
 .smart-tooltip-layer[data-tooltip-layer-root="body-portal"],
 .smart-tooltip-layer,
 .smart-tooltip-bubble {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   isolation: isolate !important;
   pointer-events: none !important;
 }

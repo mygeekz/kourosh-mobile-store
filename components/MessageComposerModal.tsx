@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import InventoryModal from './InventoryModal';
 import ModalActions from './ModalActions';
+import ModalField from './ModalField';
 import ToggleSwitch from './ToggleSwitch';
 import { apiFetch } from '../utils/apiFetch';
 import { humanizeTelegramErrorText } from '../utils/telegramErrorMessage';
@@ -43,6 +44,9 @@ const quickTemplates = [
   { key: 'ready', label: 'آماده تحویل', icon: 'fa-solid fa-box-open', text: 'سلام {name} عزیز، سفارش شما آماده تحویل است. برای هماهنگی با فروشگاه در ارتباط باشید.' },
   { key: 'thanks', label: 'تشکر خرید', icon: 'fa-regular fa-heart', text: 'سلام {name} عزیز، از خرید و اعتماد شما سپاسگزاریم. در صورت نیاز به پیگیری، همراه شما هستیم.' },
 ];
+
+
+const emojiPresets = ['😊', '🙏', '✅', '💬', '📌', '⏰', '💳', '📱', '🤝', '❤️', '🌟', '🔔'];
 
 const cleanText = (value: unknown) => String(value ?? '').trim();
 
@@ -118,6 +122,7 @@ const MessageComposerModal: React.FC<Props> = ({ open, onClose, onQueued, initia
   const [text, setText] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [customers, setCustomers] = useState<PersonOption[]>([]);
   const [partners, setPartners] = useState<PersonOption[]>([]);
   const openInitializedRef = useRef(false);
@@ -132,6 +137,7 @@ const MessageComposerModal: React.FC<Props> = ({ open, onClose, onQueued, initia
     if (openInitializedRef.current) return;
     openInitializedRef.current = true;
     setErr(null);
+    setShowEmojiPicker(false);
 
     if (initialRecipient) {
       setRecipientType(initialRecipient.type ?? 'customer');
@@ -293,6 +299,12 @@ const MessageComposerModal: React.FC<Props> = ({ open, onClose, onQueued, initia
   };
 
 
+  const appendEmoji = (emoji: string) => {
+    setText((prev) => `${prev}${prev && !prev.endsWith(' ') ? ' ' : ''}${emoji}`);
+    setShowEmojiPicker(false);
+  };
+
+
   const selectedChannelLabel = activeChannels.map((key) => channelMeta[key].title).join('، ') || 'انتخاب نشده';
   const recipientDisplayName = (recipientName || previewVariables.name || 'گیرنده').trim();
   const readyChecks = [
@@ -309,300 +321,282 @@ const MessageComposerModal: React.FC<Props> = ({ open, onClose, onQueued, initia
       open={open}
       onClose={onClose}
       title="ارسال پیام"
-      widthClassName="max-w-[920px]"
+      widthClassName="max-w-[1120px]"
       overlayClassName="message-composer-modal-overlay"
+      panelClassName="message-composer-canonical-panel"
+      bodyClassName="message-composer-canonical-body"
       iconClassName="fa-solid fa-message"
       eyebrow="پیام‌رسانی"
       hideCloseButton
+      variant="expansive"
+      layout="vertical"
+      tone="info"
     >
-      <form onSubmit={handleSend} className="mc68 message-composer-apple message-composer-apple--compact" dir="rtl">
-        <div className="mc68-shell">
-          <section className="mc68-readiness-panel" aria-label="آمادگی ارسال پیام">
-            <div className="mc68-readiness-summary">
-              <div className="mc68-metric-card">
-                <span className="mc68-metric-card__icon mc68-metric-card__icon--green"><i className="fa-solid fa-comment-sms" /></span>
+      <form onSubmit={handleSend} className="message-composer-canonical modal-template-form modal-template-form--message" dir="rtl">
+        <section className="message-composer-status" aria-label="آمادگی ارسال پیام">
+          <div className="message-composer-status__metrics">
+            <div className="modal-template-metric message-composer-status__metric">
+              <span className="modal-template-metric__icon is-success"><i className="fa-solid fa-comment-sms" /></span>
+              <div className="modal-template-metric__copy">
                 <strong>{selectedChannelLabel || 'انتخاب نشده'}</strong>
-                <small>مسیر ارسال</small>
+                <span>مسیر ارسال</span>
               </div>
-              <div className="mc68-metric-card">
-                <span className="mc68-metric-card__icon"><i className="fa-solid fa-font" /></span>
+            </div>
+            <div className="modal-template-metric message-composer-status__metric">
+              <span className="modal-template-metric__icon"><i className="fa-solid fa-font" /></span>
+              <div className="modal-template-metric__copy">
                 <strong>{charsLeft.toLocaleString('fa-IR')}</strong>
-                <small>کاراکتر باقی‌مانده از {MESSAGE_LIMIT.toLocaleString('fa-IR')}</small>
+                <span>کاراکتر باقی‌مانده از {MESSAGE_LIMIT.toLocaleString('fa-IR')}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="message-composer-status__main">
+            <p>گام‌های ارسال پیام را کامل کنید. خروجی نهایی قبل از ورود به صف ارسال قابل کنترل است.</p>
+            <div className="message-composer-progress" aria-hidden="true"><span style={{ width: `${deliveryScore}%` }} /></div>
+            <div className="message-composer-checks">
+              {readyChecks.map((item) => (
+                <span key={item.key} className={item.done ? 'is-done' : ''}>
+                  <i className={item.done ? 'fa-solid fa-check' : 'fa-regular fa-circle'} />
+                  {item.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {err ? (
+          <div className="message-composer-alert" role="alert">
+            <i className="fa-solid fa-circle-exclamation" />
+            <span>{err}</span>
+          </div>
+        ) : null}
+
+        <div className="message-composer-grid">
+          <section className="modal-template-card message-composer-card message-composer-route">
+            <header className="message-composer-card__head">
+              <span className="message-composer-card__icon"><i className="fa-solid fa-user" /></span>
+              <div>
+                <h4>گیرنده و مسیر ارسال</h4>
+                <p>گیرنده، کانال، شماره تماس و وضعیت اتصال را یکجا کنترل کنید.</p>
+              </div>
+            </header>
+
+            <div className="message-composer-segment" role="tablist" aria-label="نوع گیرنده">
+              {(Object.keys(recipientTypeMeta) as RecipientType[]).map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  disabled={recipientLocked}
+                  className={recipientType === type ? 'is-active' : ''}
+                  onClick={() => setOnlyIfSafe(type)}
+                >
+                  <i className={recipientTypeMeta[type].icon} />
+                  <span>{recipientTypeMeta[type].label}</span>
+                </button>
+              ))}
+            </div>
+
+            {recipientType === 'manual' ? (
+              <ModalField label="نام گیرنده" iconClass="fa-solid fa-user-pen" required error={validation.recipientName}>
+                <input
+                  value={recipientName}
+                  onChange={(event) => setRecipientName(event.target.value)}
+                  placeholder="مثلاً آقای محمدی"
+                />
+              </ModalField>
+            ) : recipientLocked ? (
+              <ModalField label={recipientType === 'partner' ? 'همکار انتخاب‌شده' : 'مشتری انتخاب‌شده'} iconClass="fa-solid fa-user" required error={validation.recipientId}>
+                <input value={recipientName || 'بدون نام'} readOnly />
+              </ModalField>
+            ) : (
+              <ModalField label={recipientType === 'partner' ? 'انتخاب همکار' : 'انتخاب مشتری'} iconClass="fa-solid fa-user" required error={validation.recipientId}>
+                <select value={recipientId} onChange={(e) => setRecipientId(e.target.value)}>
+                  <option value="">انتخاب کنید</option>
+                  {options.map((person) => (
+                    <option key={person.id} value={person.id}>{person.name}</option>
+                  ))}
+                </select>
+              </ModalField>
+            )}
+
+            <div className="message-composer-channel-block">
+              <div className="message-composer-label-row">
+                <span>کانال ارسال <em>*</em></span>
+              </div>
+              <div className="message-composer-channel-grid">
+                {(['sms', 'telegram'] as ChannelKey[]).map((key) => {
+                  const active = channels[key];
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      className={active ? 'is-active' : ''}
+                      onClick={() => selectChannel(key)}
+                      aria-pressed={active}
+                    >
+                      <span className="message-composer-channel__radio" />
+                      <span className="message-composer-channel__copy">
+                        <strong>{channelMeta[key].title}</strong>
+                        <small>{active ? 'انتخاب‌شده' : channelMeta[key].hint}</small>
+                      </span>
+                      <span className={`message-composer-channel__icon message-composer-channel__icon--${key}`}><i className={channelMeta[key].icon} /></span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="mc68-readiness-main">
-              <p>گام‌های ارسال پیام را تکمیل کنید. خروجی نهایی قبل از ورود به صف ارسال قابل کنترل است.</p>
-              <div className="mc68-progress" aria-hidden="true"><span style={{ width: `${deliveryScore}%` }} /></div>
-              <div className="mc68-checks">
-                {readyChecks.map((item) => (
-                  <span key={item.key} className={item.done ? 'is-done' : ''}>
-                    <i className={item.done ? 'fa-solid fa-check' : 'fa-regular fa-circle'} />
-                    {item.label}
-                  </span>
-                ))}
-              </div>
+            <div className="message-composer-inline-fields">
+              {channels.sms ? (
+                <ModalField label="شماره موبایل" iconClass="fa-solid fa-phone" required error={validation.phoneNumber}>
+                  <input
+                    value={phoneNumber}
+                    inputMode="tel"
+                    dir="ltr"
+                    onChange={(event) => setPhoneNumber(event.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="09xxxxxxxxx"
+                  />
+                </ModalField>
+              ) : null}
+
+              {channels.telegram ? (
+                <ModalField label="Chat ID تلگرام" iconClass="fa-brands fa-telegram" required error={validation.telegramChatId}>
+                  <input
+                    value={telegramChatId}
+                    dir="ltr"
+                    onChange={(event) => setTelegramChatId(event.target.value)}
+                    placeholder="123456789"
+                  />
+                </ModalField>
+              ) : null}
             </div>
+
+            {channels.telegram && recipientType !== 'manual' ? (
+              <div className="message-composer-route-footer">
+                <div className="message-composer-save-chatid">
+                  <ToggleSwitch checked={saveTelegramChatId} onCheckedChange={setSaveTelegramChatId} ariaLabel="ذخیره Chat ID تلگرام" size="sm" />
+                  <span>ذخیره Chat ID در پرونده</span>
+                </div>
+                {tgStartLink ? (
+                  <button type="button" onClick={() => copyToClipboard(tgStartLink)}>
+                    <i className="fa-solid fa-link" />
+                    کپی لینک اتصال
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
           </section>
 
-          {err ? (
-            <div className="mc68-alert" role="alert">
-              <i className="fa-solid fa-circle-exclamation" />
-              <span>{err}</span>
+          <section className="modal-template-card message-composer-card message-composer-compose">
+            <header className="message-composer-card__head">
+              <span className="message-composer-card__icon"><i className="fa-solid fa-pen-nib" /></span>
+              <div>
+                <h4>متن پیام</h4>
+                <p>قالب آماده انتخاب کنید یا متن اختصاصی بنویسید؛ پیش‌نمایش قبل از ثبت دیده می‌شود.</p>
+              </div>
+            </header>
+
+            <div className="message-composer-template-grid" aria-label="قالب‌های سریع">
+              {quickTemplates.map((template) => (
+                <button key={template.key} type="button" onClick={() => setText(template.text)}>
+                  <i className={template.icon} />
+                  {template.label}
+                </button>
+              ))}
             </div>
-          ) : null}
 
-          <div className="mc68-grid">
-            <section className="mc68-card mc68-route">
-              <header className="mc68-card__head">
-                <span className="mc68-card__icon"><i className="fa-solid fa-user" /></span>
-                <div>
-                  <h4>گیرنده و مسیر ارسال</h4>
-                  <p>گیرنده، کانال، شماره تماس و وضعیت اتصال را یکجا کنترل کنید.</p>
-                </div>
-              </header>
-
-              <div className="mc68-segment" role="tablist" aria-label="نوع گیرنده">
-                {(Object.keys(recipientTypeMeta) as RecipientType[]).map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    disabled={recipientLocked}
-                    className={recipientType === type ? 'is-active' : ''}
-                    onClick={() => setOnlyIfSafe(type)}
-                  >
-                    <i className={recipientTypeMeta[type].icon} />
-                    <span>{recipientTypeMeta[type].label}</span>
-                  </button>
-                ))}
-              </div>
-
-              {recipientType === 'manual' ? (
-                <div className="mc68-field">
-                  <label>نام گیرنده <em>*</em></label>
-                  <div className={`mc68-clean-control ${validation.recipientName ? 'is-error' : ''}`}>
-                    <div
-                      role="textbox"
-                      tabIndex={0}
-                      contentEditable
-                      suppressContentEditableWarning
-                      className="mc68-clean-editor mc68-clean-editor--rtl"
-                      data-placeholder="مثلاً آقای محمدی"
-                      onInput={(event) => setRecipientName(event.currentTarget.textContent || '')}
-                    >{recipientName}</div>
-                    <span className="mc68-clean-divider" />
-                    <span className="mc68-clean-icon"><i className="fa-solid fa-user-pen" /></span>
-                  </div>
-                  {validation.recipientName ? <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.recipientName}</small> : null}
-                </div>
-              ) : recipientLocked ? (
-                <div className="mc68-field">
-                  <label>{recipientType === 'partner' ? 'همکار انتخاب‌شده' : 'مشتری انتخاب‌شده'} <em>*</em></label>
-                  <div className={`mc68-clean-control ${validation.recipientId ? 'is-error' : ''}`}>
-                    <div className="mc68-clean-editor mc68-clean-editor--rtl mc68-clean-editor--readonly">{recipientName || 'بدون نام'}</div>
-                    <span className="mc68-clean-divider" />
-                    <span className="mc68-clean-icon"><i className="fa-solid fa-user" /></span>
-                  </div>
-                  {validation.recipientId ? <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.recipientId}</small> : null}
-                </div>
-              ) : (
-                <div className="mc68-field">
-                  <label>{recipientType === 'partner' ? 'انتخاب همکار' : 'انتخاب مشتری'} <em>*</em></label>
-                  <div className={`mc68-control mc68-control--select mc68-control--no-focus ${validation.recipientId ? 'is-error' : ''}`}>
-                    <select className="mc68-select-clean" value={recipientId} onChange={(e) => setRecipientId(e.target.value)}>
-                      <option value="">انتخاب کنید</option>
-                      {options.map((person) => (
-                        <option key={person.id} value={person.id}>{person.name}</option>
-                      ))}
-                    </select>
-                    <span className="mc68-control__divider" />
-                    <span className="mc68-control__icon"><i className="fa-solid fa-user" /></span>
-                  </div>
-                  {validation.recipientId ? <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.recipientId}</small> : null}
-                </div>
-              )}
-
-              <div className="mc68-channel-block">
-                <div className="mc68-label-row">
-                  <span>کانال ارسال <em>*</em></span>
-                </div>
-                <div className="mc68-channel-grid">
-                  {(['sms', 'telegram'] as ChannelKey[]).map((key) => {
-                    const active = channels[key];
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        className={`mc68-channel ${active ? 'is-active' : ''}`}
-                        onClick={() => selectChannel(key)}
-                      >
-                        <span className="mc68-channel__radio" />
-                        <span className="mc68-channel__copy">
-                          <strong>{channelMeta[key].title}</strong>
-                          <small>{active ? 'انتخاب‌شده' : channelMeta[key].hint}</small>
-                        </span>
-                        <span className={`mc68-channel__icon mc68-channel__icon--${key}`}><i className={channelMeta[key].icon} /></span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mc68-inline-fields">
-                {channels.sms ? (
-                  <div className="mc68-field">
-                    <label>شماره موبایل <em>*</em></label>
-                    <div className={`mc68-clean-control ${validation.phoneNumber ? 'is-error' : ''}`}>
-                      <div
-                        role="textbox"
-                        tabIndex={0}
-                        contentEditable
-                        suppressContentEditableWarning
-                        className="mc68-clean-editor mc68-clean-editor--ltr"
-                        data-placeholder="09xxxxxxxxx"
-                        onInput={(event) => {
-                          const value = (event.currentTarget.textContent || '').replace(/[^0-9]/g, '');
-                          if (event.currentTarget.textContent !== value) event.currentTarget.textContent = value;
-                          setPhoneNumber(value);
-                        }}
-                      >{phoneNumber}</div>
-                      <span className="mc68-clean-divider" />
-                      <span className="mc68-clean-icon"><i className="fa-solid fa-phone" /></span>
-                    </div>
-                    {validation.phoneNumber ? <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.phoneNumber}</small> : null}
-                  </div>
-                ) : null}
-
-                {channels.telegram ? (
-                  <div className="mc68-field">
-                    <label>Chat ID تلگرام <em>*</em></label>
-                    <div className={`mc68-clean-control ${validation.telegramChatId ? 'is-error' : ''}`}>
-                      <div
-                        role="textbox"
-                        tabIndex={0}
-                        contentEditable
-                        suppressContentEditableWarning
-                        className="mc68-clean-editor mc68-clean-editor--ltr"
-                        data-placeholder="123456789"
-                        onInput={(event) => {
-                          const value = event.currentTarget.textContent || '';
-                          setTelegramChatId(value);
-                        }}
-                      >{telegramChatId}</div>
-                      <span className="mc68-clean-divider" />
-                      <span className="mc68-clean-icon"><i className="fa-brands fa-telegram" /></span>
-                    </div>
-                    {validation.telegramChatId ? (
-                      <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.telegramChatId}</small>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
-
-              {channels.telegram && recipientType !== 'manual' ? (
-                <div className="mc68-route-footer">
-                  <div className="mc68-save-chatid">
-                    <ToggleSwitch checked={saveTelegramChatId} onCheckedChange={setSaveTelegramChatId} ariaLabel="ذخیره Chat ID تلگرام" size="sm" />
-                    <span>ذخیره Chat ID در پرونده</span>
-                  </div>
-
-                </div>
-              ) : null}
-            </section>
-
-            <section className="mc68-card mc68-compose">
-              <header className="mc68-card__head">
-                <span className="mc68-card__icon"><i className="fa-solid fa-pen-nib" /></span>
-                <div>
-                  <h4>متن پیام</h4>
-                  <p>قالب آماده انتخاب کنید یا متن اختصاصی بنویسید؛ پیش‌نمایش قبل از ثبت دیده می‌شود.</p>
-                </div>
-              </header>
-
-              <div className="mc68-template-grid" aria-label="قالب‌های سریع">
-                {quickTemplates.map((template) => (
-                  <button key={template.key} type="button" onClick={() => setText(template.text)}>
-                    <i className={template.icon} />
-                    {template.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mc68-field">
-                <label>متن پیام <em>*</em></label>
+            <div className="message-composer-text-field">
+              <ModalField label="متن پیام" iconClass="fa-solid fa-message" required error={validation.text}>
                 <textarea
-                  className={`mc68-textarea ${validation.text ? 'is-error' : ''}`}
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="متن پیام را بنویسید…"
                   rows={8}
                 />
-                <div className="mc68-textarea-meta">
-                  <span>{text.length.toLocaleString('fa-IR')} / {MESSAGE_LIMIT.toLocaleString('fa-IR')}</span>
-                  <span><i className="fa-regular fa-face-smile" /></span>
+                <div className="message-composer-textarea-meta">
+                  <span>{text.length.toLocaleString('fa-IR')} / {MESSAGE_LIMIT.toLocaleString('fa-IR')} کاراکتر</span>
+                  <button
+                    type="button"
+                    className="message-composer-emoji-trigger"
+                    aria-expanded={showEmojiPicker}
+                    aria-label="انتخاب ایموجی"
+                    onClick={() => setShowEmojiPicker((current) => !current)}
+                  >
+                    <i className="fa-regular fa-face-smile" />
+                  </button>
                 </div>
-                {validation.text ? <small className="mc68-error"><i className="fa-solid fa-circle-exclamation" /> {validation.text}</small> : null}
-              </div>
-
-              <div className="mc68-variables">
-                <span>متغیرهای قابل استفاده</span>
-                <div>
-                  <button type="button">{'{name}'} <small>نام مشتری</small></button>
-                  <button type="button">{'{phone}'} <small>شماره تماس</small></button>
-                  <button type="button">{'{amount}'} <small>مبلغ</small></button>
-                  <button type="button">{'{dueDate}'} <small>سررسید</small></button>
-                  <button type="button">{'{link}'} <small>لینک پرداخت</small></button>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <section className="mc68-preview">
-            <header className="mc68-preview__head">
-              <span><i className="fa-solid fa-eye" /> پیش‌نمایش پیام</span>
-              <strong>{deliveryScore.toLocaleString('fa-IR')}٪ آماده ارسال</strong>
-            </header>
-            <div className="mc68-preview-card">
-              <div className="mc68-preview-recipient">
-                <span className="mc68-preview-avatar"><i className="fa-solid fa-user" /></span>
-                <div>
-                  <strong>{recipientDisplayName}</strong>
-                  <small>{selectedChannelLabel}</small>
-                </div>
-                <em>{activeChannels.length ? 'آماده بررسی' : 'کانال انتخاب نشده'}</em>
-              </div>
-
-              <div className="mc68-preview-body">
-                {resolvedPreview.trim() ? (
-                  <div className="mc68-preview-bubble">
-                    {resolvedPreview.trim()}
-                    <span><i className="fa-solid fa-check-double" /> 11:30</span>
+                {showEmojiPicker ? (
+                  <div className="message-composer-emoji-picker" role="listbox" aria-label="ایموجی‌های سریع">
+                    {emojiPresets.map((emoji) => (
+                      <button key={emoji} type="button" role="option" onClick={() => appendEmoji(emoji)}>
+                        {emoji}
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  <div className="mc68-preview-empty">
-                    <span><i className="fa-regular fa-message" /></span>
-                    <strong>هنوز متنی وارد نشده است.</strong>
-                    <small>برای دیدن پیش‌نمایش، متن پیام را در باکس بالا وارد کنید.</small>
-                  </div>
-                )}
+                ) : null}
+              </ModalField>
+            </div>
+
+            <div className="message-composer-variables">
+              <span>متغیرهای قابل استفاده</span>
+              <div>
+                {(['name', 'phone', 'amount', 'dueDate', 'link'] as const).map((key) => (
+                  <button key={key} type="button" onClick={() => setText((prev) => `${prev}${prev ? ' ' : ''}{${key}}`)}>
+                    {`{${key}}`}
+                    <small>{key === 'name' ? 'نام مشتری' : key === 'phone' ? 'شماره تماس' : key === 'amount' ? 'مبلغ' : key === 'dueDate' ? 'سررسید' : 'لینک پرداخت'}</small>
+                  </button>
+                ))}
               </div>
             </div>
           </section>
-
-          <ModalActions
-            className="mc68-actions"
-            onCancel={onClose}
-            helperTitle="ثبت در صف ارسال"
-            helperText="پیام پس از ثبت، در صف ارسال قرار می‌گیرد و در زمان‌بندی تعیین‌شده ارسال خواهد شد."
-            helperIconClass="fa-solid fa-circle-info"
-            submitText="ثبت در صف ارسال"
-            submittingText="در حال ثبت پیام..."
-            isSubmitting={loading}
-            submitDisabled={!canSend}
-            cancelIconClass="fa-solid fa-arrow-right"
-            submitIconClass="fa-solid fa-paper-plane"
-          />
         </div>
+
+        <section className="message-composer-preview">
+          <header className="message-composer-preview__head">
+            <span><i className="fa-solid fa-eye" /> پیش‌نمایش پیام</span>
+            <strong>{deliveryScore.toLocaleString('fa-IR')}٪ آماده ارسال</strong>
+          </header>
+          <div className="message-composer-preview-card">
+            <div className="message-composer-preview-recipient">
+              <span className="message-composer-preview-avatar"><i className="fa-solid fa-user" /></span>
+              <div>
+                <strong>{recipientDisplayName}</strong>
+                <small>{selectedChannelLabel}</small>
+              </div>
+              <em>{activeChannels.length ? 'آماده بررسی' : 'کانال انتخاب نشده'}</em>
+            </div>
+
+            <div className="message-composer-preview-body">
+              {resolvedPreview.trim() ? (
+                <div className="message-composer-preview-bubble">
+                  {resolvedPreview.trim()}
+                  <span><i className="fa-solid fa-check-double" /> 11:30</span>
+                </div>
+              ) : (
+                <div className="message-composer-preview-empty">
+                  <span><i className="fa-regular fa-message" /></span>
+                  <strong>هنوز متنی وارد نشده است.</strong>
+                  <small>برای دیدن پیش‌نمایش، متن پیام را در باکس بالا وارد کنید.</small>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <ModalActions
+          className="message-composer-actions"
+          onCancel={onClose}
+          helperTitle="ثبت در صف ارسال"
+          helperText="پیام پس از ثبت، در صف ارسال قرار می‌گیرد و در زمان‌بندی تعیین‌شده ارسال خواهد شد."
+          helperIconClass="fa-solid fa-circle-info"
+          submitText="ثبت در صف ارسال"
+          submittingText="در حال ثبت پیام..."
+          isSubmitting={loading}
+          submitDisabled={!canSend}
+          cancelIconClass="fa-solid fa-arrow-right"
+          submitIconClass="fa-solid fa-paper-plane"
+        />
       </form>
     </InventoryModal>
   );

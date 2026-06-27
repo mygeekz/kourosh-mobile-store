@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'jalali-moment';
 import ShamsiDatePicker from '../../components/ShamsiDatePicker';
+import Modal from '../../components/Modal';
+import ModalActions from '../../components/ModalActions';
 import Notification from '../../components/Notification';
 import { useAuth } from '../../contexts/AuthContext';
 import { exportToExcel } from '../../utils/exporters';
@@ -478,55 +480,78 @@ const fetchData = async () => {
         </div>
       </section>
 
-      {showCreate ? (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/35 p-4" onClick={() => setShowCreate(false)}>
-          <div className="w-full max-w-lg rounded-3xl border bg-white p-5 shadow-2xl dark:border-slate-800 dark:bg-slate-950" onClick={(e) => e.stopPropagation()}>
-            <div className="mb-4 flex items-center justify-between">
-              <strong>ثبت پیگیری جدید</strong>
-              <button type="button" className="followups-modal-close" onClick={() => setShowCreate(false)}><i className="fa-solid fa-xmark" /></button>
-            </div>
-            <div className="space-y-3">
-              <input className="followups-modal-input" value={newCustomerId} onChange={(e) => setNewCustomerId(e.target.value)} placeholder="شناسه مشتری" />
-              <textarea className="followups-modal-input min-h-[96px]" value={newNote} onChange={(e) => setNewNote(e.target.value)} placeholder="متن پیگیری" />
-              <ShamsiDatePicker selectedDate={newNextDate} onDateChange={setNewNextDate} inputClassName="followups-modal-input" />
-              <button
-                type="button"
-                className="followups-modal-submit"
-                disabled={isCreating}
-                onClick={async () => {
-                  const cid = Number(newCustomerId);
-                  if (!cid || !newNote.trim()) { setNotification({ message: 'شناسه مشتری و متن پیگیری الزامی است.', type: 'error' }); return; }
-                  setIsCreating(true);
-                  await createFollowup(cid, newNote.trim(), newNextDate ? isoEndOfDay(newNextDate) : null);
-                  setIsCreating(false);
-                  setShowCreate(false);
-                }}
-              >ثبت پیگیری</button>
-            </div>
-          </div>
+      <Modal
+        isOpen={showCreate}
+        onClose={() => setShowCreate(false)}
+        title="ثبت پیگیری جدید"
+        variant="operational"
+        size="md"
+        layout="vertical"
+        tone="info"
+        iconClass="fa-solid fa-user-clock"
+        kicker="مرکز پیگیری وصول"
+        ariaDescription="ثبت پیگیری جدید برای مشتری انتخاب‌شده."
+        wrapperClassName="followups-modal-overlay"
+        bodyClassName="followups-modal-body"
+      >
+        <div className="space-y-3">
+          <input className="followups-modal-input" value={newCustomerId} onChange={(e) => setNewCustomerId(e.target.value)} placeholder="شناسه مشتری" />
+          <textarea className="followups-modal-input min-h-[96px]" value={newNote} onChange={(e) => setNewNote(e.target.value)} placeholder="متن پیگیری" />
+          <ShamsiDatePicker selectedDate={newNextDate} onDateChange={setNewNextDate} inputClassName="followups-modal-input" />
         </div>
-      ) : null}
+        <ModalActions
+          onCancel={() => setShowCreate(false)}
+          cancelText="انصراف"
+          submitText="ثبت پیگیری"
+          submitType="button"
+          isSubmitting={isCreating}
+          submitDisabled={isCreating}
+          submitIconClass="fa-solid fa-check"
+          onSubmitClick={async () => {
+            const cid = Number(newCustomerId);
+            if (!cid || !newNote.trim()) { setNotification({ message: 'شناسه مشتری و متن پیگیری الزامی است.', type: 'error' }); return; }
+            setIsCreating(true);
+            await createFollowup(cid, newNote.trim(), newNextDate ? isoEndOfDay(newNextDate) : null);
+            setIsCreating(false);
+            setShowCreate(false);
+          }}
+        />
+      </Modal>
 
-      {editingRow ? (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/35 p-4" onClick={() => setEditingRow(null)}>
-          <div className="w-full max-w-lg rounded-3xl border bg-white p-5 shadow-2xl dark:border-slate-800 dark:bg-slate-950" onClick={(e) => e.stopPropagation()}>
-            <div className="mb-4 flex items-center justify-between">
-              <strong>ویرایش پیگیری</strong>
-              <button type="button" className="followups-modal-close" onClick={() => setEditingRow(null)}><i className="fa-solid fa-xmark" /></button>
-            </div>
-            <div className="space-y-3">
-              <textarea className="followups-modal-input min-h-[120px]" value={editNote} onChange={(e) => setEditNote(e.target.value)} />
-              <ShamsiDatePicker selectedDate={editNextDate} onDateChange={setEditNextDate} inputClassName="followups-modal-input" />
-              <div className="flex flex-wrap gap-2">
-                <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickSetDue(editingRow, 0)}>امروز</button>
-                <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickReschedule(editingRow, 1)}>فردا</button>
-                <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickReschedule(editingRow, 7)}>یک هفته بعد</button>
-              </div>
-              <button type="button" className="followups-modal-submit" disabled={isSavingEdit} onClick={saveEdit}>ذخیره تغییرات</button>
-            </div>
+      <Modal
+        isOpen={Boolean(editingRow)}
+        onClose={() => setEditingRow(null)}
+        title="ویرایش پیگیری"
+        variant="operational"
+        size="md"
+        layout="vertical"
+        tone="info"
+        iconClass="fa-solid fa-pen-to-square"
+        kicker="مرکز پیگیری وصول"
+        ariaDescription="ویرایش متن و موعد پیگیری مشتری."
+        wrapperClassName="followups-modal-overlay"
+        bodyClassName="followups-modal-body"
+      >
+        <div className="space-y-3">
+          <textarea className="followups-modal-input min-h-[120px]" value={editNote} onChange={(e) => setEditNote(e.target.value)} />
+          <ShamsiDatePicker selectedDate={editNextDate} onDateChange={setEditNextDate} inputClassName="followups-modal-input" />
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickSetDue(editingRow, 0)}>امروز</button>
+            <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickReschedule(editingRow, 1)}>فردا</button>
+            <button type="button" className="followups-modal-secondary" onClick={() => editingRow && quickReschedule(editingRow, 7)}>یک هفته بعد</button>
           </div>
         </div>
-      ) : null}
+        <ModalActions
+          onCancel={() => setEditingRow(null)}
+          cancelText="انصراف"
+          submitText="ذخیره تغییرات"
+          submitType="button"
+          isSubmitting={isSavingEdit}
+          submitDisabled={isSavingEdit}
+          submitIconClass="fa-solid fa-check"
+          onSubmitClick={saveEdit}
+        />
+      </Modal>
     </div>
   );
 }

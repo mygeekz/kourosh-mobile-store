@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import PortalLayer from './ui/PortalLayer';
 
 type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
@@ -238,7 +238,6 @@ const SmartTooltipLayer: React.FC = () => {
 
   const style = useMemo<React.CSSProperties & { '--smart-tooltip-arrow-x'?: string; '--smart-tooltip-arrow-y'?: string }>(() => ({
     position: 'fixed',
-    zIndex: 2147483647,
     left: state.x,
     top: state.y,
     opacity: state.visible ? 1 : 0,
@@ -253,15 +252,19 @@ const SmartTooltipLayer: React.FC = () => {
       style={style}
       aria-hidden={!state.visible}
       data-placement={state.placement}
-      data-tooltip-layer-root="body-portal"
+      data-tooltip-layer-root="portal-layer"
     >
-      <div ref={bubbleRef} className="smart-tooltip-bubble">{state.text}</div>
+      <div ref={bubbleRef} role="tooltip" className="smart-tooltip-bubble">{state.text}</div>
     </div>
   );
 
-  if (!isMounted || typeof document === 'undefined') return null;
+  if (!isMounted) return null;
 
-  return createPortal(tooltipNode, document.body);
+  return (
+    <PortalLayer layer="tooltip" className="app-tooltip-layer">
+      {tooltipNode}
+    </PortalLayer>
+  );
 };
 
 export default SmartTooltipLayer;

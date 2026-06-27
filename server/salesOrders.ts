@@ -51,7 +51,11 @@ export async function createSalesOrder(
   await getDbInstance();
 
   const { customerId, paymentMethod, discount, tax, notes, items, transactionDate } = orderPayload;
+  const normalizedPaymentMethod = paymentMethod === 'credit' ? 'credit' : 'cash';
   if (!items?.length) throw new Error('سبد خرید خالی است.');
+  if (normalizedPaymentMethod === 'credit' && (!Number(customerId) || Number(customerId) <= 0)) {
+    throw new Error('برای فروش اعتباری انتخاب مشتری الزامی است.');
+  }
 
   await execAsync('BEGIN TRANSACTION;');
   try {
@@ -74,7 +78,7 @@ export async function createSalesOrder(
        VALUES (?,?,?,?,?,?,?,?)`,
       [
         customerId ?? null,
-        paymentMethod,
+        normalizedPaymentMethod,
         cleanGlobalDiscount,
         Number(tax) || 0,
         subtotal,
@@ -146,7 +150,7 @@ export async function createSalesOrder(
     }
 
     if (customerId && grandTotal > 0) {
-      const isCredit = paymentMethod === 'credit';
+      const isCredit = normalizedPaymentMethod === 'credit';
       await addCustomerLedgerEntryInternal(
         customerId,
         isCredit ? `فاکتور فروش اعتباری شماره ${orderId}` : `فاکتور فروش نقدی شماره ${orderId}`,
@@ -240,6 +244,8 @@ export async function getSalesOrderForInvoice(
       status: (order as any).status || 'active',
       canceledAt: (order as any).canceledAt || null,
       cancelReason: (order as any).cancelReason || null,
+      paymentMethod: order.paymentMethod === 'credit' ? 'credit' : 'cash',
+      paymentMethodLabel: order.paymentMethod === 'credit' ? 'فروش اعتباری' : 'فروش نقدی',
       // نمایش شمسی فقط برای UI؛ دادهٔ خام ISO در خود order باقی می‌ماند
       transactionDate: moment(order.transactionDate, 'YYYY-MM-DD')
         .locale('fa')
@@ -263,9 +269,12 @@ export async function getAllSalesOrdersFromDb() {
     SELECT so.id,
            so.transactionDate,
            so.grandTotal,
+           so.paymentMethod,
+           so.customerId,
            so.status,
            so.canceledAt,
-           COALESCE(c.fullName,'مهمان') AS customerName
+           COALESCE(c.fullName,'مهمان') AS customerName,
+           c.fullName AS customerFullName
       FROM sales_orders so
       LEFT JOIN customers c ON c.id = so.customerId
      ORDER BY so.id DESC

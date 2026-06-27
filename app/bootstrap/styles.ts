@@ -14,7 +14,6 @@ import '../../styles/system/legacy-quarantine/people-list-hero-foundation.css';
 import '../../styles/system/settings-shell-foundation.css';
 import '../../styles/system/legacy-quarantine/people-detail-command-foundation.css';
 import '../../styles/system/shared-action-buttons-foundation.css';
-import '../../styles/components/unified-fields.css';
 import '../../styles/system/legacy-quarantine/field-form-after-primitives-foundation.css';
 import '../../styles/system/reports-runtime/reports-apple-minimal-foundation.css';
 import '../../styles/system/telegram-runtime/settings-telegram-compact-foundation.css';
@@ -50,8 +49,6 @@ import '../../styles/system/products-services-redesign/products-services-repairs
 import '../../styles/system/products-services-redesign/products-commerce-stage17-polish.css';
 import '../../styles/system/cross-module-density-foundation.css';
 import '../../styles/system/table-actions-foundation.css';
-import '../../styles/system/telegram-runtime/message-composer-controls-foundation.css';
-import '../../styles/system/message-composer-redesign.css';
 import '../../styles/system/people-table-detail-foundation.css';
 import '../../styles/system/finance-modal-field-polish-foundation.css';
 import '../../styles/system/telegram-ui-foundation.css';
@@ -193,7 +190,6 @@ import '../../styles/system/ui-contracts/telegram-v71-accordion-kpis-unified-sur
 import '../../styles/system/ui-contracts/telegram-v72-global-loading-logs-search-fix.css';
 import '../../styles/system/ui-contracts/telegram-v73-connection-bundle-two-column.css';
 import '../../styles/system/ui-contracts/telegram-v74-monitor-progress-true-fill.css';
-import '../../styles/system/ui-contracts/telegram-v75-restore-confirm-solid-modal.css';
 import '../../styles/system/ui-contracts/telegram-v76-readable-success-buttons-global.css';
 import '../../styles/system/ui-contracts/telegram-v77-connection-layout-cleanup.css';
 import '../../styles/system/ui-contracts/telegram-v78-connection-guide-cleanup.css';
@@ -331,12 +327,6 @@ import '../../styles/system/reports-redesign/purchase-suggestions-action-board/p
 import '../../styles/system/reports-redesign/smart-insights/smart-insights.phase1-stabilized.css';
 import '../../styles/system/overlay-layer-contract.css';
 import '../../styles/system/customer-detail/customer-ledger-real-responsive-fix.css';
-import '../../styles/system/customer-detail/customer-edit-modal-v60-final.css';
-import '../../styles/system/telegram-runtime/message-composer-full-redesign-v68.css';
-import '../../styles/system/telegram-runtime/message-composer-polish-v69.css';
-import '../../styles/system/telegram-runtime/message-composer-no-focus-v70.css';
-import '../../styles/system/telegram-runtime/message-composer-final-clean-v71.css';
-import '../../styles/system/telegram-runtime/message-composer-channel-initial-v74.css';
 import '../../styles/system/customer-detail/telegram-quick-preview-v75.css';
 import '../../styles/system/partner-runtime/partner-detail-customer-ui-sync-v80.css';
 import '../../styles/system/partner-runtime/partner-detail-alignment-fix-v81.css';
@@ -371,3 +361,16 @@ import '../../styles/system/partner-runtime/partner-ledger-final-polish-v137.css
 import '../../styles/system/global-focus-reset-v139.css';
 import '../../styles/system/partner-runtime/partner-ledger-edit-modal-v141.css';
 import '../../styles/system/global-focus-reset-hard-v140.css';
+import '../../styles/components/modal-system.css';
+import '../../styles/system/ui-contracts/sales-payment-readability-final-phase79.css';
+import '../../styles/system/ui-contracts/sales-payment-no-inner-badge-phase80.css';
+import '../../styles/system/ui-contracts/spa-nonblocking-feedback-guard-phase83.css';
+import '../../styles/system/sidebar-submenu-transparent-phase84.css';
+import '../../styles/system/sidebar-hover-transparent-phase85.css';
+
+import '../../styles/system/expenses-modal-horizontal-phase87.css';
+import '../../styles/system/expenses-modal-horizontal-phase88.css';
+import '../../styles/system/expenses-modal-horizontal-phase89.css';
+import '../../styles/system/expenses-recurring-payment-history-phase93.css';
+
+import '../../styles/system/notifications-saas-redesign-phase95.css';

@@ -1,39 +1,4 @@
 
-/* Targeted fixes from phase 16 baseline: restore modal + Telegram merged control cards */
-.restore-backup-modal-v22 {
-  z-index: 100000 !important;
-}
-.restore-backup-modal-v22 .app-modal--compact,
-.restore-backup-modal-v22 [data-modal-variant="compact"] {
-  max-width: 430px !important;
-  height: auto !important;
-  max-height: min(78vh, 620px) !important;
-}
-.restore-backup-modal-v22 .modal-premium-header,
-.confirm-dialog-surface--restore .confirm-dialog-header-row {
-  direction: rtl !important;
-  text-align: right !important;
-}
-.restore-backup-modal-v22 .app-modal-title-row {
-  width: 100% !important;
-  justify-content: flex-start !important;
-  text-align: right !important;
-}
-.restore-backup-modal-v22 .modal-premium-title,
-.restore-backup-modal-v22 .modal-premium-kicker,
-.confirm-dialog-surface--restore h3,
-.confirm-dialog-surface--restore p {
-  text-align: right !important;
-}
-.confirm-dialog-surface--restore {
-  max-width: 430px !important;
-  direction: rtl !important;
-  z-index: 100001 !important;
-}
-.confirm-dialog-surface--restore .confirm-dialog-title-row {
-  justify-content: flex-start !important;
-  text-align: right !important;
-}
 
 #telegram-settings-form .telegram-control-merged-grid {
   align-items: stretch !important;
@@ -172,9 +137,5 @@ html.dark #telegram-settings-form .telegram-monitor-merged-summary {
   #telegram-settings-form .telegram-control-merged-card,
   #telegram-settings-form .telegram-control-merged-card__inner {
     min-height: 0 !important;
-  }
-  .restore-backup-modal-v22 .app-modal--compact,
-  .confirm-dialog-surface--restore {
-    max-width: calc(100vw - 24px) !important;
   }
 }

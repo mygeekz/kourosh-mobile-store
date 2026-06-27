@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { apiFetch } from "../../utils/apiFetch";
 import ProModal from "./ProModal";
+import { useConfirm } from "../../contexts/ConfirmContext";
 
 type Category = { id: number; name: string };
 type Partner = { id: number; partnerName: string; partnerType?: string; phoneNumber?: string; notes?: string };
@@ -36,6 +37,7 @@ async function json<T>(res: Response): Promise<T> {
 
 export default function InventoryProPage() {
   const location = useLocation();
+  const confirmAction = useConfirm();
   const [loading, setLoading] = useState(true);
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -210,7 +212,18 @@ export default function InventoryProPage() {
   }
 
   async function deleteProduct(p: Product) {
-    if (!confirm(`حذف مورد شود؟\n${p.name}`)) return;
+    const approved = await confirmAction({
+      title: "حذف کالا",
+      description: `کالای «${p.name}» از موجودی حذف شود؟ این عملیات قابل بازگشت نیست.`,
+      confirmText: "حذف کالا",
+      cancelText: "انصراف",
+      tone: "danger",
+      summaryItems: [
+        { label: "نام کالا", value: p.name || "—" },
+        { label: "موجودی", value: `${Number(p.stock ?? 0).toLocaleString("fa-IR")} ${p.unit || "عدد"}` },
+      ],
+    });
+    if (!approved) return;
     try {
       const res = await apiFetch(`/api/products/${p.id}`, { method: "DELETE" });
       await json(res);
@@ -274,7 +287,16 @@ export default function InventoryProPage() {
   }
 
   async function deleteCategory(id: number) {
-    if (!confirm("این دسته‌بندی حذف مورد شود؟")) return;
+    const category = categories.find((item) => Number(item.id) === Number(id));
+    const approved = await confirmAction({
+      title: "حذف دسته‌بندی",
+      description: "این دسته‌بندی حذف شود؟ قبل از حذف مطمئن شوید کالای وابسته‌ای به آن نیاز ندارد.",
+      confirmText: "حذف دسته‌بندی",
+      cancelText: "انصراف",
+      tone: "warning",
+      summaryItems: category ? [{ label: "دسته‌بندی", value: category.name }] : undefined,
+    });
+    if (!approved) return;
     try {
       const res = await apiFetch(`/api/categories/${id}`, { method: "DELETE" });
       await json(res);

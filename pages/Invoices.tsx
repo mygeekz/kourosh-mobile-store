@@ -59,6 +59,27 @@ const summarizeItems = (items: any[]): string => {
   return `${uniq[0]} + ${uniq.length - 1} مورد دیگر`;
 };
 
+const normalizeSalePaymentMethod = (sale: any): 'cash' | 'credit' | 'installment' => {
+  const raw = String(
+    sale?.paymentMethod
+    ?? sale?.payment_method
+    ?? sale?.paymentType
+    ?? sale?.purchaseType
+    ?? sale?.purchaseTypeLabel
+    ?? '',
+  ).trim().toLowerCase();
+  if (raw.includes('installment') || raw.includes('قسط')) return 'installment';
+  if (raw.includes('credit') || raw.includes('اعتبار')) return 'credit';
+  return 'cash';
+};
+
+const paymentMethodMeta = (sale: any) => {
+  const kind = normalizeSalePaymentMethod(sale);
+  if (kind === 'credit') return { label: 'فروش اعتباری', className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/25 dark:text-amber-300' };
+  if (kind === 'installment') return { label: 'فروش اقساطی', className: 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/50 dark:bg-blue-950/25 dark:text-blue-300' };
+  return { label: 'فروش نقدی', className: 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/25 dark:text-emerald-300' };
+};
+
 /* ---------- نوع باکس آخرین فاکتور ---------- */
 type LastBox = { id?: number; lines: string[]; grandTotal?: number | null };
 
@@ -288,6 +309,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
     id: sale.id,
     date: formatIsoToShamsi(sale.transactionDate),
     customer: (sale as any).customerName ?? (sale as any).customerFullName ?? (sale as any).customer ?? '—',
+    paymentType: paymentMethodMeta(sale).label,
     description: descCache[sale.id] ?? pickSaleDesc(sale),
     total: Number((sale as any).grandTotal ?? (sale as any).totalAmount ?? (sale as any).total ?? 0),
   }));
@@ -300,6 +322,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
         { header: 'شناسه', key: 'id' },
         { header: 'تاریخ', key: 'date' },
         { header: 'مشتری', key: 'customer' },
+        { header: 'نوع فروش', key: 'paymentType' },
         { header: 'شرح', key: 'description' },
         { header: 'مبلغ کل', key: 'total' },
       ],
@@ -311,11 +334,12 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
     exportToPdfTable({
       filename: `${exportFilenameBase}.pdf`,
       title: 'فاکتورهای فروش',
-      head: ['شناسه', 'تاریخ', 'مشتری', 'مبلغ کل'],
+      head: ['شناسه', 'تاریخ', 'مشتری', 'نوع فروش', 'مبلغ کل'],
       body: exportRows.map((r) => [
         Number(r.id).toLocaleString('fa-IR'),
         r.date,
         r.customer,
+        r.paymentType,
         formatCurrencyText(Number(r.total || 0), readStoredCurrencyUnit()),
       ]),
     });
@@ -385,6 +409,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                   <th className="px-6 py-3 text-right text-xs font-semibold text-text">تاریخ</th>
                   <th className="px-6 py-3 text-right text-xs font-semibold text-text">شرح</th>
                   <th className="px-6 py-3 text-right text-xs font-semibold text-text">مشتری</th>
+                  <th className="px-6 py-3 text-right text-xs font-semibold text-text">نوع فروش</th>
                   <th className="px-6 py-3 text-right text-xs font-semibold text-text">مبلغ کل</th>
                   <th className="px-6 py-3 text-right text-xs font-semibold text-text">عملیات</th>
                 </tr>
@@ -396,6 +421,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                     <td className="px-6 py-4"><Skeleton className="h-5 w-28" rounded="lg" /></td>
                     <td className="px-6 py-4"><Skeleton className="h-5 w-56" rounded="lg" /></td>
                     <td className="px-6 py-4"><Skeleton className="h-5 w-36" rounded="lg" /></td>
+                    <td className="px-6 py-4"><Skeleton className="h-7 w-24" rounded="full" /></td>
                     <td className="px-6 py-4"><Skeleton className="h-5 w-32" rounded="lg" /></td>
                     <td className="px-6 py-4"><Skeleton className="h-9 w-40" rounded="xl" /></td>
                   </tr>
@@ -424,6 +450,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                     <th className="px-6 py-3 text-right text-xs font-semibold">تاریخ</th>
                     <th className="px-6 py-3 text-right text-xs font-semibold">شرح کالا/خدمت</th>
                     <th className="px-6 py-3 text-right text-xs font-semibold">مشتری</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold">نوع فروش</th>
                     <th className="px-6 py-3 text-right text-xs font-semibold">مبلغ کل</th>
                     <th className="px-6 py-3 text-right text-xs font-semibold">عملیات</th>
                   </tr>
@@ -433,6 +460,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                     const desc = descCache[sale.id] ? descCache[sale.id] : pickSaleDesc(sale);
                     const isDeleting = deletingId === sale.id;
                     const isCanceled = (sale as any).status === 'canceled';
+                    const paymentMeta = paymentMethodMeta(sale);
                     return (
                       <tr key={sale.id} className="hover:bg-primary/5 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -450,7 +478,10 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                           {desc}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                          {sale.customerFullName || (sale.customerId ? "مشتری ابطال شده" : "مهمان")}
+                          {sale.customerFullName || (sale as any).customerName || (sale.customerId ? "مشتری ابطال شده" : "مهمان")}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[11px] font-black ${paymentMeta.className}`}>{paymentMeta.label}</span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700 dark:text-indigo-300">
                           {sale.grandTotal != null ? formatCurrencyText(sale.grandTotal, readStoredCurrencyUnit()) : '-'}
@@ -498,6 +529,7 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                 const desc = descCache[sale.id] ? descCache[sale.id] : pickSaleDesc(sale);
                 const isDeleting = deletingId === sale.id;
                 const isCanceled = (sale as any).status === 'canceled';
+                const paymentMeta = paymentMethodMeta(sale);
                 return (
                   <div key={sale.id} className="sales-invoice-mobile-card bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm space-y-3">
                     <div className="flex items-start justify-between">
@@ -511,8 +543,9 @@ const cancelInvoice = async (sale: SalesTransactionEntry) => {
                           )}
                         </div>
                         <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {formatIsoToShamsi(sale.transactionDate)} • {sale.customerFullName || "مهمان"}
+                          {formatIsoToShamsi(sale.transactionDate)} • {sale.customerFullName || (sale as any).customerName || "مهمان"}
                         </div>
+                        <span className={`mt-2 inline-flex w-fit items-center rounded-full border px-2.5 py-1 text-[11px] font-black ${paymentMeta.className}`}>{paymentMeta.label}</span>
                       </div>
                       <div className="text-sm font-black text-primary">
                         {sale.grandTotal != null ? `${sale.grandTotal.toLocaleString("fa-IR")} ت` : "-"}

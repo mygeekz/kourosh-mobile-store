@@ -1,0 +1,224 @@
+/* Phase 51.88 — Expenses modal microfixes: stable date field, visible actions, title history combobox, amount words. */
+body .kourosh-modal__panel.expense-modal87-panel {
+  max-height: min(92dvh, 820px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+body .kourosh-modal__panel.expense-modal87-panel .kourosh-modal__body.expense-modal87-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.expense-modal87__actions {
+  position: sticky !important;
+  bottom: 0 !important;
+  z-index: 30 !important;
+  min-height: 76px !important;
+  box-shadow: 0 -18px 34px -30px rgba(15, 23, 42, 0.42) !important;
+}
+
+.expense-modal87__actions .btn,
+.expense-modal87__actions button {
+  min-width: 150px !important;
+  min-height: 46px !important;
+  border-radius: 18px !important;
+  font-weight: 950 !important;
+  transform: none !important;
+}
+
+.expense-modal87__dateControl,
+.expense-modal87__dateControl *:not(i),
+.expense-modal87__dateField .app-date-field,
+.expense-modal87__dateField .app-date-field__control,
+.expense-modal87__dateField .app-date-field__input {
+  box-sizing: border-box !important;
+}
+
+.expense-modal87__dateField .app-date-field,
+.expense-modal87__dateField .app-date-field:hover,
+.expense-modal87__dateField .app-date-field:focus-within,
+.expense-modal87__dateField .app-date-field[data-open="true"] {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  transform: none !important;
+  translate: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.expense-modal87__dateField .app-date-field__control,
+.expense-modal87__dateField .app-date-field__control:hover,
+.expense-modal87__dateField .app-date-field__control:focus-within {
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  inset: auto !important;
+}
+
+.expense-modal87__dateField .app-date-field__input,
+.expense-modal87__dateField .app-date-field__input:hover,
+.expense-modal87__dateField .app-date-field__input:focus,
+.expense-modal87__dateField .app-date-field__input:focus-visible {
+  position: static !important;
+  display: block !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  max-height: 52px !important;
+  line-height: 52px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-inline: 52px !important;
+  text-align: center !important;
+  transform: none !important;
+  translate: none !important;
+  vertical-align: middle !important;
+}
+
+.expense-modal87__amountWords,
+.expense-modal87__summaryWords {
+  margin-top: 7px;
+  min-height: 18px;
+  color: #059669;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.7;
+  text-align: right;
+}
+.expense-modal87__summaryWords {
+  margin-top: 6px;
+  text-align: center;
+  color: #047857;
+}
+.dark .expense-modal87__amountWords,
+.dark .expense-modal87__summaryWords { color: #86efac; }
+
+.expense-modal87__field--combo { position: relative; z-index: 14; }
+.expense-modal87__combo { position: relative; min-width: 0; }
+.expense-modal87__comboToggle {
+  position: absolute !important;
+  left: 8px !important;
+  top: 50% !important;
+  z-index: 4 !important;
+  display: grid !important;
+  width: 36px !important;
+  height: 36px !important;
+  place-items: center !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  color: #64748b !important;
+  transform: translateY(-50%) !important;
+  box-shadow: none !important;
+}
+.expense-modal87__comboToggle:hover,
+.expense-modal87__comboToggle:focus { background: rgba(241,245,249,.92) !important; transform: translateY(-50%) !important; }
+
+.expense-modal87__comboMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  z-index: 40;
+  max-height: 300px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid rgba(203, 213, 225, .95);
+  border-radius: 20px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 24px 55px -32px rgba(15,23,42,.45);
+}
+.dark .expense-modal87__comboMenu {
+  border-color: rgba(51,65,85,.95);
+  background: rgba(15,23,42,.98);
+}
+.expense-modal87__comboItem {
+  display: flex !important;
+  width: 100% !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-height: 58px !important;
+  padding: 10px 12px !important;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  text-align: right !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.expense-modal87__comboItem:hover,
+.expense-modal87__comboItem:focus { background: #f8fafc !important; transform: none !important; }
+.dark .expense-modal87__comboItem { color: #f8fafc !important; }
+.dark .expense-modal87__comboItem:hover,
+.dark .expense-modal87__comboItem:focus { background: rgba(30,41,59,.82) !important; }
+.expense-modal87__comboItem span { min-width: 0; display: grid; gap: 3px; }
+.expense-modal87__comboItem strong { font-size: 13px; font-weight: 950; color: inherit; }
+.expense-modal87__comboItem small { color: #64748b; font-size: 11px; font-weight: 800; }
+.dark .expense-modal87__comboItem small { color: #cbd5e1; }
+.expense-modal87__comboItem i { color: #64748b; }
+.expense-modal87__comboItem--create { background: #ecfdf5 !important; color: #047857 !important; }
+.expense-modal87__comboItem--create:hover { background: #d1fae5 !important; }
+.expense-modal87__comboEmpty { padding: 14px; color: #64748b; font-size: 12px; font-weight: 800; text-align: center; }
+
+.expense-modal87__history {
+  margin-top: 12px;
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  border-radius: 22px;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 18px 36px -32px rgba(15, 23, 42, 0.32);
+}
+.dark .expense-modal87__history {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15, 23, 42, 0.78);
+  box-shadow: none;
+}
+.expense-modal87__historyStats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: #f8fafc;
+  font-size: 12px;
+}
+.dark .expense-modal87__historyStats { background: rgba(2, 6, 23, .48); }
+.expense-modal87__historyStats span { color: #64748b; font-weight: 900; }
+.expense-modal87__historyStats strong { color: #0f172a; font-weight: 950; }
+.dark .expense-modal87__historyStats strong { color: #f8fafc; }
+.expense-modal87__historyMeta,
+.expense-modal87__historyEmpty { margin-top: 8px; color: #64748b; font-size: 11px; font-weight: 800; line-height: 1.9; }
+.dark .expense-modal87__historyMeta,
+.dark .expense-modal87__historyEmpty { color: #cbd5e1; }
+.expense-modal87__historyList { display: grid; gap: 6px; margin-top: 10px; }
+.expense-modal87__historyList div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px;
+  border-radius: 12px;
+  background: rgba(248,250,252,.72);
+  color: #475569;
+  font-size: 11px;
+  font-weight: 900;
+}
+.dark .expense-modal87__historyList div { background: rgba(2,6,23,.38); color: #cbd5e1; }
+.expense-modal87__historyList strong { color: #0f172a; }
+.dark .expense-modal87__historyList strong { color: #fff; }
+
+@media (max-width: 980px) {
+  .expense-modal87__actions { position: sticky !important; }
+}

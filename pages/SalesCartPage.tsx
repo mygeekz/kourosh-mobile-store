@@ -166,11 +166,14 @@ const SalesCartPage: React.FC = () => {
 
   const location = useLocation();
   const prefillGuardRef = useRef<string | null>(null);
+  const paymentPrefillGuardRef = useRef<string | null>(null);
 
   const searchParams = new URLSearchParams(location.search);
-  const prefillPaymentMethod = searchParams.get('mode') === 'credit' || (location.state as any)?.prefillPaymentMethod === 'credit'
-    ? 'credit'
-    : 'cash';
+  const routePrefillPaymentMethod: 'credit' | null =
+    searchParams.get('mode') === 'credit' || (location.state as any)?.prefillPaymentMethod === 'credit'
+      ? 'credit'
+      : null;
+  const routePaymentPrefillKey = `${location.key}:${routePrefillPaymentMethod ?? 'none'}`;
 
   const [notification, setNotification] = useState<NotificationMessage | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -195,12 +198,47 @@ const SalesCartPage: React.FC = () => {
     }
   );
 
+  const checkoutStateRef = useRef<CartState>(state);
+  const paymentMethodRef = useRef<CartState['paymentMethod']>(state.paymentMethod);
+  const customerIdRef = useRef<number | null>(state.customerId);
 
   useEffect(() => {
-    if (state.paymentMethod !== prefillPaymentMethod) {
-      dispatch({ type: 'SET_PAYMENT_METHOD', payload: { method: prefillPaymentMethod } });
+    checkoutStateRef.current = state;
+    paymentMethodRef.current = state.paymentMethod;
+    customerIdRef.current = state.customerId;
+  }, [state]);
+
+  const setPaymentMethod = (method: CartState['paymentMethod']) => {
+    paymentMethodRef.current = method;
+    checkoutStateRef.current = { ...checkoutStateRef.current, paymentMethod: method };
+    dispatch({ type: 'SET_PAYMENT_METHOD', payload: { method } });
+  };
+
+  const setCustomerId = (customerId: number | null) => {
+    customerIdRef.current = customerId;
+    checkoutStateRef.current = { ...checkoutStateRef.current, customerId };
+    dispatch({ type: 'SET_CUSTOMER', payload: { customerId } });
+  };
+
+  const setGlobalDiscount = (discount: number) => {
+    const cleanDiscount = Math.max(0, Number(discount) || 0);
+    checkoutStateRef.current = { ...checkoutStateRef.current, globalDiscount: cleanDiscount };
+    dispatch({ type: 'SET_GLOBAL_DISCOUNT', payload: { discount: cleanDiscount } });
+  };
+
+  const setNotes = (notes: string) => {
+    checkoutStateRef.current = { ...checkoutStateRef.current, notes };
+    dispatch({ type: 'SET_NOTES', payload: { notes } });
+  };
+
+  useEffect(() => {
+    if (!routePrefillPaymentMethod) return;
+    if (paymentPrefillGuardRef.current === routePaymentPrefillKey) return;
+    paymentPrefillGuardRef.current = routePaymentPrefillKey;
+    if (state.paymentMethod !== routePrefillPaymentMethod) {
+      setPaymentMethod(routePrefillPaymentMethod);
     }
-  }, [prefillPaymentMethod]);
+  }, [routePrefillPaymentMethod, routePaymentPrefillKey, state.paymentMethod]);
 
   // Persist cart across navigations (برای افزودن مورد جدید چند کالا از صفحات مختلف)
   useEffect(() => {
@@ -226,13 +264,12 @@ const SalesCartPage: React.FC = () => {
   useEffect(() => {
     const prefill = (location.state as any)?.prefillItem;
     if (!prefill) return;
-    const normalizedType =
-      (prefill.type as string)?.toLowerCase() === 'product' ? 'inventory' : (prefill.type as string);
+    const normalizedType = ((prefill.type as string)?.toLowerCase() === 'product' ? 'inventory' : (prefill.type as string)) as SellableItem['type'];
     const guardKey = `${location.key}:${normalizedType}:${prefill.id ?? prefill.itemId}`;
     if (prefillGuardRef.current === guardKey) return;
     prefillGuardRef.current = guardKey;
 
-    const item: SellableItem =
+    const item = (
       'id' in prefill
         ? {
             id: prefill.id,
@@ -265,7 +302,8 @@ const SalesCartPage: React.FC = () => {
             ownershipType: prefill.ownershipType ?? null,
             profitShareProfileId: prefill.profitShareProfileId ?? null,
             profitShareProfileTitle: prefill.profitShareProfileTitle ?? null,
-          };
+          }
+    ) as SellableItem;
 
     const exists = state.items.some(i => i.itemId === item.id && i.itemType === normalizedType);
     if (!exists) dispatch({ type: 'ADD_ITEM', payload: item });
@@ -284,7 +322,7 @@ const SalesCartPage: React.FC = () => {
   useEffect(() => {
     const prefillCustomerId = Number((location.state as any)?.prefillCustomerId || 0);
     if (!prefillCustomerId) return;
-    dispatch({ type: 'SET_CUSTOMER', payload: { customerId: prefillCustomerId } });
+    setCustomerId(prefillCustomerId);
     navigate(location.pathname, { replace: true, state: { ...(location.state as any), prefillCustomerId: undefined, prefillCustomerName: undefined, prefillItem: (location.state as any)?.prefillItem } });
   }, [location.state, location.pathname, navigate]);
 
@@ -292,9 +330,19 @@ const SalesCartPage: React.FC = () => {
   const handleAddItem = (item: SellableItem) => dispatch({ type: 'ADD_ITEM', payload: item });
 
   /* ثبت اطلاعات فروش */
-  const handleCheckout = async () => {
-    if (!state.items.length) { setNotification({ type: 'warning', text: 'سبد خرید خالی است.' }); return; }
-    if (state.paymentMethod === 'credit' && !state.customerId) {
+  const handleCheckout = async (forcedPaymentMethod?: CartState['paymentMethod'], forcedCustomerId?: number | null) => {
+    const checkoutState = {
+      ...state,
+      paymentMethod: forcedPaymentMethod ?? paymentMethodRef.current ?? state.paymentMethod,
+      customerId: forcedCustomerId ?? customerIdRef.current ?? state.customerId,
+      items: checkoutStateRef.current.items.length ? checkoutStateRef.current.items : state.items,
+      globalDiscount: checkoutStateRef.current.globalDiscount ?? state.globalDiscount,
+      notes: checkoutStateRef.current.notes ?? state.notes,
+    };
+    const checkoutPaymentMethod: CartState['paymentMethod'] = checkoutState.paymentMethod === 'credit' ? 'credit' : 'cash';
+    const checkoutCustomerId = checkoutState.customerId;
+    if (!checkoutState.items.length) { setNotification({ type: 'warning', text: 'سبد خرید خالی است.' }); return; }
+    if (checkoutPaymentMethod === 'credit' && !checkoutCustomerId) {
       setNotification({ type: 'warning', text: 'برای فروش اعتباری باید مشتری را انتخاب کنید تا بدهی/بستانکاری در حساب او ثبت اطلاعات شود.' });
       return;
     }
@@ -308,22 +356,22 @@ const SalesCartPage: React.FC = () => {
       return;
     }
     setIsSubmitting(true); setNotification(null);
-    setCheckoutStageHint(state.paymentMethod === 'credit' ? 'در حال اعتبارسنجی فروش اعتباری و حساب مشتری' : 'در حال اعتبارسنجی اقلام فروش و موجودی');
+    setCheckoutStageHint(checkoutPaymentMethod === 'credit' ? 'در حال اعتبارسنجی فروش اعتباری و حساب مشتری' : 'در حال اعتبارسنجی اقلام فروش و موجودی');
 
     // subtotal و تخفیف‌ها را مانند نمایش، پاک‌سازی و سقف‌گذاری می‌کنیم
-    const subtotal = state.items.reduce((s, i) => s + (Number(i.unitPrice)||0) * (Number(i.quantity)||0), 0);
-    const itemsDiscount = state.items.reduce((s, i) => s + Math.min(Math.max(Number(i.discountPerItem) || 0, 0), (Number(i.unitPrice) || 0) * (Number(i.quantity) || 0)), 0); // تخفیف کل ردیف‌ها با سقف مبلغ همان ردیف
+    const subtotal = checkoutState.items.reduce((sum, item) => sum + (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0), 0);
+    const itemsDiscount = checkoutState.items.reduce((sum, item) => sum + Math.min(Math.max(Number(item.discountPerItem) || 0, 0), (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0)), 0);
     const afterRowDiscounts = Math.max(0, subtotal - itemsDiscount);
-    const cleanGlobal = Math.min(Math.max(Number(state.globalDiscount)||0, 0), afterRowDiscounts);
+    const cleanGlobal = Math.min(Math.max(Number(checkoutState.globalDiscount) || 0, 0), afterRowDiscounts);
 
     const payload: SalesOrderPayload = {
       transactionDate: (salesDate ? moment(salesDate).locale('en').format('YYYY-MM-DD') : undefined),
-      customerId: state.customerId,
-      paymentMethod: state.paymentMethod,
+      customerId: checkoutCustomerId,
+      paymentMethod: checkoutPaymentMethod,
       discount: cleanGlobal, // تخفیف کل فاکتور
       tax: 0,
-      notes: creditLimitManagerApproved ? `${state.notes || ''}\n[تأیید مدیر برای عبور از سقف اعتبار پیشنهادی]`.trim() : state.notes,
-      items: state.items.map(i => ({
+      notes: creditLimitManagerApproved ? `${checkoutState.notes || ''}\n[تأیید مدیر برای عبور از سقف اعتبار پیشنهادی]`.trim() : checkoutState.notes,
+      items: checkoutState.items.map(i => ({
         itemId: i.itemId,
         itemType: (i.itemType as string).toLowerCase() === 'product' ? 'inventory' : (i.itemType as any),
         description: i.description,
@@ -336,13 +384,16 @@ const SalesCartPage: React.FC = () => {
     };
 
     try {
-      setCheckoutStageHint(state.paymentMethod === 'credit' ? 'در حال ثبت اطلاعات فروش اعتباری و ایجاد سند حساب مشتری' : 'در حال ثبت اطلاعات فروش و صدور فاکتور');
+      setCheckoutStageHint(checkoutPaymentMethod === 'credit' ? 'در حال ثبت اطلاعات فروش اعتباری و ایجاد سند حساب مشتری' : 'در حال ثبت اطلاعات فروش و صدور فاکتور');
       const res = await apiFetch('/api/sales-orders', { method: 'POST', body: JSON.stringify(payload) });
       const json = await res.json();
       if (!res.ok || !json.success) throw new Error(json.message);
-      setCheckoutStageHint(state.paymentMethod === 'credit' ? 'در حال نهایی‌سازی فاکتور و به‌روزرسانی حساب مشتری' : 'در حال نهایی‌سازی فاکتور و به‌روزرسانی موجودی');
+      setCheckoutStageHint(checkoutPaymentMethod === 'credit' ? 'در حال نهایی‌سازی فاکتور و به‌روزرسانی حساب مشتری' : 'در حال نهایی‌سازی فاکتور و به‌روزرسانی موجودی');
       if (!mountedRef.current) return;
-      setNotification({ type: 'success', text: state.paymentMethod === 'credit' ? 'فروش اعتباری ثبت اطلاعات شد و در حساب مشتری اعمال شد.' : 'فروش ثبت اطلاعات شد!' });
+      setNotification({ type: 'success', text: checkoutPaymentMethod === 'credit' ? 'فروش اعتباری ثبت اطلاعات شد و در حساب مشتری اعمال شد.' : 'فروش ثبت اطلاعات شد!' });
+      paymentMethodRef.current = initialState.paymentMethod;
+      customerIdRef.current = initialState.customerId;
+      checkoutStateRef.current = initialState;
       dispatch({ type: 'CLEAR_CART' });
       scheduleTimeout(() => navigate(`/invoices/${json.data.orderId}`), 600);
     } catch (err: any) {
@@ -366,10 +417,10 @@ const checkoutStageIcon = checkoutStageProgress === 1
 
   /* جمع‌ها (منطق واحد نمایش) */
   const summary = useMemo(() => {
-    const subtotal = state.items.reduce((s, i) => s + (Number(i.unitPrice)||0) * (Number(i.quantity)||0), 0);
-    const itemsDiscount = state.items.reduce((s, i) => s + Math.min(Math.max(Number(i.discountPerItem) || 0, 0), (Number(i.unitPrice) || 0) * (Number(i.quantity) || 0)), 0); // تخفیف کل ردیف‌ها با سقف مبلغ همان ردیف
+    const subtotal = state.items.reduce((sum, item) => sum + (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0), 0);
+    const itemsDiscount = state.items.reduce((sum, item) => sum + Math.min(Math.max(Number(item.discountPerItem) || 0, 0), (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0)), 0);
     const afterRowDiscounts = Math.max(0, subtotal - itemsDiscount);
-    const cleanGlobal = Math.min(Math.max(Number(state.globalDiscount)||0, 0), afterRowDiscounts);
+    const cleanGlobal = Math.min(Math.max(Number(state.globalDiscount) || 0, 0), afterRowDiscounts);
     const grandTotal = Math.max(0, afterRowDiscounts - cleanGlobal);
     return { subtotal, itemsDiscount, globalDiscount: cleanGlobal, grandTotal };
   }, [state.items, state.globalDiscount]);
@@ -445,21 +496,26 @@ const checkoutStageIcon = checkoutStageProgress === 1
   const suggestedCreditLimit = Math.max(0, Number(smartSalesMeta.suggestedCreditLimit || 0));
   const trustCurrentBalance = Math.max(0, Number(smartSalesMeta.customerTrustProfile?.currentBalance || 0));
   const projectedCreditExposure = trustCurrentBalance + Math.max(0, Number(summary.grandTotal) || 0);
-  const isCreditLimitExceeded = state.paymentMethod === 'credit' && Boolean(state.customerId) && suggestedCreditLimit > 0 && projectedCreditExposure > suggestedCreditLimit;
+  const customerTrustScore = smartSalesMeta.customerTrustProfile?.score == null ? null : Number(smartSalesMeta.customerTrustProfile.score);
+  const customerLateOrOverdueCount = Number(smartSalesMeta.customerTrustProfile?.latePaymentCount || 0) + Number(smartSalesMeta.customerTrustProfile?.overdueUnpaidCount || 0);
+  const customerReturnedCheckCount = Number(smartSalesMeta.customerTrustProfile?.returnedCheckCount || 0);
+  const hasNegativeCreditHistory = customerLateOrOverdueCount > 0 || customerReturnedCheckCount > 0;
+  // حداقل اعتبار عملیاتی: مشتری عادی و بدون سابقه بد نباید برای فروش‌های سبک فوری نیازمند تایید مدیر شود.
+  const minimumRoutineCreditLimit = 5_000_000;
+  const effectiveCreditLimit = suggestedCreditLimit > 0 ? Math.max(suggestedCreditLimit, minimumRoutineCreditLimit) : minimumRoutineCreditLimit;
+  const isCreditLimitExceeded = state.paymentMethod === 'credit' && Boolean(state.customerId) && projectedCreditExposure > effectiveCreditLimit;
   const isCreditLimitBlocked = state.paymentMethod === 'credit' && Boolean(state.customerId) && (
-    isCreditLimitExceeded ||
-    (smartSalesMeta.customerTrustProfile && suggestedCreditLimit <= 0)
+    customerReturnedCheckCount > 0 ||
+    (hasNegativeCreditHistory && isCreditLimitExceeded) ||
+    (customerTrustScore != null && customerTrustScore < 35 && isCreditLimitExceeded)
   );
   const requiresManagerCreditApproval = isCreditLimitBlocked && !creditLimitManagerApproved;
   const formatLocalMoney = (value: number) => `${(Number(value) || 0).toLocaleString('fa-IR')} تومان`;
   const selectedCustomer = customers.find((customer) => Number(customer.id) === Number(state.customerId)) || null;
-  const customerTrustScore = smartSalesMeta.customerTrustProfile?.score == null ? null : Number(smartSalesMeta.customerTrustProfile.score);
-  const customerLateOrOverdueCount = Number(smartSalesMeta.customerTrustProfile?.latePaymentCount || 0) + Number(smartSalesMeta.customerTrustProfile?.overdueUnpaidCount || 0);
-  const customerReturnedCheckCount = Number(smartSalesMeta.customerTrustProfile?.returnedCheckCount || 0);
-  const hasCustomerTrustRisk = customerTrustScore != null && (
-    customerTrustScore < 50 ||
-    customerLateOrOverdueCount > 0 ||
+  const hasCustomerTrustRisk = Boolean(state.customerId) && (
     customerReturnedCheckCount > 0 ||
+    customerLateOrOverdueCount > 0 ||
+    (customerTrustScore != null && customerTrustScore < 35 && isCreditLimitExceeded) ||
     isCreditLimitBlocked
   );
   const customerTrustActionTone = !state.customerId
@@ -562,14 +618,14 @@ const checkoutStageIcon = checkoutStageProgress === 1
   };
 
   const handlePaymentMethodChange = (method: 'cash' | 'credit') => {
-    const previousMethod = state.paymentMethod;
-    dispatch({ type: 'SET_PAYMENT_METHOD', payload: { method } });
-    if (method === 'credit' && hasCustomerTrustRisk && state.customerId) {
+    const previousMethod = paymentMethodRef.current;
+    if (method === 'credit' && !customerIdRef.current) {
+      setNotification({ type: 'warning', text: 'برای فروش اعتباری ابتدا یک مشتری واقعی انتخاب کن.' });
+      return;
+    }
+    setPaymentMethod(method);
+    if (previousMethod !== method && method === 'credit' && hasCustomerTrustRisk && customerIdRef.current) {
       logRiskPaymentMethodChange(previousMethod, method, 'بازگشت دستی اپراتور به پرداخت اعتباری برای مشتری پرریسک');
-      setNotification({
-        type: 'warning',
-        text: 'روش پرداخت دوباره اعتباری شد؛ هشدار ریسک مشتری و دکمه تغییر به نقدی دوباره فعال شد.',
-      });
     }
   };
 
@@ -605,137 +661,131 @@ const checkoutStageIcon = checkoutStageProgress === 1
         </div>
       ) : null}
     <div
-      className="sales-cart-foundation min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-950 dark:to-slate-950"
+      className="sales-cart-foundation min-h-screen bg-slate-50/80 dark:bg-slate-950"
       dir="rtl"
       data-ui-sales-page="cart"
       data-ui-sales-mode={state.paymentMethod}
     >
       {notification && <Notification message={notification} onClose={() => setNotification(null)} />}
 
-      <div className="max-w-7xl mx-auto px-4 py-5">
-        {/* هدر */}
-        <header className="sales-hero-panel relative overflow-hidden rounded-[30px] border border-slate-200 bg-white/95 p-3 shadow-[0_28px_64px_-50px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/92 md:p-3 xl:p-3" data-ui-sales-surface="hero">
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-emerald-100/50 to-transparent blur-2xl dark:from-emerald-500/10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-sky-100/60 to-transparent blur-2xl dark:from-sky-500/10" />
-          <div className="relative flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start gap-3">
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[16px] bg-slate-900 text-white shadow-[0_18px_38px_-26px_rgba(15,23,42,0.48)] dark:bg-white dark:text-slate-900">
-                  <i className="fa-solid fa-cash-register text-[0.9rem]" />
-                </span>
-                <div className="min-w-0 flex-1 text-right">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold tracking-[0.12em] text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-                    <span className="inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: brandAccent }} />
-                    صندوق هوشمند فروش
-                  </div>
-                  <h1 className="mt-3 text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100 md:text-[30px]">
-                    فروش را سریع، تمیز و حرفه‌ای ثبت اطلاعات کن
-                  </h1>
-                  <p className="mt-2 max-w-3xl text-[13px] leading-6 text-slate-500 dark:text-slate-300 md:text-sm">
-                    {state.paymentMethod === 'credit'
-                      ? 'در حالت اعتباری، همزمان با ثبت اطلاعات اقلام می‌توانی مشتری را انتخاب کنی، قیمت مبنا را کنترل کنی و فروش را با اثر مالی دقیق در حساب مشتری نهایی کنی.'
-                      : 'در حالت نقدی، جریان فروش از انتخاب قلم تا بررسی و ادامه سود و ثبت اطلاعات نهایی فاکتور، به‌صورت یکپارچه و بدون شلوغی در اختیارت است.'}
-                  </p>
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <Button
-                      type="button"
-                      onClick={() => dispatch({ type: 'SET_PAYMENT_METHOD', payload: { method: state.paymentMethod === 'cash' ? 'credit' : 'cash' } })}
-                      variant="primary"
-                      size="xs"
-                      className="sales-toolbar-btn"
-                      leftIcon={<i className={state.paymentMethod === 'credit' ? 'fa-solid fa-file-invoice-dollar' : 'fa-solid fa-money-bill-wave'} />}
-                    >
-                      {state.paymentMethod === 'credit' ? 'تغییر به فروش نقدی' : 'تغییر به فروش اعتباری'}
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={() => navigate('/sales')}
-                      variant="secondary"
-                      size="xs"
-                      className="sales-toolbar-btn"
-                      leftIcon={<i className="fa-solid fa-house" />}
-                    >
-                      هاب فروش
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={() => navigate('/invoices')}
-                      variant="secondary"
-                      size="xs"
-                      className="sales-toolbar-btn"
-                      leftIcon={<i className="fa-solid fa-file-invoice" />}
-                    >
-                      فاکتورها
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="sales-hero-metrics grid gap-2.5 sm:grid-cols-2 xl:w-[320px]" data-ui-sales-metrics="hero">
-              <div className="rounded-[20px] border border-slate-200 bg-slate-50/90 p-3 dark:border-slate-800 dark:bg-slate-900/70">
-                <div className="text-[10px] font-bold tracking-[0.14em] text-slate-500 dark:text-slate-400">حالت فروش</div>
-                <div className="mt-1.5 flex items-center gap-2 text-[15px] font-extrabold text-slate-900 dark:text-slate-100">
-                  <span className={`inline-flex h-7 w-7 items-center justify-center rounded-xl ${state.paymentMethod === 'credit' ? 'bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300'}`}>
-                    <i className={state.paymentMethod === 'credit' ? 'fa-solid fa-file-invoice-dollar' : 'fa-solid fa-money-bill-wave'} />
-                  </span>
-                  <span>{state.paymentMethod === 'credit' ? 'اعتباری' : 'نقدی'}</span>
-                </div>
-                <div className="mt-1.5 text-[11px] leading-5.5 text-slate-500 dark:text-slate-400">{state.paymentMethod === 'credit' ? 'ثبت اطلاعات فروش همراه با کنترل حساب مشتری' : 'تسویه مستقیم و آماده برای صدور فاکتور'}</div>
-              </div>
-              <div className="rounded-[20px] border border-slate-200 bg-slate-50/90 p-3 dark:border-slate-800 dark:bg-slate-900/70">
-                <div className="text-[10px] font-bold tracking-[0.14em] text-slate-500 dark:text-slate-400">اقلام سبد</div>
-                <div className="mt-1.5 text-xl font-black text-slate-900 dark:text-slate-100">{state.items.length.toLocaleString('fa-IR')}</div>
-                <div className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">قلم قابل ثبت اطلاعات در فاکتور</div>
-              </div>
-              <div className="rounded-[20px] border border-slate-200 bg-slate-50/90 p-3 dark:border-slate-800 dark:bg-slate-900/70 sm:col-span-2">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold tracking-[0.14em] text-slate-500 dark:text-slate-400">جمع نهایی</div>
-                    <div className="mt-1.5 text-xl font-black text-slate-900 dark:text-slate-100">{f(summary.grandTotal)}</div>
-                  </div>
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-slate-900 text-white dark:bg-white dark:text-slate-900">
-                    <i className="fa-solid fa-chart-line text-[12px]" />
-                  </span>
-                </div>
-                <div className="mt-1.5 text-[11px] leading-5.5 text-slate-500 dark:text-slate-400">بعد از اعمال تخفیف‌های ردیفی و تخفیف کل فاکتور</div>
-              </div>
-            </div>
-          </div>
-        </header>
+      <div className="w-full px-4 py-4 2xl:px-6">
         {/* بدنه اصلی فروش */}
-        <div className="sales-workspace mt-5 grid grid-cols-1 gap-4 xl:grid-cols-12" dir="ltr" data-ui-sales-workspace="true">
-          <section className="space-y-4 xl:col-span-8 xl:col-start-1">
-            <section id="sale-step-items" dir="rtl" className="sales-section-card overflow-hidden rounded-[28px] border border-slate-200 bg-white/95 p-4 shadow-[0_24px_54px_-42px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-slate-950/82">
-              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-extrabold text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-                    <i className="fa-solid fa-layer-group text-[10px]" />
-                    انتخاب کالا یا خدمات
-                  </div>
-                  <h2 className="mt-3 text-[17px] font-extrabold text-slate-900 dark:text-slate-100">انتخاب اقلام برای فاکتور</h2>
-                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">کالا یا خدمت را جست‌وجو کن، مستقیم به سبد اضافه کن و ثبت فروش را بدون شلوغی ادامه بده.</p>
+        <div className="sales-workspace grid grid-cols-1 items-start gap-5 xl:grid-cols-[340px_minmax(0,1fr)_410px] 2xl:grid-cols-[360px_minmax(0,1fr)_430px]" dir="ltr" data-ui-sales-workspace="true">
+          <aside className="space-y-4 xl:sticky xl:top-4" dir="rtl" data-ui-sales-services-sidebar="true">
+            <section className="sales-section-card overflow-hidden rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_58px_-44px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/86">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div className="text-right">
+                  <h2 className="text-[18px] font-black text-slate-950 dark:text-slate-50">لیست خدمات</h2>
+                  <p className="mt-1 text-[12px] font-medium leading-5 text-slate-500 dark:text-slate-400">خدمات فروش را سریع به فاکتور اضافه کن.</p>
                 </div>
-                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
-                  <i className="fa-solid fa-cubes-stacked" />
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-[18px] border border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+                  <i className="fa-solid fa-screwdriver-wrench" />
+                </span>
+              </div>
+              <ServiceQuickSell variant="dark" layout="list" maxVisible={8} onAddItem={handleAddItem} />
+            </section>
+          </aside>
+
+          <section className="space-y-4">
+            <section id="sale-step-items" dir="rtl" className="sales-section-card overflow-visible rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_58px_-44px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/86">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="text-right">
+                  <h2 className="text-[16px] font-black text-slate-950 dark:text-slate-50">افزودن کالا / خدمت</h2>
+                  <p className="mt-1 text-[11px] font-medium leading-5 text-slate-500 dark:text-slate-400">کمبوباکس کالاهای انبار و خدمات را نمایش می‌دهد و قابلیت جستجو دارد.</p>
+                </div>
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+                  <i className="fa-solid fa-layer-group" />
                 </span>
               </div>
 
-              <div className="mb-4">
+              <div className="mb-3">
                 <SellableItemSelect onAddItem={handleAddItem} />
               </div>
 
-              <div className="rounded-[22px] border border-slate-200 bg-slate-50/75 p-3.5 dark:border-slate-800 dark:bg-slate-900/40">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-[13px] font-extrabold text-slate-900 dark:text-slate-100">میانبر خدمات پرکاربرد</div>
-                    <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">خدمت‌های پرتکرار را با سرعت بیشتر به همین فاکتور اضافه کن.</div>
+              <div className="rounded-[22px] border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-900/45" data-ui-sales-advisor="inline">
+                <div className="mb-3 flex items-start justify-between gap-3">
+                  <div className="text-right">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-2.5 py-1 text-[10px] font-black text-violet-700 dark:border-violet-900/60 dark:bg-violet-950/35 dark:text-violet-300">
+                      <i className="fa-solid fa-sparkles" />
+                      تحلیل هوشمند فروش
+                    </div>
+                    <h3 className="mt-2 text-[15px] font-black text-slate-950 dark:text-slate-50">کنترل هوشمند همین فاکتور</h3>
+                    <p className="mt-1 text-[11px] leading-5 text-slate-500 dark:text-slate-400">ریسک مشتری، سقف اعتبار، کیفیت داده، تخفیف و پیشنهادهای لحظه‌ای اینجا نمایش داده می‌شود.</p>
                   </div>
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900">
-                    <i className="fa-solid fa-bolt text-[12px]" />
+                  <span className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl ${smartSalesLoading ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/30 dark:text-blue-300' : customerTrustActionTone === 'risk' ? 'bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-300' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-300'}`}>
+                    <i className={smartSalesLoading ? 'fa-solid fa-spinner fa-spin' : customerTrustActionTone === 'risk' ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-shield-halved'} />
                   </span>
                 </div>
-                <ServiceQuickSell variant="dark" onAddItem={handleAddItem} />
+
+                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-right dark:border-slate-800 dark:bg-slate-950/70">
+                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400">سطح ریسک</div>
+                    <div className={`mt-1 text-[12px] font-black ${customerTrustActionTone === 'risk' ? 'text-rose-600 dark:text-rose-300' : 'text-emerald-600 dark:text-emerald-300'}`}>{!state.customerId ? 'بدون مشتری' : customerTrustActionTone === 'risk' ? 'نیازمند توجه' : 'پایین'}</div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-right dark:border-slate-800 dark:bg-slate-950/70">
+                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400">امتیاز اعتماد</div>
+                    <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{customerTrustScore == null ? '—' : `${customerTrustScore.toLocaleString('fa-IR')} از ۱۰۰`}</div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-right dark:border-slate-800 dark:bg-slate-950/70">
+                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400">سقف اعتبار</div>
+                    <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{suggestedCreditLimit > 0 ? formatLocalMoney(suggestedCreditLimit) : 'نامشخص'}</div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-right dark:border-slate-800 dark:bg-slate-950/70">
+                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400">کیفیت داده</div>
+                    <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{Number(smartSalesMeta.dataQuality || 0).toLocaleString('fa-IR')}٪</div>
+                  </div>
+                </div>
+
+                {customerTrustActionTone === 'risk' && state.paymentMethod === 'credit' && !isCustomerRiskControlledByCash ? (
+                  <div className="sales-risk-cash-suggestion mt-3 grid gap-3 rounded-[20px] border border-rose-200 bg-rose-50/80 p-3 text-right dark:border-rose-900/60 dark:bg-rose-950/20 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+                    <div className="flex items-start gap-3">
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-700 dark:bg-rose-900/45 dark:text-rose-100">
+                        <i className="fa-solid fa-triangle-exclamation" />
+                      </span>
+                      <div>
+                        <div className="text-[13px] font-black text-rose-800 dark:text-rose-100">پیشنهاد فوری: تغییر روش پرداخت به نقدی</div>
+                        <p className="mt-1 text-[11px] leading-5 text-rose-700/90 dark:text-rose-100/80">این مشتری سیگنال ریسک دارد؛ برای کنترل ریسک، سیستم پیشنهاد می‌دهد روش پرداخت نقدی شود.</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="sales-risk-switch-cash-btn w-full justify-center md:w-auto"
+                      style={{ backgroundColor: '#fff1f2', borderColor: '#fb7185', color: '#9f1239', WebkitTextFillColor: '#9f1239' }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        logRiskPaymentMethodChange('credit', 'cash', 'تغییر پیشنهادی سیستم از اعتباری به نقدی برای کنترل ریسک مشتری');
+                        setPaymentMethod('cash');
+                        setNotification({ type: 'success', text: 'روش پرداخت برای کاهش ریسک این مشتری به نقدی تغییر کرد.' });
+                      }}
+                    >
+                      <i className="fa-solid fa-money-bill-wave" />
+                      <span>تغییر به نقدی</span>
+                    </button>
+                  </div>
+                ) : null}
+
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  {customerTrustActionSuggestions.slice(0, 3).map((action) => (
+                    <div key={action.title} className="rounded-2xl border border-slate-200 bg-white px-3 py-2 text-right dark:border-slate-800 dark:bg-slate-950/70">
+                      <div className="flex items-center gap-2 text-[11px] font-black text-slate-900 dark:text-slate-100">
+                        <i className={action.icon} />
+                        {action.title}
+                      </div>
+                      <p className="mt-1 text-[10px] leading-5 text-slate-500 dark:text-slate-400">{action.text}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3">
+                  <SmartSalesAdvisor
+                    title="دستیار هوشمند فروش"
+                    subtitle="پیشنهادها و هشدارهای لحظه‌ای با محاسبه سمت سرور"
+                    contextLabel={state.paymentMethod === 'credit' ? 'فروش اعتباری' : 'فروش نقدی'}
+                    learningStatus={smartSalesMeta.learningStatus}
+                    insights={smartSalesInsights}
+                  />
+                </div>
               </div>
             </section>
 
@@ -746,8 +796,8 @@ const checkoutStageIcon = checkoutStageProgress === 1
                     <i className="fa-solid fa-cart-shopping text-[10px]" />
                     سبد فروش
                   </div>
-                  <h3 className="mt-3 text-[17px] font-extrabold text-slate-900 dark:text-slate-100">کنترل کامل سبد فروش</h3>
-                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">تعداد، قیمت مبنا، تخفیف، سود و جزئیات هر ردیف را در همین بخش کنترل کن.</p>
+                  <h3 className="mt-3 text-[17px] font-extrabold text-slate-900 dark:text-slate-100">سبد فروش</h3>
+                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">تعداد، قیمت واحد، تخفیف و حذف ردیف‌ها را بدون کارت‌های اضافی کنترل کن.</p>
                 </div>
                 {state.items.length > 0 && (
                   <Button
@@ -773,94 +823,64 @@ const checkoutStageIcon = checkoutStageProgress === 1
                   <p className="mt-2 text-[13px] text-slate-500 dark:text-slate-400">برای شروع، کالا یا خدمت مورد نظر را از بخش انتخاب بالا به سبد اضافه کن.</p>
                 </div>
               ) : (
-                <>
-                  <div className="sales-control-tips mb-4 grid gap-3 md:grid-cols-3" data-ui-sales-tips="true">
-                    <div className="rounded-[20px] border border-slate-200 bg-slate-50/80 px-3.5 py-3 dark:border-slate-800 dark:bg-slate-900/45">
-                      <div className="flex items-start gap-2.5">
-                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
-                          <i className="fa-solid fa-chart-line text-[12px]" />
-                        </span>
-                        <div className="min-w-0">
-                          <div className="text-[10px] font-black tracking-[0.12em] text-slate-500 dark:text-slate-400">قیمت مبنا</div>
-                          <div className="mt-1 text-[12px] font-bold leading-5 text-slate-800 dark:text-slate-100">بهای اولیه و قیمت خرید روز هر قلم را دقیق کنترل کن.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-[20px] border border-slate-200 bg-slate-50/80 px-3.5 py-3 dark:border-slate-800 dark:bg-slate-900/45">
-                      <div className="flex items-start gap-2.5">
-                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
-                          <i className="fa-solid fa-sliders text-[12px]" />
-                        </span>
-                        <div className="min-w-0">
-                          <div className="text-[10px] font-black tracking-[0.12em] text-slate-500 dark:text-slate-400">کنترل سبد</div>
-                          <div className="mt-1 text-[12px] font-bold leading-5 text-slate-800 dark:text-slate-100">مقدار، تخفیف و جزئیات هر ردیف را بدون شلوغی تنظیم کن.</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-[20px] border border-slate-200 bg-slate-50/80 px-3.5 py-3 dark:border-slate-800 dark:bg-slate-900/45">
-                      <div className="flex items-start gap-2.5">
-                        <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
-                          <i className="fa-solid fa-chart-line text-[12px]" />
-                        </span>
-                        <div className="min-w-0">
-                          <div className="text-[10px] font-black tracking-[0.12em] text-slate-500 dark:text-slate-400">کنترل سود</div>
-                          <div className="mt-1 text-[12px] font-bold leading-5 text-slate-800 dark:text-slate-100">پیش از ثبت، سود و وضعیت هر قلم را شفاف بررسی کن.</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <CartTable items={state.items} dispatch={dispatch} />
-                </>
+                <CartTable items={state.items} dispatch={dispatch} />
               )}
             </section>
           </section>
 
-          <aside className="space-y-4 xl:col-span-4 xl:col-start-9" dir="rtl">
-            <section className="rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_56px_-44px_rgba(15,23,42,0.24)] dark:border-slate-800 dark:bg-slate-950/82">
+          <aside className="space-y-4 xl:sticky xl:top-4" dir="rtl">
+            <section className="rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_58px_-44px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/86" data-ui-sales-customer-card="true">
               <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-extrabold text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-                    <i className="fa-solid fa-file-circle-check text-[10px]" />
-                    کنترل نهایی فاکتور
-                  </div>
-                  <h4 className="mt-3 text-[17px] font-extrabold text-slate-900 dark:text-slate-100">خلاصه مالی و ثبت نهایی</h4>
-                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">در این ستون جمع اقلام، تخفیف کل، روش پرداخت، تاریخ و ثبت نهایی فاکتور را کنترل کن.</p>
+                <div className="text-right">
+                  <h3 className="text-[17px] font-black text-slate-950 dark:text-slate-50">اطلاعات مشتری</h3>
+                  <p className="mt-1 text-[12px] font-medium leading-5 text-slate-500 dark:text-slate-400">برای فروش نقدی می‌توانی مشتری مهمان را نگه داری؛ برای اعتباری انتخاب مشتری الزامی است.</p>
                 </div>
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900">
-                  <i className="fa-solid fa-receipt" />
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-[18px] border border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+                  <i className="fa-solid fa-user" />
                 </span>
               </div>
 
-              <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-                <div className="rounded-[22px] border border-slate-200 bg-slate-50/75 p-3.5 dark:border-slate-800 dark:bg-slate-900/45">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400">وضعیت فاکتور</div>
-                      <div className={`mt-2 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[12px] font-black ${state.items.length > 0 ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/35 dark:text-emerald-300' : 'border-slate-200 bg-white text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300'}`}>
-                        <span className={`inline-flex h-2 w-2 rounded-full ${state.items.length > 0 ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'}`} />
-                        {state.items.length > 0 ? 'آماده ثبت' : 'در انتظار انتخاب قلم'}
-                      </div>
-                    </div>
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200">
-                      <i className="fa-solid fa-circle-check" />
-                    </span>
-                  </div>
-                </div>
+              <select
+                value={state.customerId ?? ''}
+                onChange={(event) => setCustomerId(event.target.value ? Number(event.target.value) : null)}
+                className="h-11 w-full rounded-2xl border border-slate-200 bg-white px-3 text-right text-[13px] font-black text-slate-900 outline-none transition focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:border-slate-800 dark:bg-slate-950/80 dark:text-slate-100 dark:focus:ring-blue-950/30"
+                aria-label="انتخاب مشتری"
+              >
+                <option value="">مشتری مهمان</option>
+                {customers.map((customer) => (
+                  <option key={customer.id} value={customer.id}>
+                    {customer.fullName}{customer.phoneNumber ? ` — ${customer.phoneNumber}` : ''}
+                  </option>
+                ))}
+              </select>
 
-                <div className="rounded-[22px] border border-slate-200 bg-slate-50/75 p-3.5 dark:border-slate-800 dark:bg-slate-900/45">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400">خلاصه سریع</div>
-                      <div className="mt-2 text-[19px] font-black text-slate-900 dark:text-slate-100">{f(summary.grandTotal)} تومان</div>
-                      <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">مبلغ قابل پرداخت بعد از تخفیف‌ها</div>
-                    </div>
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-900/60 dark:bg-blue-950/35 dark:text-blue-300">
-                      <i className="fa-solid fa-wallet" />
-                    </span>
+              <div className="mt-3 rounded-[22px] border border-slate-200 bg-slate-50/75 p-3 text-right dark:border-slate-800 dark:bg-slate-900/45">
+                <div className="text-[12px] font-black text-slate-900 dark:text-slate-100">
+                  {selectedCustomer?.fullName || 'مشتری مهمان'}
+                </div>
+                <div className="mt-2 grid gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                  <div className="flex items-center justify-between gap-3">
+                    <span>شماره موبایل</span>
+                    <span className="text-slate-700 dark:text-slate-200">{selectedCustomer?.phoneNumber || '—'}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span>مانده حساب</span>
+                    <span className="text-slate-700 dark:text-slate-200">{formatLocalMoney(Number(selectedCustomer?.currentBalance || 0))}</span>
                   </div>
                 </div>
               </div>
+            </section>
 
+            <section className="rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_58px_-44px_rgba(15,23,42,0.28)] dark:border-slate-800 dark:bg-slate-950/86" data-ui-sales-checkout-card="true">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div className="text-right">
+                  <h3 className="text-[17px] font-black text-slate-950 dark:text-slate-50">خلاصه مالی و ثبت نهایی</h3>
+                  <p className="mt-1 text-[12px] font-medium leading-5 text-slate-500 dark:text-slate-400">جمع فاکتور، تخفیف، پرداخت و ثبت نهایی در همین ستون کنترل می‌شود.</p>
+                </div>
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-[18px] border border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+                  <i className="fa-solid fa-receipt" />
+                </span>
+              </div>
               {isCreditLimitBlocked ? (
                 <div className={`mb-4 rounded-[22px] border p-3.5 ${
                   creditLimitManagerApproved
@@ -920,25 +940,20 @@ const checkoutStageIcon = checkoutStageProgress === 1
               ) : null}
 
               <CartSummary
-                customers={customers}
+                customers={[]}
                 selectedCustomerId={state.customerId}
-                onCustomerChange={(id) => dispatch({ type: 'SET_CUSTOMER', payload: { customerId: id } })}
+                onCustomerChange={setCustomerId}
                 paymentMethod={state.paymentMethod as any}
                 onPaymentChange={(m) => handlePaymentMethodChange(m as any)}
                 items={state.items}
                 summary={summary}
                 globalDiscount={summary.globalDiscount}
-                onGlobalDiscountChange={(val: unknown) =>
-                  dispatch({
-                    type: 'SET_GLOBAL_DISCOUNT',
-                    payload: { discount: typeof val === 'number' ? val : parseToman(String(val)) },
-                  })
-                }
+                onGlobalDiscountChange={(val: unknown) => setGlobalDiscount(typeof val === 'number' ? val : parseToman(String(val)))}
                 notes={state.notes}
-                onNotesChange={(t) => dispatch({ type: 'SET_NOTES', payload: { notes: t } })}
+                onNotesChange={setNotes}
                 salesDate={salesDate}
                 onDateChange={setSalesDate}
-                onSubmit={handleCheckout}
+                onSubmit={() => handleCheckout(state.paymentMethod, state.customerId)}
                 isSubmitting={isSubmitting}
                 loadingHint={checkoutStageHint}
                 loadingStageStep={checkoutStageProgress}
@@ -949,147 +964,6 @@ const checkoutStageIcon = checkoutStageProgress === 1
           </aside>
         </div>
 
-        <section className="mt-4 rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_24px_56px_-44px_rgba(15,23,42,0.24)] dark:border-slate-800 dark:bg-slate-950/82" dir="rtl" data-ui-sales-surface="advisor">
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-violet-50 px-3 py-1 text-[10px] font-extrabold text-violet-700 dark:border-violet-900/60 dark:bg-violet-950/35 dark:text-violet-300">
-                <i className="fa-solid fa-sparkles text-[10px]" />
-                بخش هوش مصنوعی فروش
-              </div>
-              <h4 className="mt-3 text-[17px] font-extrabold text-slate-900 dark:text-slate-100">دستیار هوشمند همین فاکتور</h4>
-              <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">تحلیل سود، ریسک تخفیف، وضعیت مشتری و موجودی از بک‌اند محاسبه می‌شود و عدد اعتماد از داده‌های واقعی همین فاکتور می‌آید.</p>
-            </div>
-            <div className="grid grid-cols-2 gap-2 sm:min-w-[260px]">
-              <div className="rounded-[18px] border border-slate-200 bg-slate-50/75 px-3 py-2.5 text-right dark:border-slate-800 dark:bg-slate-900/45">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400">تعداد تحلیل‌ها</div>
-                    <div className="mt-1 text-[16px] font-black text-slate-900 dark:text-slate-100">{smartSalesLoading ? '...' : smartSalesInsights.length.toLocaleString('fa-IR')}</div>
-                  </div>
-                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-violet-100 bg-violet-50 text-violet-600 dark:border-violet-900/60 dark:bg-violet-950/35 dark:text-violet-300">
-                    <i className="fa-solid fa-chart-line text-[12px]" />
-                  </span>
-                </div>
-              </div>
-              <div className="rounded-[18px] border border-slate-200 bg-slate-50/75 px-3 py-2.5 text-right dark:border-slate-800 dark:bg-slate-900/45">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <div className="text-[10px] font-extrabold text-slate-500 dark:text-slate-400">نوع فروش</div>
-                    <div className="mt-1 text-[16px] font-black text-slate-900 dark:text-slate-100">{state.paymentMethod === 'credit' ? 'اعتباری' : 'نقدی'}</div>
-                  </div>
-                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-900/60 dark:bg-blue-950/35 dark:text-blue-300">
-                    <i className={state.paymentMethod === 'credit' ? 'fa-solid fa-file-invoice-dollar text-[12px]' : 'fa-solid fa-money-bill-wave text-[12px]'} />
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {state.customerId && smartSalesMeta.customerTrustProfile ? (
-            <div className={[
-              'mb-4 rounded-[24px] border p-4 text-right shadow-[0_18px_42px_-34px_rgba(15,23,42,0.24)]',
-              isCustomerRiskControlledByCash
-                ? 'border-emerald-200 bg-emerald-50/75 dark:border-emerald-900/60 dark:bg-emerald-950/20'
-                : customerTrustActionTone === 'risk'
-                  ? 'border-rose-200 bg-rose-50/75 dark:border-rose-900/60 dark:bg-rose-950/20'
-                  : customerTrustActionTone === 'positive'
-                    ? 'border-emerald-200 bg-emerald-50/75 dark:border-emerald-900/60 dark:bg-emerald-950/20'
-                    : 'border-slate-200 bg-slate-50/80 dark:border-slate-800 dark:bg-slate-900/45',
-            ].join(' ')}>
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 text-[13px] font-black text-slate-900 dark:text-slate-50">
-                    <i className={isCustomerRiskControlledByCash ? 'fa-solid fa-circle-check text-emerald-500' : customerTrustActionTone === 'risk' ? 'fa-solid fa-triangle-exclamation text-rose-500' : customerTrustActionTone === 'positive' ? 'fa-solid fa-user-check text-emerald-500' : 'fa-solid fa-lightbulb text-amber-500'} />
-                    {isCustomerRiskControlledByCash ? 'ریسک با پرداخت نقدی کنترل شد' : 'پیشنهاد اقدام مدیریتی قبل از ثبت فاکتور'}
-                  </div>
-                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">
-                    {selectedCustomer?.fullName ? `مشتری انتخاب‌شده: ${selectedCustomer.fullName} · ` : ''}
-                    امتیاز اعتماد: {customerTrustScore == null ? 'نامشخص' : `${customerTrustScore.toLocaleString('fa-IR')} از ۱۰۰`}
-                    {smartSalesMeta.customerTrustProfile?.tierLabel ? ` · ${smartSalesMeta.customerTrustProfile.tierLabel}` : ''}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2 text-[11px] font-black">
-                  <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
-                    سقف اعتبار: {suggestedCreditLimit > 0 ? formatLocalMoney(suggestedCreditLimit) : 'نامشخص'}
-                  </span>
-                  <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
-                    دیرکرد/معوق: {customerLateOrOverdueCount.toLocaleString('fa-IR')}
-                  </span>
-                  <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
-                    چک برگشتی: {customerReturnedCheckCount.toLocaleString('fa-IR')}
-                  </span>
-                </div>
-              </div>
-
-              {customerTrustActionTone === 'risk' && state.paymentMethod === 'credit' && !isCustomerRiskControlledByCash ? (
-                <div className="mt-3 flex flex-col gap-3 rounded-[22px] border border-rose-300 bg-white p-3 shadow-[0_18px_42px_-30px_rgba(225,29,72,0.45)] ring-2 ring-rose-100 dark:border-rose-800 dark:bg-rose-950/20 dark:ring-rose-900/40 md:flex-row md:items-center md:justify-between">
-                  <div className="flex items-start gap-3">
-                    <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-rose-100 text-rose-700 dark:bg-rose-900/45 dark:text-rose-100">
-                      <i className="fa-solid fa-arrow-right-arrow-left" />
-                    </span>
-                    <div>
-                      <div className="text-[13px] font-black text-rose-800 dark:text-rose-100">پیشنهاد فوری: تغییر روش پرداخت به نقدی</div>
-                      <p className="mt-1 text-[11px] leading-5 text-rose-700/90 dark:text-rose-100/80">
-                        این مشتری سیگنال ریسک دارد. برای ثبت امن‌تر، می‌توانی همین‌جا روش پرداخت را از اعتباری به نقدی تغییر بدهی.
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="danger"
-                    size="sm"
-                    className="w-full justify-center !rounded-2xl !px-4 !py-2.5 !text-[12px] !font-black md:w-auto"
-                    leftIcon={<i className="fa-solid fa-money-bill-wave" />}
-                    onClick={() => {
-                      logRiskPaymentMethodChange('credit', 'cash', 'تغییر پیشنهادی سیستم از اعتباری به نقدی برای کنترل ریسک مشتری');
-                      dispatch({ type: 'SET_PAYMENT_METHOD', payload: { method: 'cash' } });
-                      setNotification({
-                        type: 'success',
-                        text: 'روش پرداخت برای کاهش ریسک این مشتری به نقدی تغییر کرد.',
-                      });
-                    }}
-                  >
-                    تغییر به نقدی
-                  </Button>
-                </div>
-              ) : null}
-
-              {isCustomerRiskControlledByCash ? (
-                <div className="mt-3 flex items-start gap-3 rounded-[22px] border border-emerald-200 bg-white p-3 shadow-[0_18px_42px_-34px_rgba(16,185,129,0.35)] ring-1 ring-emerald-100 dark:border-emerald-900/55 dark:bg-emerald-950/20 dark:ring-emerald-900/30">
-                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/45 dark:text-emerald-100">
-                    <i className="fa-solid fa-circle-check" />
-                  </span>
-                  <div>
-                    <div className="text-[12px] font-black text-emerald-800 dark:text-emerald-100">اقدام اصلاحی انجام شد</div>
-                    <p className="mt-1 text-[11px] leading-5 text-emerald-700/90 dark:text-emerald-100/80">
-                      روش پرداخت نقدی شده است؛ ریسک اعتباری این فاکتور کنترل شده، بدهی جدید برای مشتری ثبت نمی‌شود و دکمه تغییر به نقدی دیگر نمایش داده نمی‌شود.
-                    </p>
-                  </div>
-                </div>
-              ) : null}
-
-              <div className="mt-3 grid gap-2 md:grid-cols-3">
-                {customerTrustActionSuggestions.map((action) => (
-                  <div key={action.title} className="rounded-2xl border border-white/70 bg-white/80 px-3 py-2.5 shadow-sm dark:border-slate-800 dark:bg-slate-950/55">
-                    <div className="flex items-center gap-2 text-[11px] font-black text-slate-900 dark:text-slate-100">
-                      <i className={action.icon} />
-                      {action.title}
-                    </div>
-                    <p className="mt-1 text-[10px] leading-5 text-slate-500 dark:text-slate-400">{action.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : null}
-
-          <SmartSalesAdvisor
-            title="دستیار هوشمند فروش"
-            subtitle="پیشنهادها و هشدارهای لحظه‌ای با محاسبه سمت سرور"
-            contextLabel={state.paymentMethod === 'credit' ? 'فروش اعتباری' : 'فروش نقدی'}
-            learningStatus={smartSalesMeta.learningStatus}
-            insights={smartSalesInsights}
-          />
-        </section>
       </div>
     </div>
     </>

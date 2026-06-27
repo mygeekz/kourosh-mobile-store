@@ -4072,10 +4072,13 @@ balance: `👋 سلام {name} عزیز،
           onClose={() => setIsEditModalOpen(false)}
           widthClass="max-w-[980px]"
           wrapperClassName="customer-edit-v2-overlay partner-edit-v98-overlay"
+          panelClassName="partner-edit-modal-panel"
           iconClass="fa-solid fa-user-tie"
           variant="operational"
+          layout="split"
+          bodyClassName="partner-edit-modal-body"
         >
-          <form onSubmit={handleEditSubmit} className="customer-edit-v2 partner-edit-v98" dir="rtl">
+          <form onSubmit={handleEditSubmit} className="customer-edit-v2 modal-template-form modal-template-form--profile-edit partner-edit-v98" dir="rtl">
             <FormErrorSummary
               errors={editFormErrors as any}
               labels={{
@@ -4093,9 +4096,9 @@ balance: `👋 سلام {name} عزیز،
               className="customer-edit-v2__errors"
             />
 
-            <div className="customer-edit-v2__layout">
-              <aside className="customer-edit-v2__summary">
-                <div className="customer-edit-v2-card customer-edit-v2-card--hero customer-edit-v2-card--hero-side partner-edit-v98-hero-card">
+            <div className="customer-edit-v2__layout modal-template-form__layout">
+              <aside className="customer-edit-v2__summary modal-template-side">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--hero customer-edit-v2-card--hero-side partner-edit-v98-hero-card">
                   <div className="customer-edit-v2-hero">
                     <div className="customer-edit-v2-hero__copy">
                       <span className="customer-edit-v2-hero__eyebrow"><i className="fa-solid fa-briefcase" /> فرم بازبینی پرونده همکار</span>
@@ -4110,7 +4113,7 @@ balance: `👋 سلام {name} عزیز،
                   </div>
                 </div>
 
-                <div className="customer-edit-v2-card customer-edit-v2-card--summary">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--summary">
                   <div className="customer-edit-v2-card__head">
                     <div>
                       <h4>خلاصه وضعیت اطلاعات</h4>
@@ -4119,39 +4122,39 @@ balance: `👋 سلام {name} عزیز،
                     <span className="customer-edit-v2-card__head-icon"><i className="fa-solid fa-chart-column" /></span>
                   </div>
 
-                  <div className="customer-edit-v2-status-list">
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                  <div className="customer-edit-v2-status-list modal-template-metric-list">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>نوع همکاری</span>
                         <strong>{PARTNER_TYPES.find((t) => t.value === editingPartner.partnerType)?.label || 'انتخاب نشده'}</strong>
                         <em className={editingPartner.partnerType?.trim() ? 'is-positive' : 'is-neutral'}><i className={`fa-solid ${editingPartner.partnerType?.trim() ? 'fa-circle-check' : 'fa-circle-minus'}`} /> {editingPartner.partnerType?.trim() ? 'تکمیل شده' : 'نیازمند انتخاب'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon"><i className="fa-solid fa-diagram-project" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon"><i className="fa-solid fa-diagram-project" /></span>
                     </div>
 
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>شماره تماس</span>
                         <strong dir="ltr">{editingPartner.phoneNumber || 'ثبت نشده'}</strong>
                         <em className={editingPartner.phoneNumber?.trim() ? 'is-positive' : 'is-neutral'}><i className={`fa-solid ${editingPartner.phoneNumber?.trim() ? 'fa-circle-check' : 'fa-circle-minus'}`} /> {editingPartner.phoneNumber?.trim() ? 'ثبت شده' : 'نیازمند ثبت'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon"><i className="fa-solid fa-phone" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon"><i className="fa-solid fa-phone" /></span>
                     </div>
 
-                    <div className="customer-edit-v2-status-item">
-                      <div className="customer-edit-v2-status-item__copy">
+                    <div className="customer-edit-v2-status-item modal-template-metric modal-template-status-metric">
+                      <div className="customer-edit-v2-status-item__copy modal-template-metric__copy">
                         <span>فرد رابط</span>
                         <strong>{editingPartner.contactPerson?.trim() ? editingPartner.contactPerson : 'ثبت نشده'}</strong>
                         <em className={editingPartner.contactPerson?.trim() ? 'is-info' : 'is-neutral'}><i className={`fa-solid ${editingPartner.contactPerson?.trim() ? 'fa-circle-info' : 'fa-circle-minus'}`} /> {editingPartner.contactPerson?.trim() ? 'قابل پیگیری' : 'در صورت نیاز ثبت شود'}</em>
                       </div>
-                      <span className="customer-edit-v2-status-item__icon is-indigo"><i className="fa-solid fa-user-tie" /></span>
+                      <span className="customer-edit-v2-status-item__icon modal-template-metric__icon is-indigo"><i className="fa-solid fa-user-tie" /></span>
                     </div>
                   </div>
                 </div>
               </aside>
 
-              <section className="customer-edit-v2__main">
-                <div className="customer-edit-v2-card customer-edit-v2-card--panel">
+              <section className="customer-edit-v2__main modal-template-main">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--panel">
                   <div className="customer-edit-v2-panel__head">
                     <h4>هویت و ارتباط</h4>
                     <span><i className="fa-solid fa-handshake" /></span>
@@ -4266,7 +4269,7 @@ balance: `👋 سلام {name} عزیز،
                   </div>
                 </div>
 
-                <div className="customer-edit-v2-card customer-edit-v2-card--panel">
+                <div className="customer-edit-v2-card modal-template-card customer-edit-v2-card--panel">
                   <div className="customer-edit-v2-panel__head">
                     <h4>اطلاعات تکمیلی</h4>
                     <span><i className="fa-solid fa-file-lines" /></span>
@@ -4334,33 +4337,17 @@ balance: `👋 سلام {name} عزیز،
               </section>
             </div>
 
-            <div className="customer-edit-v2__footer">
-              <div className="customer-edit-v2__footer-note">
-                <i className="fa-solid fa-shield-halved" />
-                <span>اطلاعات همکاری با بالاترین سطح امنیت ذخیره می‌شود.</span>
-              </div>
-              <div className="customer-edit-v2__footer-actions">
-                <Button
-                  type="button"
-                  onClick={() => setIsEditModalOpen(false)}
-                  variant="ghost"
-                  className="customer-edit-v2__cancel-btn"
-                >
-                  انصراف
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={!token || isSubmittingEdit}
-                  loading={Boolean(isSubmittingEdit)}
-                  loadingText="در حال ذخیره تغییرات..."
-                  variant="primary"
-                  className="customer-edit-v2__submit-btn"
-                  leftIcon={!isSubmittingEdit ? <i className="fa-solid fa-floppy-disk" /> : undefined}
-                >
-                  ذخیره تغییرات همکار
-                </Button>
-              </div>
-            </div>
+            <ModalActions
+              onCancel={() => setIsEditModalOpen(false)}
+              submitText="ذخیره تغییرات همکار"
+              submittingText="در حال ذخیره تغییرات..."
+              isSubmitting={isSubmittingEdit}
+              submitDisabled={!token || isSubmittingEdit}
+              submitIconClass="fa-solid fa-floppy-disk"
+              helperIconClass="fa-solid fa-shield-halved"
+              helperText="اطلاعات شما با بالاترین سطح امنیت ذخیره می‌شود."
+              hideHelper={false}
+            />
           </form>
         </Modal>
       )}
@@ -4386,93 +4373,103 @@ balance: `👋 سلام {name} عزیز،
       )}
       {/* Ledger Modal (new payment) */}
       {isLedgerModalOpen && (
-        <Modal title={`${ledgerDirection === 'receipt' ? 'ثبت دریافت از همکار' : 'ثبت پرداخت به همکار'} ${profile.partnerName}`} onClose={() => setIsLedgerModalOpen(false)} widthClass="max-w-5xl" iconClass="fa-solid fa-money-bill-transfer" variant="operational">
-          <form onSubmit={handleLedgerSubmit} className="partner-payment-modal partner-payment-modal--v2 partner-payment-modal--safe-left partner-payment-modal--final partner-payment-modal--horizontal-no-scroll people-finance-modal premium-modal-stack p-1">
-            <div className="partner-payment-modal__top">
-              <section className="people-finance-modal__summary partner-payment-modal__balance-hero partner-payment-modal__account-card">
-                <div className="min-w-0">
-                  <div className="people-finance-modal__eyebrow">دفتر حساب همکار</div>
-                  <div className="people-finance-modal__title">{profile.partnerName}</div>
+        <Modal title={`${ledgerDirection === 'receipt' ? 'ثبت دریافت از همکار' : 'ثبت پرداخت به همکار'} ${profile.partnerName}`} onClose={() => setIsLedgerModalOpen(false)} widthClass="max-w-5xl" iconClass="fa-solid fa-money-bill-transfer" tone={ledgerDirection === 'receipt' ? 'success' : 'warning'} variant="operational" layout="split" bodyClassName="partner-ledger-modal-body">
+          <form onSubmit={handleLedgerSubmit} className="people-finance-modal modal-template-form modal-template-form--finance ledger-payment-modal ledger-payment-modal--partner premium-modal-stack p-1" data-ledger-direction={ledgerDirection}>
+            <section className="ledger-payment-modal__type-strip" aria-label="نوع تراکنش همکار">
+              <div className="ledger-payment-modal__type-head">
+                <span className="ledger-payment-modal__type-head-icon"><i className="fa-solid fa-shuffle" /></span>
+                <div>
+                  <div className="people-finance-modal__eyebrow">نوع تراکنش همکار</div>
+                  <strong>پرداخت یا دریافت را قبل از ورود مبلغ مشخص کن</strong>
+                  <p>این انتخاب تعیین می‌کند مانده فروشگاه نسبت به همکار کاهش پیدا کند یا به‌عنوان برگشت وجه/اصلاح حساب ثبت شود.</p>
                 </div>
-                <div className="people-finance-modal__balance partner-balance-card partner-balance-card--current">
-                  <span className="people-finance-modal__balance-icon" aria-hidden="true"><i className="fa-solid fa-wallet" /></span>
+              </div>
+              <div className="people-ledger-type-grid ledger-payment-modal__type-grid" role="radiogroup" aria-label="نوع تراکنش همکار">
+                {[
+                  { key: 'payment', title: 'پرداخت به همکار', sub: 'کاهش بدهی فروشگاه به همکار', icon: 'fa-upload', tone: 'warning' },
+                  { key: 'receipt', title: 'دریافت از همکار', sub: 'برگشت وجه یا اصلاح حساب', icon: 'fa-download', tone: 'success' },
+                ].map((item) => {
+                  const active = ledgerDirection === item.key;
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => setLedgerDirection(item.key as any)}
+                      className={["people-ledger-type-card ledger-payment-modal__type-card", active ? 'is-active' : '', `ledger-payment-modal__type-card--${item.tone}`].join(' ')}
+                      aria-pressed={active}
+                    >
+                      <span className="people-ledger-type-card__icon ledger-payment-modal__type-icon"><i className={`fa-solid ${item.icon}`} /></span>
+                      <span className="people-ledger-type-card__copy ledger-payment-modal__type-copy"><strong>{item.title}</strong><small>{item.sub}</small></span>
+                      <span className="people-ledger-type-card__check ledger-payment-modal__type-check"><i className="fa-solid fa-check" /></span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <div className="ledger-payment-modal__workspace">
+              <aside className="ledger-payment-modal__account-panel">
+                <section className="people-finance-modal__summary modal-template-card ledger-payment-modal__account-card">
+                  <div className="min-w-0">
+                    <div className="people-finance-modal__eyebrow">دفتر حساب همکار</div>
+                    <div className="people-finance-modal__title">{profile.partnerName}</div>
+                    <div className="people-finance-modal__hint">
+                      پرداخت به همکار مانده بدهی فروشگاه را کم می‌کند؛ دریافت از همکار برای برگشت وجه یا اصلاح حساب استفاده می‌شود.
+                    </div>
+                  </div>
+                </section>
+
+                <section className="people-finance-modal__balance modal-template-card ledger-payment-modal__balance-card">
+                  <span className="people-finance-modal__balance-icon ledger-payment-modal__metric-icon" aria-hidden="true"><i className="fa-solid fa-wallet" /></span>
                   <div className="people-finance-modal__balance-copy">
                     <span>مانده فعلی</span>
                     <strong>{Math.abs(Number(profile.currentBalance || 0)).toLocaleString('fa-IR')} تومان</strong>
                     <small>{getBalanceLabel(getBalanceState(profile.currentBalance, { overdue: Math.abs(Number(profile.currentBalance || 0)) >= 50000000 }), 'partner')}</small>
                   </div>
-                </div>
+                </section>
+
                 {(() => {
                   const current = Math.abs(Number(profile.currentBalance || 0));
                   const amount = Number(String(newLedgerEntry.debit || '').replace(/[^\d.-]/g, '')) || 0;
                   const nextBalance = ledgerDirection === 'payment' ? Math.max(0, current - amount) : current + amount;
                   const previewTone = nextBalance <= 0 ? 'settled' : nextBalance >= 50000000 ? 'danger' : nextBalance >= 10000000 ? 'warning' : 'ok';
                   return (
-                    <div className={`partner-payment-modal__preview-balance partner-balance-card partner-balance-card--preview partner-payment-modal__preview-balance--${previewTone}`}>
-                      <span><i className="fa-solid fa-calculator" /> مانده بعد از ثبت</span>
-                      <strong>{nextBalance.toLocaleString('fa-IR')} تومان</strong>
-                    </div>
+                    <section className={`ledger-payment-modal__preview-card ledger-payment-modal__preview-card--${previewTone}`}>
+                      <span className="ledger-payment-modal__metric-icon"><i className="fa-solid fa-calculator" /></span>
+                      <div>
+                        <span>مانده بعد از ثبت</span>
+                        <strong>{nextBalance.toLocaleString('fa-IR')} تومان</strong>
+                        <small>{ledgerDirection === 'payment' ? 'بعد از پرداخت به همکار' : 'بعد از دریافت از همکار'}</small>
+                      </div>
+                    </section>
                   );
                 })()}
-              </section>
+              </aside>
 
-              <section className="partner-payment-modal__type-panel">
-                <div className="partner-payment-modal__type-panel-head">
-                  <span><i className="fa-solid fa-shuffle" /></span>
-                  <div>
-                    <div className="people-finance-modal__eyebrow">نوع تراکنش</div>
-                    <strong>پرداخت یا دریافت را مشخص کن</strong>
-                  </div>
+              <section className="ledger-payment-modal__entry-panel">
+                <FormErrorSummary errors={ledgerFormErrors as any} labels={{ amount: ledgerDirection === 'receipt' ? 'مبلغ دریافتی' : 'مبلغ پرداختی', transactionDate: 'تاریخ ثبت مالی', description: 'شرح تراکنش' }} fieldIdMap={{ amount: 'ledgerAmount', transactionDate: 'ledgerTransactionDate', description: 'ledgerDescription' }} className="people-form-error-summary ledger-payment-modal__errors" />
+
+                <div className="people-finance-modal__grid ledger-payment-modal__field-grid">
+                  <ModalField label={ledgerDirection === 'receipt' ? 'مبلغ دریافتی' : 'مبلغ پرداختی'} iconClass="fa-solid fa-coins" required error={ledgerFormErrors.amount} className="people-finance-field people-finance-field--amount ledger-payment-modal__field">
+                    <PriceInput id="ledgerAmount" name="amount" value={String(newLedgerEntry.debit || '')} onChange={handleLedgerInputChange} className={inputClass(!!ledgerFormErrors.amount)} preview="مثال: ۵۰۰۰۰۰۰" topLabel="" suffix="" />
+                    <div className="people-amount-chip-row">
+                      {[
+                        { label: '۱ میلیون', value: 1000000 },
+                        { label: '۵ میلیون', value: 5000000 },
+                        { label: '۱۰ میلیون', value: 10000000 },
+                        { label: 'کل مانده', value: Math.max(0, Math.abs(Number(profile.currentBalance || 0))) },
+                      ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index).map((chip) => (
+                        <button key={chip.label} type="button" className="people-amount-chip" onClick={() => handleLedgerInputChange({ target: { name: 'amount', value: String(chip.value) } })}>{chip.label}</button>
+                      ))}
+                    </div>
+                  </ModalField>
+
+                  <ModalField label="تاریخ ثبت مالی" iconClass="fa-solid fa-calendar-day" required error={ledgerFormErrors.transactionDate} className="people-finance-field people-finance-field--date ledger-payment-modal__field">
+                    <ShamsiDatePicker id="ledgerTransactionDate" selectedDate={ledgerDateSelected} onDateChange={setLedgerDateSelected} inputClassName={inputClass(!!ledgerFormErrors.transactionDate)} />
+                  </ModalField>
                 </div>
-                <div className="people-ledger-type-grid people-ledger-type-grid--priority partner-payment-modal__type-grid" role="radiogroup" aria-label="نوع تراکنش همکار">
-                  {[
-                    { key: 'payment', title: 'پرداخت به همکار', sub: 'کاهش بدهی فروشگاه به همکار', icon: 'fa-arrow-up' },
-                    { key: 'receipt', title: 'دریافت از همکار', sub: 'برگشت وجه یا اصلاح حساب', icon: 'fa-arrow-down' },
-                  ].map((item) => {
-                    const active = ledgerDirection === item.key;
-                    return (
-                      <button
-                        key={item.key}
-                        type="button"
-                        onClick={() => setLedgerDirection(item.key as any)}
-                        className={["people-ledger-type-card", active ? 'is-active' : ''].join(' ')}
-                        aria-pressed={active}
-                      >
-                        <span className="people-ledger-type-card__icon"><i className={`fa-solid ${item.icon}`} /></span>
-                        <span className="people-ledger-type-card__copy"><strong>{item.title}</strong><small>{item.sub}</small></span>
-                        <span className="people-ledger-type-card__check"><i className="fa-solid fa-check" /></span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            </div>
 
-            <div className="partner-payment-modal__entry">
-              <FormErrorSummary errors={ledgerFormErrors as any} labels={{ amount: ledgerDirection === 'receipt' ? 'مبلغ دریافتی' : 'مبلغ پرداختی', transactionDate: 'تاریخ ثبت مالی', description: 'شرح تراکنش' }} fieldIdMap={{ amount: 'ledgerAmount', transactionDate: 'ledgerTransactionDate', description: 'ledgerDescription' }} className="people-form-error-summary partner-payment-modal__errors" />
-
-              <section className="partner-payment-modal__entry-right">
-                <ModalField label="تاریخ ثبت مالی" iconClass="fa-solid fa-calendar-day" required error={ledgerFormErrors.transactionDate} className="people-finance-field people-finance-field--date">
-                  <ShamsiDatePicker id="ledgerTransactionDate" selectedDate={ledgerDateSelected} onDateChange={setLedgerDateSelected} inputClassName={inputClass(!!ledgerFormErrors.transactionDate)} />
-                </ModalField>
-
-                <ModalField label={ledgerDirection === 'receipt' ? 'مبلغ دریافتی' : 'مبلغ پرداختی'} iconClass="fa-solid fa-coins" required error={ledgerFormErrors.amount}>
-                  <PriceInput id="ledgerAmount" name="amount" value={String(newLedgerEntry.debit || '')} onChange={handleLedgerInputChange} className={inputClass(!!ledgerFormErrors.amount)} preview="مثال: ۵۰۰۰۰۰۰" topLabel="" suffix="" />
-                  <div className="people-amount-chip-row">
-                    {[
-                      { label: '۱ میلیون', value: 1000000 },
-                      { label: '۵ میلیون', value: 5000000 },
-                      { label: '۱۰ میلیون', value: 10000000 },
-                      { label: 'کل مانده', value: Math.max(0, Math.abs(Number(profile.currentBalance || 0))) },
-                    ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index).map((chip) => (
-                      <button key={chip.label} type="button" className="people-amount-chip" onClick={() => handleLedgerInputChange({ target: { name: 'amount', value: String(chip.value) } })}>{chip.label}</button>
-                    ))}
-                  </div>
-                </ModalField>
-              </section>
-
-              <section className="partner-payment-modal__entry-left">
-                <ModalField label="شرح تراکنش" iconClass="fa-solid fa-note-sticky" required error={ledgerFormErrors.description}>
+                <ModalField label="شرح تراکنش" iconClass="fa-solid fa-note-sticky" required error={ledgerFormErrors.description} className="people-finance-field people-finance-field--description ledger-payment-modal__field ledger-payment-modal__field--description">
                   <textarea id="ledgerDescription" name="description" value={newLedgerEntry.description} onChange={handleLedgerInputChange} rows={4} className={inputClass(!!ledgerFormErrors.description, true)} required placeholder="مثلاً: پرداخت کارت‌به‌کارت بابت تسویه گوشی / دریافت بابت اصلاح حساب" />
                   <div key={`partner-note-templates-${ledgerDirection}`} className="people-note-template-row">
                     {[
@@ -4511,7 +4508,7 @@ balance: `👋 سلام {name} عزیز،
 
       {/* Full partner phone settlement desk */}
       {isFullPhoneSettlementModalOpen && (
-        <Modal title="نمای تسویه کامل همکار" onClose={() => setIsFullPhoneSettlementModalOpen(false)} widthClass="max-w-6xl" iconClass="fa-solid fa-layer-group" variant="expansive">
+        <Modal title="نمای تسویه کامل همکار" onClose={() => setIsFullPhoneSettlementModalOpen(false)} widthClass="max-w-6xl" iconClass="fa-solid fa-layer-group" tone="info" variant="expansive" layout="split" bodyClassName="partner-full-settlement-modal-body">
           <div className="partner-settlement-desk space-y-4 p-1" dir="rtl">
             <div className="rounded-[26px] border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/55">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -4853,9 +4850,9 @@ balance: `👋 سلام {name} عزیز،
         ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index);
 
         return (
-          <Modal title="ثبت پرداخت مرتبط با گوشی" onClose={() => setPhoneSettlementItem(null)} widthClass="max-w-4xl" iconClass="fa-solid fa-mobile-screen-button" variant="operational">
-            <form onSubmit={handlePhoneSettlementSubmit} className="people-finance-modal people-finance-modal--horizontal phone-settlement-finance-modal premium-modal-stack p-1">
-              <div className="people-finance-modal__side">
+          <Modal title="ثبت پرداخت مرتبط با گوشی" onClose={() => setPhoneSettlementItem(null)} widthClass="max-w-4xl" iconClass="fa-solid fa-mobile-screen-button" tone="warning" variant="operational" layout="split" bodyClassName="partner-phone-settlement-modal-body">
+            <form onSubmit={handlePhoneSettlementSubmit} className="people-finance-modal modal-template-form modal-template-form--finance people-finance-modal--horizontal phone-settlement-finance-modal premium-modal-stack p-1">
+              <div className="people-finance-modal__side modal-template-side">
                 <div className="people-finance-modal__summary phone-settlement-finance-modal__summary">
                 <div>
                   <div className="people-finance-modal__eyebrow">پرداخت متصل به همین گوشی</div>
@@ -4901,7 +4898,7 @@ balance: `👋 سلام {name} عزیز،
                 />
               </div>
 
-              <div className="people-finance-modal__main">
+              <div className="people-finance-modal__main modal-template-main">
                 <FormErrorSummary errors={phoneSettlementErrors as any} labels={{ amount: 'مبلغ پرداخت روی همین گوشی', transactionDate: 'تاریخ پرداخت', note: 'شرح پرداخت' }} fieldIdMap={{ amount: 'phoneSettlementAmount', transactionDate: 'phoneSettlementDate', note: 'phoneSettlementNote' }} className="people-form-error-summary" />
 
               <div className="people-finance-modal__grid">
@@ -4982,98 +4979,105 @@ balance: `👋 سلام {name} عزیز،
         <Modal
           title="ویرایش رکورد دفتر همکار"
           onClose={() => setEditingEntry(null)}
-          widthClass="max-w-[760px]"
-          wrapperClassName="partner-ledger-edit-modal-v141 customer-profile-edit-overlay"
+          widthClass="max-w-4xl"
+          wrapperClassName="partner-ledger-edit-modal-canonical"
+          panelClassName="partner-ledger-edit-modal-panel"
           iconClass="fa-solid fa-pen-to-square"
+          tone="info"
           variant="operational"
+          layout="split"
+          bodyClassName="partner-ledger-edit-modal-body"
+          hideCloseButton
         >
-          <div className="partner-ledger-edit-v141" dir="rtl">
-            <div className="partner-ledger-edit-v141__content">
-              <aside className="partner-ledger-edit-v141__summary">
-                <div className="partner-ledger-edit-v141__summary-icon">
-                  <i className="fa-solid fa-clipboard-list" />
-                </div>
-                <div className="partner-ledger-edit-v141__summary-kicker">رکورد دفتر همکار</div>
-                <div className="partner-ledger-edit-v141__summary-title">رکورد #{Number(editingEntry.id || 0).toLocaleString('fa-IR')}</div>
-                <p className="partner-ledger-edit-v141__summary-text">
-                  شرح رکورد و مبالغ دریافتی و پرداختی این سند را از همین بخش ویرایش کنید.
-                </p>
-                <div className="partner-ledger-edit-v141__notice">
-                  <i className="fa-solid fa-circle-info" />
-                  فقط اطلاعات همین رکورد به‌روزرسانی می‌شود
-                </div>
-              </aside>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleLedgerEdit();
+            }}
+            className="partner-ledger-edit-canonical modal-template-form modal-template-form--profile-edit"
+            dir="rtl"
+          >
+            <aside className="partner-ledger-edit-canonical__summary modal-template-card">
+              <span className="partner-ledger-edit-canonical__summary-icon modal-template-card__icon">
+                <i className="fa-solid fa-clipboard-list" />
+              </span>
+              <div className="partner-ledger-edit-canonical__summary-kicker">رکورد دفتر همکار</div>
+              <h3 className="partner-ledger-edit-canonical__summary-title">رکورد #{Number(editingEntry.id || 0).toLocaleString('fa-IR')}</h3>
+              <p className="partner-ledger-edit-canonical__summary-text">
+                شرح رکورد و مبلغ دریافتی/پرداختی همین سند را با استاندارد جدید فیلدها اصلاح کنید.
+              </p>
+              <div className="partner-ledger-edit-canonical__notice">
+                <i className="fa-solid fa-circle-info" />
+                <span>فقط اطلاعات همین رکورد به‌روزرسانی می‌شود.</span>
+              </div>
+            </aside>
 
-              <section className="partner-ledger-edit-v141__form">
-                <label className="partner-ledger-edit-v141__field partner-ledger-edit-v141__field--full">
-                  <span className="partner-ledger-edit-v141__label">شرح رکورد</span>
-                  <div className="partner-ledger-edit-v147__description-shell" style={{ borderColor: "rgb(203 213 225)", boxShadow: "none", outline: "none" }}>
-                    <span className="partner-ledger-edit-v147__description-icon"><i className="fa-solid fa-receipt" /></span>
-                    <input
-                      className="partner-ledger-edit-v147__description-input"
-                      dir="rtl"
-                      style={{ outline: "none", boxShadow: "none", border: "0" }}
-                      value={editingEntry.description || ''}
-                      onChange={(e) => setEditingEntry({ ...editingEntry, description: e.target.value })}
-                      placeholder="مثلاً: دریافت گوشی Galaxy A17 / اصلاح مبلغ ثبت‌شده"
-                    />
-                  </div>
-                </label>
+            <section className="partner-ledger-edit-canonical__form modal-template-main">
+              <ModalField
+                label="شرح رکورد"
+                iconClass="fa-solid fa-receipt"
+                className="partner-ledger-edit-canonical__field partner-ledger-edit-canonical__field--full"
+              >
+                <input
+                  id="editPartnerLedgerDescription"
+                  name="description"
+                  dir="rtl"
+                  value={editingEntry.description || ''}
+                  onChange={(e) => setEditingEntry({ ...editingEntry, description: e.target.value })}
+                  placeholder="مثلاً: دریافت گوشی Galaxy A17 / اصلاح مبلغ ثبت‌شده"
+                />
+              </ModalField>
 
-                <div className="partner-ledger-edit-v141__money-grid">
-                  <label className="partner-ledger-edit-v141__field">
-                    <span className="partner-ledger-edit-v141__label">مبلغ دریافتی از همکار</span>
-                    <div className="partner-ledger-edit-v141__price-shell">
-                      <PriceInput
-                        id="editPartnerLedgerCredit"
-                        name="credit"
-                        value={String(editingEntry.credit || '')}
-                        onChange={(e) => setEditingEntry({ ...editingEntry, credit: Number((e.target as HTMLInputElement).value.replace(/[^\d.-]/g, '')) || 0 })}
-                        className="partner-ledger-edit-v141__price-input"
-                        preview="مبلغ دریافت"
-                        topLabel=""
-                        suffix="تومان"
-                      />
-                      <span className="partner-ledger-edit-v141__price-icon is-credit"><i className="fa-solid fa-arrow-down" /></span>
-                    </div>
-                  </label>
+              <div className="partner-ledger-edit-canonical__money-grid">
+                <ModalField
+                  label="مبلغ دریافتی از همکار"
+                  iconClass="fa-solid fa-arrow-down"
+                  className="partner-ledger-edit-canonical__field"
+                >
+                  <PriceInput
+                    id="editPartnerLedgerCredit"
+                    name="credit"
+                    value={String(editingEntry.credit || '')}
+                    onChange={(e) => setEditingEntry({ ...editingEntry, credit: Number((e.target as HTMLInputElement).value.replace(/[^\d.-]/g, '')) || 0 })}
+                    preview="مبلغ دریافت"
+                    topLabel=""
+                    suffix="تومان"
+                  />
+                </ModalField>
 
-                  <label className="partner-ledger-edit-v141__field">
-                    <span className="partner-ledger-edit-v141__label">مبلغ پرداختی به همکار</span>
-                    <div className="partner-ledger-edit-v141__price-shell">
-                      <PriceInput
-                        id="editPartnerLedgerDebit"
-                        name="debit"
-                        value={String(editingEntry.debit || '')}
-                        onChange={(e) => setEditingEntry({ ...editingEntry, debit: Number((e.target as HTMLInputElement).value.replace(/[^\d.-]/g, '')) || 0 })}
-                        className="partner-ledger-edit-v141__price-input"
-                        preview="مبلغ پرداخت"
-                        topLabel=""
-                        suffix="تومان"
-                      />
-                      <span className="partner-ledger-edit-v141__price-icon is-debit"><i className="fa-solid fa-arrow-up" /></span>
-                    </div>
-                  </label>
-                </div>
+                <ModalField
+                  label="مبلغ پرداختی به همکار"
+                  iconClass="fa-solid fa-arrow-up"
+                  className="partner-ledger-edit-canonical__field"
+                >
+                  <PriceInput
+                    id="editPartnerLedgerDebit"
+                    name="debit"
+                    value={String(editingEntry.debit || '')}
+                    onChange={(e) => setEditingEntry({ ...editingEntry, debit: Number((e.target as HTMLInputElement).value.replace(/[^\d.-]/g, '')) || 0 })}
+                    preview="مبلغ پرداخت"
+                    topLabel=""
+                    suffix="تومان"
+                  />
+                </ModalField>
+              </div>
 
-                <div className="partner-ledger-edit-v141__helper">
-                  <i className="fa-solid fa-circle-info" />
-                  مبالغ را به تومان وارد کنید. تغییر این مقادیر روی مانده حساب همکار اثر می‌گذارد.
-                </div>
-              </section>
-            </div>
+              <div className="partner-ledger-edit-canonical__helper">
+                <i className="fa-solid fa-circle-info" />
+                <span>مبالغ را به تومان وارد کنید. تغییر این مقادیر روی مانده حساب همکار اثر می‌گذارد.</span>
+              </div>
+            </section>
 
-            <div className="partner-ledger-edit-v141__footer">
-              <button type="button" onClick={() => setEditingEntry(null)} className="partner-ledger-edit-v141__cancel">
-                <i className="fa-solid fa-xmark" />
-                انصراف
-              </button>
-              <button type="button" onClick={handleLedgerEdit} disabled={!token} className="partner-ledger-edit-v141__submit">
-                <i className="fa-solid fa-check" />
-                ذخیره رکورد دفتر
-              </button>
-            </div>
-          </div>
+            <ModalActions
+              onCancel={() => setEditingEntry(null)}
+              submitText="ذخیره رکورد دفتر"
+              submitType="submit"
+              submitIconClass="fa-solid fa-check"
+              submitDisabled={!token}
+              align="end"
+              className="partner-ledger-edit-canonical__actions"
+            />
+          </form>
         </Modal>
       )}
     </div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { NotificationMessage } from '../types';
 import { getRecoveryHint } from '../utils/feedback';
 import { APP_MESSAGES, cleanAppMessage } from '../shared/messages';
+import PortalLayer from './ui/PortalLayer';
 
 type NotificationPosition =
   | 'bottom-right'
@@ -193,7 +193,7 @@ const humanizeText = (value: string, type: ToneKey) => {
   return { title: sentence(text), detail: '', nextStep: type === 'error' ? getRecoveryHint(text) : '' };
 };
 
-const Notification: React.FC<NotificationProps> = ({ message, onClose, type, text, className }) => {
+const Notification: React.FC<NotificationProps> = ({ message, onClose, position = 'bottom-right', type, text, className }) => {
   const [now, setNow] = useState(() => Date.now());
   const [visible, setVisible] = useState(false);
   const [actionBusy, setActionBusy] = useState(false);
@@ -270,7 +270,7 @@ const Notification: React.FC<NotificationProps> = ({ message, onClose, type, tex
   const notificationNode = (
     <div
       className={[
-        'fixed bottom-3 right-3 z-[2147483000] pointer-events-auto w-[min(calc(100vw-24px),400px)] overflow-hidden rounded-[24px] border shadow-[0_25px_70px_-35px_rgba(15,23,42,0.42)] backdrop-blur-xl transition-all duration-300 sm:bottom-5 sm:right-5 sm:w-[min(92vw,400px)]',
+        'app-notification-toast pointer-events-auto w-[min(calc(100vw-24px),400px)] overflow-hidden rounded-[24px] border shadow-[0_25px_70px_-35px_rgba(15,23,42,0.42)] backdrop-blur-xl transition-all duration-300 sm:w-[min(92vw,400px)]',
         tone.wrap,
         visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0',
         className ?? '',
@@ -355,8 +355,11 @@ const Notification: React.FC<NotificationProps> = ({ message, onClose, type, tex
     </div>
   );
 
-  if (typeof document === 'undefined') return notificationNode;
-  return createPortal(notificationNode, document.body);
+  return (
+    <PortalLayer layer="toast" className={`app-toast-layer app-toast-layer--${position}`}>
+      {notificationNode}
+    </PortalLayer>
+  );
 };
 
 export default Notification;

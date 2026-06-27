@@ -37,93 +37,6 @@ pre,
   font-family: var(--font-mono) !important;
 }
 
-/* Stage 442 - Solid restore modal + compact Alert Management related items */
-.restore-backup-modal-v22,
-.restore-backup-modal-v22 * {
-  box-sizing: border-box !important;
-}
-
-.restore-backup-modal-v22 {
-  isolation: isolate !important;
-}
-
-.restore-backup-modal-v22 .app-modal,
-.restore-backup-modal-v22 [data-ui-modal],
-.restore-backup-modal-v22 [role="dialog"],
-.restore-backup-modal-v22 > div {
-  background: #ffffff !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(226, 232, 240, .96) !important;
-  box-shadow: 0 34px 92px -42px rgba(15, 23, 42, .34), 0 18px 36px -28px rgba(15,23,42,.18) !important;
-}
-
-.restore-backup-modal-v22::before,
-.restore-backup-modal-v22::after,
-.restore-backup-modal-v22 .app-modal::before,
-.restore-backup-modal-v22 .app-modal::after,
-.restore-backup-modal-v22 [role="dialog"]::before,
-.restore-backup-modal-v22 [role="dialog"]::after {
-  display: none !important;
-  content: none !important;
-  opacity: 0 !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card {
-  position: relative !important;
-  isolation: isolate !important;
-  background: #fff7f7 !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  border: 1.5px solid rgba(251, 113, 133, .52) !important;
-  box-shadow: none !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card--danger {
-  background: #fff7f7 !important;
-  color: #0f172a !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__title,
-.restore-backup-modal-v22 .app-modal-confirm-card__text,
-.restore-backup-modal-v22 .app-modal-confirm-card__hint {
-  opacity: 1 !important;
-  text-shadow: none !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__file {
-  color: #be123c !important;
-  font-weight: 950 !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__icon {
-  background: #ffe4e6 !important;
-  color: #be123c !important;
-  box-shadow: none !important;
-}
-
-html.dark .restore-backup-modal-v22 .app-modal,
-.dark .restore-backup-modal-v22 .app-modal,
-html.dark .restore-backup-modal-v22 [data-ui-modal],
-.dark .restore-backup-modal-v22 [data-ui-modal],
-html.dark .restore-backup-modal-v22 [role="dialog"],
-.dark .restore-backup-modal-v22 [role="dialog"],
-html.dark .restore-backup-modal-v22 > div,
-.dark .restore-backup-modal-v22 > div {
-  background: #0f172a !important;
-  background-image: none !important;
-  border-color: rgba(51, 65, 85, .88) !important;
-}
-
-html.dark .restore-backup-modal-v22 .app-modal-confirm-card,
-.dark .restore-backup-modal-v22 .app-modal-confirm-card {
-  background: rgba(69, 10, 10, .96) !important;
-  border-color: rgba(248, 113, 113, .42) !important;
-  color: #f8fafc !important;
-}
-
 /* Alert Management: only 3 items are rendered; make the section compact and fixed-height friendly. */
 .sib211-related {
   padding: 10px !important;
@@ -292,168 +205,6 @@ html.dark .sib211-related__grid button,
   overflow-wrap: anywhere !important;
 }
 
-/* Restore backup modal: complete Apple-base redesign, solid surface, no glass bleed, no X button. */
-.restore-backup-modal-v22.app-modal-backdrop,
-.restore-backup-modal-v22.ux-overlay-backdrop {
-  background: rgba(15, 23, 42, .46) !important;
-  backdrop-filter: blur(10px) saturate(1.02) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.02) !important;
-  z-index: 11000 !important;
-}
-
-.restore-backup-modal-v22 .modal-surface,
-.restore-backup-modal-v22 .modal-shell-premium,
-.restore-backup-modal-v22 .premium-drawer-panel,
-.restore-backup-modal-v22 .detail-severity-card,
-.restore-backup-modal-v22 .app-modal {
-  width: min(560px, calc(100vw - 32px)) !important;
-  max-width: 560px !important;
-  height: auto !important;
-  max-height: calc(100dvh - 48px) !important;
-  overflow: hidden !important;
-  border-radius: 30px !important;
-  border: 1px solid rgba(226, 232, 240, .98) !important;
-  background: #fff !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  box-shadow: 0 36px 100px -46px rgba(15, 23, 42, .42), 0 20px 42px -32px rgba(15, 23, 42, .24) !important;
-  isolation: isolate !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.restore-backup-modal-v22 .modal-surface::before,
-.restore-backup-modal-v22 .modal-surface::after,
-.restore-backup-modal-v22 .modal-shell-premium::before,
-.restore-backup-modal-v22 .modal-shell-premium::after,
-.restore-backup-modal-v22 .premium-drawer-panel::before,
-.restore-backup-modal-v22 .premium-drawer-panel::after,
-.restore-backup-modal-v22 .detail-severity-card::before,
-.restore-backup-modal-v22 .detail-severity-card::after {
-  display: none !important;
-  content: none !important;
-  background: none !important;
-  opacity: 0 !important;
-}
-
-.restore-backup-modal-v22 .modal-premium-header,
-.restore-backup-modal-v22 .premium-drawer-panel__header {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
-  gap: 4px !important;
-  padding: 22px 24px 16px !important;
-  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
-  background: #fff !important;
-  background-image: none !important;
-  text-align: right !important;
-}
-
-.restore-backup-modal-v22 .app-modal-title-row {
-  align-items: center !important;
-  gap: 12px !important;
-}
-
-.restore-backup-modal-v22 .modal-premium-kicker {
-  margin: 0 0 2px !important;
-  color: #64748b !important;
-  font-size: .75rem !important;
-  font-weight: 900 !important;
-  letter-spacing: 0 !important;
-}
-
-.restore-backup-modal-v22 .modal-premium-title {
-  margin: 0 !important;
-  color: #0f172a !important;
-  font-size: clamp(1.35rem, 2.2vw, 1.75rem) !important;
-  line-height: 1.45 !important;
-  font-weight: 950 !important;
-}
-
-.restore-backup-modal-v22 .modal-close-btn {
-  display: none !important;
-}
-
-.restore-backup-modal-v22 .modal-body-premium,
-.restore-backup-modal-v22 .premium-drawer-panel__body,
-.restore-backup-modal-v22 .detail-severity-panel {
-  padding: 20px 24px 22px !important;
-  background: #fff !important;
-  background-image: none !important;
-  opacity: 1 !important;
-  overflow-y: auto !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card {
-  display: grid !important;
-  grid-template-columns: 54px minmax(0, 1fr) !important;
-  gap: 14px !important;
-  align-items: start !important;
-  padding: 18px !important;
-  border-radius: 24px !important;
-  background: #fff7f7 !important;
-  background-image: none !important;
-  border: 1.5px solid rgba(251, 113, 133, .56) !important;
-  color: #0f172a !important;
-  box-shadow: none !important;
-  opacity: 1 !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__icon {
-  width: 54px !important;
-  height: 54px !important;
-  border-radius: 18px !important;
-  background: #ffe4e6 !important;
-  color: #be123c !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 1.2rem !important;
-  box-shadow: none !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__title {
-  margin: 0 0 8px !important;
-  color: #0f172a !important;
-  font-size: 1rem !important;
-  line-height: 1.85 !important;
-  font-weight: 950 !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__text,
-.restore-backup-modal-v22 .app-modal-confirm-card__hint {
-  margin: 0 !important;
-  color: #475569 !important;
-  font-size: .9rem !important;
-  line-height: 1.9 !important;
-  font-weight: 750 !important;
-}
-
-.restore-backup-modal-v22 .app-modal-confirm-card__file {
-  display: inline-block !important;
-  max-width: 100% !important;
-  vertical-align: middle !important;
-  color: #be123c !important;
-  font-weight: 950 !important;
-  direction: ltr !important;
-  unicode-bidi: isolate !important;
-  white-space: normal !important;
-  overflow-wrap: anywhere !important;
-}
-
-.restore-backup-modal-v22 .modal-actions,
-.restore-backup-modal-v22 [class*="ModalActions"],
-.restore-backup-modal-v22 .app-modal-actions {
-  margin-top: 18px !important;
-  padding-top: 16px !important;
-  border-top: 1px solid rgba(226, 232, 240, .92) !important;
-}
-
-.restore-backup-modal-v22 button {
-  min-height: 46px !important;
-  border-radius: 16px !important;
-  font-weight: 900 !important;
-}
-
 html.dark .sib211-detail-grid > div > strong,
 .dark .sib211-detail-grid > div > strong,
 html.dark .sib211-metrics__grid > article > strong,
@@ -461,55 +212,6 @@ html.dark .sib211-metrics__grid > article > strong,
 html.dark .sib211-kpi strong,
 .dark .sib211-kpi strong {
   color: #f8fafc !important;
-}
-
-html.dark .restore-backup-modal-v22 .modal-surface,
-.dark .restore-backup-modal-v22 .modal-surface,
-html.dark .restore-backup-modal-v22 .modal-shell-premium,
-.dark .restore-backup-modal-v22 .modal-shell-premium,
-html.dark .restore-backup-modal-v22 .premium-drawer-panel,
-.dark .restore-backup-modal-v22 .premium-drawer-panel,
-html.dark .restore-backup-modal-v22 .detail-severity-card,
-.dark .restore-backup-modal-v22 .detail-severity-card,
-html.dark .restore-backup-modal-v22 .app-modal,
-.dark .restore-backup-modal-v22 .app-modal,
-html.dark .restore-backup-modal-v22 .modal-premium-header,
-.dark .restore-backup-modal-v22 .modal-premium-header,
-html.dark .restore-backup-modal-v22 .modal-body-premium,
-.dark .restore-backup-modal-v22 .modal-body-premium {
-  background: #0f172a !important;
-  background-image: none !important;
-  border-color: rgba(51, 65, 85, .88) !important;
-}
-
-html.dark .restore-backup-modal-v22 .modal-premium-title,
-.dark .restore-backup-modal-v22 .modal-premium-title,
-html.dark .restore-backup-modal-v22 .app-modal-confirm-card__title,
-.dark .restore-backup-modal-v22 .app-modal-confirm-card__title {
-  color: #f8fafc !important;
-}
-
-html.dark .restore-backup-modal-v22 .app-modal-confirm-card,
-.dark .restore-backup-modal-v22 .app-modal-confirm-card {
-  background: rgba(69, 10, 10, .96) !important;
-  border-color: rgba(248, 113, 113, .44) !important;
-}
-
-html.dark .restore-backup-modal-v22 .app-modal-confirm-card__text,
-.dark .restore-backup-modal-v22 .app-modal-confirm-card__text,
-html.dark .restore-backup-modal-v22 .app-modal-confirm-card__hint,
-.dark .restore-backup-modal-v22 .app-modal-confirm-card__hint {
-  color: #cbd5e1 !important;
-}
-
-@media (max-width: 640px) {
-  .restore-backup-modal-v22 .app-modal-confirm-card {
-    grid-template-columns: 1fr !important;
-  }
-
-  .restore-backup-modal-v22 .app-modal-confirm-card__icon {
-    justify-self: start !important;
-  }
 }
 
 /* Stage 444 - Search page icon alignment + solid payment modal + tooltip top-layer reinforcement */
@@ -1073,7 +775,7 @@ html.dark .installment-edit-tx-modal__status-chip--soft,
 .smart-tooltip-layer[data-tooltip-layer-root="body-portal"],
 .smart-tooltip-layer,
 .smart-tooltip-bubble {
-  z-index: 2147483647 !important;
+  z-index: var(--kourosh-z-tooltip, 9500) !important;
   isolation: isolate !important;
   pointer-events: none !important;
 }
@@ -1502,5 +1204,89 @@ html.dark .installment-edit-tx-modal__status-chip--soft,
 
   .partner-ledger-empty-state__icon {
     align-self: flex-start;
+  }
+}
+
+/* Phase 50.3: final cascade guard for the unified modal system. */
+[data-kourosh-layer="modal-backdrop"] {
+  z-index: var(--app-modal-overlay-z, var(--kourosh-z-modal-backdrop, 9000)) !important;
+}
+
+[data-kourosh-layer="modal"] {
+  z-index: var(--app-modal-panel-z, var(--kourosh-z-modal-panel, 9010)) !important;
+}
+
+.app-modal:focus,
+.app-modal:focus-visible {
+  outline: none !important;
+}
+
+.settings-restore-modal .modal-surface,
+.settings-restore-modal .app-modal {
+  width: min(720px, calc(100vw - 32px)) !important;
+  max-width: min(720px, calc(100vw - 32px)) !important;
+  background: linear-gradient(180deg, #ffffff, #f8fafc) !important;
+  border: 1px solid rgba(226, 232, 240, 0.96) !important;
+  box-shadow: 0 34px 92px -42px rgba(15, 23, 42, 0.34), 0 18px 36px -28px rgba(15, 23, 42, 0.18) !important;
+}
+
+.dark .settings-restore-modal .modal-surface,
+.dark .settings-restore-modal .app-modal {
+  background: linear-gradient(180deg, #0f172a, #020617) !important;
+  border-color: rgba(51, 65, 85, 0.9) !important;
+}
+
+.settings-restore-modal .modal-body-premium,
+.settings-restore-modal .premium-drawer-panel__body {
+  padding: 18px !important;
+  gap: 0 !important;
+}
+
+.settings-restore-modal .app-modal-alert,
+.confirm-dialog-body .app-modal-alert {
+  position: relative !important;
+  min-width: 0 !important;
+  opacity: 1 !important;
+  overflow: hidden !important;
+}
+
+.settings-restore-modal .modal-actions,
+.confirm-dialog-body .modal-actions {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin-top: 18px !important;
+  padding: 14px 0 0 !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.22) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.settings-restore-modal .app-modal-command-row,
+.confirm-dialog-body .app-modal-command-row {
+  width: auto !important;
+  min-width: min(100%, 300px) !important;
+  flex: 0 0 auto !important;
+  justify-content: flex-end !important;
+}
+
+@media (max-width: 640px) {
+  .settings-restore-modal .modal-surface,
+  .settings-restore-modal .app-modal {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  .settings-restore-modal .modal-actions,
+  .confirm-dialog-body .modal-actions,
+  .settings-restore-modal .app-modal-command-row,
+  .confirm-dialog-body .app-modal-command-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
   }
 }

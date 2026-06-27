@@ -5,7 +5,7 @@
    This scoped override prevents glass/transparent modal rules from leaking into restore. */
 
 .ux-overlay-backdrop.app-modal-backdrop:has([data-confirm-dialog-kind="restore-backup"]) {
-  z-index: 2147483000 !important;
+  z-index: var(--kourosh-z-modal-backdrop, 9000) !important;
   background: rgba(15, 23, 42, 0.54) !important;
   backdrop-filter: blur(7px) saturate(1.02) !important;
 }

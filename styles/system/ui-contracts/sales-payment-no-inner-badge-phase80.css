@@ -1,0 +1,102 @@
+/* Phase 51.80 — remove inner selected badge; keep only distinct chip surface */
+[data-ui-sales-payment="true"] .sales-payment-choice small,
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"] small {
+  display: none !important;
+}
+
+[data-ui-sales-payment="true"] .sales-payment-choice::after,
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"]::after {
+  content: none !important;
+  display: none !important;
+}
+
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border: 2px solid rgb(5 150 105) !important;
+  background: linear-gradient(180deg, rgb(236 253 245), rgb(209 250 229)) !important;
+  color: rgb(4 120 87) !important;
+  -webkit-text-fill-color: rgb(4 120 87) !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18), 0 14px 30px -25px rgba(5,150,105,.62) !important;
+}
+
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border: 2px solid rgb(37 99 235) !important;
+  background: linear-gradient(180deg, rgb(239 246 255), rgb(219 234 254)) !important;
+  color: rgb(29 78 216) !important;
+  -webkit-text-fill-color: rgb(29 78 216) !important;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.18), 0 14px 30px -25px rgba(37,99,235,.62) !important;
+}
+
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"] *,
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"] span,
+[data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"] i {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* Highest priority readable cash switch CTA. Older CSS forces children white; override it globally and inside advisor. */
+.sales-risk-switch-cash-btn,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn,
+button.sales-risk-switch-cash-btn {
+  background: rgb(255 241 242) !important;
+  border: 1px solid rgb(251 113 133) !important;
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+  text-shadow: none !important;
+  font-weight: 950 !important;
+}
+
+.sales-risk-switch-cash-btn *,
+.sales-risk-switch-cash-btn span,
+.sales-risk-switch-cash-btn i,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn *,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn span,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn i,
+button.sales-risk-switch-cash-btn *,
+button.sales-risk-switch-cash-btn span,
+button.sales-risk-switch-cash-btn i {
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+  text-shadow: none !important;
+}
+
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn:hover,
+[data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(255 228 230) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(136 19 55) !important;
+  -webkit-text-fill-color: rgb(136 19 55) !important;
+}
+
+html.dark [data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border-color: rgb(52 211 153) !important;
+  background: rgba(6, 78, 59, .42) !important;
+  color: rgb(167 243 208) !important;
+  -webkit-text-fill-color: rgb(167 243 208) !important;
+}
+
+html.dark [data-ui-sales-payment="true"] .sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border-color: rgb(96 165 250) !important;
+  background: rgba(30, 64, 175, .42) !important;
+  color: rgb(191 219 254) !important;
+  -webkit-text-fill-color: rgb(191 219 254) !important;
+}
+
+html.dark .sales-risk-switch-cash-btn,
+html.dark [data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn {
+  background: rgba(76, 5, 25, .62) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}
+
+html.dark .sales-risk-switch-cash-btn *,
+html.dark .sales-risk-switch-cash-btn span,
+html.dark .sales-risk-switch-cash-btn i,
+html.dark [data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn *,
+html.dark [data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn span,
+html.dark [data-ui-sales-advisor="inline"] .sales-risk-switch-cash-btn i {
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}

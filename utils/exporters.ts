@@ -212,6 +212,8 @@ export function exportToExcel<T extends Record<string, any>>(
 export function exportToPdfTable(opts: {
   filename: string;
   title?: string;
+  subtitle?: string;
+  orientation?: 'portrait' | 'landscape';
   head: string[];
   body: (string | number)[][];
 }) {
@@ -231,59 +233,99 @@ export function exportToPdfTable(opts: {
     host.style.left = '-10000px';
     host.style.top = '0';
     host.style.background = '#fff';
-    host.style.padding = '16px';
-    host.style.width = '794px'; // نزدیک A4 در 96dpi
+    host.style.padding = '0';
+    const pdfOrientation = opts.orientation || (opts.head.length > 5 ? 'landscape' : 'portrait');
+    host.style.width = pdfOrientation === 'landscape' ? '1122px' : '794px'; // نزدیک A4/A4 landscape در 96dpi
 
     const style = document.createElement('style');
     style.innerHTML = `
-      .xpdf-wrap{direction:rtl;font-family:inherit;color:#111;}
-      .xpdf-title{font-size:18px;font-weight:800;margin:0 0 12px 0;text-align:right;}
-      .xpdf-table{width:100%;border-collapse:collapse;table-layout:fixed;}
-      .xpdf-table th,.xpdf-table td{border:1px solid #e5e7eb;padding:8px 10px;font-size:12px;vertical-align:top;word-break:break-word;}
-      .xpdf-table th{background:#f3f4f6;font-weight:800;}
-      .xpdf-meta{font-size:11px;color:#6b7280;text-align:right;margin-bottom:10px;}
+      .xpdf-wrap{direction:rtl;font-family:Vazirmatn,Vazir,Tahoma,Arial,sans-serif;color:#0f172a;background:#fff;padding:24px;box-sizing:border-box;}
+      .xpdf-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;padding:14px 16px;border:1px solid #dbe4f0;border-radius:18px;background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);}
+      .xpdf-title{font-size:24px;line-height:1.45;font-weight:900;margin:0;text-align:right;color:#0f172a;}
+      .xpdf-subtitle{font-size:13px;color:#64748b;font-weight:700;margin:4px 0 0;text-align:right;}
+      .xpdf-meta{font-size:12px;color:#475569;text-align:right;line-height:1.9;border:1px solid #e2e8f0;border-radius:14px;background:#fff;padding:8px 10px;min-width:190px;}
+      .xpdf-grid{width:100%;direction:rtl;display:grid;grid-template-columns:var(--xpdf-columns);border:1px solid #dbe4f0;border-radius:16px;overflow:hidden;background:#fff;}
+      .xpdf-cell{min-width:0;box-sizing:border-box;border-left:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:10px 10px;font-size:13px;line-height:1.8;text-align:right;color:#0f172a;background:#fff;unicode-bidi:plaintext;}
+      .xpdf-cell:nth-child(7n){border-left:0;}
+      .xpdf-th{display:flex;align-items:center;justify-content:center;min-height:42px;background:#f1f5f9;color:#334155;font-size:12px;font-weight:900;line-height:1.45;text-align:center;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;unicode-bidi:isolate;}
+      .xpdf-td{display:flex;align-items:center;}
+      .xpdf-td.is-id,.xpdf-td.is-cost,.xpdf-td.is-date,.xpdf-td.is-status{justify-content:center;text-align:center;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;}
+      .xpdf-td.is-device{unicode-bidi:isolate;text-align:right;}
+      .xpdf-td.is-issue{white-space:normal;overflow-wrap:anywhere;}
     `;
 
     const wrap = document.createElement('div');
     wrap.className = 'xpdf-wrap';
     wrap.appendChild(style);
+    const header = document.createElement('header');
+    header.className = 'xpdf-header';
+    const heading = document.createElement('div');
     if (opts.title) {
       const h = document.createElement('h1');
       h.className = 'xpdf-title';
       h.textContent = opts.title;
-      wrap.appendChild(h);
+      heading.appendChild(h);
     }
-
+    if (opts.subtitle) {
+      const sub = document.createElement('p');
+      sub.className = 'xpdf-subtitle';
+      sub.textContent = opts.subtitle;
+      heading.appendChild(sub);
+    }
     const meta = document.createElement('div');
     meta.className = 'xpdf-meta';
-    meta.textContent = `تاریخ خروجی: ${new Date().toLocaleString('fa-IR')}`;
-    wrap.appendChild(meta);
+    meta.innerHTML = `<div>تاریخ خروجی: ${new Date().toLocaleString('fa-IR')}</div><div>تعداد ردیف‌ها: ${opts.body.length.toLocaleString('fa-IR')}</div>`;
+    header.appendChild(heading);
+    header.appendChild(meta);
+    wrap.appendChild(header);
 
-    const table = document.createElement('table');
-    table.className = 'xpdf-table';
+    const normalizedHeaders = opts.head.map((x) => String(x || '').trim());
+    const classForHeader = (header: string) => {
+      if (/شناسه/.test(header)) return 'is-id';
+      if (/دستگاه/.test(header)) return 'is-device';
+      if (/شرح|مشکل/.test(header)) return 'is-issue';
+      if (/تاریخ/.test(header)) return 'is-date';
+      if (/هزینه/.test(header)) return 'is-cost';
+      if (/وضعیت/.test(header)) return 'is-status';
+      return '';
+    };
 
-    const thead = document.createElement('thead');
-    const trh = document.createElement('tr');
-    for (const col of opts.head) {
-      const th = document.createElement('th');
-      th.textContent = String(col ?? '');
-      trh.appendChild(th);
-    }
-    thead.appendChild(trh);
-    table.appendChild(thead);
+    const columnTemplateForHeader = (header: string) => {
+      if (/شناسه/.test(header)) return '72px';
+      if (/مشتری/.test(header)) return '140px';
+      if (/دستگاه/.test(header)) return '170px';
+      if (/شرح|مشکل/.test(header)) return 'minmax(220px, 1.35fr)';
+      if (/وضعیت/.test(header)) return '120px';
+      if (/تاریخ/.test(header)) return '150px';
+      if (/هزینه/.test(header)) return '130px';
+      return 'minmax(110px, 1fr)';
+    };
 
-    const tbody = document.createElement('tbody');
-    for (const row of opts.body) {
-      const tr = document.createElement('tr');
-      for (const cell of row) {
-        const td = document.createElement('td');
+    const grid = document.createElement('div');
+    grid.className = 'xpdf-grid';
+    grid.style.setProperty('--xpdf-columns', normalizedHeaders.map(columnTemplateForHeader).join(' '));
+
+    normalizedHeaders.forEach((headerText) => {
+      const th = document.createElement('div');
+      const headerClass = classForHeader(headerText);
+      th.className = `xpdf-cell xpdf-th${headerClass ? ` ${headerClass}` : ''}`;
+      th.textContent = headerText;
+      grid.appendChild(th);
+    });
+
+    opts.body.forEach((row, rowIndex) => {
+      row.forEach((cell, cellIndex) => {
+        const td = document.createElement('div');
+        const headerClass = classForHeader(normalizedHeaders[cellIndex] || '');
+        td.className = `xpdf-cell xpdf-td${headerClass ? ` ${headerClass}` : ''}`;
         td.textContent = String(cell ?? '');
-        tr.appendChild(td);
-      }
-      tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-    wrap.appendChild(table);
+        if (rowIndex % 2 === 1) td.style.background = '#f8fafc';
+        if (rowIndex === opts.body.length - 1) td.style.borderBottom = '0';
+        grid.appendChild(td);
+      });
+    });
+
+    wrap.appendChild(grid);
 
     host.appendChild(wrap);
     document.body.appendChild(host);
@@ -308,10 +350,10 @@ export function exportToPdfTable(opts: {
         scrollY: 0,
       });
 
-      const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+      const pdf = new jsPDF({ orientation: pdfOrientation === 'landscape' ? 'l' : 'p', unit: 'mm', format: 'a4', compress: true });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
-      const margin = 12;
+      const margin = pdfOrientation === 'landscape' ? 8 : 10;
       const availW = pageW - margin * 2;
       const availH = pageH - margin * 2;
 
@@ -340,7 +382,7 @@ export function exportToPdfTable(opts: {
         const jsPDF = (jspdfMod as any).default ?? (jspdfMod as any).jsPDF;
         const autoTable = (autoTableMod as any).default ?? (autoTableMod as any);
 
-        const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+        const pdf = new jsPDF({ orientation: pdfOrientation === 'landscape' ? 'l' : 'p', unit: 'mm', format: 'a4' });
         const margin = 12;
         let y = margin;
         if (opts.title) {

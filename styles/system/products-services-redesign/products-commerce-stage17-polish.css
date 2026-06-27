@@ -484,3 +484,382 @@ html.dark .products-commerce-local-search__input:focus {
     flex-basis: auto;
   }
 }
+
+/* Phase 51.62 — Products print/report + table actions + pagination polish */
+.products-page .product-table-actions {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: 100% !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn,
+.products-page .product-table-actions button.product-row-action-btn {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn .ux-btn__content,
+.products-page .product-table-actions button.product-row-action-btn .ux-btn__content {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  line-height: 1 !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn .ux-btn__icon,
+.products-page .product-table-actions button.product-row-action-btn .ux-btn__icon {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn .ux-btn__icon > i,
+.products-page .product-table-actions button.product-row-action-btn .ux-btn__icon > i,
+.products-page .product-table-actions .product-row-action-btn .ux-btn__icon > svg,
+.products-page .product-table-actions button.product-row-action-btn .ux-btn__icon > svg {
+  display: block !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  font-size: 13px !important;
+}
+
+.products-page .product-table-actions .product-row-action-btn .ux-btn__label,
+.products-page .product-table-actions button.product-row-action-btn .ux-btn__label {
+  display: none !important;
+}
+
+.products-page .products-pagination-shell {
+  margin-top: 16px;
+  margin-inline-start: auto;
+  width: min(100%, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+  box-shadow: 0 18px 42px -36px rgba(15, 23, 42, 0.28);
+}
+
+.products-page .products-pagination-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.products-page .products-pagination-summary__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 14px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  background: #fff;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.products-page .products-pagination-summary__label {
+  display: block;
+  font-size: 10px;
+  line-height: 1.6;
+  font-weight: 900;
+  color: #64748b;
+}
+
+.products-page .products-pagination-summary__value {
+  display: block;
+  font-size: 13px;
+  line-height: 1.8;
+  font-weight: 950;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.products-page .products-pagination-controls {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  direction: rtl;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.products-page .products-pagination-btn {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 13px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.products-page .products-pagination-btn i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.products-page .products-pagination-btn:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.products-page .products-pagination-btn:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+}
+
+.products-page .products-pagination-size {
+  display: inline-flex;
+  align-items: center;
+  direction: rtl;
+  unicode-bidi: isolate;
+  gap: 8px;
+  padding: 5px 6px 5px 10px;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 17px;
+  background: #fff;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.products-page .products-pagination-size__label {
+  display: inline-flex;
+  align-items: center;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.products-page .products-pagination-size__label::after {
+  content: "|";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 8px;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.products-page .products-pagination-size__label:has(+ .products-pagination-size__separator)::after {
+  content: "";
+  margin-inline-start: 0;
+}
+
+.products-page .products-pagination-size__separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  user-select: none;
+}
+
+.products-page .products-pagination-separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  user-select: none;
+}
+
+.products-page .products-pagination-select {
+  height: 30px;
+  min-width: 86px;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: #0f172a;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.dark .products-page .products-pagination-shell,
+html.dark .products-page .products-pagination-shell {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.9));
+}
+
+.dark .products-page .products-pagination-summary__icon,
+.dark .products-page .products-pagination-controls,
+.dark .products-page .products-pagination-size,
+html.dark .products-page .products-pagination-summary__icon,
+html.dark .products-page .products-pagination-controls,
+html.dark .products-page .products-pagination-size {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15, 23, 42, 0.86);
+  color: #cbd5e1;
+}
+
+.dark .products-page .products-pagination-summary__value,
+.dark .products-page .products-pagination-select,
+html.dark .products-page .products-pagination-summary__value,
+html.dark .products-page .products-pagination-select {
+  color: #f8fafc;
+}
+
+.dark .products-page .products-pagination-btn,
+html.dark .products-page .products-pagination-btn {
+  color: #cbd5e1;
+}
+
+.dark .products-page .products-pagination-btn:hover:not(:disabled),
+html.dark .products-page .products-pagination-btn:hover:not(:disabled) {
+  background: rgba(30, 41, 59, 0.88);
+  border-color: rgba(71, 85, 105, 0.95);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .products-page .products-pagination-shell {
+    width: 100%;
+    margin-inline-start: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .products-page .products-pagination-summary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Phase 51.63 — Products pagination focus-box removal
+   The products/services redesign global control focus rule is intentionally
+   preserved for real form fields, but pagination is a compact navigation
+   control and must not render the old blue focus box around the page-size
+   native select. */
+.products-page.products-services-redesign-v1 .products-pagination-size,
+.products-page.products-redesign-v1 .products-pagination-size,
+.products-page.products-services-redesign-v1 .products-pagination-size:focus,
+.products-page.products-redesign-v1 .products-pagination-size:focus,
+.products-page.products-services-redesign-v1 .products-pagination-size:focus-within,
+.products-page.products-redesign-v1 .products-pagination-size:focus-within,
+.products-page.products-services-redesign-v1 .products-pagination-size:has(.products-pagination-select:focus),
+.products-page.products-redesign-v1 .products-pagination-size:has(.products-pagination-select:focus),
+.products-page.products-services-redesign-v1 .products-pagination-size:has(.products-pagination-select:focus-visible),
+.products-page.products-redesign-v1 .products-pagination-size:has(.products-pagination-select:focus-visible) {
+  border-color: rgba(203, 213, 225, 0.9) !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.products-page.products-services-redesign-v1 select.products-pagination-select,
+.products-page.products-redesign-v1 select.products-pagination-select,
+.products-page.products-services-redesign-v1 select.products-pagination-select:hover,
+.products-page.products-redesign-v1 select.products-pagination-select:hover,
+.products-page.products-services-redesign-v1 select.products-pagination-select:focus,
+.products-page.products-redesign-v1 select.products-pagination-select:focus,
+.products-page.products-services-redesign-v1 select.products-pagination-select:focus-visible,
+.products-page.products-redesign-v1 select.products-pagination-select:focus-visible,
+.products-page.products-services-redesign-v1 select.products-pagination-select:active,
+.products-page.products-redesign-v1 select.products-pagination-select:active {
+  height: 30px !important;
+  min-height: 30px !important;
+  min-width: 86px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #0f172a !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.dark .products-page.products-services-redesign-v1 .products-pagination-size,
+.dark .products-page.products-redesign-v1 .products-pagination-size,
+html.dark .products-page.products-services-redesign-v1 .products-pagination-size,
+html.dark .products-page.products-redesign-v1 .products-pagination-size,
+.dark .products-page.products-services-redesign-v1 .products-pagination-size:focus-within,
+.dark .products-page.products-redesign-v1 .products-pagination-size:focus-within,
+html.dark .products-page.products-services-redesign-v1 .products-pagination-size:focus-within,
+html.dark .products-page.products-redesign-v1 .products-pagination-size:focus-within {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background: rgba(15, 23, 42, 0.86) !important;
+  box-shadow: none !important;
+}
+
+.dark .products-page.products-services-redesign-v1 select.products-pagination-select,
+.dark .products-page.products-redesign-v1 select.products-pagination-select,
+html.dark .products-page.products-services-redesign-v1 select.products-pagination-select,
+html.dark .products-page.products-redesign-v1 select.products-pagination-select {
+  color: #f8fafc !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}

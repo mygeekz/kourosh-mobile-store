@@ -1,0 +1,196 @@
+/* Phase 51.93 — Recurring expense payment history visibility + stable date fields. */
+
+.expenses-page-date-stable {
+  align-items: center !important;
+}
+
+.expenses-page-date-stable > .relative:first-child {
+  min-width: 360px !important;
+}
+
+.expenses-page-date-stable input[type="text"],
+.expenses-page-date-stable input[type="search"] {
+  height: 44px !important;
+  min-height: 44px !important;
+  transform: none !important;
+}
+
+.expenses-page-date-stable .app-date-field,
+.expenses-page-date-stable .app-date-field:hover,
+.expenses-page-date-stable .app-date-field:focus-within,
+.expenses-page-date-stable .app-date-field[data-open="true"] {
+  position: relative !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expenses-page-date-stable .app-date-field__control,
+.expenses-page-date-stable .app-date-field__control:hover,
+.expenses-page-date-stable .app-date-field__control:focus-within,
+.expenses-page-date-stable .app-date-field[data-open="true"] .app-date-field__control {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.expenses-page-date-stable .app-date-field__input,
+.expenses-page-date-stable .app-date-field__input:hover,
+.expenses-page-date-stable .app-date-field__input:focus,
+.expenses-page-date-stable .app-date-field__input:focus-visible,
+.expenses-page-date-stable .app-date-field[data-open="true"] .app-date-field__input {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  max-height: 44px !important;
+  margin: 0 !important;
+  padding: 0 44px !important;
+  line-height: 44px !important;
+  text-align: center !important;
+  direction: ltr !important;
+  transform: none !important;
+  translate: none !important;
+  box-shadow: none !important;
+}
+
+.expenses-page-date-stable .app-date-field__icon {
+  position: absolute !important;
+  top: 50% !important;
+  right: 14px !important;
+  transform: translateY(-50%) !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+.expense-modal87__dateField .app-date-field,
+.expense-modal87__dateField .app-date-field:hover,
+.expense-modal87__dateField .app-date-field:focus-within,
+.expense-modal87__dateField .app-date-field[data-open="true"],
+.recurring-payment-modal92 .app-date-field,
+.recurring-payment-modal92 .app-date-field:hover,
+.recurring-payment-modal92 .app-date-field:focus-within,
+.recurring-payment-modal92 .app-date-field[data-open="true"] {
+  transform: none !important;
+  translate: none !important;
+}
+
+.expense-modal87__dateField .app-date-field__input,
+.expense-modal87__dateField .app-date-field__input:hover,
+.expense-modal87__dateField .app-date-field__input:focus,
+.expense-modal87__dateField .app-date-field[data-open="true"] .app-date-field__input,
+.recurring-payment-modal92 .app-date-field__input,
+.recurring-payment-modal92 .app-date-field__input:hover,
+.recurring-payment-modal92 .app-date-field__input:focus,
+.recurring-payment-modal92 .app-date-field[data-open="true"] .app-date-field__input {
+  position: absolute !important;
+  inset: 0 !important;
+  padding: 0 52px !important;
+  text-align: center !important;
+  direction: ltr !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+.recurring-expense-payment-history {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.82);
+}
+
+.dark .recurring-expense-payment-history {
+  border-color: rgba(51, 65, 85, 0.85);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.recurring-expense-payment-history__row {
+  display: grid;
+  grid-template-columns: minmax(78px, auto) minmax(92px, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 5px 7px;
+  border-radius: 11px;
+  background: #fff;
+  color: #334155;
+}
+
+.dark .recurring-expense-payment-history__row {
+  background: rgba(2, 6, 23, 0.48);
+  color: #cbd5e1;
+}
+
+.recurring-expense-payment-history__date {
+  font-size: 11px;
+  font-weight: 950;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.recurring-expense-payment-history__amount {
+  min-width: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 950;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recurring-expense-payment-history__method {
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 10px;
+  font-weight: 950;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.dark .recurring-expense-payment-history__date,
+.dark .recurring-expense-payment-history__amount {
+  color: #f8fafc;
+}
+
+.dark .recurring-expense-payment-history__method {
+  background: rgba(6, 78, 59, 0.38);
+  color: #bbf7d0;
+}
+
+.recurring-payment-modal92 .expense-modal87__main {
+  padding-top: 22px !important;
+}
+
+.recurring-payment-modal92 .expense-modal87__side {
+  align-self: stretch !important;
+}
+
+@media (max-width: 920px) {
+  .expenses-page-date-stable {
+    grid-template-columns: 1fr !important;
+    min-width: 0 !important;
+  }
+  .expenses-page-date-stable > .relative:first-child {
+    min-width: 0 !important;
+  }
+}

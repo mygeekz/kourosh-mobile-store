@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Button from './Button';
+import Modal from './Modal';
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -122,88 +123,89 @@ const PwaInstallOverlay: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white text-gray-900 shadow-2xl dark:bg-slate-950 dark:text-slate-100">
-        <div className="p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="text-lg font-bold">نصب برنامه</div>
-              <div className="mt-1 text-sm leading-6 text-gray-600 dark:text-slate-400">
-                برای تجربه بهتر، برنامه را روی موبایل نصب کنید تا مثل اپلیکیشن مستقل اجرا شود.
+    <Modal
+      isOpen={shouldShow}
+      onClose={onDismiss}
+      title="نصب برنامه"
+      variant="compact"
+      size="md"
+      layout="horizontal"
+      tone={inApp || lastError ? 'warning' : 'info'}
+      iconClass="fa-solid fa-download"
+      kicker="دسترسی سریع"
+      ariaDescription="برای تجربه بهتر، برنامه را روی موبایل نصب کنید تا مثل اپلیکیشن مستقل اجرا شود."
+      wrapperClassName="pwa-install-overlay"
+      bodyClassName="pwa-install-overlay__body"
+    >
+      <div className="app-modal-alert app-modal-alert--horizontal" data-modal-alert-tone={inApp || lastError ? 'warning' : 'info'}>
+        <span className="app-modal-alert__icon" aria-hidden="true"><i className="fa-solid fa-mobile-screen-button" /></span>
+        <div className="app-modal-alert__content">
+          <p className="app-modal-alert__title">برنامه را روی دستگاه نصب کنید.</p>
+          <p className="app-modal-alert__text">برای تجربه بهتر، برنامه را روی موبایل نصب کنید تا مثل اپلیکیشن مستقل اجرا شود.</p>
+          <div className="app-modal-alert__summaryGrid">
+            <div className="app-modal-alert__summaryItem">
+              <div className="app-modal-alert__summaryLabel">وضعیت نصب</div>
+              <div className="app-modal-alert__summaryValue">
+                {ios
+                  ? 'iPhone/iPad: از Add to Home Screen استفاده کنید.'
+                  : deferredPrompt
+                    ? 'Android/Chrome: آماده نصب است.'
+                    : 'Android/Chrome: هنوز شرایط نصب فراهم نیست.'}
               </div>
             </div>
-            <Button
-              onClick={onDismiss}
-              className="shrink-0"
-              aria-label="dismiss"
-              type="button"
-              variant="ghost"
-              size="xs"
-              leftIcon={<i className="fa-solid fa-xmark" />}
-            />
           </div>
-
-          <div className="mt-4 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-slate-800 dark:bg-slate-900/70">
-            <div className="text-sm font-semibold">وضعیت نصب</div>
-            <div className="mt-2 text-sm text-gray-700 dark:text-slate-300">
-              {ios
-                ? 'iPhone/iPad: از طریق گزینه Add to Home Screen نصب می‌شود.'
-                : deferredPrompt
-                  ? 'Android/Chrome: آماده نصب است.'
-                  : 'Android/Chrome: هنوز شرایط نصب فراهم نیست.'}
-            </div>
-            {inApp && (
-              <div className="mt-2 text-xs text-amber-700 dark:text-amber-300">
-                این صفحه داخل مرورگر داخلی باز شده و ممکن است نصب فعال نشود.
-              </div>
-            )}
-          </div>
-
-          {lastError && (
-            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-200">
-              {lastError}
-            </div>
-          )}
-
-          {showIOSHelp && (
-            <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm leading-7 text-blue-800 dark:border-sky-900/40 dark:bg-sky-950/30 dark:text-sky-200">
-              <div className="font-semibold mb-1">نصب روی iPhone/iPad</div>
-              1) دکمه Share (⤴︎) را بزنید
-              <br />
-              2) گزینه <b>Add to Home Screen</b> را انتخاب کنید
-              <br />
-              3) Add را بزنید
-            </div>
-          )}
-
-          <div className="mt-5 flex flex-col sm:flex-row gap-2">
-            <Button
-              type="button"
-              onClick={onInstallClick}
-              variant={canShowCTA ? 'primary' : 'secondary'}
-              className="w-full"
-              disabled={!canShowCTA}
-              leftIcon={<i className="fa-solid fa-download" />}
-            >
-              نصب برنامه
-            </Button>
-            <a
-              href="#/login"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 px-4 py-3 text-center font-semibold text-gray-800 hover:bg-gray-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900"
-            >
-              <i className="fa-solid fa-globe" />
-              ادامه در مرورگر
-            </a>
-          </div>
-
-          {!deferredPrompt && !ios && (
-            <div className="mt-3 text-xs leading-6 text-gray-500 dark:text-slate-500">
-              اگر گزینه نصب ظاهر نمی‌شود، معمولاً دلیلش این است که اتصال HTTPS «امن» تشخیص داده نشده (گواهی معتبر/مورد اعتماد نیست) یا سرویس‌ورکر فعال نشده.
-            </div>
+          {inApp && (
+            <p className="app-modal-alert__text text-amber-700 dark:text-amber-300">
+              این صفحه داخل مرورگر داخلی باز شده و ممکن است نصب فعال نشود.
+            </p>
           )}
         </div>
       </div>
-    </div>
+
+      {lastError && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-200">
+          {lastError}
+        </div>
+      )}
+
+      {showIOSHelp && (
+        <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm leading-7 text-blue-800 dark:border-sky-900/40 dark:bg-sky-950/30 dark:text-sky-200">
+          <div className="font-semibold mb-1">نصب روی iPhone/iPad</div>
+          1) دکمه Share (⤴︎) را بزنید
+          <br />
+          2) گزینه <b>Add to Home Screen</b> را انتخاب کنید
+          <br />
+          3) Add را بزنید
+        </div>
+      )}
+
+      <div className="modal-actions premium-modal-actions app-modal-actions pwa-install-overlay__actions">
+        <div className="app-modal-command-row flex flex-col-reverse gap-2.5 sm:flex-row sm:items-center sm:justify-end">
+          <a
+            href="#/login"
+            className="modal-btn app-command-button app-command-button--cancel premium-cancel-btn inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 px-4 py-3 text-center font-semibold text-gray-800 hover:bg-gray-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900"
+          >
+            <i className="fa-solid fa-globe" aria-hidden="true" />
+            ادامه در مرورگر
+          </a>
+          <Button
+            type="button"
+            onClick={onInstallClick}
+            variant={canShowCTA ? 'primary' : 'secondary'}
+            disabled={!canShowCTA}
+            leftIcon={<i className="fa-solid fa-download" aria-hidden="true" />}
+          >
+            نصب برنامه
+          </Button>
+        </div>
+      </div>
+
+      {!deferredPrompt && !ios && (
+        <div className="mt-3 text-xs leading-6 text-gray-500 dark:text-slate-500">
+          اگر گزینه نصب ظاهر نمی‌شود، معمولاً دلیلش این است که اتصال HTTPS «امن» تشخیص داده نشده یا سرویس‌ورکر فعال نشده.
+        </div>
+      )}
+    </Modal>
   );
 };
 

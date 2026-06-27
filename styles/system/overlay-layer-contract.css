@@ -44,3 +44,118 @@
 [data-ui-header="main"] {
   z-index: var(--kourosh-z-header);
 }
+
+/* Phase 50.8: canonical non-modal portal layers and command overlay layers. */
+:root {
+  --kourosh-z-command-backdrop: 9200;
+  --kourosh-z-command-panel: 9210;
+  --kourosh-z-sheet-backdrop: 9300;
+  --kourosh-z-sheet-panel: 9310;
+  --kourosh-z-popover: 9400;
+  --kourosh-z-tooltip: 9500;
+  --kourosh-z-toast: 9600;
+}
+
+[data-kourosh-layer="modal-backdrop"] { z-index: var(--kourosh-z-modal-backdrop) !important; }
+[data-kourosh-layer="modal"] { z-index: var(--kourosh-z-modal-panel) !important; }
+[data-kourosh-layer="drawer-backdrop"] { z-index: var(--kourosh-z-drawer-backdrop) !important; }
+[data-kourosh-layer="drawer"] { z-index: var(--kourosh-z-drawer-panel) !important; }
+[data-kourosh-layer="sheet-backdrop"] { z-index: var(--kourosh-z-sheet-backdrop) !important; }
+[data-kourosh-layer="sheet"] { z-index: var(--kourosh-z-sheet-panel) !important; }
+[data-kourosh-layer="command-backdrop"] { z-index: var(--kourosh-z-command-backdrop) !important; }
+[data-kourosh-layer="command"] { z-index: var(--kourosh-z-command-panel) !important; }
+[data-kourosh-layer="popover"] { z-index: var(--kourosh-z-popover) !important; }
+[data-kourosh-layer="tooltip"] { z-index: var(--kourosh-z-tooltip) !important; }
+[data-kourosh-layer="toast"] { z-index: var(--kourosh-z-toast) !important; }
+
+.app-portal-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.app-portal-layer--toast,
+.app-toast-layer {
+  display: flex;
+  padding: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .app-portal-layer--toast,
+  .app-toast-layer {
+    padding: 1.25rem;
+  }
+}
+
+.app-toast-layer--bottom-right { align-items: flex-end; justify-content: flex-start; }
+.app-toast-layer--bottom-left { align-items: flex-end; justify-content: flex-end; }
+.app-toast-layer--top-right { align-items: flex-start; justify-content: flex-start; }
+.app-toast-layer--top-left { align-items: flex-start; justify-content: flex-end; }
+.app-toast-layer--top-center { align-items: flex-start; justify-content: center; }
+.app-toast-layer--bottom-center { align-items: flex-end; justify-content: center; }
+
+.app-portal-layer--popover,
+.app-portal-layer--tooltip,
+.app-tooltip-layer,
+.app-date-popover-layer {
+  display: block;
+}
+
+.app-date-popover-panel,
+.app-notification-toast {
+  pointer-events: auto;
+}
+
+.app-command-palette-overlay {
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding: min(10vh, 72px) 1rem 1rem !important;
+}
+
+.command-palette-panel[data-command-palette-root="true"] {
+  width: min(42rem, calc(100vw - 2rem)) !important;
+  max-width: min(42rem, calc(100vw - 2rem)) !important;
+  min-width: 0 !important;
+  inset-inline: auto !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(226, 232, 240, 0.94) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 34px 88px -48px rgba(15, 23, 42, 0.52) !important;
+}
+
+html.dark .command-palette-panel[data-command-palette-root="true"] {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background: rgba(2, 6, 23, 0.98) !important;
+  box-shadow: 0 38px 96px -46px rgba(2, 6, 23, 0.9) !important;
+}
+
+.smart-tooltip-layer[data-tooltip-layer-root="portal-layer"],
+.smart-tooltip-layer[data-tooltip-layer-root="portal-layer"].smart-tooltip-layer--visible,
+.smart-tooltip-layer[data-tooltip-layer-root="portal-layer"] .smart-tooltip-bubble {
+  z-index: auto !important;
+}
+
+.app-date-popover-panel {
+  pointer-events: auto !important;
+  z-index: auto !important;
+  max-width: calc(100vw - 1rem) !important;
+}
+
+@media (max-width: 520px) {
+  .app-command-palette-overlay {
+    padding: 0.75rem !important;
+  }
+
+  .command-palette-panel[data-command-palette-root="true"] {
+    width: min(100%, calc(100vw - 1.5rem)) !important;
+    max-width: min(100%, calc(100vw - 1.5rem)) !important;
+    border-radius: 20px !important;
+  }
+
+  .app-date-popover-panel {
+    left: 0.5rem !important;
+    width: calc(100vw - 1rem) !important;
+  }
+}

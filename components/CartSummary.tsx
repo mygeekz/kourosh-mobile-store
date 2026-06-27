@@ -147,17 +147,23 @@ const CartSummary: React.FC<Props> = ({
               {(['cash', 'credit'] as PaymentMethod[]).map((m) => {
                 const active = paymentMethod === m;
                 return (
-                  <Button
+                  <button
                     key={m}
                     type="button"
-                    onClick={() => onPaymentChange(m)}
-                    variant={active ? (m === 'cash' ? 'success' : 'warning') : 'secondary'}
-                    size="xs"
-                    className="w-full justify-center sales-payment-chip"
-                    leftIcon={<i className={m === 'cash' ? 'fa-solid fa-money-bill-wave' : 'fa-solid fa-file-invoice-dollar'} />}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      onPaymentChange(m);
+                    }}
+                    className={`sales-payment-choice ${active ? 'is-active' : ''} ${active && m === 'cash' ? 'is-active-cash' : ''} ${active && m === 'credit' ? 'is-active-credit' : ''}`}
+                    data-selected={active ? 'true' : 'false'}
+                    data-payment-method={m}
+                    aria-pressed={active}
                   >
-                    {m === 'cash' ? 'نقدی' : 'اعتباری'}
-                  </Button>
+                    <i className={m === 'cash' ? 'fa-solid fa-money-bill-wave' : 'fa-solid fa-file-invoice-dollar'} />
+                    <span>{m === 'cash' ? 'نقدی' : 'اعتباری'}</span>
+                  </button>
                 );
               })}
             </div>
@@ -165,7 +171,7 @@ const CartSummary: React.FC<Props> = ({
 
           <div>
             <label className="mb-1.5 block text-[12px] font-black text-slate-700 dark:text-slate-200">تاریخ فروش</label>
-            <ShamsiDatePicker selectedDate={salesDate} onDateChange={onDateChange} preview="انتخاب تاریخ" />
+            <ShamsiDatePicker selectedDate={salesDate} onDateChange={onDateChange} preview="انتخاب تاریخ" inputClassName="sales-date-input--no-icon" hideIcon />
           </div>
 
           <div>

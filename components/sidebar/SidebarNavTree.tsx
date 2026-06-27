@@ -115,7 +115,7 @@ export const SidebarNavTree: React.FC<SidebarNavTreeProps> = ({
     const content = (
       <div
         className={[
-          'sidebar-nav-row group relative flex items-center w-full whitespace-nowrap cursor-pointer text-right overflow-hidden border transition-all duration-200 ease-out hover:-translate-y-[1px] hover:border-[var(--sidebar-hover-border)] hover:bg-[var(--sidebar-hover-bg)]/70 hover:text-[var(--sidebar-hover-fg)] hover:shadow-[0_18px_34px_-26px_rgba(15,23,42,0.35)]',
+          'sidebar-nav-row group relative flex items-center w-full whitespace-nowrap cursor-pointer text-right overflow-hidden border transition-all duration-200 ease-out hover:border-transparent hover:bg-transparent hover:shadow-none',
           depth === 0 ? 'rounded-[16px] px-2.5 py-1' : 'rounded-[13px] px-2 py-0.5',
           indent,
           depth === 0
@@ -145,12 +145,12 @@ export const SidebarNavTree: React.FC<SidebarNavTreeProps> = ({
             depth === 0
               ? (isActiveRow
                   ? 'rounded-xl border border-[var(--sidebar-hover-border)] bg-[var(--sidebar-hover-bg)] text-[var(--sidebar-hover-fg)] shadow-[0_14px_28px_-22px_rgba(15,23,42,0.28)]'
-                  : 'rounded-xl border border-transparent bg-transparent text-current group-hover:border-[var(--sidebar-hover-border)]/70 group-hover:bg-[var(--sidebar-hover-bg)]/80')
+                  : 'rounded-xl border border-transparent bg-transparent text-current group-hover:border-transparent group-hover:bg-transparent')
               : (routeActive
                   ? 'rounded-lg bg-[var(--sidebar-hover-bg)] text-[var(--sidebar-hover-fg)]'
                   : (branchActive
-                      ? 'rounded-lg border border-transparent bg-transparent text-slate-600 dark:text-slate-300 group-hover:bg-[var(--sidebar-hover-bg)]/70'
-                      : 'rounded-lg border border-transparent bg-transparent text-current group-hover:bg-[var(--sidebar-hover-bg)]/70')),
+                      ? 'rounded-lg border border-transparent bg-transparent text-slate-600 dark:text-slate-300 group-hover:bg-transparent'
+                      : 'rounded-lg border border-transparent bg-transparent text-current group-hover:bg-transparent')),
           ].join(' ')}
           style={{ width: depth === 0 ? iconPx : Math.max(18, iconPx - 4), height: depth === 0 ? iconPx : Math.max(18, iconPx - 4) }}
         >

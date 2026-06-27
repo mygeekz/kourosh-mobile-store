@@ -104,6 +104,15 @@ const BASE_CSS = `
   .inv__meta-k{ color:#64748b; }
   .inv__meta-v{ font-weight:800; color:#0f172a; }
 
+  .inv__payment-badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    border-radius:999px; padding:3px 9px;
+    font-size:9.5px; font-weight:900; white-space:nowrap;
+    border:1px solid #bbf7d0; background:#ecfdf5; color:#047857;
+  }
+  .inv__payment-badge--credit{ border-color:#fde68a; background:#fffbeb; color:#b45309; }
+  .inv__payment-badge--installment{ border-color:#bfdbfe; background:#eff6ff; color:#1d4ed8; }
+
   .inv__qr{
     width:92px; flex:0 0 auto;
     border:1px solid rgba(15,23,42,.10); border-radius:12px;
@@ -550,6 +559,14 @@ const submitReturn = async () => {
   const c = invoice.customerDetails || {};
   const m = invoice.invoiceMetadata || {};
   const f = invoice.financialSummary || {};
+  const invoicePaymentMethod = String((m as any).paymentMethod || '').toLowerCase();
+  const invoicePaymentLabel = String((m as any).paymentMethodLabel || '').trim()
+    || (invoicePaymentMethod === 'credit' ? 'فروش اعتباری' : invoicePaymentMethod === 'installment' ? 'فروش اقساطی' : 'فروش نقدی');
+  const invoicePaymentBadgeClass = invoicePaymentMethod === 'credit'
+    ? 'inv__payment-badge inv__payment-badge--credit'
+    : invoicePaymentMethod === 'installment'
+      ? 'inv__payment-badge inv__payment-badge--installment'
+      : 'inv__payment-badge';
   const items: any[] = invoice.lineItems || [];
   const dateFa = toJalali(m.transactionDate);
 
@@ -725,6 +742,7 @@ const submitReturn = async () => {
             <div style={{ display: "flex", gap: "10px", alignItems: "stretch" }}>
               <div className="inv__meta">
                 <div className="inv__meta-row"><span className="inv__meta-k">شماره فاکتور</span><span className="inv__meta-v">{m.invoiceNumber}</span></div>
+                <div className="inv__meta-row"><span className="inv__meta-k">نوع فروش</span><span className="inv__meta-v"><span className={invoicePaymentBadgeClass}>{invoicePaymentLabel}</span></span></div>
                 <div className="inv__meta-row"><span className="inv__meta-k">تاریخ</span><span className="inv__meta-v">{dateFa}</span></div>
                 <div className="inv__meta-row"><span className="inv__meta-k">مشتری</span><span className="inv__meta-v">{c?.fullName ?? "مهمان"}</span></div>
               </div>
