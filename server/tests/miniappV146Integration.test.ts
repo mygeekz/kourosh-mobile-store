@@ -10,6 +10,8 @@ import {
 } from "../../miniapp/startParam";
 import {
   buildTelegramMiniAppLaunchLink,
+  buildTelegramMiniAppLaunchButton,
+  buildTelegramMiniAppWebAppUrl,
   createTelegramMenuButtonEnsurer,
   resolveTelegramMiniAppUrl,
   telegramMenuButtonPayload,
@@ -65,6 +67,11 @@ assert.equal(telegramMenuButtonPayload(configured).mode, "web_app");
 assert.equal(telegramMenuButtonPayload({}).mode, "default");
 assert.equal(telegramMenuButtonPayload({ telegram_miniapp_public_url: "javascript:alert(1)" }).mode, "default");
 assert.equal(buildTelegramMiniAppLaunchLink(configured, "v1_c_account"), "https://t.me/KouroshStoreBot?startapp=v1_c_account");
+assert.equal(buildTelegramMiniAppWebAppUrl(configured, "v1_c_account"), "https://panel.example.com/miniapp.html?kourosh_start=v1_c_account");
+assert.deepEqual(buildTelegramMiniAppLaunchButton(configured, "v1_c_account"), {
+  text: "باز کردن در پنل کوروش",
+  web_app: { url: "https://panel.example.com/miniapp.html?kourosh_start=v1_c_account" },
+});
 assert.equal(buildTelegramMiniAppLaunchLink({ ...configured, telegram_bot_username: "bad!" }, "v1_c_account"), null);
 assert.equal(buildTelegramMiniAppLaunchLink(configured, "v1_c_unknown"), null);
 

@@ -6,6 +6,7 @@ import {
 } from "../apiClient";
 import { getTelegramWebApp } from "../telegram";
 import type { MiniAppAuthData, MiniAppIdentity } from "../types";
+import { resolveMiniAppLaunch } from "../startParam";
 
 type MiniAppAuthStatus =
   | "loading"
@@ -69,11 +70,18 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
         // Rotating the session ensures a still-valid stored token cannot hide a
         // newer startapp navigation context.
         const auth = await authenticateMiniApp(webApp.initData);
+        const directLaunchHint = new URLSearchParams(window.location.search).get("kourosh_start");
+        const hintedLaunch = directLaunchHint
+          ? resolveMiniAppLaunch(directLaunchHint, auth.identity.kind)
+          : null;
+        const launch = auth.launch?.startParam || !hintedLaunch?.startParam
+          ? auth.launch
+          : hintedLaunch;
         if (active) {
           setState({
             status: "authenticated",
             identity: auth.identity,
-            launch: auth.launch,
+            launch,
             message: "",
             code: null,
           });

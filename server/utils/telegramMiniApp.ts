@@ -22,6 +22,24 @@ export {
 };
 export type { TelegramPublicAccessMode };
 
+
+export const buildTelegramMiniAppWebAppUrl = (settings: Settings, startParam: unknown): string | null => {
+  const raw = String(startParam ?? "");
+  if (!isMiniAppStartParamShapeValid(raw) || !parseMiniAppStartParam(raw)) return null;
+  const currentPublicUrl = resolveTelegramMiniAppUrl(settings);
+  if (!currentPublicUrl) return null;
+  try {
+    const url = new URL(currentPublicUrl);
+    url.searchParams.set("kourosh_start", raw);
+    return url.toString();
+  } catch {
+    return null;
+  }
+};
+
+// Legacy Main Mini App deep link. Telegram resolves this through the bot's Main Mini App
+// configuration (BotFather), so rotating temporary tunnel workflows must not use it
+// for bot-generated action buttons. Keep only for explicit compatibility callers.
 export const buildTelegramMiniAppLaunchLink = (settings: Settings, startParam: unknown): string | null => {
   const username = normalizeTelegramBotUsername(settings.telegram_bot_username);
   const raw = String(startParam ?? "");
@@ -35,8 +53,8 @@ export const buildTelegramMiniAppLaunchButton = (
   startParam: unknown,
   text = "باز کردن در پنل کوروش",
 ) => {
-  const url = buildTelegramMiniAppLaunchLink(settings, startParam);
-  return url ? { text, url } : null;
+  const webAppUrl = buildTelegramMiniAppWebAppUrl(settings, startParam);
+  return webAppUrl ? { text, web_app: { url: webAppUrl } } : null;
 };
 
 export const telegramMenuButtonPayload = (settings: Settings) => {

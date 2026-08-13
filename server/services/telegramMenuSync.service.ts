@@ -9,15 +9,36 @@ export type TelegramMenuSyncResult = {
   message?: string;
 };
 
+type TelegramApiResult = {
+  success?: boolean;
+  message?: string;
+  rawText?: string;
+  errorCode?: string;
+  data?: unknown;
+};
+
 type TelegramMenuSyncDeps = {
   configureTransport: (settings: Record<string, unknown>) => unknown;
-  callApi: (botToken: string, method: string, payload: Record<string, unknown>) => Promise<{ success?: boolean; message?: string; rawText?: string; errorCode?: string }>;
+  callApi: (botToken: string, method: string, payload: Record<string, unknown>) => Promise<TelegramApiResult>;
   sleep: (ms: number) => Promise<void>;
 };
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 const transientFailure = /(timeout|timed out|socket hang up|econnreset|etimedout|429|rate limit|temporar|unavailable|network)/i;
 const delays = [0, 1_000, 2_000];
+
+const verifiedMenuButtonUrl = (result: TelegramApiResult): string | null => {
+  const data = result?.data;
+  if (!data || typeof data !== "object") return null;
+  const root = data as { result?: unknown };
+  const menu = root.result;
+  if (!menu || typeof menu !== "object") return null;
+  const typed = menu as { type?: unknown; web_app?: { url?: unknown } };
+  if (String(typed.type || "") !== "web_app") return null;
+  const rawUrl = String(typed.web_app?.url || "").trim();
+  if (!rawUrl) return null;
+  try { return new URL(rawUrl).toString(); } catch { return null; }
+};
 
 export const createTelegramMenuSyncService = (overrides: Partial<TelegramMenuSyncDeps> = {}) => {
   const deps: TelegramMenuSyncDeps = {
@@ -42,7 +63,30 @@ export const createTelegramMenuSyncService = (overrides: Partial<TelegramMenuSyn
       if (delays[attempt] > 0) await deps.sleep(delays[attempt]);
       try {
         const result = await deps.callApi(botToken, "setChatMenuButton", desired.payload);
-        if (result?.success) return { state: "synced", attempts: attempt + 1 };
+        if (result?.success) {
+          const verification = await deps.callApi(botToken, "getChatMenuButton", {});
+          const expectedUrl = desired.mode === "web_app"
+            ? String((desired.payload.menu_button as { web_app?: { url?: unknown } })?.web_app?.url || "").trim()
+            : "";
+          if (desired.mode === "default") {
+            const verifiedType = verification?.data && typeof verification.data === "object"
+              ? String(((verification.data as { result?: { type?: unknown } }).result?.type) || "")
+              : "";
+            if (verification?.success && verifiedType === "default") return { state: "synced", attempts: attempt + 1 };
+          } else {
+            const verifiedUrl = verification?.success ? verifiedMenuButtonUrl(verification) : null;
+            let canonicalExpected: string | null = null;
+            try { canonicalExpected = expectedUrl ? new URL(expectedUrl).toString() : null; } catch { canonicalExpected = null; }
+            if (canonicalExpected && verifiedUrl === canonicalExpected) return { state: "synced", attempts: attempt + 1 };
+          }
+          lastMessage = String(verification?.message || verification?.rawText || verification?.errorCode || "Telegram Menu read-back did not match the requested Mini App URL.");
+          if (!verification?.success) {
+            if (!transientFailure.test(lastMessage)) break;
+          }
+          // Telegram accepted the write but did not expose the requested value yet.
+          // Retry through the same explicitly configured transport; never fall back.
+          continue;
+        }
         lastMessage = String(result?.message || result?.rawText || result?.errorCode || lastMessage);
         if (!transientFailure.test(lastMessage)) break;
       } catch (error) {
