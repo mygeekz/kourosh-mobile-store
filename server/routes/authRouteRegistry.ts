@@ -9,6 +9,7 @@ import { registerInitialSetupRoutes } from "./initialSetup.routes";
 import { registerSearchRoutes } from "./search.routes";
 import { registerBarcodeRoutes } from "./barcode.routes";
 import { registerMiniAppRoutes } from "./miniapp.routes";
+import { registerMiniAppPublicSyncRoutes } from "./miniAppPublicSync.routes";
 
 export function registerPublicAppRoutes(
   app: Express,
@@ -19,6 +20,8 @@ export function registerPublicAppRoutes(
   // Mini App routes own their Telegram validation and isolated session guard.
   // Register them before the dashboard's bearer-token gate.
   registerMiniAppRoutes(app);
+  // Loopback-only runtime handoff for the optional Windows external-tunnel helper.
+  registerMiniAppPublicSyncRoutes(app);
 }
 
 export function registerPreTokenUtilityRoutes(app: Express): void {

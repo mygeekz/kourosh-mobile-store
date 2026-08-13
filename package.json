@@ -904,7 +904,12 @@
     "start:miniapp:tunnel:windows": "node scripts/windows-miniapp-tunnel-launcher.mjs",
     "test:windows-miniapp-tunnel-v162": "node scripts/test-windows-miniapp-tunnel-v162.mjs",
     "audit:windows-miniapp-tunnel-v162": "node scripts/audit-windows-miniapp-tunnel-v162.mjs",
-    "test:v162:correction": "npm run test:windows-miniapp-tunnel-v162 && npm run audit:windows-miniapp-tunnel-v162 && npm run test:v162"
+    "test:v162:correction": "npm run test:windows-miniapp-tunnel-v162 && npm run audit:windows-miniapp-tunnel-v162 && npm run test:v162",
+    "test:miniapp-auto-tunnel-v163": "node scripts/test-miniapp-auto-tunnel-v163.mjs",
+    "audit:miniapp-auto-tunnel-v163": "node scripts/audit-miniapp-auto-tunnel-v163.mjs",
+    "test:v163": "npm run test:miniapp-auto-tunnel-v163 && npm run audit:miniapp-auto-tunnel-v163 && npm run test:miniapp-public-sync-service-v163 && npm run test:telegram-menu-sync-v163 && npm run test:v162:correction",
+    "test:telegram-menu-sync-v163": "node --experimental-strip-types --experimental-loader ./scripts/ts-runtime-loader-v163.mjs scripts/test-telegram-menu-sync-v163.mjs",
+    "test:miniapp-public-sync-service-v163": "node --experimental-strip-types --experimental-loader ./scripts/ts-runtime-loader-v163.mjs scripts/test-miniapp-public-sync-service-v163.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

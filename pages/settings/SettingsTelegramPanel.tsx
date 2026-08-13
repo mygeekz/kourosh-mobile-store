@@ -129,6 +129,9 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
   const [cloudRecoveryCode, setCloudRecoveryCode] = useState('');
   const [cloudActionBusy, setCloudActionBusy] = useState(false);
   const [cloudEnrollmentAvailable, setCloudEnrollmentAvailable] = useState<boolean | null>(null);
+  const [miniAppPublicSyncStatus, setMiniAppPublicSyncStatus] = useState<null | {
+    phase?: string; publicUrl?: string | null; gateway?: string; tunnel?: string; telegramMenu?: string; message?: string | null;
+  }>(null);
 
   useEffect(() => {
     if (tab !== 'telegram') return;
@@ -139,6 +142,32 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
       .catch(() => { if (active) setCloudEnrollmentAvailable(false); });
     return () => { active = false; };
   }, [tab]);
+
+  useEffect(() => {
+    if (tab !== 'telegram') return;
+    let active = true;
+    let timer = 0;
+    const loadPublicSyncStatus = async () => {
+      try {
+        const response = await apiFetch('/api/settings/miniapp-public-sync/status', { cache: 'no-store' });
+        const body = await response.json().catch(() => ({}));
+        if (!active || !response.ok || body?.success === false) return;
+        const data = body?.data || {};
+        setMiniAppPublicSyncStatus(data);
+        const publicUrl = String(data?.publicUrl || '').trim();
+        if (publicUrl && ['PUBLIC_URL_READY', 'MENU_SYNC_PENDING', 'MENU_SYNCED', 'ERROR'].includes(String(data?.phase || ''))) {
+          setBusinessInfo((previous) => {
+            const current = previous as TelegramBusinessInfo;
+            if (String(current.telegram_miniapp_public_url || '').trim() === publicUrl && current.miniapp_public_access_mode === 'external_tunnel') return previous;
+            return { ...current, miniapp_public_access_mode: 'external_tunnel', telegram_miniapp_public_url: publicUrl };
+          });
+        }
+      } catch {}
+      if (active) timer = window.setTimeout(loadPublicSyncStatus, 2500);
+    };
+    void loadPublicSyncStatus();
+    return () => { active = false; if (timer) window.clearTimeout(timer); };
+  }, [tab, setBusinessInfo]);
 
   const runCloudCredentialAction = async (kind: 'enroll' | 'rotate') => {
     const code = (kind === 'enroll' ? cloudEnrollmentCode : cloudRecoveryCode).trim();
@@ -356,9 +385,12 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                         <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">فقط URL صریح همین strategy استفاده می‌شود؛ هیچ fallback به Local URL، app_base_url یا Relay URL وجود ندارد.</p>
                       </div>
                       <div className="rounded-2xl border border-slate-200 p-4 text-xs leading-6 text-slate-600 dark:border-slate-800 dark:text-slate-300">
-                        <div className="font-black text-slate-900 dark:text-white">Readiness</div>
-                        <div className="mt-2">Gateway: {telegramMiniAppUrl ? 'آماده بررسی' : 'URL لازم است'}</div>
-                        <div>Relay Connector: لازم نیست</div>
+                        <div className="font-black text-slate-900 dark:text-white">وضعیت Mini App عمومی</div>
+                        <div className="mt-2">Mini App عمومی: {['PUBLIC_URL_READY', 'MENU_SYNC_PENDING', 'MENU_SYNCED'].includes(String(miniAppPublicSyncStatus?.phase || '')) ? '● متصل' : telegramMiniAppUrl ? 'در حال بررسی' : 'URL لازم است'}</div>
+                        <div>Gateway: {miniAppPublicSyncStatus?.gateway === 'ready' ? '● آماده' : telegramMiniAppUrl ? 'در حال بررسی' : 'نامشخص'}</div>
+                        <div>Tunnel: {miniAppPublicSyncStatus?.tunnel === 'ready' ? '● متصل' : miniAppPublicSyncStatus?.tunnel === 'starting' ? 'در حال اتصال' : 'نامشخص'}</div>
+                        <div>Telegram Menu: {miniAppPublicSyncStatus?.telegramMenu === 'synced' ? '● همگام' : miniAppPublicSyncStatus?.telegramMenu === 'pending' ? '● در انتظار اتصال تلگرام' : miniAppPublicSyncStatus?.telegramMenu === 'error' ? 'نیازمند تلاش مجدد' : 'نامشخص'}</div>
+                        {miniAppPublicSyncStatus?.message ? <div className="mt-2 text-slate-500 dark:text-slate-400">{miniAppPublicSyncStatus.message}</div> : null}
                       </div>
                     </div>
                   )}

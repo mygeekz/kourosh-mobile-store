@@ -44,6 +44,7 @@ import { resolveTelegramTransportMode } from "../telegram/TelegramTransport";
 import { resolveRelayControlUrl, resolveRelayConnectorUrl, resolveRelayProvider, validateRelayConnectorUrl, validateRelayControlUrl } from "../connectivity/relayProvider";
 import { enrollCloudConnector, rotateCloudConnectorCredential } from "../cloud/cloudEnrollment";
 import { writeMiniAppGatewayRuntimeConfigFromSettings } from "../miniapp/miniAppGatewayRuntimeConfig.mjs";
+import { getMiniAppPublicSyncStatus } from "../services/miniAppPublicUrlSync.service";
 
 type AuthorizeRole = (allowed: string[]) => RequestHandler;
 
@@ -99,6 +100,11 @@ export const registerSettingsRoutes = (
     } catch (e) {
       next(e);
     }
+  });
+
+  app.get("/api/settings/miniapp-public-sync/status", authorizeRole(["Admin"]), async (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    return res.json({ success: true, data: getMiniAppPublicSyncStatus() });
   });
 
 

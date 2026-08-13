@@ -2,6 +2,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import net from "node:net";
+import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -224,7 +225,7 @@ const printPublicUrl = (publicUrl, urlFile, options = {}) => {
   const copied = (options.copyClipboard || copyToWindowsClipboard)(publicUrl, options);
   out.write(copied ? "[OK] URL copied to clipboard.\n" : "[INFO] Clipboard copy was unavailable.\n");
   out.write(`[OK] URL saved to: ${urlFile}\n`);
-  out.write("[ACTION] Paste this URL into Mini App Public HTTPS URL in Kourosh Settings.\n\n");
+  out.write("[SYNC] Public URL will be synchronized with Kourosh automatically.\n\n");
 };
 
 export const runCloudflaredQuickTunnel = (options = {}) => new Promise((resolve, reject) => {
@@ -254,7 +255,9 @@ export const runCloudflaredQuickTunnel = (options = {}) => new Promise((resolve,
     publicUrl = candidate;
     fs.writeFileSync(urlFile, `${publicUrl}\r\n`, { encoding: "ascii", mode: 0o600 });
     printPublicUrl(publicUrl, urlFile, options);
-    options.onPublicUrl?.(publicUrl);
+    Promise.resolve(options.onPublicUrl?.(publicUrl)).catch((error) => {
+      (options.stderr || process.stderr).write(`[MINI APP TUNNEL] PUBLIC_URL_HANDOFF_FAILED: ${String(error?.message || error)}\n`);
+    });
   };
   const consume = (chunk, stream) => {
     const text = String(chunk);
@@ -307,6 +310,58 @@ export const runCloudflaredQuickTunnel = (options = {}) => new Promise((resolve,
   });
 });
 
+const requestLoopbackJson = (method, routePath, body, options = {}) => new Promise((resolve, reject) => {
+  const payload = body == null ? null : Buffer.from(JSON.stringify(body));
+  const request = http.request({
+    host: options.backendHost || "127.0.0.1",
+    port: Number(options.backendPort || 3001),
+    path: routePath,
+    method,
+    timeout: Number(options.requestTimeoutMs || 8_000),
+    headers: payload ? { "content-type": "application/json", "content-length": payload.length } : undefined,
+  }, (response) => {
+    const chunks = [];
+    response.on("data", (chunk) => chunks.push(chunk));
+    response.on("end", () => {
+      const text = Buffer.concat(chunks).toString("utf8");
+      let parsed = null;
+      try { parsed = text ? JSON.parse(text) : null; } catch {}
+      resolve({ status: Number(response.statusCode || 0), body: parsed, text });
+    });
+  });
+  request.once("timeout", () => request.destroy(Object.assign(new Error("KOUROSH_BACKEND_SYNC_TIMEOUT"), { code: "KOUROSH_BACKEND_SYNC_TIMEOUT" })));
+  request.once("error", reject);
+  request.end(payload || undefined);
+});
+
+export const waitForKouroshTunnelSyncPreflight = async (options = {}) => {
+  const timeoutMs = Number(options.timeoutMs || 60_000);
+  const intervalMs = Number(options.intervalMs || 500);
+  const deadline = Date.now() + timeoutMs;
+  let lastError = null;
+  do {
+    try {
+      const result = await (options.requestJson || requestLoopbackJson)("GET", "/api/local-runtime/miniapp-public-url-sync/preflight", null, options);
+      if (result.status === 200 && result.body?.success) return result.body.data;
+      lastError = new Error(`KOUROSH_TUNNEL_PREFLIGHT_HTTP_${result.status}`);
+    } catch (error) { lastError = error; }
+    if (Date.now() >= deadline) break;
+    await (options.sleepImpl || sleep)(intervalMs);
+  } while (true);
+  throw Object.assign(new Error("KOUROSH_BACKEND_NOT_READY_FOR_TUNNEL_SYNC"), { code: "KOUROSH_BACKEND_NOT_READY_FOR_TUNNEL_SYNC", cause: lastError });
+};
+
+export const syncValidatedPublicUrlWithKourosh = async (publicUrl, options = {}) => {
+  const normalized = normalizeQuickTunnelMiniAppUrl(publicUrl);
+  if (!normalized) throw Object.assign(new Error("INVALID_GENERATED_TUNNEL_PUBLIC_URL"), { code: "INVALID_GENERATED_TUNNEL_PUBLIC_URL" });
+  const result = await (options.requestJson || requestLoopbackJson)("POST", "/api/local-runtime/miniapp-public-url-sync", { provider: "cloudflare_quick_tunnel", publicUrl: normalized }, options);
+  if (result.status !== 200 || !result.body?.success) {
+    const message = String(result.body?.data?.status?.message || result.body?.message || result.text || `HTTP ${result.status}`);
+    throw Object.assign(new Error(message), { code: "KOUROSH_PUBLIC_URL_SYNC_FAILED", httpStatus: result.status });
+  }
+  return result.body.data;
+};
+
 export const startOrReuseWindowsMiniAppTunnel = async (options = {}) => {
   if (process.platform !== "win32" && options.allowNonWindows !== true) {
     throw Object.assign(new Error("WINDOWS_MINIAPP_TUNNEL_LAUNCHER_REQUIRES_WINDOWS"), { code: "WINDOWS_MINIAPP_TUNNEL_LAUNCHER_REQUIRES_WINDOWS" });
@@ -325,6 +380,7 @@ export const startOrReuseWindowsMiniAppTunnel = async (options = {}) => {
     const savedUrl = fs.existsSync(urlFile) ? fs.readFileSync(urlFile, "utf8").trim() : "";
     if (isValidSavedQuickTunnelUrl(savedUrl)) {
       printPublicUrl(savedUrl, urlFile, options);
+      if (options.syncPublicUrl) await options.syncPublicUrl(savedUrl);
       return { action: "reuse", pid: Number(existing.pid) || null, publicUrl: savedUrl };
     }
     const error = new Error(`MINIAPP_TUNNEL_ALREADY_RUNNING_URL_UNKNOWN: PID ${Number(existing.pid) || "unknown"}`);
@@ -349,6 +405,10 @@ export const startOrReuseWindowsMiniAppTunnel = async (options = {}) => {
         urlFile,
         logFile: options.logFile,
         ...options.runOptions,
+        onPublicUrl: async (publicUrl) => {
+          await options.runOptions?.onPublicUrl?.(publicUrl);
+          if (options.syncPublicUrl) await options.syncPublicUrl(publicUrl);
+        },
       });
       return { action: "started", source: cloudflared.source, attempts: attempt, ...result };
     } catch (error) {
@@ -377,7 +437,28 @@ const main = async () => {
   process.stdout.write(`[TARGET] ${DEFAULT_TARGET_URL}\n`);
   process.stdout.write("[INFO] Cloudflare Quick Tunnel is a Windows development/test helper only.\n");
   process.stdout.write("[INFO] Kourosh Core remains provider-independent and works without this helper.\n\n");
-  const result = await startOrReuseWindowsMiniAppTunnel();
+  process.stdout.write("[KOUROSH] Waiting for Local Backend public-URL sync service...\n");
+  const preflight = await waitForKouroshTunnelSyncPreflight();
+  if (preflight?.allowed === false) {
+    process.stdout.write(`[TUNNEL] Skipped: Mini App mode ${String(preflight.protectedMode || "protected")} is protected from temporary-tunnel overwrite.\n`);
+    return;
+  }
+  process.stdout.write("[TUNNEL] Generating temporary public URL...\n");
+  const result = await startOrReuseWindowsMiniAppTunnel({
+    syncPublicUrl: async (publicUrl) => {
+      process.stdout.write("[MINI APP] Synchronizing public URL and runtime Host...\n");
+      const synced = await syncValidatedPublicUrlWithKourosh(publicUrl);
+      if (synced?.ready) {
+        process.stdout.write("[MINI APP] Runtime synchronized and public URL is READY.\n");
+        if (synced?.menuSync === "synced") process.stdout.write("[TELEGRAM] Menu synchronized.\n");
+        else if (synced?.menuSync === "pending") process.stdout.write("[TELEGRAM] Menu synchronization pending - Telegram transport/token is unavailable.\n");
+        else process.stdout.write("[TELEGRAM] Menu synchronization pending/error; Mini App remains READY.\n");
+      } else {
+        process.stderr.write("[MINI APP] Public URL was saved but public health check is not READY yet.\n");
+      }
+      return synced;
+    },
+  });
   if (result.action === "reuse") process.stdout.write(`[REUSE] Existing Quick Tunnel PID ${result.pid || "unknown"}.\n`);
 };
 
