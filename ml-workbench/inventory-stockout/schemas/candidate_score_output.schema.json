@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase13a/candidate_score_output.schema.json",
+  "title": "Kourosh Phase 13A Offline Candidate Score Output",
+  "type": "object",
+  "required": [
+    "candidatePackageId",
+    "modelKey",
+    "modelVersion",
+    "predictionType",
+    "horizonDays",
+    "rowCount",
+    "scoreCount",
+    "generatedAt",
+    "workbenchVersion",
+    "source",
+    "safetyPolicy",
+    "scores"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "candidatePackageId": { "type": "string", "minLength": 1 },
+    "modelKey": { "type": "string", "minLength": 1 },
+    "modelVersion": { "type": "string", "minLength": 1 },
+    "predictionType": { "type": "string", "minLength": 1 },
+    "horizonDays": { "type": ["integer", "null"] },
+    "rowCount": { "type": "integer", "minimum": 0 },
+    "scoreCount": { "type": "integer", "minimum": 0 },
+    "generatedAt": { "type": "string", "minLength": 1 },
+    "workbenchVersion": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "required": ["sourceType", "featureCount", "featureNames", "warnings"],
+      "properties": {
+        "sourceType": { "enum": ["test_csv", "feature_snapshots"] },
+        "packageDir": { "type": "string" },
+        "inputFile": { "type": "string" },
+        "snapshotMetadata": { "type": "object" },
+        "trainingPackageValidation": { "type": "object" },
+        "featureCount": { "type": "integer", "minimum": 0 },
+        "featureNames": { "type": "array", "items": { "type": "string" } },
+        "featureContract": { "type": "object" },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "properties": {
+        "modelExecutionAllowed": { "const": false },
+        "runtimeInvocationAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "productionIntegrationAllowed": { "const": false },
+        "decisionAutomationAllowed": { "const": false },
+        "canChangeInventoryOrAccounting": { "const": false },
+        "canChangePricing": { "const": false },
+        "canChangeReports": { "const": false },
+        "canChangeLedger": { "const": false },
+        "canMutateBusinessRecords": { "const": false },
+        "artifactExecutionAllowed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "artifactBytesLoadingAllowed": { "const": false },
+        "rawTrainingCsvLoadingAllowed": { "const": false },
+        "automaticDeletionAllowed": { "const": false },
+        "purgeJobAllowed": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "entityId",
+          "predictionType",
+          "horizonDays",
+          "score",
+          "label",
+          "confidence",
+          "modelKey",
+          "modelVersion",
+          "candidatePackageId",
+          "generatedAt",
+          "sourceRowIndex"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "entityId": { "type": "string", "minLength": 1 },
+          "predictionType": { "type": "string", "minLength": 1 },
+          "horizonDays": { "type": ["integer", "null"] },
+          "score": { "type": ["number", "null"] },
+          "label": { "type": "string", "minLength": 1 },
+          "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+          "modelKey": { "type": "string", "minLength": 1 },
+          "modelVersion": { "type": "string", "minLength": 1 },
+          "candidatePackageId": { "type": "string", "minLength": 1 },
+          "generatedAt": { "type": "string", "minLength": 1 },
+          "sourceRowIndex": { "type": "integer", "minimum": 0 }
+        },
+        "not": {
+          "anyOf": [
+            { "required": ["set_stock"] },
+            { "required": ["change_price"] },
+            { "required": ["approve_purchase"] },
+            { "required": ["create_invoice"] },
+            { "required": ["mutate_ledger"] },
+            { "required": ["auto_order"] },
+            { "required": ["delete_record"] },
+            { "required": ["production_action"] },
+            { "required": ["auto_decision"] },
+            { "required": ["activate_artifact"] },
+            { "required": ["deploy_model"] },
+            { "required": ["write_inventory"] },
+            { "required": ["write_accounting"] },
+            { "required": ["write_ledger"] },
+            { "required": ["write_report"] }
+          ]
+        }
+      }
+    }
+  }
+}

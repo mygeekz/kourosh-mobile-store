@@ -1,0 +1,138 @@
+/* Stage 137 — Product Profit Real chart final polish
+   Replaces the hard-to-read Recharts profit bars with a custom ranking list
+   and changes donut center from concentration to top-product share. */
+
+.product-profit-real-chart-card__subtext {
+  max-width: 34rem !important;
+}
+
+.product-profit-real-donut-center strong {
+  font-size: 1.34rem !important;
+}
+
+.product-profit-real-donut-legend__item {
+  min-height: 54px !important;
+}
+
+.product-profit-real-profit-ranking {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 11px !important;
+  padding-top: 2px !important;
+}
+
+.product-profit-real-profit-row {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 11px !important;
+  border: 1px solid rgba(226, 232, 240, .78) !important;
+  border-radius: 18px !important;
+  background: rgba(248, 250, 252, .72) !important;
+}
+
+.product-profit-real-profit-row__rank {
+  display: grid !important;
+  place-items: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 12px !important;
+  background: rgba(15, 118, 110, .10) !important;
+  color: #0f766e !important;
+  font-size: .76rem !important;
+  font-weight: 950 !important;
+}
+
+.product-profit-real-profit-row__main {
+  display: grid !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.product-profit-real-profit-row__topline {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.product-profit-real-profit-row__topline strong {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #0f172a !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  text-align: right !important;
+}
+
+.product-profit-real-profit-row__topline span {
+  flex: 0 0 auto !important;
+  color: #0f766e !important;
+  font-size: .76rem !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.product-profit-real-profit-row__track {
+  position: relative !important;
+  height: 9px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  background: rgba(226, 232, 240, .90) !important;
+}
+
+.product-profit-real-profit-row__track span {
+  position: absolute !important;
+  inset-block: 0 !important;
+  right: 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #14b8a6, #0f766e) !important;
+  transition: width .4s ease !important;
+}
+
+.product-profit-real-profit-row__track span.is-negative {
+  background: linear-gradient(90deg, #fb7185, #e11d48) !important;
+}
+
+.product-profit-real-profit-row:has(.is-negative) .product-profit-real-profit-row__rank {
+  background: rgba(225, 29, 72, .10) !important;
+  color: #e11d48 !important;
+}
+
+.product-profit-real-profit-row:has(.is-negative) .product-profit-real-profit-row__topline span {
+  color: #e11d48 !important;
+}
+
+.dark .product-profit-real-profit-row {
+  border-color: rgba(51, 65, 85, .72) !important;
+  background: rgba(15, 23, 42, .56) !important;
+}
+
+.dark .product-profit-real-profit-row__topline strong {
+  color: #f8fafc !important;
+}
+
+.dark .product-profit-real-profit-row__track {
+  background: rgba(51, 65, 85, .86) !important;
+}
+
+.dark .product-profit-real-profit-row__rank {
+  background: rgba(20, 184, 166, .16) !important;
+  color: #5eead4 !important;
+}
+
+@media (max-width: 760px) {
+  .product-profit-real-profit-row__topline {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .product-profit-real-profit-row__topline span {
+    white-space: normal !important;
+  }
+}

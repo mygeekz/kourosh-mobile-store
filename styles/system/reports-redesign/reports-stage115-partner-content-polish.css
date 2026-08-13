@@ -1,0 +1,244 @@
+/* Stage 115 — Partner performance content/table polish
+   Fixes vertical spacing, hero card icons/title layout, and table overflow/layout issues. */
+
+.partner-performance-executive-page .space-y-5 > .partner-summary-table-card {
+  margin-top: 18px !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-grid--v2 {
+  gap: 16px !important;
+  margin-bottom: 18px !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card--v2 {
+  min-height: 142px !important;
+  padding: 20px !important;
+  overflow: hidden !important;
+}
+
+/* Disable old generated icon blocks that caused title overlap. */
+.partner-performance-executive-page .partner-profit-hero-card--v2::before,
+.partner-performance-executive-page .partner-profit-hero-card--v2::after {
+  display: none !important;
+  content: none !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-heading {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: start !important;
+  direction: rtl !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1rem !important;
+  border: 1px solid rgba(37,99,235,.14) !important;
+  background: rgba(37,99,235,.10) !important;
+  color: #2563eb !important;
+  box-shadow: 0 18px 40px -28px rgba(37,99,235,.45) !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-icon--focus {
+  border-color: rgba(16,185,129,.18) !important;
+  background: rgba(16,185,129,.12) !important;
+  color: #059669 !important;
+  box-shadow: 0 18px 40px -28px rgba(16,185,129,.45) !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-titleblock {
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-kicker {
+  margin: 0 !important;
+  color: #475569 !important;
+  font-size: 10px !important;
+  font-weight: 950 !important;
+  letter-spacing: .14em !important;
+  line-height: 1.3 !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-kicker--focus {
+  color: #047857 !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-titleblock h3 {
+  margin: 6px 0 0 !important;
+  color: #0f172a !important;
+  font-size: 17px !important;
+  font-weight: 950 !important;
+  line-height: 1.55 !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-titleblock p,
+.partner-performance-executive-page .partner-hero-card-copy {
+  margin: 8px 0 0 !important;
+  color: #64748b !important;
+  font-size: .83rem !important;
+  font-weight: 700 !important;
+  line-height: 1.9 !important;
+  text-align: right !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card {
+  margin-top: 14px !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  min-width: 190px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(16,185,129,.20) !important;
+  background: rgba(255,255,255,.78) !important;
+  padding: 11px 13px !important;
+  box-shadow: 0 18px 44px -34px rgba(16,185,129,.35) !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card div {
+  color: #047857 !important;
+  font-size: 10px !important;
+  font-weight: 950 !important;
+  letter-spacing: .10em !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card strong {
+  color: #065f46 !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+}
+
+/* Table head: no squeezed right rail, clean title+chips layout. */
+.partner-performance-executive-page .partner-summary-table-card {
+  margin-top: 18px !important;
+  overflow: hidden !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head--v2 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 18px 20px !important;
+  direction: rtl !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock {
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: center !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-title-icon {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 13px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #2563eb !important;
+  background: rgba(37,99,235,.10) !important;
+  border: 1px solid rgba(37,99,235,.14) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock h3 {
+  margin: 0 !important;
+  display: block !important;
+  white-space: nowrap !important;
+  font-size: 15px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock p {
+  margin-top: 5px !important;
+  max-width: 76ch !important;
+  line-height: 1.8 !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-chips {
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head--v2 .partner-summary-table-chips span {
+  min-height: 32px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-shell {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  border-top: 1px solid rgba(226,232,240,.85) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table {
+  min-width: 1040px !important;
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.partner-performance-executive-page .partner-summary-table thead th {
+  height: 46px !important;
+  padding: 0 14px !important;
+  text-align: right !important;
+  vertical-align: middle !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody td {
+  height: 54px !important;
+  padding: 0 14px !important;
+  vertical-align: middle !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(1) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(2) { width: 185px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(3) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(4) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(5) { width: 175px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(6),
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(7),
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(8) {
+  width: 92px !important;
+  text-align: center !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td {
+  background: #f3f8ff !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td:first-child {
+  box-shadow: inset -4px 0 0 #2563eb !important;
+}
+
+@media (max-width: 920px) {
+  .partner-performance-executive-page .partner-summary-table-head--v2 {
+    grid-template-columns: 1fr !important;
+  }
+  .partner-performance-executive-page .partner-summary-table-chips {
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-hero-card-heading {
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+  }
+  .partner-performance-executive-page .partner-focus-value-card {
+    width: 100% !important;
+  }
+}

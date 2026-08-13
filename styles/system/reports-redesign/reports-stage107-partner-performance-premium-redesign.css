@@ -1,0 +1,238 @@
+/* Stage 107 — Partner performance premium redesign
+   Goal: premium executive depth without noisy gradients/glass. */
+
+.partner-performance-executive-page {
+  --partner-ink: #0f172a;
+  --partner-muted: #64748b;
+  --partner-line: rgba(148, 163, 184, .28);
+  --partner-line-strong: rgba(100, 116, 139, .34);
+  --partner-blue: #2563eb;
+  --partner-indigo: #4f46e5;
+  --partner-emerald: #059669;
+  --partner-amber: #d97706;
+  --partner-surface: #ffffff;
+  --partner-soft: #f8fafc;
+}
+
+/* Main page rhythm: calmer shell, premium not flat. */
+.partner-performance-executive-page :where(.report-header-shell, .responsive-filter-bar) {
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(37, 99, 235, .075), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+  box-shadow: 0 18px 44px -36px rgba(15, 23, 42, .28) !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar {
+  padding: 14px !important;
+  border-radius: 24px !important;
+}
+
+/* Filter controls: defined but not flat. */
+.partner-performance-executive-page .report-date-presets__chips {
+  height: 52px !important;
+  padding: 8px !important;
+  border-radius: 19px !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  background: linear-gradient(180deg, #fff, #f8fafc) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 10px 22px -20px rgba(15,23,42,.35) !important;
+}
+
+.partner-performance-executive-page .report-date-preset-chip,
+.partner-performance-executive-page .ux-input,
+.partner-performance-executive-page select.ux-input,
+.partner-performance-executive-page .app-date-field__input,
+.partner-performance-executive-page input[data-app-date-input='true'] {
+  border-radius: 15px !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  background: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 18px -18px rgba(15,23,42,.36) !important;
+}
+
+.partner-performance-executive-page .report-date-preset-chip.is-active,
+.partner-performance-executive-page .report-filter-button--primary {
+  border-color: #111827 !important;
+  background: linear-gradient(180deg, #1f2937, #111827) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 28px -22px rgba(17,24,39,.75) !important;
+}
+
+/* Tabs: executive segmented rail. */
+.partner-performance-executive-page .partner-tabs-shell {
+  padding: 8px !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+  box-shadow: 0 16px 40px -34px rgba(15, 23, 42, .34) !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell button {
+  min-height: 42px !important;
+  border-radius: 15px !important;
+  padding-inline: 15px !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  background: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell button[class*="bg-indigo-600"],
+.partner-performance-executive-page .partner-tabs-shell button.text-white {
+  border-color: rgba(79,70,229,.65) !important;
+  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 14px 30px -22px rgba(37,99,235,.85) !important;
+}
+
+/* Premium KPI cards: not plain boxes, but still minimal and readable. */
+.partner-performance-executive-page .partner-premium-card {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: start !important;
+  min-height: 128px !important;
+  padding: 17px 18px !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(148, 163, 184, .26) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    0 18px 46px -36px rgba(15,23,42,.42) !important;
+  overflow: hidden !important;
+}
+
+.partner-performance-executive-page .partner-premium-card::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 auto 0 0 !important;
+  width: 4px !important;
+  border-radius: 999px 0 0 999px !important;
+  background: linear-gradient(180deg, #2563eb, #7c3aed) !important;
+  opacity: .72 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card::after {
+  content: '' !important;
+  position: absolute !important;
+  right: -36px !important;
+  top: -44px !important;
+  width: 130px !important;
+  height: 130px !important;
+  border-radius: 999px !important;
+  background: radial-gradient(circle, rgba(37,99,235,.11), transparent 68%) !important;
+  pointer-events: none !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__icon {
+  position: relative !important;
+  z-index: 1 !important;
+  width: 42px !important;
+  height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(37,99,235,.18) !important;
+  color: #2563eb !important;
+  background: linear-gradient(180deg, #eff6ff, #ffffff) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 12px 26px -22px rgba(37,99,235,.65) !important;
+  font-size: .92rem !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__content {
+  position: relative !important;
+  z-index: 1 !important;
+  min-width: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__label {
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: 0 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__value {
+  margin-top: 9px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.15rem, 1.55vw, 1.65rem) !important;
+  line-height: 1.25 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.02em !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__hint {
+  margin-top: 9px !important;
+  color: #64748b !important;
+  font-size: .74rem !important;
+  line-height: 1.8 !important;
+  font-weight: 700 !important;
+}
+
+/* Narrative / section cards keep depth, not flatness. */
+.partner-performance-executive-page :where(.space-y-5 > div[class*="rounded-[26px]"], .space-y-5 > div[class*="rounded-[22px]"]) {
+  border-color: rgba(148, 163, 184, .28) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow: 0 18px 44px -36px rgba(15,23,42,.34) !important;
+}
+
+.partner-performance-executive-page .space-y-5 > div[class*="border-emerald"] {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(16,185,129,.13), transparent 30%),
+    linear-gradient(180deg, #f0fdf4, #ffffff) !important;
+  border-color: rgba(16,185,129,.28) !important;
+}
+
+/* Tables: stronger enterprise surface, not plain grid. */
+.partner-performance-executive-page .overflow-x-auto {
+  border-radius: 20px !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  background: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 16px 42px -38px rgba(15,23,42,.32) !important;
+}
+
+.partner-performance-executive-page thead th {
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9) !important;
+  color: #475569 !important;
+}
+
+.partner-performance-executive-page tbody tr:hover td {
+  background: #f8fbff !important;
+}
+
+.partner-performance-executive-page tbody tr.bg-slate-50 td,
+.partner-performance-executive-page tbody tr[class*="bg-slate-50"] td {
+  background: #eef6ff !important;
+  box-shadow: inset 3px 0 0 #2563eb !important;
+}
+
+/* Buttons remain real controls, not badges. */
+.partner-performance-executive-page table a,
+.partner-performance-executive-page table button:not([role="switch"]),
+.partner-performance-executive-page .partner-action-button {
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  background: linear-gradient(180deg, #fff, #f8fafc) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 8px 18px -18px rgba(15,23,42,.38) !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-premium-card {
+    min-height: 112px !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    padding: 15px !important;
+  }
+
+  .partner-performance-executive-page .partner-premium-card__icon {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}

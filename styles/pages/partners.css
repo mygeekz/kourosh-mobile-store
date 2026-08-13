@@ -1,0 +1,171 @@
+/* v140 — Partner directory list/table uses utility-only shared UI primitives.
+   Directory-specific partner selectors were removed after source-wide reference checks. */
+
+.people-primary-btn {
+  min-height: 42px !important;
+  padding-inline: 0.95rem !important;
+  border-radius: 18px !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 14px 28px -18px rgba(79,70,229,0.35) !important;
+}
+
+.people-filter-chip {
+  min-height: 34px !important;
+  border-radius: 999px !important;
+  padding-inline: 0.8rem !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+
+.partner-ledger-grid {
+  gap: 1rem;
+}
+
+.partner-ledger-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.partner-ledger-summary-card {
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  padding: 0.95rem 1rem;
+  box-shadow: 0 16px 34px -28px rgba(15, 23, 42, 0.22);
+}
+
+.dark .partner-ledger-summary-card {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(2, 6, 23, 0.8);
+}
+
+.partner-ledger-summary-card__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgb(100 116 139);
+}
+
+.dark .partner-ledger-summary-card__label {
+  color: rgb(148 163 184);
+}
+
+.partner-ledger-summary-card__value {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .partner-ledger-summary-card__value {
+  color: rgb(248 250 252);
+}
+
+.partner-ledger-summary-card__meta {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgb(100 116 139);
+}
+
+.dark .partner-ledger-summary-card__meta {
+  color: rgb(148 163 184);
+}
+
+.partner-ledger-shell {
+  border-radius: 30px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 22px 44px -36px rgba(15, 23, 42, 0.28);
+}
+
+.dark .partner-ledger-shell {
+  border-color: rgba(51, 65, 85, 0.9);
+  background: rgba(2, 6, 23, 0.78);
+}
+
+.partner-ledger-table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.partner-ledger-table thead th {
+  background: transparent;
+}
+
+.partner-ledger-table__head-row th {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+}
+
+.partner-ledger-group-row td {
+  border-bottom: 0 !important;
+}
+
+.partner-ledger-group-row td:first-child {
+  border-top-right-radius: 22px;
+  border-bottom-right-radius: 22px;
+}
+
+.partner-ledger-group-row td:last-child {
+  border-top-left-radius: 22px;
+  border-bottom-left-radius: 22px;
+}
+
+.partner-ledger-row td {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.dark .partner-ledger-row td {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.partner-ledger-row td:first-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.partner-ledger-row td:last-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.partner-ledger-row:hover td {
+  background: rgba(248, 250, 252, 0.95);
+}
+
+.dark .partner-ledger-row:hover td {
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.partner-ledger-row--expanded td {
+  background: rgba(248, 250, 252, 0.96);
+}
+
+.dark .partner-ledger-row--expanded td {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+.partner-ledger-expanded-panel {
+  box-shadow: 0 20px 44px -36px rgba(15, 23, 42, 0.26);
+}
+
+.partner-ledger-history-card {
+  box-shadow: 0 18px 38px -30px rgba(192, 38, 211, 0.18);
+}
+
+.partner-ledger-history-grid {
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .partner-ledger-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,39 @@
+/* Installment sale page: plain comboboxes without the extra decorative chevron/icon. */
+.installment-form-page .installment-clean-select,
+.installment-form-page select.installment-clean-select {
+  background-image: none !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+
+/* ===== Installment sale combobox cleanup and phone edit vertical hard lock ===== */
+.installment-form-page .installment-clean-select,
+.installment-form-page select.installment-clean-select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-image: none !important;
+  background-position: initial !important;
+  background-size: auto !important;
+  padding-inline-start: 1rem !important;
+  padding-inline-end: 1rem !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid,
+.phone-finance-block--edit .phone-finance-block__grid,
+.phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: 1 / -1 !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-vertical-form {
+  max-width: 100%;
+}
+
+

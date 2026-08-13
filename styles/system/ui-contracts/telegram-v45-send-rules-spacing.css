@@ -1,0 +1,77 @@
+
+/* v45 — based on v44.
+   Fix spacing in Telegram "قوانین ارسال" section:
+   cards were touching the divider/line and inner fields were too tight. */
+
+/* Main send rules section: give content air below the header divider. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .space-y-5 > .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section > div:first-child .space-y-5 > .rounded-3xl {
+  margin-top: 0.85rem !important;
+}
+
+/* Target cards/fields inside the rules area without changing upper merged panels. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+  padding: 0.85rem 0.95rem 0.9rem !important;
+  border-radius: 20px !important;
+  margin-block: 0.12rem !important;
+}
+
+/* Prevent labels from visually sticking to the top border of their field cards. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field-label {
+  margin-bottom: 0.62rem !important;
+  padding-inline: 0.1rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Add consistent breathing room to the controls and helper rows. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-wrap {
+  margin-top: 0.15rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback {
+  margin-top: 0.52rem !important;
+}
+
+/* Grids in send rules need stronger gaps; old compact styles made cards feel glued. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid {
+  gap: 1rem !important;
+}
+
+/* The note card directly under "قوانین ارسال" should not stick to the divider. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border {
+  scroll-margin-top: 1rem;
+}
+
+/* Specifically space the Quiet Hours / Guard rows shown in the screenshot. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input[name*="quiet"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input[name*="Quiet"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input[name*="guard"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input[name*="Guard"] {
+  min-height: 2.85rem !important;
+}
+
+/* Keep helper text readable and away from the input capsule. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-error {
+  line-height: 1.85 !important;
+  padding-top: 0.1rem !important;
+}
+
+/* Mobile: preserve spacing but avoid oversized cards. */
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+    padding: 0.78rem 0.82rem 0.82rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid {
+    gap: 0.85rem !important;
+  }
+}

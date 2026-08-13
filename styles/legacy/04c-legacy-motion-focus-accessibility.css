@@ -1,0 +1,158 @@
+
+@layer components {
+  .ux-btn,
+  .ux-toolbar-surface,
+  .ux-table-shell,
+  .premium-stat-card,
+  .premium-chart-card,
+  .premium-data-shell,
+  .premium-kpi-card,
+  .premium-modal-shell,
+  .premium-drawer-panel,
+  .customers-hero-panel,
+  .detail-hero-card,
+  .app-inline-alert,
+  .premium-empty-state-card,
+  .sidebar,
+  .dark .detail-hero-card__icon {
+    border-color: rgb(51 65 85 / 0.85);
+  }
+  .settings-sidebar {
+    transition-property: transform, box-shadow, border-color, background-color, opacity, filter;
+    transition-duration: 180ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: auto;
+  }
+
+  .ux-btn:hover:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+  .ux-toolbar-surface:hover,
+  .premium-stat-card:hover,
+  .premium-chart-card:hover,
+  .premium-data-shell:hover,
+  .premium-kpi-card:hover,
+  .detail-hero-card:hover,
+  .customers-hero-panel:hover,
+  .premium-empty-state-card:hover {
+    transform: translateY(-1px);
+  }
+
+  .ux-btn:active:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+  .ux-filter-chip:active,
+  .premium-data-segment:active,
+  .ux-icon-btn:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  .ux-btn:focus-visible,
+  .ux-filter-chip:focus-visible,
+  .premium-data-segment:focus-visible,
+  .premium-tab-header button:focus-visible,
+  .sidebar a:focus-visible,
+  .settings-sidebar a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(148, 163, 184, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.06);
+  }
+
+  .dark .ux-btn:focus-visible,
+  .dark .ux-filter-chip:focus-visible,
+  .dark .premium-data-segment:focus-visible,
+  .dark .premium-tab-header button:focus-visible,
+  .dark .sidebar a:focus-visible,
+  .dark .settings-sidebar a:focus-visible,
+  .dark input:focus-visible,
+  .dark select:focus-visible,
+  .dark textarea:focus-visible,
+  .dark button:focus-visible {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .ux-btn__spinner,
+  .app-toast-loading::before,
+  .skeleton::after,
+  .shimmer::after {
+    animation-timing-function: linear;
+  }
+
+  .ux-btn[data-success='true'],
+  .ux-btn[data-complete='true'],
+  .ux-btn[data-status='success'],
+  .premium-stat-card[data-success='true'],
+  .app-inline-alert[data-variant='success'] {
+    animation: ux-success-pulse 900ms cubic-bezier(0.22, 1, 0.36, 1) 1;
+  }
+
+  .app-toast,
+  .app-inline-alert,
+  .premium-empty-state-card {
+    animation: ux-fade-rise 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ux-table-shell tbody tr,
+  table:not(.unstyled-table) tbody tr,
+  .repair-row,
+  .invoice-row {
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .ux-table-shell tbody tr:hover,
+  table:not(.unstyled-table) tbody tr:hover,
+  .repair-row:hover,
+  .invoice-row:hover {
+    transform: translateY(-0.5px);
+  }
+
+  @keyframes ux-success-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    35% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.12); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  @keyframes ux-fade-rise {
+    0% { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ux-btn,
+    .ux-toolbar-surface,
+    .ux-table-shell,
+    .premium-stat-card,
+    .premium-chart-card,
+    .premium-data-shell,
+    .premium-kpi-card,
+    .premium-modal-shell,
+    .premium-drawer-panel,
+    .customers-hero-panel,
+    .detail-hero-card,
+    .app-inline-alert,
+    .premium-empty-state-card,
+    .sidebar,
+    .settings-sidebar,
+    .ux-table-shell tbody tr,
+    table:not(.unstyled-table) tbody tr,
+    .repair-row,
+    .invoice-row,
+    .app-toast,
+    .ux-btn[data-success='true'],
+    .ux-btn[data-complete='true'],
+    .ux-btn[data-status='success'],
+    .premium-stat-card[data-success='true'],
+    .app-inline-alert[data-variant='success'] {
+      animation: none !important;
+      transition-duration: 0.01ms !important;
+      transform: none !important;
+    }
+
+    .ux-btn__spinner,
+    .skeleton::after,
+    .shimmer::after,
+    .app-toast-loading::before {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}

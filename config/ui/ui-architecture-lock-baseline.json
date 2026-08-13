@@ -1,0 +1,3416 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "phase": "UI architecture phase 1",
+  "policy": {
+    "newCssFilesAllowed": false,
+    "newPatchStyleFilesAllowed": false,
+    "importantUsageMayOnlyDecrease": true,
+    "arbitraryBreakpointUsageMayOnlyDecrease": true,
+    "arbitraryZIndexUsageMayOnlyDecrease": true,
+    "unregisteredUiFoundationFilesAllowed": false
+  },
+  "cssPaths": [
+    "index.css",
+    "styles/components/badges.css",
+    "styles/components/button-normalization.css",
+    "styles/components/buttons.css",
+    "styles/components/cards.css",
+    "styles/components/dashboard-clock.css",
+    "styles/components/date-field.css",
+    "styles/components/detail-hero.css",
+    "styles/components/detail.css",
+    "styles/components/empty-states.css",
+    "styles/components/filters.css",
+    "styles/components/forms.css",
+    "styles/components/modal-system.css",
+    "styles/components/modals.css",
+    "styles/components/search-field.css",
+    "styles/components/select-field.css",
+    "styles/components/sidebar.css",
+    "styles/components/tables.css",
+    "styles/components/toasts.css",
+    "styles/components/toolbars.css",
+    "styles/components/unified-buttons.css",
+    "styles/components/unified-fields.css",
+    "styles/core/animations.css",
+    "styles/core/base.css",
+    "styles/core/tokens.css",
+    "styles/core/typography.css",
+    "styles/core/utilities.css",
+    "styles/generated/tailwind-entry.generated.css",
+    "styles/global.css",
+    "styles/layout/app-shell.css",
+    "styles/layout/page-shell.css",
+    "styles/layout/print-shells.css",
+    "styles/layout/print.css",
+    "styles/layout/responsive.css",
+    "styles/layout/sidebar.css",
+    "styles/legacy/01-legacy-app-base-and-loaders.css",
+    "styles/legacy/02a-legacy-reports-kpi-table-foundation.css",
+    "styles/legacy/02b-legacy-premium-modal-base.css",
+    "styles/legacy/02c-legacy-detail-drawer-primitives.css",
+    "styles/legacy/02d-legacy-detail-compact-density.css",
+    "styles/legacy/02e-legacy-smart-tooltip-transitions.css",
+    "styles/legacy/02f-legacy-page-shell-modern.css",
+    "styles/legacy/02g-legacy-ux-button-core-loading.css",
+    "styles/legacy/02h-legacy-ux-button-motion-presets.css",
+    "styles/legacy/02i-legacy-people-list-controls-fields.css",
+    "styles/legacy/02j-legacy-report-toolbar-filters.css",
+    "styles/legacy/02k-legacy-cards-toasts-feedback-loading.css",
+    "styles/legacy/02l-legacy-wizard-table-quicklinks-installments.css",
+    "styles/legacy/02m-legacy-accessibility-focus-transition-base.css",
+    "styles/legacy/02n-legacy-customers-hero-toolbar.css",
+    "styles/legacy/02o-legacy-telegram-link-modal.css",
+    "styles/legacy/02p-legacy-people-action-buttons-chips.css",
+    "styles/legacy/03a-legacy-action-primitives-buttons.css",
+    "styles/legacy/03b-legacy-report-tools-pagination.css",
+    "styles/legacy/03c-legacy-form-empty-density.css",
+    "styles/legacy/03d-legacy-premium-tabs-inventory-detail.css",
+    "styles/legacy/03f-legacy-header-search-password-fixes.css",
+    "styles/legacy/03g-legacy-dark-tables-loading-progress.css",
+    "styles/legacy/04a-legacy-repairs-saved-views-inputs.css",
+    "styles/legacy/04b-legacy-premium-data-chart-shell.css",
+    "styles/legacy/04c-legacy-motion-focus-accessibility.css",
+    "styles/legacy/04d-legacy-field-attention-page-actions.css",
+    "styles/legacy/05a-legacy-button-icon-baseline.css",
+    "styles/legacy/05b-legacy-quick-link-cards.css",
+    "styles/legacy/05c-legacy-unified-button-hardening.css",
+    "styles/legacy/05d-legacy-report-filter-sales-mobile-buttons.css",
+    "styles/legacy/06a-legacy-sales-flow-visual-pass.css",
+    "styles/legacy/06b-legacy-sales-cart-button-borders.css",
+    "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css",
+    "styles/legacy/06d-legacy-sales-cart-full-page-redesign.css",
+    "styles/legacy/07a-legacy-button-stroke-normalization.css",
+    "styles/legacy/07b-legacy-premium-button-unification.css",
+    "styles/legacy/08a-legacy-global-field-system.css",
+    "styles/legacy/08b-legacy-global-card-section-system.css",
+    "styles/legacy/08c-legacy-global-table-row-actions.css",
+    "styles/legacy/09a-legacy-global-modal-drawer-unification.css",
+    "styles/legacy/09b-legacy-global-toast-alert-status.css",
+    "styles/legacy/09c-legacy-global-nav-sidebar-topbar.css",
+    "styles/legacy/09d-legacy-global-charts-kpi-dashboard.css",
+    "styles/legacy/10a-legacy-final-shell-cohesion.css",
+    "styles/legacy/10b-legacy-targeted-ui-qa-cleanup.css",
+    "styles/legacy/10c-legacy-smart-toast-progress.css",
+    "styles/legacy/10d-legacy-telegram-modal-stability-lux.css",
+    "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+    "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+    "styles/pages/customers-shell.css",
+    "styles/pages/customers.css",
+    "styles/pages/dashboard.css",
+    "styles/pages/inventory.css",
+    "styles/pages/partners.css",
+    "styles/pages/purchases.css",
+    "styles/pages/repairs.css",
+    "styles/pages/reports.css",
+    "styles/pages/settings-overrides.css",
+    "styles/pages/settings.css",
+    "styles/pages/telegram.css",
+    "styles/print/products-print-report.css",
+    "styles/system/audit-operations-center-v72.css",
+    "styles/system/bidi-text-contract-foundation.css",
+    "styles/system/cross-module-density-foundation.css",
+    "styles/system/customer-detail/customer-edit-modal-v60-final.css",
+    "styles/system/customer-detail/customer-ledger-real-responsive-fix.css",
+    "styles/system/customer-detail/telegram-quick-preview-v75.css",
+    "styles/system/customers-directory-v73.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-4.css",
+    "styles/system/dashboard-smart-widgets-foundation.css",
+    "styles/system/design-tokens.css",
+    "styles/system/expenses-modal-horizontal-phase87.css",
+    "styles/system/expenses-modal-horizontal-phase88.css",
+    "styles/system/expenses-modal-horizontal-phase89.css",
+    "styles/system/expenses-recurring-payment-history-phase93.css",
+    "styles/system/field-form-contract.css",
+    "styles/system/finance-modal-field-polish-foundation.css",
+    "styles/system/finance-tables-foundation.css",
+    "styles/system/global-commercial-qa-foundation.css",
+    "styles/system/global-focus-reset-hard-v140.css",
+    "styles/system/global-focus-reset-v139.css",
+    "styles/system/header-sidebar-navigation-foundation.css",
+    "styles/system/installments-runtime/installments-phone-edit-foundation.css",
+    "styles/system/legacy-quarantine/collection-cleanup-foundation.css",
+    "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+    "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+    "styles/system/legacy-quarantine/partner-settlement-foundation.css",
+    "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+    "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+    "styles/system/legacy-quarantine/people-list-hero-foundation.css",
+    "styles/system/legacy-quarantine/select-customer-compat-foundation.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage78-phone-sales-table-tools-hard-reset.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage79-phone-sales-table-tools-visual-reset.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage80-phone-sales-search-single-frame.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage81-phone-sales-search-no-inner-frame.css",
+    "styles/system/login-glass-form-chrome-fix.css",
+    "styles/system/message-composer-redesign.css",
+    "styles/system/mobile-phones-foundation.css",
+    "styles/system/mobile-sales-tabs-foundation.css",
+    "styles/system/modal-partner-foundation.css",
+    "styles/system/modal-people-foundation.css",
+    "styles/system/modal-products-foundation.css",
+    "styles/system/notifications-foundation.css",
+    "styles/system/notifications-saas-redesign-phase95.css",
+    "styles/system/overlay-layer-contract.css",
+    "styles/system/partner-capital-status-foundation.css",
+    "styles/system/partner-capital-table-foundation.css",
+    "styles/system/partner-detail-responsive-ledger-foundation.css",
+    "styles/system/partner-detail-visual-foundation.css",
+    "styles/system/partner-runtime/partner-detail-actions-reflow-v85.css",
+    "styles/system/partner-runtime/partner-detail-alignment-fix-v81.css",
+    "styles/system/partner-runtime/partner-detail-customer-top-sync-v86.css",
+    "styles/system/partner-runtime/partner-detail-customer-ui-sync-v80.css",
+    "styles/system/partner-runtime/partner-detail-hero-hard-layout-v82.css",
+    "styles/system/partner-runtime/partner-detail-responsive-breakpoint-v83.css",
+    "styles/system/partner-runtime/partner-detail-safe-gutter-v84.css",
+    "styles/system/partner-runtime/partner-edit-modal-customer-parity-v98.css",
+    "styles/system/partner-runtime/partner-email-telegram-help-fix-v99.css",
+    "styles/system/partner-runtime/partner-header-fix-v94.css",
+    "styles/system/partner-runtime/partner-header-mockup-v89.css",
+    "styles/system/partner-runtime/partner-header-repair-v93.css",
+    "styles/system/partner-runtime/partner-header-rtl-risk-v91.css",
+    "styles/system/partner-runtime/partner-ledger-edit-modal-v141.css",
+    "styles/system/partner-runtime/partner-ledger-final-polish-v137.css",
+    "styles/system/partner-runtime/partner-ledger-focus-color-rtl-v135.css",
+    "styles/system/partner-runtime/partner-ledger-hard-icons-v130.css",
+    "styles/system/partner-runtime/partner-ledger-icon-overlap-fix-v131.css",
+    "styles/system/partner-runtime/partner-ledger-icons-button-v128.css",
+    "styles/system/partner-runtime/partner-ledger-icons-right-v129.css",
+    "styles/system/partner-runtime/partner-ledger-table-spacing-v134.css",
+    "styles/system/partner-runtime/partner-ledger-transactions-redesign-v132.css",
+    "styles/system/partner-runtime/partner-operational-table-v105.css",
+    "styles/system/partner-runtime/partner-overview-final-polish-v111.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-fix-v102.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-logo-right-v103.css",
+    "styles/system/partner-runtime/partner-phone-capital-redesign-v101.css",
+    "styles/system/partner-runtime/partner-phone-capital-solid-reset-foundation.css",
+    "styles/system/partner-runtime/partner-telegram-customer-copy-v119.css",
+    "styles/system/partner-runtime/partner-telegram-header-hard-grid-v124.css",
+    "styles/system/partner-runtime/partner-telegram-panel-redesign-v114.css",
+    "styles/system/partner-runtime/partner-telegram-sidebar-rtl-v122.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-1.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-2.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-3.css",
+    "styles/system/people-ledger-contract.css",
+    "styles/system/people-runtime/people-commercial-redesign-foundation.css",
+    "styles/system/people-status-mobile-foundation.css",
+    "styles/system/people-table-detail-foundation.css",
+    "styles/system/products-services-redesign/products-commerce-stage17-polish.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css",
+    "styles/system/products-services-repairs/products-ui-foundation.css",
+    "styles/system/products-services-repairs/repairs-ui-foundation.css",
+    "styles/system/products-services-repairs/services-inventory-foundation.css",
+    "styles/system/reports-filter-kpi-foundation.css",
+    "styles/system/reports-redesign/aging-receivables-stage21-commercial.css",
+    "styles/system/reports-redesign/purchase-suggestions-action-board/purchase-suggestions-action-board.phase2-stabilized.css",
+    "styles/system/reports-redesign/reports-redesign-pass-1.css",
+    "styles/system/reports-redesign/reports-redesign-pass-2.css",
+    "styles/system/reports-redesign/reports-redesign-pass-3.css",
+    "styles/system/reports-redesign/reports-redesign-pass-4.css",
+    "styles/system/reports-redesign/reports-redesign-pass-5.css",
+    "styles/system/reports-redesign/reports-redesign-stage20-compact-header.css",
+    "styles/system/reports-redesign/reports-redesign-stage22-shell-cleanup.css",
+    "styles/system/reports-redesign/reports-stage100-cohort-executive.css",
+    "styles/system/reports-redesign/reports-stage101-cohort-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage102-followups-executive.css",
+    "styles/system/reports-redesign/reports-stage104-followups-filters-actions-cleanup.css",
+    "styles/system/reports-redesign/reports-stage105-followups-table-actions-apple.css",
+    "styles/system/reports-redesign/reports-stage106-partner-performance-executive.css",
+    "styles/system/reports-redesign/reports-stage107-partner-performance-premium-redesign.css",
+    "styles/system/reports-redesign/reports-stage108-partner-performance-bento-responsive.css",
+    "styles/system/reports-redesign/reports-stage109-partner-tabs-horizontal-icons.css",
+    "styles/system/reports-redesign/reports-stage110-partner-tabs-rtl-responsive.css",
+    "styles/system/reports-redesign/reports-stage111-partner-tabs-flush-right.css",
+    "styles/system/reports-redesign/reports-stage112-partner-tabs-parent-flush-right.css",
+    "styles/system/reports-redesign/reports-stage113-partner-tabs-secondary-span.css",
+    "styles/system/reports-redesign/reports-stage114-partner-content-redesign.css",
+    "styles/system/reports-redesign/reports-stage115-partner-content-polish.css",
+    "styles/system/reports-redesign/reports-stage116-partner-summary-table-single-layer.css",
+    "styles/system/reports-redesign/reports-stage117-top-suppliers-executive.css",
+    "styles/system/reports-redesign/reports-stage118-inventory-turnover-executive.css",
+    "styles/system/reports-redesign/reports-stage121-inventory-turnover-cards-formula-polish.css",
+    "styles/system/reports-redesign/reports-stage122-dead-stock-executive.css",
+    "styles/system/reports-redesign/reports-stage123-abc-filter-kpi-polish.css",
+    "styles/system/reports-redesign/reports-stage124-abc-filter-density-spacing.css",
+    "styles/system/reports-redesign/reports-stage125-abc-calendar-field-flatten.css",
+    "styles/system/reports-redesign/reports-stage126-abc-date-vertical-align.css",
+    "styles/system/reports-redesign/reports-stage127-abc-table-badge-action-polish.css",
+    "styles/system/reports-redesign/reports-stage128-realized-profit-executive.css",
+    "styles/system/reports-redesign/reports-stage129-realized-profit-date-row-fix.css",
+    "styles/system/reports-redesign/reports-stage130-cashflow-executive.css",
+    "styles/system/reports-redesign/reports-stage131-cashflow-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage132-cashflow-premium-control-dock.css",
+    "styles/system/reports-redesign/reports-stage133-cashflow-date-double-box-fix.css",
+    "styles/system/reports-redesign/reports-stage134-financial-audit-executive.css",
+    "styles/system/reports-redesign/reports-stage135-product-profit-real-executive.css",
+    "styles/system/reports-redesign/reports-stage136-product-profit-real-chart-polish.css",
+    "styles/system/reports-redesign/reports-stage137-product-profit-real-chart-final.css",
+    "styles/system/reports-redesign/reports-stage138-product-profit-real-summary-box-fix.css",
+    "styles/system/reports-redesign/reports-stage139-analytics-dashboard-executive.css",
+    "styles/system/reports-redesign/reports-stage143-analytics-empty-state-polish.css",
+    "styles/system/reports-redesign/reports-stage145-analytics-chart-tooltip-persian.css",
+    "styles/system/reports-redesign/reports-stage146-analytics-debt-snapshot-summary.css",
+    "styles/system/reports-redesign/reports-stage149-smart-insights-executive-redesign.css",
+    "styles/system/reports-redesign/reports-stage150-smart-insights-super-premium.css",
+    "styles/system/reports-redesign/reports-stage151-smart-insights-hero-fill.css",
+    "styles/system/reports-redesign/reports-stage152-smart-insights-hero-rebuild.css",
+    "styles/system/reports-redesign/reports-stage153-smart-insights-hero-hard-replace.css",
+    "styles/system/reports-redesign/reports-stage154-smart-insights-command-center-polish.css",
+    "styles/system/reports-redesign/reports-stage155-smart-insights-executive-board-compact.css",
+    "styles/system/reports-redesign/reports-stage156-smart-insights-orbital-board.css",
+    "styles/system/reports-redesign/reports-stage157-smart-insights-final-audit.css",
+    "styles/system/reports-redesign/reports-stage158-smart-insights-action-logic-fix.css",
+    "styles/system/reports-redesign/reports-stage159-smart-insights-scroll-and-kpis.css",
+    "styles/system/reports-redesign/reports-stage163-smart-insights-rollback-balanced-fix.css",
+    "styles/system/reports-redesign/reports-stage164-smart-insights-kpi-grid-polish.css",
+    "styles/system/reports-redesign/reports-stage165-smart-insights-kpi-reference-match.css",
+    "styles/system/reports-redesign/reports-stage166-smart-insights-kpi-rebuild-reference.css",
+    "styles/system/reports-redesign/reports-stage167-smart-insights-engine-gauge-polish.css",
+    "styles/system/reports-redesign/reports-stage168-smart-insights-gauge-font-arc-fix.css",
+    "styles/system/reports-redesign/reports-stage169-smart-insights-center-icon-cta-fix.css",
+    "styles/system/reports-redesign/reports-stage170-smart-insights-center-height-icon-fix.css",
+    "styles/system/reports-redesign/reports-stage171-smart-insights-target-icon-refine.css",
+    "styles/system/reports-redesign/reports-stage172-smart-insights-actions-reference.css",
+    "styles/system/reports-redesign/reports-stage173-smart-insights-actions-overlap-fix.css",
+    "styles/system/reports-redesign/reports-stage174-smart-insights-actions-button-fix.css",
+    "styles/system/reports-redesign/reports-stage175-smart-insights-actions-scale-down.css",
+    "styles/system/reports-redesign/reports-stage176-smart-insights-action-queue-compact.css",
+    "styles/system/reports-redesign/reports-stage177-smart-insights-action-item-height-buttons.css",
+    "styles/system/reports-redesign/reports-stage178-smart-insights-actions-buttons-final.css",
+    "styles/system/reports-redesign/reports-stage179-smart-insights-clickable-action-cards.css",
+    "styles/system/reports-redesign/reports-stage180-collection-followup-persistence-fix.css",
+    "styles/system/reports-redesign/reports-stage181-collection-actions-root-fix.css",
+    "styles/system/reports-redesign/reports-stage182-smart-insights-predictive-engine-redesign.css",
+    "styles/system/reports-redesign/reports-stage183-smart-insights-today-commands-redesign.css",
+    "styles/system/reports-redesign/reports-stage184-today-commands-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage185-today-commands-rtl-modal-fix.css",
+    "styles/system/reports-redesign/reports-stage186-today-commands-rtl-modal-redesign.css",
+    "styles/system/reports-redesign/reports-stage187-today-commands-final-align-modal-balance.css",
+    "styles/system/reports-redesign/reports-stage188-smart-insight-modal-premium-fix.css",
+    "styles/system/reports-redesign/reports-stage189-smart-insight-modal-horizontal-layout.css",
+    "styles/system/reports-redesign/reports-stage190-smart-insight-modal-horizontal-rebuild.css",
+    "styles/system/reports-redesign/reports-stage191-smart-insight-modal-horizontal-final.css",
+    "styles/system/reports-redesign/reports-stage193-accounting-modal-pixel-match.css",
+    "styles/system/reports-redesign/reports-stage194-accounting-modal-real-data-compact.css",
+    "styles/system/reports-redesign/reports-stage196-accounting-modal-compact-header.css",
+    "styles/system/reports-redesign/reports-stage197-collection-followup-modal.css",
+    "styles/system/reports-redesign/reports-stage198-collection-modal-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage199-collection-modal-real-data-guard.css",
+    "styles/system/reports-redesign/reports-stage200-stock-reorder-modal.css",
+    "styles/system/reports-redesign/reports-stage201-customer-engagement-modal.css",
+    "styles/system/reports-redesign/reports-stage202-sales-performance-modal.css",
+    "styles/system/reports-redesign/reports-stage203-active-sales-assistant-modal.css",
+    "styles/system/reports-redesign/reports-stage209-smart-insights-modal-top-kpi-compact.css",
+    "styles/system/reports-redesign/reports-stage210-smart-insight-modal-enterprise-horizontal.css",
+    "styles/system/reports-redesign/reports-stage211-insight-overview-modals-horizontal.css",
+    "styles/system/reports-redesign/reports-stage212-ml-workbench-polish.css",
+    "styles/system/reports-redesign/reports-stage213-smart-insights-simple-mode.css",
+    "styles/system/reports-redesign/reports-stage214-smart-readiness-summary.css",
+    "styles/system/reports-redesign/reports-stage216-responsive-modal-sidebar-safe.css",
+    "styles/system/reports-redesign/reports-stage217-side-kpis-modal-executive.css",
+    "styles/system/reports-redesign/reports-stage219-smart-modal-portal-sidebar-safe.css",
+    "styles/system/reports-redesign/reports-stage220-smart-modal-compact-density.css",
+    "styles/system/reports-redesign/reports-stage221-smart-modal-layout-corrections.css",
+    "styles/system/reports-redesign/reports-stage222-generic-modal-sidebar-lock.css",
+    "styles/system/reports-redesign/reports-stage223-generic-modal-hard-safe-lane.css",
+    "styles/system/reports-redesign/reports-stage224-sales-performance-modal-lane-fix.css",
+    "styles/system/reports-redesign/reports-stage225-smart-insight-final-polish.css",
+    "styles/system/reports-redesign/reports-stage227-smart-kpi-cards-only-tighten.css",
+    "styles/system/reports-redesign/reports-stage228-smart-filter-dock-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage229-smart-side-cards-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage230-smart-filter-date-visibility.css",
+    "styles/system/reports-redesign/reports-stage231-smart-command-center-compact-only.css",
+    "styles/system/reports-redesign/reports-stage232-today-actions-compact-only.css",
+    "styles/system/reports-redesign/reports-stage233-today-and-overview-final-tune.css",
+    "styles/system/reports-redesign/reports-stage234-today-alignment-theme-followup.css",
+    "styles/system/reports-redesign/reports-stage235-manager-credit-approvals.css",
+    "styles/system/reports-redesign/reports-stage236-risk-profit-live.css",
+    "styles/system/reports-redesign/reports-stage24-actions-and-header-cleanup.css",
+    "styles/system/reports-redesign/reports-stage25-operational-actions.css",
+    "styles/system/reports-redesign/reports-stage26-header-calendar-action-fixes.css",
+    "styles/system/reports-redesign/reports-stage27-financial-aging-workspace-fixes.css",
+    "styles/system/reports-redesign/reports-stage28-financial-overview-executive.css",
+    "styles/system/reports-redesign/reports-stage29-calendar-kpi-cleanup.css",
+    "styles/system/reports-redesign/reports-stage30-kpi-text-highlight-cleanup.css",
+    "styles/system/reports-redesign/reports-stage31-financial-metric-card-clean.css",
+    "styles/system/reports-redesign/reports-stage32-sales-summary-executive.css",
+    "styles/system/reports-redesign/reports-stage35-product-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage36-product-sales-hard-polish.css",
+    "styles/system/reports-redesign/reports-stage37-product-sales-compact-redesign.css",
+    "styles/system/reports-redesign/reports-stage40-product-sales-filter-rtl-fix.css",
+    "styles/system/reports-redesign/reports-stage41-product-sales-filter-hard-rtl.css",
+    "styles/system/reports-redesign/reports-stage42-product-sales-filter-layout-clean.css",
+    "styles/system/reports-redesign/reports-stage43-product-sales-date-label-polish.css",
+    "styles/system/reports-redesign/reports-stage44-product-sales-date-offset.css",
+    "styles/system/reports-redesign/reports-stage45-product-sales-date-final-offset.css",
+    "styles/system/reports-redesign/reports-stage46-product-sales-date-solid-frame.css",
+    "styles/system/reports-redesign/reports-stage47-product-sales-date-box-reset.css",
+    "styles/system/reports-redesign/reports-stage48-product-sales-date-left-gap.css",
+    "styles/system/reports-redesign/reports-stage49-product-sales-metric-grid.css",
+    "styles/system/reports-redesign/reports-stage50-product-sales-metric-inner-frame-remove.css",
+    "styles/system/reports-redesign/reports-stage53-product-sales-table-cleanup.css",
+    "styles/system/reports-redesign/reports-stage54-product-sales-table-final-polish.css",
+    "styles/system/reports-redesign/reports-stage55-product-sales-table-width-tools-fix.css",
+    "styles/system/reports-redesign/reports-stage56-product-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage57-product-sales-table-tools-position.css",
+    "styles/system/reports-redesign/reports-stage59-product-sales-search-standard.css",
+    "styles/system/reports-redesign/reports-stage60-product-sales-search-contenteditable.css",
+    "styles/system/reports-redesign/reports-stage61-product-sales-table-tools-placement.css",
+    "styles/system/reports-redesign/reports-stage62-compare-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage64-compare-sales-details-modal.css",
+    "styles/system/reports-redesign/reports-stage65-compare-sales-filter-cards-modal-fixes.css",
+    "styles/system/reports-redesign/reports-stage66-compare-sales-filter-layout-final.css",
+    "styles/system/reports-redesign/reports-stage67-compare-sales-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage68-compare-sales-filter-final-spacing.css",
+    "styles/system/reports-redesign/reports-stage70-compare-sales-filter-hard-right.css",
+    "styles/system/reports-redesign/reports-stage71-compare-sales-primary-split.css",
+    "styles/system/reports-redesign/reports-stage72-phone-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage73-phone-sales-polish-fixes.css",
+    "styles/system/reports-redesign/reports-stage74-phone-sales-filter-financial-style.css",
+    "styles/system/reports-redesign/reports-stage75-phone-sales-filter-box-cleanup.css",
+    "styles/system/reports-redesign/reports-stage76-phone-sales-table-search-placement.css",
+    "styles/system/reports-redesign/reports-stage77-phone-sales-table-tools-cleanup.css",
+    "styles/system/reports-redesign/reports-stage82-phone-sales-search-final.css",
+    "styles/system/reports-redesign/reports-stage83-phone-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage84-phone-installment-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage85-mobile-sales-analytics-executive.css",
+    "styles/system/reports-redesign/reports-stage87-collection-header-compact.css",
+    "styles/system/reports-redesign/reports-stage88-collection-header-layout-v2.css",
+    "styles/system/reports-redesign/reports-stage89-collection-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage90-collection-kanban-dnd-fix.css",
+    "styles/system/reports-redesign/reports-stage91-installments-calendar-executive.css",
+    "styles/system/reports-redesign/reports-stage92-debtors-executive.css",
+    "styles/system/reports-redesign/reports-stage93-debtors-action-refresh-fix.css",
+    "styles/system/reports-redesign/reports-stage94-creditors-executive.css",
+    "styles/system/reports-redesign/reports-stage95-creditors-action-polish.css",
+    "styles/system/reports-redesign/reports-stage96-creditors-action-inner-box-remove.css",
+    "styles/system/reports-redesign/reports-stage97-top-customers-executive.css",
+    "styles/system/reports-redesign/reports-stage98-rfm-executive.css",
+    "styles/system/reports-redesign/reports-stage99-rfm-action-polish.css",
+    "styles/system/reports-redesign/smart-insights/smart-insights.phase1-stabilized.css",
+    "styles/system/reports-risk-cashflow-foundation.css",
+    "styles/system/reports-runtime/reports-apple-minimal-foundation.css",
+    "styles/system/reports-shell-foundation.css",
+    "styles/system/search-input-foundation.css",
+    "styles/system/settings-modules-smart-foundation.css",
+    "styles/system/settings-redesign/settings-general-modules-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-redesign-pass-1.css",
+    "styles/system/settings-shell-foundation.css",
+    "styles/system/shared-action-buttons-foundation.css",
+    "styles/system/sidebar-notifications-stage15-polish.css",
+    "styles/system/sidebar-notifications-stage16-actions-polish.css",
+    "styles/system/smart-insight-foundation.css",
+    "styles/system/table-actions-foundation.css",
+    "styles/system/telegram-logs-redesign.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-1.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-3.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-4.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-5.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-6.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-7.css",
+    "styles/system/telegram-runtime/customer-telegram-link-modal-redesign.css",
+    "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+    "styles/system/telegram-runtime/message-composer-channel-initial-v74.css",
+    "styles/system/telegram-runtime/message-composer-controls-foundation.css",
+    "styles/system/telegram-runtime/message-composer-final-clean-v71.css",
+    "styles/system/telegram-runtime/message-composer-full-redesign-v68.css",
+    "styles/system/telegram-runtime/message-composer-no-focus-v70.css",
+    "styles/system/telegram-runtime/message-composer-polish-v69.css",
+    "styles/system/telegram-runtime/settings-telegram-compact-foundation.css",
+    "styles/system/telegram-runtime/telegram-real-compact-foundation.css",
+    "styles/system/telegram-ui-foundation.css",
+    "styles/system/ui-contracts/form-field-contract-phase4.css",
+    "styles/system/ui-contracts/global-visual-qa-cleanup-phase16.css",
+    "styles/system/ui-contracts/inventory-mobile-foundation-phase10.css",
+    "styles/system/ui-contracts/modal-command-contract-phase1.css",
+    "styles/system/ui-contracts/modal-command-contract-phase2.css",
+    "styles/system/ui-contracts/navigation-shell-contract-phase5.css",
+    "styles/system/ui-contracts/notifications-reminders-foundation-phase14.css",
+    "styles/system/ui-contracts/ops-messaging-foundation-phase9.css",
+    "styles/system/ui-contracts/people-ledger-foundation-phase12.css",
+    "styles/system/ui-contracts/repair-services-workflow-foundation-phase15.css",
+    "styles/system/ui-contracts/reports-foundation-contract-phase7.css",
+    "styles/system/ui-contracts/sales-cart-invoice-foundation-phase11.css",
+    "styles/system/ui-contracts/sales-payment-no-inner-badge-phase80.css",
+    "styles/system/ui-contracts/sales-payment-readability-final-phase79.css",
+    "styles/system/ui-contracts/settings-data-ops-phase3.css",
+    "styles/system/ui-contracts/settings-foundation-contract-phase8.css",
+    "styles/system/ui-contracts/spa-nonblocking-feedback-guard-phase83.css",
+    "styles/system/ui-contracts/table-card-contract-phase6.css",
+    "styles/system/ui-contracts/targeted-from-phase16-restore-telegram-v22.css",
+    "styles/system/ui-contracts/targeted-from-v22-header-telegram-polish-v24.css",
+    "styles/system/ui-contracts/telegram-control-cards-precision-v26.css",
+    "styles/system/ui-contracts/telegram-detail-grid-cleanup-v33.css",
+    "styles/system/ui-contracts/telegram-flatten-section-surfaces-v31.css",
+    "styles/system/ui-contracts/telegram-global-apple-surface-v29.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v27.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v28.css",
+    "styles/system/ui-contracts/telegram-monitor-single-surface-v32.css",
+    "styles/system/ui-contracts/telegram-remove-extra-shell-v30.css",
+    "styles/system/ui-contracts/telegram-template-and-detail-spacing-v34.css",
+    "styles/system/ui-contracts/telegram-v35-detail-template-polish.css",
+    "styles/system/ui-contracts/telegram-v38-auto-message-group.css",
+    "styles/system/ui-contracts/telegram-v39-auto-message-group-spacing.css",
+    "styles/system/ui-contracts/telegram-v41-access-group-fix.css",
+    "styles/system/ui-contracts/telegram-v42-connect-and-operations-polish.css",
+    "styles/system/ui-contracts/telegram-v43-operations-width-standard.css",
+    "styles/system/ui-contracts/telegram-v44-operations-full-width-commercial.css",
+    "styles/system/ui-contracts/telegram-v45-send-rules-spacing.css",
+    "styles/system/ui-contracts/telegram-v46-send-rules-inner-padding.css",
+    "styles/system/ui-contracts/telegram-v47-send-rules-compact-fields.css",
+    "styles/system/ui-contracts/telegram-v48-send-rules-field-flatten.css",
+    "styles/system/ui-contracts/telegram-v49-exact-send-rule-fields.css",
+    "styles/system/ui-contracts/telegram-v50-send-rule-icons-left.css",
+    "styles/system/ui-contracts/telegram-v51-send-rule-icons-force-left.css",
+    "styles/system/ui-contracts/telegram-v52-logs-apple-neutral.css",
+    "styles/system/ui-contracts/telegram-v53-logs-detail-modal.css",
+    "styles/system/ui-contracts/telegram-v54-alert-icon-import-fix.css",
+    "styles/system/ui-contracts/telegram-v55-lucide-import-safe-icons.css",
+    "styles/system/ui-contracts/telegram-v56-logs-modal-and-table-fix.css",
+    "styles/system/ui-contracts/telegram-v57-logs-icons-modal-center.css",
+    "styles/system/ui-contracts/telegram-v58-logs-modal-compact-responsive.css",
+    "styles/system/ui-contracts/telegram-v59-logs-table-compact-remove-duplicate.css",
+    "styles/system/ui-contracts/telegram-v60-final-spacing-template-modal.css",
+    "styles/system/ui-contracts/telegram-v61-modal-true-center-overlay.css",
+    "styles/system/ui-contracts/telegram-v62-template-center-apple-direct.css",
+    "styles/system/ui-contracts/telegram-v63-modal-breathing-space.css",
+    "styles/system/ui-contracts/telegram-v64-direct-safe-padding.css",
+    "styles/system/ui-contracts/telegram-v65-template-center-compact-scale.css",
+    "styles/system/ui-contracts/telegram-v66-quick-check-compact.css",
+    "styles/system/ui-contracts/telegram-v67-template-command-cards-compact.css",
+    "styles/system/ui-contracts/telegram-v68-smart-suggestion-compact.css",
+    "styles/system/ui-contracts/telegram-v69-quick-check-single-card.css",
+    "styles/system/ui-contracts/telegram-v70-template-filter-accordion-fix.css",
+    "styles/system/ui-contracts/telegram-v71-accordion-kpis-unified-surface.css",
+    "styles/system/ui-contracts/telegram-v72-global-loading-logs-search-fix.css",
+    "styles/system/ui-contracts/telegram-v73-connection-bundle-two-column.css",
+    "styles/system/ui-contracts/telegram-v74-monitor-progress-true-fill.css",
+    "styles/system/ui-contracts/telegram-v75-restore-confirm-solid-modal.css",
+    "styles/system/ui-contracts/telegram-v76-readable-success-buttons-global.css",
+    "styles/system/ui-contracts/telegram-v77-connection-layout-cleanup.css",
+    "styles/system/ui-contracts/telegram-v78-connection-guide-cleanup.css",
+    "styles/system/ui-contracts/telegram-v80-send-rules-quiet-hours-cleanup.css",
+    "styles/system/ui-contracts/telegram-v82-final-visible-fixes.css",
+    "styles/system/ui-density-accessibility-foundation.css",
+    "styles/system/ui-personalization-foundation.css",
+    "styles/themes.css",
+    "styles/vendors/overrides.css"
+  ],
+  "runtimeActiveCssPaths": [
+    "index.css",
+    "styles/components/badges.css",
+    "styles/components/button-normalization.css",
+    "styles/components/buttons.css",
+    "styles/components/cards.css",
+    "styles/components/dashboard-clock.css",
+    "styles/components/date-field.css",
+    "styles/components/detail-hero.css",
+    "styles/components/detail.css",
+    "styles/components/empty-states.css",
+    "styles/components/filters.css",
+    "styles/components/forms.css",
+    "styles/components/modal-system.css",
+    "styles/components/modals.css",
+    "styles/components/select-field.css",
+    "styles/components/sidebar.css",
+    "styles/components/tables.css",
+    "styles/components/toasts.css",
+    "styles/components/toolbars.css",
+    "styles/components/unified-buttons.css",
+    "styles/core/animations.css",
+    "styles/core/base.css",
+    "styles/core/tokens.css",
+    "styles/core/typography.css",
+    "styles/core/utilities.css",
+    "styles/generated/tailwind-entry.generated.css",
+    "styles/layout/app-shell.css",
+    "styles/layout/page-shell.css",
+    "styles/layout/print-shells.css",
+    "styles/layout/print.css",
+    "styles/layout/responsive.css",
+    "styles/layout/sidebar.css",
+    "styles/legacy/01-legacy-app-base-and-loaders.css",
+    "styles/legacy/02a-legacy-reports-kpi-table-foundation.css",
+    "styles/legacy/02b-legacy-premium-modal-base.css",
+    "styles/legacy/02c-legacy-detail-drawer-primitives.css",
+    "styles/legacy/02d-legacy-detail-compact-density.css",
+    "styles/legacy/02e-legacy-smart-tooltip-transitions.css",
+    "styles/legacy/02f-legacy-page-shell-modern.css",
+    "styles/legacy/02g-legacy-ux-button-core-loading.css",
+    "styles/legacy/02h-legacy-ux-button-motion-presets.css",
+    "styles/legacy/02i-legacy-people-list-controls-fields.css",
+    "styles/legacy/02j-legacy-report-toolbar-filters.css",
+    "styles/legacy/02k-legacy-cards-toasts-feedback-loading.css",
+    "styles/legacy/02l-legacy-wizard-table-quicklinks-installments.css",
+    "styles/legacy/02m-legacy-accessibility-focus-transition-base.css",
+    "styles/legacy/02n-legacy-customers-hero-toolbar.css",
+    "styles/legacy/02o-legacy-telegram-link-modal.css",
+    "styles/legacy/02p-legacy-people-action-buttons-chips.css",
+    "styles/legacy/03a-legacy-action-primitives-buttons.css",
+    "styles/legacy/03b-legacy-report-tools-pagination.css",
+    "styles/legacy/03c-legacy-form-empty-density.css",
+    "styles/legacy/03d-legacy-premium-tabs-inventory-detail.css",
+    "styles/legacy/03f-legacy-header-search-password-fixes.css",
+    "styles/legacy/03g-legacy-dark-tables-loading-progress.css",
+    "styles/legacy/04a-legacy-repairs-saved-views-inputs.css",
+    "styles/legacy/04b-legacy-premium-data-chart-shell.css",
+    "styles/legacy/04c-legacy-motion-focus-accessibility.css",
+    "styles/legacy/04d-legacy-field-attention-page-actions.css",
+    "styles/legacy/05a-legacy-button-icon-baseline.css",
+    "styles/legacy/05b-legacy-quick-link-cards.css",
+    "styles/legacy/05c-legacy-unified-button-hardening.css",
+    "styles/legacy/05d-legacy-report-filter-sales-mobile-buttons.css",
+    "styles/legacy/06a-legacy-sales-flow-visual-pass.css",
+    "styles/legacy/06b-legacy-sales-cart-button-borders.css",
+    "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css",
+    "styles/legacy/06d-legacy-sales-cart-full-page-redesign.css",
+    "styles/legacy/07a-legacy-button-stroke-normalization.css",
+    "styles/legacy/07b-legacy-premium-button-unification.css",
+    "styles/legacy/08b-legacy-global-card-section-system.css",
+    "styles/legacy/08c-legacy-global-table-row-actions.css",
+    "styles/legacy/09a-legacy-global-modal-drawer-unification.css",
+    "styles/legacy/09b-legacy-global-toast-alert-status.css",
+    "styles/legacy/09c-legacy-global-nav-sidebar-topbar.css",
+    "styles/legacy/09d-legacy-global-charts-kpi-dashboard.css",
+    "styles/legacy/10a-legacy-final-shell-cohesion.css",
+    "styles/legacy/10b-legacy-targeted-ui-qa-cleanup.css",
+    "styles/legacy/10c-legacy-smart-toast-progress.css",
+    "styles/legacy/10d-legacy-telegram-modal-stability-lux.css",
+    "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css",
+    "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css",
+    "styles/pages/customers-shell.css",
+    "styles/pages/customers.css",
+    "styles/pages/dashboard.css",
+    "styles/pages/inventory.css",
+    "styles/pages/partners.css",
+    "styles/pages/purchases.css",
+    "styles/pages/repairs.css",
+    "styles/pages/reports.css",
+    "styles/pages/settings-overrides.css",
+    "styles/pages/settings.css",
+    "styles/pages/telegram.css",
+    "styles/system/audit-operations-center-v72.css",
+    "styles/system/bidi-text-contract-foundation.css",
+    "styles/system/cross-module-density-foundation.css",
+    "styles/system/customer-detail/customer-ledger-real-responsive-fix.css",
+    "styles/system/customer-detail/telegram-quick-preview-v75.css",
+    "styles/system/customers-directory-v73.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-4.css",
+    "styles/system/dashboard-smart-widgets-foundation.css",
+    "styles/system/design-tokens.css",
+    "styles/system/expenses-modal-horizontal-phase87.css",
+    "styles/system/expenses-modal-horizontal-phase88.css",
+    "styles/system/expenses-modal-horizontal-phase89.css",
+    "styles/system/expenses-recurring-payment-history-phase93.css",
+    "styles/system/field-form-contract.css",
+    "styles/system/finance-modal-field-polish-foundation.css",
+    "styles/system/finance-tables-foundation.css",
+    "styles/system/global-commercial-qa-foundation.css",
+    "styles/system/global-focus-reset-hard-v140.css",
+    "styles/system/global-focus-reset-v139.css",
+    "styles/system/header-sidebar-navigation-foundation.css",
+    "styles/system/installments-runtime/installments-phone-edit-foundation.css",
+    "styles/system/legacy-quarantine/collection-cleanup-foundation.css",
+    "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css",
+    "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css",
+    "styles/system/legacy-quarantine/partner-settlement-foundation.css",
+    "styles/system/legacy-quarantine/people-detail-command-foundation.css",
+    "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css",
+    "styles/system/legacy-quarantine/people-list-hero-foundation.css",
+    "styles/system/legacy-quarantine/select-customer-compat-foundation.css",
+    "styles/system/login-glass-form-chrome-fix.css",
+    "styles/system/mobile-phones-foundation.css",
+    "styles/system/mobile-sales-tabs-foundation.css",
+    "styles/system/modal-partner-foundation.css",
+    "styles/system/modal-people-foundation.css",
+    "styles/system/notifications-foundation.css",
+    "styles/system/notifications-saas-redesign-phase95.css",
+    "styles/system/overlay-layer-contract.css",
+    "styles/system/partner-capital-status-foundation.css",
+    "styles/system/partner-capital-table-foundation.css",
+    "styles/system/partner-detail-responsive-ledger-foundation.css",
+    "styles/system/partner-detail-visual-foundation.css",
+    "styles/system/partner-runtime/partner-detail-actions-reflow-v85.css",
+    "styles/system/partner-runtime/partner-detail-alignment-fix-v81.css",
+    "styles/system/partner-runtime/partner-detail-customer-top-sync-v86.css",
+    "styles/system/partner-runtime/partner-detail-customer-ui-sync-v80.css",
+    "styles/system/partner-runtime/partner-detail-hero-hard-layout-v82.css",
+    "styles/system/partner-runtime/partner-detail-responsive-breakpoint-v83.css",
+    "styles/system/partner-runtime/partner-detail-safe-gutter-v84.css",
+    "styles/system/partner-runtime/partner-edit-modal-customer-parity-v98.css",
+    "styles/system/partner-runtime/partner-email-telegram-help-fix-v99.css",
+    "styles/system/partner-runtime/partner-header-fix-v94.css",
+    "styles/system/partner-runtime/partner-header-mockup-v89.css",
+    "styles/system/partner-runtime/partner-header-repair-v93.css",
+    "styles/system/partner-runtime/partner-header-rtl-risk-v91.css",
+    "styles/system/partner-runtime/partner-ledger-edit-modal-v141.css",
+    "styles/system/partner-runtime/partner-ledger-final-polish-v137.css",
+    "styles/system/partner-runtime/partner-ledger-focus-color-rtl-v135.css",
+    "styles/system/partner-runtime/partner-ledger-hard-icons-v130.css",
+    "styles/system/partner-runtime/partner-ledger-icon-overlap-fix-v131.css",
+    "styles/system/partner-runtime/partner-ledger-icons-button-v128.css",
+    "styles/system/partner-runtime/partner-ledger-icons-right-v129.css",
+    "styles/system/partner-runtime/partner-ledger-table-spacing-v134.css",
+    "styles/system/partner-runtime/partner-ledger-transactions-redesign-v132.css",
+    "styles/system/partner-runtime/partner-operational-table-v105.css",
+    "styles/system/partner-runtime/partner-overview-final-polish-v111.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-fix-v102.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-logo-right-v103.css",
+    "styles/system/partner-runtime/partner-phone-capital-redesign-v101.css",
+    "styles/system/partner-runtime/partner-phone-capital-solid-reset-foundation.css",
+    "styles/system/partner-runtime/partner-telegram-customer-copy-v119.css",
+    "styles/system/partner-runtime/partner-telegram-header-hard-grid-v124.css",
+    "styles/system/partner-runtime/partner-telegram-panel-redesign-v114.css",
+    "styles/system/partner-runtime/partner-telegram-sidebar-rtl-v122.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-1.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-2.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-3.css",
+    "styles/system/people-ledger-contract.css",
+    "styles/system/people-runtime/people-commercial-redesign-foundation.css",
+    "styles/system/people-status-mobile-foundation.css",
+    "styles/system/people-table-detail-foundation.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css",
+    "styles/system/products-services-repairs/products-ui-foundation.css",
+    "styles/system/products-services-repairs/repairs-ui-foundation.css",
+    "styles/system/products-services-repairs/services-inventory-foundation.css",
+    "styles/system/reports-filter-kpi-foundation.css",
+    "styles/system/reports-redesign/aging-receivables-stage21-commercial.css",
+    "styles/system/reports-redesign/purchase-suggestions-action-board/purchase-suggestions-action-board.phase2-stabilized.css",
+    "styles/system/reports-redesign/reports-redesign-pass-1.css",
+    "styles/system/reports-redesign/reports-redesign-pass-2.css",
+    "styles/system/reports-redesign/reports-redesign-pass-3.css",
+    "styles/system/reports-redesign/reports-redesign-pass-4.css",
+    "styles/system/reports-redesign/reports-redesign-pass-5.css",
+    "styles/system/reports-redesign/reports-redesign-stage20-compact-header.css",
+    "styles/system/reports-redesign/reports-redesign-stage22-shell-cleanup.css",
+    "styles/system/reports-redesign/reports-stage100-cohort-executive.css",
+    "styles/system/reports-redesign/reports-stage101-cohort-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage102-followups-executive.css",
+    "styles/system/reports-redesign/reports-stage104-followups-filters-actions-cleanup.css",
+    "styles/system/reports-redesign/reports-stage105-followups-table-actions-apple.css",
+    "styles/system/reports-redesign/reports-stage106-partner-performance-executive.css",
+    "styles/system/reports-redesign/reports-stage107-partner-performance-premium-redesign.css",
+    "styles/system/reports-redesign/reports-stage108-partner-performance-bento-responsive.css",
+    "styles/system/reports-redesign/reports-stage109-partner-tabs-horizontal-icons.css",
+    "styles/system/reports-redesign/reports-stage110-partner-tabs-rtl-responsive.css",
+    "styles/system/reports-redesign/reports-stage111-partner-tabs-flush-right.css",
+    "styles/system/reports-redesign/reports-stage112-partner-tabs-parent-flush-right.css",
+    "styles/system/reports-redesign/reports-stage113-partner-tabs-secondary-span.css",
+    "styles/system/reports-redesign/reports-stage114-partner-content-redesign.css",
+    "styles/system/reports-redesign/reports-stage115-partner-content-polish.css",
+    "styles/system/reports-redesign/reports-stage116-partner-summary-table-single-layer.css",
+    "styles/system/reports-redesign/reports-stage117-top-suppliers-executive.css",
+    "styles/system/reports-redesign/reports-stage118-inventory-turnover-executive.css",
+    "styles/system/reports-redesign/reports-stage121-inventory-turnover-cards-formula-polish.css",
+    "styles/system/reports-redesign/reports-stage122-dead-stock-executive.css",
+    "styles/system/reports-redesign/reports-stage123-abc-filter-kpi-polish.css",
+    "styles/system/reports-redesign/reports-stage124-abc-filter-density-spacing.css",
+    "styles/system/reports-redesign/reports-stage125-abc-calendar-field-flatten.css",
+    "styles/system/reports-redesign/reports-stage126-abc-date-vertical-align.css",
+    "styles/system/reports-redesign/reports-stage127-abc-table-badge-action-polish.css",
+    "styles/system/reports-redesign/reports-stage128-realized-profit-executive.css",
+    "styles/system/reports-redesign/reports-stage129-realized-profit-date-row-fix.css",
+    "styles/system/reports-redesign/reports-stage130-cashflow-executive.css",
+    "styles/system/reports-redesign/reports-stage131-cashflow-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage132-cashflow-premium-control-dock.css",
+    "styles/system/reports-redesign/reports-stage133-cashflow-date-double-box-fix.css",
+    "styles/system/reports-redesign/reports-stage134-financial-audit-executive.css",
+    "styles/system/reports-redesign/reports-stage135-product-profit-real-executive.css",
+    "styles/system/reports-redesign/reports-stage136-product-profit-real-chart-polish.css",
+    "styles/system/reports-redesign/reports-stage137-product-profit-real-chart-final.css",
+    "styles/system/reports-redesign/reports-stage138-product-profit-real-summary-box-fix.css",
+    "styles/system/reports-redesign/reports-stage139-analytics-dashboard-executive.css",
+    "styles/system/reports-redesign/reports-stage143-analytics-empty-state-polish.css",
+    "styles/system/reports-redesign/reports-stage145-analytics-chart-tooltip-persian.css",
+    "styles/system/reports-redesign/reports-stage146-analytics-debt-snapshot-summary.css",
+    "styles/system/reports-redesign/reports-stage149-smart-insights-executive-redesign.css",
+    "styles/system/reports-redesign/reports-stage150-smart-insights-super-premium.css",
+    "styles/system/reports-redesign/reports-stage151-smart-insights-hero-fill.css",
+    "styles/system/reports-redesign/reports-stage152-smart-insights-hero-rebuild.css",
+    "styles/system/reports-redesign/reports-stage153-smart-insights-hero-hard-replace.css",
+    "styles/system/reports-redesign/reports-stage154-smart-insights-command-center-polish.css",
+    "styles/system/reports-redesign/reports-stage155-smart-insights-executive-board-compact.css",
+    "styles/system/reports-redesign/reports-stage156-smart-insights-orbital-board.css",
+    "styles/system/reports-redesign/reports-stage157-smart-insights-final-audit.css",
+    "styles/system/reports-redesign/reports-stage158-smart-insights-action-logic-fix.css",
+    "styles/system/reports-redesign/reports-stage159-smart-insights-scroll-and-kpis.css",
+    "styles/system/reports-redesign/reports-stage163-smart-insights-rollback-balanced-fix.css",
+    "styles/system/reports-redesign/reports-stage164-smart-insights-kpi-grid-polish.css",
+    "styles/system/reports-redesign/reports-stage165-smart-insights-kpi-reference-match.css",
+    "styles/system/reports-redesign/reports-stage166-smart-insights-kpi-rebuild-reference.css",
+    "styles/system/reports-redesign/reports-stage167-smart-insights-engine-gauge-polish.css",
+    "styles/system/reports-redesign/reports-stage168-smart-insights-gauge-font-arc-fix.css",
+    "styles/system/reports-redesign/reports-stage169-smart-insights-center-icon-cta-fix.css",
+    "styles/system/reports-redesign/reports-stage170-smart-insights-center-height-icon-fix.css",
+    "styles/system/reports-redesign/reports-stage171-smart-insights-target-icon-refine.css",
+    "styles/system/reports-redesign/reports-stage172-smart-insights-actions-reference.css",
+    "styles/system/reports-redesign/reports-stage173-smart-insights-actions-overlap-fix.css",
+    "styles/system/reports-redesign/reports-stage174-smart-insights-actions-button-fix.css",
+    "styles/system/reports-redesign/reports-stage175-smart-insights-actions-scale-down.css",
+    "styles/system/reports-redesign/reports-stage176-smart-insights-action-queue-compact.css",
+    "styles/system/reports-redesign/reports-stage177-smart-insights-action-item-height-buttons.css",
+    "styles/system/reports-redesign/reports-stage178-smart-insights-actions-buttons-final.css",
+    "styles/system/reports-redesign/reports-stage179-smart-insights-clickable-action-cards.css",
+    "styles/system/reports-redesign/reports-stage180-collection-followup-persistence-fix.css",
+    "styles/system/reports-redesign/reports-stage181-collection-actions-root-fix.css",
+    "styles/system/reports-redesign/reports-stage182-smart-insights-predictive-engine-redesign.css",
+    "styles/system/reports-redesign/reports-stage183-smart-insights-today-commands-redesign.css",
+    "styles/system/reports-redesign/reports-stage184-today-commands-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage185-today-commands-rtl-modal-fix.css",
+    "styles/system/reports-redesign/reports-stage186-today-commands-rtl-modal-redesign.css",
+    "styles/system/reports-redesign/reports-stage187-today-commands-final-align-modal-balance.css",
+    "styles/system/reports-redesign/reports-stage188-smart-insight-modal-premium-fix.css",
+    "styles/system/reports-redesign/reports-stage189-smart-insight-modal-horizontal-layout.css",
+    "styles/system/reports-redesign/reports-stage190-smart-insight-modal-horizontal-rebuild.css",
+    "styles/system/reports-redesign/reports-stage191-smart-insight-modal-horizontal-final.css",
+    "styles/system/reports-redesign/reports-stage193-accounting-modal-pixel-match.css",
+    "styles/system/reports-redesign/reports-stage194-accounting-modal-real-data-compact.css",
+    "styles/system/reports-redesign/reports-stage196-accounting-modal-compact-header.css",
+    "styles/system/reports-redesign/reports-stage197-collection-followup-modal.css",
+    "styles/system/reports-redesign/reports-stage198-collection-modal-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage199-collection-modal-real-data-guard.css",
+    "styles/system/reports-redesign/reports-stage200-stock-reorder-modal.css",
+    "styles/system/reports-redesign/reports-stage201-customer-engagement-modal.css",
+    "styles/system/reports-redesign/reports-stage202-sales-performance-modal.css",
+    "styles/system/reports-redesign/reports-stage203-active-sales-assistant-modal.css",
+    "styles/system/reports-redesign/reports-stage209-smart-insights-modal-top-kpi-compact.css",
+    "styles/system/reports-redesign/reports-stage210-smart-insight-modal-enterprise-horizontal.css",
+    "styles/system/reports-redesign/reports-stage211-insight-overview-modals-horizontal.css",
+    "styles/system/reports-redesign/reports-stage212-ml-workbench-polish.css",
+    "styles/system/reports-redesign/reports-stage213-smart-insights-simple-mode.css",
+    "styles/system/reports-redesign/reports-stage214-smart-readiness-summary.css",
+    "styles/system/reports-redesign/reports-stage217-side-kpis-modal-executive.css",
+    "styles/system/reports-redesign/reports-stage219-smart-modal-portal-sidebar-safe.css",
+    "styles/system/reports-redesign/reports-stage220-smart-modal-compact-density.css",
+    "styles/system/reports-redesign/reports-stage221-smart-modal-layout-corrections.css",
+    "styles/system/reports-redesign/reports-stage222-generic-modal-sidebar-lock.css",
+    "styles/system/reports-redesign/reports-stage223-generic-modal-hard-safe-lane.css",
+    "styles/system/reports-redesign/reports-stage224-sales-performance-modal-lane-fix.css",
+    "styles/system/reports-redesign/reports-stage225-smart-insight-final-polish.css",
+    "styles/system/reports-redesign/reports-stage227-smart-kpi-cards-only-tighten.css",
+    "styles/system/reports-redesign/reports-stage228-smart-filter-dock-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage229-smart-side-cards-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage230-smart-filter-date-visibility.css",
+    "styles/system/reports-redesign/reports-stage231-smart-command-center-compact-only.css",
+    "styles/system/reports-redesign/reports-stage232-today-actions-compact-only.css",
+    "styles/system/reports-redesign/reports-stage233-today-and-overview-final-tune.css",
+    "styles/system/reports-redesign/reports-stage234-today-alignment-theme-followup.css",
+    "styles/system/reports-redesign/reports-stage235-manager-credit-approvals.css",
+    "styles/system/reports-redesign/reports-stage236-risk-profit-live.css",
+    "styles/system/reports-redesign/reports-stage24-actions-and-header-cleanup.css",
+    "styles/system/reports-redesign/reports-stage25-operational-actions.css",
+    "styles/system/reports-redesign/reports-stage26-header-calendar-action-fixes.css",
+    "styles/system/reports-redesign/reports-stage27-financial-aging-workspace-fixes.css",
+    "styles/system/reports-redesign/reports-stage28-financial-overview-executive.css",
+    "styles/system/reports-redesign/reports-stage29-calendar-kpi-cleanup.css",
+    "styles/system/reports-redesign/reports-stage30-kpi-text-highlight-cleanup.css",
+    "styles/system/reports-redesign/reports-stage31-financial-metric-card-clean.css",
+    "styles/system/reports-redesign/reports-stage32-sales-summary-executive.css",
+    "styles/system/reports-redesign/reports-stage35-product-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage36-product-sales-hard-polish.css",
+    "styles/system/reports-redesign/reports-stage37-product-sales-compact-redesign.css",
+    "styles/system/reports-redesign/reports-stage40-product-sales-filter-rtl-fix.css",
+    "styles/system/reports-redesign/reports-stage41-product-sales-filter-hard-rtl.css",
+    "styles/system/reports-redesign/reports-stage42-product-sales-filter-layout-clean.css",
+    "styles/system/reports-redesign/reports-stage43-product-sales-date-label-polish.css",
+    "styles/system/reports-redesign/reports-stage44-product-sales-date-offset.css",
+    "styles/system/reports-redesign/reports-stage45-product-sales-date-final-offset.css",
+    "styles/system/reports-redesign/reports-stage46-product-sales-date-solid-frame.css",
+    "styles/system/reports-redesign/reports-stage47-product-sales-date-box-reset.css",
+    "styles/system/reports-redesign/reports-stage48-product-sales-date-left-gap.css",
+    "styles/system/reports-redesign/reports-stage49-product-sales-metric-grid.css",
+    "styles/system/reports-redesign/reports-stage50-product-sales-metric-inner-frame-remove.css",
+    "styles/system/reports-redesign/reports-stage53-product-sales-table-cleanup.css",
+    "styles/system/reports-redesign/reports-stage54-product-sales-table-final-polish.css",
+    "styles/system/reports-redesign/reports-stage55-product-sales-table-width-tools-fix.css",
+    "styles/system/reports-redesign/reports-stage56-product-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage57-product-sales-table-tools-position.css",
+    "styles/system/reports-redesign/reports-stage59-product-sales-search-standard.css",
+    "styles/system/reports-redesign/reports-stage60-product-sales-search-contenteditable.css",
+    "styles/system/reports-redesign/reports-stage61-product-sales-table-tools-placement.css",
+    "styles/system/reports-redesign/reports-stage62-compare-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage64-compare-sales-details-modal.css",
+    "styles/system/reports-redesign/reports-stage65-compare-sales-filter-cards-modal-fixes.css",
+    "styles/system/reports-redesign/reports-stage66-compare-sales-filter-layout-final.css",
+    "styles/system/reports-redesign/reports-stage67-compare-sales-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage68-compare-sales-filter-final-spacing.css",
+    "styles/system/reports-redesign/reports-stage70-compare-sales-filter-hard-right.css",
+    "styles/system/reports-redesign/reports-stage71-compare-sales-primary-split.css",
+    "styles/system/reports-redesign/reports-stage72-phone-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage73-phone-sales-polish-fixes.css",
+    "styles/system/reports-redesign/reports-stage74-phone-sales-filter-financial-style.css",
+    "styles/system/reports-redesign/reports-stage75-phone-sales-filter-box-cleanup.css",
+    "styles/system/reports-redesign/reports-stage76-phone-sales-table-search-placement.css",
+    "styles/system/reports-redesign/reports-stage77-phone-sales-table-tools-cleanup.css",
+    "styles/system/reports-redesign/reports-stage82-phone-sales-search-final.css",
+    "styles/system/reports-redesign/reports-stage83-phone-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage84-phone-installment-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage85-mobile-sales-analytics-executive.css",
+    "styles/system/reports-redesign/reports-stage87-collection-header-compact.css",
+    "styles/system/reports-redesign/reports-stage88-collection-header-layout-v2.css",
+    "styles/system/reports-redesign/reports-stage89-collection-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage90-collection-kanban-dnd-fix.css",
+    "styles/system/reports-redesign/reports-stage91-installments-calendar-executive.css",
+    "styles/system/reports-redesign/reports-stage92-debtors-executive.css",
+    "styles/system/reports-redesign/reports-stage93-debtors-action-refresh-fix.css",
+    "styles/system/reports-redesign/reports-stage94-creditors-executive.css",
+    "styles/system/reports-redesign/reports-stage95-creditors-action-polish.css",
+    "styles/system/reports-redesign/reports-stage96-creditors-action-inner-box-remove.css",
+    "styles/system/reports-redesign/reports-stage97-top-customers-executive.css",
+    "styles/system/reports-redesign/reports-stage98-rfm-executive.css",
+    "styles/system/reports-redesign/reports-stage99-rfm-action-polish.css",
+    "styles/system/reports-redesign/smart-insights/smart-insights.phase1-stabilized.css",
+    "styles/system/reports-risk-cashflow-foundation.css",
+    "styles/system/reports-runtime/reports-apple-minimal-foundation.css",
+    "styles/system/reports-shell-foundation.css",
+    "styles/system/search-input-foundation.css",
+    "styles/system/settings-modules-smart-foundation.css",
+    "styles/system/settings-redesign/settings-general-modules-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-redesign-pass-1.css",
+    "styles/system/settings-shell-foundation.css",
+    "styles/system/shared-action-buttons-foundation.css",
+    "styles/system/sidebar-notifications-stage15-polish.css",
+    "styles/system/sidebar-notifications-stage16-actions-polish.css",
+    "styles/system/smart-insight-foundation.css",
+    "styles/system/table-actions-foundation.css",
+    "styles/system/telegram-logs-redesign.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-1.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-3.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-4.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-5.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-6.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-7.css",
+    "styles/system/telegram-runtime/customer-telegram-link-modal-redesign.css",
+    "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css",
+    "styles/system/telegram-runtime/settings-telegram-compact-foundation.css",
+    "styles/system/telegram-runtime/telegram-real-compact-foundation.css",
+    "styles/system/telegram-ui-foundation.css",
+    "styles/system/ui-contracts/form-field-contract-phase4.css",
+    "styles/system/ui-contracts/global-visual-qa-cleanup-phase16.css",
+    "styles/system/ui-contracts/inventory-mobile-foundation-phase10.css",
+    "styles/system/ui-contracts/modal-command-contract-phase1.css",
+    "styles/system/ui-contracts/modal-command-contract-phase2.css",
+    "styles/system/ui-contracts/navigation-shell-contract-phase5.css",
+    "styles/system/ui-contracts/notifications-reminders-foundation-phase14.css",
+    "styles/system/ui-contracts/ops-messaging-foundation-phase9.css",
+    "styles/system/ui-contracts/people-ledger-foundation-phase12.css",
+    "styles/system/ui-contracts/repair-services-workflow-foundation-phase15.css",
+    "styles/system/ui-contracts/reports-foundation-contract-phase7.css",
+    "styles/system/ui-contracts/sales-cart-invoice-foundation-phase11.css",
+    "styles/system/ui-contracts/sales-payment-no-inner-badge-phase80.css",
+    "styles/system/ui-contracts/sales-payment-readability-final-phase79.css",
+    "styles/system/ui-contracts/settings-data-ops-phase3.css",
+    "styles/system/ui-contracts/settings-foundation-contract-phase8.css",
+    "styles/system/ui-contracts/spa-nonblocking-feedback-guard-phase83.css",
+    "styles/system/ui-contracts/table-card-contract-phase6.css",
+    "styles/system/ui-contracts/targeted-from-phase16-restore-telegram-v22.css",
+    "styles/system/ui-contracts/targeted-from-v22-header-telegram-polish-v24.css",
+    "styles/system/ui-contracts/telegram-control-cards-precision-v26.css",
+    "styles/system/ui-contracts/telegram-detail-grid-cleanup-v33.css",
+    "styles/system/ui-contracts/telegram-flatten-section-surfaces-v31.css",
+    "styles/system/ui-contracts/telegram-global-apple-surface-v29.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v27.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v28.css",
+    "styles/system/ui-contracts/telegram-monitor-single-surface-v32.css",
+    "styles/system/ui-contracts/telegram-remove-extra-shell-v30.css",
+    "styles/system/ui-contracts/telegram-template-and-detail-spacing-v34.css",
+    "styles/system/ui-contracts/telegram-v35-detail-template-polish.css",
+    "styles/system/ui-contracts/telegram-v38-auto-message-group.css",
+    "styles/system/ui-contracts/telegram-v39-auto-message-group-spacing.css",
+    "styles/system/ui-contracts/telegram-v41-access-group-fix.css",
+    "styles/system/ui-contracts/telegram-v42-connect-and-operations-polish.css",
+    "styles/system/ui-contracts/telegram-v43-operations-width-standard.css",
+    "styles/system/ui-contracts/telegram-v44-operations-full-width-commercial.css",
+    "styles/system/ui-contracts/telegram-v45-send-rules-spacing.css",
+    "styles/system/ui-contracts/telegram-v46-send-rules-inner-padding.css",
+    "styles/system/ui-contracts/telegram-v47-send-rules-compact-fields.css",
+    "styles/system/ui-contracts/telegram-v48-send-rules-field-flatten.css",
+    "styles/system/ui-contracts/telegram-v49-exact-send-rule-fields.css",
+    "styles/system/ui-contracts/telegram-v50-send-rule-icons-left.css",
+    "styles/system/ui-contracts/telegram-v51-send-rule-icons-force-left.css",
+    "styles/system/ui-contracts/telegram-v52-logs-apple-neutral.css",
+    "styles/system/ui-contracts/telegram-v53-logs-detail-modal.css",
+    "styles/system/ui-contracts/telegram-v54-alert-icon-import-fix.css",
+    "styles/system/ui-contracts/telegram-v55-lucide-import-safe-icons.css",
+    "styles/system/ui-contracts/telegram-v56-logs-modal-and-table-fix.css",
+    "styles/system/ui-contracts/telegram-v57-logs-icons-modal-center.css",
+    "styles/system/ui-contracts/telegram-v58-logs-modal-compact-responsive.css",
+    "styles/system/ui-contracts/telegram-v59-logs-table-compact-remove-duplicate.css",
+    "styles/system/ui-contracts/telegram-v60-final-spacing-template-modal.css",
+    "styles/system/ui-contracts/telegram-v61-modal-true-center-overlay.css",
+    "styles/system/ui-contracts/telegram-v62-template-center-apple-direct.css",
+    "styles/system/ui-contracts/telegram-v63-modal-breathing-space.css",
+    "styles/system/ui-contracts/telegram-v64-direct-safe-padding.css",
+    "styles/system/ui-contracts/telegram-v65-template-center-compact-scale.css",
+    "styles/system/ui-contracts/telegram-v66-quick-check-compact.css",
+    "styles/system/ui-contracts/telegram-v67-template-command-cards-compact.css",
+    "styles/system/ui-contracts/telegram-v68-smart-suggestion-compact.css",
+    "styles/system/ui-contracts/telegram-v69-quick-check-single-card.css",
+    "styles/system/ui-contracts/telegram-v70-template-filter-accordion-fix.css",
+    "styles/system/ui-contracts/telegram-v71-accordion-kpis-unified-surface.css",
+    "styles/system/ui-contracts/telegram-v72-global-loading-logs-search-fix.css",
+    "styles/system/ui-contracts/telegram-v73-connection-bundle-two-column.css",
+    "styles/system/ui-contracts/telegram-v74-monitor-progress-true-fill.css",
+    "styles/system/ui-contracts/telegram-v76-readable-success-buttons-global.css",
+    "styles/system/ui-contracts/telegram-v77-connection-layout-cleanup.css",
+    "styles/system/ui-contracts/telegram-v78-connection-guide-cleanup.css",
+    "styles/system/ui-contracts/telegram-v80-send-rules-quiet-hours-cleanup.css",
+    "styles/system/ui-contracts/telegram-v82-final-visible-fixes.css",
+    "styles/system/ui-density-accessibility-foundation.css",
+    "styles/system/ui-personalization-foundation.css",
+    "styles/themes.css",
+    "styles/vendors/overrides.css"
+  ],
+  "patchStylePaths": [
+    "styles/legacy/10a-legacy-final-shell-cohesion.css",
+    "styles/system/customer-detail/customer-edit-modal-v60-final.css",
+    "styles/system/customer-detail/customer-ledger-real-responsive-fix.css",
+    "styles/system/customer-detail/telegram-quick-preview-v75.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-4.css",
+    "styles/system/expenses-modal-horizontal-phase87.css",
+    "styles/system/expenses-modal-horizontal-phase88.css",
+    "styles/system/expenses-modal-horizontal-phase89.css",
+    "styles/system/expenses-recurring-payment-history-phase93.css",
+    "styles/system/finance-modal-field-polish-foundation.css",
+    "styles/system/global-focus-reset-hard-v140.css",
+    "styles/system/global-focus-reset-v139.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage78-phone-sales-table-tools-hard-reset.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage79-phone-sales-table-tools-visual-reset.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage80-phone-sales-search-single-frame.css",
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage81-phone-sales-search-no-inner-frame.css",
+    "styles/system/login-glass-form-chrome-fix.css",
+    "styles/system/notifications-saas-redesign-phase95.css",
+    "styles/system/partner-runtime/partner-detail-actions-reflow-v85.css",
+    "styles/system/partner-runtime/partner-detail-alignment-fix-v81.css",
+    "styles/system/partner-runtime/partner-detail-customer-top-sync-v86.css",
+    "styles/system/partner-runtime/partner-detail-customer-ui-sync-v80.css",
+    "styles/system/partner-runtime/partner-detail-hero-hard-layout-v82.css",
+    "styles/system/partner-runtime/partner-detail-responsive-breakpoint-v83.css",
+    "styles/system/partner-runtime/partner-detail-safe-gutter-v84.css",
+    "styles/system/partner-runtime/partner-edit-modal-customer-parity-v98.css",
+    "styles/system/partner-runtime/partner-email-telegram-help-fix-v99.css",
+    "styles/system/partner-runtime/partner-header-fix-v94.css",
+    "styles/system/partner-runtime/partner-header-mockup-v89.css",
+    "styles/system/partner-runtime/partner-header-repair-v93.css",
+    "styles/system/partner-runtime/partner-header-rtl-risk-v91.css",
+    "styles/system/partner-runtime/partner-ledger-edit-modal-v141.css",
+    "styles/system/partner-runtime/partner-ledger-final-polish-v137.css",
+    "styles/system/partner-runtime/partner-ledger-focus-color-rtl-v135.css",
+    "styles/system/partner-runtime/partner-ledger-hard-icons-v130.css",
+    "styles/system/partner-runtime/partner-ledger-icon-overlap-fix-v131.css",
+    "styles/system/partner-runtime/partner-ledger-icons-button-v128.css",
+    "styles/system/partner-runtime/partner-ledger-icons-right-v129.css",
+    "styles/system/partner-runtime/partner-ledger-table-spacing-v134.css",
+    "styles/system/partner-runtime/partner-ledger-transactions-redesign-v132.css",
+    "styles/system/partner-runtime/partner-operational-table-v105.css",
+    "styles/system/partner-runtime/partner-overview-final-polish-v111.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-fix-v102.css",
+    "styles/system/partner-runtime/partner-phone-capital-header-logo-right-v103.css",
+    "styles/system/partner-runtime/partner-phone-capital-redesign-v101.css",
+    "styles/system/partner-runtime/partner-telegram-customer-copy-v119.css",
+    "styles/system/partner-runtime/partner-telegram-header-hard-grid-v124.css",
+    "styles/system/partner-runtime/partner-telegram-panel-redesign-v114.css",
+    "styles/system/partner-runtime/partner-telegram-sidebar-rtl-v122.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-1.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-2.css",
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-3.css",
+    "styles/system/products-services-redesign/products-commerce-stage17-polish.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css",
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css",
+    "styles/system/reports-redesign/aging-receivables-stage21-commercial.css",
+    "styles/system/reports-redesign/reports-redesign-pass-1.css",
+    "styles/system/reports-redesign/reports-redesign-pass-2.css",
+    "styles/system/reports-redesign/reports-redesign-pass-3.css",
+    "styles/system/reports-redesign/reports-redesign-pass-4.css",
+    "styles/system/reports-redesign/reports-redesign-pass-5.css",
+    "styles/system/reports-redesign/reports-redesign-stage20-compact-header.css",
+    "styles/system/reports-redesign/reports-redesign-stage22-shell-cleanup.css",
+    "styles/system/reports-redesign/reports-stage100-cohort-executive.css",
+    "styles/system/reports-redesign/reports-stage101-cohort-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage102-followups-executive.css",
+    "styles/system/reports-redesign/reports-stage104-followups-filters-actions-cleanup.css",
+    "styles/system/reports-redesign/reports-stage105-followups-table-actions-apple.css",
+    "styles/system/reports-redesign/reports-stage106-partner-performance-executive.css",
+    "styles/system/reports-redesign/reports-stage107-partner-performance-premium-redesign.css",
+    "styles/system/reports-redesign/reports-stage108-partner-performance-bento-responsive.css",
+    "styles/system/reports-redesign/reports-stage109-partner-tabs-horizontal-icons.css",
+    "styles/system/reports-redesign/reports-stage110-partner-tabs-rtl-responsive.css",
+    "styles/system/reports-redesign/reports-stage111-partner-tabs-flush-right.css",
+    "styles/system/reports-redesign/reports-stage112-partner-tabs-parent-flush-right.css",
+    "styles/system/reports-redesign/reports-stage113-partner-tabs-secondary-span.css",
+    "styles/system/reports-redesign/reports-stage114-partner-content-redesign.css",
+    "styles/system/reports-redesign/reports-stage115-partner-content-polish.css",
+    "styles/system/reports-redesign/reports-stage116-partner-summary-table-single-layer.css",
+    "styles/system/reports-redesign/reports-stage117-top-suppliers-executive.css",
+    "styles/system/reports-redesign/reports-stage118-inventory-turnover-executive.css",
+    "styles/system/reports-redesign/reports-stage121-inventory-turnover-cards-formula-polish.css",
+    "styles/system/reports-redesign/reports-stage122-dead-stock-executive.css",
+    "styles/system/reports-redesign/reports-stage123-abc-filter-kpi-polish.css",
+    "styles/system/reports-redesign/reports-stage124-abc-filter-density-spacing.css",
+    "styles/system/reports-redesign/reports-stage125-abc-calendar-field-flatten.css",
+    "styles/system/reports-redesign/reports-stage126-abc-date-vertical-align.css",
+    "styles/system/reports-redesign/reports-stage127-abc-table-badge-action-polish.css",
+    "styles/system/reports-redesign/reports-stage128-realized-profit-executive.css",
+    "styles/system/reports-redesign/reports-stage129-realized-profit-date-row-fix.css",
+    "styles/system/reports-redesign/reports-stage130-cashflow-executive.css",
+    "styles/system/reports-redesign/reports-stage131-cashflow-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage132-cashflow-premium-control-dock.css",
+    "styles/system/reports-redesign/reports-stage133-cashflow-date-double-box-fix.css",
+    "styles/system/reports-redesign/reports-stage134-financial-audit-executive.css",
+    "styles/system/reports-redesign/reports-stage135-product-profit-real-executive.css",
+    "styles/system/reports-redesign/reports-stage136-product-profit-real-chart-polish.css",
+    "styles/system/reports-redesign/reports-stage137-product-profit-real-chart-final.css",
+    "styles/system/reports-redesign/reports-stage138-product-profit-real-summary-box-fix.css",
+    "styles/system/reports-redesign/reports-stage139-analytics-dashboard-executive.css",
+    "styles/system/reports-redesign/reports-stage143-analytics-empty-state-polish.css",
+    "styles/system/reports-redesign/reports-stage145-analytics-chart-tooltip-persian.css",
+    "styles/system/reports-redesign/reports-stage146-analytics-debt-snapshot-summary.css",
+    "styles/system/reports-redesign/reports-stage149-smart-insights-executive-redesign.css",
+    "styles/system/reports-redesign/reports-stage150-smart-insights-super-premium.css",
+    "styles/system/reports-redesign/reports-stage151-smart-insights-hero-fill.css",
+    "styles/system/reports-redesign/reports-stage152-smart-insights-hero-rebuild.css",
+    "styles/system/reports-redesign/reports-stage153-smart-insights-hero-hard-replace.css",
+    "styles/system/reports-redesign/reports-stage154-smart-insights-command-center-polish.css",
+    "styles/system/reports-redesign/reports-stage155-smart-insights-executive-board-compact.css",
+    "styles/system/reports-redesign/reports-stage156-smart-insights-orbital-board.css",
+    "styles/system/reports-redesign/reports-stage157-smart-insights-final-audit.css",
+    "styles/system/reports-redesign/reports-stage158-smart-insights-action-logic-fix.css",
+    "styles/system/reports-redesign/reports-stage159-smart-insights-scroll-and-kpis.css",
+    "styles/system/reports-redesign/reports-stage163-smart-insights-rollback-balanced-fix.css",
+    "styles/system/reports-redesign/reports-stage164-smart-insights-kpi-grid-polish.css",
+    "styles/system/reports-redesign/reports-stage165-smart-insights-kpi-reference-match.css",
+    "styles/system/reports-redesign/reports-stage166-smart-insights-kpi-rebuild-reference.css",
+    "styles/system/reports-redesign/reports-stage167-smart-insights-engine-gauge-polish.css",
+    "styles/system/reports-redesign/reports-stage168-smart-insights-gauge-font-arc-fix.css",
+    "styles/system/reports-redesign/reports-stage169-smart-insights-center-icon-cta-fix.css",
+    "styles/system/reports-redesign/reports-stage170-smart-insights-center-height-icon-fix.css",
+    "styles/system/reports-redesign/reports-stage171-smart-insights-target-icon-refine.css",
+    "styles/system/reports-redesign/reports-stage172-smart-insights-actions-reference.css",
+    "styles/system/reports-redesign/reports-stage173-smart-insights-actions-overlap-fix.css",
+    "styles/system/reports-redesign/reports-stage174-smart-insights-actions-button-fix.css",
+    "styles/system/reports-redesign/reports-stage175-smart-insights-actions-scale-down.css",
+    "styles/system/reports-redesign/reports-stage176-smart-insights-action-queue-compact.css",
+    "styles/system/reports-redesign/reports-stage177-smart-insights-action-item-height-buttons.css",
+    "styles/system/reports-redesign/reports-stage178-smart-insights-actions-buttons-final.css",
+    "styles/system/reports-redesign/reports-stage179-smart-insights-clickable-action-cards.css",
+    "styles/system/reports-redesign/reports-stage180-collection-followup-persistence-fix.css",
+    "styles/system/reports-redesign/reports-stage181-collection-actions-root-fix.css",
+    "styles/system/reports-redesign/reports-stage182-smart-insights-predictive-engine-redesign.css",
+    "styles/system/reports-redesign/reports-stage183-smart-insights-today-commands-redesign.css",
+    "styles/system/reports-redesign/reports-stage184-today-commands-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage185-today-commands-rtl-modal-fix.css",
+    "styles/system/reports-redesign/reports-stage186-today-commands-rtl-modal-redesign.css",
+    "styles/system/reports-redesign/reports-stage187-today-commands-final-align-modal-balance.css",
+    "styles/system/reports-redesign/reports-stage188-smart-insight-modal-premium-fix.css",
+    "styles/system/reports-redesign/reports-stage189-smart-insight-modal-horizontal-layout.css",
+    "styles/system/reports-redesign/reports-stage190-smart-insight-modal-horizontal-rebuild.css",
+    "styles/system/reports-redesign/reports-stage191-smart-insight-modal-horizontal-final.css",
+    "styles/system/reports-redesign/reports-stage193-accounting-modal-pixel-match.css",
+    "styles/system/reports-redesign/reports-stage194-accounting-modal-real-data-compact.css",
+    "styles/system/reports-redesign/reports-stage196-accounting-modal-compact-header.css",
+    "styles/system/reports-redesign/reports-stage197-collection-followup-modal.css",
+    "styles/system/reports-redesign/reports-stage198-collection-modal-compact-polish.css",
+    "styles/system/reports-redesign/reports-stage199-collection-modal-real-data-guard.css",
+    "styles/system/reports-redesign/reports-stage200-stock-reorder-modal.css",
+    "styles/system/reports-redesign/reports-stage201-customer-engagement-modal.css",
+    "styles/system/reports-redesign/reports-stage202-sales-performance-modal.css",
+    "styles/system/reports-redesign/reports-stage203-active-sales-assistant-modal.css",
+    "styles/system/reports-redesign/reports-stage209-smart-insights-modal-top-kpi-compact.css",
+    "styles/system/reports-redesign/reports-stage210-smart-insight-modal-enterprise-horizontal.css",
+    "styles/system/reports-redesign/reports-stage211-insight-overview-modals-horizontal.css",
+    "styles/system/reports-redesign/reports-stage212-ml-workbench-polish.css",
+    "styles/system/reports-redesign/reports-stage213-smart-insights-simple-mode.css",
+    "styles/system/reports-redesign/reports-stage214-smart-readiness-summary.css",
+    "styles/system/reports-redesign/reports-stage216-responsive-modal-sidebar-safe.css",
+    "styles/system/reports-redesign/reports-stage217-side-kpis-modal-executive.css",
+    "styles/system/reports-redesign/reports-stage219-smart-modal-portal-sidebar-safe.css",
+    "styles/system/reports-redesign/reports-stage220-smart-modal-compact-density.css",
+    "styles/system/reports-redesign/reports-stage221-smart-modal-layout-corrections.css",
+    "styles/system/reports-redesign/reports-stage222-generic-modal-sidebar-lock.css",
+    "styles/system/reports-redesign/reports-stage223-generic-modal-hard-safe-lane.css",
+    "styles/system/reports-redesign/reports-stage224-sales-performance-modal-lane-fix.css",
+    "styles/system/reports-redesign/reports-stage225-smart-insight-final-polish.css",
+    "styles/system/reports-redesign/reports-stage227-smart-kpi-cards-only-tighten.css",
+    "styles/system/reports-redesign/reports-stage228-smart-filter-dock-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage229-smart-side-cards-responsive-only.css",
+    "styles/system/reports-redesign/reports-stage230-smart-filter-date-visibility.css",
+    "styles/system/reports-redesign/reports-stage231-smart-command-center-compact-only.css",
+    "styles/system/reports-redesign/reports-stage232-today-actions-compact-only.css",
+    "styles/system/reports-redesign/reports-stage233-today-and-overview-final-tune.css",
+    "styles/system/reports-redesign/reports-stage234-today-alignment-theme-followup.css",
+    "styles/system/reports-redesign/reports-stage24-actions-and-header-cleanup.css",
+    "styles/system/reports-redesign/reports-stage25-operational-actions.css",
+    "styles/system/reports-redesign/reports-stage26-header-calendar-action-fixes.css",
+    "styles/system/reports-redesign/reports-stage27-financial-aging-workspace-fixes.css",
+    "styles/system/reports-redesign/reports-stage28-financial-overview-executive.css",
+    "styles/system/reports-redesign/reports-stage29-calendar-kpi-cleanup.css",
+    "styles/system/reports-redesign/reports-stage30-kpi-text-highlight-cleanup.css",
+    "styles/system/reports-redesign/reports-stage31-financial-metric-card-clean.css",
+    "styles/system/reports-redesign/reports-stage32-sales-summary-executive.css",
+    "styles/system/reports-redesign/reports-stage35-product-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage36-product-sales-hard-polish.css",
+    "styles/system/reports-redesign/reports-stage37-product-sales-compact-redesign.css",
+    "styles/system/reports-redesign/reports-stage40-product-sales-filter-rtl-fix.css",
+    "styles/system/reports-redesign/reports-stage41-product-sales-filter-hard-rtl.css",
+    "styles/system/reports-redesign/reports-stage42-product-sales-filter-layout-clean.css",
+    "styles/system/reports-redesign/reports-stage43-product-sales-date-label-polish.css",
+    "styles/system/reports-redesign/reports-stage44-product-sales-date-offset.css",
+    "styles/system/reports-redesign/reports-stage45-product-sales-date-final-offset.css",
+    "styles/system/reports-redesign/reports-stage46-product-sales-date-solid-frame.css",
+    "styles/system/reports-redesign/reports-stage47-product-sales-date-box-reset.css",
+    "styles/system/reports-redesign/reports-stage48-product-sales-date-left-gap.css",
+    "styles/system/reports-redesign/reports-stage49-product-sales-metric-grid.css",
+    "styles/system/reports-redesign/reports-stage50-product-sales-metric-inner-frame-remove.css",
+    "styles/system/reports-redesign/reports-stage53-product-sales-table-cleanup.css",
+    "styles/system/reports-redesign/reports-stage54-product-sales-table-final-polish.css",
+    "styles/system/reports-redesign/reports-stage55-product-sales-table-width-tools-fix.css",
+    "styles/system/reports-redesign/reports-stage56-product-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage57-product-sales-table-tools-position.css",
+    "styles/system/reports-redesign/reports-stage59-product-sales-search-standard.css",
+    "styles/system/reports-redesign/reports-stage60-product-sales-search-contenteditable.css",
+    "styles/system/reports-redesign/reports-stage61-product-sales-table-tools-placement.css",
+    "styles/system/reports-redesign/reports-stage62-compare-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage64-compare-sales-details-modal.css",
+    "styles/system/reports-redesign/reports-stage65-compare-sales-filter-cards-modal-fixes.css",
+    "styles/system/reports-redesign/reports-stage66-compare-sales-filter-layout-final.css",
+    "styles/system/reports-redesign/reports-stage67-compare-sales-filter-row-fix.css",
+    "styles/system/reports-redesign/reports-stage68-compare-sales-filter-final-spacing.css",
+    "styles/system/reports-redesign/reports-stage70-compare-sales-filter-hard-right.css",
+    "styles/system/reports-redesign/reports-stage71-compare-sales-primary-split.css",
+    "styles/system/reports-redesign/reports-stage72-phone-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage73-phone-sales-polish-fixes.css",
+    "styles/system/reports-redesign/reports-stage74-phone-sales-filter-financial-style.css",
+    "styles/system/reports-redesign/reports-stage75-phone-sales-filter-box-cleanup.css",
+    "styles/system/reports-redesign/reports-stage76-phone-sales-table-search-placement.css",
+    "styles/system/reports-redesign/reports-stage77-phone-sales-table-tools-cleanup.css",
+    "styles/system/reports-redesign/reports-stage82-phone-sales-search-final.css",
+    "styles/system/reports-redesign/reports-stage83-phone-sales-table-tools-final.css",
+    "styles/system/reports-redesign/reports-stage84-phone-installment-sales-executive.css",
+    "styles/system/reports-redesign/reports-stage85-mobile-sales-analytics-executive.css",
+    "styles/system/reports-redesign/reports-stage87-collection-header-compact.css",
+    "styles/system/reports-redesign/reports-stage88-collection-header-layout-v2.css",
+    "styles/system/reports-redesign/reports-stage89-collection-search-single-frame.css",
+    "styles/system/reports-redesign/reports-stage90-collection-kanban-dnd-fix.css",
+    "styles/system/reports-redesign/reports-stage91-installments-calendar-executive.css",
+    "styles/system/reports-redesign/reports-stage92-debtors-executive.css",
+    "styles/system/reports-redesign/reports-stage93-debtors-action-refresh-fix.css",
+    "styles/system/reports-redesign/reports-stage94-creditors-executive.css",
+    "styles/system/reports-redesign/reports-stage95-creditors-action-polish.css",
+    "styles/system/reports-redesign/reports-stage96-creditors-action-inner-box-remove.css",
+    "styles/system/reports-redesign/reports-stage97-top-customers-executive.css",
+    "styles/system/reports-redesign/reports-stage98-rfm-executive.css",
+    "styles/system/reports-redesign/reports-stage99-rfm-action-polish.css",
+    "styles/system/settings-redesign/settings-general-modules-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-final-polish.css",
+    "styles/system/settings-redesign/settings-users-account-business-redesign-pass-1.css",
+    "styles/system/sidebar-notifications-stage15-polish.css",
+    "styles/system/sidebar-notifications-stage16-actions-polish.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-1.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-3.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-4.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-5.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-6.css",
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-7.css",
+    "styles/system/telegram-runtime/message-composer-channel-initial-v74.css",
+    "styles/system/telegram-runtime/message-composer-final-clean-v71.css",
+    "styles/system/telegram-runtime/message-composer-full-redesign-v68.css",
+    "styles/system/telegram-runtime/message-composer-no-focus-v70.css",
+    "styles/system/telegram-runtime/message-composer-polish-v69.css",
+    "styles/system/ui-contracts/form-field-contract-phase4.css",
+    "styles/system/ui-contracts/global-visual-qa-cleanup-phase16.css",
+    "styles/system/ui-contracts/inventory-mobile-foundation-phase10.css",
+    "styles/system/ui-contracts/modal-command-contract-phase1.css",
+    "styles/system/ui-contracts/modal-command-contract-phase2.css",
+    "styles/system/ui-contracts/navigation-shell-contract-phase5.css",
+    "styles/system/ui-contracts/notifications-reminders-foundation-phase14.css",
+    "styles/system/ui-contracts/ops-messaging-foundation-phase9.css",
+    "styles/system/ui-contracts/people-ledger-foundation-phase12.css",
+    "styles/system/ui-contracts/repair-services-workflow-foundation-phase15.css",
+    "styles/system/ui-contracts/reports-foundation-contract-phase7.css",
+    "styles/system/ui-contracts/sales-cart-invoice-foundation-phase11.css",
+    "styles/system/ui-contracts/sales-payment-no-inner-badge-phase80.css",
+    "styles/system/ui-contracts/sales-payment-readability-final-phase79.css",
+    "styles/system/ui-contracts/settings-data-ops-phase3.css",
+    "styles/system/ui-contracts/settings-foundation-contract-phase8.css",
+    "styles/system/ui-contracts/spa-nonblocking-feedback-guard-phase83.css",
+    "styles/system/ui-contracts/table-card-contract-phase6.css",
+    "styles/system/ui-contracts/targeted-from-phase16-restore-telegram-v22.css",
+    "styles/system/ui-contracts/targeted-from-v22-header-telegram-polish-v24.css",
+    "styles/system/ui-contracts/telegram-control-cards-precision-v26.css",
+    "styles/system/ui-contracts/telegram-detail-grid-cleanup-v33.css",
+    "styles/system/ui-contracts/telegram-flatten-section-surfaces-v31.css",
+    "styles/system/ui-contracts/telegram-global-apple-surface-v29.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v27.css",
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v28.css",
+    "styles/system/ui-contracts/telegram-monitor-single-surface-v32.css",
+    "styles/system/ui-contracts/telegram-remove-extra-shell-v30.css",
+    "styles/system/ui-contracts/telegram-template-and-detail-spacing-v34.css",
+    "styles/system/ui-contracts/telegram-v35-detail-template-polish.css",
+    "styles/system/ui-contracts/telegram-v38-auto-message-group.css",
+    "styles/system/ui-contracts/telegram-v39-auto-message-group-spacing.css",
+    "styles/system/ui-contracts/telegram-v41-access-group-fix.css",
+    "styles/system/ui-contracts/telegram-v42-connect-and-operations-polish.css",
+    "styles/system/ui-contracts/telegram-v43-operations-width-standard.css",
+    "styles/system/ui-contracts/telegram-v44-operations-full-width-commercial.css",
+    "styles/system/ui-contracts/telegram-v45-send-rules-spacing.css",
+    "styles/system/ui-contracts/telegram-v46-send-rules-inner-padding.css",
+    "styles/system/ui-contracts/telegram-v47-send-rules-compact-fields.css",
+    "styles/system/ui-contracts/telegram-v48-send-rules-field-flatten.css",
+    "styles/system/ui-contracts/telegram-v49-exact-send-rule-fields.css",
+    "styles/system/ui-contracts/telegram-v50-send-rule-icons-left.css",
+    "styles/system/ui-contracts/telegram-v51-send-rule-icons-force-left.css",
+    "styles/system/ui-contracts/telegram-v52-logs-apple-neutral.css",
+    "styles/system/ui-contracts/telegram-v53-logs-detail-modal.css",
+    "styles/system/ui-contracts/telegram-v54-alert-icon-import-fix.css",
+    "styles/system/ui-contracts/telegram-v55-lucide-import-safe-icons.css",
+    "styles/system/ui-contracts/telegram-v56-logs-modal-and-table-fix.css",
+    "styles/system/ui-contracts/telegram-v57-logs-icons-modal-center.css",
+    "styles/system/ui-contracts/telegram-v58-logs-modal-compact-responsive.css",
+    "styles/system/ui-contracts/telegram-v59-logs-table-compact-remove-duplicate.css",
+    "styles/system/ui-contracts/telegram-v60-final-spacing-template-modal.css",
+    "styles/system/ui-contracts/telegram-v61-modal-true-center-overlay.css",
+    "styles/system/ui-contracts/telegram-v62-template-center-apple-direct.css",
+    "styles/system/ui-contracts/telegram-v63-modal-breathing-space.css",
+    "styles/system/ui-contracts/telegram-v64-direct-safe-padding.css",
+    "styles/system/ui-contracts/telegram-v65-template-center-compact-scale.css",
+    "styles/system/ui-contracts/telegram-v66-quick-check-compact.css",
+    "styles/system/ui-contracts/telegram-v67-template-command-cards-compact.css",
+    "styles/system/ui-contracts/telegram-v68-smart-suggestion-compact.css",
+    "styles/system/ui-contracts/telegram-v69-quick-check-single-card.css",
+    "styles/system/ui-contracts/telegram-v70-template-filter-accordion-fix.css",
+    "styles/system/ui-contracts/telegram-v71-accordion-kpis-unified-surface.css",
+    "styles/system/ui-contracts/telegram-v72-global-loading-logs-search-fix.css",
+    "styles/system/ui-contracts/telegram-v73-connection-bundle-two-column.css",
+    "styles/system/ui-contracts/telegram-v74-monitor-progress-true-fill.css",
+    "styles/system/ui-contracts/telegram-v75-restore-confirm-solid-modal.css",
+    "styles/system/ui-contracts/telegram-v76-readable-success-buttons-global.css",
+    "styles/system/ui-contracts/telegram-v77-connection-layout-cleanup.css",
+    "styles/system/ui-contracts/telegram-v78-connection-guide-cleanup.css",
+    "styles/system/ui-contracts/telegram-v80-send-rules-quiet-hours-cleanup.css",
+    "styles/system/ui-contracts/telegram-v82-final-visible-fixes.css"
+  ],
+  "grandfatheredUiFoundationFiles": [],
+  "byFile": {
+    "index.css": {
+      "importantDeclarations": 346,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 2
+    },
+    "styles/components/cards.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/date-field.css": {
+      "importantDeclarations": 126,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/components/filters.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/forms.css": {
+      "importantDeclarations": 4,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/components/modal-system.css": {
+      "importantDeclarations": 3865,
+      "arbitraryBreakpoints": 19,
+      "arbitraryZIndexes": 3
+    },
+    "styles/components/modals.css": {
+      "importantDeclarations": 149,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/search-field.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 2
+    },
+    "styles/components/select-field.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 2
+    },
+    "styles/components/tables.css": {
+      "importantDeclarations": 32,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/toasts.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/components/toolbars.css": {
+      "importantDeclarations": 17,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/components/unified-buttons.css": {
+      "importantDeclarations": 132,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/unified-fields.css": {
+      "importantDeclarations": 127,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/core/animations.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/global.css": {
+      "importantDeclarations": 11,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/layout/print-shells.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/layout/print.css": {
+      "importantDeclarations": 3,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/layout/responsive.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/01-legacy-app-base-and-loaders.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/02b-legacy-premium-modal-base.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/02e-legacy-smart-tooltip-transitions.css": {
+      "importantDeclarations": 99,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 3
+    },
+    "styles/legacy/02g-legacy-ux-button-core-loading.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/02k-legacy-cards-toasts-feedback-loading.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/legacy/02o-legacy-telegram-link-modal.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 2
+    },
+    "styles/legacy/03f-legacy-header-search-password-fixes.css": {
+      "importantDeclarations": 39,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/04a-legacy-repairs-saved-views-inputs.css": {
+      "importantDeclarations": 5,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/legacy/04c-legacy-motion-focus-accessibility.css": {
+      "importantDeclarations": 5,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/04d-legacy-field-attention-page-actions.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/05d-legacy-report-filter-sales-mobile-buttons.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/06a-legacy-sales-flow-visual-pass.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/06b-legacy-sales-cart-button-borders.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/06c-legacy-sales-cart-premium-cleanup.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/06d-legacy-sales-cart-full-page-redesign.css": {
+      "importantDeclarations": 3,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/07a-legacy-button-stroke-normalization.css": {
+      "importantDeclarations": 6,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/07b-legacy-premium-button-unification.css": {
+      "importantDeclarations": 24,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/08a-legacy-global-field-system.css": {
+      "importantDeclarations": 10,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/08b-legacy-global-card-section-system.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/08c-legacy-global-table-row-actions.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/09a-legacy-global-modal-drawer-unification.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/09b-legacy-global-toast-alert-status.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/09d-legacy-global-charts-kpi-dashboard.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/10a-legacy-final-shell-cohesion.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/10b-legacy-targeted-ui-qa-cleanup.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/10d-legacy-telegram-modal-stability-lux.css": {
+      "importantDeclarations": 11,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css": {
+      "importantDeclarations": 13,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/legacy/10f-legacy-phone-edit-horizontal-modal.css": {
+      "importantDeclarations": 8,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/pages/dashboard.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/pages/partners.css": {
+      "importantDeclarations": 32,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/pages/reports.css": {
+      "importantDeclarations": 689,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 5
+    },
+    "styles/pages/telegram.css": {
+      "importantDeclarations": 265,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/bidi-text-contract-foundation.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/cross-module-density-foundation.css": {
+      "importantDeclarations": 23,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/customer-detail/customer-edit-modal-v60-final.css": {
+      "importantDeclarations": 302,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/customer-detail/customer-ledger-real-responsive-fix.css": {
+      "importantDeclarations": 576,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/components/dashboard-clock.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-4.css": {
+      "importantDeclarations": 56,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/dashboard-smart-widgets-foundation.css": {
+      "importantDeclarations": 5,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/design-tokens.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/expenses-modal-horizontal-phase87.css": {
+      "importantDeclarations": 120,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/expenses-modal-horizontal-phase88.css": {
+      "importantDeclarations": 85,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/expenses-modal-horizontal-phase89.css": {
+      "importantDeclarations": 234,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 4
+    },
+    "styles/system/expenses-recurring-payment-history-phase93.css": {
+      "importantDeclarations": 60,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/field-form-contract.css": {
+      "importantDeclarations": 51,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/finance-modal-field-polish-foundation.css": {
+      "importantDeclarations": 14,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/finance-tables-foundation.css": {
+      "importantDeclarations": 180,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/global-commercial-qa-foundation.css": {
+      "importantDeclarations": 50,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/global-focus-reset-hard-v140.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/global-focus-reset-v139.css": {
+      "importantDeclarations": 15,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/header-sidebar-navigation-foundation.css": {
+      "importantDeclarations": 789,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 15
+    },
+    "styles/system/installments-runtime/installments-phone-edit-foundation.css": {
+      "importantDeclarations": 18,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/collection-cleanup-foundation.css": {
+      "importantDeclarations": 28,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/enterprise-forms-reports-foundation.css": {
+      "importantDeclarations": 1059,
+      "arbitraryBreakpoints": 16,
+      "arbitraryZIndexes": 9
+    },
+    "styles/system/legacy-quarantine/field-form-after-primitives-foundation.css": {
+      "importantDeclarations": 123,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 8
+    },
+    "styles/system/legacy-quarantine/partner-settlement-foundation.css": {
+      "importantDeclarations": 4,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/people-detail-command-foundation.css": {
+      "importantDeclarations": 529,
+      "arbitraryBreakpoints": 5,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/legacy-quarantine/people-empty-list-detail-foundation.css": {
+      "importantDeclarations": 328,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/people-list-hero-foundation.css": {
+      "importantDeclarations": 135,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/select-customer-compat-foundation.css": {
+      "importantDeclarations": 22,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage78-phone-sales-table-tools-hard-reset.css": {
+      "importantDeclarations": 126,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage79-phone-sales-table-tools-visual-reset.css": {
+      "importantDeclarations": 130,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage80-phone-sales-search-single-frame.css": {
+      "importantDeclarations": 60,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/legacy-quarantine/unused-css-candidates/reports-stage81-phone-sales-search-no-inner-frame.css": {
+      "importantDeclarations": 82,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/message-composer-redesign.css": {
+      "importantDeclarations": 64,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/mobile-phones-foundation.css": {
+      "importantDeclarations": 12,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/mobile-sales-tabs-foundation.css": {
+      "importantDeclarations": 16,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/modal-partner-foundation.css": {
+      "importantDeclarations": 1548,
+      "arbitraryBreakpoints": 17,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/modal-people-foundation.css": {
+      "importantDeclarations": 129,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/modal-products-foundation.css": {
+      "importantDeclarations": 239,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 4
+    },
+    "styles/system/notifications-foundation.css": {
+      "importantDeclarations": 57,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/notifications-saas-redesign-phase95.css": {
+      "importantDeclarations": 1297,
+      "arbitraryBreakpoints": 24,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/overlay-layer-contract.css": {
+      "importantDeclarations": 59,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-capital-status-foundation.css": {
+      "importantDeclarations": 63,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-capital-table-foundation.css": {
+      "importantDeclarations": 206,
+      "arbitraryBreakpoints": 7,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-detail-responsive-ledger-foundation.css": {
+      "importantDeclarations": 209,
+      "arbitraryBreakpoints": 10,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-detail-visual-foundation.css": {
+      "importantDeclarations": 289,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 13
+    },
+    "styles/system/partner-runtime/partner-detail-actions-reflow-v85.css": {
+      "importantDeclarations": 56,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-detail-alignment-fix-v81.css": {
+      "importantDeclarations": 31,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-detail-customer-top-sync-v86.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-detail-customer-ui-sync-v80.css": {
+      "importantDeclarations": 118,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-detail-hero-hard-layout-v82.css": {
+      "importantDeclarations": 67,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/partner-runtime/partner-detail-responsive-breakpoint-v83.css": {
+      "importantDeclarations": 72,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-detail-safe-gutter-v84.css": {
+      "importantDeclarations": 28,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-edit-modal-customer-parity-v98.css": {
+      "importantDeclarations": 27,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-email-telegram-help-fix-v99.css": {
+      "importantDeclarations": 11,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-header-fix-v94.css": {
+      "importantDeclarations": 67,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-header-mockup-v89.css": {
+      "importantDeclarations": 10,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-header-repair-v93.css": {
+      "importantDeclarations": 140,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-header-rtl-risk-v91.css": {
+      "importantDeclarations": 62,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-edit-modal-v141.css": {
+      "importantDeclarations": 470,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/partner-runtime/partner-ledger-final-polish-v137.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-focus-color-rtl-v135.css": {
+      "importantDeclarations": 93,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-hard-icons-v130.css": {
+      "importantDeclarations": 94,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/partner-runtime/partner-ledger-icon-overlap-fix-v131.css": {
+      "importantDeclarations": 66,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/partner-runtime/partner-ledger-icons-button-v128.css": {
+      "importantDeclarations": 103,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-icons-right-v129.css": {
+      "importantDeclarations": 28,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-table-spacing-v134.css": {
+      "importantDeclarations": 58,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-ledger-transactions-redesign-v132.css": {
+      "importantDeclarations": 240,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-operational-table-v105.css": {
+      "importantDeclarations": 327,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-overview-final-polish-v111.css": {
+      "importantDeclarations": 160,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-phone-capital-header-fix-v102.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/partner-runtime/partner-phone-capital-header-logo-right-v103.css": {
+      "importantDeclarations": 48,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-phone-capital-redesign-v101.css": {
+      "importantDeclarations": 200,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/partner-runtime/partner-phone-capital-solid-reset-foundation.css": {
+      "importantDeclarations": 122,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/partner-runtime/partner-telegram-customer-copy-v119.css": {
+      "importantDeclarations": 60,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-telegram-header-hard-grid-v124.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-telegram-panel-redesign-v114.css": {
+      "importantDeclarations": 164,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/partner-runtime/partner-telegram-sidebar-rtl-v122.css": {
+      "importantDeclarations": 5,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-1.css": {
+      "importantDeclarations": 69,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-2.css": {
+      "importantDeclarations": 84,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/people-detail-redesign/people-detail-redesign-pass-3.css": {
+      "importantDeclarations": 41,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/people-ledger-contract.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/people-runtime/people-commercial-redesign-foundation.css": {
+      "importantDeclarations": 187,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/people-status-mobile-foundation.css": {
+      "importantDeclarations": 38,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/people-table-detail-foundation.css": {
+      "importantDeclarations": 579,
+      "arbitraryBreakpoints": 5,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/products-services-redesign/products-commerce-stage17-polish.css": {
+      "importantDeclarations": 188,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css": {
+      "importantDeclarations": 70,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css": {
+      "importantDeclarations": 79,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css": {
+      "importantDeclarations": 27,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/products-services-repairs/products-ui-foundation.css": {
+      "importantDeclarations": 566,
+      "arbitraryBreakpoints": 8,
+      "arbitraryZIndexes": 5
+    },
+    "styles/system/products-services-repairs/repairs-ui-foundation.css": {
+      "importantDeclarations": 378,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/products-services-repairs/services-inventory-foundation.css": {
+      "importantDeclarations": 478,
+      "arbitraryBreakpoints": 6,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-filter-kpi-foundation.css": {
+      "importantDeclarations": 137,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/aging-receivables-stage21-commercial.css": {
+      "importantDeclarations": 1,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/purchase-suggestions-action-board/purchase-suggestions-action-board.phase2-stabilized.css": {
+      "importantDeclarations": 1043,
+      "arbitraryBreakpoints": 21,
+      "arbitraryZIndexes": 9
+    },
+    "styles/system/reports-redesign/reports-redesign-pass-1.css": {
+      "importantDeclarations": 93,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-redesign-pass-2.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-redesign-pass-3.css": {
+      "importantDeclarations": 61,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-redesign-pass-4.css": {
+      "importantDeclarations": 374,
+      "arbitraryBreakpoints": 5,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-redesign-pass-5.css": {
+      "importantDeclarations": 112,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-redesign-stage20-compact-header.css": {
+      "importantDeclarations": 6,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-redesign-stage22-shell-cleanup.css": {
+      "importantDeclarations": 10,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage100-cohort-executive.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 4
+    },
+    "styles/system/reports-redesign/reports-stage101-cohort-search-single-frame.css": {
+      "importantDeclarations": 65,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage102-followups-executive.css": {
+      "importantDeclarations": 16,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage104-followups-filters-actions-cleanup.css": {
+      "importantDeclarations": 109,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage105-followups-table-actions-apple.css": {
+      "importantDeclarations": 87,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage106-partner-performance-executive.css": {
+      "importantDeclarations": 110,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage107-partner-performance-premium-redesign.css": {
+      "importantDeclarations": 121,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage108-partner-performance-bento-responsive.css": {
+      "importantDeclarations": 82,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage109-partner-tabs-horizontal-icons.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage110-partner-tabs-rtl-responsive.css": {
+      "importantDeclarations": 50,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage111-partner-tabs-flush-right.css": {
+      "importantDeclarations": 24,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage112-partner-tabs-parent-flush-right.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage113-partner-tabs-secondary-span.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage114-partner-content-redesign.css": {
+      "importantDeclarations": 132,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage115-partner-content-polish.css": {
+      "importantDeclarations": 132,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage116-partner-summary-table-single-layer.css": {
+      "importantDeclarations": 118,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/reports-redesign/reports-stage117-top-suppliers-executive.css": {
+      "importantDeclarations": 14,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage118-inventory-turnover-executive.css": {
+      "importantDeclarations": 20,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage121-inventory-turnover-cards-formula-polish.css": {
+      "importantDeclarations": 71,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage122-dead-stock-executive.css": {
+      "importantDeclarations": 8,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage123-abc-filter-kpi-polish.css": {
+      "importantDeclarations": 9,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage124-abc-filter-density-spacing.css": {
+      "importantDeclarations": 75,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage125-abc-calendar-field-flatten.css": {
+      "importantDeclarations": 73,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage126-abc-date-vertical-align.css": {
+      "importantDeclarations": 14,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage127-abc-table-badge-action-polish.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage128-realized-profit-executive.css": {
+      "importantDeclarations": 128,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage129-realized-profit-date-row-fix.css": {
+      "importantDeclarations": 39,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage130-cashflow-executive.css": {
+      "importantDeclarations": 294,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage131-cashflow-filter-row-fix.css": {
+      "importantDeclarations": 97,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage132-cashflow-premium-control-dock.css": {
+      "importantDeclarations": 130,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage133-cashflow-date-double-box-fix.css": {
+      "importantDeclarations": 20,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage134-financial-audit-executive.css": {
+      "importantDeclarations": 279,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage135-product-profit-real-executive.css": {
+      "importantDeclarations": 310,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage136-product-profit-real-chart-polish.css": {
+      "importantDeclarations": 121,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage137-product-profit-real-chart-final.css": {
+      "importantDeclarations": 70,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage138-product-profit-real-summary-box-fix.css": {
+      "importantDeclarations": 22,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage139-analytics-dashboard-executive.css": {
+      "importantDeclarations": 287,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage143-analytics-empty-state-polish.css": {
+      "importantDeclarations": 48,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage145-analytics-chart-tooltip-persian.css": {
+      "importantDeclarations": 23,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage146-analytics-debt-snapshot-summary.css": {
+      "importantDeclarations": 64,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage149-smart-insights-executive-redesign.css": {
+      "importantDeclarations": 218,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage150-smart-insights-super-premium.css": {
+      "importantDeclarations": 197,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage151-smart-insights-hero-fill.css": {
+      "importantDeclarations": 90,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage152-smart-insights-hero-rebuild.css": {
+      "importantDeclarations": 113,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage153-smart-insights-hero-hard-replace.css": {
+      "importantDeclarations": 184,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage154-smart-insights-command-center-polish.css": {
+      "importantDeclarations": 162,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage155-smart-insights-executive-board-compact.css": {
+      "importantDeclarations": 12,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage156-smart-insights-orbital-board.css": {
+      "importantDeclarations": 2334,
+      "arbitraryBreakpoints": 42,
+      "arbitraryZIndexes": 6
+    },
+    "styles/system/reports-redesign/reports-stage183-smart-insights-today-commands-redesign.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage184-today-commands-compact-polish.css": {
+      "importantDeclarations": 240,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage185-today-commands-rtl-modal-fix.css": {
+      "importantDeclarations": 42,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage186-today-commands-rtl-modal-redesign.css": {
+      "importantDeclarations": 69,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage187-today-commands-final-align-modal-balance.css": {
+      "importantDeclarations": 97,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage188-smart-insight-modal-premium-fix.css": {
+      "importantDeclarations": 104,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage189-smart-insight-modal-horizontal-layout.css": {
+      "importantDeclarations": 157,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage190-smart-insight-modal-horizontal-rebuild.css": {
+      "importantDeclarations": 204,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage191-smart-insight-modal-horizontal-final.css": {
+      "importantDeclarations": 173,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage193-accounting-modal-pixel-match.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage194-accounting-modal-real-data-compact.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage196-accounting-modal-compact-header.css": {
+      "importantDeclarations": 76,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage197-collection-followup-modal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage198-collection-modal-compact-polish.css": {
+      "importantDeclarations": 104,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage199-collection-modal-real-data-guard.css": {
+      "importantDeclarations": 12,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage200-stock-reorder-modal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage201-customer-engagement-modal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage202-sales-performance-modal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage203-active-sales-assistant-modal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage209-smart-insights-modal-top-kpi-compact.css": {
+      "importantDeclarations": 41,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage210-smart-insight-modal-enterprise-horizontal.css": {
+      "importantDeclarations": 263,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage211-insight-overview-modals-horizontal.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage213-smart-insights-simple-mode.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage214-smart-readiness-summary.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage216-responsive-modal-sidebar-safe.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage217-side-kpis-modal-executive.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage219-smart-modal-portal-sidebar-safe.css": {
+      "importantDeclarations": 66,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage220-smart-modal-compact-density.css": {
+      "importantDeclarations": 126,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage221-smart-modal-layout-corrections.css": {
+      "importantDeclarations": 63,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage222-generic-modal-sidebar-lock.css": {
+      "importantDeclarations": 35,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage223-generic-modal-hard-safe-lane.css": {
+      "importantDeclarations": 26,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage224-sales-performance-modal-lane-fix.css": {
+      "importantDeclarations": 79,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage225-smart-insight-final-polish.css": {
+      "importantDeclarations": 119,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage227-smart-kpi-cards-only-tighten.css": {
+      "importantDeclarations": 42,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage228-smart-filter-dock-responsive-only.css": {
+      "importantDeclarations": 88,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage229-smart-side-cards-responsive-only.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage230-smart-filter-date-visibility.css": {
+      "importantDeclarations": 42,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage231-smart-command-center-compact-only.css": {
+      "importantDeclarations": 77,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage232-today-actions-compact-only.css": {
+      "importantDeclarations": 96,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage233-today-and-overview-final-tune.css": {
+      "importantDeclarations": 129,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage234-today-alignment-theme-followup.css": {
+      "importantDeclarations": 87,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage24-actions-and-header-cleanup.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage25-operational-actions.css": {
+      "importantDeclarations": 3,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage26-header-calendar-action-fixes.css": {
+      "importantDeclarations": 55,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage27-financial-aging-workspace-fixes.css": {
+      "importantDeclarations": 76,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/reports-redesign/reports-stage28-financial-overview-executive.css": {
+      "importantDeclarations": 12,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage29-calendar-kpi-cleanup.css": {
+      "importantDeclarations": 12,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage30-kpi-text-highlight-cleanup.css": {
+      "importantDeclarations": 22,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage31-financial-metric-card-clean.css": {
+      "importantDeclarations": 24,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage32-sales-summary-executive.css": {
+      "importantDeclarations": 48,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage35-product-sales-executive.css": {
+      "importantDeclarations": 55,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage36-product-sales-hard-polish.css": {
+      "importantDeclarations": 153,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage37-product-sales-compact-redesign.css": {
+      "importantDeclarations": 84,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage40-product-sales-filter-rtl-fix.css": {
+      "importantDeclarations": 90,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage41-product-sales-filter-hard-rtl.css": {
+      "importantDeclarations": 49,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage42-product-sales-filter-layout-clean.css": {
+      "importantDeclarations": 132,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage43-product-sales-date-label-polish.css": {
+      "importantDeclarations": 100,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage44-product-sales-date-offset.css": {
+      "importantDeclarations": 16,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage45-product-sales-date-final-offset.css": {
+      "importantDeclarations": 23,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage46-product-sales-date-solid-frame.css": {
+      "importantDeclarations": 94,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/reports-redesign/reports-stage47-product-sales-date-box-reset.css": {
+      "importantDeclarations": 78,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage48-product-sales-date-left-gap.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage49-product-sales-metric-grid.css": {
+      "importantDeclarations": 123,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage50-product-sales-metric-inner-frame-remove.css": {
+      "importantDeclarations": 17,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage53-product-sales-table-cleanup.css": {
+      "importantDeclarations": 160,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage54-product-sales-table-final-polish.css": {
+      "importantDeclarations": 76,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage55-product-sales-table-width-tools-fix.css": {
+      "importantDeclarations": 111,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage56-product-sales-table-tools-final.css": {
+      "importantDeclarations": 124,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage57-product-sales-table-tools-position.css": {
+      "importantDeclarations": 57,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage59-product-sales-search-standard.css": {
+      "importantDeclarations": 87,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage60-product-sales-search-contenteditable.css": {
+      "importantDeclarations": 76,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage61-product-sales-table-tools-placement.css": {
+      "importantDeclarations": 36,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage62-compare-sales-executive.css": {
+      "importantDeclarations": 38,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage64-compare-sales-details-modal.css": {
+      "importantDeclarations": 36,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage65-compare-sales-filter-cards-modal-fixes.css": {
+      "importantDeclarations": 169,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage66-compare-sales-filter-layout-final.css": {
+      "importantDeclarations": 147,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage67-compare-sales-filter-row-fix.css": {
+      "importantDeclarations": 49,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage68-compare-sales-filter-final-spacing.css": {
+      "importantDeclarations": 55,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage70-compare-sales-filter-hard-right.css": {
+      "importantDeclarations": 37,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage71-compare-sales-primary-split.css": {
+      "importantDeclarations": 18,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage72-phone-sales-executive.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage73-phone-sales-polish-fixes.css": {
+      "importantDeclarations": 150,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage74-phone-sales-filter-financial-style.css": {
+      "importantDeclarations": 134,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage75-phone-sales-filter-box-cleanup.css": {
+      "importantDeclarations": 80,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage76-phone-sales-table-search-placement.css": {
+      "importantDeclarations": 74,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage77-phone-sales-table-tools-cleanup.css": {
+      "importantDeclarations": 112,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage82-phone-sales-search-final.css": {
+      "importantDeclarations": 74,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage83-phone-sales-table-tools-final.css": {
+      "importantDeclarations": 132,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage84-phone-installment-sales-executive.css": {
+      "importantDeclarations": 103,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage85-mobile-sales-analytics-executive.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage87-collection-header-compact.css": {
+      "importantDeclarations": 90,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage88-collection-header-layout-v2.css": {
+      "importantDeclarations": 177,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage89-collection-search-single-frame.css": {
+      "importantDeclarations": 65,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage91-installments-calendar-executive.css": {
+      "importantDeclarations": 63,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage92-debtors-executive.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage93-debtors-action-refresh-fix.css": {
+      "importantDeclarations": 35,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage94-creditors-executive.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage95-creditors-action-polish.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage96-creditors-action-inner-box-remove.css": {
+      "importantDeclarations": 59,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage97-top-customers-executive.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage98-rfm-executive.css": {
+      "importantDeclarations": 2,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/reports-redesign/reports-stage99-rfm-action-polish.css": {
+      "importantDeclarations": 55,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/smart-insights/smart-insights.phase1-stabilized.css": {
+      "importantDeclarations": 4869,
+      "arbitraryBreakpoints": 80,
+      "arbitraryZIndexes": 9
+    },
+    "styles/system/reports-risk-cashflow-foundation.css": {
+      "importantDeclarations": 531,
+      "arbitraryBreakpoints": 8,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/reports-runtime/reports-apple-minimal-foundation.css": {
+      "importantDeclarations": 32,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-shell-foundation.css": {
+      "importantDeclarations": 17,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/search-input-foundation.css": {
+      "importantDeclarations": 866,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 9
+    },
+    "styles/system/settings-modules-smart-foundation.css": {
+      "importantDeclarations": 101,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/settings-redesign/settings-general-modules-final-polish.css": {
+      "importantDeclarations": 35,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/settings-redesign/settings-users-account-business-final-polish.css": {
+      "importantDeclarations": 344,
+      "arbitraryBreakpoints": 11,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/settings-redesign/settings-users-account-business-redesign-pass-1.css": {
+      "importantDeclarations": 43,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/settings-shell-foundation.css": {
+      "importantDeclarations": 35,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/shared-action-buttons-foundation.css": {
+      "importantDeclarations": 148,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/components/sidebar.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/sidebar-notifications-stage15-polish.css": {
+      "importantDeclarations": 68,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/sidebar-notifications-stage16-actions-polish.css": {
+      "importantDeclarations": 105,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/smart-insight-foundation.css": {
+      "importantDeclarations": 89,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/table-actions-foundation.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-logs-redesign.css": {
+      "importantDeclarations": 5,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-1.css": {
+      "importantDeclarations": 104,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-2.css": {
+      "importantDeclarations": 123,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-3.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-4.css": {
+      "importantDeclarations": 23,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-5.css": {
+      "importantDeclarations": 89,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 3
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-6.css": {
+      "importantDeclarations": 50,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-redesign/settings-telegram-redesign-pass-7.css": {
+      "importantDeclarations": 42,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/customer-telegram-link-modal-redesign.css": {
+      "importantDeclarations": 9,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/legacy-telegram-monitor-foundation.css": {
+      "importantDeclarations": 439,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/telegram-runtime/message-composer-channel-initial-v74.css": {
+      "importantDeclarations": 18,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/message-composer-controls-foundation.css": {
+      "importantDeclarations": 780,
+      "arbitraryBreakpoints": 6,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/telegram-runtime/message-composer-final-clean-v71.css": {
+      "importantDeclarations": 84,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/message-composer-full-redesign-v68.css": {
+      "importantDeclarations": 29,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/message-composer-no-focus-v70.css": {
+      "importantDeclarations": 99,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/message-composer-polish-v69.css": {
+      "importantDeclarations": 158,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/settings-telegram-compact-foundation.css": {
+      "importantDeclarations": 90,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-runtime/telegram-real-compact-foundation.css": {
+      "importantDeclarations": 78,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/telegram-ui-foundation.css": {
+      "importantDeclarations": 1807,
+      "arbitraryBreakpoints": 31,
+      "arbitraryZIndexes": 5
+    },
+    "styles/system/ui-contracts/form-field-contract-phase4.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/ui-contracts/inventory-mobile-foundation-phase10.css": {
+      "importantDeclarations": 41,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/modal-command-contract-phase1.css": {
+      "importantDeclarations": 82,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/modal-command-contract-phase2.css": {
+      "importantDeclarations": 38,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/navigation-shell-contract-phase5.css": {
+      "importantDeclarations": 226,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/notifications-reminders-foundation-phase14.css": {
+      "importantDeclarations": 34,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/ops-messaging-foundation-phase9.css": {
+      "importantDeclarations": 68,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/people-ledger-foundation-phase12.css": {
+      "importantDeclarations": 57,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/repair-services-workflow-foundation-phase15.css": {
+      "importantDeclarations": 549,
+      "arbitraryBreakpoints": 6,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/reports-foundation-contract-phase7.css": {
+      "importantDeclarations": 134,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/sales-cart-invoice-foundation-phase11.css": {
+      "importantDeclarations": 320,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/sales-payment-no-inner-badge-phase80.css": {
+      "importantDeclarations": 152,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/sales-payment-readability-final-phase79.css": {
+      "importantDeclarations": 70,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/settings-data-ops-phase3.css": {
+      "importantDeclarations": 99,
+      "arbitraryBreakpoints": 5,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/settings-foundation-contract-phase8.css": {
+      "importantDeclarations": 66,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/spa-nonblocking-feedback-guard-phase83.css": {
+      "importantDeclarations": 22,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/table-card-contract-phase6.css": {
+      "importantDeclarations": 14,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/targeted-from-phase16-restore-telegram-v22.css": {
+      "importantDeclarations": 87,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/targeted-from-v22-header-telegram-polish-v24.css": {
+      "importantDeclarations": 117,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/telegram-control-cards-precision-v26.css": {
+      "importantDeclarations": 121,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-detail-grid-cleanup-v33.css": {
+      "importantDeclarations": 17,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-flatten-section-surfaces-v31.css": {
+      "importantDeclarations": 36,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-global-apple-surface-v29.css": {
+      "importantDeclarations": 46,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v27.css": {
+      "importantDeclarations": 51,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-monitor-apple-surface-v28.css": {
+      "importantDeclarations": 61,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-monitor-single-surface-v32.css": {
+      "importantDeclarations": 75,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-remove-extra-shell-v30.css": {
+      "importantDeclarations": 18,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-template-and-detail-spacing-v34.css": {
+      "importantDeclarations": 65,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v35-detail-template-polish.css": {
+      "importantDeclarations": 100,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/telegram-v38-auto-message-group.css": {
+      "importantDeclarations": 8,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v39-auto-message-group-spacing.css": {
+      "importantDeclarations": 37,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v41-access-group-fix.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v42-connect-and-operations-polish.css": {
+      "importantDeclarations": 21,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v43-operations-width-standard.css": {
+      "importantDeclarations": 15,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v44-operations-full-width-commercial.css": {
+      "importantDeclarations": 30,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v45-send-rules-spacing.css": {
+      "importantDeclarations": 15,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v46-send-rules-inner-padding.css": {
+      "importantDeclarations": 28,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v47-send-rules-compact-fields.css": {
+      "importantDeclarations": 43,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v48-send-rules-field-flatten.css": {
+      "importantDeclarations": 69,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v49-exact-send-rule-fields.css": {
+      "importantDeclarations": 59,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v50-send-rule-icons-left.css": {
+      "importantDeclarations": 15,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v51-send-rule-icons-force-left.css": {
+      "importantDeclarations": 20,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v52-logs-apple-neutral.css": {
+      "importantDeclarations": 39,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v53-logs-detail-modal.css": {
+      "importantDeclarations": 127,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v56-logs-modal-and-table-fix.css": {
+      "importantDeclarations": 141,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v57-logs-icons-modal-center.css": {
+      "importantDeclarations": 59,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v58-logs-modal-compact-responsive.css": {
+      "importantDeclarations": 88,
+      "arbitraryBreakpoints": 4,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v59-logs-table-compact-remove-duplicate.css": {
+      "importantDeclarations": 77,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v60-final-spacing-template-modal.css": {
+      "importantDeclarations": 110,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v61-modal-true-center-overlay.css": {
+      "importantDeclarations": 45,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v62-template-center-apple-direct.css": {
+      "importantDeclarations": 92,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v63-modal-breathing-space.css": {
+      "importantDeclarations": 40,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v64-direct-safe-padding.css": {
+      "importantDeclarations": 60,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v65-template-center-compact-scale.css": {
+      "importantDeclarations": 92,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v66-quick-check-compact.css": {
+      "importantDeclarations": 49,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v67-template-command-cards-compact.css": {
+      "importantDeclarations": 44,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v68-smart-suggestion-compact.css": {
+      "importantDeclarations": 86,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v69-quick-check-single-card.css": {
+      "importantDeclarations": 94,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v70-template-filter-accordion-fix.css": {
+      "importantDeclarations": 72,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/telegram-v71-accordion-kpis-unified-surface.css": {
+      "importantDeclarations": 73,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v72-global-loading-logs-search-fix.css": {
+      "importantDeclarations": 52,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "styles/system/ui-contracts/telegram-v73-connection-bundle-two-column.css": {
+      "importantDeclarations": 87,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v74-monitor-progress-true-fill.css": {
+      "importantDeclarations": 19,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v75-restore-confirm-solid-modal.css": {
+      "importantDeclarations": 35,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v76-readable-success-buttons-global.css": {
+      "importantDeclarations": 34,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v77-connection-layout-cleanup.css": {
+      "importantDeclarations": 33,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v78-connection-guide-cleanup.css": {
+      "importantDeclarations": 8,
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v80-send-rules-quiet-hours-cleanup.css": {
+      "importantDeclarations": 17,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-contracts/telegram-v82-final-visible-fixes.css": {
+      "importantDeclarations": 446,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 2
+    },
+    "styles/system/ui-density-accessibility-foundation.css": {
+      "importantDeclarations": 149,
+      "arbitraryBreakpoints": 7,
+      "arbitraryZIndexes": 0
+    },
+    "styles/print/products-print-report.css": {
+      "importantDeclarations": 7,
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/ui-personalization-foundation.css": {
+      "importantDeclarations": 0,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage235-manager-credit-approvals.css": {
+      "importantDeclarations": 8,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/reports-redesign/reports-stage236-risk-profit-live.css": {
+      "importantDeclarations": 38,
+      "arbitraryBreakpoints": 3,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/audit-operations-center-v72.css": {
+      "importantDeclarations": 54,
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "styles/system/customers-directory-v73.css": {
+      "importantDeclarations": 257,
+      "arbitraryBreakpoints": 10,
+      "arbitraryZIndexes": 4
+    },
+    "components/LoginLogoMotionV3.tsx": {
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "components/PhoneModelAutocomplete.tsx": {
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "components/auth/AuthPageShell.tsx": {
+      "arbitraryBreakpoints": 7,
+      "arbitraryZIndexes": 0
+    },
+    "components/reports/mlOperator/MlOperatorDetailDrawer.tsx": {
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "pages/Expenses.tsx": {
+      "arbitraryBreakpoints": 2,
+      "arbitraryZIndexes": 0
+    },
+    "pages/InitialSetup.tsx": {
+      "arbitraryBreakpoints": 1,
+      "arbitraryZIndexes": 0
+    },
+    "pages/SearchResults.tsx": {
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "pages/mobilePhones/MobilePhonesMainWorkspace.tsx": {
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    },
+    "pages/reports/CollectionFollowupCenter.tsx": {
+      "arbitraryBreakpoints": 0,
+      "arbitraryZIndexes": 1
+    }
+  },
+  "summary": {
+    "cssFiles": 488,
+    "runtimeCssFiles": 467,
+    "patchStyleFiles": 328,
+    "uiFoundationFiles": 23,
+    "unregisteredUiFoundationFiles": 0,
+    "importantDeclarations": 54329,
+    "arbitraryBreakpoints": 806,
+    "arbitraryZIndexes": 259
+  }
+}

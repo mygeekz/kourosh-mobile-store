@@ -1,0 +1,187 @@
+/* Phase 7: Settings shell connected to the shared semantic palette system. */
+
+@layer components {
+  /* Settings pages keep a neutral workspace surface in every light palette.
+     Brand palettes are reserved for accents, controls and charts. */
+  .settings-shell-page {
+    background: rgb(var(--settings-page-rgb));
+  }
+
+  .dark .settings-shell-page {
+    background: rgb(var(--settings-page-rgb));
+  }
+
+  .settings-shell {
+    --settings-border: var(--ds-border-subtle);
+    color: var(--ds-text-primary);
+  }
+
+  .detail-hero-card__icon {
+    border-color: var(--ds-border-strong);
+  }
+
+  .settings-sidebar {
+    @apply rounded-[28px] border p-3;
+    border-color: var(--ds-border-subtle);
+    background: var(--ds-surface-card);
+    box-shadow: var(--ds-shadow-card);
+  }
+
+  .settings-workspace {
+    @apply rounded-[32px] border;
+    border-color: var(--ds-border-subtle);
+    background: var(--ds-surface-card);
+    box-shadow: var(--ds-shadow-card);
+  }
+
+  .settings-fieldset {
+    @apply rounded-[28px] border p-5 md:p-6;
+    border-color: var(--ds-border-subtle);
+    background: var(--ds-surface-card-muted);
+  }
+
+  .settings-mobile-tab {
+    @apply shadow-none;
+  }
+
+  .settings-section-icon {
+    display: inline-flex;
+    @apply h-10 w-10 items-center justify-center rounded-2xl border;
+    border-color: var(--ds-border-subtle);
+    background: var(--ds-surface-card-muted);
+    color: var(--ds-text-secondary);
+  }
+
+  .settings-data-block {
+    @apply rounded-2xl border p-4;
+    border-color: var(--ds-border-subtle);
+    background: var(--ds-surface-card-muted);
+    color: var(--ds-text-primary);
+  }
+
+  .settings-table-clean thead th {
+    @apply py-3 text-right text-xs font-bold;
+    color: var(--ds-text-muted);
+  }
+
+  .settings-table-clean tbody td {
+    @apply py-3 text-sm;
+    color: var(--ds-text-secondary);
+  }
+
+  .settings-table-clean tbody tr {
+    @apply border-t;
+    border-color: var(--ds-border-subtle);
+  }
+
+  /* Normalize legacy utility colors at the Settings boundary. */
+  .settings-shell [class~="bg-white"],
+  .settings-shell [class*="bg-white/90"],
+  .settings-shell [class*="bg-white/95"] {
+    background-color: var(--ds-surface-card);
+    color: var(--ds-text-primary);
+  }
+
+  .settings-shell [class~="bg-slate-50"],
+  .settings-shell [class*="bg-slate-50/50"],
+  .settings-shell [class*="bg-slate-50/60"],
+  .settings-shell [class*="bg-slate-50/80"],
+  .settings-shell [class~="bg-gray-50"],
+  .settings-shell [class*="bg-gray-50/60"],
+  .settings-shell [class~="bg-gray-100"],
+  .settings-shell [class~="bg-gray-800"],
+  .settings-shell [class*="bg-gray-900/30"] {
+    background-color: var(--ds-surface-card-muted);
+    color: var(--ds-text-primary);
+  }
+
+  .settings-shell [class~="border-gray-200"],
+  .settings-shell [class~="border-slate-200"],
+  .settings-shell [class*="border-slate-200/80"],
+  .settings-shell [class*="border-slate-200/90"],
+  .settings-shell [class*="dark:border-gray-700"] {
+    border-color: var(--ds-border-subtle);
+  }
+
+  .settings-shell [class~="text-gray-900"],
+  .settings-shell [class~="text-text"] {
+    color: var(--ds-text-primary);
+  }
+
+  .settings-shell [class~="text-gray-700"],
+  .settings-shell [class~="text-gray-600"],
+  .settings-shell [class~="text-slate-700"],
+  .settings-shell [class~="text-slate-600"] {
+    color: var(--ds-text-secondary);
+  }
+
+  .settings-shell [class~="text-gray-500"],
+  .settings-shell [class~="text-slate-500"] {
+    color: var(--ds-text-muted);
+  }
+
+  .settings-shell input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  .settings-shell select,
+  .settings-shell textarea {
+    border-color: var(--ds-control-border);
+    background: var(--ds-control-bg);
+    color: var(--ds-control-fg);
+  }
+
+  .settings-shell input:not([type='checkbox']):not([type='radio']):not([type='range'])::placeholder,
+  .settings-shell textarea::placeholder {
+    color: var(--ds-control-muted);
+  }
+
+  .settings-shell .settings-mobile-tab,
+  .settings-shell .settings-action-btn {
+    border-color: var(--ds-border-strong);
+    background: var(--ds-surface-card);
+    color: var(--ds-text-primary);
+  }
+
+  .settings-shell .shadow-sm,
+  .settings-shell .shadow {
+    box-shadow: var(--ds-shadow-card);
+  }
+
+  .settings-shell .ux-btn-secondary,
+  .settings-shell .ux-btn-ghost,
+  .settings-shell button.rounded-lg.border:not(.ux-btn),
+  .settings-shell button.rounded-xl.border:not(.ux-btn),
+  .settings-shell button.rounded-2xl.border:not(.ux-btn) {
+    border-color: var(--ds-border-strong);
+    color: var(--ds-text-secondary);
+    background: var(--ds-surface-card);
+    box-shadow: var(--ds-shadow-control);
+  }
+
+  .settings-shell .ux-btn-secondary:hover,
+  .settings-shell .ux-btn-ghost:hover,
+  .settings-shell button.rounded-lg.border:not(.ux-btn):hover,
+  .settings-shell button.rounded-xl.border:not(.ux-btn):hover,
+  .settings-shell button.rounded-2xl.border:not(.ux-btn):hover {
+    color: var(--ds-text-primary);
+    border-color: var(--ds-focus-border);
+    background: var(--ds-surface-card-muted);
+  }
+
+  .settings-shell .bg-primary\/10,
+  .settings-shell .hover\:bg-primary\/5:hover {
+    background-color: var(--ds-primary-soft);
+  }
+
+  .settings-action-btn {
+    display: inline-flex;
+    @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border px-4 py-2.5 text-sm font-semibold transition-all duration-200 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 ux-btn-secondary ux-btn-sm;
+    isolation: isolate;
+    border-color: var(--ds-border-strong);
+    background: var(--ds-surface-card);
+    color: var(--ds-text-primary);
+  }
+
+  .settings-action-btn:focus-visible {
+    border-color: var(--ds-focus-border);
+    box-shadow: 0 0 0 4px var(--ds-focus-ring);
+  }
+}

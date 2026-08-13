@@ -1,0 +1,60 @@
+/* === REPORTS PREMIUM COMPONENTS === */
+@layer components {
+  .report-page {
+  }
+  .report-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .report-toolbar .rt-left,
+  .report-toolbar .rt-right {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .report-action {
+    display: inline-flex;
+  }
+  .report-action-primary {
+  }
+  .report-action-muted {
+  }
+  .kpi-grid {
+  }
+  .kpi-card {
+  }
+  .kpi-card:before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    height: 1px;
+    width: 100%;
+    background: rgba(148,163,184,0.22);
+    opacity: 1;
+  }
+  .kpi-label { }
+  .kpi-value { }
+  .kpi-sub { }
+
+  .section-card {
+  }
+  .section-header {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .section-title { }
+  .section-desc { }
+  .section-body { }
+
+  .report-table {
+  }
+  .report-table th {
+  }
+  .report-table td {
+  }
+  .report-table tr:hover td {
+    background-color: rgb(255 255 255 / 0.05);
+  }
+  .empty-state {
+  }
+}

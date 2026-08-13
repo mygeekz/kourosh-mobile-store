@@ -1,0 +1,365 @@
+/* Stage 220 — Compact density for Smart Insights modal family.
+   Scoped only to portal-safe Smart Insight modals; does not alter the page body, hero, filters, or cards. */
+
+:root {
+  --smart-modal-compact-radius: 22px;
+  --smart-modal-compact-pad: clamp(10px, 1vw, 14px);
+}
+
+/* All Smart Insight modals close by backdrop click; remove redundant X buttons. */
+.apr220-overlay--sidebar-safe .apr220-close,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__close,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__close,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__close,
+.side-kpi-modal-v217 .side-kpi-modal-v217__close {
+  display: none !important;
+}
+
+/* Shared surface sizing: keep modal compact and reduce unnecessary vertical scroll. */
+.apr220-overlay--sidebar-safe .apr220-dialog,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__surface,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__surface,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__surface {
+  border-radius: var(--smart-modal-compact-radius) !important;
+  max-height: calc(100dvh - 24px) !important;
+}
+
+/* Auto Pricing modal header compacting */
+.apr220-overlay--sidebar-safe .apr220-header {
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 230px) !important;
+  gap: 10px !important;
+  padding: 10px 14px !important;
+  min-height: 0 !important;
+  align-items: center !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kicker {
+  min-height: 24px !important;
+  padding: 0 9px !important;
+  font-size: 0.64rem !important;
+  letter-spacing: 0.04em !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-header h2 {
+  margin-top: 5px !important;
+  font-size: clamp(1rem, 1.55vw, 1.28rem) !important;
+  line-height: 1.45 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-header p {
+  margin-top: 4px !important;
+  font-size: 0.72rem !important;
+  line-height: 1.7 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-header__summary {
+  min-height: 0 !important;
+  padding: 9px 11px !important;
+  border-radius: 16px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-header__summary small,
+.apr220-overlay--sidebar-safe .apr220-header__summary span {
+  font-size: 0.66rem !important;
+  line-height: 1.55 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-header__summary strong {
+  margin-top: 4px !important;
+  font-size: 0.98rem !important;
+  line-height: 1.35 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-body {
+  padding: 10px 12px 12px !important;
+  gap: 10px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kpi-grid {
+  gap: 8px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kpi {
+  min-height: 54px !important;
+  padding: 8px 10px !important;
+  border-radius: 16px !important;
+  gap: 8px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kpi__icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 12px !important;
+  font-size: 0.78rem !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kpi small,
+.apr220-overlay--sidebar-safe .apr220-panel p,
+.apr220-overlay--sidebar-safe .apr220-product small,
+.apr220-overlay--sidebar-safe .apr220-memory-card small {
+  font-size: 0.67rem !important;
+  line-height: 1.55 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-kpi strong,
+.apr220-overlay--sidebar-safe .apr220-memory-card strong {
+  font-size: 0.86rem !important;
+  line-height: 1.35 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-layout {
+  gap: 10px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-panel {
+  border-radius: 18px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-panel__head,
+.apr220-overlay--sidebar-safe .apr220-panel h3 {
+  padding: 10px 12px !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-panel h3,
+.apr220-overlay--sidebar-safe .apr220-panel__head h3 {
+  font-size: 0.84rem !important;
+  line-height: 1.55 !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-table__head,
+.apr220-overlay--sidebar-safe .apr220-table__row {
+  min-height: 42px !important;
+  padding-block: 8px !important;
+  font-size: 0.74rem !important;
+}
+
+.apr220-overlay--sidebar-safe .apr220-reason,
+.apr220-overlay--sidebar-safe .apr220-memory-card,
+.apr220-overlay--sidebar-safe .apr220-action-link,
+.apr220-overlay--sidebar-safe .apr220-memory-actions button {
+  min-height: 34px !important;
+  padding: 8px 10px !important;
+  border-radius: 13px !important;
+  font-size: 0.72rem !important;
+}
+
+/* Generic insight modal compacting */
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__header {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 12px 16px !important;
+  min-height: 0 !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__header-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  font-size: 0.92rem !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__severity,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__type-chip {
+  min-height: 24px !important;
+  padding: 0 9px !important;
+  font-size: 0.66rem !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__title h2 {
+  margin-top: 5px !important;
+  font-size: clamp(1.08rem, 1.55vw, 1.34rem) !important;
+  line-height: 1.45 !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__title p {
+  margin-top: 4px !important;
+  font-size: 0.74rem !important;
+  line-height: 1.7 !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__body {
+  padding: 12px 14px !important;
+  max-height: calc(100dvh - 106px) !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__hero-grid,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__content-grid {
+  gap: 10px !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__hero-grid > div {
+  border-radius: 18px !important;
+  padding: 11px 12px !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel h3 {
+  font-size: 0.86rem !important;
+  line-height: 1.55 !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel li,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel p,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel span,
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__panel small {
+  font-size: 0.72rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Overview modals: decision memory, repetition, side KPI */
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__header,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__header {
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 12px 16px !important;
+  min-height: 0 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__header-icon,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__header-icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  font-size: 0.9rem !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__badge,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__chip,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__badge,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__chip {
+  min-height: 24px !important;
+  padding: 0 9px !important;
+  font-size: 0.65rem !important;
+  gap: 5px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__title h2,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__title h2 {
+  margin-top: 5px !important;
+  font-size: clamp(1.08rem, 1.55vw, 1.34rem) !important;
+  line-height: 1.42 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__title p,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__title p {
+  margin-top: 4px !important;
+  font-size: 0.73rem !important;
+  line-height: 1.65 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__body,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__body {
+  padding: 12px 14px !important;
+  max-height: calc(100dvh - 106px) !important;
+  gap: 10px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__hero-strip,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__content-grid,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__aside-grid,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__topline,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__metric-row,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__content {
+  gap: 9px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__hero-card,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__mini-card,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__kpi-card,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__footer-note,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__selected-card,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__metric-card,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__panel,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__footer {
+  border-radius: 16px !important;
+  padding: 10px 11px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel-head,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__panel-head {
+  padding: 9px 11px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel-body,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__trend-grid,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__alert-list {
+  padding: 9px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__hero-label,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__mini-label,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__stat-label,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__kpi-label,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__selected-card span,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__metric-copy span,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__panel-head span {
+  font-size: 0.66rem !important;
+  line-height: 1.55 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__hero-value,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__mini-value,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__kpi-value,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__selected-card strong,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__metric-copy strong {
+  margin-top: 3px !important;
+  font-size: 0.92rem !important;
+  line-height: 1.35 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__metric-icon,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__kpi-icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 12px !important;
+  font-size: 0.78rem !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__table-row,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__list-row,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__alert-row,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__trend-card {
+  padding: 8px 9px !important;
+  border-radius: 13px !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__cell-title strong,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel-title,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__panel-head h3,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__trend-head strong,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__alert-title {
+  font-size: 0.78rem !important;
+  line-height: 1.45 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__cell-sub,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__brief-text,
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__footer-text,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__trend-card p,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__alert-meta,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__footer p {
+  font-size: 0.68rem !important;
+  line-height: 1.6 !important;
+}
+
+/* In laptop height, prefer horizontal compaction over inner scroll. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .apr220-overlay--sidebar-safe .apr220-header,
+  .smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__header,
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__header,
+  .insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__header {
+    padding-block: 9px !important;
+  }
+
+  .apr220-overlay--sidebar-safe .apr220-body,
+  .smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__body,
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__body,
+  .insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__body {
+    padding-block: 9px !important;
+  }
+}

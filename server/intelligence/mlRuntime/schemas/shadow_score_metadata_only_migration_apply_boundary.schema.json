@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 13J guarded metadata-only migration apply boundary report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "phase",
+    "boundaryKind",
+    "status",
+    "sourcePhase",
+    "sourceDryRunKind",
+    "boundaryMode",
+    "applyBoundaryOnly",
+    "migrationApplyRequested",
+    "migrationApplyAccepted",
+    "migrationApplyDecision",
+    "migrationApplicationAllowed",
+    "migrationApplicationPerformed",
+    "migrationRunnerRegistered",
+    "migrationRunnerOperational",
+    "migrationRegistryMutated",
+    "sqlTextLoadedFromDisk",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreationApplied",
+    "tableCreated",
+    "repositoryWriteAllowed",
+    "routeExposed",
+    "warningCount",
+    "errorCount",
+    "warnings",
+    "errors",
+    "applyBoundaryChecks",
+    "applyBoundaryPlan",
+    "sourceMigrationRunnerDryRunReport",
+    "applyBoundary",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13J"
+    },
+    "boundaryKind": {
+      "const": "guarded_metadata_only_migration_apply_boundary"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ]
+    },
+    "sourcePhase": {
+      "const": "Phase 13I"
+    },
+    "sourceDryRunKind": {
+      "const": "guarded_metadata_only_migration_runner_dry_run"
+    },
+    "boundaryMode": {
+      "const": "safety_gate_only_no_migration_application"
+    },
+    "applyBoundaryOnly": {
+      "const": true
+    },
+    "migrationApplyRequested": {
+      "const": false
+    },
+    "migrationApplyAccepted": {
+      "const": false
+    },
+    "migrationApplyDecision": {
+      "enum": [
+        "blocked_until_future_explicit_migration_phase",
+        "blocked_by_failed_preflight",
+        "blocked_by_safety_boundary"
+      ]
+    },
+    "migrationApplicationAllowed": {
+      "const": false
+    },
+    "migrationApplicationPerformed": {
+      "const": false
+    },
+    "migrationRunnerRegistered": {
+      "const": false
+    },
+    "migrationRunnerOperational": {
+      "const": false
+    },
+    "migrationRegistryMutated": {
+      "const": false
+    },
+    "sqlTextLoadedFromDisk": {
+      "const": false
+    },
+    "sqlExecutionAllowed": {
+      "const": false
+    },
+    "databaseConnectionAllowed": {
+      "const": false
+    },
+    "databaseWriteAllowed": {
+      "const": false
+    },
+    "tableCreationApplied": {
+      "const": false
+    },
+    "tableCreated": {
+      "const": false
+    },
+    "repositoryWriteAllowed": {
+      "const": false
+    },
+    "routeExposed": {
+      "const": false
+    },
+    "warningCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errorCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "applyBoundaryChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "status",
+          "message"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "warning",
+              "fail"
+            ]
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "applyBoundaryPlan": {
+      "type": "object",
+      "required": [
+        "tableDraftName",
+        "sourcePhase",
+        "sourceDryRunKind",
+        "boundaryMode",
+        "plannedColumnCount",
+        "plannedIndexCount",
+        "plannedUniqueConstraintCount",
+        "plannedCheckConstraintCount",
+        "preflightCheckCount",
+        "applyGateCheckCount",
+        "futureApplyPrerequisites",
+        "migrationApplicationAllowed",
+        "migrationApplyDecision",
+        "sqlExecutionAllowed",
+        "databaseConnectionAllowed",
+        "databaseWriteAllowed",
+        "tableCreationApplied",
+        "migrationRunnerRegistered",
+        "migrationRunnerOperational",
+        "migrationRegistryMutated"
+      ],
+      "properties": {
+        "tableDraftName": {
+          "const": "shadow_score_metadata_only_store"
+        },
+        "sourcePhase": {
+          "const": "Phase 13I"
+        },
+        "sourceDryRunKind": {
+          "const": "guarded_metadata_only_migration_runner_dry_run"
+        },
+        "boundaryMode": {
+          "const": "safety_gate_only_no_migration_application"
+        },
+        "plannedColumnCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "plannedIndexCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "plannedUniqueConstraintCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "plannedCheckConstraintCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "preflightCheckCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "applyGateCheckCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "futureApplyPrerequisites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "migrationApplicationAllowed": {
+          "const": false
+        },
+        "migrationApplyDecision": {
+          "enum": [
+            "blocked_until_future_explicit_migration_phase",
+            "blocked_by_failed_preflight",
+            "blocked_by_safety_boundary"
+          ]
+        },
+        "sqlExecutionAllowed": {
+          "const": false
+        },
+        "databaseConnectionAllowed": {
+          "const": false
+        },
+        "databaseWriteAllowed": {
+          "const": false
+        },
+        "tableCreationApplied": {
+          "const": false
+        },
+        "migrationRunnerRegistered": {
+          "const": false
+        },
+        "migrationRunnerOperational": {
+          "const": false
+        },
+        "migrationRegistryMutated": {
+          "const": false
+        }
+      }
+    },
+    "sourceMigrationRunnerDryRunReport": {
+      "type": "object"
+    },
+    "applyBoundary": {
+      "type": "object",
+      "properties": {
+        "applyBoundaryOnly": {
+          "const": true
+        },
+        "safetyGateOnly": {
+          "const": true
+        },
+        "migrationApplyRequested": {
+          "const": false
+        },
+        "migrationApplyAccepted": {
+          "const": false
+        },
+        "migrationApplicationAllowed": {
+          "const": false
+        },
+        "migrationApplicationPerformed": {
+          "const": false
+        },
+        "migrationRunnerRegistered": {
+          "const": false
+        },
+        "migrationRunnerOperational": {
+          "const": false
+        },
+        "migrationRegistryMutated": {
+          "const": false
+        },
+        "sqlTextLoadedFromDisk": {
+          "const": false
+        },
+        "sqlFileIsNotReadFromDisk": {
+          "const": true
+        },
+        "sqlFileIsNotExecuted": {
+          "const": true
+        },
+        "sqlExecutionAllowed": {
+          "const": false
+        },
+        "databaseConnectionAllowed": {
+          "const": false
+        },
+        "databaseWriteAllowed": {
+          "const": false
+        },
+        "tableCreationApplied": {
+          "const": false
+        },
+        "tableCreated": {
+          "const": false
+        },
+        "exposesRoute": {
+          "const": false
+        },
+        "executesModel": {
+          "const": false
+        },
+        "activatesArtifact": {
+          "const": false
+        },
+        "mutatesBusinessRecords": {
+          "const": false
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "properties": {
+        "applyBoundaryOnly": {
+          "const": true
+        },
+        "safetyGateOnly": {
+          "const": true
+        },
+        "noRuntimeSqlExecution": {
+          "const": true
+        },
+        "noDatabaseConnection": {
+          "const": true
+        },
+        "noDatabaseWrite": {
+          "const": true
+        },
+        "noTableCreated": {
+          "const": true
+        },
+        "noMigrationRegistryMutation": {
+          "const": true
+        },
+        "noMigrationApplication": {
+          "const": true
+        },
+        "modelExecutionAllowed": {
+          "const": false
+        },
+        "runtimeInvocationAllowed": {
+          "const": false
+        },
+        "inferenceEndpointExposed": {
+          "const": false
+        },
+        "artifactActivationAllowed": {
+          "const": false
+        },
+        "canMutateBusinessRecords": {
+          "const": false
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+import fs from "node:fs";
+const failures=[];const pass=(ok,msg)=>{if(ok)console.log(`[v155-readonly-audit] PASS: ${msg}`);else failures.push(msg);};
+const readiness=fs.readFileSync("cloud/runtime/cloudReadiness.mjs","utf8");
+const config=fs.readFileSync("cloud/runtime/cloudProductionConfig.mjs","utf8");
+const registry=fs.readFileSync("cloud/control-plane/PersistentCloudTenantRegistry.mjs","utf8");
+const schema=fs.readFileSync("cloud/control-plane/cloudControlSchema.mjs","utf8");
+pass(!/PersistentCloudTenantRegistry/.test(readiness),"Production readiness does not instantiate the writable tenant registry");
+pass(/inspectCloudControlDatabase/.test(readiness),"Production readiness uses explicit read-only Control DB inspection");
+pass(!/initializeCloudControl|migrateCloudControl|createControlDatabaseBackup|restoreControlDatabase|acquireCloudRuntimeLock/.test(readiness),"Readiness imports no initialization, migration, backup, restore or runtime-lock mutation API");
+pass(!/mkdirSync|chmodSync|writeFileSync|unlinkSync|renameSync/.test(config),"Canonical production config resolver has no filesystem mutation");
+pass(!/#migrate\(|#createCurrentSchema\(|mkdirSync/.test(registry),"Persistent registry constructor no longer initializes or migrates schema");
+pass(/openOperationalCloudControlDatabase/.test(registry),"Writable registry requires an operational current-schema open without initialization or migration");
+pass(/immutable=1/.test(schema) && /readOnly:true/.test(schema),"Control DB inspection uses immutable SQLite read-only mode without WAL/SHM creation");
+pass(/CLOUD_SCHEMA_MIGRATION_REQUIRED/.test(schema),"Current-schema assertion fails closed when migration is required");
+if(failures.length){for(const f of failures)console.error(`[v155-readonly-audit] FAIL: ${f}`);process.exit(1);}console.log("[v155-readonly-audit] Read-only readiness source guard completed successfully.");

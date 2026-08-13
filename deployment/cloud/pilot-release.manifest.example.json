@@ -1,0 +1,30 @@
+{
+  "releaseProfile": "pilot-candidate",
+  "productionLive": false,
+  "runtime": {
+    "node": "24 LTS",
+    "instanceCount": 1,
+    "bindHost": "127.0.0.1",
+    "port": 8787
+  },
+  "storage": {
+    "runtimeDir": "/var/lib/kourosh-cloud",
+    "controlDb": "/var/lib/kourosh-cloud/control.db",
+    "backupDir": "/var/lib/kourosh-cloud/backups"
+  },
+  "edge": {
+    "publicBaseDomain": "example.invalid",
+    "tenantWildcard": "*.apps.example.invalid",
+    "controlHost": "control.example.invalid",
+    "connectorHost": "connector.example.invalid",
+    "connectorEndpoint": "wss://connector.example.invalid/connector",
+    "clientIpMode": "direct"
+  },
+  "operations": {
+    "initializeExplicitly": "npm run cloud:init",
+    "migrateExplicitly": "npm run cloud:migrate -- --confirm MIGRATE",
+    "backup": "npm run cloud:backup",
+    "readOnlyAudit": "npm run audit:cloud-production-readiness",
+    "preflight": "npm run cloud:preflight"
+  }
+}

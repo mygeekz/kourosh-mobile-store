@@ -1,0 +1,460 @@
+/* Dashboard Redesign Pass 4 — Add Widget & Widget Manager Executive Polish
+   Scope: dashboard only. No behavior/API/layout persistence changes. */
+
+.app-dashboard-page .dashboard-add-widget-overlay {
+  isolation: isolate;
+}
+
+.app-dashboard-page .dashboard-add-widget-backdrop {
+  background:
+    radial-gradient(circle at 20% 20%, hsl(var(--primary) / 0.16), transparent 34%),
+    radial-gradient(circle at 78% 24%, hsl(var(--primary) / 0.14), transparent 30%),
+    rgb(var(--palette-page-rgb) / 0.42) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+}
+
+.app-dashboard-page .dashboard-add-widget-modal--executive {
+  max-height: min(88vh, 860px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ds-border-subtle) !important;
+  background:
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.98), rgb(var(--palette-surface-muted-rgb) / 0.96)) !important;
+  box-shadow:
+    0 30px 110px -45px rgb(var(--palette-surface-rgb) / 0.48),
+    inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.82) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-modal--executive {
+  border-color: var(--ds-border-strong) !important;
+  background:
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.98), rgb(var(--palette-page-rgb) / 0.96)) !important;
+  box-shadow:
+    0 34px 120px -46px rgba(0, 0, 0, 0.82),
+    inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.06) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-modal__header--executive {
+  flex: 0 0 auto;
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-muted-rgb) / 0.96), rgb(var(--palette-primary-soft-rgb) / 0.78)) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-modal__header--executive {
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / 0.98), rgb(var(--palette-surface-rgb) / 0.88)) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-titlebar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.app-dashboard-page .dashboard-add-widget-titlebar__icon {
+  flex: 0 0 auto;
+  box-shadow: 0 16px 40px -30px color-mix(in srgb, var(--ds-primary) 28%, transparent);
+}
+
+.app-dashboard-page .dashboard-add-widget-kicker {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--ds-info) 22%, transparent);
+  background: var(--ds-info-soft);
+  color: var(--ds-info);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-kicker {
+  border-color: color-mix(in srgb, var(--ds-info) 22%, transparent);
+  background: var(--ds-info-soft);
+  color: var(--ds-info);
+}
+
+.app-dashboard-page .dashboard-add-widget-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.app-dashboard-page .dashboard-add-widget-summary__item {
+  min-width: 0;
+  border: 1px solid var(--ds-border-subtle);
+  background: var(--ds-surface-card);
+  border-radius: 18px;
+  padding: 10px 12px;
+  box-shadow: 0 16px 38px -36px color-mix(in srgb, var(--ds-primary) 28%, transparent);
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-summary__item {
+  border-color: var(--ds-border-subtle);
+  background: var(--ds-surface-page);
+}
+
+.app-dashboard-page .dashboard-add-widget-summary__item span {
+  display: block;
+  color: var(--ds-text-secondary);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-summary__item span {
+  color: var(--ds-text-muted);
+}
+
+.app-dashboard-page .dashboard-add-widget-summary__item strong {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--ds-text-primary);
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-summary__item strong {
+  color: var(--ds-text-primary);
+}
+
+.app-dashboard-page .dashboard-add-widget-controls {
+  align-items: stretch;
+}
+
+.app-dashboard-page .dashboard-add-widget-search {
+  min-width: 0;
+}
+
+.app-dashboard-page .dashboard-add-widget-search__input {
+  height: 44px !important;
+  padding-inline-start: 48px !important;
+  padding-inline-end: 42px !important;
+  border: 1px solid var(--ds-border-subtle) !important;
+  background: var(--ds-surface-card) !important;
+  color: var(--ds-text-primary) !important;
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.80) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-search__input {
+  border-color: var(--ds-border-strong) !important;
+  background: var(--ds-surface-page) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-search__icon {
+  right: 16px !important;
+  z-index: 2;
+}
+
+.app-dashboard-page .dashboard-add-widget-search__clear {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: var(--ds-text-secondary);
+  transition: background 160ms ease, color 160ms ease;
+  transform: translateY(-50%);
+}
+
+.app-dashboard-page .dashboard-add-widget-search__clear:hover {
+  background: var(--ds-surface-page);
+  color: var(--ds-text-primary);
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-search__clear:hover {
+  background: var(--ds-surface-card);
+  color: var(--ds-text-primary);
+}
+
+.app-dashboard-page .dashboard-add-widget-categories {
+  padding-bottom: 2px;
+}
+
+.app-dashboard-page .dashboard-add-widget-category {
+  min-width: max-content;
+  border-color: var(--ds-border-subtle) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-category--active {
+  background: var(--ds-surface-page) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-category--active {
+  background: var(--ds-surface-page) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-modal__body--executive {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background: var(--ds-surface-card);
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-modal__body--executive {
+  background: var(--ds-surface-page);
+}
+
+.app-dashboard-page .dashboard-add-widget-grid {
+  align-items: stretch;
+}
+
+.app-dashboard-page .dashboard-add-widget-card--executive {
+  position: relative;
+  min-height: 118px !important;
+  overflow: hidden;
+  border: 1px solid var(--ds-border-subtle) !important;
+  background: var(--ds-surface-card) !important;
+  box-shadow: 0 18px 52px -44px color-mix(in srgb, var(--ds-primary) 28%, transparent) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-card--executive::before {
+  position: absolute;
+  inset-block: 16px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--ds-primary), var(--ds-primary));
+  content: "";
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.app-dashboard-page .dashboard-add-widget-card--executive:hover::before {
+  opacity: 1;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-card--executive {
+  border-color: var(--ds-border-strong) !important;
+  background: var(--ds-surface-page) !important;
+  box-shadow: 0 22px 58px -48px rgba(0, 0, 0, 0.86) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__main {
+  height: 100%;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__identity {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__icon {
+  flex: 0 0 auto;
+  box-shadow: 0 18px 38px -30px color-mix(in srgb, var(--ds-primary) 28%, transparent);
+}
+
+.app-dashboard-page .dashboard-add-widget-card__copy {
+  min-width: 0;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__title {
+  max-width: 100%;
+  letter-spacing: -0.015em;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__meta {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__chip,
+.app-dashboard-page .dashboard-add-widget-card__id {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__id {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: var(--ds-text-secondary);
+  font-size: 10px;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-card__id {
+  color: var(--ds-text-muted);
+}
+
+.app-dashboard-page .dashboard-add-widget-card__add {
+  flex: 0 0 auto;
+  min-width: max-content;
+  background: linear-gradient(135deg, var(--ds-primary), var(--ds-primary)) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-card__add:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.app-dashboard-page .dashboard-add-widget-empty {
+  min-height: 220px;
+  border: 1px dashed var(--ds-border-subtle);
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-muted-rgb) / 0.94), rgb(var(--palette-primary-soft-rgb) / 0.62)) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-empty {
+  border-color: var(--ds-border-subtle);
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / 0.92), rgb(var(--palette-page-rgb) / 0.72)) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-empty__reset {
+  margin-top: 12px;
+  height: 34px;
+  padding-inline: 14px;
+  border-radius: 14px;
+  background: var(--ds-surface-page);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-empty__reset {
+  background: var(--ds-surface-page);
+  color: var(--ds-text-primary);
+}
+
+.app-dashboard-page .dashboard-add-widget-modal__footer--executive {
+  flex: 0 0 auto;
+  background: var(--ds-surface-card) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-add-widget-modal__footer--executive {
+  background: var(--ds-surface-page) !important;
+}
+
+.app-dashboard-page .dashboard-add-widget-footnote {
+  line-height: 1.8;
+}
+
+.app-dashboard-page .dashboard-add-widget-done {
+  min-width: 84px;
+}
+
+.app-dashboard-page .dashboard-card-manager-panel {
+  background:
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.96), rgb(var(--palette-surface-muted-rgb) / 0.88)) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-card-manager-panel {
+  background:
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.98), rgb(var(--palette-page-rgb) / 0.88)) !important;
+}
+
+.app-dashboard-page .dashboard-card-manager-section {
+  border-color: var(--ds-border-subtle) !important;
+  background: var(--ds-surface-card) !important;
+}
+
+html.dark .app-dashboard-page .dashboard-card-manager-section {
+  border-color: var(--ds-border-subtle) !important;
+  background: var(--ds-surface-page) !important;
+}
+
+.app-dashboard-page .dashboard-card-manager-item {
+  border-color: var(--ds-border-subtle) !important;
+  box-shadow: 0 16px 42px -38px color-mix(in srgb, var(--ds-primary) 28%, transparent);
+}
+
+.app-dashboard-page .dashboard-card-manager-item:hover {
+  border-color: var(--ds-primary-soft-border) !important;
+  transform: translateY(-1px);
+}
+
+html.dark .app-dashboard-page .dashboard-card-manager-item {
+  border-color: var(--ds-border-strong) !important;
+  box-shadow: 0 20px 52px -44px rgba(0, 0, 0, 0.78);
+}
+
+.app-dashboard-page :where(.dashboard-card-manager-panel, .dashboard-add-widget-modal) :where(button, input, select):focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ds-primary) 18%, transparent) !important;
+}
+
+@media (max-width: 768px) {
+  .app-dashboard-page .dashboard-add-widget-modal--executive {
+    width: min(96vw, 720px) !important;
+    max-height: 92vh;
+    border-radius: 24px !important;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-modal__header--executive,
+  .app-dashboard-page .dashboard-add-widget-modal__body--executive,
+  .app-dashboard-page .dashboard-add-widget-modal__footer--executive {
+    padding-inline: 14px !important;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-controls {
+    gap: 10px;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-card__main {
+    flex-direction: column;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-card__add {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-modal__footer--executive {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-done {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-dashboard-page .dashboard-add-widget-titlebar {
+    gap: 10px;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-title {
+    font-size: 15px !important;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-subtitle,
+  .app-dashboard-page .dashboard-add-widget-footnote {
+    font-size: 11px !important;
+  }
+
+  .app-dashboard-page .dashboard-add-widget-card--executive {
+    border-radius: 20px !important;
+    padding: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-dashboard-page .dashboard-add-widget-card__add:hover,
+  .app-dashboard-page .dashboard-add-widget-card--executive:hover,
+  .app-dashboard-page .dashboard-card-manager-item:hover {
+    transform: none !important;
+  }
+}

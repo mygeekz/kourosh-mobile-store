@@ -1,0 +1,136 @@
+/* Stage 59 — Product sales table search standardization
+   Scope: /reports/product-sales table toolbar only.
+   Uses the same one-surface search pattern used elsewhere: wrapper owns the border, input is borderless, icon is locked left. */
+
+.product-sales-executive-page .product-sales-table-tools {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .65rem !important;
+  direction: rtl !important;
+}
+
+.product-sales-executive-page .product-sales-table-search {
+  direction: ltr !important;
+  width: min(100%, 24rem) !important;
+  min-width: 18rem !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  display: grid !important;
+  grid-template-columns: 2.25rem minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 0 !important;
+  padding: 0 .35rem 0 .45rem !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+}
+
+.product-sales-executive-page .product-sales-table-search,
+.product-sales-executive-page .product-sales-table-search *,
+.product-sales-executive-page .product-sales-table-search::before,
+.product-sales-executive-page .product-sales-table-search::after {
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-table-search::before,
+.product-sales-executive-page .product-sales-table-search::after {
+  display: none !important;
+  content: none !important;
+}
+
+.product-sales-executive-page .product-sales-table-search > i,
+.product-sales-executive-page .product-sales-table-search > i.fa-solid,
+.product-sales-executive-page .product-sales-table-search > i.fa-magnifying-glass {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  min-width: 2rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #64748b !important;
+  font-size: .82rem !important;
+  line-height: 1 !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input,
+.product-sales-executive-page .product-sales-table-search input[type='text'],
+.product-sales-executive-page .product-sales-table-search input[type='search'] {
+  all: unset !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+  direction: rtl !important;
+  text-align: right !important;
+  padding: 0 .35rem 0 .2rem !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .86rem !important;
+  font-weight: 800 !important;
+  line-height: 42px !important;
+  letter-spacing: 0 !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+  font-weight: 750 !important;
+}
+
+.product-sales-executive-page .product-sales-table-search:focus-within {
+  border-color: rgba(59, 130, 246, .52) !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, .08) !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-decoration,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-cancel-button,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-results-button,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-results-decoration {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-table-tools {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-table-search {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}

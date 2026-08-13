@@ -1,0 +1,305 @@
+/* Phase 4: root contract for inputs, search fields, date fields and icon-affixed controls.
+   Scope is intentionally class/data based and avoids @apply to prevent Tailwind circular dependencies. */
+
+:root {
+  --app-field-height-sm: 2.5rem;
+  --app-field-height-md: 3rem;
+  --app-field-height-lg: 3.5rem;
+  --app-field-radius: 1.125rem;
+  --app-field-icon-size: 2rem;
+  --app-field-inline-pad: 1rem;
+  --app-field-icon-gap: 0.75rem;
+  --app-field-bg: rgba(255, 255, 255, 0.96);
+  --app-field-border: rgba(203, 213, 225, 0.86);
+  --app-field-text: rgb(15, 23, 42);
+  --app-field-muted: rgb(100, 116, 139);
+  --app-field-focus: rgba(14, 165, 233, 0.28);
+  --app-field-danger: rgba(244, 63, 94, 0.72);
+}
+
+.dark {
+  --app-field-bg: rgba(15, 23, 42, 0.88);
+  --app-field-border: rgba(51, 65, 85, 0.95);
+  --app-field-text: rgb(248, 250, 252);
+  --app-field-muted: rgb(148, 163, 184);
+  --app-field-focus: rgba(56, 189, 248, 0.26);
+}
+
+.app-form-field,
+[data-ui-field="true"] {
+  position: relative;
+  min-width: 0;
+}
+
+.app-form-field__control-wrap,
+.ux-field-control-wrap,
+.premium-input-wrap,
+[data-ui-field="true"] .app-field__control-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+}
+
+.app-form-field__control,
+[data-ui-control="true"],
+.ux-input,
+.modal-control-premium,
+.unified-form-control,
+.app-search-field__input,
+.search-input {
+  min-width: 0;
+  width: 100%;
+  min-height: var(--app-field-height-md);
+  border-radius: var(--app-field-radius);
+  border: 1px solid var(--app-field-border);
+  background: var(--app-field-bg);
+  color: var(--app-field-text);
+  line-height: 1.6;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease, transform 160ms ease;
+  box-sizing: border-box;
+}
+
+.app-form-field__control:focus,
+[data-ui-control="true"]:focus,
+.ux-input:focus,
+.modal-control-premium:focus,
+.unified-form-control:focus,
+.app-date-field__input:focus,
+.app-search-field__input:focus,
+.search-input:focus {
+  border-color: var(--app-field-border);
+  box-shadow: none;
+}
+
+.app-form-field__control::placeholder,
+[data-ui-control="true"]::placeholder,
+.ux-input::placeholder,
+.modal-control-premium::placeholder,
+.unified-form-control::placeholder,
+.app-date-field__input::placeholder,
+.app-search-field__input::placeholder,
+.search-input::placeholder {
+  color: var(--app-field-muted);
+  opacity: 0.72;
+  font-weight: 650;
+}
+
+.app-form-field__leading-icon,
+.ux-field-leading-icon,
+.premium-input-leading-icon,
+.app-search-field__icon,
+[data-ui-field="true"] .app-field__leading-icon {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--app-field-icon-size);
+  height: var(--app-field-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 var(--app-field-icon-size);
+  border-radius: 0.875rem;
+  color: var(--app-field-muted);
+  pointer-events: none;
+}
+
+/* RTL default: leading icon is visually on the right and input text gets safe padding. */
+.app-form-field--with-leading-icon .app-form-field__leading-icon,
+.app-form-field--with-leading-icon .ux-field-leading-icon,
+.app-form-field--with-leading-icon .premium-input-leading-icon,
+[dir="rtl"] [data-has-leading-icon="true"] .app-form-field__leading-icon,
+[data-has-leading-icon="true"][dir="rtl"] .app-form-field__leading-icon,
+[data-has-leading-icon="true"] .app-field__leading-icon {
+  right: 0.65rem;
+  left: auto;
+}
+
+.app-form-field--with-leading-icon input,
+.app-form-field--with-leading-icon select,
+.app-form-field--with-leading-icon textarea,
+[data-has-leading-icon="true"] input,
+[data-has-leading-icon="true"] select,
+[data-has-leading-icon="true"] textarea,
+.premium-has-leading-icon,
+.ux-input-affix-target--right,
+.ux-input-affix-target--wide {
+  padding-right: calc(var(--app-field-icon-size) + var(--app-field-icon-gap) + 0.85rem) !important;
+}
+
+/* LTR controls still reserve the correct side when explicitly marked. */
+[dir="ltr"].app-form-field--with-leading-icon .app-form-field__leading-icon,
+[dir="ltr"][data-has-leading-icon="true"] .app-form-field__leading-icon,
+.app-search-field[dir="ltr"] .app-search-field__icon {
+  left: 0.65rem;
+  right: auto;
+}
+
+[dir="ltr"].app-form-field--with-leading-icon input,
+[dir="ltr"].app-form-field--with-leading-icon select,
+[dir="ltr"].app-form-field--with-leading-icon textarea,
+[dir="ltr"][data-has-leading-icon="true"] input,
+[dir="ltr"][data-has-leading-icon="true"] select,
+[dir="ltr"][data-has-leading-icon="true"] textarea,
+.app-search-field[dir="ltr"] .app-search-field__input {
+  padding-left: calc(var(--app-field-icon-size) + var(--app-field-icon-gap) + 0.85rem) !important;
+  padding-right: var(--app-field-inline-pad) !important;
+}
+
+.app-search-field[dir="ltr"] .app-search-field__input[dir="rtl"] {
+  text-align: right;
+  padding-left: calc(var(--app-field-icon-size) + var(--app-field-icon-gap) + 0.85rem) !important;
+  padding-right: var(--app-field-inline-pad) !important;
+}
+
+.app-form-field--with-trailing-icon .app-date-field .app-date-field__icon {
+  left: 0.75rem;
+  right: auto;
+}
+
+/* Canonical interactive trailing action, used by password visibility controls. */
+.app-form-field__trailing-action {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  left: 0.65rem;
+  right: auto;
+  width: 2.375rem;
+  height: 2.375rem;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-form-field__trailing-action > .app-password-visibility-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  inline-size: 100% !important;
+  min-inline-size: 0 !important;
+  block-size: 100% !important;
+  min-block-size: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  opacity: .72;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  appearance: none;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.app-form-field__trailing-action > .app-password-visibility-button::before,
+.app-form-field__trailing-action > .app-password-visibility-button::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.app-form-field__trailing-action > .app-password-visibility-button:hover {
+  opacity: 1;
+}
+
+.app-form-field__trailing-action > .app-password-visibility-button:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 2px;
+}
+
+.app-form-field__trailing-action > .ux-btn,
+.app-form-field__trailing-action > .app-command-button {
+  width: 2.375rem !important;
+  min-width: 2.375rem !important;
+  height: 2.375rem !important;
+  min-height: 2.375rem !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+.app-form-field__trailing-action .ux-btn__content,
+.app-form-field__trailing-action .ux-btn__icon {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.app-form-field--with-trailing-icon input,
+[data-has-trailing-icon="true"] input {
+  padding-left: 3.65rem !important;
+}
+
+.app-form-field--with-trailing-icon .app-date-field .app-date-field__input {
+  padding-left: calc(var(--app-field-icon-size) + var(--app-field-icon-gap) + 0.65rem) !important;
+  padding-right: var(--app-field-inline-pad) !important;
+  text-align: center;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+}
+
+.app-form-field--price .price-input__field,
+.price-input [data-number-field="true"] {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-form-field--error .app-form-field__control,
+.app-form-field__control--error,
+[data-ui-field="true"][data-field-state="error"] [data-ui-control="true"],
+.modal-control-error,
+.ux-control-error {
+  border-color: var(--app-field-danger) !important;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.12) !important;
+}
+
+.app-field-feedback,
+.ux-field-error,
+.ux-field-hint {
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+}
+
+/* Legacy absolute icon pattern: reserve enough text space without refactoring every page in one pass. */
+.relative > i.fa-magnifying-glass.pointer-events-none.absolute.right-3 + input,
+.relative > i.fa-magnifying-glass.pointer-events-none.absolute.right-4 + input,
+.relative > span.pointer-events-none.absolute.right-3 + input,
+.relative > span.pointer-events-none.absolute.right-4 + input {
+  padding-right: 3.25rem !important;
+}
+
+.relative > i.fa-magnifying-glass.pointer-events-none.absolute.left-3 + input,
+.relative > i.fa-magnifying-glass.pointer-events-none.absolute.left-4 + input,
+.relative > span.pointer-events-none.absolute.left-3 + input,
+.relative > span.pointer-events-none.absolute.left-4 + input {
+  padding-left: 3.25rem !important;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --app-field-icon-size: 1.875rem;
+    --app-field-radius: 1rem;
+  }
+
+  .app-form-field__control,
+  [data-ui-control="true"],
+  .ux-input,
+  .modal-control-premium,
+  .unified-form-control,
+    .app-search-field__input,
+  .search-input {
+    min-height: 2.75rem;
+    font-size: 0.875rem;
+  }
+}

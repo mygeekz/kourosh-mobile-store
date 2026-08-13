@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "version": "2.1.0",
+  "phase": "UI-6.5",
+  "status": "architecture-locked-settings-inventory-canonical-select-checkbox-range",
+  "styleSystem": {
+    "manifest": "styles/manifest/style-manifest.json",
+    "runtimeEntry": "app/bootstrap/styles.ts",
+    "generator": "scripts/generate-style-bootstrap.mjs",
+    "directCssImportsAllowedIn": [
+      "app/bootstrap/styles.ts"
+    ],
+    "pageLevelCssImportsAllowed": false,
+    "newLocalCssFilesAllowed": false,
+    "patchStyleFilesMayOnlyDecrease": true,
+    "importantUsageMayOnlyDecrease": true
+  },
+  "responsiveContract": {
+    "status": "enforced",
+    "breakpoints": {
+      "mobile": 640,
+      "tablet": 768,
+      "desktop": 1024,
+      "wide": 1280
+    },
+    "newArbitraryBreakpointsAllowed": false
+  },
+  "layerContract": {
+    "status": "enforced",
+    "layers": {
+      "base": 0,
+      "sticky": 40,
+      "header": 900,
+      "floating": 1100,
+      "backdrop": 9000,
+      "modal": 9010,
+      "command": 9210,
+      "sheet": 9310,
+      "dropdown": 9350,
+      "popover": 9400,
+      "tooltip": 9500,
+      "drawer": 10000,
+      "toast": 11000
+    },
+    "newArbitraryZIndexAllowed": false
+  },
+  "componentPolicy": {
+    "canonicalImportPath": "@/components/ui",
+    "newRawPrimitivesAllowed": false,
+    "newDuplicateComponentsAllowed": false,
+    "legacyUsageMayOnlyDecrease": true,
+    "directCanonicalFileImportsAllowed": false,
+    "newLegacyImportsAllowed": false
+  },
+  "components": [
+    {
+      "id": "button",
+      "role": "action",
+      "canonicalPath": "components/Button.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "Button",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "button"
+      ]
+    },
+    {
+      "id": "action-control-contract",
+      "role": "action-contract",
+      "canonicalPath": "components/ui/actionControlContract.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "actionControlVariantClassMap",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "page-level-action-variant-map"
+      ]
+    },
+    {
+      "id": "action-link",
+      "role": "action-navigation",
+      "canonicalPath": "components/ui/ActionLink.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ActionLink",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "operational-link-button"
+      ]
+    },
+    {
+      "id": "dialog-shell",
+      "role": "overlay-foundation",
+      "canonicalPath": "components/ui/DialogShell.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "DialogShell",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "dialog",
+      "role": "overlay",
+      "canonicalPath": "components/ui/Dialog.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "Dialog",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "components/Modal.tsx",
+        "components/modals/AppModal.tsx"
+      ]
+    },
+    {
+      "id": "dialog-actions",
+      "role": "overlay-actions",
+      "canonicalPath": "components/ui/DialogActions.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "DialogActions",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "components/ModalActions.tsx",
+        "components/modals/ModalActions.tsx"
+      ]
+    },
+    {
+      "id": "modal-field",
+      "role": "overlay-form-field",
+      "canonicalPath": "components/ui/ModalField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ModalField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "components/ModalField.tsx"
+      ]
+    },
+    {
+      "id": "portal-layer",
+      "role": "overlay-layer",
+      "canonicalPath": "components/ui/PortalLayer.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "PortalLayer",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "tooltip-layer",
+      "role": "feedback-overlay",
+      "canonicalPath": "components/SmartTooltipLayer.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "SmartTooltipLayer",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "native-title-tooltip",
+        "smart-tooltip-layer"
+      ]
+    },
+    {
+      "id": "page-shell",
+      "role": "page-layout",
+      "canonicalPath": "components/ui/PageShell.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "PageShell",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "management-directory",
+      "role": "management-directory-layout",
+      "canonicalPath": "components/ui/ManagementDirectory.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ManagementDirectoryHero",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "page-local-management-hero",
+        "page-local-kpi-grid",
+        "page-local-directory-filter-surface",
+        "page-local-directory-list-surface"
+      ]
+    },
+    {
+      "id": "panel-card",
+      "role": "surface",
+      "canonicalPath": "components/ui/PanelCard.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "PanelCard",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "card"
+      ]
+    },
+    {
+      "id": "data-table-shell",
+      "role": "data-table",
+      "canonicalPath": "components/ui/DataTableShell.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "DataTableShell",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "table"
+      ]
+    },
+    {
+      "id": "table-action-group",
+      "role": "data-table-actions",
+      "canonicalPath": "components/ui/TableActionGroup.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "TableActionGroup",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "table-row-action-cluster",
+        "mobile-row-action-menu"
+      ]
+    },
+    {
+      "id": "search-field",
+      "role": "search",
+      "canonicalPath": "components/ui/AppSearchField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "AppSearchField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "search"
+      ]
+    },
+    {
+      "id": "text-field",
+      "role": "form-control",
+      "canonicalPath": "components/ui/TextField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "TextField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "input"
+      ]
+    },
+    {
+      "id": "select-field",
+      "role": "form-control",
+      "canonicalPath": "components/ui/SelectField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "SelectField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "select"
+      ]
+    },
+    {
+      "id": "checkbox-field",
+      "role": "form-control",
+      "canonicalPath": "components/ui/CheckboxField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "CheckboxField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "input[type=checkbox]"
+      ]
+    },
+    {
+      "id": "range-field",
+      "role": "form-control",
+      "canonicalPath": "components/ui/RangeField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "RangeField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "input[type=range]"
+      ]
+    },
+    {
+      "id": "textarea-field",
+      "role": "form-control",
+      "canonicalPath": "components/ui/TextareaField.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "TextareaField",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": [
+        "textarea"
+      ]
+    },
+    {
+      "id": "control-shell",
+      "role": "form-foundation",
+      "canonicalPath": "components/ui/ControlShell.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ControlShell",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "empty-state",
+      "role": "feedback",
+      "canonicalPath": "components/ui/EmptyState.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "EmptyState",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "action-bar",
+      "role": "toolbar",
+      "canonicalPath": "components/ui/ActionBar.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ActionBar",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "responsive-filter-bar",
+      "role": "filters",
+      "canonicalPath": "components/ui/ResponsiveFilterBar.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "ResponsiveFilterBar",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "surface-header",
+      "role": "surface-heading",
+      "canonicalPath": "components/ui/SurfaceHeader.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "SurfaceHeader",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "skeleton",
+      "role": "loading",
+      "canonicalPath": "components/ui/Skeleton.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "Skeleton",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "command-palette",
+      "role": "navigation-overlay",
+      "canonicalPath": "components/CommandPalette.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "CommandPalette",
+      "status": "canonical",
+      "owner": "navigation-foundation",
+      "replaces": [
+        "command-palette-panel",
+        "quick-search-panel"
+      ]
+    },
+    {
+      "id": "sidebar",
+      "role": "application-navigation",
+      "canonicalPath": "components/Sidebar.tsx",
+      "barrelPath": "components/sidebar/index.ts",
+      "exportName": "SidebarNavTree",
+      "status": "canonical",
+      "owner": "navigation-foundation",
+      "replaces": [
+        "components/sidebar/SidebarFlyoutPanel.tsx"
+      ]
+    },
+    {
+      "id": "surface",
+      "role": "surface-foundation",
+      "canonicalPath": "components/ui/Surface.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "Surface",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "page-kit",
+      "role": "page-composition",
+      "canonicalPath": "components/ui/PageKit.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "PageKit",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "icon-glyph",
+      "role": "decorative-icon",
+      "canonicalPath": "components/ui/IconGlyph.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "IconGlyph",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "fontawesome-icon",
+      "role": "icon-renderer",
+      "canonicalPath": "components/ui/FontAwesomeIcon.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "FontAwesomeIcon",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "password-visibility-button",
+      "role": "auth-control",
+      "canonicalPath": "components/ui/PasswordVisibilityButton.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "PasswordVisibilityButton",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "form-skeleton",
+      "role": "loading-composition",
+      "canonicalPath": "components/ui/Skeletons.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "FormSkeleton",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    },
+    {
+      "id": "table-skeleton",
+      "role": "loading-composition",
+      "canonicalPath": "components/ui/Skeletons.tsx",
+      "barrelPath": "components/ui/index.ts",
+      "exportName": "TableSkeleton",
+      "status": "canonical",
+      "owner": "ui-foundation",
+      "replaces": []
+    }
+  ],
+  "legacyComponents": [
+    {
+      "path": "components/SearchBox.tsx",
+      "status": "migrating",
+      "replacementId": "search-field",
+      "newImportsAllowed": false
+    },
+    {
+      "path": "components/StatCard.tsx",
+      "status": "migrating",
+      "replacementId": "panel-card",
+      "newImportsAllowed": false
+    },
+    {
+      "path": "components/reports/PremiumStatCard.tsx",
+      "status": "migrating",
+      "replacementId": "panel-card",
+      "newImportsAllowed": false
+    },
+    {
+      "path": "components/reports/ModernKpiCard.tsx",
+      "status": "migrating",
+      "replacementId": "panel-card",
+      "newImportsAllowed": false
+    },
+    {
+      "path": "components/reports/PremiumDataTable.tsx",
+      "status": "migrating",
+      "replacementId": "data-table-shell",
+      "newImportsAllowed": false
+    },
+    {
+      "path": "components/ui/AppSelectField.tsx",
+      "status": "migrating",
+      "replacementId": "select-field",
+      "newImportsAllowed": false
+    }
+  ],
+  "architectureLock": {
+    "status": "enforced",
+    "baseline": "config/ui/ui-architecture-lock-baseline.json",
+    "audit": "scripts/audit-ui-architecture-lock.mjs",
+    "rules": {
+      "newCssFilesAllowed": false,
+      "newPatchStyleFilesAllowed": false,
+      "importantUsageMayOnlyDecrease": true,
+      "arbitraryBreakpointUsageMayOnlyDecrease": true,
+      "arbitraryZIndexUsageMayOnlyDecrease": true,
+      "unregisteredUiFoundationFilesAllowed": false
+    }
+  }
+}

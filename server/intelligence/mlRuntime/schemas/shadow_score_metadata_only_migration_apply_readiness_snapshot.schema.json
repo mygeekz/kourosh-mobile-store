@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shadow_score_metadata_only_migration_apply_readiness_snapshot.schema.json",
+  "title": "Phase 13N Metadata-only Migration Apply Readiness Snapshot",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "snapshotKind",
+    "snapshotMode",
+    "readinessSnapshotOnly",
+    "allowed",
+    "ready",
+    "overallReadinessDecision",
+    "snapshotRows",
+    "readinessBoundary",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": { "const": "Phase 13N" },
+    "snapshotKind": { "const": "metadata_only_migration_apply_readiness_snapshot" },
+    "sourcePhases": {
+      "type": "array",
+      "prefixItems": [{ "const": "Phase 13L" }, { "const": "Phase 13M" }],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "snapshotMode": { "const": "readiness_snapshot_only_no_migration_application" },
+    "readinessSnapshotOnly": { "const": true },
+    "allowed": { "const": false },
+    "ready": { "const": false },
+    "overallReadinessDecision": {
+      "enum": [
+        "not_ready_blocked_by_phase_boundary",
+        "not_ready_blocked_by_execution_database_or_registry_boundary",
+        "not_ready_blocked_by_source_evidence_failure"
+      ]
+    },
+    "migrationApplicationAllowed": { "const": false },
+    "migrationApplicationPerformed": { "const": false },
+    "sqlExecutionAllowed": { "const": false },
+    "databaseConnectionAllowed": { "const": false },
+    "databaseWriteAllowed": { "const": false },
+    "tableCreated": { "const": false },
+    "routeExposed": { "const": false },
+    "snapshotRows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sourceRowName", "riskCategory", "readinessDecision", "allowed", "migrationApplicationAllowed"],
+        "properties": {
+          "allowed": { "const": false },
+          "migrationApplicationAllowed": { "const": false },
+          "sqlExecutionAllowed": { "const": false },
+          "databaseConnectionAllowed": { "const": false },
+          "databaseWriteAllowed": { "const": false },
+          "routeExposed": { "const": false }
+        }
+      }
+    },
+    "readinessBoundary": {
+      "type": "object",
+      "required": ["readinessSnapshotOnly", "doesNotExecuteSql", "databaseWriteAllowed", "migrationApplicationAllowed", "tableCreated"],
+      "properties": {
+        "readinessSnapshotOnly": { "const": true },
+        "doesNotExecuteSql": { "const": true },
+        "databaseWriteAllowed": { "const": false },
+        "migrationApplicationAllowed": { "const": false },
+        "tableCreated": { "const": false }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "required": ["noRuntimeSqlExecution", "noDatabaseConnection", "noDatabaseWrite", "modelExecutionAllowed", "inferenceEndpointExposed", "artifactActivationAllowed", "canMutateBusinessRecords"],
+      "properties": {
+        "noRuntimeSqlExecution": { "const": true },
+        "noDatabaseConnection": { "const": true },
+        "noDatabaseWrite": { "const": true },
+        "modelExecutionAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      }
+    }
+  }
+}

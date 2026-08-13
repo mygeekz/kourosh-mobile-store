@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kourosh.shadow_score_metadata_only_migration_apply_evidence_diff_snapshot.schema.json",
+  "title": "Kourosh Phase 13Q Metadata-only Migration Apply Evidence Diff Snapshot",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "snapshotKind",
+    "snapshotMode",
+    "diffSnapshotOnly",
+    "evidenceOnly",
+    "allowed",
+    "ready",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "routeExposed",
+    "diffRows",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13Q"
+    },
+    "snapshotKind": {
+      "const": "metadata_only_migration_apply_evidence_diff_snapshot"
+    },
+    "sourcePhase": {
+      "const": "Phase 13P"
+    },
+    "sourcePacketKind": {
+      "const": "metadata_only_migration_apply_operator_evidence_packet"
+    },
+    "snapshotMode": {
+      "const": "evidence_diff_snapshot_only_no_migration_application"
+    },
+    "diffSnapshotOnly": {
+      "const": true
+    },
+    "evidenceOnly": {
+      "const": true
+    },
+    "unsafeChangeDetected": {
+      "const": false
+    },
+    "operatorApproved": {
+      "const": false
+    },
+    "allowed": {
+      "const": false
+    },
+    "ready": {
+      "const": false
+    },
+    "migrationApplyAccepted": {
+      "const": false
+    },
+    "migrationApplicationAllowed": {
+      "const": false
+    },
+    "migrationApplicationPerformed": {
+      "const": false
+    },
+    "migrationRunnerRegistered": {
+      "const": false
+    },
+    "migrationRunnerOperational": {
+      "const": false
+    },
+    "migrationRegistryMutated": {
+      "const": false
+    },
+    "sqlTextLoadedFromDisk": {
+      "const": false
+    },
+    "sqlExecutionAllowed": {
+      "const": false
+    },
+    "databaseConnectionAllowed": {
+      "const": false
+    },
+    "databaseWriteAllowed": {
+      "const": false
+    },
+    "tableCreationApplied": {
+      "const": false
+    },
+    "tableCreated": {
+      "const": false
+    },
+    "repositoryWriteAllowed": {
+      "const": false
+    },
+    "routeExposed": {
+      "const": false
+    },
+    "blockedInvariantPreserved": {
+      "const": true
+    },
+    "safetyRelevantChangeCount": {
+      "const": 0
+    },
+    "changedRowCount": {
+      "const": 0
+    },
+    "diffRows": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "field",
+          "baselineValue",
+          "currentValue",
+          "diffStatus",
+          "valueChanged",
+          "safetyRelevant",
+          "blockedInvariant",
+          "blockedInvariantPreserved",
+          "migrationApplicationAllowed",
+          "sqlExecutionAllowed",
+          "databaseConnectionAllowed",
+          "databaseWriteAllowed",
+          "routeExposed",
+          "businessMutationAllowed"
+        ],
+        "properties": {
+          "diffStatus": {
+            "enum": [
+              "unchanged_blocked",
+              "changed_still_blocked"
+            ]
+          },
+          "valueChanged": {
+            "const": false
+          },
+          "safetyRelevant": {
+            "const": true
+          },
+          "blockedInvariant": {
+            "const": true
+          },
+          "blockedInvariantPreserved": {
+            "const": true
+          },
+          "migrationApplicationAllowed": {
+            "const": false
+          },
+          "sqlExecutionAllowed": {
+            "const": false
+          },
+          "databaseConnectionAllowed": {
+            "const": false
+          },
+          "databaseWriteAllowed": {
+            "const": false
+          },
+          "routeExposed": {
+            "const": false
+          },
+          "businessMutationAllowed": {
+            "const": false
+          }
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "diffSnapshotOnly": {
+          "const": true
+        },
+        "noRuntimeSqlExecution": {
+          "const": true
+        },
+        "noDatabaseConnection": {
+          "const": true
+        },
+        "noDatabaseWrite": {
+          "const": true
+        },
+        "noMigrationApplication": {
+          "const": true
+        },
+        "modelExecutionAllowed": {
+          "const": false
+        },
+        "inferenceEndpointExposed": {
+          "const": false
+        },
+        "artifactActivationAllowed": {
+          "const": false
+        },
+        "canMutateBusinessRecords": {
+          "const": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,409 @@
+/* Phase 81 — Partner / Customer Detail Redesign Pass 1
+   Scoped executive polish for people detail pages only. No behavioral selectors. */
+
+.people-detail-redesign-v1 {
+  --people-detail-surface: rgba(255, 255, 255, 0.92);
+  --people-detail-surface-soft: rgba(248, 250, 252, 0.88);
+  --people-detail-border: rgba(148, 163, 184, 0.24);
+  --people-detail-border-strong: rgba(100, 116, 139, 0.28);
+  --people-detail-text: rgb(15, 23, 42);
+  --people-detail-muted: rgb(100, 116, 139);
+  --people-detail-shadow: 0 20px 55px rgba(15, 23, 42, 0.07);
+  --people-detail-shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.045);
+  --people-detail-radius-xl: 30px;
+  --people-detail-radius-lg: 24px;
+  --people-detail-accent: rgb(79, 70, 229);
+  --people-detail-accent-soft: rgba(99, 102, 241, 0.10);
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  padding-bottom: 1.25rem;
+}
+
+.people-detail-redesign-v1::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(99, 102, 241, 0.105), transparent 26rem),
+    radial-gradient(circle at 15% 32%, rgba(14, 165, 233, 0.075), transparent 22rem),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.72), rgba(255, 255, 255, 0));
+}
+
+.dark .people-detail-redesign-v1 {
+  --people-detail-surface: rgba(15, 23, 42, 0.86);
+  --people-detail-surface-soft: rgba(2, 6, 23, 0.52);
+  --people-detail-border: rgba(148, 163, 184, 0.18);
+  --people-detail-border-strong: rgba(148, 163, 184, 0.26);
+  --people-detail-text: rgb(248, 250, 252);
+  --people-detail-muted: rgb(148, 163, 184);
+  --people-detail-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
+  --people-detail-shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.22);
+  --people-detail-accent-soft: rgba(129, 140, 248, 0.12);
+}
+
+.dark .people-detail-redesign-v1::before {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(129, 140, 248, 0.14), transparent 26rem),
+    radial-gradient(circle at 16% 36%, rgba(56, 189, 248, 0.08), transparent 22rem),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.44), rgba(2, 6, 23, 0));
+}
+
+.people-detail-redesign-v1 .detail-hero-card,
+.people-detail-redesign-v1 .customer-detail-hero,
+.people-detail-redesign-v1 .partner-detail-hero-clean {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--people-detail-border) !important;
+  border-radius: var(--people-detail-radius-xl) !important;
+  background: linear-gradient(180deg, var(--people-detail-surface), var(--people-detail-surface-soft)) !important;
+  box-shadow: var(--people-detail-shadow) !important;
+  backdrop-filter: blur(14px);
+}
+
+.people-detail-redesign-v1 .detail-hero-card::after,
+.people-detail-redesign-v1 .partner-detail-hero-clean::after,
+.people-detail-redesign-v1 .customer-detail-hero::after {
+  content: "";
+  position: absolute;
+  inset-inline: 1.35rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.42), transparent);
+  pointer-events: none;
+}
+
+.people-detail-redesign-v1 .detail-hero-card__icon,
+.people-detail-redesign-v1 .partner-detail-hero__avatar,
+.people-detail-redesign-v1 .customer-detail-hero .detail-hero-card__icon {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 14px 26px rgba(79, 70, 229, 0.13) !important;
+}
+
+.people-detail-redesign-v1 .partner-detail-hero__top,
+.people-detail-redesign-v1 .customer-detail-hero__top,
+.people-detail-redesign-v1 .detail-hero-card__head {
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.people-detail-redesign-v1 .partner-detail-actions,
+.people-detail-redesign-v1 .customer-detail-actions {
+  gap: .55rem !important;
+  align-items: center;
+}
+
+.people-detail-redesign-v1 .people-action-btn,
+.people-detail-redesign-v1 .partner-detail-action-btn,
+.people-detail-redesign-v1 .customer-detail-actions button,
+.people-detail-redesign-v1 .partner-detail-actions button {
+  border-radius: 999px !important;
+  min-height: 2.35rem;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.06) !important;
+}
+
+.people-detail-redesign-v1 .people-action-btn:focus-visible,
+.people-detail-redesign-v1 button:focus-visible,
+.people-detail-redesign-v1 input:focus-visible,
+.people-detail-redesign-v1 textarea:focus-visible,
+.people-detail-redesign-v1 select:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.20), 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+}
+
+.people-detail-redesign-v1 .detail-account-focus,
+.people-detail-redesign-v1 .partner-detail-account-focus {
+  border: 1px solid var(--people-detail-border) !important;
+  border-radius: var(--people-detail-radius-xl) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.92)) !important;
+  box-shadow: var(--people-detail-shadow-soft) !important;
+  overflow: hidden;
+}
+
+.dark .people-detail-redesign-v1 .detail-account-focus,
+.dark .people-detail-redesign-v1 .partner-detail-account-focus {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.86), rgba(2, 6, 23, 0.62)) !important;
+}
+
+.people-detail-redesign-v1 .detail-account-focus__label,
+.people-detail-redesign-v1 .detail-account-focus__hint,
+.people-detail-redesign-v1 .partner-phone-capital-description,
+.people-detail-redesign-v1 .partner-phone-capital-summary-note {
+  color: var(--people-detail-muted) !important;
+}
+
+.people-detail-redesign-v1 .detail-account-focus__value,
+.people-detail-redesign-v1 .partner-phone-capital-summary-value,
+.people-detail-redesign-v1 .partner-phone-capital-metric-value {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+}
+
+.people-detail-redesign-v1 .detail-account-focus__metrics span,
+.people-detail-redesign-v1 .partner-phone-capital-eyebrow,
+.people-detail-redesign-v1 .partner-capital-detail-table-section {
+  border-color: var(--people-detail-border) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+.dark .people-detail-redesign-v1 .detail-account-focus__metrics span,
+.dark .people-detail-redesign-v1 .partner-phone-capital-eyebrow,
+.dark .people-detail-redesign-v1 .partner-capital-detail-table-section {
+  background: rgba(15, 23, 42, 0.62) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.people-detail-redesign-v1 .detail-card,
+.people-detail-redesign-v1 .partner-detail-section-shell,
+.people-detail-redesign-v1 .people-ledger-grid,
+.people-detail-redesign-v1 .partner-ledger-quick-summary,
+.people-detail-redesign-v1 .partner-phone-capital-section,
+.people-detail-redesign-v1 .partner-phone-capital-summary-card,
+.people-detail-redesign-v1 .partner-phone-capital-metric,
+.people-detail-redesign-v1 .partner-capital-detail-table-section,
+.people-detail-redesign-v1 .partner-phone-capital-table-scroll {
+  border-color: var(--people-detail-border) !important;
+  border-radius: var(--people-detail-radius-lg) !important;
+  background: var(--people-detail-surface) !important;
+  box-shadow: var(--people-detail-shadow-soft) !important;
+}
+
+.people-detail-redesign-v1 .partner-phone-capital-section {
+  padding: 1.15rem !important;
+  margin-inline: 1.25rem !important;
+}
+
+.people-detail-redesign-v1 .partner-phone-capital-header,
+.people-detail-redesign-v1 .partner-phone-capital-metrics {
+  gap: .85rem !important;
+}
+
+.people-detail-redesign-v1 .partner-phone-capital-title,
+.people-detail-redesign-v1 .partner-ledger-quick-summary h3,
+.people-detail-redesign-v1 .detail-card h3,
+.people-detail-redesign-v1 .partner-detail-section-shell h3 {
+  color: var(--people-detail-text) !important;
+  letter-spacing: -0.025em;
+}
+
+.people-detail-redesign-v1 .partner-capital-compact-table,
+.people-detail-redesign-v1 .people-ledger-grid table,
+.people-detail-redesign-v1 table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.people-detail-redesign-v1 .partner-capital-compact-table thead th,
+.people-detail-redesign-v1 .people-ledger-grid thead th,
+.people-detail-redesign-v1 table thead th {
+  background: rgba(248, 250, 252, 0.88) !important;
+  color: rgb(71, 85, 105) !important;
+  border-bottom: 1px solid var(--people-detail-border) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.01em;
+}
+
+.dark .people-detail-redesign-v1 .partner-capital-compact-table thead th,
+.dark .people-detail-redesign-v1 .people-ledger-grid thead th,
+.dark .people-detail-redesign-v1 table thead th {
+  background: rgba(15, 23, 42, 0.82) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.people-detail-redesign-v1 .partner-capital-compact-table tbody td,
+.people-detail-redesign-v1 .people-ledger-grid tbody td,
+.people-detail-redesign-v1 table tbody td {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.72) !important;
+  vertical-align: middle;
+}
+
+.dark .people-detail-redesign-v1 .partner-capital-compact-table tbody td,
+.dark .people-detail-redesign-v1 .people-ledger-grid tbody td,
+.dark .people-detail-redesign-v1 table tbody td {
+  border-bottom-color: rgba(51, 65, 85, 0.68) !important;
+}
+
+.people-detail-redesign-v1 .partner-capital-compact-table tbody tr,
+.people-detail-redesign-v1 .people-ledger-grid tbody tr,
+.people-detail-redesign-v1 table tbody tr {
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.people-detail-redesign-v1 .partner-capital-compact-table tbody tr:hover,
+.people-detail-redesign-v1 .people-ledger-grid tbody tr:hover,
+.people-detail-redesign-v1 table tbody tr:hover {
+  background: rgba(99, 102, 241, 0.045) !important;
+}
+
+.people-detail-redesign-v1 .partner-system-id-value,
+.people-detail-redesign-v1 .partner-capital-system-id,
+.people-detail-redesign-v1 [dir="ltr"],
+.people-detail-redesign-v1 .font-mono {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.people-detail-redesign-v1 .partner-capital-status-chip,
+.people-detail-redesign-v1 .partner-telegram-status-chip,
+.people-detail-redesign-v1 .people-ledger-type-badge,
+.people-detail-redesign-v1 .financial-status-badge,
+.people-detail-redesign-v1 [class*="status-chip"] {
+  border-radius: 999px !important;
+  min-height: 1.75rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.people-detail-redesign-v1 .ledger-actions-row,
+.people-detail-redesign-v1 .partner-capital-actions,
+.people-detail-redesign-v1 .partner-ledger-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem !important;
+}
+
+.people-detail-redesign-v1 .ledger-actions-row button,
+.people-detail-redesign-v1 .partner-capital-actions button,
+.people-detail-redesign-v1 .partner-ledger-card-actions button {
+  border-radius: 999px !important;
+  min-height: 2rem;
+}
+
+.people-detail-redesign-v1 .people-ledger-timeline-index-fallback,
+.people-detail-redesign-v1 .partner-ledger-entry-metric,
+.people-detail-redesign-v1 .partner-ledger-quick-item {
+  border-color: var(--people-detail-border) !important;
+  background: rgba(248, 250, 252, 0.76) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+
+.dark .people-detail-redesign-v1 .people-ledger-timeline-index-fallback,
+.dark .people-detail-redesign-v1 .partner-ledger-entry-metric,
+.dark .people-detail-redesign-v1 .partner-ledger-quick-item {
+  background: rgba(15, 23, 42, 0.64) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .035);
+}
+
+.people-detail-redesign-v1 input,
+.people-detail-redesign-v1 textarea,
+.people-detail-redesign-v1 select {
+  border-color: var(--people-detail-border) !important;
+  border-radius: 18px !important;
+  background-color: rgba(255, 255, 255, 0.86) !important;
+}
+
+.dark .people-detail-redesign-v1 input,
+.dark .people-detail-redesign-v1 textarea,
+.dark .people-detail-redesign-v1 select {
+  background-color: rgba(15, 23, 42, 0.72) !important;
+  color: rgb(248, 250, 252) !important;
+}
+
+.people-detail-redesign-v1 ::placeholder {
+  color: rgba(100, 116, 139, 0.78) !important;
+}
+
+.dark .people-detail-redesign-v1 ::placeholder {
+  color: rgba(148, 163, 184, 0.82) !important;
+}
+
+.people-detail-redesign-v1 .customer-detail-hero .inline-flex,
+.people-detail-redesign-v1 .partner-detail-hero-clean .inline-flex {
+  max-width: 100%;
+}
+
+@media (max-width: 1366px) {
+  .people-detail-redesign-v1 {
+    --people-detail-radius-xl: 26px;
+    --people-detail-radius-lg: 22px;
+  }
+
+  .people-detail-redesign-v1 .partner-phone-capital-section,
+  .people-detail-redesign-v1 .partner-detail-section-shell {
+    margin-inline: .75rem !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .people-detail-redesign-v1 .partner-detail-actions,
+  .people-detail-redesign-v1 .customer-detail-actions {
+    justify-content: flex-start !important;
+    max-width: none !important;
+  }
+
+  .people-detail-redesign-v1 .detail-account-focus,
+  .people-detail-redesign-v1 .partner-detail-account-focus {
+    padding: 1rem !important;
+  }
+
+  .people-detail-redesign-v1 .partner-phone-capital-header {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .people-detail-redesign-v1 {
+    --people-detail-radius-xl: 22px;
+    --people-detail-radius-lg: 20px;
+    gap: 1rem !important;
+  }
+
+  .people-detail-redesign-v1 .detail-hero-card,
+  .people-detail-redesign-v1 .customer-detail-hero,
+  .people-detail-redesign-v1 .partner-detail-hero-clean,
+  .people-detail-redesign-v1 .detail-card,
+  .people-detail-redesign-v1 .partner-detail-section-shell,
+  .people-detail-redesign-v1 .partner-phone-capital-section {
+    padding: 1rem !important;
+    margin-inline: 0 !important;
+  }
+
+  .people-detail-redesign-v1 .people-action-btn,
+  .people-detail-redesign-v1 .partner-detail-action-btn,
+  .people-detail-redesign-v1 .customer-detail-actions button,
+  .people-detail-redesign-v1 .partner-detail-actions button {
+    flex: 1 1 11rem;
+    justify-content: center;
+  }
+
+  .people-detail-redesign-v1 .partner-capital-actions,
+  .people-detail-redesign-v1 .ledger-actions-row {
+    justify-content: stretch !important;
+  }
+
+  .people-detail-redesign-v1 .partner-capital-actions button,
+  .people-detail-redesign-v1 .ledger-actions-row button {
+    flex: 1 1 8rem;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .people-detail-redesign-v1 .detail-account-focus__metrics,
+  .people-detail-redesign-v1 .partner-phone-capital-metrics,
+  .people-detail-redesign-v1 .partner-ledger-entry-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .people-detail-redesign-v1 .partner-telegram-status-chip,
+  .people-detail-redesign-v1 .detail-hero-card__head span,
+  .people-detail-redesign-v1 .partner-detail-hero-clean span,
+  .people-detail-redesign-v1 .customer-detail-hero span {
+    white-space: normal !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .people-detail-redesign-v1 *,
+  .people-detail-redesign-v1 *::before,
+  .people-detail-redesign-v1 *::after {
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+  }
+}

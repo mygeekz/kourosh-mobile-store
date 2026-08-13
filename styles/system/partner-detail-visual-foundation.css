@@ -1,0 +1,693 @@
+/* Stage 111 — PartnerDetail safe top actions final
+   Root cause from screenshot:
+   The top action strip is kept in the correct place, but its total width can exceed
+   the safe space and get clipped on the physical left. The profile area also has
+   chips/text that increase min-content width and push actions outward.
+
+   Final contract:
+   - actions stay in the top header area like CustomerDetail
+   - actions render as a compact 2-column grid inside a safe fixed/flexible column
+   - profile column can actually shrink
+   - no overlay/transparency/pseudo layer can wash out the buttons
+*/
+
+.partner-detail-apple,
+.partner-detail-apple * {
+  box-sizing: border-box !important;
+}
+
+.partner-detail-apple {
+  overflow-x: clip !important;
+}
+
+/* Solid hero card with no visual overlay. */
+.partner-detail-apple .partner-detail-hero-clean,
+.partner-detail-apple .detail-hero-card.partner-detail-hero-clean {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.partner-detail-apple .partner-detail-hero-clean::before,
+.partner-detail-apple .partner-detail-hero-clean::after,
+.partner-detail-apple .detail-hero-card.partner-detail-hero-clean::before,
+.partner-detail-apple .detail-hero-card.partner-detail-hero-clean::after,
+.partner-detail-apple .partner-detail-hero-clean > .pointer-events-none,
+.partner-detail-apple .partner-detail-hero-clean > [class*="absolute"][class*="inset-0"],
+.partner-detail-apple .partner-detail-hero-clean > [class*="bg-gradient"],
+.partner-detail-apple .partner-detail-hero-clean > [class*="blur"],
+.partner-detail-apple .partner-detail-hero-clean > [class*="opacity"] {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+  background: transparent !important;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.partner-detail-apple .partner-detail-hero-clean > *,
+.partner-detail-apple .partner-detail-hero-clean .detail-hero-card__head {
+  position: relative !important;
+  z-index: 5 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  overflow: visible !important;
+}
+
+/* Header layout: same top placement, but profile can shrink and actions have safe width. */
+.partner-detail-apple .partner-detail-hero__top {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .partner-detail-apple .partner-detail-hero__top {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* The profile area must not push actions outside. */
+.partner-detail-apple .partner-detail-hero__top > :first-child {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  flex: 1 1 0 !important;
+  overflow: visible !important;
+}
+
+@media (min-width: 1024px) {
+  .partner-detail-apple .partner-detail-hero__top > :first-child {
+    max-width: calc(100% - 460px) !important;
+  }
+}
+
+.partner-detail-apple .partner-detail-hero__top > :first-child > * {
+  min-width: 0 !important;
+}
+
+.partner-detail-apple .partner-detail-hero__top > :first-child .space-y-2,
+.partner-detail-apple .partner-detail-hero__top > :first-child .mt-3 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.partner-detail-apple .partner-detail-hero__top > :first-child .mt-3 {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+}
+
+/* Top actions: safe compact grid, no left clipping. */
+.partner-detail-apple .partner-detail-actions--customer-parity,
+.partner-detail-apple .partner-detail-actions {
+  position: relative !important;
+  z-index: 30 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .55rem !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+
+  width: min(100%, 430px) !important;
+  min-width: 0 !important;
+  max-width: 430px !important;
+  flex: 0 0 min(100%, 430px) !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: auto !important;
+}
+
+.partner-detail-apple .partner-detail-actions--customer-parity .people-action-btn,
+.partner-detail-apple .partner-detail-actions .people-action-btn,
+.partner-detail-apple .partner-detail-actions--customer-parity button,
+.partner-detail-apple .partner-detail-actions button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding-inline: .58rem !important;
+  border-radius: 15px !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1 !important;
+  font-size: 10.8px !important;
+  font-weight: 850 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-clip: padding-box !important;
+}
+
+.partner-detail-apple .partner-detail-actions--customer-parity .ux-btn__content,
+.partner-detail-apple .partner-detail-actions .ux-btn__content,
+.partner-detail-apple .partner-detail-actions--customer-parity .btn__content,
+.partner-detail-apple .partner-detail-actions .btn__content {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.partner-detail-apple .partner-detail-actions--customer-parity i,
+.partner-detail-apple .partner-detail-actions i,
+.partner-detail-apple .partner-detail-actions svg {
+  flex: 0 0 auto !important;
+}
+
+.partner-detail-apple .partner-detail-actions--customer-parity *,
+.partner-detail-apple .partner-detail-actions * {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-detail-apple .partner-detail-hero__top > :first-child {
+    max-width: 100% !important;
+  }
+
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-basis: 100% !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+html.dark .partner-detail-apple .partner-detail-hero-clean,
+html.dark .partner-detail-apple .detail-hero-card.partner-detail-hero-clean {
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+/* Stage 112 — PartnerDetail solid visual reset
+   Scope: visual clarity only. No button relocation.
+   Problem:
+   PartnerDetail inherited multiple old translucent people/detail rules:
+   - semi-transparent rgba surfaces
+   - bg-white/90 chips
+   - muted text colors
+   - possible pseudo/overlay layers
+   Result: cards/text look washed out compared with the rest of the app.
+
+   Contract:
+   - PartnerDetail surfaces are solid
+   - text contrast is restored
+   - no opacity/filter/backdrop/mix-blend/mask on hero/card content
+   - buttons and chips remain fully opaque
+*/
+
+.partner-detail-apple {
+  --partner-solid-bg: #ffffff;
+  --partner-solid-soft: #f8fafc;
+  --partner-solid-border: #e2e8f0;
+  --partner-solid-text: #0f172a;
+  --partner-solid-muted: #475569;
+  --partner-solid-subtle: #64748b;
+  color: var(--partner-solid-text) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.dark .partner-detail-apple {
+  --partner-solid-bg: #020617;
+  --partner-solid-soft: #0f172a;
+  --partner-solid-border: #1e293b;
+  --partner-solid-text: #f8fafc;
+  --partner-solid-muted: #cbd5e1;
+  --partner-solid-subtle: #94a3b8;
+}
+
+/* Solid main cards/surfaces in PartnerDetail. */
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card,
+  .people-ledger-grid,
+  section,
+  article
+) {
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+}
+
+/* Important: solidify the surfaces that old CSS made rgba/gradient. */
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus
+) {
+  background: var(--partner-solid-bg) !important;
+  background-color: var(--partner-solid-bg) !important;
+  background-image: none !important;
+  border-color: var(--partner-solid-border) !important;
+  box-shadow: 0 18px 46px -38px rgba(15, 23, 42, .22) !important;
+}
+
+/* Kill decorative layers/pseudo-elements that can create a haze over content. */
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus)::before,
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus)::after,
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus) > .pointer-events-none,
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus) > [class*="absolute"][class*="inset-0"],
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus) > [class*="bg-gradient"],
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus) > [class*="blur"],
+.partner-detail-apple :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus) > [class*="opacity"] {
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+  background: transparent !important;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Real content is always above background and fully opaque. */
+.partner-detail-apple :where(
+  .detail-hero-card__head,
+  .partner-detail-hero__top,
+  .partner-detail-actions,
+  .partner-detail-actions--customer-parity,
+  .detail-account-focus > *,
+  .partner-detail-account-focus > *
+) {
+  position: relative !important;
+  z-index: 10 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Restore readable text contrast only in PartnerDetail. */
+.partner-detail-apple :where(h1, h2, h3, h4, .font-black, .font-bold) {
+  color: var(--partner-solid-text) !important;
+  opacity: 1 !important;
+}
+
+.partner-detail-apple :where(p, small, .text-slate-500, .text-slate-400, .text-gray-500, .text-gray-400) {
+  color: var(--partner-solid-muted) !important;
+  opacity: 1 !important;
+}
+
+/* Make chips solid instead of bg-white/90 or translucent rgba. */
+.partner-detail-apple :where(
+  .rounded-full,
+  .people-chip,
+  .financial-status-badge,
+  .detail-account-focus__metrics span
+) {
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.partner-detail-apple :where(
+  span[class*="bg-white/"],
+  span[class*="bg-slate-"],
+  .people-chip,
+  .detail-account-focus__metrics span
+) {
+  background: var(--partner-solid-soft) !important;
+  background-color: var(--partner-solid-soft) !important;
+  background-image: none !important;
+  border-color: var(--partner-solid-border) !important;
+  color: var(--partner-solid-muted) !important;
+}
+
+/* Keep danger/success chips readable but solid. */
+.partner-detail-apple :where([class*="text-rose"], [class*="text-red"]) {
+  color: #be123c !important;
+}
+
+.partner-detail-apple :where([class*="text-emerald"], [class*="text-green"]) {
+  color: #047857 !important;
+}
+
+.partner-detail-apple :where([class*="bg-rose"], [class*="bg-red"]) {
+  background: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+}
+
+.partner-detail-apple :where([class*="bg-emerald"], [class*="bg-green"]) {
+  background: #ecfdf5 !important;
+  border-color: #bbf7d0 !important;
+}
+
+/* Buttons: full opacity, solid background, no inherited haze. */
+.partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn),
+.partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn) * {
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn) {
+  background-clip: padding-box !important;
+  z-index: 20 !important;
+}
+
+/* Make account summary clearer; old CSS used rgba(.76) and gradients. */
+.partner-detail-apple .partner-detail-account-focus,
+.partner-detail-apple .detail-account-focus.partner-detail-account-focus {
+  background: var(--partner-solid-bg) !important;
+  background-color: var(--partner-solid-bg) !important;
+  background-image: none !important;
+}
+
+.partner-detail-apple .partner-detail-account-focus .people-chip {
+  background: var(--partner-solid-soft) !important;
+  border-color: var(--partner-solid-border) !important;
+}
+
+/* Avoid global detail-page-shell repair styles from dimming partner detail internals. */
+.partner-detail-apple :where(input, textarea, select, button, a) {
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* Dark theme adjustments. */
+html.dark .partner-detail-apple :where([class*="bg-rose"], [class*="bg-red"]) {
+  background: rgba(127, 29, 29, .34) !important;
+  border-color: rgba(244, 63, 94, .34) !important;
+  color: #fecdd3 !important;
+}
+
+html.dark .partner-detail-apple :where([class*="bg-emerald"], [class*="bg-green"]) {
+  background: rgba(6, 78, 59, .34) !important;
+  border-color: rgba(52, 211, 153, .34) !important;
+  color: #bbf7d0 !important;
+}
+
+html.dark .partner-detail-apple :where(.text-rose-700, .text-red-700, [class*="text-rose"], [class*="text-red"]) {
+  color: #fecdd3 !important;
+}
+
+html.dark .partner-detail-apple :where(.text-emerald-700, .text-green-700, [class*="text-emerald"], [class*="text-green"]) {
+  color: #bbf7d0 !important;
+}
+/* Stage 113 — PartnerDetail page stack/clip cleanup
+   If opacity/filter resets don't change the visual haze, the issue is usually not the child card.
+   It is a parent stacking/clip/overflow/sidebar overlay problem.
+
+   Scope: PartnerDetail only.
+   Goals:
+   - keep the content above any faded/overlay layer
+   - prevent the page from sliding under the left app/sidebar area
+   - remove inherited transforms/filters/opacity from the PartnerDetail page tree
+   - make every partner-detail surface solid
+*/
+
+/* Page root: create a clean stacking context above old overlays. */
+.detail-page-shell.people-detail-apple.partner-detail-apple {
+  position: relative !important;
+  z-index: 20 !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  mix-blend-mode: normal !important;
+  overflow: visible !important;
+  overflow-x: clip !important;
+  background: transparent !important;
+  max-width: min(1280px, calc(100vw - 24px)) !important;
+  width: min(1280px, calc(100vw - 24px)) !important;
+  margin-inline: auto !important;
+  padding-inline: clamp(.75rem, 1.15vw, 1.25rem) !important;
+}
+
+/* Any direct child in partner detail must render above decorative layout layers. */
+.detail-page-shell.people-detail-apple.partner-detail-apple > * {
+  position: relative !important;
+  z-index: 2 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Remove any page-level decorative/gradient overlay children. */
+.detail-page-shell.people-detail-apple.partner-detail-apple > .pointer-events-none,
+.detail-page-shell.people-detail-apple.partner-detail-apple > [class*="absolute"][class*="inset-0"],
+.detail-page-shell.people-detail-apple.partner-detail-apple > [class*="bg-gradient"],
+.detail-page-shell.people-detail-apple.partner-detail-apple > [class*="blur"],
+.detail-page-shell.people-detail-apple.partner-detail-apple > [class*="opacity"],
+.detail-page-shell.people-detail-apple.partner-detail-apple::before,
+.detail-page-shell.people-detail-apple.partner-detail-apple::after {
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+  background: transparent !important;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* The hero and all major blocks must be opaque, solid and above overlay layers. */
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card,
+  .people-ledger-grid,
+  .detail-stat-card
+) {
+  position: relative !important;
+  z-index: 5 !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  transform: none !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+/* The old repair/detail CSS uses very broad .detail-page-shell selectors.
+   Force all content inside the partner hero/account panels to be fully opaque. */
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus
+) * {
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Kill pseudo/decorative layers inside major blocks. */
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card
+)::before,
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card
+)::after,
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card
+) > .pointer-events-none,
+.partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card
+) > [class*="absolute"][class*="inset-0"] {
+  content: none !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+}
+
+/* Make texts readable if old text-slate-* rules made them too pale. */
+.partner-detail-apple :where(h1, h2, h3, h4, strong, .font-black, .font-bold) {
+  color: rgb(15 23 42) !important;
+}
+
+.partner-detail-apple :where(p, small, .text-slate-500, .text-slate-400, .text-gray-500, .text-gray-400) {
+  color: rgb(71 85 105) !important;
+}
+
+/* Solid chips instead of translucent bg-white/90 */
+.partner-detail-apple :where(span[class*="bg-white/"], .people-chip, .financial-status-badge, .detail-account-focus__metrics span) {
+  background: rgb(248 250 252) !important;
+  background-color: rgb(248 250 252) !important;
+  background-image: none !important;
+  border-color: rgb(226 232 240) !important;
+  color: rgb(71 85 105) !important;
+  opacity: 1 !important;
+}
+
+/* Keep danger/settlement tones readable. */
+.partner-detail-apple :where([class*="text-rose"], [class*="text-red"]) {
+  color: rgb(190 18 60) !important;
+}
+.partner-detail-apple :where([class*="bg-rose"], [class*="bg-red"]) {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(254 205 211) !important;
+}
+
+/* Action buttons: solid/opaque and above card surfaces. */
+.partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) {
+  position: relative !important;
+  z-index: 50 !important;
+}
+
+.partner-detail-apple :where(.partner-detail-actions, .partner-detail-actions--customer-parity) :where(button, .ux-btn, .people-action-btn) {
+  position: relative !important;
+  z-index: 51 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Hard guard against app/sidebar overlay covering the first pixels of partner page content. */
+@media (min-width: 1024px) {
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    padding-left: max(1.25rem, env(safe-area-inset-left)) !important;
+  }
+}
+
+html.dark .partner-detail-apple :where(
+  .detail-hero-card,
+  .partner-detail-hero-clean,
+  .detail-account-focus,
+  .partner-detail-account-focus,
+  .detail-card,
+  .people-panel-card,
+  .people-ledger-grid,
+  .detail-stat-card
+) {
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+  background-image: none !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-detail-apple :where(h1, h2, h3, h4, strong, .font-black, .font-bold) {
+  color: rgb(248 250 252) !important;
+}
+html.dark .partner-detail-apple :where(p, small, .text-slate-500, .text-slate-400, .text-gray-500, .text-gray-400) {
+  color: rgb(203 213 225) !important;
+}
+html.dark .partner-detail-apple :where(span[class*="bg-white/"], .people-chip, .financial-status-badge, .detail-account-focus__metrics span) {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+  color: rgb(203 213 225) !important;
+}

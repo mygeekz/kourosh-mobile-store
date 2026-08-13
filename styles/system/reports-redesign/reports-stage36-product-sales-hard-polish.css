@@ -1,0 +1,386 @@
+/* Stage 36 — Product sales hard polish
+   Scope: reports/product-sales + report search/date primitives. No API/calculation changes. */
+
+/* Global report search standard: icon on the left, RTL text on the right */
+.report-merged-page input[type="search"],
+.reports-single-title-body input[type="search"],
+.ux-toolbar-search__input,
+.kp-search-field__input {
+  text-align: right !important;
+  padding-right: 1rem !important;
+  padding-left: 2.65rem !important;
+}
+.report-merged-page .kp-search-field__icon,
+.report-merged-page .ux-toolbar-search__icon,
+.reports-single-title-body .kp-search-field__icon,
+.reports-single-title-body .ux-toolbar-search__icon {
+  left: .9rem !important;
+  right: auto !important;
+}
+
+/* Preset chips should shrink to content after removing 30-day option */
+.report-merged-page .report-date-presets,
+.reports-single-title-body .report-date-presets {
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  flex: 0 0 auto !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.report-merged-page .report-date-presets__chips,
+.reports-single-title-body .report-date-presets__chips {
+  display: inline-flex !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  gap: .45rem !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  border-radius: 18px !important;
+  background: rgba(248, 250, 252, .82) !important;
+  padding: .32rem !important;
+  box-shadow: none !important;
+}
+.report-merged-page .report-date-preset-chip,
+.reports-single-title-body .report-date-preset-chip {
+  min-height: 34px !important;
+  width: auto !important;
+  flex: 0 0 auto !important;
+  border-radius: 14px !important;
+  padding: 0 .82rem !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page {
+  --ps-border: rgba(148, 163, 184, .34);
+  --ps-surface-solid: #fff;
+  --ps-surface-soft: rgba(248, 250, 252, .86);
+  --ps-text: #0f172a;
+  --ps-muted: #64748b;
+  --ps-blue: #2563eb;
+  --ps-green: #059669;
+  --ps-orange: #d97706;
+  --ps-red: #e11d48;
+}
+
+/* Remove PageKit's bulky filter shell for this page; we use the custom panel below. */
+.product-sales-executive-page .responsive-filter-bar,
+.product-sales-executive-page [data-ui-responsive-filter-bar] {
+  display: none !important;
+}
+
+.product-sales-control-panel {
+  display: grid;
+  gap: .75rem;
+  margin-bottom: .95rem;
+  padding: .8rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 22px;
+  background: var(--ps-surface-solid);
+  box-shadow: none;
+}
+.product-sales-control-panel__search {
+  position: relative;
+  width: min(100%, 34rem);
+  justify-self: end;
+}
+.product-sales-control-panel__search i {
+  position: absolute;
+  left: .95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: .78rem;
+  pointer-events: none;
+}
+.product-sales-control-panel__search input {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--ps-border);
+  border-radius: 15px;
+  background: #fff;
+  color: var(--ps-text);
+  font-size: .78rem;
+  font-weight: 800;
+  outline: none;
+  padding: 0 1rem 0 2.75rem;
+  box-shadow: none;
+}
+.product-sales-control-panel__search input:focus {
+  border-color: rgba(37, 99, 235, .42);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, .07);
+}
+.product-sales-control-panel__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: flex-end;
+  gap: .65rem;
+}
+.product-sales-control-panel__row--dates .product-sales-date-presets {
+  align-self: center;
+}
+.product-sales-control-panel__row--dates .report-date-presets__chips {
+  min-height: 42px !important;
+}
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 0 12.8rem !important;
+  min-width: 12.8rem !important;
+  max-width: 12.8rem !important;
+}
+.product-sales-executive-page .product-sales-date-field.report-filter-field,
+.product-sales-executive-page .product-sales-date-field .report-filter-field__body,
+.product-sales-executive-page .product-sales-date-field .app-date-field,
+.product-sales-executive-page .product-sales-date-field .app-date-field__control {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  height: auto !important;
+  min-height: 0 !important;
+  margin-bottom: .32rem !important;
+  padding: 0 .45rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.product-sales-executive-page .report-simple-date-input,
+.product-sales-executive-page .report-simple-date-input .app-date-field__input,
+.product-sales-executive-page .report-simple-date-input input[data-app-date-input="true"] {
+  height: 42px !important;
+  min-height: 42px !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+}
+.product-sales-executive-page .report-simple-date-input {
+  border: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+.product-sales-executive-page .report-simple-date-input .app-date-field__input,
+.product-sales-executive-page .report-simple-date-input input[data-app-date-input="true"] {
+  border: 1px solid var(--ps-border) !important;
+  background: #fff !important;
+  color: var(--ps-text) !important;
+  text-align: center !important;
+  font-size: .82rem !important;
+  font-weight: 850 !important;
+  padding-inline: 2.1rem .8rem !important;
+}
+.product-sales-executive-page .report-simple-date-input .app-date-field__icon {
+  left: auto !important;
+  right: .75rem !important;
+  color: #64748b !important;
+}
+.product-sales-refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: 42px;
+  width: max-content;
+  padding: 0 .95rem;
+  border: 1px solid rgba(15, 23, 42, .12);
+  border-radius: 15px;
+  background: #0f172a;
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.product-sales-refresh-button:disabled { opacity: .58; cursor: not-allowed; }
+
+.product-sales-segment {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  min-height: 42px;
+  width: max-content;
+  max-width: 100%;
+  padding: .32rem;
+  border: 1px solid var(--ps-border);
+  border-radius: 17px;
+  background: var(--ps-surface-soft);
+}
+.product-sales-segment__label {
+  padding-inline: .6rem .35rem;
+  color: var(--ps-muted);
+  font-size: .68rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.product-sales-segment button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  min-height: 34px;
+  width: max-content;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: #475569;
+  padding: 0 .7rem;
+  font-size: .72rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.product-sales-segment button small {
+  color: #94a3b8;
+  font-size: .62rem;
+  font-weight: 900;
+}
+.product-sales-segment button.is-active {
+  background: #fff;
+  color: var(--ps-blue);
+  box-shadow: 0 1px 0 rgba(15, 23, 42, .04);
+}
+.product-sales-segment--profit button.is-active { color: var(--ps-green); }
+
+/* KPI cards: commercial metrics with icons, no decorative underlines/glow. */
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: .7rem !important;
+  min-height: 88px !important;
+  padding: .9rem !important;
+  border: 1px solid var(--ps-border) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div::before {
+  content: "\f201" !important;
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(37, 99, 235, .15) !important;
+  background: rgba(37, 99, 235, .06) !important;
+  color: var(--ps-blue) !important;
+  font-size: .9rem !important;
+}
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(1)::before { content: "\f155" !important; color: var(--ps-green) !important; background: rgba(5,150,105,.07) !important; border-color: rgba(5,150,105,.18) !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(2)::before { content: "\f09d" !important; color: var(--ps-orange) !important; background: rgba(217,119,6,.07) !important; border-color: rgba(217,119,6,.18) !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(3)::before { content: "\f19c" !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(4)::before { content: "\f4c0" !important; color: var(--ps-green) !important; background: rgba(5,150,105,.07) !important; border-color: rgba(5,150,105,.18) !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(5)::before { content: "\f0ae" !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(6)::before { content: "\f058" !important; color: var(--ps-green) !important; background: rgba(5,150,105,.07) !important; border-color: rgba(5,150,105,.18) !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(7)::before { content: "\f51e" !important; color: var(--ps-orange) !important; background: rgba(217,119,6,.07) !important; border-color: rgba(217,119,6,.18) !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div:nth-child(8)::before { content: "\f073" !important; }
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > div,
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > div * {
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Clean old colored operational cards without removing their information. */
+.product-sales-executive-page .rounded-\[26px\],
+.product-sales-executive-page .rounded-\[28px\] {
+  border-color: var(--ps-border) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.product-sales-executive-page .rounded-\[26px\] > div:first-child span.grid,
+.product-sales-executive-page .rounded-\[28px\] > div:first-child span.grid {
+  background: rgba(37, 99, 235, .06) !important;
+  color: var(--ps-blue) !important;
+  border: 1px solid rgba(37, 99, 235, .15) !important;
+}
+.product-sales-executive-page .rounded-\[26px\] .rounded-2xl,
+.product-sales-executive-page .rounded-\[28px\] .rounded-2xl {
+  box-shadow: none !important;
+}
+
+/* Top products: remove heavy black ranking blocks. */
+.product-sales-executive-page .p-4.grid .bg-slate-900.text-white {
+  background: #f8fafc !important;
+  color: #334155 !important;
+  border: 1px solid rgba(148, 163, 184, .32) !important;
+  box-shadow: none !important;
+}
+
+/* Details table: professional, readable, less visual noise. */
+.product-sales-executive-page table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+  font-size: .76rem !important;
+}
+.product-sales-executive-page table thead {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1 !important;
+}
+.product-sales-executive-page table thead th {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border-bottom: 1px solid rgba(148, 163, 184, .28) !important;
+  padding: .75rem .85rem !important;
+  font-weight: 900 !important;
+}
+.product-sales-executive-page table tbody td {
+  padding: .78rem .85rem !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+  vertical-align: middle !important;
+  line-height: 1.75 !important;
+}
+.product-sales-executive-page table tbody tr:hover {
+  background: #f8fafc !important;
+}
+.product-sales-executive-page .report-direct-action,
+.product-sales-executive-page button.report-direct-action,
+.product-sales-executive-page table button {
+  width: max-content !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  min-height: 34px !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.product-sales-executive-page table .bg-indigo-50\/90,
+.product-sales-executive-page table .bg-indigo-100,
+.product-sales-executive-page table .shadow-sm {
+  box-shadow: none !important;
+}
+
+@media (max-width: 900px) {
+  .product-sales-control-panel__search { width: 100%; }
+  .product-sales-control-panel__row { justify-content: stretch; }
+  .product-sales-executive-page .product-sales-date-field { flex: 1 1 12rem !important; max-width: none !important; }
+  .product-sales-segment { width: 100%; overflow-x: auto; justify-content: flex-start; }
+}
+
+.dark .product-sales-executive-page {
+  --ps-border: rgba(148, 163, 184, .18);
+  --ps-surface-solid: rgba(15, 23, 42, .88);
+  --ps-surface-soft: rgba(15, 23, 42, .72);
+  --ps-text: #e2e8f0;
+  --ps-muted: #94a3b8;
+}
+.dark .product-sales-control-panel,
+.dark .product-sales-control-panel__search input,
+.dark .product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div,
+.dark .product-sales-executive-page .rounded-\[26px\],
+.dark .product-sales-executive-page .rounded-\[28px\] {
+  background: rgba(15, 23, 42, .88) !important;
+  color: #e2e8f0 !important;
+}
+.dark .product-sales-executive-page table thead th,
+.dark .product-sales-executive-page table tbody tr:hover {
+  background: rgba(30, 41, 59, .82) !important;
+}
+.dark .product-sales-executive-page table tbody td {
+  border-bottom-color: rgba(51, 65, 85, .78) !important;
+}

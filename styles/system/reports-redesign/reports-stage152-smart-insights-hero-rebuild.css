@@ -1,0 +1,242 @@
+/* Stage 152 — Smart Insights hero rebuild
+   Forcefully rebuilds the left side of the hero so it is visible, full, useful and premium. */
+
+.smart-brain-page .smart-brain-hero {
+  min-height: 420px !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child {
+  display: grid !important;
+  grid-template-columns: minmax(520px, 1fr) minmax(390px, 560px) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+.smart-insights-mission-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 360px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(226, 232, 240, .82) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.96), rgba(248,250,252,.82)),
+    radial-gradient(circle at 10% 0%, rgba(79,70,229,.11), transparent 36%),
+    radial-gradient(circle at 100% 20%, rgba(20,184,166,.10), transparent 32%) !important;
+  box-shadow:
+    0 18px 46px rgba(15,23,42,.055),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+  color: #0f172a !important;
+}
+
+.smart-insights-mission-panel,
+.smart-insights-mission-panel * {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.smart-insights-mission-panel__intro {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: start !important;
+  gap: 14px !important;
+}
+
+.smart-insights-mission-panel__intro h1 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.55rem, 2.8vw, 2.35rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -.03em !important;
+}
+
+.smart-insights-mission-panel__intro p {
+  margin-top: 10px !important;
+  max-width: 780px !important;
+  color: #475569 !important;
+  font-size: .86rem !important;
+  font-weight: 780 !important;
+  line-height: 2.15 !important;
+}
+
+.smart-insights-mission-panel__badge {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 108px !important;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.72) !important;
+  text-align: center !important;
+}
+
+.smart-insights-mission-panel__badge span {
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-insights-mission-panel__badge strong {
+  color: #0f172a !important;
+  font-size: .92rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-mission-strip {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 16px !important;
+}
+
+.smart-insights-mission-strip > div {
+  display: grid !important;
+  grid-template-columns: 36px minmax(0,1fr) !important;
+  grid-template-areas:
+    "icon label"
+    "icon value" !important;
+  align-items: center !important;
+  gap: 2px 10px !important;
+  min-height: 76px !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.76) !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.64) !important;
+}
+
+.smart-insights-mission-strip i {
+  grid-area: icon !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 14px !important;
+  background: #eef2ff !important;
+  color: #4f46e5 !important;
+}
+
+.smart-insights-mission-strip span {
+  grid-area: label !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-insights-mission-strip strong {
+  grid-area: value !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  color: #0f172a !important;
+  font-size: .84rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-hero-ops {
+  grid-template-columns: minmax(0, 1fr) !important;
+  margin-top: 14px !important;
+}
+
+.smart-insights-hero-ops__primary {
+  min-height: 126px !important;
+  padding: 16px !important;
+  border-radius: 22px !important;
+}
+
+.smart-insights-hero-ops__primary h3 {
+  margin-top: 10px !important;
+  font-size: 1rem !important;
+  line-height: 1.75 !important;
+}
+
+.smart-insights-hero-ops__primary p {
+  font-size: .76rem !important;
+  line-height: 1.9 !important;
+}
+
+.smart-insights-hero-ops__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.smart-insights-hero-ops__mini {
+  min-height: 74px !important;
+}
+
+/* Balance the right cards with the rebuilt left side. */
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) {
+  align-content: stretch !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div {
+  min-height: 164px !important;
+  padding: 18px !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div.sm\:col-span-2 {
+  min-height: 132px !important;
+}
+
+.dark .smart-insights-mission-panel {
+  border-color: rgba(51,65,85,.78) !important;
+  background:
+    linear-gradient(145deg, rgba(15,23,42,.88), rgba(2,6,23,.72)),
+    radial-gradient(circle at 10% 0%, rgba(99,102,241,.17), transparent 36%),
+    radial-gradient(circle at 100% 20%, rgba(20,184,166,.12), transparent 32%) !important;
+  box-shadow: none !important;
+  color: #f8fafc !important;
+}
+
+.dark .smart-insights-mission-panel__intro h1,
+.dark .smart-insights-mission-panel__badge strong,
+.dark .smart-insights-mission-strip strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-insights-mission-panel__intro p,
+.dark .smart-insights-mission-panel__badge span,
+.dark .smart-insights-mission-strip span {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-insights-mission-panel__badge,
+.dark .smart-insights-mission-strip > div {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.58) !important;
+}
+
+.dark .smart-insights-mission-strip i {
+  background: rgba(79,70,229,.18) !important;
+  color: #c7d2fe !important;
+}
+
+@media (max-width: 1280px) {
+  .smart-brain-page .smart-brain-hero > div:first-child {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-insights-mission-panel {
+    min-height: auto !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-insights-mission-panel {
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-insights-mission-panel__intro {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-insights-mission-panel__badge {
+    width: 100% !important;
+  }
+
+  .smart-insights-mission-strip,
+  .smart-insights-hero-ops__grid {
+    grid-template-columns: 1fr !important;
+  }
+}

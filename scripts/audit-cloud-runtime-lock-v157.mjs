@@ -1,0 +1,13 @@
+import fs from "node:fs";
+const failures=[];const pass=(condition,message)=>{if(condition)console.log(`[v157-lock-audit] PASS: ${message}`);else failures.push(message);};
+const state=fs.readFileSync("cloud/runtime/cloudRuntimeState.mjs","utf8");
+const readiness=fs.readFileSync("cloud/runtime/cloudReadiness.mjs","utf8");
+const startup=fs.readFileSync("cloud/relay-server/index.mjs","utf8");
+pass(/\/proc\/sys\/kernel\/random\/boot_id/.test(state)&&/\/proc\/\$\{value\}\/stat/.test(state),"Linux lock identity derives from OS boot identity and /proc PID start metadata");
+pass(/processIdentity/.test(state)&&/processIdentityMode/.test(state),"Cloud lock persists a non-secret process-instance identity alongside PID and startedAt");
+pass(/actual\.identity===storedIdentity/.test(state)&&/active:identityMatch/.test(state),"A live PID is active only when its stored process identity matches on supported Linux runtime");
+pass(/pid_only_legacy/.test(state)&&/pid_only_fallback/.test(state),"Cross-platform and legacy PID-only fallbacks are explicit rather than reported as strong ownership");
+pass(/runtimeLockIdentity/.test(readiness)&&/getCloudRuntimeLockIdentityCapability/.test(readiness),"Readiness reports whether strong process-instance lock identity is available");
+pass(startup.indexOf("acquireCloudRuntimeLock(config.runtimeDataDir)")<startup.indexOf("const opened=openOperationalCloudControlDatabase"),"Single-instance lock remains ahead of operational SQLite recovery");
+pass(!/Bot Token|bot_token|telegram_token|secret/i.test(state),"Runtime lock identity contains no application credential or Bot Token material");
+if(failures.length){for(const failure of failures)console.error(`[v157-lock-audit] FAIL: ${failure}`);process.exit(1);}console.log("[v157-lock-audit] Runtime-lock ownership hardening audit completed successfully.");

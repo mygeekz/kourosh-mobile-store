@@ -1,0 +1,13 @@
+export declare const DNS_LABEL_PATTERN: RegExp;
+export declare const RESERVED_SERVICE_LABELS: readonly string[];
+export declare const normalizeCloudHostname: (value: unknown) => string;
+export declare const validateDnsHostname: (value: unknown, options?: { maxLength?: number; allowIpLiteral?: boolean; allowSingleLabel?: boolean }) => { ok: boolean; code?: string; host?: string; labels?: string[] };
+export declare const requireDnsHostname: (value: unknown, options?: { maxLength?: number; allowIpLiteral?: boolean; allowSingleLabel?: boolean }) => string;
+export declare const validateCloudBaseDomain: (value: unknown, options?: { allowSingleLabel?: boolean }) => { ok: boolean; code?: string; domain?: string };
+export declare const requireCloudBaseDomain: (value: unknown, options?: { allowSingleLabel?: boolean }) => string;
+export declare const tenantNamespaceForBaseDomain: (baseDomain: string) => string;
+export declare const generateTenantHostLabel: (options?: { randomBytes?: number; randomHex?: () => string }) => string;
+export declare const buildTenantAssignment: (input: { baseDomain: string; hostLabel?: string }) => { hostLabel: string; assignedHost: string; assignedPublicUrl: string };
+export declare const validateAssignedMiniAppUrl: (value: unknown, options?: { baseDomain?: string }) => { ok: boolean; code?: string; url?: string; host?: string };
+export declare const isReservedServiceHost: (host: string, input?: { controlHost?: string; connectorHost?: string; baseDomain?: string }) => boolean;
+export declare const assertEdgeHostSeparation: (input: { baseDomain: string; controlHost: string; connectorHost: string }) => { baseDomain: string; controlHost: string; connectorHost: string; tenantNamespace: string };

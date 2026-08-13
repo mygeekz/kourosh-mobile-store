@@ -1,0 +1,107 @@
+/* v81 — Fix partner detail drift/alignment after customer-parity sync.
+   Root cause: older partner-detail action-grid rules use RTL-unsafe inline alignment
+   (`justify-self:end`, `margin-inline-end:auto`) which pushes the actions rail to the left.
+   This override restores right-side anchoring and prevents hero/header content from
+   appearing shifted or clipped outside the card. */
+
+.partner-detail-apple .partner-detail-hero__top,
+.partner-detail-responsive-root .partner-detail-hero__top {
+  align-items: flex-start !important;
+}
+
+/* Keep the hero text block inside the available width. */
+.partner-detail-apple .partner-detail-hero__top > :first-child,
+.partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: min(100%, calc(100% - 446px)) !important;
+}
+
+/* Actions must stay inside the hero card and align to the right in RTL. */
+.partner-detail-apple .partner-detail-actions,
+.partner-detail-apple .partner-detail-actions--customer-parity,
+.partner-detail-responsive-root .partner-detail-actions,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity {
+  justify-self: start !important; /* in RTL = right */
+  align-self: start !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 0 !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: 0 !important;
+  width: min(100%, 430px) !important;
+  max-width: 430px !important;
+  min-width: 320px !important;
+  flex: 0 0 430px !important;
+}
+
+/* Ensure buttons do not spill or create clipped left edges. */
+.partner-detail-apple .partner-detail-actions .people-action-btn,
+.partner-detail-apple .partner-detail-actions--customer-parity .people-action-btn,
+.partner-detail-apple .partner-detail-actions button,
+.partner-detail-apple .partner-detail-actions--customer-parity button,
+.partner-detail-responsive-root .partner-detail-actions .people-action-btn,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity .people-action-btn,
+.partner-detail-responsive-root .partner-detail-actions button,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity button {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Shared synced sections must stay within card width and not drift left. */
+.partner-customer-sync-actions,
+.partner-customer-sync-extra-grid,
+.partner-customer-sync-ledger,
+.partner-customer-sync-telegram {
+  margin-inline: 0 !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-hero-clean,
+.partner-detail-section-shell,
+.partner-phone-capital-section,
+.partner-customer-sync-actions,
+.partner-customer-sync-ledger,
+.partner-customer-sync-telegram {
+  overflow: hidden !important;
+}
+
+/* Desktop + tablet safety */
+@media (max-width: 1180px) {
+  .partner-detail-apple .partner-detail-hero__top > :first-child,
+  .partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+    max-width: 100% !important;
+  }
+
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    flex: 1 1 100% !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    margin-inline-start: 0 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .partner-detail-apple .partner-detail-actions,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: 1fr !important;
+  }
+}

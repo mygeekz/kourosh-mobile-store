@@ -1,0 +1,88 @@
+/* Stage 99 — RFM row action polish
+   Fixes cramped action button in the RFM table. */
+
+.rfm-table-final {
+  min-width: 1040px !important;
+}
+
+.rfm-col-customer { width: 23% !important; }
+.rfm-col-recency { width: 11% !important; }
+.rfm-col-frequency { width: 9% !important; }
+.rfm-col-money { width: 15% !important; }
+.rfm-col-score { width: 15% !important; }
+.rfm-col-segment { width: 12% !important; }
+.rfm-col-action { width: 15% !important; }
+
+.rfm-table-final td:last-child,
+.rfm-table-final th:last-child {
+  min-width: 150px !important;
+}
+
+.rfm-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 132px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.rfm-row-actions::before,
+.rfm-row-actions::after,
+.rfm-row-action::before,
+.rfm-row-action::after,
+.rfm-row-action span::before,
+.rfm-row-action span::after {
+  content: none !important;
+  display: none !important;
+}
+
+.rfm-row-action {
+  min-width: 128px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 15px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  font-size: .79rem !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+}
+
+.rfm-row-action i {
+  flex: 0 0 auto !important;
+  font-size: .82rem !important;
+  line-height: 1 !important;
+  color: #475569 !important;
+}
+
+.rfm-row-action span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: max-content !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+.rfm-row-action:hover {
+  background: #f8fafc !important;
+  border-color: rgba(59, 130, 246, .28) !important;
+}

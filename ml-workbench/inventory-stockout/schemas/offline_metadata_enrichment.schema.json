@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase10b/offline_metadata_enrichment.schema.json",
+  "title": "Kourosh Offline Inventory Stockout Metadata Enrichment",
+  "type": "object",
+  "required": [
+    "generatedAt",
+    "workbenchEnrichmentVersion",
+    "thresholdScenarioMetadata",
+    "calibrationMetadata",
+    "errorAnalysis",
+    "datasetSliceDiagnostics",
+    "dataDrift",
+    "featureContractDrift",
+    "robustnessMetadata",
+    "deploymentReadinessMetadata"
+  ],
+  "properties": {
+    "generatedAt": {
+      "type": "string"
+    },
+    "workbenchEnrichmentVersion": {
+      "type": "string"
+    },
+    "thresholdScenarioMetadata": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "calibrationMetadata": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "errorAnalysis": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "datasetSliceDiagnostics": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "dataDrift": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "featureContractDrift": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "robustnessMetadata": {
+      "$ref": "#/$defs/statusedObject"
+    },
+    "deploymentReadinessMetadata": {
+      "$ref": "#/$defs/statusedObject"
+    }
+  },
+  "not": {
+    "anyOf": [
+      {
+        "required": [
+          "set_stock"
+        ]
+      },
+      {
+        "required": [
+          "change_price"
+        ]
+      },
+      {
+        "required": [
+          "approve_purchase"
+        ]
+      },
+      {
+        "required": [
+          "create_invoice"
+        ]
+      },
+      {
+        "required": [
+          "mutate_ledger"
+        ]
+      },
+      {
+        "required": [
+          "auto_order"
+        ]
+      },
+      {
+        "required": [
+          "delete_record"
+        ]
+      },
+      {
+        "required": [
+          "production_action"
+        ]
+      },
+      {
+        "required": [
+          "auto_decision"
+        ]
+      },
+      {
+        "required": [
+          "activate_artifact"
+        ]
+      },
+      {
+        "required": [
+          "deploy_model"
+        ]
+      },
+      {
+        "required": [
+          "modelBinary"
+        ]
+      },
+      {
+        "required": [
+          "modelBytes"
+        ]
+      },
+      {
+        "required": [
+          "artifactBytes"
+        ]
+      },
+      {
+        "required": [
+          "serializedModel"
+        ]
+      },
+      {
+        "required": [
+          "picklePayload"
+        ]
+      },
+      {
+        "required": [
+          "executableArtifactBytes"
+        ]
+      }
+    ]
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "statusedObject": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "available",
+            "not_available",
+            "pass",
+            "warning",
+            "fail",
+            "limited",
+            "missing",
+            "unchanged",
+            "metadata_summary_ready",
+            "metadata_summary_warning"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

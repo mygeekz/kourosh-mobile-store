@@ -1,0 +1,46 @@
+
+/* v74 — Channel cards initial-state polish */
+.message-composer-modal-overlay .mc68 .mc68-channel,
+.message-composer-modal-overlay .mc68 .mc68-channel:hover,
+.message-composer-modal-overlay .mc68 .mc68-channel:focus,
+.message-composer-modal-overlay .mc68 .mc68-channel:focus-visible {
+  min-height: 48px !important;
+  border: 1px solid var(--mc68-border) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: var(--mc68-text) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active,
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active:hover,
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active:focus,
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active:focus-visible {
+  border-color: rgba(59,130,246,.9) !important;
+  background: rgba(239,246,255,.96) !important;
+  color: rgb(37,99,235) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel .mc68-channel__copy strong {
+  color: inherit !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel .mc68-channel__copy small {
+  color: rgb(100,116,139) !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active .mc68-channel__copy small {
+  color: rgb(37,99,235) !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel__radio {
+  background: #fff !important;
+  border: 1px solid var(--mc68-border) !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-channel.is-active .mc68-channel__radio {
+  border: 3px solid rgb(37,99,235) !important;
+}

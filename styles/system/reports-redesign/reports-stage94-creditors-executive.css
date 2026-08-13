@@ -1,0 +1,379 @@
+/* Stage 94 — Creditors report executive redesign
+   Mirrors the approved Debtors report pattern with creditor-specific copy and actions. */
+
+.creditors-executive-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.creditors-executive-panel,
+.creditors-table-card {
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.creditors-executive-panel { padding: 16px; }
+
+.creditors-executive-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.creditors-executive-kpi {
+  min-height: 92px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.creditors-executive-kpi__icon {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  background: #f8fafc;
+  color: #2563eb;
+}
+
+.creditors-executive-kpi--danger .creditors-executive-kpi__icon { color: #e11d48; background: #fff1f2; border-color: rgba(244, 63, 94, .22); }
+.creditors-executive-kpi--warn .creditors-executive-kpi__icon { color: #d97706; background: #fffbeb; border-color: rgba(245, 158, 11, .22); }
+.creditors-executive-kpi--risk .creditors-executive-kpi__icon { color: #7c3aed; background: #f5f3ff; border-color: rgba(124, 58, 237, .2); }
+
+.creditors-executive-kpi div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.creditors-executive-kpi span:not(.creditors-executive-kpi__icon) {
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 850;
+}
+
+.creditors-executive-kpi strong {
+  color: #0f172a;
+  font-size: clamp(1.05rem, 1.6vw, 1.45rem);
+  font-weight: 950;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.creditors-executive-kpi small {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.creditors-executive-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, .9);
+  direction: ltr;
+}
+
+.creditors-search-final {
+  position: relative;
+  flex: 1 1 320px;
+  max-width: 520px;
+  height: 40px;
+  direction: ltr;
+}
+
+.creditors-search-final i {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: #64748b;
+  font-size: .82rem;
+  pointer-events: none;
+}
+
+.creditors-search-final input {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 40px;
+  border: 1px solid rgba(148, 163, 184, .42);
+  border-radius: 15px;
+  background: #fff;
+  color: #0f172a;
+  direction: rtl;
+  text-align: right;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+.creditors-search-final input::placeholder { color: #94a3b8; opacity: 1; }
+.creditors-search-final input:focus { border-color: rgba(59, 130, 246, .58); }
+
+.creditors-page-size-final {
+  display: grid;
+  grid-template-columns: 58px 132px;
+  align-items: stretch;
+  direction: ltr;
+  width: 190px;
+  height: 40px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  border-radius: 15px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.creditors-page-size-final select {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 40px;
+  text-align: center;
+  text-align-last: center;
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.creditors-page-size-final span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 12px;
+  border-left: 1px solid rgba(226,232,240,.9);
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.creditors-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, .9);
+}
+
+.creditors-table-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.creditors-table-title__icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  background: #f8fafc;
+  color: #2563eb;
+}
+
+.creditors-table-title h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.creditors-table-title p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 750;
+}
+
+.creditors-table-shell { overflow-x: auto; }
+.creditors-table-final { width: 100%; min-width: 860px; border-collapse: collapse; table-layout: fixed; }
+.creditors-col-partner { width: 34%; }
+.creditors-col-type { width: 16%; }
+.creditors-col-credit { width: 26%; }
+.creditors-col-action { width: 24%; }
+
+.creditors-table-final th {
+  padding: 12px 16px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 900;
+  text-align: right;
+  border-bottom: 1px solid rgba(226,232,240,.9);
+}
+
+.creditors-table-final td {
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(226,232,240,.72);
+  vertical-align: middle;
+}
+
+.creditors-partner-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.creditors-partner-cell > span {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  border: 1px solid rgba(37,99,235,.2);
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 950;
+}
+
+.creditors-partner-cell div { min-width: 0; }
+.creditors-partner-cell strong {
+  display: block;
+  color: #0f172a;
+  font-size: .86rem;
+  font-weight: 950;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.creditors-partner-cell small { color: #64748b; font-size: .72rem; font-weight: 750; }
+
+.creditors-type-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  background: #f8fafc;
+  color: #475569;
+  font-size: .74rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.creditors-credit-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.creditors-credit-cell strong { color: #e11d48; font-size: .9rem; font-weight: 950; white-space: nowrap; }
+.creditors-credit-cell small { color: #64748b; font-size: .72rem; font-weight: 750; }
+.creditors-credit-cell div {
+  width: 100%;
+  max-width: 220px;
+  height: 4px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+.creditors-credit-cell div span { display: block; height: 100%; border-radius: inherit; background: #f43f5e; }
+
+.creditors-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.creditors-row-action {
+  min-width: 132px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border-radius: 13px;
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  color: #0f172a;
+  text-decoration: none;
+  font-size: .76rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.creditors-row-action i { font-size: .78rem; }
+.creditors-row-action--primary { border-color: rgba(37,99,235,.24); background: #eff6ff; color: #1d4ed8; }
+.creditors-row-action:hover { background: #f8fafc; }
+
+.creditors-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(226,232,240,.9);
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.creditors-pagination div { display: flex; align-items: center; gap: 6px; }
+.creditors-pagination button {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  background: #fff;
+  color: #0f172a;
+  font-weight: 900;
+}
+.creditors-pagination button:disabled { opacity: .45; cursor: not-allowed; }
+
+.creditors-empty-state {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #64748b;
+  font-size: .86rem;
+  font-weight: 800;
+}
+
+.creditors-empty-state i { font-size: 1.4rem; color: #2563eb; }
+
+@media (max-width: 760px) {
+  .creditors-executive-toolbar { align-items: stretch; }
+  .creditors-search-final { flex-basis: 100%; max-width: 100%; }
+  .creditors-page-size-final { width: 190px; }
+  .creditors-pagination { flex-direction: column; align-items: flex-start; }
+  .creditors-row-actions { flex-direction: column; align-items: stretch; }
+  .creditors-row-action { width: 100%; }
+}

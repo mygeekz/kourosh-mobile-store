@@ -1,0 +1,106 @@
+/* Split from 02-legacy-reports-premium-components.css: ux button core + loading states */
+@layer components {
+  .ux-btn,
+  button[class*="rounded"][class*="bg-"],
+  button[class*="rounded"][class*="border"],
+  button[class*="bg-"][class*="px-"],
+  button[class*="border"][class*="px-"] {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-btn__content {
+    display: inline-flex;
+  }
+
+  .ux-btn__icon {
+    display: inline-flex;
+    font-size: 0.95em;
+  }
+
+  .ux-btn__label {
+    display: inline-flex;
+  }
+
+  .ux-btn__label-main {
+    display: inline-flex;
+  }
+
+  .ux-btn__label--stacked {
+    flex-direction: column;
+  }
+
+  .ux-btn__hint {
+  }
+
+  .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-start;
+  }
+
+  html[data-button-icon-side='end'] .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-end;
+  }
+
+  .ux-btn__spinner {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  /* Loading motion is owned by styles/system/shared-action-buttons-foundation.css. */
+  .ux-btn[data-loading='true'] {
+    transform: none !important;
+    cursor: progress;
+  }
+
+  .ux-icon-btn .ux-btn__content {
+    gap: 0;
+  }
+
+  .ux-btn--native .ux-btn__content {
+    pointer-events: none;
+  }
+
+  .ux-btn--native[data-ux-enhanced='true'] {
+    white-space: nowrap;
+  }
+
+  .ux-btn--native[data-ux-icon-glyph]::before {
+    content: attr(data-ux-icon-glyph);
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Pro', 'FontAwesome';
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.95rem;
+    height: 1.95rem;
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.24);
+    color: currentColor;
+    font-size: 0.82rem;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22);
+    flex: 0 0 auto;
+  }
+
+  html.dark .ux-btn--native[data-ux-icon-glyph]::before {
+    background: rgb(255 255 255 / 0.1);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  }
+
+  html[data-ui-density='compact'] .ux-btn--native[data-ux-icon-glyph]::before {
+    width: 1.78rem;
+    height: 1.78rem;
+    font-size: 0.76rem;
+  }
+
+  .ux-btn-xs.ux-btn--native[data-ux-icon-glyph]::before,
+  .ux-btn.ux-icon-btn .ux-btn__icon {
+    width: 1.72rem;
+    height: 1.72rem;
+    font-size: 0.72rem;
+  }
+
+  .ux-icon-btn {
+    min-width: 2.55rem;
+    padding-inline: 0.55rem;
+  }
+}

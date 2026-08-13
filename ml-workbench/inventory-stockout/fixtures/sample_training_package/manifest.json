@@ -1,0 +1,50 @@
+{
+  "packageKey": "inventory_stockout_external_training_package_v1",
+  "packageVersion": "v1",
+  "datasetKey": "inventory_stockout_baseline_v1",
+  "datasetVersion": "v1",
+  "createdAt": "2026-07-03T00:00:00.000Z",
+  "purpose": "Small deterministic fixture for Phase 9A offline Inventory Stockout model training workbench tests.",
+  "target": {
+    "key": "actualStockoutWithinHorizon",
+    "type": "binary",
+    "positiveClass": 1,
+    "negativeClass": 0,
+    "description": "Whether stockout occurred within the evaluated horizon."
+  },
+  "featureSchema": [
+    { "key": "stockQuantity", "type": "number", "nullable": false, "description": "Stock quantity at observation time." },
+    { "key": "soldQty14", "type": "number", "nullable": true, "description": "Units sold during the prior 14 days." },
+    { "key": "avgDailySold", "type": "number", "nullable": true, "description": "Average daily sales in lookback window." },
+    { "key": "daysToStockoutPredicted", "type": "number", "nullable": true, "description": "Baseline days-to-stockout estimate." },
+    { "key": "thresholdQty", "type": "number", "nullable": true, "description": "Configured reorder threshold." },
+    { "key": "suggestedBuyQty", "type": "number", "nullable": true, "description": "Baseline suggested buy quantity." },
+    { "key": "severityScore", "type": "integer", "nullable": false, "description": "Numeric baseline severity." },
+    { "key": "baselinePredictedRisk", "type": "binary", "nullable": false, "description": "Baseline risk flag." },
+    { "key": "productCategory", "type": "category", "nullable": true, "description": "Fixture-only product category." }
+  ],
+  "split": {
+    "splitKey": "fixture_seed_42_time_aware",
+    "splitStrategy": "time_aware",
+    "seed": "42",
+    "testRatio": 0.25,
+    "trainRows": 8,
+    "testRows": 4,
+    "hasBothClassesInTrain": true,
+    "hasBothClassesInTest": true,
+    "leakagePolicy": "Fixture preserves prediction-time features only."
+  },
+  "baselineBenchmark": {
+    "status": "fixture_only",
+    "bestCandidateKey": "rule_baseline_fixture",
+    "bestF1Pct": 75.0,
+    "bestBalancedAccuracyPct": 70.0
+  },
+  "files": {
+    "trainCsv": "train.csv",
+    "testCsv": "test.csv",
+    "manifest": "manifest.json"
+  },
+  "trainingPolicy": "Offline fixture package only. No Kourosh backend model execution, inference endpoint, activation, or business mutation is allowed.",
+  "evaluationPolicy": "Evaluate locally against the fixed test split only."
+}

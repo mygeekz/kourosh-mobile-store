@@ -1,0 +1,266 @@
+/* Hard page overrides for reports, settings, repairs, services, inventory, people, notifications and telegram.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== HARD REPORTS APPLE MINIMAL OVERRIDE =====
+   This intentionally neutralizes legacy colorful/large report widgets under ReportsLayout. */
+.reports-layout-executive :where(.reports-premium-orbit, .reports-premium-panel, .report-auto-action-engine) {
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.dark .reports-layout-executive :where(.reports-premium-orbit, .reports-premium-panel, .report-auto-action-engine) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  background-image: none !important;
+}
+
+.reports-layout-executive :where([class*="bg-gradient"], [class*="radial-gradient"], [class*="from-"], [class*="via-"], [class*="to-"]) {
+  background-image: none !important;
+}
+
+.reports-layout-executive :where([class*="shadow-"], [class*="shadow_"], [class*="shadow["]) {
+  box-shadow: none !important;
+}
+
+.reports-layout-executive :where([class*="rounded-[28px]"], [class*="rounded-[30px]"], [class*="rounded-[32px]"], [class*="rounded-3xl"]) {
+  border-radius: 16px !important;
+}
+
+.reports-layout-executive :where(.bg-rose-50, .bg-red-50, .bg-orange-50, .bg-amber-50, .bg-yellow-50, .bg-emerald-50, .bg-green-50, .bg-blue-50, .bg-indigo-50, .bg-purple-50, .bg-violet-50, .bg-fuchsia-50) {
+  background: #fff !important;
+}
+
+.dark .reports-layout-executive :where(.bg-rose-50, .bg-red-50, .bg-orange-50, .bg-amber-50, .bg-yellow-50, .bg-emerald-50, .bg-green-50, .bg-blue-50, .bg-indigo-50, .bg-purple-50, .bg-violet-50, .bg-fuchsia-50) {
+  background: rgb(2 6 23) !important;
+}
+
+.reports-layout-executive :where(.border-rose-200, .border-red-200, .border-orange-200, .border-amber-200, .border-yellow-200, .border-emerald-200, .border-green-200, .border-blue-200, .border-indigo-200, .border-purple-200, .border-violet-200, .border-fuchsia-200) {
+  border-color: rgb(226 232 240) !important;
+}
+
+.dark .reports-layout-executive :where(.border-rose-200, .border-red-200, .border-orange-200, .border-amber-200, .border-yellow-200, .border-emerald-200, .border-green-200, .border-blue-200, .border-indigo-200, .border-purple-200, .border-violet-200, .border-fuchsia-200) {
+  border-color: rgb(30 41 59) !important;
+}
+
+/* Compact all top-level report cards/links; no more poster-sized report boxes. */
+.reports-layout-executive .report-page :where(section, article, a, button, div)[class*="rounded"] {
+  max-width: 100%;
+}
+
+.reports-layout-executive .report-page :where(a, button, div)[class*="p-4"],
+.reports-layout-executive .report-page :where(a, button, div)[class*="p-5"],
+.reports-layout-executive .report-page :where(a, button, div)[class*="p-6"] {
+  padding: 12px !important;
+}
+
+.reports-layout-executive .report-page :where(.grid) {
+  gap: 10px !important;
+}
+
+/* Analysis cards specifically: remove decorative circles and color blobs. */
+.reports-layout-executive .report-page :where([class*="-right-14"], [class*="-top-16"], [class*="h-40"][class*="w-40"]) {
+  display: none !important;
+}
+
+.reports-layout-executive .report-page :where(.group.relative.overflow-hidden) {
+  min-height: 74px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.dark .reports-layout-executive .report-page :where(.group.relative.overflow-hidden) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+}
+
+/* Smart insight and auto action legacy cards become rows. */
+.reports-layout-executive .report-page :where([class*="border-rose"], [class*="border-red"], [class*="border-orange"], [class*="border-amber"], [class*="border-emerald"], [class*="border-green"], [class*="border-blue"], [class*="border-indigo"], [class*="border-purple"], [class*="border-violet"]) {
+  border-color: rgb(226 232 240) !important;
+}
+
+.dark .reports-layout-executive .report-page :where([class*="border-rose"], [class*="border-red"], [class*="border-orange"], [class*="border-amber"], [class*="border-emerald"], [class*="border-green"], [class*="border-blue"], [class*="border-indigo"], [class*="border-purple"], [class*="border-violet"]) {
+  border-color: rgb(30 41 59) !important;
+}
+
+.reports-layout-executive .report-page :where([class*="text-rose"], [class*="text-red"], [class*="text-orange"], [class*="text-amber"], [class*="text-yellow"], [class*="text-emerald"], [class*="text-green"], [class*="text-blue"], [class*="text-indigo"], [class*="text-purple"], [class*="text-violet"], [class*="text-fuchsia"]) {
+  color: rgb(51 65 85) !important;
+}
+
+.dark .reports-layout-executive .report-page :where([class*="text-rose"], [class*="text-red"], [class*="text-orange"], [class*="text-amber"], [class*="text-yellow"], [class*="text-emerald"], [class*="text-green"], [class*="text-blue"], [class*="text-indigo"], [class*="text-purple"], [class*="text-violet"], [class*="text-fuchsia"]) {
+  color: rgb(226 232 240) !important;
+}
+
+/* New AI minbar: one compact strip, expandable only when needed. */
+.reports-ai-minibar {
+  overflow: hidden;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.dark .reports-ai-minibar {
+  border-color: rgb(30 41 59);
+  background: rgb(2 6 23);
+}
+
+.reports-ai-minibar__summary {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 0;
+  background: transparent;
+  padding: 8px 12px;
+  text-align: right;
+}
+
+.reports-ai-minibar__title {
+  font-size: 12px;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .reports-ai-minibar__title {
+  color: rgb(241 245 249);
+}
+
+.reports-ai-minibar__meta {
+  border-radius: 999px;
+  background: rgb(248 250 252);
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.dark .reports-ai-minibar__meta {
+  background: rgb(15 23 42);
+  color: rgb(148 163 184);
+}
+
+.reports-ai-minibar__chevron {
+  margin-right: auto;
+  color: rgb(148 163 184);
+}
+
+.reports-ai-minibar__details {
+  border-top: 1px solid rgb(226 232 240);
+  padding: 10px;
+}
+
+.dark .reports-ai-minibar__details {
+  border-color: rgb(30 41 59);
+}
+
+.reports-ai-minibar__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px;
+}
+
+.reports-ai-minibar__grid > div,
+.reports-auto-action-compact__row {
+  border: 1px solid rgb(226 232 240);
+  border-radius: 12px;
+  background: rgb(248 250 252);
+  padding: 8px;
+  text-align: right;
+}
+
+.dark .reports-ai-minibar__grid > div,
+.dark .reports-auto-action-compact__row {
+  border-color: rgb(30 41 59);
+  background: rgb(15 23 42);
+}
+
+.reports-ai-minibar__grid strong {
+  display: block;
+  font-size: 10px;
+  font-weight: 950;
+  color: rgb(100 116 139);
+}
+
+.dark .reports-ai-minibar__grid strong {
+  color: rgb(148 163 184);
+}
+
+.reports-ai-minibar__grid span,
+.reports-ai-minibar__grid a,
+.reports-ai-minibar__grid p {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.6;
+  color: rgb(51 65 85);
+}
+
+.dark .reports-ai-minibar__grid span,
+.dark .reports-ai-minibar__grid a,
+.dark .reports-ai-minibar__grid p {
+  color: rgb(226 232 240);
+}
+
+.reports-auto-action-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
+}
+
+.reports-auto-action-compact__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+}
+
+.reports-auto-action-compact__row span {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 900;
+  color: rgb(15 23 42);
+}
+
+.dark .reports-auto-action-compact__row span {
+  color: rgb(241 245 249);
+}
+
+.reports-auto-action-compact__row small {
+  font-size: 10px;
+  font-weight: 900;
+  color: rgb(100 116 139);
+}
+
+.dark .reports-auto-action-compact__row small {
+  color: rgb(148 163 184);
+}
+
+@media (max-width: 768px) {
+  .reports-layout-executive .report-page :where(a, button, div)[class*="p-4"],
+  .reports-layout-executive .report-page :where(a, button, div)[class*="p-5"],
+  .reports-layout-executive .report-page :where(a, button, div)[class*="p-6"] {
+    padding: 10px !important;
+  }
+
+  .reports-ai-minibar__summary {
+    min-height: 40px;
+  }
+}
+
+

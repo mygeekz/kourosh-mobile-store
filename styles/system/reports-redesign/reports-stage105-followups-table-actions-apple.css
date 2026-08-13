@@ -1,0 +1,138 @@
+/* Stage 105 — Followups table column balance + Apple-standard action buttons */
+
+.followups-executive-page .followups-table {
+  min-width: 1180px !important;
+  table-layout: fixed !important;
+}
+
+/* Give real space to the two high-value fields: note + action. */
+.followups-executive-page .followups-col-due { width: 10% !important; }
+.followups-executive-page .followups-col-customer { width: 16% !important; }
+.followups-executive-page .followups-col-status { width: 8% !important; }
+.followups-executive-page .followups-col-owner { width: 8% !important; }
+.followups-executive-page .followups-col-note { width: 30% !important; }
+.followups-executive-page .followups-col-action { width: 28% !important; }
+
+.followups-executive-page .followups-table th,
+.followups-executive-page .followups-table td {
+  padding-inline: 12px !important;
+}
+
+.followups-executive-page .followups-table td:nth-child(5) {
+  vertical-align: top !important;
+}
+
+.followups-executive-page .followups-note {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  color: #334155 !important;
+  line-height: 1.85 !important;
+  font-size: .78rem !important;
+  font-weight: 760 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.followups-executive-page .followups-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-row-actions::before,
+.followups-executive-page .followups-row-actions::after,
+.followups-executive-page .followups-row-action::before,
+.followups-executive-page .followups-row-action::after,
+.followups-executive-page .followups-row-action span::before,
+.followups-executive-page .followups-row-action span::after {
+  content: none !important;
+  display: none !important;
+}
+
+.followups-executive-page .followups-row-action {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .38) !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, .03) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  font-size: .76rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease !important;
+}
+
+.followups-executive-page .followups-row-action:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(59, 130, 246, .34) !important;
+  background: #f8fafc !important;
+  box-shadow: 0 10px 22px -18px rgba(15, 23, 42, .34) !important;
+}
+
+.followups-executive-page .followups-row-action i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+  flex: 0 0 16px !important;
+}
+
+.followups-executive-page .followups-row-action span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-row-action--edit {
+  min-width: 92px !important;
+  color: #1d4ed8 !important;
+  border-color: rgba(59, 130, 246, .26) !important;
+  background: #ffffff !important;
+}
+
+.followups-executive-page .followups-row-action--success {
+  min-width: 88px !important;
+  color: #047857 !important;
+  border-color: rgba(16, 185, 129, .30) !important;
+  background: #ecfdf5 !important;
+}
+
+.followups-executive-page .followups-row-action--customer {
+  min-width: 126px !important;
+  color: #0f172a !important;
+  border-color: rgba(148, 163, 184, .38) !important;
+  background: #ffffff !important;
+}
+
+@media (max-width: 920px) {
+  .followups-executive-page .followups-table { min-width: 1120px !important; }
+  .followups-executive-page .followups-row-actions { flex-wrap: wrap !important; }
+}

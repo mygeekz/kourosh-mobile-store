@@ -1,0 +1,633 @@
+
+/* v105 — Partner operational phone capital table redesign */
+
+.partner-operational-table-v105 {
+  direction: rtl !important;
+  margin-top: 26px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, .045), transparent 30%),
+    linear-gradient(180deg, #fff 0%, #fbfdff 100%) !important;
+  box-shadow: 0 18px 44px -42px rgba(15, 23, 42, .32) !important;
+}
+
+.partner-operational-table-v105 *,
+.partner-operational-table-v105 *::before,
+.partner-operational-table-v105 *::after {
+  box-sizing: border-box !important;
+}
+
+.partner-operational-table-v105__header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 18px !important;
+  align-items: start !important;
+  padding: 22px 22px 14px !important;
+}
+
+.partner-operational-table-v105__title-block {
+  min-width: 0 !important;
+  text-align: right !important;
+  justify-self: end !important;
+}
+
+.partner-operational-table-v105__eyebrow {
+  width: max-content !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 7px 12px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+
+.partner-operational-table-v105__eyebrow i {
+  color: rgb(59, 130, 246) !important;
+}
+
+.partner-operational-table-v105__title-block h4 {
+  margin: 12px 0 0 !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 22px !important;
+  line-height: 1.4 !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.partner-operational-table-v105__title-block p {
+  margin: 8px 0 0 !important;
+  max-width: 760px !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1.95 !important;
+}
+
+.partner-operational-table-v105__filters {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 5px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 18px !important;
+  background: rgba(248, 250, 252, .92) !important;
+  justify-self: start !important;
+}
+
+.partner-operational-table-v105__filter {
+  height: 34px !important;
+  min-width: 92px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 0 10px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: transparent !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  transition: .18s ease !important;
+}
+
+.partner-operational-table-v105__filter b {
+  min-width: 22px !important;
+  height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: rgba(226, 232, 240, .72) !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 10px !important;
+}
+
+.partner-operational-table-v105__filter.is-active {
+  background: linear-gradient(135deg, rgb(37, 99, 235), rgb(59, 130, 246)) !important;
+  color: #fff !important;
+  box-shadow: 0 12px 24px -20px rgba(37, 99, 235, .55) !important;
+}
+
+.partner-operational-table-v105__filter.is-active b {
+  background: rgba(255,255,255,.20) !important;
+  color: #fff !important;
+}
+
+.partner-operational-table-v105__summary {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  padding: 0 22px 16px !important;
+}
+
+.partner-operational-table-v105__summary-card {
+  min-height: 86px !important;
+  display: grid !important;
+  grid-template-columns: 42px minmax(0, 1fr) !important;
+  grid-template-areas:
+    "icon label"
+    "icon value" !important;
+  align-items: center !important;
+  gap: 3px 12px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.95) !important;
+}
+
+.partner-operational-table-v105__summary-card span {
+  grid-area: icon !important;
+  width: 42px !important;
+  height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 15px !important;
+  background: rgb(239, 246, 255) !important;
+  color: rgb(37, 99, 235) !important;
+  font-size: 16px !important;
+}
+
+.partner-operational-table-v105__summary-card small {
+  grid-area: label !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+}
+
+.partner-operational-table-v105__summary-card strong {
+  grid-area: value !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1.6 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.partner-operational-table-v105__summary-card.is-rose span { background: rgb(255, 228, 230) !important; color: rgb(225, 29, 72) !important; }
+.partner-operational-table-v105__summary-card.is-rose strong { color: rgb(225, 29, 72) !important; }
+.partner-operational-table-v105__summary-card.is-green span { background: rgb(220, 252, 231) !important; color: rgb(22, 163, 74) !important; }
+.partner-operational-table-v105__summary-card.is-green strong { color: rgb(22, 163, 74) !important; }
+.partner-operational-table-v105__summary-card.is-amber span { background: rgb(254, 243, 199) !important; color: rgb(217, 119, 6) !important; }
+.partner-operational-table-v105__summary-card.is-amber strong { color: rgb(217, 119, 6) !important; }
+.partner-operational-table-v105__summary-card.is-slate span { background: rgb(241, 245, 249) !important; color: rgb(71, 85, 105) !important; }
+
+.partner-operational-table-v105__toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 1.15fr) minmax(220px, 280px) auto !important;
+  gap: 12px !important;
+  align-items: center !important;
+  padding: 0 22px 20px !important;
+}
+
+.partner-operational-table-v105__search,
+.partner-operational-table-v105__select {
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 0 12px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  color: rgb(100, 116, 139) !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-operational-table-v105__search,
+.partner-operational-table-v105__search:hover,
+.partner-operational-table-v105__search:focus,
+.partner-operational-table-v105__search:focus-within,
+.partner-operational-table-v105__search:focus-visible {
+  direction: rtl !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-operational-table-v105__search > input,
+.partner-operational-table-v105__search > input:hover,
+.partner-operational-table-v105__search > input:focus,
+.partner-operational-table-v105__search > input:active,
+.partner-operational-table-v105__search > input:focus-visible,
+.partner-operational-table-v105__search-input,
+.partner-operational-table-v105__search-input:hover,
+.partner-operational-table-v105__search-input:focus,
+.partner-operational-table-v105__search-input:active,
+.partner-operational-table-v105__search-input:focus-visible {
+  all: unset !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.5 !important;
+  caret-color: rgb(15, 23, 42) !important;
+}
+
+.partner-operational-table-v105__search > input::-webkit-search-decoration,
+.partner-operational-table-v105__search > input::-webkit-search-cancel-button,
+.partner-operational-table-v105__search > input::-webkit-search-results-button,
+.partner-operational-table-v105__search > input::-webkit-search-results-decoration,
+.partner-operational-table-v105__search-input::-webkit-search-decoration,
+.partner-operational-table-v105__search-input::-webkit-search-cancel-button,
+.partner-operational-table-v105__search-input::-webkit-search-results-button,
+.partner-operational-table-v105__search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: none !important;
+}
+
+.partner-operational-table-v105__search > i {
+  flex: 0 0 18px !important;
+  width: 18px !important;
+  text-align: center !important;
+  color: rgb(100, 116, 139) !important;
+  order: 2 !important;
+}
+
+.partner-operational-table-v105__search > input,
+.partner-operational-table-v105__search-input {
+  order: 1 !important;
+}
+
+.partner-operational-table-v105__select {
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr) !important;
+}
+
+.partner-operational-table-v105__select > select,
+.partner-operational-table-v105__select > select:hover,
+.partner-operational-table-v105__select > select:focus,
+.partner-operational-table-v105__select > select:active {
+  all: unset !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+}
+
+.partner-operational-table-v105__search > input::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+}
+
+.partner-operational-table-v105__tool-btn {
+  height: 44px !important;
+  min-width: 142px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 18px !important;
+  border: 1px solid rgba(59, 130, 246, .18) !important;
+  border-radius: 15px !important;
+  background: linear-gradient(135deg, rgb(59, 130, 246), rgb(37, 99, 235)) !important;
+  color: #fff !important;
+  box-shadow: 0 16px 30px -18px rgba(37, 99, 235, .58) !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+}
+
+.partner-operational-table-v105__tool-btn:hover {
+  filter: brightness(1.02) !important;
+}
+
+/* Table itself */
+.partner-operational-table-v105 .partner-phone-capital-table-scroll {
+  border-top: 1px solid rgba(226, 232, 240, .96) !important;
+  padding: 6px 10px 12px !important;
+  background: linear-gradient(180deg, rgba(248, 250, 252, .72), rgba(255,255,255,0)) !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table {
+  min-width: 1040px !important;
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table thead {
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(71, 85, 105) !important;
+  backdrop-filter: none !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table th {
+  height: 46px !important;
+  padding: 0 18px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .96) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table td {
+  padding: 18px 18px !important;
+  border-top: 1px solid rgba(226, 232, 240, .86) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .86) !important;
+  vertical-align: middle !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table tbody tr {
+  background: transparent !important;
+  transition: transform .16s ease, box-shadow .16s ease !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table tbody tr:hover {
+  transform: translateY(-1px) !important;
+}
+
+.partner-operational-table-v105 .partner-capital-status-chip {
+  min-height: 28px !important;
+  border-radius: 999px !important;
+}
+
+.partner-operational-table-v105 .finance-table-action {
+  height: 34px !important;
+  border-radius: 13px !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+
+/* Mobile cards get the same new card language */
+.partner-operational-table-v105 .lg\:hidden > div,
+.partner-operational-table-v105 .lg\:hidden .rounded-\[24px\] {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+}
+
+.partner-operational-table-v105__data-row > td {
+  background: rgba(255,255,255,.98) !important;
+}
+
+.partner-operational-table-v105__data-row > td:first-child {
+  border-right: 1px solid rgba(226, 232, 240, .86) !important;
+  border-top-right-radius: 18px !important;
+  border-bottom-right-radius: 18px !important;
+}
+
+.partner-operational-table-v105__data-row > td:last-child {
+  border-left: 1px solid rgba(226, 232, 240, .86) !important;
+  border-top-left-radius: 18px !important;
+  border-bottom-left-radius: 18px !important;
+}
+
+.partner-operational-table-v105__timeline-row > td {
+  padding-top: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.partner-operational-table-v105__action-bar {
+  justify-content: flex-start !important;
+}
+
+.partner-operational-table-v105 .finance-table-action {
+  height: 36px !important;
+  min-width: 104px !important;
+  padding: 0 14px !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(203, 213, 225, .9) !important;
+  background: #fff !important;
+  color: rgb(51, 65, 85) !important;
+  box-shadow: 0 10px 24px -22px rgba(15, 23, 42, .35) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  gap: 7px !important;
+}
+
+.partner-operational-table-v105 .finance-table-action:hover {
+  background: rgb(248, 250, 252) !important;
+  border-color: rgba(148, 163, 184, .8) !important;
+}
+
+.partner-operational-table-v105 .finance-table-action i {
+  color: rgb(71, 85, 105) !important;
+}
+
+.partner-operational-table-v105 .finance-table-action--history {
+  min-width: 122px !important;
+}
+
+.partner-operational-table-v105 .partner-capital-status-chip {
+  min-height: 30px !important;
+  padding-inline: 12px !important;
+  border-radius: 999px !important;
+}
+
+.partner-operational-table-v105 .partner-capital-date-value {
+  white-space: nowrap !important;
+}
+
+.partner-operational-table-v105 .partner-capital-source-link > * {
+  max-width: 100% !important;
+}
+
+.partner-operational-table-v105 .partner-capital-compact-table .font-mono {
+  font-size: 10.5px !important;
+}
+
+
+.dark .partner-operational-table-v105,
+.dark .partner-operational-table-v105__summary-card,
+.dark .partner-operational-table-v105__search,
+.dark .partner-operational-table-v105__select,
+.dark .partner-operational-table-v105 .partner-phone-capital-table-scroll,
+.dark .partner-operational-table-v105 .partner-capital-compact-table tbody tr {
+  border-color: rgba(30, 41, 59, .96) !important;
+  background: rgb(15, 23, 42) !important;
+}
+
+.dark .partner-operational-table-v105__title-block h4,
+.dark .partner-operational-table-v105__summary-card strong,
+.dark .partner-operational-table-v105__search > input,
+.dark .partner-operational-table-v105__select > select {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .partner-operational-table-v105__title-block p,
+.dark .partner-operational-table-v105__summary-card small {
+  color: rgb(148, 163, 184) !important;
+}
+
+.dark .partner-operational-table-v105__tool-btn {
+  background: linear-gradient(135deg, rgb(59, 130, 246), rgb(37, 99, 235)) !important;
+  color: #fff !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-operational-table-v105__header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-operational-table-v105__filters {
+    justify-self: stretch !important;
+    overflow-x: auto !important;
+  }
+
+  .partner-operational-table-v105__summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-operational-table-v105__toolbar {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-operational-table-v105__summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-operational-table-v105 {
+    border-radius: 22px !important;
+  }
+}
+
+
+@media (max-width: 1380px) {
+  .partner-operational-table-v105__summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .partner-operational-table-v105__toolbar {
+    grid-template-columns: minmax(260px, 1fr) minmax(200px, 240px) auto !important;
+  }
+
+  .partner-operational-table-v105 .partner-capital-compact-table {
+    min-width: 980px !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .partner-operational-table-v105__header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-operational-table-v105__filters {
+    justify-self: stretch !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+  }
+
+  .partner-operational-table-v105__summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-operational-table-v105__toolbar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-operational-table-v105 .partner-phone-capital-table-scroll {
+    padding-inline: 8px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .partner-operational-table-v105 {
+    margin-top: 22px !important;
+    border-radius: 24px !important;
+  }
+
+  .partner-operational-table-v105__header {
+    padding: 18px 18px 12px !important;
+  }
+
+  .partner-operational-table-v105__summary,
+  .partner-operational-table-v105__toolbar {
+    padding-inline: 18px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-operational-table-v105__summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-operational-table-v105__summary-card {
+    min-height: 78px !important;
+  }
+
+  .partner-operational-table-v105 {
+    border-radius: 22px !important;
+  }
+}
+
+
+/* v109 — hard search-box reset using contenteditable to avoid native double-box/focus styles */
+.partner-operational-table-v105__search {
+  direction: rtl !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.partner-operational-table-v105__search-input,
+.partner-operational-table-v105__search-input:hover,
+.partner-operational-table-v105__search-input:focus,
+.partner-operational-table-v105__search-input:focus-visible {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 42px !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  caret-color: rgb(15, 23, 42) !important;
+}
+
+.partner-operational-table-v105__search-input:empty::before {
+  content: attr(data-placeholder);
+  color: rgb(148, 163, 184) !important;
+}
+
+.partner-operational-table-v105__search > i {
+  flex: 0 0 18px !important;
+  width: 18px !important;
+  text-align: center !important;
+  color: rgb(100, 116, 139) !important;
+}

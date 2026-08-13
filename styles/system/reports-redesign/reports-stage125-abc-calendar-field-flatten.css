@@ -1,0 +1,131 @@
+/* Stage 125 — ABC calendar field flatten + metric density polish
+   Scope-limited to /reports/abc. Removes the extra card-like field frame around
+   date controls and makes the metric selector compact without changing report logic. */
+
+.abc-executive-page .abc-filter-bar {
+  align-items: flex-end !important;
+  gap: 12px !important;
+}
+
+/* Date controls: the Shamsi input remains the only visual box; wrapper is structural only. */
+.abc-executive-page .abc-filter-field--date.report-filter-field,
+.abc-executive-page .abc-filter-field--date[data-ui-report-filter-field="true"] {
+  flex: 1 1 170px !important;
+  min-width: 168px !important;
+  max-width: 202px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--date .report-filter-field__head {
+  height: 17px !important;
+  min-height: 17px !important;
+  padding-inline: 4px !important;
+  margin-bottom: 3px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--date .report-filter-field__icon {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+  border-radius: 999px !important;
+}
+
+.abc-executive-page .abc-filter-field--date .report-filter-field__body,
+.abc-executive-page .abc-filter-field--date .report-filter-field__body > * {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--date :where(.app-date-field, .app-date-field__control) {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"]) {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border-radius: 14px !important;
+  font-size: .82rem !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .34) !important;
+}
+
+/* Metric selector: compact by design; no oversized card. */
+.abc-executive-page .abc-filter-field--metric.report-filter-field,
+.abc-executive-page .abc-filter-field--metric[data-ui-report-filter-field="true"] {
+  flex: 0 0 130px !important;
+  min-width: 128px !important;
+  max-width: 138px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--metric .report-filter-field__head {
+  height: 17px !important;
+  min-height: 17px !important;
+  padding-inline: 4px !important;
+  margin-bottom: 3px !important;
+}
+
+.abc-executive-page .abc-filter-field--metric .report-filter-field__icon {
+  width: 17px !important;
+  height: 17px !important;
+  min-width: 17px !important;
+}
+
+.abc-executive-page .abc-filter-field--metric .report-filter-field__body {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-field--metric .abc-filter-select {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border: 1px solid rgba(203, 213, 225, .9) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .94) !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .34) !important;
+  font-size: .78rem !important;
+  padding-inline: 10px !important;
+}
+
+.abc-executive-page .abc-apply-button {
+  align-self: flex-end !important;
+  height: 38px !important;
+  min-width: 84px !important;
+  border-radius: 14px !important;
+}
+
+.dark .abc-executive-page .abc-filter-field--metric .abc-filter-select {
+  border-color: rgba(51, 65, 85, .9) !important;
+  background: rgba(15, 23, 42, .78) !important;
+  color: #f8fafc !important;
+}
+
+@media (max-width: 900px) {
+  .abc-executive-page .abc-filter-field--date.report-filter-field,
+  .abc-executive-page .abc-filter-field--metric.report-filter-field,
+  .abc-executive-page .abc-filter-field--date[data-ui-report-filter-field="true"],
+  .abc-executive-page .abc-filter-field--metric[data-ui-report-filter-field="true"] {
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+}

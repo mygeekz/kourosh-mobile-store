@@ -1,0 +1,50 @@
+/* Phase 51.83 — Global SPA non-blocking feedback guard.
+   Toasts must never dim, blur, reload, or block the current page. */
+html body .app-portal-layer--toast,
+html body .app-toast-layer,
+html body [data-kourosh-layer="toast"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+html body .app-portal-layer--toast::before,
+html body .app-portal-layer--toast::after,
+html body .app-toast-layer::before,
+html body .app-toast-layer::after,
+html body [data-kourosh-layer="toast"]::before,
+html body [data-kourosh-layer="toast"]::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+  opacity: 0 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body .app-notification-toast,
+html body [data-ui-feedback-surface="toast"] {
+  pointer-events: auto !important;
+  filter: none !important;
+}
+
+html:has(.app-notification-toast) body,
+html:has([data-ui-feedback-surface="toast"]) body,
+html:has(.app-notification-toast) #root,
+html:has([data-ui-feedback-surface="toast"]) #root {
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: none !important;
+  background-color: inherit !important;
+}
+
+html:has(.app-notification-toast) .app-splash,
+html:has([data-ui-feedback-surface="toast"]) .app-splash {
+  pointer-events: none !important;
+}

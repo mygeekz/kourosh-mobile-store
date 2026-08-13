@@ -1,0 +1,1232 @@
+/* Stage 117 — PartnerDetail responsive system
+   Goal:
+   Make PartnerDetail reliable at every viewport width without moving core content unexpectedly.
+   Scope: PartnerDetail only.
+*/
+
+.partner-detail-responsive-root,
+.detail-page-shell.people-detail-apple.partner-detail-apple {
+  width: min(1280px, calc(100vw - 24px)) !important;
+  max-width: min(1280px, calc(100vw - 24px)) !important;
+  min-width: 0 !important;
+  margin-inline: auto !important;
+  padding-inline: clamp(.5rem, 1vw, 1.25rem) !important;
+  overflow-x: clip !important;
+  box-sizing: border-box !important;
+}
+
+.partner-detail-responsive-root *,
+.partner-detail-responsive-root *::before,
+.partner-detail-responsive-root *::after {
+  box-sizing: border-box !important;
+}
+
+/* Top hero: profile + actions remain top-aligned, but safely wrap. */
+.partner-detail-responsive-root .detail-hero-card,
+.partner-detail-responsive-root .partner-detail-hero-clean {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.partner-detail-responsive-root .detail-hero-card__head {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  padding: clamp(.9rem, 1.4vw, 1.35rem) !important;
+  overflow: visible !important;
+}
+
+.partner-detail-responsive-root .partner-detail-hero__top {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 430px) !important;
+  gap: 1rem !important;
+  align-items: start !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-detail-hero__top > :first-child > .space-y-2,
+.partner-detail-responsive-root .partner-detail-hero__top > :first-child .mt-3 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-detail-hero__top .mt-3 {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: .5rem !important;
+}
+
+/* Actions: compact, fixed safe column on desktop; full width below. */
+.partner-detail-responsive-root .partner-detail-actions,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity {
+  width: 100% !important;
+  max-width: 430px !important;
+  min-width: 0 !important;
+  justify-self: end !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: .55rem !important;
+  overflow: visible !important;
+  z-index: 40 !important;
+}
+
+.partner-detail-responsive-root .partner-detail-actions .people-action-btn,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity .people-action-btn,
+.partner-detail-responsive-root .partner-detail-actions button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 38px !important;
+  padding-inline: .55rem !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 10.75px !important;
+  line-height: 1 !important;
+}
+
+/* Account focus block: responsive content. */
+.partner-detail-responsive-root .detail-account-focus,
+.partner-detail-responsive-root .partner-detail-account-focus {
+  margin-inline: 0 !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.partner-detail-responsive-root .detail-account-focus > div,
+.partner-detail-responsive-root .partner-detail-account-focus > div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .45fr) !important;
+  gap: 1rem !important;
+  align-items: start !important;
+}
+
+.partner-detail-responsive-root .detail-account-focus .people-chip {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  line-height: 1.7 !important;
+}
+
+/* All lower section shells: remove unsafe mx-6 on narrow sizes through CSS. */
+.partner-detail-responsive-root .partner-detail-section-shell,
+.partner-detail-responsive-root .partner-phone-capital-section,
+.partner-detail-responsive-root .partner-unified-overview-section {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* Phone capital centralized section responsive refinements. */
+.partner-detail-responsive-root .partner-phone-capital-section {
+  margin-inline: 1.5rem !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 330px) !important;
+  gap: 1.25rem !important;
+  align-items: start !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-summary-card {
+  width: 100% !important;
+  max-width: 330px !important;
+  justify-self: end !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-metric-card,
+.partner-detail-responsive-root .partner-phone-capital-summary-card {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-metric-card :where(.font-black, .font-bold),
+.partner-detail-responsive-root .partner-phone-capital-summary-card :where(.font-black, .font-bold) {
+  overflow-wrap: anywhere !important;
+}
+
+/* Tables: always horizontally scroll instead of breaking page width. */
+.partner-detail-responsive-root .partner-detail-table-scroll,
+.partner-detail-responsive-root .partner-phone-capital-table-scroll,
+.partner-detail-responsive-root .overflow-x-auto {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.partner-detail-responsive-root table {
+  max-width: none !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-section table {
+  min-width: 980px !important;
+}
+
+/* Unified overview cards lower section */
+.partner-detail-responsive-root .partner-unified-overview-section .grid {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-unified-overview-section .grid > div {
+  min-width: 0 !important;
+}
+
+/* Breakpoints */
+@media (max-width: 1180px) {
+  .partner-detail-responsive-root .partner-detail-hero__top {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    max-width: 100% !important;
+    justify-self: stretch !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-header,
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-summary-card {
+    max-width: 100% !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .partner-detail-responsive-root,
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    width: min(100%, calc(100vw - 16px)) !important;
+    max-width: min(100%, calc(100vw - 16px)) !important;
+    padding-inline: .5rem !important;
+  }
+
+  .partner-detail-responsive-root .detail-account-focus > div,
+  .partner-detail-responsive-root .partner-detail-account-focus > div {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section,
+  .partner-detail-responsive-root .partner-detail-section-shell,
+  .partner-detail-responsive-root .partner-unified-overview-section {
+    margin-inline: .5rem !important;
+    padding: 1rem !important;
+    border-radius: 22px !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-detail-responsive-root {
+    gap: 1rem !important;
+  }
+
+  .partner-detail-responsive-root .detail-hero-card__head {
+    padding: .85rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: .85rem !important;
+  }
+
+  .partner-detail-responsive-root .detail-hero-card__icon {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 18px !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-title {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-summary-value {
+    font-size: 1.25rem !important;
+    line-height: 1.85 !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .partner-detail-responsive-root,
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: .25rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section,
+  .partner-detail-responsive-root .partner-detail-section-shell,
+  .partner-detail-responsive-root .partner-unified-overview-section {
+    margin-inline: 0 !important;
+    padding: .85rem !important;
+    border-radius: 18px !important;
+  }
+
+  .partner-detail-responsive-root .detail-hero-card,
+  .partner-detail-responsive-root .partner-detail-hero-clean {
+    border-radius: 18px !important;
+  }
+}
+/* Stage 118 — PartnerDetail 100% zoom responsive correction
+   Observed:
+   At 90% browser zoom, layout has enough CSS px and looks correct.
+   At 100% zoom on the same screen, the desktop two-column header remains active
+   but available width is not enough; the left action column gets clipped.
+
+   Fix:
+   Activate the safe/tablet layout earlier for laptop widths.
+   Keep actions at the top area, but make them a full safe row before clipping starts.
+*/
+
+@media (max-width: 1380px) {
+  .partner-detail-responsive-root,
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    width: min(100%, calc(100vw - 40px)) !important;
+    max-width: min(100%, calc(100vw - 40px)) !important;
+    padding-inline: .75rem !important;
+    overflow-x: clip !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-hero__top {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-hero__top > :first-child {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    justify-self: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions .people-action-btn,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity .people-action-btn,
+  .partner-detail-responsive-root .partner-detail-actions button {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .detail-account-focus > div,
+  .partner-detail-responsive-root .partner-detail-account-focus > div {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-summary-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    justify-self: stretch !important;
+  }
+}
+
+/* Extra guard for common 1366/1280 laptop widths at 100% zoom. */
+@media (max-width: 1280px) {
+  .partner-detail-responsive-root,
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    width: min(100%, calc(100vw - 28px)) !important;
+    max-width: min(100%, calc(100vw - 28px)) !important;
+    padding-inline: .6rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Avoid any horizontal bleed from wide internal children. */
+.partner-detail-responsive-root :where(.detail-hero-card, .partner-detail-hero-clean, .detail-account-focus, .partner-detail-account-focus, .partner-phone-capital-section, .partner-detail-section-shell) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root :where(.partner-detail-hero__top, .partner-detail-actions, .partner-detail-actions--customer-parity, .partner-phone-capital-header, .partner-phone-capital-metrics) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 760px) {
+  .partner-detail-responsive-root,
+  .detail-page-shell.people-detail-apple.partner-detail-apple {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: .45rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-detail-actions,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-phone-capital-metrics {
+    grid-template-columns: 1fr !important;
+  }
+}
+/* Stage 119 — PartnerDetail ledger insight responsive cleanup
+   Target shown in screenshot:
+   - "آخرین گردش‌های حساب" list
+   - "خلاصه سریع دفتر"
+   Issues:
+   - amount chips overflow out of metric cards
+   - 3-column metric grid is too tight on medium widths
+   - text/value badges do not wrap safely
+*/
+
+.partner-detail-responsive-root .partner-ledger-insight-grid,
+.partner-detail-apple .partner-ledger-insight-grid {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  align-items: start !important;
+}
+
+/* The two columns should collapse earlier to prevent cards squeezing. */
+@media (max-width: 1380px) {
+  .partner-detail-responsive-root .partner-ledger-insight-grid,
+  .partner-detail-apple .partner-ledger-insight-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Recent ledger entry cards: allow all text to wrap and stay inside. */
+.partner-detail-responsive-root .partner-ledger-insight-grid :where(.min-w-0),
+.partner-detail-apple .partner-ledger-insight-grid :where(.min-w-0) {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-insight-grid :where(.text-sm, .text-xs, .font-bold, .font-black),
+.partner-detail-apple .partner-ledger-insight-grid :where(.text-sm, .text-xs, .font-bold, .font-black) {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+/* The metrics inside each ledger entry should not remain 3 columns when tight. */
+.partner-detail-responsive-root .partner-ledger-entry-metrics,
+.partner-detail-apple .partner-ledger-entry-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 760px) {
+  .partner-detail-responsive-root .partner-ledger-entry-metrics,
+  .partner-detail-apple .partner-ledger-entry-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-entry-metric--balance,
+  .partner-detail-apple .partner-ledger-entry-metric--balance {
+    grid-column: auto !important;
+  }
+}
+
+.partner-detail-responsive-root .partner-ledger-entry-metric,
+.partner-detail-apple .partner-ledger-entry-metric {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+  line-height: 1.8 !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+/* Any chip/badge inside metric cells must wrap instead of overflowing. */
+.partner-detail-responsive-root .partner-ledger-entry-metric :where(span, div),
+.partner-detail-apple .partner-ledger-entry-metric :where(span, div) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Solid/clear quick summary cards. */
+.partner-detail-responsive-root .partner-ledger-quick-summary,
+.partner-detail-apple .partner-ledger-quick-summary {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  background: #fff !important;
+  background-color: #fff !important;
+  border-color: rgb(226 232 240) !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-quick-item,
+.partner-detail-apple .partner-ledger-quick-item {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  background: rgb(248 250 252) !important;
+  background-color: rgb(248 250 252) !important;
+  border-color: rgb(226 232 240) !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-quick-item :where(div, span),
+.partner-detail-apple .partner-ledger-quick-item :where(div, span) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+}
+
+@media (max-width: 1380px) and (min-width: 761px) {
+  .partner-detail-responsive-root .partner-ledger-quick-summary__items,
+  .partner-detail-apple .partner-ledger-quick-summary__items {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .partner-detail-responsive-root .partner-ledger-quick-summary__items,
+  .partner-detail-apple .partner-ledger-quick-summary__items {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+}
+
+/* The red balance chip in screenshot should never overflow its card. */
+.partner-detail-responsive-root .partner-ledger-insight-grid :where([class*="text-rose"], [class*="text-red"]),
+.partner-detail-apple .partner-ledger-insight-grid :where([class*="text-rose"], [class*="text-red"]) {
+  overflow-wrap: anywhere !important;
+  white-space: normal !important;
+}
+
+/* Dark */
+html.dark .partner-detail-responsive-root .partner-ledger-quick-summary,
+html.dark .partner-detail-apple .partner-ledger-quick-summary {
+  background: rgb(2 6 23) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-detail-responsive-root .partner-ledger-quick-item,
+html.dark .partner-detail-apple .partner-ledger-quick-item {
+  background: rgb(15 23 42) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+/* v135 — PartnerDetail final container-aware responsive contract
+   Source-of-truth audit findings:
+   - PartnerDetail lives inside the app shell, so viewport media queries do not reliably represent
+     the actual content width when the sidebar is open or browser zoom changes.
+   - Multiple later partner-runtime files reintroduced fixed 300/430/440px columns after the older
+     responsive foundation. This contract is intentionally imported after every PartnerDetail runtime
+     stylesheet and responds to the real inline size of the PartnerDetail container.
+   - Wide data tables remain internally scrollable only when the card representation is not active.
+*/
+
+.partner-detail-responsive-root,
+.detail-page-shell.people-detail-apple.partner-detail-apple {
+  container-type: inline-size !important;
+  container-name: partner-detail !important;
+  width: 100% !important;
+  max-width: 1280px !important;
+  min-width: 0 !important;
+  margin-inline: auto !important;
+  padding-inline: clamp(8px, 1.25vw, 18px) !important;
+  overflow-x: clip !important;
+  scrollbar-gutter: auto !important;
+}
+
+/* Retire the old physical-left gutter. It was based on viewport/scrollbar assumptions and could
+   steal 42px from the actual app content column at laptop widths. */
+.partner-detail-responsive-root.partner-detail-safe-gutter-v84,
+.detail-page-shell.people-detail-apple.partner-detail-apple.partner-detail-safe-gutter-v84 {
+  padding-left: clamp(8px, 1.25vw, 18px) !important;
+  padding-right: clamp(8px, 1.25vw, 18px) !important;
+}
+
+.partner-detail-responsive-root > :where(
+  section,
+  .detail-card,
+  .partner-detail-section-shell,
+  .partner-phone-capital-section,
+  .partner-telegram-customer-copy-v119,
+  [data-ui-people-surface="partner-header-overview"]
+) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+}
+
+.partner-detail-responsive-root :where(
+  .partner-detail-section-shell,
+  .partner-phone-capital-section,
+  .partner-phone-capital-header,
+  .partner-phone-capital-copy,
+  .partner-phone-capital-summary-card,
+  .partner-phone-capital-metrics,
+  .partner-operational-table-v105,
+  .partner-operational-table-v105__header,
+  .partner-operational-table-v105__summary,
+  .partner-operational-table-v105__toolbar,
+  .partner-telegram-customer-copy-v119,
+  .partner-ledger-v132__transactions-panel,
+  .partner-ledger-v133__search-grid,
+  .partner-ledger-v133__summary-grid,
+  .partner-purchase-history-section,
+  .partner-purchase-history-header,
+  .partner-purchase-history-filters,
+  .people-directory-pagination
+) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root :where(h1, h2, h3, h4, p, span, strong, small, b, em, div) {
+  overflow-wrap: break-word;
+}
+
+/* Monetary and machine identifiers should stay readable rather than break digit-by-digit. */
+.partner-detail-responsive-root :where(
+  .partner-phone-capital-summary-value,
+  .partner-operational-table-v105__summary-card strong,
+  .partner-ledger-summary-card__value,
+  .font-mono
+) {
+  word-break: normal !important;
+}
+
+/* Overview/KPI and settlement sections use the actual content width, not Tailwind viewport breakpoints. */
+.partner-detail-responsive-root [data-partner-overview="true"] > .grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.partner-detail-responsive-root [data-partner-overview="true"] article,
+.partner-detail-responsive-root .partner-settlement-workspace__metrics > article {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root [data-partner-overview="true"] article :where(.font-black, .font-semibold),
+.partner-detail-responsive-root .partner-settlement-workspace__metrics > article :where(.font-black, .font-semibold) {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-wrap: break-word !important;
+}
+
+.partner-detail-responsive-root .partner-settlement-workspace__header {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-settlement-workspace__header > * {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-settlement-workspace__metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+/* Phone capital section. */
+.partner-detail-responsive-root .partner-phone-capital-section {
+  margin-inline: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-header {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 330px) minmax(0, 1fr) !important;
+  grid-template-areas: "summary copy" !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-copy {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-summary-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 330px !important;
+  justify-self: end !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-metrics {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-metrics .truncate,
+.partner-detail-responsive-root .partner-phone-capital-summary-value {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: break-word !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__filters {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__filter {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__summary {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__summary-card {
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__summary-card strong {
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 1fr) minmax(210px, 260px) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+.partner-detail-responsive-root .partner-operational-table-v105__search,
+.partner-detail-responsive-root .partner-operational-table-v105__select,
+.partner-detail-responsive-root .partner-operational-table-v105__tool-btn {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-table-scroll,
+.partner-detail-responsive-root .partner-phone-capital-table-view,
+.partner-detail-responsive-root .people-table-shell,
+.partner-detail-responsive-root .partner-ledger-shell,
+.partner-detail-responsive-root .partner-purchase-history-table-view {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.partner-detail-responsive-root .partner-phone-capital-mobile-list,
+.partner-detail-responsive-root .partner-purchase-history-mobile-list {
+  display: none !important;
+}
+
+/* Telegram panel: make the split follow available PartnerDetail width. */
+.partner-detail-responsive-root .partner-telegram-customer-copy-v119 {
+  overflow: visible !important;
+}
+
+.partner-detail-responsive-root .partner-telegram-customer-copy-v119 > .grid {
+  display: grid !important;
+  grid-template-columns: 320px minmax(0, 1fr) !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-telegram-customer-copy-v119 > .grid > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-telegram-header-v124 {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-telegram-header-v124__actions {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-telegram-searchbox-v120 {
+  width: min(100%, 520px) !important;
+  min-width: 0 !important;
+}
+
+/* Ledger: controls and data surfaces must shrink independently. */
+.partner-detail-responsive-root .partner-customer-sync-ledger-head > *,
+.partner-detail-responsive-root .partner-ledger-v132__transactions-panel > *,
+.partner-detail-responsive-root .partner-ledger-v133__search-grid > *,
+.partner-detail-responsive-root .partner-ledger-v133__search-grid > div:last-child,
+.partner-detail-responsive-root .partner-ledger-v133__search-grid .flex,
+.partner-detail-responsive-root .partner-ledger-expanded-panel,
+.partner-detail-responsive-root .partner-ledger-history-card,
+.partner-detail-responsive-root .partner-ledger-history-grid {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-v133__search-grid {
+  display: grid !important;
+  grid-template-columns: minmax(280px, .9fr) minmax(0, 1.1fr) !important;
+  gap: 10px !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-v133__search-wrap {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-v133__search-input,
+.partner-detail-responsive-root .partner-ledger-v133__search-wrap input {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-v133__summary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.partner-detail-responsive-root .partner-ledger-batch-sticky-summary__grid,
+.partner-detail-responsive-root .partner-ledger-history-grid,
+.partner-detail-responsive-root .partner-ledger-expanded-panel > .grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)) !important;
+}
+
+.partner-detail-responsive-root .partner-system-id-block {
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-system-id-value {
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Purchase history: table on wide containers, readable cards on constrained containers. */
+.partner-detail-responsive-root .partner-purchase-history-section {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-purchase-history-filters {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+.partner-detail-responsive-root .partner-purchase-history-filters > button {
+  min-width: 116px !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .people-directory-pagination {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Actual content-width breakpoints. */
+@container partner-detail (max-width: 1080px) {
+  .partner-detail-responsive-root [data-partner-overview="true"] > .grid,
+  .partner-detail-responsive-root .partner-settlement-workspace__metrics,
+  .partner-detail-responsive-root .partner-phone-capital-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-header,
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-header {
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "copy" "summary" !important;
+    direction: rtl !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-summary-card {
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-operational-table-v105__header,
+  .partner-detail-responsive-root .partner-operational-table-v105__toolbar,
+  .partner-detail-responsive-root .partner-ledger-v133__search-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-operational-table-v105__summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-operational-table-v105__toolbar > * {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-customer-copy-v119 > .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v132__transactions-panel > .flex.flex-col.gap-4.xl\:flex-row {
+    flex-direction: column !important;
+  }
+}
+
+@container partner-detail (max-width: 900px) {
+  .partner-detail-responsive-root {
+    padding-inline: 10px !important;
+  }
+
+  .partner-detail-responsive-root > :where(
+    section,
+    .detail-card,
+    .partner-detail-section-shell,
+    .partner-phone-capital-section,
+    .partner-telegram-customer-copy-v119
+  ) {
+    border-radius: 22px !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list,
+  .partner-detail-responsive-root .partner-purchase-history-mobile-list {
+    display: grid !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-table-view,
+  .partner-detail-responsive-root .partner-purchase-history-table-view {
+    display: none !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "title" "actions" !important;
+    direction: rtl !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124__actions {
+    width: 100% !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v133__summary-grid,
+  .partner-detail-responsive-root .partner-ledger-batch-sticky-summary__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-batch-sticky-summary {
+    position: static !important;
+    top: auto !important;
+  }
+
+  .partner-detail-responsive-root .partner-purchase-history-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-purchase-history-filters {
+    width: 100% !important;
+  }
+}
+
+@container partner-detail (max-width: 680px) {
+  .partner-detail-responsive-root {
+    padding-inline: 8px !important;
+  }
+
+  .partner-detail-responsive-root [data-partner-overview="true"],
+  .partner-detail-responsive-root .partner-settlement-workspace,
+  .partner-detail-responsive-root .partner-phone-capital-section,
+  .partner-detail-responsive-root .partner-telegram-customer-copy-v119,
+  .partner-detail-responsive-root .partner-purchase-history-section,
+  .partner-detail-responsive-root .detail-card.partner-customer-sync-ledger {
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .partner-detail-responsive-root [data-partner-overview="true"] > .grid,
+  .partner-detail-responsive-root .partner-settlement-workspace__metrics,
+  .partner-detail-responsive-root .partner-phone-capital-metrics,
+  .partner-detail-responsive-root .partner-operational-table-v105__summary,
+  .partner-detail-responsive-root .partner-ledger-v133__summary-grid,
+  .partner-detail-responsive-root .partner-ledger-batch-sticky-summary__grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-settlement-workspace__header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-settlement-workspace__header > :last-child {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .partner-detail-responsive-root .partner-operational-table-v105__filters {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-operational-table-v105__filter {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list {
+    padding-inline: 0 !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-summary-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    padding: 18px 88px 18px 18px !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-summary-card::before {
+    right: 18px !important;
+    width: 58px !important;
+    height: 58px !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list > article,
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list > div,
+  .partner-detail-responsive-root .partner-purchase-history-card {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list .grid.grid-cols-2,
+  .partner-detail-responsive-root .partner-purchase-history-card__metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-customer-copy-v119 {
+    padding: 12px !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-customer-copy-v119 :where(.grid-cols-2) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124__title {
+    width: 100% !important;
+    justify-self: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124__actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124__actions > * {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .partner-detail-responsive-root .partner-customer-sync-ledger-head {
+    align-items: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-customer-sync-ledger-head > button,
+  .partner-detail-responsive-root .partner-customer-sync-ledger-head > .ux-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v132__transactions-panel {
+    padding: 10px !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v132__panel-head {
+    align-items: stretch !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v132__record-pill {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v133__search-grid > div:last-child,
+  .partner-detail-responsive-root .partner-ledger-v132__transactions-panel > .flex-1 > .flex.flex-wrap.items-center.gap-2.justify-end {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-v133__search-grid > div:last-child > *,
+  .partner-detail-responsive-root .partner-ledger-v132__transactions-panel > .flex-1 > .flex.flex-wrap.items-center.gap-2.justify-end > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-responsive-root .partner-ledger-expanded-panel > .grid,
+  .partner-detail-responsive-root .partner-ledger-history-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-purchase-history-filters {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-purchase-history-filters > button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .partner-detail-responsive-root .people-directory-pagination {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    justify-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .partner-detail-responsive-root .people-directory-pagination > *,
+  .partner-detail-responsive-root .people-directory-pagination nav {
+    width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+  }
+}
+
+@container partner-detail (max-width: 440px) {
+  .partner-detail-responsive-root {
+    padding-inline: 6px !important;
+  }
+
+  .partner-detail-responsive-root .partner-telegram-header-v124__actions {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-mobile-list .grid,
+  .partner-detail-responsive-root .partner-purchase-history-card__metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-summary-card {
+    padding: 16px 68px 16px 14px !important;
+  }
+
+  .partner-detail-responsive-root .partner-phone-capital-section .partner-phone-capital-summary-card::before {
+    right: 14px !important;
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .partner-detail-responsive-root [data-partner-overview="true"],
+  .partner-detail-responsive-root .partner-settlement-workspace,
+  .partner-detail-responsive-root .partner-phone-capital-section,
+  .partner-detail-responsive-root .partner-telegram-customer-copy-v119,
+  .partner-detail-responsive-root .partner-purchase-history-section,
+  .partner-detail-responsive-root .detail-card.partner-customer-sync-ledger {
+    border-radius: 18px !important;
+  }
+}
+
+/* PartnerDetail modals are portaled outside the page container; keep their responsive contract viewport-based. */
+@media (max-width: 920px) {
+  .partner-edit-v98-overlay .customer-edit-v2__layout,
+  .partner-ledger-edit-modal-canonical .partner-ledger-edit-canonical,
+  .kourosh-modal__panel .phone-settlement-finance-modal,
+  .kourosh-modal__panel .partner-full-settlement-modal-body .partner-settlement-desk {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .partner-ledger-edit-modal-canonical .partner-ledger-edit-canonical,
+  .kourosh-modal__panel .phone-settlement-finance-modal {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-ledger-edit-modal-canonical .partner-ledger-edit-canonical__money-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .kourosh-modal__panel .partner-full-settlement-modal-body :where(.lg\:w-\[480px\], .sm\:min-w-\[360px\], .lg\:min-w-\[520px\]) {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-edit-v98-overlay .customer-edit-v2,
+  .partner-ledger-edit-modal-canonical .partner-ledger-edit-canonical,
+  .kourosh-modal__panel .phone-settlement-finance-modal,
+  .kourosh-modal__panel .partner-settlement-desk {
+    gap: 10px !important;
+  }
+
+  .kourosh-modal__panel .partner-settlement-desk :where(.grid-cols-2, .sm\:grid-cols-4, .lg\:grid-cols-4) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .kourosh-modal__panel .partner-settlement-desk :where(.sm\:grid-cols-\[minmax\(0\,1fr\)_220px_auto_auto\], .md\:grid-cols-\[minmax\(0\,1fr\)_auto_auto\]) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .kourosh-modal__panel .partner-settlement-desk :where(button, .ux-btn, input, select, textarea) {
+    max-width: 100% !important;
+  }
+}

@@ -1,0 +1,320 @@
+/* Stage 62 — Compare sales executive redesign
+   Scope: /reports/periodic-comparison only. */
+
+.compare-sales-executive-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #0f172a;
+}
+
+.compare-sales-filter-panel,
+.compare-sales-section,
+.compare-sales-empty-state {
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.compare-sales-filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  direction: rtl;
+}
+
+.compare-sales-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  direction: rtl;
+}
+
+.compare-sales-date-presets,
+.compare-sales-date-presets .report-date-presets__chips,
+.compare-sales-executive-page .report-date-presets,
+.compare-sales-executive-page .report-date-presets__chips {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  margin: 0 0 0 14px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  width: auto !important;
+}
+
+.compare-sales-executive-page .report-date-preset-chip,
+.compare-sales-filter-row--secondary button,
+.compare-sales-refresh-button {
+  height: 36px;
+  border-radius: 13px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  background: #fff;
+  color: #0f172a;
+  box-shadow: none;
+  padding: 0 12px;
+  font-size: .78rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.compare-sales-executive-page .report-date-preset-chip.is-active,
+.compare-sales-filter-row--secondary button:hover,
+.compare-sales-refresh-button:hover {
+  background: #f8fafc;
+  border-color: rgba(59, 130, 246, .28);
+}
+
+.compare-sales-date-box,
+.compare-sales-baseline-select {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 150px;
+  width: 150px;
+  margin: 0;
+}
+
+.compare-sales-date-box > span,
+.compare-sales-baseline-select > span,
+.compare-sales-filter-label {
+  color: #64748b;
+  font-size: .64rem;
+  line-height: 1;
+  font-weight: 850;
+  padding-inline: 4px;
+  white-space: nowrap;
+}
+
+.compare-sales-date-box .app-date-field,
+.compare-sales-date-box .app-date-field__control,
+.compare-sales-date-box .app-date-field__control.compare-sales-date-input {
+  width: 100% !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.compare-sales-date-box .app-date-field__input,
+.compare-sales-date-box input[data-app-date-input='true'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 34px !important;
+  border: 1px solid rgba(148, 163, 184, .46) !important;
+  border-radius: 13px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  text-align: center !important;
+  direction: ltr !important;
+  font-size: .83rem !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  padding: 0 12px !important;
+}
+
+.compare-sales-date-box .app-date-field__icon { display: none !important; }
+
+.compare-sales-baseline-select select {
+  height: 34px;
+  border: 1px solid rgba(148, 163, 184, .46);
+  border-radius: 13px;
+  background: #fff;
+  color: #0f172a;
+  padding: 0 12px;
+  font-size: .8rem;
+  font-weight: 850;
+  outline: 0;
+}
+
+.compare-sales-refresh-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+}
+
+.compare-sales-filter-row--primary {
+  justify-content: flex-start;
+}
+
+.compare-sales-filter-row--secondary {
+  justify-content: flex-start;
+}
+
+.compare-sales-filter-row--secondary {
+  border-top: 1px solid rgba(226, 232, 240, .9);
+  padding-top: 10px;
+}
+
+.compare-sales-section {
+  padding: 14px;
+}
+
+.compare-sales-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.compare-sales-section__head h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 950;
+  color: #0f172a;
+}
+
+.compare-sales-section__head p {
+  margin: 5px 0 0;
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.compare-sales-trend-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: .76rem;
+  font-weight: 900;
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #f8fafc;
+  white-space: nowrap;
+}
+.compare-sales-trend-badge--positive { color: #047857; background: #ecfdf5; border-color: rgba(16, 185, 129, .25); }
+.compare-sales-trend-badge--negative { color: #be123c; background: #fff1f2; border-color: rgba(244, 63, 94, .25); }
+.compare-sales-trend-badge--neutral { color: #475569; }
+
+.compare-sales-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.compare-sales-metric-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 94px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 18px;
+  background: #fff;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.compare-sales-metric-card__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  border: 1px solid rgba(59, 130, 246, .16);
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.compare-sales-metric-card__label {
+  display: block;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+  margin-bottom: 4px;
+}
+
+.compare-sales-metric-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1.2rem;
+  font-weight: 950;
+  line-height: 1.35;
+}
+
+.compare-sales-metric-card small {
+  display: block;
+  margin-top: 3px;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.compare-sales-metric-card button {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  height: 28px;
+  margin-top: 7px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  background: #fff;
+  color: #1d4ed8;
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.compare-sales-empty-state {
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #64748b;
+  font-size: .82rem;
+  font-weight: 750;
+}
+.compare-sales-empty-state i { color: #2563eb; font-size: 1.2rem; }
+.compare-sales-empty-state strong { color: #0f172a; font-size: .95rem; }
+
+.dark .compare-sales-filter-panel,
+.dark .compare-sales-section,
+.dark .compare-sales-empty-state,
+.dark .compare-sales-metric-card,
+.dark .compare-sales-date-box .app-date-field__input,
+.dark .compare-sales-date-box input[data-app-date-input='true'],
+.dark .compare-sales-baseline-select select,
+.dark .compare-sales-executive-page .report-date-preset-chip,
+.dark .compare-sales-filter-row--secondary button,
+.dark .compare-sales-refresh-button {
+  background: #0f172a !important;
+  border-color: rgba(148, 163, 184, .24) !important;
+  color: #e5e7eb !important;
+}
+.dark .compare-sales-section__head h2,
+.dark .compare-sales-metric-card strong,
+.dark .compare-sales-empty-state strong { color: #f8fafc !important; }
+.dark .compare-sales-section__head p,
+.dark .compare-sales-metric-card small,
+.dark .compare-sales-metric-card__label,
+.dark .compare-sales-date-box > span,
+.dark .compare-sales-baseline-select > span,
+.dark .compare-sales-filter-label { color: #94a3b8 !important; }
+
+@media (max-width: 760px) {
+  .compare-sales-filter-row { align-items: stretch; }
+  .compare-sales-date-presets,
+  .compare-sales-date-presets .report-date-presets__chips,
+  .compare-sales-executive-page .report-date-presets,
+  .compare-sales-executive-page .report-date-presets__chips { margin-left: 0 !important; }
+  .compare-sales-date-box,
+  .compare-sales-baseline-select { width: 100%; min-width: 100%; }
+  .compare-sales-refresh-button { margin-right: 0; width: max-content; }
+  .compare-sales-section__head { flex-direction: column; }
+}

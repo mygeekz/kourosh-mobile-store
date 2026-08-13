@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 13L Metadata-only Migration Apply Eligibility Matrix",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "matrixKind",
+    "status",
+    "sourcePhase",
+    "sourceFixtureKind",
+    "matrixMode",
+    "eligibilityMatrixOnly",
+    "allowed",
+    "eligibleScenarioCount",
+    "blockedScenarioCount",
+    "matrixRowCount",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "matrixRows",
+    "eligibilityBoundary",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13L"
+    },
+    "matrixKind": {
+      "const": "metadata_only_migration_apply_eligibility_matrix"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ]
+    },
+    "sourcePhase": {
+      "const": "Phase 13K"
+    },
+    "sourceFixtureKind": {
+      "const": "metadata_only_migration_apply_preflight_fixture"
+    },
+    "matrixMode": {
+      "const": "eligibility_matrix_only_no_migration_application"
+    },
+    "eligibilityMatrixOnly": {
+      "const": true
+    },
+    "allowed": {
+      "const": false
+    },
+    "eligibleScenarioCount": {
+      "const": 0
+    },
+    "blockedScenarioCount": {
+      "type": "integer",
+      "minimum": 5
+    },
+    "matrixRowCount": {
+      "type": "integer",
+      "minimum": 5
+    },
+    "migrationApplyAccepted": {
+      "const": false
+    },
+    "migrationApplicationAllowed": {
+      "const": false
+    },
+    "migrationApplicationPerformed": {
+      "const": false
+    },
+    "migrationRunnerRegistered": {
+      "const": false
+    },
+    "migrationRunnerOperational": {
+      "const": false
+    },
+    "migrationRegistryMutated": {
+      "const": false
+    },
+    "sqlTextLoadedFromDisk": {
+      "const": false
+    },
+    "sqlExecutionAllowed": {
+      "const": false
+    },
+    "databaseConnectionAllowed": {
+      "const": false
+    },
+    "databaseWriteAllowed": {
+      "const": false
+    },
+    "tableCreationApplied": {
+      "const": false
+    },
+    "tableCreated": {
+      "const": false
+    },
+    "repositoryWriteAllowed": {
+      "const": false
+    },
+    "routeExposed": {
+      "const": false
+    },
+    "matrixRows": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "eligibilityStatus",
+          "eligibilityDecision",
+          "migrationApplicationAllowed",
+          "sqlExecutionAllowed",
+          "databaseWriteAllowed"
+        ],
+        "properties": {
+          "eligibilityStatus": {
+            "const": "blocked"
+          },
+          "migrationApplicationAllowed": {
+            "const": false
+          },
+          "sqlExecutionAllowed": {
+            "const": false
+          },
+          "databaseConnectionAllowed": {
+            "const": false
+          },
+          "databaseWriteAllowed": {
+            "const": false
+          },
+          "tableCreationApplied": {
+            "const": false
+          },
+          "repositoryWriteAllowed": {
+            "const": false
+          },
+          "routeExposed": {
+            "const": false
+          }
+        }
+      }
+    },
+    "eligibilityBoundary": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "eligibilityMatrixOnly": {
+          "const": true
+        },
+        "doesNotExecuteSql": {
+          "const": true
+        },
+        "migrationApplicationAllowed": {
+          "const": false
+        },
+        "tableCreated": {
+          "const": false
+        },
+        "allRowsRemainBlocked": {
+          "const": true
+        },
+        "stopsBeforeExecutableMigration": {
+          "const": true
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "noMigrationApplication": {
+          "const": true
+        },
+        "noRuntimeSqlExecution": {
+          "const": true
+        },
+        "noDatabaseConnection": {
+          "const": true
+        },
+        "noDatabaseWrite": {
+          "const": true
+        },
+        "modelExecutionAllowed": {
+          "const": false
+        },
+        "inferenceEndpointExposed": {
+          "const": false
+        },
+        "artifactActivationAllowed": {
+          "const": false
+        },
+        "canMutateBusinessRecords": {
+          "const": false
+        }
+      }
+    },
+    "generatedAt": {
+      "type": "string"
+    }
+  }
+}

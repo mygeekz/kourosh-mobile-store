@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase9a/candidate_output.schema.json",
+  "title": "Kourosh Offline Inventory Stockout Candidate Output Sample",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["entityId", "predictionType", "horizonDays", "score", "label", "confidence", "modelVersion", "generatedAt"],
+    "properties": {
+      "entityId": { "type": ["string", "number"] },
+      "predictionType": { "type": "string" },
+      "horizonDays": { "type": ["number", "integer", "null"] },
+      "score": { "type": ["number", "null"] },
+      "label": { "type": ["string", "number", "boolean", "null"] },
+      "confidence": { "type": ["number", "null"] },
+      "modelVersion": { "type": "string" },
+      "generatedAt": { "type": "string" }
+    },
+    "additionalProperties": false,
+    "not": {
+      "anyOf": [
+        { "required": ["set_stock"] },
+        { "required": ["change_price"] },
+        { "required": ["approve_purchase"] },
+        { "required": ["create_invoice"] },
+        { "required": ["mutate_ledger"] },
+        { "required": ["auto_order"] },
+        { "required": ["delete_record"] },
+        { "required": ["production_action"] },
+        { "required": ["auto_decision"] },
+        { "required": ["activate_artifact"] },
+        { "required": ["deploy_model"] }
+      ]
+    }
+  }
+}

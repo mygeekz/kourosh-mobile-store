@@ -1,0 +1,651 @@
+/* Canonical Shamsi date field.
+   This file is the only owner of date-field and calendar interaction geometry.
+   Existing public class names are preserved for backward compatibility. */
+
+.app-date-field {
+  --date-field-height: var(--ds-control-height-lg, 46px);
+  --date-field-radius: var(--ds-control-radius, 16px);
+  --date-field-border: var(--ds-control-border, rgba(203, 213, 225, .92));
+  --date-field-border-hover: var(--ds-border-strong, rgba(148, 163, 184, .88));
+  --date-field-bg: var(--ds-control-bg, #fff);
+  --date-field-color: var(--ds-control-fg, #0f172a);
+  --date-field-muted: var(--ds-control-muted, #64748b);
+  --date-field-padding: var(--ds-control-padding-x, 14px);
+  --date-field-icon-size: var(--ds-control-icon-size, 30px);
+  --date-field-font-size: var(--ds-control-font-size, .82rem);
+  --date-field-font-weight: var(--ds-control-font-weight, 850);
+  --date-field-shadow: var(--ds-control-shadow, 0 12px 28px -24px rgba(15, 23, 42, .28));
+  box-sizing: border-box !important;
+  position: relative !important;
+  isolation: isolate !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: var(--date-field-radius) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  direction: ltr !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+.app-date-field[data-date-size='compact'] {
+  --date-field-height: 42px;
+  --date-field-radius: 14px;
+  --date-field-font-size: .76rem;
+  --date-field-icon-size: 28px;
+}
+
+.app-date-field[data-date-size='dense'] {
+  --date-field-height: 36px;
+  --date-field-radius: 12px;
+  --date-field-font-size: .7rem;
+  --date-field-icon-size: 26px;
+  --date-field-padding: 10px;
+}
+
+.app-date-field:is(:hover, :focus, :focus-within, :active),
+.app-date-field[data-open='true'] {
+  width: 100% !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+}
+
+.app-date-field__control,
+.app-date-field__control:is(:hover, :focus, :focus-visible, :focus-within, :active),
+.app-date-field[data-open='true'] > .app-date-field__control {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: var(--date-field-radius) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: visible !important;
+  cursor: pointer !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+.app-date-field__input,
+.app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+.app-date-field[data-open='true'] .app-date-field__input,
+input[data-app-date-input='true'],
+input[data-app-date-input='true']:is(:hover, :focus, :focus-visible, :active) {
+  box-sizing: border-box !important;
+  position: relative !important;
+  inset: auto !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding-block: 0 !important;
+  padding-inline-start: calc(var(--date-field-icon-size) + 22px) !important;
+  padding-inline-end: var(--date-field-padding) !important;
+  margin: 0 !important;
+  border: 1px solid var(--date-field-border) !important;
+  border-radius: var(--date-field-radius) !important;
+  background: var(--date-field-bg) !important;
+  background-image: none !important;
+  color: var(--date-field-color) !important;
+  box-shadow: var(--date-field-shadow) !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: var(--ds-control-text-align, center) !important;
+  line-height: calc(var(--date-field-height) - 2px) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: var(--date-field-font-size) !important;
+  font-weight: var(--date-field-font-weight) !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: var(--ds-control-letter-spacing, 0) !important;
+  text-indent: 0 !important;
+  vertical-align: middle !important;
+  caret-color: var(--date-accent, currentColor) !important;
+  cursor: pointer !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+  transition-property: border-color, background-color, box-shadow, color !important;
+  transition-duration: 150ms !important;
+  transition-timing-function: ease !important;
+}
+
+.app-date-field__input:hover,
+input[data-app-date-input='true']:hover {
+  border-color: var(--date-field-border-hover) !important;
+}
+
+.app-date-field__input:focus,
+.app-date-field__input:focus-visible,
+.app-date-field[data-open='true'] .app-date-field__input,
+input[data-app-date-input='true']:focus,
+input[data-app-date-input='true']:focus-visible {
+  border-color: var(--date-field-border-hover) !important;
+  box-shadow: var(--date-field-shadow) !important;
+}
+
+.app-date-field[data-invalid='true'] {
+  --date-field-border: rgba(244, 63, 94, .78);
+  --date-field-border-hover: rgba(225, 29, 72, .92);
+}
+
+.app-date-field[data-invalid='true'] .app-date-field__input {
+  box-shadow: var(--date-field-shadow) !important;
+}
+
+.app-date-field__input::placeholder,
+input[data-app-date-input='true']::placeholder {
+  color: var(--date-field-muted) !important;
+  opacity: .82 !important;
+  font-weight: 700 !important;
+}
+
+.app-date-field--no-icon .app-date-field__input,
+.app-date-field--no-icon .app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+.app-date-field--no-icon[data-open='true'] .app-date-field__input {
+  padding-inline: var(--date-field-padding) !important;
+}
+
+.app-date-field__icon,
+.app-date-field__icon:is(:hover, :focus, :active) {
+  position: absolute !important;
+  inset-inline-start: 10px !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: var(--date-field-icon-size) !important;
+  height: var(--date-field-icon-size) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--date-field-muted) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-50%) !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+  transition: color 150ms ease !important;
+}
+
+.app-date-field__icon i {
+  display: block !important;
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+.app-date-field[data-disabled='true'] .app-date-field__control {
+  cursor: not-allowed !important;
+  opacity: .58 !important;
+}
+
+.app-date-field[data-disabled='true'] .app-date-field__input {
+  cursor: not-allowed !important;
+}
+
+html.dark .app-date-field {
+  --date-field-border: var(--ds-control-border, rgba(51, 65, 85, .94));
+  --date-field-border-hover: rgba(100, 116, 139, .92);
+  --date-field-bg: var(--ds-control-bg, #0b1220);
+  --date-field-color: var(--ds-control-fg, #f8fafc);
+  --date-field-muted: var(--ds-control-muted, #94a3b8);
+  --date-field-shadow: var(--ds-control-shadow, 0 14px 30px -26px rgba(2, 6, 23, .88));
+}
+
+/* Final invariant guard. This deliberately outranks old utility and page rules. */
+html body #root .app-date-field[data-date-stable='true'],
+html body #root .app-date-field[data-date-stable='true']:is(:hover, :focus, :focus-within, :active),
+html body #root .app-date-field[data-date-stable='true'][data-open='true'],
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control:is(:hover, :focus, :focus-visible, :focus-within, :active),
+html body #root .app-date-field[data-date-stable='true'][data-open='true'] > .app-date-field__control {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+}
+
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+html body #root .app-date-field[data-date-stable='true'][data-open='true'] > .app-date-field__control > .app-date-field__input {
+  box-sizing: border-box !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding-block: 0 !important;
+  margin: 0 !important;
+  line-height: calc(var(--date-field-height) - 2px) !important;
+  text-indent: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+}
+
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'] > .app-date-field__control > .app-date-field__input,
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'][data-open='true'] > .app-date-field__control > .app-date-field__input {
+  padding-inline: var(--date-field-padding) !important;
+}
+
+/* Calendar portal */
+.app-date-popover-panel {
+  position: fixed !important;
+  z-index: var(--z-popover, 1200) !important;
+  box-sizing: border-box !important;
+  max-width: calc(100vw - 16px) !important;
+  max-height: calc(100dvh - 16px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  padding: 12px !important;
+  border: 1px solid rgba(203, 213, 225, .92) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: 0 28px 72px -34px rgba(15, 23, 42, .56) !important;
+  direction: rtl !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+.app-date-popover-header {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) 38px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 0 10px !important;
+  padding: 5px !important;
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+  border-radius: 15px !important;
+  background: #f8fafc !important;
+}
+
+.app-date-popover-title {
+  min-width: 0 !important;
+  height: 38px !important;
+  padding: 0 8px !important;
+  margin: 0 !important;
+  color: #0f172a !important;
+  text-align: center !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  line-height: 38px !important;
+  white-space: nowrap !important;
+}
+
+.calendar-nav-btn,
+.calendar-action-btn,
+.calendar-day-btn,
+.calendar-nav-btn:is(:hover, :focus, :focus-visible, :active),
+.calendar-action-btn:is(:hover, :focus, :focus-visible, :active),
+.calendar-day-btn:is(:hover, :focus, :focus-visible, :active) {
+  box-sizing: border-box !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+  outline: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  animation: none !important;
+}
+
+.calendar-nav-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+  padding: 0 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease !important;
+}
+
+.calendar-nav-btn:is(:hover, :focus-visible, :active) {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  border-color: #cbd5e1 !important;
+  background: #eef2f7 !important;
+  color: #0f172a !important;
+}
+
+.app-date-weekdays,
+.app-date-days-grid {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  gap: 5px !important;
+}
+
+.app-date-weekdays {
+  margin: 0 0 6px !important;
+}
+
+.app-date-weekday {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 25px !important;
+  color: #64748b !important;
+  font-size: .66rem !important;
+  font-weight: 850 !important;
+}
+
+.calendar-day-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  aspect-ratio: 1 / 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 37px !important;
+  padding: 0 !important;
+  border: 1px solid transparent !important;
+  border-radius: 12px !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  font-size: .8rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease !important;
+}
+
+.calendar-day-btn:is(:hover, :focus-visible, :active) {
+  padding: 0 !important;
+  border-color: #cbd5e1 !important;
+  background: #eef2f7 !important;
+  color: #0f172a !important;
+}
+
+.calendar-day-btn.is-outside-month {
+  color: #b7c0ce !important;
+  background: transparent !important;
+}
+
+.calendar-day-btn.is-today:not(.is-selected) {
+  border-color: color-mix(in srgb, var(--date-accent, #2563eb) 36%, #cbd5e1) !important;
+  background: color-mix(in srgb, var(--date-accent, #2563eb) 7%, #fff) !important;
+  color: var(--date-accent, #2563eb) !important;
+}
+
+.calendar-day-btn.is-selected,
+.calendar-day-btn.is-selected:is(:hover, :focus-visible, :active) {
+  border-color: var(--date-accent, #2563eb) !important;
+  background: var(--date-accent, #2563eb) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.app-date-popover-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin: 11px 0 0 !important;
+  padding: 10px 0 0 !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.calendar-action-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  padding: 0 15px !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  font-size: .74rem !important;
+  font-weight: 900 !important;
+  transition: border-color 140ms ease, background-color 140ms ease, color 140ms ease !important;
+}
+
+.calendar-action-btn:is(:hover, :focus-visible, :active) {
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  padding: 0 15px !important;
+}
+
+.calendar-action-btn--secondary {
+  border: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
+  color: #475569 !important;
+}
+
+.calendar-action-btn--secondary:is(:hover, :focus-visible, :active) {
+  border-color: #cbd5e1 !important;
+  background: #eef2f7 !important;
+  color: #0f172a !important;
+}
+
+.calendar-action-btn--primary,
+.calendar-action-btn--primary:is(:hover, :focus-visible, :active) {
+  border: 1px solid var(--date-accent, #2563eb) !important;
+  background: var(--date-accent, #2563eb) !important;
+  color: #fff !important;
+}
+
+html.dark .app-date-popover-panel {
+  border-color: #334155 !important;
+  background: #0b1220 !important;
+  color: #f8fafc !important;
+  box-shadow: 0 30px 80px -34px rgba(2, 6, 23, .92) !important;
+}
+
+html.dark .app-date-popover-header {
+  border-color: #334155 !important;
+  background: #111c30 !important;
+}
+
+html.dark .app-date-popover-title {
+  color: #f8fafc !important;
+}
+
+html.dark .calendar-nav-btn,
+html.dark .calendar-action-btn--secondary {
+  border-color: #334155 !important;
+  background: #0f172a !important;
+  color: #cbd5e1 !important;
+}
+
+html.dark .calendar-nav-btn:is(:hover, :focus-visible, :active),
+html.dark .calendar-action-btn--secondary:is(:hover, :focus-visible, :active) {
+  border-color: #475569 !important;
+  background: #17233a !important;
+  color: #fff !important;
+}
+
+html.dark .app-date-weekday {
+  color: #94a3b8 !important;
+}
+
+html.dark .calendar-day-btn {
+  background: #111c30 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark .calendar-day-btn:is(:hover, :focus-visible, :active) {
+  border-color: #475569 !important;
+  background: #17233a !important;
+  color: #fff !important;
+}
+
+html.dark .calendar-day-btn.is-outside-month {
+  background: transparent !important;
+  color: #475569 !important;
+}
+
+html.dark .calendar-day-btn.is-today:not(.is-selected) {
+  background: color-mix(in srgb, var(--date-accent, #2563eb) 14%, #0b1220) !important;
+  color: color-mix(in srgb, var(--date-accent, #2563eb) 72%, #fff) !important;
+}
+
+html.dark .calendar-day-btn.is-selected,
+html.dark .calendar-day-btn.is-selected:is(:hover, :focus-visible, :active) {
+  border-color: var(--date-accent, #2563eb) !important;
+  background: var(--date-accent, #2563eb) !important;
+  color: #fff !important;
+}
+
+html.dark .app-date-popover-actions {
+  border-top-color: #334155 !important;
+}
+
+@media (max-width: 639px) {
+  .app-date-popover-panel {
+    padding: 10px !important;
+    border-radius: 18px !important;
+  }
+
+  .calendar-day-btn {
+    min-height: 35px !important;
+    border-radius: 10px !important;
+    font-size: .76rem !important;
+  }
+}
+
+/* Final single-value-layer invariant.
+   The native input is the only rendered date value. Keeping one visible layer
+   prevents duplicate dates when modal, form, or browser rules alter input
+   opacity/position. Geometry remains owned exclusively by this canonical file. */
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control:is(:hover, :focus, :focus-visible, :focus-within, :active),
+html body #root .app-date-field[data-date-stable='true'][data-open='true'] > .app-date-field__control {
+  overflow: hidden !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+html body #root .app-date-field[data-date-stable='true'][data-open='true'] > .app-date-field__control > .app-date-field__input {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: var(--date-field-height) !important;
+  min-height: var(--date-field-height) !important;
+  max-height: var(--date-field-height) !important;
+  padding-block: 0 !important;
+  padding-inline-start: calc(var(--date-field-icon-size) + 22px) !important;
+  padding-inline-end: var(--date-field-padding) !important;
+  margin: 0 !important;
+  border: 1px solid var(--date-field-border) !important;
+  border-radius: var(--date-field-radius) !important;
+  background: var(--date-field-bg) !important;
+  background-image: none !important;
+  box-shadow: var(--date-field-shadow) !important;
+  color: var(--date-field-color) !important;
+  -webkit-text-fill-color: var(--date-field-color) !important;
+  caret-color: var(--date-accent, currentColor) !important;
+  opacity: 1 !important;
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: var(--ds-control-text-align, center) !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: var(--date-field-font-size) !important;
+  font-weight: var(--date-field-font-weight) !important;
+  font-variant-numeric: tabular-nums !important;
+  line-height: calc(var(--date-field-height) - 2px) !important;
+  letter-spacing: 0 !important;
+  text-indent: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+}
+
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'] > .app-date-field__control > .app-date-field__input,
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:is(:hover, :focus, :focus-visible, :active),
+html body #root .app-date-field.app-date-field--no-icon[data-date-stable='true'][data-open='true'] > .app-date-field__control > .app-date-field__input {
+  padding-inline: var(--date-field-padding) !important;
+}
+
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:hover,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:focus,
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input:focus-visible,
+html body #root .app-date-field[data-date-stable='true'][data-open='true'] > .app-date-field__control > .app-date-field__input {
+  border-color: var(--date-field-border-hover) !important;
+  background: var(--date-field-bg) !important;
+  box-shadow: var(--date-field-shadow) !important;
+}
+
+html body #root .app-date-field[data-date-stable='true'] > .app-date-field__control > .app-date-field__input::placeholder {
+  color: var(--date-field-muted) !important;
+  -webkit-text-fill-color: var(--date-field-muted) !important;
+  opacity: .82 !important;
+  font-weight: 700 !important;
+}
+

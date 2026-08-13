@@ -1,0 +1,130 @@
+/* Stage 81 — Phone sales search: remove final inner frame completely.
+   This override neutralizes the absolute transparent input introduced in previous search experiments. */
+
+.phone-sales-executive-page .phone-sales-table-tools--final {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: ltr !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 330px !important;
+  max-width: min(330px, 56vw) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell::before,
+.phone-sales-executive-page .phone-sales-search-shell::after,
+.phone-sales-executive-page .phone-sales-search-shell *::before,
+.phone-sales-executive-page .phone-sales-search-shell *::after {
+  content: none !important;
+  display: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell > i {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  z-index: 1 !important;
+  flex: 0 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  pointer-events: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell input,
+.phone-sales-executive-page .phone-sales-search-shell input[type='text'],
+.phone-sales-executive-page .phone-sales-search-shell input[type='search'],
+.phone-sales-executive-page .phone-sales-search-shell input[data-ui-control] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  position: static !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  color: #0f172a !important;
+  caret-color: #0f172a !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 38px !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell input:focus,
+.phone-sales-executive-page .phone-sales-search-shell input:focus-visible,
+.phone-sales-executive-page .phone-sales-search-shell input:active,
+.phone-sales-executive-page .phone-sales-search-shell:focus-within {
+  border-color: rgba(59, 130, 246, .45) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell input:focus,
+.phone-sales-executive-page .phone-sales-search-shell input:focus-visible,
+.phone-sales-executive-page .phone-sales-search-shell input:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.phone-sales-executive-page .phone-sales-search-shell input::-webkit-search-decoration,
+.phone-sales-executive-page .phone-sales-search-shell input::-webkit-search-cancel-button,
+.phone-sales-executive-page .phone-sales-search-shell input::-webkit-search-results-button,
+.phone-sales-executive-page .phone-sales-search-shell input::-webkit-search-results-decoration {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .phone-sales-executive-page .phone-sales-search-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

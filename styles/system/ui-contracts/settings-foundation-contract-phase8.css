@@ -1,0 +1,330 @@
+/* Phase 8 — Settings Foundation ContractScope-only CSS. This layer normalizes Settings panels withoutcreating another competing redesign system. */
+
+.settings-shell[data-ui-settings-shell="true"] {--settings-surface: rgba(255,255,255,0.96);--settings-surface-soft: rgba(248,250,252,0.88);--settings-border: rgba(226,232,240,0.92);--settings-text: rgb(15,23,42);--settings-muted: rgb(100,116,139);--settings-radius-lg: 28px;--settings-radius-md: 22px;--settings-shadow: 0 18px 46px -38px rgba(15,23,42,0.42);--settings-shadow-hover: 0 24px 60px -44px rgba(15,23,42,0.48);color: var(--settings-text);}
+
+.dark .settings-shell[data-ui-settings-shell="true"] {--settings-surface: rgba(15,23,42,0.92);--settings-surface-soft: rgba(2,6,23,0.54);--settings-border: rgba(51,65,85,0.92);--settings-text: rgb(248,250,252);--settings-muted: rgb(148,163,184);--settings-shadow: 0 22px 60px -42px rgba(0,0,0,0.78);--settings-shadow-hover: 0 28px 72px -48px rgba(0,0,0,0.82);}
+
+.settings-command-bar[data-ui-settings-header="true"] {z-index: 42;}
+
+.settings-command-bar[data-ui-settings-header="true"] > div {min-height: 48px;}
+
+.settings-command-bar[data-ui-settings-header="true"] .settings-top-command {min-height: 38px;border-radius: 14px !important;white-space: nowrap;}
+
+.settings-command-bar[data-ui-settings-header="true"] [data-ui-button="true"] i,.settings-save-footer[data-ui-settings-save-footer="true"] [data-ui-button="true"] i {font-size: 0.88rem;}
+
+.settings-tab-row,.settings-command-bar[data-ui-settings-header="true"] .flex {min-width: 0;}
+
+.settings-tab-row > .settings-tab-icon,.settings-section-icon,.settings-hero-card span[class*="h-11"],.settings-hero-card span[class*="h-12"] {place-items: center;line-height: 1;}
+
+.settings-workspace[data-ui-settings-workspace="true"] {border: 0;border-radius: 0;background: transparent;background-image: none;box-shadow: none;}
+
+.settings-panel-frame[data-ui-settings-panel-frame="true"] {min-height: 0;min-width: 0;width: 100%;max-width: 100%;box-sizing: border-box;}
+
+/* Settings uses one primary workspace surface. Structural wrappers must neverbecome a second visual card, otherwise every tab receives nested surfaces,reduced usable width and clipped content. */.settings-workspace[data-ui-settings-workspace="true"] {overflow: visible !important;padding: 0 !important;}
+
+.settings-panel-root[data-ui-settings-panel],.settings-panel-root[data-ui-settings-panel] > * {min-width: 0;max-width: 100%;box-sizing: border-box;}
+
+.settings-panel-root[data-ui-settings-panel] {min-width: 0;}
+
+.settings-section-card,.settings-data-card,.settings-pricing-log-shell,.settings-hero-card {border-color: var(--settings-border) !important;background-color: var(--settings-surface) !important;box-shadow: var(--settings-shadow) !important;}
+
+.settings-section-card,.settings-hero-card {border-radius: var(--settings-radius-lg) !important;}
+
+.settings-panel-root[data-ui-settings-panel] h1,.settings-panel-root[data-ui-settings-panel] h2,.settings-panel-root[data-ui-settings-panel] h3,.settings-panel-root[data-ui-settings-panel] h4,.settings-command-bar[data-ui-settings-header="true"] .font-extrabold,.settings-command-bar[data-ui-settings-header="true"] .font-black {letter-spacing: -0.015em;}
+
+.settings-panel-root[data-ui-settings-panel] p,.settings-panel-root[data-ui-settings-panel] .app-subtle,.settings-panel-root[data-ui-settings-panel] [class*="text-slate-500"],.settings-panel-root[data-ui-settings-panel] [class*="text-gray-500"] {line-height: 1.9;}
+
+.settings-panel-root[data-ui-settings-panel] .line-clamp-1,.settings-section-card .line-clamp-1 {display: block !important;-webkit-line-clamp: unset !important;-webkit-box-orient: initial !important;overflow: visible !important;}
+
+.settings-panel-root[data-ui-settings-panel] input,.settings-panel-root[data-ui-settings-panel] select,.settings-panel-root[data-ui-settings-panel] textarea,.settings-workspace[data-ui-settings-workspace="true"] input,.settings-workspace[data-ui-settings-workspace="true"] select,.settings-workspace[data-ui-settings-workspace="true"] textarea {border-radius: 16px !important;}
+
+.settings-panel-root[data-ui-settings-panel] input,.settings-panel-root[data-ui-settings-panel] select,.settings-panel-root[data-ui-settings-panel] textarea {outline: 0;box-shadow: none !important;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-button="true"],.settings-workspace[data-ui-settings-workspace="true"] [data-ui-button="true"] {border-radius: 14px !important;}
+
+.settings-metric-card,.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid] > [data-ui-settings-card] {min-width: 0;}
+
+.settings-panel-root[data-ui-settings-panel] table {border-collapse: separate;border-spacing: 0;}
+
+.settings-panel-root[data-ui-settings-panel] th,.settings-panel-root[data-ui-settings-panel] td {vertical-align: middle;}
+
+.settings-panel-root[data-ui-settings-panel="modules"] .module-plan-grid > div,.settings-panel-root[data-ui-settings-panel="users"] .settings-table-clean,.settings-panel-root[data-ui-settings-panel="data"] .settings-backup-list-card,.settings-panel-root[data-ui-settings-panel="pricing"] .settings-pricing-log-item {transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;}
+
+.settings-panel-root[data-ui-settings-panel="modules"] .module-plan-grid > div,.settings-panel-root[data-ui-settings-panel="pricing"] .settings-pricing-log-item {transform: translateY(-1px);box-shadow: var(--settings-shadow-hover) !important;}
+
+.settings-panel-root[data-ui-settings-panel] bdi,.settings-panel-root[data-ui-settings-panel] [dir="ltr"] {unicode-bidi: plaintext;font-variant-numeric: tabular-nums;}
+
+@media (max-width: 1023px) {.settings-shell[data-ui-settings-shell="true"] {padding-inline: 12px !important;}
+
+.settings-command-bar[data-ui-settings-header="true"] > div {align-items: stretch;flex-direction: column;}
+
+.settings-command-bar[data-ui-settings-header="true"] > div > div {display: grid;grid-template-columns: 1fr 1fr;width: 100%;}
+
+.settings-command-bar[data-ui-settings-header="true"] > div > div > :first-child,.settings-command-bar[data-ui-settings-header="true"] > div > div > :nth-child(2) {grid-column: 1 / -1;}
+
+.settings-command-bar[data-ui-settings-header="true"] .settings-top-command {width: 100%;justify-content: center;}
+
+.settings-workspace[data-ui-settings-workspace="true"] {border-radius: 24px;}
+
+.settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: 14px !important;}
+
+.settings-panel-root[data-ui-settings-panel] > section,.settings-section-card,.settings-hero-card {border-radius: 24px !important;padding: 16px !important;}}
+
+@media (max-width: 640px) {.settings-command-bar[data-ui-settings-header="true"] > div > div {grid-template-columns: 1fr;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-button="true"],.settings-save-footer[data-ui-settings-save-footer="true"] [data-ui-button="true"] {width: 100%;justify-content: center;}
+
+.settings-save-footer[data-ui-settings-save-footer="true"] > div {padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;}}
+
+@media (max-width: 640px) {.settings-workspace[data-ui-settings-workspace="true"] {border-radius: 20px;}
+
+.settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: 10px !important;}
+
+.settings-panel-root[data-ui-settings-panel] :is(input, select, textarea, [data-ui-button="true"]) {max-width: 100%;}
+
+}
+
+/* Phase 13 follow-up — single visual surface for every Settings tab.The workspace is the only primary card. First-level content sections arestructural regions, not nested cards. Nested operational/status cards remain intact. */.settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: clamp(16px, 1.5vw, 22px) !important;}
+
+.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > :is(section, form, .settings-section-card),.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid] > :is(section, aside, form, .settings-section-card) {border: 0 !important;border-radius: 0 !important;background: transparent !important;background-image: none !important;box-shadow: none !important;overflow: visible !important;padding-inline: 0 !important;}
+
+.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > :is(section, form, .settings-section-card)::before,.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > :is(section, form, .settings-section-card)::after,.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid] > :is(section, aside, form, .settings-section-card)::before,.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid] > :is(section, aside, form, .settings-section-card)::after {content: none !important;display: none !important;}
+
+/* Use spacing and a calm divider instead of a second card frame. */.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > :is(section, form, .settings-section-card) + :is(section, form, .settings-section-card),.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid] + :is(section, form, .settings-section-card, [data-ui-settings-grid]) {border-top: 1px solid color-mix(in srgb, var(--settings-border) 78%, transparent) !important;margin-top: 18px !important;padding-top: 18px !important;}
+
+@media (max-width: 768px) {.settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: 12px !important;}
+
+.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > :is(section, form, .settings-section-card) + :is(section, form, .settings-section-card),.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid] + :is(section, form, .settings-section-card, [data-ui-settings-grid]) {margin-top: 14px !important;padding-top: 14px !important;}}
+
+@media (max-width: 520px) {.settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: 10px !important;}}
+
+/* Phase 14/15 — canonical Settings layout and container-responsive contract.The workspace owns the container; the content boundary is the sole gutterowner. Responsive grids opt in semantically instead of being discovered bypartial Tailwind class-name selectors. */.settings-workspace[data-ui-settings-workspace="true"] {container-name: settings-workspace;container-type: inline-size;inline-size: 100%;max-inline-size: 100%;min-inline-size: 0;box-sizing: border-box;overflow-x: visible !important;overflow-y: visible;}
+
+.settings-workspace-layout {inline-size: 100%;max-inline-size: 100%;min-inline-size: 0;box-sizing: border-box;}
+
+.settings-shell.settings-redesign-v1 .settings-content-boundary[data-ui-settings-content-boundary="true"] {--settings-gutter: 24px;inline-size: auto;min-inline-size: 0;max-inline-size: none;margin-inline: var(--settings-gutter);padding: var(--settings-gutter) 0;box-sizing: border-box;overflow-x: visible;}
+
+.settings-shell.settings-redesign-v1 .settings-panel-frame[data-ui-settings-panel-frame="true"],.settings-shell.settings-redesign-v1 .settings-panel-root[data-ui-settings-panel] {inline-size: 100%;max-inline-size: 100%;min-inline-size: 0;margin-inline: 0;box-sizing: border-box;}
+
+.settings-shell.settings-redesign-v1 .settings-panel-frame[data-ui-settings-panel-frame="true"] {padding: 0 !important;}
+
+.settings-panel-root[data-ui-settings-panel] > section,.settings-panel-root[data-ui-settings-panel] > article,.settings-panel-root[data-ui-settings-panel] > aside,.settings-panel-root[data-ui-settings-panel] > form,.settings-panel-root[data-ui-settings-panel] > [data-ui-settings-grid],.settings-panel-root[data-ui-settings-panel] .settings-section-card,.settings-panel-root[data-ui-settings-panel] [data-ui-settings-card],.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid] {min-inline-size: 0;max-inline-size: 100%;box-sizing: border-box;}
+
+.settings-panel-root[data-ui-settings-panel] :is(input, select, textarea) {inline-size: 100%;min-inline-size: 0;max-inline-size: 100%;box-sizing: border-box;}
+
+.settings-panel-root[data-ui-settings-panel] :is(h1, h2, h3, h4, p, label, small, strong) {max-inline-size: 100%;white-space: normal;overflow-wrap: anywhere;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid] {inline-size: 100%;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid] > .settings-grid-span-full {grid-column: 1 / -1;}
+
+.settings-panel-root[data-ui-settings-panel] .module-hero-row {min-inline-size: 0;}
+
+@container settings-workspace (max-width: 1024px) {.settings-shell.settings-redesign-v1 .settings-content-boundary[data-ui-settings-content-boundary="true"] {--settings-gutter: 20px;}}
+
+@container settings-workspace (max-width: 900px) {.settings-panel-root[data-ui-settings-panel] .module-hero-row {align-items: stretch !important;flex-direction: column !important;}
+
+.settings-panel-root[data-ui-settings-panel] .module-action-card {inline-size: 100%;max-inline-size: 100%;}}
+
+@container settings-workspace (max-width: 720px) {.settings-shell.settings-redesign-v1 .settings-content-boundary[data-ui-settings-content-boundary="true"] {--settings-gutter: 16px;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid]:not([data-ui-settings-grid="inline"]) {grid-template-columns: minmax(0, 1fr) !important;}
+
+.settings-panel-root[data-ui-settings-panel] [data-ui-settings-grid]:not([data-ui-settings-grid="inline"]) > .settings-grid-span-full {grid-column: auto !important;}
+
+.settings-panel-root[data-ui-settings-panel] :is(.module-plan-card,.module-feature-card,.module-child-feature-card,.settings-account-card,[data-ui-business-logo="true"]) {inline-size: 100%;max-inline-size: 100%;min-inline-size: 0;}
+
+.settings-panel-root[data-ui-settings-panel] .module-plan-card {min-block-size: 0;}
+
+.settings-panel-root[data-ui-settings-panel] .settings-sms-savebar {position: static !important;}
+
+.settings-panel-root[data-ui-settings-panel] :is(.module-plan-card > .flex,.module-plan-card > [class*="mt-auto"],.module-feature-card > .flex,.module-child-feature-card) {align-items: flex-start;flex-wrap: wrap;}
+
+.settings-panel-root[data-ui-settings-panel] .truncate {overflow: visible !important;text-overflow: clip !important;white-space: normal !important;}}
+
+@container settings-workspace (max-width: 520px) {.settings-panel-root[data-ui-settings-panel] [data-ui-settings-actions="stack"] [data-ui-button="true"],.settings-panel-root[data-ui-settings-panel] .settings-action-btn[data-ui-settings-action="wide"] {inline-size: 100%;max-inline-size: 100%;justify-content: center;}
+
+.settings-panel-root[data-ui-settings-panel] :is(.module-status-chip,.adaptive-badge) {white-space: normal;}}
+/* Root Settings panel must remain structural, not a visual card */
+.settings-shell.settings-redesign-v1
+.settings-panel-frame[data-ui-settings-panel-frame="true"]
+> .settings-panel-root[data-ui-settings-panel] {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Neutralize legacy redesign classes applied directly to the root form */
+.settings-shell.settings-redesign-v1
+.settings-panel-root.settings-inner-panel-redesign-v1,
+.settings-shell.settings-redesign-v1
+.settings-panel-root.settings-business-redesign-v1 {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Structural wrappers must not provide a second background */
+.settings-shell.settings-redesign-v1
+.settings-content-boundary[data-ui-settings-content-boundary="true"],
+.settings-shell.settings-redesign-v1
+.settings-panel-frame[data-ui-settings-panel-frame="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+/* Business logo card: card-width responsive contract.
+   The card remains narrow on wide workspaces, so viewport breakpoints are not sufficient. */
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo="true"] {
+  container: business-logo-card / inline-size;
+  min-inline-size: 0;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-header="true"] > * {
+  min-inline-size: 0;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-status="true"] {
+  max-inline-size: 48%;
+  block-size: auto;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-preview-row="true"],
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-copy="true"] {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-copy="true"] :is(span, p),
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-file="true"] {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-settings-actions="logo"] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-settings-actions="logo"] [data-ui-button="true"] {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  justify-content: center;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-action="reset"] {
+  grid-column: 1 / -1;
+}
+
+@container business-logo-card (max-width: 300px) {
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-settings-actions="logo"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-action="reset"] {
+    grid-column: auto;
+  }
+}
+
+@container business-logo-card (max-width: 340px) {
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-preview-row="true"] {
+    align-items: flex-start;
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-figure="true"] {
+    inline-size: 68px;
+    block-size: 68px;
+    border-radius: 18px;
+  }
+}
+
+@container business-logo-card (max-width: 280px) {
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-header="true"],
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-preview-row="true"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-status="true"] {
+    max-inline-size: 100%;
+    align-self: flex-start;
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-figure="true"] {
+    align-self: center;
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-settings-actions="logo"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-panel-root[data-ui-settings-panel="business"] [data-ui-business-logo-action="reset"] {
+    grid-column: auto;
+  }
+}
+
+/* Settings side-card container contract.
+   Narrow cards must adapt to their own available width instead of the viewport. */
+.settings-panel-root[data-ui-settings-panel]
+:is(.settings-account-card, .settings-data-v2-preview, [data-ui-settings-card]):not([data-ui-business-logo="true"]) {
+  container-name: settings-side-card;
+  container-type: inline-size;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.settings-panel-root[data-ui-settings-panel]
+:is(.settings-account-card, .settings-data-v2-preview, [data-ui-settings-card])
+:is(.truncate, [dir="ltr"]) {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+@container settings-side-card (max-width: 420px) {
+  .settings-panel-root[data-ui-settings-panel]
+  [data-ui-settings-grid]:not([data-ui-settings-grid="inline"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-panel-root[data-ui-settings-panel]
+  [data-ui-settings-actions] {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .settings-panel-root[data-ui-settings-panel]
+  [data-ui-settings-actions]
+  [data-ui-button="true"] {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@container settings-side-card (max-width: 320px) {
+  .settings-panel-root[data-ui-settings-panel]
+  [data-ui-settings-actions]
+  [data-ui-button="true"] {
+    inline-size: 100%;
+    justify-content: center;
+  }
+}

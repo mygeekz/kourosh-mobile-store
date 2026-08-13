@@ -1,0 +1,66 @@
+/* Stage 222 — hard lock for Generic Smart Insight modal lane.
+   This is intentionally scoped to the selected-insight modal only. It does not touch
+   the Smart Insights page, hero cards, filters, or non-modal report layouts. */
+
+.smart-insight-modal-v185--generic-root {
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: var(--smart-insight-sidebar-offset, 0px) !important;
+  width: auto !important;
+  max-width: none !important;
+  z-index: var(--kourosh-z-modal-backdrop) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: var(--smart-insight-modal-gutter, 12px) !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  background: rgba(15, 23, 42, 0.42) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(112%) !important;
+  backdrop-filter: blur(12px) saturate(112%) !important;
+}
+
+.smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+  width: min(980px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - 28px)) !important;
+  max-width: min(980px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - 28px)) !important;
+  max-height: calc(100dvh - 28px) !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.smart-insight-modal-v185--generic-root .smart-insight-modal-v185__body {
+  min-height: 0 !important;
+  overflow: auto !important;
+  overscroll-behavior: contain !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1380px) {
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+    width: min(900px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - 24px)) !important;
+    max-width: min(900px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - 24px)) !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v186__hero-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v186__content-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .smart-insight-modal-v185--generic-root {
+    right: 0 !important;
+    padding: 10px !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+}

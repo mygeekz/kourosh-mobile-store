@@ -1,0 +1,39 @@
+
+@layer base {
+  html[data-ui-density='compact'] .ux-table-row-actions > button,
+  html[data-ui-density='compact'] .ux-table-row-actions > a {
+    min-height: 34px;
+    border-radius: 14px;
+    padding: 0.45rem 0.7rem;
+  }
+
+  html[data-ui-density='compact'] .detail-page-shell {
+    gap: 1.15rem;
+  }
+
+  html[data-ui-density='compact'] .detail-hero-card {
+    border-radius: 26px;
+  }
+
+  html[data-ui-density='compact'] .detail-hero-card__head {
+    padding: 1rem 1rem 1.05rem;
+  }
+
+  html[data-ui-density='compact'] .detail-hero-card__icon {
+    width: 58px;
+    height: 58px;
+    border-radius: 20px;
+  }
+
+  html[data-ui-density='compact'] .detail-stat-card,
+  html[data-ui-density='compact'] .detail-inline-stat,
+  html[data-ui-density='compact'] .detail-card {
+    border-radius: 20px;
+    padding: 0.9rem;
+  }
+
+  html[data-ui-density='compact'] .premium-sticky-footer {
+    padding-top: 0.8rem;
+    padding-bottom: 0.15rem;
+  }
+}

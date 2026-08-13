@@ -1,0 +1,23 @@
+/* Phase 33: sales cart premium cleanup */
+.sales-toolbar-btn.ux-btn { box-shadow: none; }
+
+
+#sale-step-items .ux-btn,
+#sale-step-cart .ux-btn,
+#sale-step-checkout .ux-btn,
+.sales-toolbar-btn.ux-btn {
+  border-color: rgba(148, 163, 184, 0.26) !important;
+}
+.dark #sale-step-items .ux-btn,
+.dark #sale-step-cart .ux-btn,
+.dark #sale-step-checkout .ux-btn,
+.dark .sales-toolbar-btn.ux-btn {
+  border-color: rgba(71, 85, 105, 0.6) !important;
+}
+#sale-step-items button:not(.ux-btn),
+#sale-step-cart button:not(.ux-btn),
+#sale-step-checkout button:not(.ux-btn) {
+  outline: none;
+}
+
+

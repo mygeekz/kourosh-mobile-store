@@ -1,0 +1,122 @@
+/* Stage 194 — Accounting modal compact header + real-data presentation polish */
+.acm193-header {
+  min-height: 116px !important;
+  padding: 20px 34px 18px 88px !important;
+}
+
+.acm193-header h2 {
+  margin-top: 12px !important;
+  font-size: clamp(23px, 1.72vw, 31px) !important;
+  line-height: 1.28 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.acm193-header p {
+  margin-top: 6px !important;
+  font-size: 13px !important;
+  line-height: 1.75 !important;
+}
+
+.acm193-badge {
+  min-height: 28px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+}
+
+.acm193-body {
+  max-height: calc(min(90vh, 820px) - 142px) !important;
+  padding: 0 32px 26px !important;
+}
+
+.acm193-top-grid {
+  gap: 14px !important;
+}
+
+.acm193-kpi {
+  min-height: 96px !important;
+  border-radius: 20px !important;
+  padding: 16px 18px !important;
+}
+
+.acm193-kpi small {
+  font-size: 13px !important;
+}
+
+.acm193-kpi strong {
+  margin-top: 8px !important;
+  font-size: clamp(21px, 1.35vw, 29px) !important;
+}
+
+.acm193-kpi__icon {
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 17px !important;
+}
+
+.acm193-content-grid {
+  margin-top: 16px !important;
+  gap: 16px !important;
+}
+
+.acm193-panel {
+  padding: 18px !important;
+  border-radius: 22px !important;
+}
+
+.acm193-panel h3 {
+  font-size: 16px !important;
+}
+
+.acm193-reason-list,
+.acm193-indicator-grid,
+.acm193-memory-grid {
+  margin-top: 14px !important;
+}
+
+.acm193-reasons {
+  min-height: 300px !important;
+}
+
+.acm193-reason {
+  min-height: 52px !important;
+  border-radius: 15px !important;
+  padding: 0 14px !important;
+}
+
+.acm193-reason span {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+
+.acm193-indicator {
+  min-height: 112px !important;
+  border-radius: 16px !important;
+  padding: 12px 8px !important;
+}
+
+.acm193-indicator small {
+  font-size: 12px !important;
+}
+
+.acm193-indicator strong {
+  font-size: 23px !important;
+}
+
+.acm193-memory p {
+  margin-top: 12px !important;
+  font-size: 12px !important;
+}
+
+/* Footer action buttons intentionally removed for accounting modal; keep selector harmless if old markup is cached. */
+.acm193-footer { display: none !important; }
+
+@media (max-width: 1500px) {
+  .acm193-header { min-height: 108px !important; padding-top: 18px !important; padding-bottom: 16px !important; }
+  .acm193-body { max-height: calc(min(90vh, 820px) - 128px) !important; }
+}
+
+@media (max-width: 820px) {
+  .acm193-header { padding: 16px 18px 14px 64px !important; }
+  .acm193-header h2 { font-size: 20px !important; }
+  .acm193-body { max-height: calc(100vh - 132px) !important; padding: 0 14px 16px !important; }
+}

@@ -1,0 +1,44 @@
+KOUROSH CLOUD v155 PILOT-CANDIDATE OPERATIONS CONTRACT
+
+This is a provider-neutral release template. It does not deploy infrastructure, configure DNS, configure Cloudflare, or make Production live.
+
+FIRST INITIALIZATION
+1. Install/use Node 24 LTS for the Cloud runtime.
+2. Configure runtime, Control DB, backup, Base Domain, Control Host, Connector Host and WSS endpoint environment values.
+3. Run: npm run cloud:init
+4. Run: npm run cloud:backup
+5. Run: npm run audit:cloud-production-readiness
+6. Run: npm run cloud:preflight
+Only a successful Node-24 preflight may report PILOT_READY.
+
+SCHEMA MIGRATION
+- Audit and normal Production startup never migrate the Control DB.
+- Stop the Relay.
+- Run: npm run cloud:migrate -- --confirm MIGRATE
+- The command creates a validated pre-migration backup before applying the transactional migration.
+
+BACKUP / RESTORE
+- Backup: npm run cloud:backup
+- Restore is explicit and requires the Relay stopped:
+  npm run cloud:restore -- --file <backup-path> --confirm RESTORE
+- Restore refuses an active runtime lock and also probes the configured Relay TCP listener.
+
+HIGH-RISK TENANT OPERATIONS
+- Reassign host: npm run cloud:reassign-host -- --store-id <opaque-store-id> --confirm REASSIGN
+- Revoke tenant: npm run cloud:revoke-tenant -- --store-id <opaque-store-id> --confirm REVOKE
+- Recovery credentials remain explicit, single-target operator actions.
+
+RECOVERY PRIORITY
+1. Restore the Cloud Control metadata DB from a validated SQLite-consistent backup.
+2. Restore Cloud runtime configuration.
+3. Restore external DNS/TLS ingress.
+4. Start the single Relay instance; Store connectors reauthenticate and reconnect.
+
+The Cloud recovery process never restores, copies, or synchronizes a Store Local business SQLite database.
+
+PROVIDER-INDEPENDENT / SELF-HOSTED RELAY (v159)
+- The cloud/relay-server and cloud/control-plane processes are the generic secure Relay implementation; the historical KOUROSH_CLOUD_* environment names are compatibility configuration keys, not a requirement to use Kourosh-managed infrastructure.
+- An operator-owned deployment controls its own Base Domain, Control Host, Connector Host, TLS edge, Control DB, backups and enrollment codes.
+- A Store configured with relay_provider=custom supplies that deployment's HTTPS Control URL and WSS Connector URL during enrollment.
+- The self-hosted Relay runtime makes no call to a Kourosh-owned account, license server, DNS service or Relay API.
+- Direct/Proxy Telegram and Self-Hosted/External-Tunnel Mini App strategies do not start the Relay Connector at the Store.

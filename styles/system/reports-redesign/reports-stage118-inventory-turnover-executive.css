@@ -1,0 +1,320 @@
+/* Stage 118 — Inventory Turnover executive redesign */
+
+.inventory-turnover-executive-page .page-kit-toolbar,
+.inventory-turnover-executive-page [data-page-kit-toolbar='true'] {
+  align-items: stretch !important;
+}
+
+.inventory-turnover-filter-panel {
+  display: grid;
+  grid-template-columns: minmax(280px, max-content) minmax(360px, 1fr);
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, .05);
+}
+
+.inventory-turnover-filter-presets {
+  display: flex;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.inventory-turnover-filter-presets .report-date-presets {
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.inventory-turnover-filter-presets .report-date-presets__chips {
+  min-height: 50px !important;
+  padding: 6px !important;
+  border: 1px solid rgba(148, 163, 184, .24) !important;
+  border-radius: 18px !important;
+  background: #f8fafc !important;
+}
+
+.inventory-turnover-filter-fields {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inventory-turnover-date-field {
+  display: grid;
+  gap: 6px;
+  width: 178px;
+  min-width: 178px;
+}
+
+.inventory-turnover-date-field > span {
+  padding-inline: 10px;
+  color: #64748b;
+  font-size: .68rem;
+  font-weight: 900;
+}
+
+.inventory-turnover-date-field .app-date-field,
+.inventory-turnover-date-field .app-date-field__control,
+.inventory-turnover-date-field .inventory-turnover-date-input {
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+}
+
+.inventory-turnover-date-field input[data-app-date-input='true'] {
+  height: 42px !important;
+  line-height: 42px !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+}
+
+.inventory-turnover-date-field .app-date-field__icon {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.inventory-turnover-refresh-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  min-height: 42px;
+  margin-top: 20px;
+  padding: 0 16px;
+  border: 1px solid rgba(15, 23, 42, .12);
+  border-radius: 15px;
+  background: #0f172a;
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 900;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+.inventory-turnover-refresh-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, .14);
+}
+
+.inventory-turnover-refresh-button:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.inventory-turnover-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.inventory-turnover-kpi-grid,
+.inventory-turnover-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.inventory-turnover-kpi-card,
+.inventory-turnover-insight-card {
+  position: relative;
+  min-height: 142px;
+  padding: 18px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.94)),
+    radial-gradient(circle at top right, rgba(59,130,246,.10), transparent 38%);
+  box-shadow: 0 18px 44px rgba(15, 23, 42, .06);
+  overflow: hidden;
+}
+
+.inventory-turnover-kpi-card::before,
+.inventory-turnover-insight-card::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #2563eb, #14b8a6);
+}
+
+.inventory-turnover-kpi-card--wide {
+  grid-column: span 2;
+}
+
+.inventory-turnover-kpi-card__icon,
+.inventory-turnover-insight-card__head > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  border: 1px solid rgba(59, 130, 246, .16);
+  background: rgba(239, 246, 255, .9);
+  color: #2563eb;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, .08);
+}
+
+.inventory-turnover-kpi-card__content {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.inventory-turnover-kpi-card__content small,
+.inventory-turnover-insight-card__head small {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.inventory-turnover-kpi-card__content strong {
+  color: #0f172a;
+  font-size: clamp(1.35rem, 2.8vw, 2.05rem);
+  font-weight: 950;
+  line-height: 1.12;
+}
+
+.inventory-turnover-kpi-card__content p,
+.inventory-turnover-insight-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.85;
+}
+
+.inventory-turnover-kpi-card__badge {
+  position: absolute;
+  inset-inline-end: 16px;
+  top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .24);
+  background: rgba(255, 255, 255, .86);
+  color: #475569;
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.inventory-turnover-kpi-card__badge.is-success { color: #047857; border-color: rgba(16,185,129,.22); background: rgba(236,253,245,.9); }
+.inventory-turnover-kpi-card__badge.is-primary { color: #2563eb; border-color: rgba(37,99,235,.22); background: rgba(239,246,255,.9); }
+.inventory-turnover-kpi-card__badge.is-warning { color: #b45309; border-color: rgba(245,158,11,.28); background: rgba(255,251,235,.92); }
+.inventory-turnover-kpi-card__badge.is-muted { color: #64748b; }
+
+.inventory-turnover-insight-card {
+  min-height: 190px;
+}
+
+.inventory-turnover-insight-card--formula {
+  grid-column: span 1;
+}
+
+.inventory-turnover-insight-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.inventory-turnover-insight-card__head h3 {
+  margin: 2px 0 0;
+  color: #0f172a;
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.inventory-turnover-formula-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, .24);
+  border-radius: 18px;
+  background: #f8fafc;
+  color: #0f172a;
+  font-size: .82rem;
+  font-weight: 900;
+}
+
+.inventory-turnover-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.inventory-turnover-action-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 14px;
+  background: #fff;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 900;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.inventory-turnover-action-row button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, .35);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, .08);
+}
+
+@media (max-width: 980px) {
+  .inventory-turnover-filter-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .inventory-turnover-filter-fields {
+    justify-content: flex-start;
+  }
+
+  .inventory-turnover-kpi-card--wide,
+  .inventory-turnover-insight-card--formula {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .inventory-turnover-filter-fields,
+  .inventory-turnover-filter-presets {
+    width: 100%;
+  }
+
+  .inventory-turnover-date-field,
+  .inventory-turnover-refresh-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .inventory-turnover-refresh-button {
+    margin-top: 0;
+  }
+
+  .inventory-turnover-formula-box {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

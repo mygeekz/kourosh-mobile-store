@@ -1,0 +1,591 @@
+/* Canonical dashboard clock widget.
+   Owner: pages/dashboard/widgets/ClockWidget.tsx
+   One source for scale, layout, modes and responsive behavior.
+*/
+
+.app-dashboard-clock {
+  --clock-surface: transparent;
+  --clock-surface-soft: var(--ds-surface-card-muted);
+  --clock-text: var(--ds-text-primary);
+  --clock-muted: var(--ds-text-muted);
+  --clock-border: var(--ds-border-subtle);
+  --clock-border-strong: var(--ds-border-strong);
+  --clock-accent: var(--ds-primary);
+  --clock-success: var(--ds-success);
+  --clock-warning: var(--ds-warning);
+  --clock-neutral: var(--ds-text-muted);
+  --clock-time-size: 48px;
+  --clock-analog-size: 158px;
+
+  display: flex;
+  min-inline-size: 0;
+  min-block-size: 0;
+  block-size: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--clock-text);
+  background: var(--clock-surface);
+}
+
+html.dark .app-dashboard-clock {
+  --clock-accent: var(--ds-primary);
+  --clock-success: var(--ds-success);
+  --clock-warning: var(--ds-warning);
+  --clock-neutral: var(--ds-text-muted);
+}
+
+.app-dashboard-clock__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 2px 0 12px;
+  border-block-end: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__identity {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-dashboard-clock__icon {
+  display: inline-flex;
+  inline-size: 34px;
+  block-size: 34px;
+  flex: 0 0 34px;
+  align-items: center;
+  justify-content: center;
+  color: var(--clock-muted);
+  border: 1px solid var(--clock-border);
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  font-size: 13px;
+}
+
+.app-dashboard-clock__identity-copy {
+  min-inline-size: 0;
+}
+
+.app-dashboard-clock__title-row {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.app-dashboard-clock__title-row h3 {
+  margin: 0;
+  color: var(--clock-text);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+
+.app-dashboard-clock__identity-copy > p {
+  margin: 3px 0 0;
+  color: var(--clock-muted);
+  font-size: 10.5px;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.app-dashboard-clock__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--clock-muted);
+  font-size: 9.5px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.app-dashboard-clock__status > span {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 999px;
+  background: var(--clock-neutral);
+}
+
+.app-dashboard-clock[data-store-state='open'] .app-dashboard-clock__status {
+  color: var(--clock-success);
+}
+
+.app-dashboard-clock[data-store-state='open'] .app-dashboard-clock__status > span {
+  background: var(--clock-success);
+}
+
+.app-dashboard-clock[data-store-state='preparing'] .app-dashboard-clock__status {
+  color: var(--clock-warning);
+}
+
+.app-dashboard-clock[data-store-state='preparing'] .app-dashboard-clock__status > span {
+  background: var(--clock-warning);
+}
+
+.app-dashboard-clock__modes {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 3px;
+}
+
+.app-dashboard-clock__mode {
+  display: inline-flex;
+  min-inline-size: 0;
+  block-size: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  padding: 0 8px;
+  color: var(--clock-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  box-shadow: none;
+  font: inherit;
+  font-size: 9.5px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 120ms ease, background-color 120ms ease, border-color 120ms ease;
+}
+
+.app-dashboard-clock__mode i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 12px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.app-dashboard-clock__mode:hover,
+.app-dashboard-clock__mode[data-active='true'] {
+  color: var(--clock-text);
+  background: var(--clock-surface-soft);
+  border-color: var(--clock-border);
+}
+
+.app-dashboard-clock__mode:focus,
+.app-dashboard-clock__mode:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.app-dashboard-clock__content {
+  display: grid;
+  min-inline-size: 0;
+  min-block-size: 0;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  padding-block-start: 14px;
+}
+
+.app-dashboard-clock__content[data-has-analog='true'] {
+  grid-template-columns: minmax(0, 1fr) minmax(138px, 168px);
+}
+
+.app-dashboard-clock__main {
+  display: flex;
+  min-inline-size: 0;
+  min-block-size: 0;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app-dashboard-clock__time-row {
+  display: flex;
+  min-inline-size: 0;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.app-dashboard-clock__digital {
+  display: flex;
+  align-items: baseline;
+  color: var(--clock-text);
+  font-size: var(--clock-time-size);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0.025em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.app-dashboard-clock__digital b {
+  margin-inline: 2px;
+  color: var(--clock-muted);
+  font-size: 0.82em;
+  font-weight: 750;
+}
+
+.app-dashboard-clock__digital small {
+  margin-inline-start: 2px;
+  color: var(--clock-muted);
+  font-size: 0.48em;
+  font-weight: 800;
+}
+
+.app-dashboard-clock__date {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-block-start: 7px;
+  color: var(--clock-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.5;
+  flex-wrap: wrap;
+}
+
+.app-dashboard-clock__date > i {
+  inline-size: 3px;
+  block-size: 3px;
+  border-radius: 50%;
+  background: var(--clock-border-strong);
+}
+
+.app-dashboard-clock__date > span[dir='ltr'] {
+  color: var(--clock-muted);
+  font-size: 9.5px;
+  font-weight: 650;
+}
+
+.app-dashboard-clock__work-window {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding-inline-start: 14px;
+  border-inline-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__work-window span {
+  color: var(--clock-muted);
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.app-dashboard-clock__work-window strong {
+  color: var(--clock-text);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.app-dashboard-clock__rhythm {
+  padding-block-start: 11px;
+  border-block-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__rhythm-copy {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app-dashboard-clock__rhythm-copy > div {
+  min-inline-size: 0;
+}
+
+.app-dashboard-clock__rhythm-copy span,
+.app-dashboard-clock__rhythm > p {
+  color: var(--clock-muted);
+  font-size: 9.5px;
+  font-weight: 650;
+  line-height: 1.6;
+}
+
+.app-dashboard-clock__rhythm-copy strong {
+  display: block;
+  margin-block-start: 2px;
+  color: var(--clock-text);
+  font-size: 11.5px;
+  font-weight: 850;
+}
+
+.app-dashboard-clock__progress {
+  block-size: 4px;
+  margin-block-start: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--clock-border);
+}
+
+.app-dashboard-clock__progress > span {
+  position: relative;
+  display: block;
+  block-size: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.26) 46%, transparent 70%) 0 0 / 180% 100%,
+    var(--clock-accent);
+  animation: appDashboardClockProgressLive 1.8s linear infinite;
+  transition: inline-size 900ms linear;
+}
+
+@keyframes appDashboardClockProgressLive {
+  from { background-position: 140% 0, 0 0; }
+  to { background-position: -140% 0, 0 0; }
+}
+
+.app-dashboard-clock__rhythm > p {
+  margin: 7px 0 0;
+}
+
+.app-dashboard-clock__metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding-block-start: 10px;
+  border-block-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__metric {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 10px;
+}
+
+.app-dashboard-clock__metric:first-child {
+  padding-inline-start: 0;
+}
+
+.app-dashboard-clock__metric + .app-dashboard-clock__metric {
+  border-inline-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__metric > i {
+  display: inline-flex;
+  inline-size: 18px;
+  flex: 0 0 18px;
+  align-items: center;
+  justify-content: center;
+  color: var(--clock-muted);
+  font-size: 11px;
+}
+
+.app-dashboard-clock__metric > div {
+  min-inline-size: 0;
+}
+
+.app-dashboard-clock__metric-label,
+.app-dashboard-clock__metric-value {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-dashboard-clock__metric-label {
+  color: var(--clock-muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.app-dashboard-clock__metric-value {
+  margin-block-start: 2px;
+  color: var(--clock-text);
+  font-size: 10.5px;
+  font-weight: 850;
+}
+
+.app-dashboard-clock__focus {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-block-start: 10px;
+  border-block-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__focus > i {
+  color: var(--clock-muted);
+  font-size: 12px;
+}
+
+.app-dashboard-clock__focus span,
+.app-dashboard-clock__focus strong {
+  display: block;
+}
+
+.app-dashboard-clock__focus span {
+  color: var(--clock-muted);
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.app-dashboard-clock__focus strong {
+  margin-block-start: 2px;
+  color: var(--clock-text);
+  font-size: 11.5px;
+  font-weight: 850;
+}
+
+.app-dashboard-clock__analog {
+  display: flex;
+  min-inline-size: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline-start: 18px;
+  border-inline-start: 1px solid var(--clock-border);
+}
+
+.app-dashboard-clock__analog-heading {
+  display: flex;
+  inline-size: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--clock-muted);
+}
+
+.app-dashboard-clock__analog-heading > span {
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+.app-dashboard-clock__analog-heading > small {
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.app-dashboard-clock__analog-face {
+  inline-size: var(--clock-analog-size);
+  block-size: var(--clock-analog-size);
+  max-inline-size: 100%;
+  color: var(--clock-text);
+}
+
+.app-dashboard-clock__analog-face svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.app-dashboard-clock__analog-ring {
+  fill: transparent;
+  stroke: var(--clock-border);
+  stroke-width: 1;
+}
+
+.app-dashboard-clock__analog-tick {
+  stroke: var(--clock-muted);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+}
+
+.app-dashboard-clock__analog-hour,
+.app-dashboard-clock__analog-minute,
+.app-dashboard-clock__analog-second {
+  stroke-linecap: round;
+}
+
+.app-dashboard-clock__analog-hour {
+  stroke: currentColor;
+  stroke-width: 4;
+}
+
+.app-dashboard-clock__analog-minute {
+  stroke: currentColor;
+  stroke-width: 2.6;
+}
+
+.app-dashboard-clock__analog-second {
+  stroke: var(--ds-danger);
+  stroke-width: 1.25;
+}
+
+.app-dashboard-clock__analog-center {
+  fill: currentColor;
+}
+
+.app-dashboard-clock[data-clock-density='regular'] {
+  --clock-time-size: 40px;
+  --clock-analog-size: 132px;
+}
+
+.app-dashboard-clock[data-clock-density='regular'] .app-dashboard-clock__header {
+  align-items: center;
+}
+
+.app-dashboard-clock[data-clock-density='regular'] .app-dashboard-clock__mode {
+  padding-inline: 7px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] {
+  --clock-time-size: 34px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__header {
+  padding-block-end: 9px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__icon {
+  inline-size: 30px;
+  block-size: 30px;
+  flex-basis: 30px;
+  border-radius: 10px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__content {
+  gap: 10px;
+  padding-block-start: 10px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__time-row {
+  align-items: flex-start;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__date {
+  font-size: 9.5px;
+}
+
+.app-dashboard-clock[data-clock-density='compact'] .app-dashboard-clock__rhythm-copy {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-dashboard-clock[data-clock-view='cinematic'] {
+  --clock-time-size: 50px;
+}
+
+@media (max-width: 720px) {
+  .app-dashboard-clock__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .app-dashboard-clock__modes {
+    inline-size: 100%;
+    justify-content: flex-start;
+  }
+
+  .app-dashboard-clock__content[data-has-analog='true'] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-dashboard-clock__analog {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-dashboard-clock__mode,
+  .app-dashboard-clock__progress > span {
+    animation: none;
+    transition: none;
+  }
+}

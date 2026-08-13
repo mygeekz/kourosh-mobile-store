@@ -1,0 +1,42 @@
+/* Phase 6: normalized customer-area responsive fixes */
+@media (max-width: 1024px) {
+  .customers-hero-panel {
+    border-radius: 26px;
+    padding: 1rem;
+  }
+
+  .customers-hero-title {
+    font-size: 1.45rem;
+  }
+
+  .premium-tab-header {
+    border-radius: 20px;
+    padding: 0.375rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .ux-nav-compact {
+    padding-left: 0.375rem;
+    padding-right: 0.375rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .ux-nav-compact li > button > div,
+  .ux-nav-compact li > a > div {
+    border-radius: 20px;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .customers-hero-panel,
+  .detail-hero-card {
+    border-radius: 24px;
+  }
+
+  .dark .customers-hero-mini {
+    border-color: rgb(51 65 85 / 0.85);
+  }
+}

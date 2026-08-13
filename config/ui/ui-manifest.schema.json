@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/ui-manifest.schema.json",
+  "title": "Kourosh UI manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "version",
+    "phase",
+    "styleSystem",
+    "responsiveContract",
+    "layerContract",
+    "componentPolicy",
+    "components",
+    "legacyComponents",
+    "architectureLock"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "styleSystem": {
+      "type": "object"
+    },
+    "responsiveContract": {
+      "type": "object"
+    },
+    "layerContract": {
+      "type": "object"
+    },
+    "componentPolicy": {
+      "type": "object"
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "canonicalPath",
+          "barrelPath",
+          "exportName",
+          "status",
+          "owner",
+          "replaces"
+        ]
+      }
+    },
+    "legacyComponents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "status",
+          "replacementId",
+          "newImportsAllowed"
+        ]
+      }
+    },
+    "architectureLock": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

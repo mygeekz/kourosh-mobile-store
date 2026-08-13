@@ -1,0 +1,160 @@
+/* Stage 40 — Product sales filter RTL alignment fix
+   Scope: /reports/product-sales only. Keeps the existing controls, but fixes the panel rhythm:
+   - rows start from the right in RTL
+   - no empty right side
+   - no forced left-pushed second row
+   - compact, two-row executive filter */
+
+.product-sales-executive-page .product-sales-control-panel {
+  direction: rtl !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  justify-items: end !important;
+  align-items: start !important;
+  gap: .55rem !important;
+  padding: .68rem .78rem !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row {
+  direction: rtl !important;
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 100% !important;
+  justify-self: end !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: .48rem !important;
+  margin: 0 !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row--dates,
+.product-sales-executive-page .product-sales-control-panel__row--modes {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row--modes {
+  justify-self: end !important;
+}
+
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-segment,
+.product-sales-executive-page .product-sales-refresh-button,
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 0 auto !important;
+}
+
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips {
+  width: auto !important;
+  max-width: max-content !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .report-date-presets__chips {
+  gap: .35rem !important;
+  padding: .22rem !important;
+}
+
+.product-sales-executive-page .report-date-presets__chips button,
+.product-sales-executive-page .product-sales-segment button,
+.product-sales-executive-page .product-sales-refresh-button {
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 .78rem !important;
+  border-radius: 12px !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field {
+  width: 10.75rem !important;
+  min-width: 10.75rem !important;
+  max-width: 10.75rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: .28rem !important;
+  padding: 0 .35rem !important;
+  margin-bottom: .2rem !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  line-height: 1.2 !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head i {
+  display: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-simple-date-input,
+.product-sales-executive-page .product-sales-date-field input {
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .32) !important;
+  box-shadow: none !important;
+  text-align: center !important;
+}
+
+.product-sales-executive-page .product-sales-segment {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .34rem !important;
+  min-height: 38px !important;
+  padding: .2rem .26rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-segment__label {
+  margin: 0 .35rem 0 .1rem !important;
+  font-size: .68rem !important;
+  font-weight: 850 !important;
+  color: #64748b !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-segment button small {
+  min-width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin-inline-start: .18rem !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #64748b !important;
+  font-size: .64rem !important;
+}
+
+@media (max-width: 900px) {
+  .product-sales-executive-page .product-sales-control-panel {
+    justify-items: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-control-panel__row {
+    width: 100% !important;
+    justify-self: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  .product-sales-executive-page .product-sales-date-field {
+    width: calc(50% - .3rem) !important;
+    min-width: min(100%, 10rem) !important;
+    max-width: none !important;
+    flex: 1 1 10rem !important;
+  }
+}

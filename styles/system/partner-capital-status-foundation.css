@@ -1,0 +1,189 @@
+/* Auto-generated UI Foundation: partner capital progress and telegram status color polish.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zs-partner-capital-progress-final.css ===== */
+
+/* Stage 125 — Final compact progress for partner capital table
+   Target: the progress line inside the "سرمایه همکار" column.
+   The screenshot shows a long empty progress track taking too much width/height.
+*/
+
+@media (max-width: 1500px) {
+  .partner-detail-responsive-root .partner-capital-progress-inline,
+  .partner-detail-apple .partner-capital-progress-inline {
+    width: 100% !important;
+    max-width: 120px !important;
+    min-width: 0 !important;
+    height: 8px !important;
+    margin-block: .12rem .16rem !important;
+    display: block !important;
+    overflow: hidden !important;
+  }
+
+  /* Collapse the internal FinancialProgressBar layout down to a minimal rail. */
+  .partner-detail-responsive-root .partner-capital-progress-inline *,
+  .partner-detail-apple .partner-capital-progress-inline * {
+    min-height: 0 !important;
+    max-height: 8px !important;
+    line-height: 1 !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div),
+  .partner-detail-apple .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div) {
+    height: 6px !important;
+    min-height: 6px !important;
+    max-height: 6px !important;
+    border-radius: 999px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline > *,
+  .partner-detail-apple .partner-capital-progress-inline > * {
+    width: 100% !important;
+    max-width: 120px !important;
+    overflow: hidden !important;
+    background: transparent !important;
+  }
+
+  /* The visible rail/track */
+  .partner-detail-responsive-root .partner-capital-progress-inline :where([class*="bg-slate"], [class*="bg-gray"]),
+  .partner-detail-apple .partner-capital-progress-inline :where([class*="bg-slate"], [class*="bg-gray"]) {
+    background-color: rgb(226 232 240) !important;
+  }
+
+  /* Hide labels/percent text inside progress component if any. */
+  .partner-detail-responsive-root .partner-capital-progress-inline :where(span, small, p),
+  .partner-detail-apple .partner-capital-progress-inline :where(span, small, p) {
+    display: none !important;
+  }
+
+  /* If progress is 0, make the empty rail much subtler. */
+  .partner-detail-responsive-root .partner-capital-progress-inline[data-progress-value="0"],
+  .partner-detail-apple .partner-capital-progress-inline[data-progress-value="0"] {
+    opacity: .55 !important;
+  }
+
+  /* Tighten the whole capital cell after progress is compact. */
+  .partner-detail-responsive-root .partner-capital-cell--capital .partner-capital-stack,
+  .partner-detail-apple .partner-capital-cell--capital .partner-capital-stack {
+    gap: .22rem !important;
+  }
+}
+
+@media (max-width: 1368px) {
+  .partner-detail-responsive-root .partner-capital-progress-inline,
+  .partner-detail-apple .partner-capital-progress-inline {
+    max-width: 96px !important;
+    height: 7px !important;
+    margin-block: .08rem .12rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div),
+  .partner-detail-apple .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div) {
+    height: 5px !important;
+    min-height: 5px !important;
+    max-height: 5px !important;
+  }
+}
+
+
+/* Stage 126 adjustment: progress should be visible, not hairline. */
+@media (max-width: 1500px) {
+  .partner-detail-responsive-root .partner-capital-progress-inline,
+  .partner-detail-apple .partner-capital-progress-inline {
+    max-width: 132px !important;
+    height: 14px !important;
+    margin-block: .14rem .18rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline *,
+  .partner-detail-apple .partner-capital-progress-inline * {
+    max-height: 14px !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div),
+  .partner-detail-apple .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div) {
+    height: 10px !important;
+    min-height: 10px !important;
+    max-height: 10px !important;
+    border-radius: 999px !important;
+  }
+}
+
+@media (max-width: 1368px) {
+  .partner-detail-responsive-root .partner-capital-progress-inline,
+  .partner-detail-apple .partner-capital-progress-inline {
+    max-width: 118px !important;
+    height: 12px !important;
+    margin-block: .12rem .16rem !important;
+  }
+
+  .partner-detail-responsive-root .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div),
+  .partner-detail-apple .partner-capital-progress-inline :where([class*="h-"], [role="progressbar"], div) {
+    height: 9px !important;
+    min-height: 9px !important;
+    max-height: 9px !important;
+  }
+}
+
+
+/* ===== Foundation source: styles/runtime-overrides/10zt-partner-telegram-status-colors.css ===== */
+
+/* Stage 127 — PartnerDetail Telegram status colors */
+
+.partner-detail-apple .partner-telegram-status-chip {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.partner-detail-apple .partner-telegram-status-chip--linked {
+  border-color: rgb(187 247 208) !important;
+  background: rgb(240 253 244) !important;
+  color: rgb(21 128 61) !important;
+}
+
+.partner-detail-apple .partner-telegram-status-chip--linked i {
+  color: rgb(22 163 74) !important;
+}
+
+.partner-detail-apple .partner-telegram-status-chip--unlinked {
+  border-color: rgb(254 205 211) !important;
+  background: rgb(255 241 242) !important;
+  color: rgb(190 18 60) !important;
+}
+
+.partner-detail-apple .partner-telegram-status-chip--unlinked i {
+  color: rgb(225 29 72) !important;
+}
+
+html.dark .partner-detail-apple .partner-telegram-status-chip--linked {
+  border-color: rgba(74, 222, 128, .38) !important;
+  background: rgba(20, 83, 45, .42) !important;
+  color: rgb(187 247 208) !important;
+}
+
+html.dark .partner-detail-apple .partner-telegram-status-chip--linked i {
+  color: rgb(134 239 172) !important;
+}
+
+html.dark .partner-detail-apple .partner-telegram-status-chip--unlinked {
+  border-color: rgba(251, 113, 133, .40) !important;
+  background: rgba(127, 29, 29, .40) !important;
+  color: rgb(254 205 211) !important;
+}
+
+html.dark .partner-detail-apple .partner-telegram-status-chip--unlinked i {
+  color: rgb(251 113 133) !important;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.partner-capital-progress,
+.partner-telegram-status,
+.partner-telegram-status-chip {
+  min-width: 0;
+}

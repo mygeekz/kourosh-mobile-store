@@ -1,0 +1,140 @@
+/* Core Design Tokens
+   Palette values live in styles/themes.css. This file exposes one semantic API
+   to every component and keeps Light/Dark behavior palette-driven.
+*/
+:root {
+  /* Surfaces */
+  --ds-surface-page: rgb(var(--palette-page-rgb));
+  --ds-surface-card: rgb(var(--palette-surface-rgb) / 0.96);
+  --ds-surface-card-muted: rgb(var(--palette-surface-muted-rgb) / 0.92);
+  --ds-surface-card-opaque: rgb(var(--palette-surface-rgb));
+  --ds-surface-card-muted-opaque: rgb(var(--palette-surface-muted-rgb));
+  --ds-surface-elevated: rgb(var(--palette-surface-elevated-rgb) / 0.98);
+
+  /* Compatibility aliases used by migrated UI owners. */
+  --ds-surface: var(--ds-surface-card);
+  --ds-surface-muted: var(--ds-surface-card-muted);
+  --ds-surface-subtle: var(--ds-surface-card-muted);
+  --ds-text: rgb(var(--palette-text-rgb));
+  --ds-border: rgb(var(--palette-border-subtle-rgb));
+
+  /* Text */
+  --ds-text-primary: rgb(var(--palette-text-rgb));
+  --ds-text-secondary: rgb(var(--palette-text-secondary-rgb));
+  --ds-text-muted: rgb(var(--palette-text-muted-rgb));
+  --ds-text-inverted: hsl(var(--primary-foreground));
+
+  /* Palette-aware brand and inverse surfaces */
+  --ds-primary: hsl(var(--primary));
+  --ds-primary-hover: hsl(var(--primary-hover));
+  --ds-primary-highlight: hsl(var(--primary-highlight));
+  --ds-primary-soft: rgb(var(--palette-primary-soft-rgb) / 0.88);
+  --ds-primary-soft-border: hsl(var(--primary) / 0.34);
+  --ds-surface-inverse: rgb(var(--palette-text-rgb));
+  --ds-text-on-inverse: rgb(var(--palette-surface-rgb));
+  --ds-border-on-inverse: rgb(var(--palette-surface-rgb) / 0.20);
+
+  /* Shared primary-action contract */
+  --ds-action-primary-bg: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+  --ds-action-primary-bg-hover: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-hover)));
+  --ds-action-primary-fg: hsl(var(--primary-foreground));
+  --ds-action-primary-border: hsl(var(--primary) / 0.62);
+  --ds-action-primary-shadow: 0 12px 26px -18px hsl(var(--primary) / 0.72);
+
+  /* Border / focus */
+  --ds-border-subtle: rgb(var(--palette-border-subtle-rgb) / 0.94);
+  --ds-border-strong: rgb(var(--palette-border-strong-rgb) / 0.96);
+  --ds-focus-ring: hsl(var(--primary) / 0.18);
+  --ds-focus-border: hsl(var(--primary) / 0.58);
+  --ds-success: hsl(var(--success));
+  --ds-success-soft: rgb(var(--success-soft-rgb) / 0.78);
+  --ds-warning: hsl(var(--warning));
+  --ds-warning-soft: rgb(var(--warning-soft-rgb) / 0.82);
+  --ds-danger: hsl(var(--danger));
+  --ds-danger-soft: rgb(var(--danger-soft-rgb) / 0.82);
+  --ds-info: hsl(var(--info));
+  --ds-info-soft: rgb(var(--info-soft-rgb) / 0.82);
+
+  /* Radius */
+  --ds-radius-xs: 10px;
+  --ds-radius-sm: 14px;
+  --ds-radius-md: 18px;
+  --ds-radius-lg: 22px;
+  --ds-radius-xl: 28px;
+
+  /* Shadows: restrained Apple-minimal scale */
+  --ds-shadow-control: none;
+  --ds-shadow-card: 0 18px 48px -38px rgb(var(--palette-text-rgb) / 0.42), inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.78);
+  --ds-shadow-popover: 0 24px 70px -42px rgb(var(--palette-text-rgb) / 0.50);
+
+  /* Controls */
+  --ds-control-height-sm: 40px;
+  --ds-control-height-md: 46px;
+  --ds-control-height-lg: 52px;
+  --ds-control-radius: var(--ds-radius-md);
+  --ds-control-padding-x: 1rem;
+  --ds-control-icon-size: 34px;
+  --ds-control-icon-offset: 0.55rem;
+  --ds-control-icon-gap: 0.70rem;
+  --ds-control-font-size: 13px;
+  --ds-control-font-weight: 650;
+  --ds-control-bg: var(--ds-surface-card);
+  --ds-control-fg: var(--ds-text-primary);
+  --ds-control-muted: var(--ds-text-muted);
+  --ds-control-border: var(--ds-border-strong);
+  --ds-control-shadow: var(--ds-shadow-control);
+
+  /* Layout */
+  --ds-page-gap: 1rem;
+  --ds-card-padding: 1rem;
+  --ds-z-sticky: 40;
+  --ds-z-popover: 80;
+  --ds-z-modal: 120;
+}
+
+html {
+  color-scheme: light;
+  background: var(--ds-surface-page);
+}
+
+html.dark,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+body,
+#root {
+  background-color: var(--ds-surface-page);
+  color: var(--ds-text-primary);
+}
+
+:root[data-theme='dark'],
+.dark,
+html.dark {
+  --ds-shadow-card: 0 22px 60px -42px rgb(0 0 0 / 0.76), inset 0 1px 0 rgb(255 255 255 / 0.06);
+  --ds-shadow-popover: 0 28px 78px -42px rgb(0 0 0 / 0.82);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ds-page-gap: 0.75rem;
+    --ds-card-padding: 0.875rem;
+    --ds-control-height-md: 44px;
+    --ds-control-height-lg: 48px;
+  }
+}
+
+/* Global app layout tokens for modal/sidebar safe area. */
+:root {
+  --app-sidebar-width: 280px;
+  --app-modal-safe-gap: 14px;
+  --app-modal-content-max-width: calc(100vw - var(--app-sidebar-width) - (var(--app-modal-safe-gap) * 2));
+}
+
+@media (max-width: 1080px) {
+  :root {
+    --app-sidebar-width: 0px;
+    --app-modal-safe-gap: 10px;
+    --app-modal-content-max-width: calc(100vw - (var(--app-modal-safe-gap) * 2));
+  }
+}

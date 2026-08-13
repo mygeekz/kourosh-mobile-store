@@ -1,0 +1,30 @@
+
+/* Stage 199 — Collection modal real-data guard
+   This stage does not invent numeric values in the collection-risk modal.
+   It only uses selected.metrics, selected.target.rows, selected.decision, and selected.actions from the API.
+*/
+
+.crm197-badge--critical {
+  border-color: rgba(252, 165, 165, 0.9) !important;
+  background: rgba(255, 241, 242, 0.92) !important;
+  color: #dc2626 !important;
+}
+
+.crm197-badge--high {
+  border-color: rgba(253, 186, 116, 0.9) !important;
+  background: rgba(255, 247, 237, 0.92) !important;
+  color: #ea580c !important;
+}
+
+.crm197-badge--medium {
+  border-color: rgba(147, 197, 253, 0.9) !important;
+  background: rgba(239, 246, 255, 0.92) !important;
+  color: #2563eb !important;
+}
+
+.crm197-badge--low,
+.crm197-badge--positive {
+  border-color: rgba(167, 243, 208, 0.9) !important;
+  background: rgba(236, 253, 245, 0.92) !important;
+  color: #059669 !important;
+}

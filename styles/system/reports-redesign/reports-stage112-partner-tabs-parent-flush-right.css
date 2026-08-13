@@ -1,0 +1,67 @@
+/* Stage 112 — Partner report tabs parent flush-right fix
+   The right gap was created by the PageKit/header wrapper, not the tab buttons themselves. */
+
+.partner-performance-executive-page .partner-report-tabs-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  direction: rtl !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  direction: rtl !important;
+  display: inline-flex !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  align-self: auto !important;
+  padding: 8px !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell::-webkit-scrollbar {
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+}
+
+/* Neutralize previous logical margins from stage111. */
+.partner-performance-executive-page .partner-report-tabs-shell,
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button:first-child {
+  margin-inline: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-report-tabs-wrap {
+    overflow: visible !important;
+  }
+
+  .partner-performance-executive-page .partner-report-tabs-shell {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+    margin-left: 0 !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+}

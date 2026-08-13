@@ -1,0 +1,343 @@
+/* Phase 88 — Settings single header and RTL tabs polish */
+.settings-shell-page > .mx-auto.max-w-7xl:first-child,
+.settings-shell-page .page-shell-modern {
+  display: none !important;
+}
+
+.settings-shell {
+  direction: rtl;
+}
+
+.settings-sidebar button.settings-tab-item,
+.settings-sidebar .settings-tab-item {
+  direction: rtl;
+  text-align: right !important;
+}
+
+.settings-sidebar .settings-tab-item > div {
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+}
+
+.settings-sidebar .settings-tab-icon {
+  order: 0;
+}
+
+.settings-sidebar .settings-tab-item:hover .settings-tab-icon {
+  color: var(--color-primary, var(--ds-primary)) !important;
+}
+
+.settings-sidebar .settings-tab-item:hover i {
+  color: inherit;
+}
+
+.settings-mobile-tab {
+  direction: rtl;
+}
+
+.settings-mobile-tab:hover i {
+  color: var(--color-primary, var(--ds-primary)) !important;
+}
+
+.settings-mobile-tab.bg-primary:hover i,
+.settings-mobile-tab[class*="bg-primary"]:hover i {
+  color: var(--ds-primary) !important;
+}
+
+
+/* Phase 94 — Adaptive UI */
+.adaptive-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 30px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: .35rem .7rem;
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.adaptive-badge--positive {
+  color: var(--ds-danger);
+  background: var(--ds-surface-card);
+  border-color: var(--ds-border-strong);
+}
+
+.adaptive-badge--negative {
+  color: var(--ds-success);
+  background: var(--ds-surface-page);
+  border-color: var(--ds-border-strong);
+}
+
+.adaptive-badge--overdue {
+  color: var(--ds-danger);
+  background: var(--ds-danger-soft);
+  border-color: var(--ds-danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ds-danger) 18%, transparent);
+}
+
+.adaptive-badge--settled {
+  color: var(--ds-text-secondary);
+  background: var(--ds-surface-card);
+  border-color: var(--ds-border-strong);
+}
+
+.dark .adaptive-badge--positive {
+  color: var(--ds-danger);
+  background: var(--ds-danger-soft);
+  border-color: color-mix(in srgb, var(--ds-danger) 45%, transparent);
+}
+
+.dark .adaptive-badge--negative {
+  color: var(--ds-success);
+  background: var(--ds-surface-card-muted);
+  border-color: color-mix(in srgb, var(--ds-success) 45%, transparent);
+}
+
+.dark .adaptive-badge--overdue {
+  color: var(--ds-danger);
+  background: var(--ds-danger-soft);
+  border-color: color-mix(in srgb, var(--ds-danger) 45%, transparent);
+}
+
+.dark .adaptive-badge--settled {
+  color: var(--ds-text-primary);
+  background: var(--ds-surface-page);
+  border-color: var(--ds-border-subtle);
+}
+
+.adaptive-row--positive { box-shadow: inset -3px 0 0 color-mix(in srgb, var(--ds-primary) 28%, transparent); }
+.adaptive-row--negative { box-shadow: inset -3px 0 0 color-mix(in srgb, var(--ds-primary) 28%, transparent); }
+.adaptive-row--settled { box-shadow: inset -3px 0 0 color-mix(in srgb, var(--ds-primary) 22%, transparent); }
+
+.adaptive-row--overdue {
+  box-shadow: inset -3px 0 0 color-mix(in srgb, var(--ds-danger) 75%, transparent);
+  background-image: linear-gradient(90deg, var(--ds-danger-soft), transparent 38%);
+}
+
+.adaptive-panel--positive {
+  border-color: color-mix(in srgb, var(--ds-danger) 24%, transparent);
+  background: var(--ds-surface-card);
+}
+
+.adaptive-panel--negative {
+  border-color: color-mix(in srgb, var(--ds-success) 24%, transparent);
+  background: var(--ds-surface-page);
+}
+
+.adaptive-panel--overdue {
+  border-color: color-mix(in srgb, var(--ds-danger) 35%, transparent);
+  background: var(--ds-danger-soft);
+}
+
+.adaptive-panel--settled {
+  border-color: var(--ds-border-strong);
+  background: var(--ds-surface-card);
+}
+
+.dark .adaptive-panel--positive { background: var(--ds-danger-soft); }
+.dark .adaptive-panel--negative { background: var(--ds-surface-card-muted); }
+.dark .adaptive-panel--overdue { background: var(--ds-danger-soft); }
+.dark .adaptive-panel--settled { border-color: var(--ds-border-subtle); background: var(--ds-surface-page); }
+
+.people-smart-alert {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--ds-warning) 28%, transparent);
+  background: linear-gradient(135deg, var(--ds-surface-page), var(--ds-surface-card));
+  color: var(--ds-warning);
+  padding: .8rem 1rem;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 14px 28px -24px color-mix(in srgb, var(--ds-primary) 22%, transparent);
+}
+
+.dark .people-smart-alert {
+  border-color: color-mix(in srgb, var(--ds-warning) 38%, transparent);
+  background: linear-gradient(135deg, var(--ds-warning-soft), var(--ds-surface-page));
+  color: var(--ds-warning);
+}
+
+
+
+
+/* Phase 98 — Settings sidebar neutral cleanup */
+.settings-sidebar {
+  direction: rtl;
+}
+
+.settings-sidebar button,
+.settings-sidebar a {
+  text-align: right !important;
+}
+
+.settings-sidebar button[class*="bg-"],
+.settings-sidebar a[class*="bg-"] {
+  box-shadow: none !important;
+}
+
+.settings-sidebar button,
+.settings-sidebar .settings-tab-item {
+  background: var(--ds-surface-card) !important;
+  border: 1px solid var(--ds-border-strong) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.dark .settings-sidebar button,
+.dark .settings-sidebar .settings-tab-item {
+  background: var(--ds-surface-page) !important;
+  border-color: var(--ds-border-subtle) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.settings-sidebar button:hover,
+.settings-sidebar .settings-tab-item:hover {
+  background: var(--ds-surface-card) !important;
+  border-color: var(--ds-border-subtle) !important;
+  transform: translateY(-1px);
+}
+
+.dark .settings-sidebar button:hover,
+.dark .settings-sidebar .settings-tab-item:hover {
+  background: var(--ds-surface-card-muted) !important;
+  border-color: var(--ds-border-subtle) !important;
+}
+
+.settings-sidebar button [class*="h-9"][class*="w-9"],
+.settings-sidebar .settings-tab-icon {
+  background: var(--ds-surface-page) !important;
+  color: var(--ds-text-secondary) !important;
+  border: 1px solid var(--ds-border-strong) !important;
+}
+
+.dark .settings-sidebar button [class*="h-9"][class*="w-9"],
+.dark .settings-sidebar .settings-tab-icon {
+  background: var(--ds-surface-card-muted) !important;
+  color: var(--ds-text-primary) !important;
+  border-color: var(--ds-border-subtle) !important;
+}
+
+.settings-sidebar button:hover [class*="h-9"][class*="w-9"],
+.settings-sidebar .settings-tab-item:hover .settings-tab-icon {
+  color: var(--ds-primary) !important;
+  border-color: var(--ds-primary-soft-border) !important;
+  background: var(--ds-surface-card) !important;
+}
+
+.settings-sidebar .bg-primary,
+.settings-sidebar .bg-primary\/10,
+.settings-sidebar .from-orange-500,
+.settings-sidebar .to-orange-500,
+.settings-sidebar .bg-orange-500,
+.settings-sidebar .bg-amber-500 {
+  background: var(--ds-warning-soft) !important;
+  color: var(--ds-warning) !important;
+}
+
+.settings-sidebar .text-primary,
+.settings-sidebar .text-orange-500,
+.settings-sidebar .text-amber-500 {
+  color: var(--ds-warning) !important;
+}
+
+.settings-sidebar .rounded-xl,
+.settings-sidebar .rounded-2xl {
+  border-radius: 18px !important;
+}
+
+.settings-sidebar .space-y-1 > * + * {
+  margin-top: 0.45rem !important;
+}
+
+
+
+
+/* ===== Phase 13 — Settings shell contract =====
+   Scope: Settings page only. Keeps route/state/save behavior intact. */
+.settings-shell {
+  --settings-card-radius: 24px;
+  --settings-card-border: var(--ds-border-subtle);
+  --settings-card-bg: var(--ds-surface-card);
+  --settings-muted: var(--ds-surface-card-muted);
+  min-width: 0;
+}
+
+.settings-workspace {
+  min-width: 0;
+  border-radius: 28px;
+}
+
+.settings-sidebar {
+  min-width: 0;
+}
+
+.settings-tab-item {
+  min-width: 0;
+  isolation: isolate;
+}
+
+.settings-tab-row {
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.settings-tab-row > :last-child,
+.settings-tab-item .min-w-0 {
+  min-width: 0;
+}
+
+.settings-tab-icon,
+.settings-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.settings-shell :is(input, textarea, select) {
+  min-width: 0;
+}
+
+.settings-shell :is(.rounded-\[28px\], .rounded-\[30px\]) {
+  scroll-margin-top: 96px;
+}
+
+.settings-shell [data-settings-mode="advanced"] {
+  min-width: 0;
+}
+
+.settings-shell .app-toggle-switch {
+  flex: 0 0 auto;
+}
+
+.settings-shell :is(button, [role="button"], summary):focus-visible {
+  outline: 3px solid var(--ds-border-subtle);
+  outline-offset: 3px;
+}
+
+.dark .settings-shell {
+  --settings-card-border: var(--ds-border-subtle);
+  --settings-card-bg: var(--ds-surface-card);
+  --settings-muted: var(--ds-surface-card-muted);
+}
+
+@media (max-width: 768px) {
+  .settings-shell {
+    padding-inline: 12px !important;
+  }
+
+  .settings-mobile-tab {
+    min-height: 40px;
+    white-space: nowrap;
+  }
+
+  .settings-workspace {
+    overflow: visible;
+  }
+}

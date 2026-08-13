@@ -1,0 +1,208 @@
+
+/* v71 — Template accordion polish for all category accordions.
+   Fixes:
+   1) KPI boxes in accordion hero are too large.
+   2) Lower cards have split white/gray surfaces; unify them to one Apple-gray surface.
+   Scoped to .telegram-template-apple-v62 .telegram-accordion-panel. */
+
+/* Accordion hero itself: less vertical bulk */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero {
+  border-radius: 20px !important;
+  background: rgba(248, 250, 252, 0.82) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary {
+  padding: 0.8rem 0.9rem !important;
+  background: rgba(248, 250, 252, 0.82) !important;
+  background-image: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary > .absolute {
+  display: none !important;
+}
+
+/* Hero layout: reduce gaps */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .relative.grid {
+  gap: 0.75rem !important;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px) !important;
+}
+
+/* Hero chips and text smaller */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .rounded-full {
+  min-height: 1.5rem !important;
+  padding: 0.2rem 0.55rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.3 !important;
+  gap: 0.35rem !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .text-lg {
+  margin-top: 0.55rem !important;
+  font-size: 0.86rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .text-sm {
+  margin-top: 0.18rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Quick hint compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .rounded-2xl {
+  min-height: 2rem !important;
+  padding: 0.4rem 0.65rem !important;
+  border-radius: 14px !important;
+  font-size: 0.65rem !important;
+  line-height: 1.45 !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+/* KPI boxes: main fix */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis {
+  gap: 0.45rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis > div {
+  min-height: 3.15rem !important;
+  padding: 0.5rem 0.58rem !important;
+  border-radius: 15px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis .text-\[11px\] {
+  font-size: 0.58rem !important;
+  line-height: 1.3 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis .text-lg {
+  margin-top: 0.18rem !important;
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+}
+
+/* Progress rail thinner */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__progress {
+  margin-top: 0.72rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__progress .h-2 {
+  height: 0.32rem !important;
+  background: rgba(226, 232, 240, 0.95) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__progress [class*="bg-gradient"] {
+  background-image: none !important;
+  background-color: rgba(59, 130, 246, 0.68) !important;
+}
+
+/* Accordion action row: unified gray surface */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-actions {
+  padding: 0.65rem 0.8rem !important;
+  gap: 0.48rem !important;
+  background: rgba(248, 250, 252, 0.82) !important;
+  border-top-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-actions button {
+  min-height: 1.95rem !important;
+  padding-inline: 0.65rem !important;
+  border-radius: 13px !important;
+  font-size: 0.64rem !important;
+}
+
+/* Body background unified */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body {
+  background: rgba(248, 250, 252, 0.82) !important;
+  padding: 0.75rem !important;
+}
+
+/* Lower event cards: remove split white/gray feel */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-\[22px\],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-2xl,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-3xl,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-template-item"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-event"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-template-card"] {
+  background: rgba(248, 250, 252, 0.92) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  box-shadow: none !important;
+}
+
+/* Remove alternating/inner white columns inside lower cards */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="bg-white"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-white,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-white\/80,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-white\/90,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-slate-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-slate-50\/50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .bg-slate-50\/70 {
+  background-color: rgba(248, 250, 252, 0.92) !important;
+}
+
+/* Inputs/mini chips inside lower cards stay slightly lighter but not white blocks */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-full {
+  background-color: rgba(255, 255, 255, 0.70) !important;
+}
+
+/* Compact event cards generally */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body button,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .ux-btn {
+  font-size: 0.66rem !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-actions,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body {
+  background: rgba(2, 6, 23, 0.28) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis > div,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-\[22px\],
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-2xl,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body .rounded-3xl,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-template-item"],
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-event"],
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-panel__body [class*="telegram-template-card"] {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary .relative.grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__summary {
+    padding: 0.7rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-accordion-hero__kpis > div {
+    min-height: 2.9rem !important;
+  }
+}

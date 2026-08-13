@@ -1,0 +1,8 @@
+
+/* v55 — remove unavailable lucide imports from TelegramLogsPanel.
+   New decorative icons use FontAwesome only. */
+.tg-logs-apple__statIcon i,
+.tg-logs-apple__detailIcon i {
+  font-size: 0.86rem;
+  line-height: 1;
+}

@@ -1,0 +1,205 @@
+/* Split from 02-legacy-reports-premium-components.css: ux button motion, presets, button sheen */
+@layer components {
+  .ux-btn,
+  .premium-submit-btn,
+  .premium-cancel-btn,
+  .inventory-inline-add,
+  .people-primary-btn,
+  .people-secondary-btn,
+  button[class*="rounded"][class*="bg-"],
+  button[class*="rounded"][class*="border"],
+  button[class*="bg-"][class*="px-"],
+  button[class*="border"][class*="px-"] {
+    border-radius: var(--btn-radius, 18px);
+  }
+
+  .ux-btn,
+  .premium-submit-btn,
+  .premium-cancel-btn,
+  .inventory-inline-add,
+  .people-primary-btn,
+  .people-secondary-btn {
+    transform: translateY(0) scale(1);
+    transition-property: transform, box-shadow, filter, border-color, background, color, opacity;
+  }
+
+  html[data-button-motion='calm'] .ux-btn,
+  html[data-button-motion='calm'] .premium-submit-btn,
+  html[data-button-motion='calm'] .premium-cancel-btn,
+  html[data-button-motion='calm'] .inventory-inline-add,
+  html[data-button-motion='calm'] .people-primary-btn,
+  html[data-button-motion='calm'] .people-secondary-btn {
+    transition-duration: 140ms;
+  }
+
+  html[data-button-motion='balanced'] .ux-btn,
+  html[data-button-motion='balanced'] .premium-submit-btn,
+  html[data-button-motion='balanced'] .premium-cancel-btn,
+  html[data-button-motion='balanced'] .inventory-inline-add,
+  html[data-button-motion='balanced'] .people-primary-btn,
+  html[data-button-motion='balanced'] .people-secondary-btn {
+    transition-duration: 200ms;
+  }
+
+  html[data-button-motion='expressive'] .ux-btn,
+  html[data-button-motion='expressive'] .premium-submit-btn,
+  html[data-button-motion='expressive'] .premium-cancel-btn,
+  html[data-button-motion='expressive'] .inventory-inline-add,
+  html[data-button-motion='expressive'] .people-primary-btn,
+  html[data-button-motion='expressive'] .people-secondary-btn {
+    transition-duration: 280ms;
+  }
+
+  html[data-button-motion='calm'] .ux-btn:hover,
+  html[data-button-motion='calm'] .premium-submit-btn:hover,
+  html[data-button-motion='calm'] .premium-cancel-btn:hover,
+  html[data-button-motion='calm'] .inventory-inline-add:hover,
+  html[data-button-motion='calm'] .people-primary-btn:hover,
+  html[data-button-motion='calm'] .people-secondary-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  html[data-button-motion='balanced'] .ux-btn:hover,
+  html[data-button-motion='balanced'] .premium-submit-btn:hover,
+  html[data-button-motion='balanced'] .premium-cancel-btn:hover,
+  html[data-button-motion='balanced'] .inventory-inline-add:hover,
+  html[data-button-motion='balanced'] .people-primary-btn:hover,
+  html[data-button-motion='balanced'] .people-secondary-btn:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  html[data-button-motion='expressive'] .ux-btn:hover,
+  html[data-button-motion='expressive'] .premium-submit-btn:hover,
+  html[data-button-motion='expressive'] .premium-cancel-btn:hover,
+  html[data-button-motion='expressive'] .inventory-inline-add:hover,
+  html[data-button-motion='expressive'] .people-primary-btn:hover,
+  html[data-button-motion='expressive'] .people-secondary-btn:hover {
+    transform: translateY(-3px) scale(1.018);
+  }
+
+  html[data-button-shadow='soft'] .ux-btn,
+  html[data-button-shadow='soft'] .premium-submit-btn,
+  html[data-button-shadow='soft'] .premium-cancel-btn,
+  html[data-button-shadow='soft'] .inventory-inline-add,
+  html[data-button-shadow='soft'] .people-primary-btn,
+  html[data-button-shadow='soft'] .people-secondary-btn {
+    box-shadow: 0 12px 24px -22px rgba(15, 23, 42, 0.22);
+  }
+
+  html[data-button-shadow='medium'] .ux-btn,
+  html[data-button-shadow='medium'] .premium-submit-btn,
+  html[data-button-shadow='medium'] .premium-cancel-btn,
+  html[data-button-shadow='medium'] .inventory-inline-add,
+  html[data-button-shadow='medium'] .people-primary-btn,
+  html[data-button-shadow='medium'] .people-secondary-btn {
+    box-shadow: 0 18px 34px -24px rgba(15, 23, 42, 0.28);
+  }
+
+  html[data-button-shadow='strong'] .ux-btn,
+  html[data-button-shadow='strong'] .premium-submit-btn,
+  html[data-button-shadow='strong'] .premium-cancel-btn,
+  html[data-button-shadow='strong'] .inventory-inline-add,
+  html[data-button-shadow='strong'] .people-primary-btn,
+  html[data-button-shadow='strong'] .people-secondary-btn {
+    box-shadow: 0 24px 48px -28px rgba(15, 23, 42, 0.34);
+  }
+
+  html[data-button-icon-side='end'] .ux-btn__content {
+    flex-direction: row-reverse;
+  }
+
+  html[data-button-icon-side='end'] .ux-btn--native .ux-btn__content {
+    flex-direction: row-reverse;
+  }
+
+  :root {
+    --ux-btn-primary-from: var(--primary);
+    --ux-btn-primary-to: var(--primary-hover);
+    --ux-btn-success-from: var(--success);
+    --ux-btn-success-to: var(--success);
+  }
+
+  html[data-button-preset='luxury'] {
+    --ux-btn-primary-from: var(--primary);
+    --ux-btn-primary-to: var(--accent);
+  }
+
+  html[data-button-preset='classic'] {
+    --ux-btn-primary-from: var(--primary);
+    --ux-btn-primary-to: var(--primary-hover);
+  }
+
+  html[data-button-preset='ocean'] {
+    --ux-btn-primary-from: var(--primary-hover);
+    --ux-btn-primary-to: var(--primary);
+  }
+
+  html[data-button-preset='sunset'] {
+    --ux-btn-primary-from: var(--primary);
+    --ux-btn-primary-to: var(--secondary);
+  }
+
+  html[data-button-preset='mono'] {
+    --ux-btn-primary-from: var(--secondary);
+    --ux-btn-primary-to: var(--primary);
+  }
+
+  /* Custom brand colors may be much lighter or darker than the standard
+     presets. Keep both gradient endpoints in the custom primary family so the
+     contrast-aware foreground selected by StyleContext remains valid. */
+  html[data-palette='custom'] {
+    --ux-btn-primary-from: var(--primary);
+    --ux-btn-primary-to: var(--primary-hover);
+  }
+
+  .ux-btn-primary,
+  .premium-submit-btn,
+  .people-primary-btn {
+    border-color: color-mix(in srgb, hsl(var(--ux-btn-primary-from)) 76%, transparent);
+    background-image: linear-gradient(135deg, hsl(var(--ux-btn-primary-from)), hsl(var(--ux-btn-primary-to)));
+    color: hsl(var(--primary-foreground));
+  }
+
+  .ux-btn-success {
+    border-color: color-mix(in srgb, hsl(var(--success)) 76%, transparent);
+    background-image: linear-gradient(135deg, hsl(var(--ux-btn-success-from)), color-mix(in srgb, hsl(var(--ux-btn-success-to)) 88%, black));
+    color: hsl(var(--success-foreground));
+  }
+
+  .ux-btn-warning {
+    border-color: color-mix(in srgb, hsl(var(--warning)) 76%, transparent);
+    background-image: linear-gradient(135deg, hsl(var(--warning)), color-mix(in srgb, hsl(var(--warning)) 86%, black));
+    color: hsl(var(--warning-foreground));
+  }
+
+  .ux-btn-danger {
+    border-color: color-mix(in srgb, hsl(var(--danger)) 76%, transparent);
+    background-image: linear-gradient(135deg, hsl(var(--danger)), color-mix(in srgb, hsl(var(--danger)) 86%, black));
+    color: hsl(var(--danger-foreground));
+  }
+
+  .ux-btn-secondary,
+  .ux-btn-ghost,
+  .premium-cancel-btn,
+  .people-secondary-btn {
+    border-color: var(--ds-border-strong);
+    background-image: linear-gradient(180deg, var(--ds-surface-elevated), var(--ds-surface-card-muted));
+    color: var(--ds-text-primary);
+  }
+
+  .ux-btn i,
+  .premium-submit-btn i,
+  .premium-cancel-btn i,
+  .inventory-inline-add i,
+  .people-primary-btn i,
+  .people-secondary-btn i {
+  }
+
+  /* The former full-button ::before sheen was removed at the source.
+     Hover feedback now comes from the real button surface, border and motion,
+     so rounded presets never reveal a smaller rectangular highlight. */
+
+  .ux-btn-primary {
+    background-image: linear-gradient(135deg, hsl(var(--ux-btn-primary-from)), hsl(var(--ux-btn-primary-to)));
+  }
+}

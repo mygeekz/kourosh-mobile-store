@@ -1,0 +1,171 @@
+/* Phase 34 — Telegram detail spacing + template policy cards
+   Scope: only Settings > Telegram. No @apply, no global button overrides. */
+
+#telegram-settings-form.telegram-redesign-v1 {
+  --tg-v34-surface: rgba(255, 255, 255, 0.92);
+  --tg-v34-surface-soft: rgba(248, 250, 252, 0.82);
+  --tg-v34-border: rgba(203, 213, 225, 0.72);
+  --tg-v34-text: #0f172a;
+  --tg-v34-muted: #64748b;
+}
+
+.dark #telegram-settings-form.telegram-redesign-v1 {
+  --tg-v34-surface: rgba(15, 23, 42, 0.88);
+  --tg-v34-surface-soft: rgba(2, 6, 23, 0.36);
+  --tg-v34-border: rgba(51, 65, 85, 0.72);
+  --tg-v34-text: #f8fafc;
+  --tg-v34-muted: #94a3b8;
+}
+
+/* The two automatic-message blocks must not float on the plain page. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel.telegram-template-policy-panel {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(240px, 1fr) minmax(280px, 1.04fr) !important;
+  gap: 18px !important;
+  align-items: center !important;
+  margin: 18px 18px 0 !important;
+  padding: 18px !important;
+  border: 1px solid var(--tg-v34-border) !important;
+  border-radius: 28px !important;
+  background: var(--tg-v34-surface) !important;
+  box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.32) !important;
+  overflow: hidden !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel::before,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel::after {
+  display: none !important;
+  content: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel > div:first-child {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+  padding-inline: 4px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel > div:first-child strong {
+  color: var(--tg-v34-text) !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.015em !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel > div:first-child p {
+  margin: 0 !important;
+  color: var(--tg-v34-muted) !important;
+  font-size: 12px !important;
+  line-height: 2 !important;
+  font-weight: 700 !important;
+  max-width: 48rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-policy-toggle,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel > .flex.flex-wrap.gap-2 {
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-policy-toggle > button {
+  min-height: 54px !important;
+  padding: 11px 14px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--tg-v34-border) !important;
+  background: var(--tg-v34-surface-soft) !important;
+  box-shadow: none !important;
+  white-space: normal !important;
+  text-align: right !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-policy-toggle > button.is-active {
+  background: rgba(226, 232, 240, 0.62) !important;
+  border-color: rgba(148, 163, 184, 0.88) !important;
+}
+
+/* Fix edge-to-edge Telegram detail fields without adding another background layer. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-core-grid,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy {
+  box-sizing: border-box !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode {
+  padding-inline: 20px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-core-grid {
+  gap: 18px !important;
+  padding-inline: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-core-grid > *,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > .app-form-field,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > [data-ui-field],
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > .telegram-route-status-card,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > div:not(.telegram-route-status-card) {
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-core-grid .app-form-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-core-grid [data-ui-field],
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy .app-form-field,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy [data-ui-field] {
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy {
+  padding-inline: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > .app-form-field,
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-proxy > [data-ui-field] {
+  width: 100% !important;
+}
+
+/* Keep the guide/monitor blocks aligned with the detail fields after the inset. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-guide-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-control-center-v26,
+#telegram-settings-form.telegram-redesign-v1 .telegram-control-merged-grid {
+  margin-inline: 20px !important;
+}
+
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel.telegram-template-policy-panel {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode {
+    padding-inline: 12px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-guide-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-control-center-v26,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-control-merged-grid {
+    margin-inline: 12px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel.telegram-template-policy-panel {
+    margin-inline: 12px !important;
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+}

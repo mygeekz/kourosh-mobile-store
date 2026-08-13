@@ -1,0 +1,32 @@
+/* Stage 29 - Report date controls and KPI decorative-line cleanup
+   Scope: report pages only. Removes decorative date icons and blue divider glows. */
+
+/* 1) Date fields in reports must stay as a single clean box. The date picker already has a label,
+   so the inner trailing calendar icon creates a duplicated blue icon on the field edge. */
+.reports-layout-executive :where(.app-date-field__icon),
+.report-page :where(.app-date-field__icon) {
+  display: none !important;
+}
+
+.reports-layout-executive :where(.app-date-field--with-trailing-icon .app-date-field__input),
+.report-page :where(.app-date-field--with-trailing-icon .app-date-field__input) {
+  padding-inline: 0 !important;
+}
+
+.reports-layout-executive :where(.app-date-field__control),
+.report-page :where(.app-date-field__control) {
+  box-shadow: none !important;
+}
+
+/* 2) KPI/stat cards in reports should not show decorative blue hairlines or shine strips. */
+.reports-layout-executive :where(.premium-stat-card)::before,
+.reports-layout-executive :where(.premium-stat-card)::after,
+.report-page :where(.premium-stat-card)::before,
+.report-page :where(.premium-stat-card)::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+/* Keep the executive financial cards commercial and plain: no gradient tint by tone. */

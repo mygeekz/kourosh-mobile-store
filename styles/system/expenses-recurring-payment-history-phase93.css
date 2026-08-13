@@ -1,0 +1,121 @@
+/* Phase 51.93 — Recurring expense payment history visibility + stable date fields. */
+
+.expenses-page-date-stable {
+  align-items: center !important;
+}
+
+.expenses-page-date-stable > .relative:first-child {
+  min-width: 360px !important;
+}
+
+.expenses-page-date-stable input[type="text"],
+.expenses-page-date-stable input[type="search"] {
+  height: 44px !important;
+  min-height: 44px !important;
+  transform: none !important;
+}
+
+.recurring-expense-payment-history {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.82);
+}
+
+.dark .recurring-expense-payment-history {
+  border-color: rgba(51, 65, 85, 0.85);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.recurring-expense-payment-history__row {
+  display: grid;
+  grid-template-columns: minmax(78px, auto) minmax(92px, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 5px 7px;
+  border-radius: 11px;
+  background: #fff;
+  color: #334155;
+}
+
+.dark .recurring-expense-payment-history__row {
+  background: rgba(2, 6, 23, 0.48);
+  color: #cbd5e1;
+}
+
+.recurring-expense-payment-history__date {
+  font-size: 11px;
+  font-weight: 950;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.recurring-expense-payment-history__amount {
+  min-width: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 950;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recurring-expense-payment-history__method {
+  border-radius: 999px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 10px;
+  font-weight: 950;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.dark .recurring-expense-payment-history__date,
+.dark .recurring-expense-payment-history__amount {
+  color: #f8fafc;
+}
+
+.dark .recurring-expense-payment-history__method {
+  background: rgba(6, 78, 59, 0.38);
+  color: #bbf7d0;
+}
+
+.recurring-payment-modal92 .expense-modal87__main {
+  padding-top: 22px !important;
+}
+
+.recurring-payment-modal92 .expense-modal87__side {
+  align-self: stretch !important;
+}
+
+@media (max-width: 920px) {
+  .expenses-page-date-stable {
+    grid-template-columns: 1fr !important;
+    min-width: 0 !important;
+  }
+  .expenses-page-date-stable > .relative:first-child {
+    min-width: 0 !important;
+  }
+}
+
+/* Canonical date-field sizing only; internal geometry belongs to date-field.css. */
+.expenses-page-date-stable .app-date-field {
+  --ds-control-height-lg: 44px;
+  --ds-control-radius: 16px;
+  --ds-control-font-size: .78rem;
+  --ds-control-shadow: none;
+}
+
+.expense-modal87__dateField .app-date-field,
+.recurring-payment-modal92 .app-date-field,
+.expense-modal87__dateControl.app-date-field {
+  --ds-control-height-lg: 46px;
+  --ds-control-radius: 15px;
+  --ds-control-font-size: .8rem;
+  --ds-control-shadow: none;
+}

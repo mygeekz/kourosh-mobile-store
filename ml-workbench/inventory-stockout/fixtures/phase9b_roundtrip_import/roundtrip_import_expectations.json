@@ -1,0 +1,169 @@
+{
+  "roundtripSuiteVersion": "phase10f-v1",
+  "targetImportContract": "inventory_stockout_candidate_evaluation_metadata_import_v1",
+  "requiredCandidatePackageKeys": [
+    "candidateManifest",
+    "modelCard",
+    "metrics",
+    "evaluationReport",
+    "candidateOutputSample",
+    "checksums",
+    "trainingPackageValidationReport"
+  ],
+  "requiredEmbeddedEnrichmentSections": [
+    "thresholdScenarioMetadata",
+    "calibrationMetadata",
+    "errorAnalysis",
+    "datasetSliceDiagnostics",
+    "dataDrift",
+    "featureContractDrift",
+    "robustnessMetadata",
+    "deploymentReadinessMetadata"
+  ],
+  "requiredSafetyFalseFlags": [
+    "backendModelExecutionAllowed",
+    "backendInferenceEndpointExposed",
+    "productionIntegrationAllowed",
+    "decisionAutomationAllowed",
+    "canChangeInventoryOrAccounting",
+    "artifactActivationAllowed"
+  ],
+  "expectedPayloadFiles": [
+    "phase9b_candidate_evaluation_metadata_import_payload.json",
+    "phase9b_candidate_evaluation_metadata_import_payload_validation_report.json"
+  ],
+  "forbiddenPayloadKeys": [
+    "modelBinary",
+    "modelBytes",
+    "artifactBytes",
+    "artifactPayload",
+    "binaryPayload",
+    "serializedModel",
+    "base64Model",
+    "picklePayload",
+    "executableArtifact",
+    "executableArtifactBytes",
+    "set_stock",
+    "change_price",
+    "approve_purchase",
+    "create_invoice",
+    "mutate_ledger",
+    "auto_order",
+    "delete_record",
+    "production_action",
+    "auto_decision",
+    "activate_artifact",
+    "deploy_model"
+  ],
+  "cases": [
+    {
+      "id": "valid_phase9b_import_payload",
+      "description": "Unmodified Phase 9B payload should pass the roundtrip import validator.",
+      "expectedStatus": [
+        "pass",
+        "warning"
+      ],
+      "expectedErrorContains": [],
+      "mutations": []
+    },
+    {
+      "id": "payload_with_model_bytes",
+      "description": "Payload containing serialized model bytes must fail.",
+      "expectedStatus": [
+        "fail"
+      ],
+      "expectedErrorContains": [
+        "serializedModel"
+      ],
+      "mutations": [
+        {
+          "operation": "set_json_value",
+          "path": [
+            "candidatePackage",
+            "serializedModel"
+          ],
+          "value": "not-allowed"
+        }
+      ]
+    },
+    {
+      "id": "payload_with_model_joblib_checksum",
+      "description": "Payload reintroducing model.joblib checksum metadata must fail the no-model-joblib import rule.",
+      "expectedStatus": [
+        "fail"
+      ],
+      "expectedErrorContains": [
+        "model.joblib"
+      ],
+      "mutations": [
+        {
+          "operation": "set_json_value",
+          "path": [
+            "candidatePackage",
+            "checksums",
+            "files",
+            "model.joblib"
+          ],
+          "value": "deadbeef"
+        }
+      ]
+    },
+    {
+      "id": "payload_missing_candidate_manifest",
+      "description": "Payload missing candidateManifest must fail.",
+      "expectedStatus": [
+        "fail"
+      ],
+      "expectedErrorContains": [
+        "candidateManifest"
+      ],
+      "mutations": [
+        {
+          "operation": "delete_json_key",
+          "path": [
+            "candidatePackage",
+            "candidateManifest"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "payload_with_unsafe_output_field",
+      "description": "Payload candidate output containing a business mutation field must fail.",
+      "expectedStatus": [
+        "fail"
+      ],
+      "expectedErrorContains": [
+        "set_stock"
+      ],
+      "mutations": [
+        {
+          "operation": "add_candidate_output_field",
+          "field": "set_stock",
+          "value": 100
+        }
+      ]
+    },
+    {
+      "id": "payload_missing_embedded_enrichment",
+      "description": "Payload missing embedded enrichment metadata on evaluationReport must fail.",
+      "expectedStatus": [
+        "fail"
+      ],
+      "expectedErrorContains": [
+        "evaluationReport"
+      ],
+      "mutations": [
+        {
+          "operation": "set_json_value",
+          "path": [
+            "candidatePackage",
+            "evaluationReport",
+            "metadataEnrichment"
+          ],
+          "value": {}
+        }
+      ]
+    }
+  ]
+}

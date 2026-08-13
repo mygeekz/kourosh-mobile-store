@@ -1,0 +1,469 @@
+/* Stage 91 — Installments & checks calendar executive redesign */
+
+.installments-calendar-executive-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.installments-calendar-filter-panel,
+.installments-calendar-toolbar,
+.installments-calendar-day-group {
+  border: 1px solid rgba(148, 163, 184, .30);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.installments-calendar-filter-panel {
+  padding: 14px 16px;
+}
+
+.installments-calendar-filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  direction: rtl;
+}
+
+.installments-calendar-presets-wrap {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.installments-calendar-presets,
+.installments-calendar-presets .report-date-presets__chips,
+.installments-calendar-executive-page .report-date-presets,
+.installments-calendar-executive-page .report-date-presets__chips {
+  height: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.installments-calendar-executive-page .report-date-preset-chip {
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  padding: 0 14px !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  font-size: .78rem !important;
+  font-weight: 850 !important;
+}
+
+.installments-calendar-executive-page .report-date-preset-chip.is-active {
+  background: #111827 !important;
+  color: #fff !important;
+  border-color: #111827 !important;
+}
+
+.installments-calendar-date-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.installments-calendar-date-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 190px;
+  min-width: 190px;
+  height: 64px;
+  margin: 0;
+}
+
+.installments-calendar-date-box > span {
+  padding: 0 8px;
+  color: #64748b;
+  font-size: .68rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.installments-calendar-date-box .app-date-field,
+.installments-calendar-date-box .app-date-field__control,
+.installments-calendar-date-box .app-date-field__control.installments-calendar-date-input {
+  position: relative !important;
+  width: 100% !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.installments-calendar-date-box .app-date-field__input,
+.installments-calendar-date-box input[data-app-date-input='true'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 42px !important;
+  padding: 0 40px 0 14px !important;
+  border: 1px solid rgba(148, 163, 184, .44) !important;
+  border-radius: 15px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  direction: ltr !important;
+  text-align: center !important;
+  font-size: .86rem !important;
+  font-weight: 900 !important;
+  line-height: 42px !important;
+  box-shadow: none !important;
+}
+
+.installments-calendar-date-box .app-date-field__icon {
+  display: inline-flex !important;
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #64748b !important;
+  pointer-events: none !important;
+}
+
+.installments-calendar-date-box .app-date-field__icon i {
+  font-size: .86rem !important;
+  line-height: 1 !important;
+  color: inherit !important;
+}
+
+.installments-calendar-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  min-height: 42px;
+  margin-top: 18px;
+  padding: 0 16px;
+  border: 1px solid rgba(148, 163, 184, .34);
+  border-radius: 15px;
+  background: #fff;
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 900;
+  box-shadow: none;
+}
+
+.installments-calendar-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.installments-calendar-metric {
+  min-height: 98px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.installments-calendar-metric__icon,
+.installments-calendar-day-title__icon,
+.installments-calendar-item-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, .25);
+  background: #f8fafc;
+  color: #2563eb;
+}
+
+.installments-calendar-metric div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.installments-calendar-metric span:not(.installments-calendar-metric__icon) {
+  color: #64748b;
+  font-size: .75rem;
+  font-weight: 850;
+}
+
+.installments-calendar-metric strong {
+  color: #0f172a;
+  font-size: 1.15rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.installments-calendar-metric small {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.installments-calendar-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.installments-calendar-search {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 320px;
+  min-width: 260px;
+  height: 40px;
+  padding: 0 12px 0 38px;
+  border: 1px solid rgba(148, 163, 184, .42);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.installments-calendar-search > i {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: .8rem;
+  pointer-events: none;
+}
+
+.installments-calendar-search input {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  color: #0f172a;
+  direction: rtl;
+  text-align: right;
+  font-size: .8rem;
+  font-weight: 800;
+}
+
+.installments-calendar-search input::placeholder {
+  color: #94a3b8;
+}
+
+.installments-calendar-segments,
+.installments-calendar-statusbar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.installments-calendar-segments button,
+.installments-calendar-statusbar button {
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 13px;
+  background: #fff;
+  color: #334155;
+  font-size: .74rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.installments-calendar-segments button.is-active,
+.installments-calendar-statusbar button.is-active {
+  background: #111827;
+  border-color: #111827;
+  color: #fff;
+}
+
+.installments-calendar-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.installments-calendar-day-group {
+  overflow: hidden;
+}
+
+.installments-calendar-day-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(226, 232, 240, .9);
+}
+
+.installments-calendar-day-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.installments-calendar-day-title strong,
+.installments-calendar-day-total {
+  color: #0f172a;
+  font-size: .9rem;
+  font-weight: 950;
+}
+
+.installments-calendar-day-title small {
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 800;
+}
+
+.installments-calendar-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.installments-calendar-item-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, .24);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.installments-calendar-item-card__main {
+  min-width: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.installments-calendar-item-card__content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.installments-calendar-item-card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.installments-calendar-item-card__title strong {
+  color: #0f172a;
+  font-size: .86rem;
+  font-weight: 950;
+}
+
+.installments-calendar-item-card__content small {
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+}
+
+.installments-calendar-status-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.installments-calendar-status-pill.is-paid { background: #ecfdf5; color: #047857; }
+.installments-calendar-status-pill.is-pending { background: #fffbeb; color: #b45309; }
+.installments-calendar-status-pill.is-passed { background: #fef2f2; color: #be123c; }
+
+.installments-calendar-customer-link {
+  color: #2563eb;
+  font-size: .82rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.installments-calendar-item-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  width: max-content;
+  padding: 0 12px;
+  border: 1px solid rgba(37, 99, 235, .22);
+  border-radius: 13px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: .74rem;
+  font-weight: 900;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.installments-calendar-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 28px;
+  border: 1px solid rgba(148, 163, 184, .26);
+  border-radius: 20px;
+  background: #fff;
+  color: #64748b;
+  font-size: .85rem;
+  font-weight: 850;
+}
+
+@media (max-width: 900px) {
+  .installments-calendar-filter-row,
+  .installments-calendar-date-group {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .installments-calendar-date-box {
+    flex: 1 1 180px;
+    width: auto;
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 640px) {
+  .installments-calendar-item-card,
+  .installments-calendar-day-group__head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

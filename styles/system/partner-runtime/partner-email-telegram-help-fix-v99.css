@@ -1,0 +1,33 @@
+
+/* v99 — Partner edit email LTR + Telegram link modal guide cleanup */
+.partner-edit-v98-overlay .partner-edit-v98-email-editor,
+.partner-edit-v98-overlay .partner-edit-v98-email-editor:focus,
+.partner-edit-v98-overlay .partner-edit-v98-email-editor:focus-visible {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: left !important;
+}
+
+/* Safety: hide any stale guide/help action in Telegram link modals if old markup remains cached */
+.telegram-link-modal-shell :where(button, a)[title*="راهنما"],
+.telegram-link-modal-shell :where(button, a):has(.fa-circle-question),
+.telegram-link-modal-shell :where(button, a):has(.fa-book-open) {
+  display: none !important;
+}
+
+/* v100 — real LTR email input; no contentEditable/bidi reversal */
+.partner-edit-v98-overlay .partner-edit-v100-email-shell {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+
+.partner-edit-v98-overlay input.partner-edit-v100-email-input,
+.partner-edit-v98-overlay input.partner-edit-v100-email-input:hover,
+.partner-edit-v98-overlay input.partner-edit-v100-email-input:focus,
+.partner-edit-v98-overlay input.partner-edit-v100-email-input:focus-visible {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  text-align: left !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
+  letter-spacing: 0 !important;
+}

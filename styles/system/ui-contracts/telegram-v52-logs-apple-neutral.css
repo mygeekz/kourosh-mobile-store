@@ -1,0 +1,127 @@
+
+/* v52 — Telegram logs panel neutral Apple surface, stat icons, better table spacing */
+
+.tg-logs-apple {
+  background: rgba(255,255,255,0.94) !important;
+  border-color: rgba(203,213,225,0.92) !important;
+  box-shadow: 0 18px 46px -34px rgba(15,23,42,0.20) !important;
+}
+html.dark .tg-logs-apple {
+  background: rgba(15,23,42,0.84) !important;
+  border-color: rgba(51,65,85,0.95) !important;
+  box-shadow: 0 18px 46px -30px rgba(2,6,23,0.62) !important;
+}
+
+.tg-logs-apple__icon {
+  border-color: rgba(203,213,225,0.95) !important;
+  background: rgba(248,250,252,0.92) !important;
+  color: rgb(71,85,105) !important;
+}
+html.dark .tg-logs-apple__icon {
+  border-color: rgba(51,65,85,0.95) !important;
+  background: rgba(15,23,42,0.74) !important;
+  color: rgb(203,213,225) !important;
+}
+
+.tg-logs-apple__stats { gap: 12px !important; }
+.tg-logs-apple__stat {
+  min-height: 86px !important;
+  padding: 13px 14px 14px !important;
+  border-color: rgba(226,232,240,0.95) !important;
+  background: rgba(248,250,252,0.86) !important;
+  box-shadow: none !important;
+}
+html.dark .tg-logs-apple__stat {
+  border-color: rgba(51,65,85,0.86) !important;
+  background: rgba(2,6,23,0.30) !important;
+}
+/* remove colored backgrounds; keep only text accent */
+.tg-logs-apple__stat--success,
+.tg-logs-apple__stat--danger {
+  border-color: rgba(226,232,240,0.95) !important;
+  background: rgba(248,250,252,0.86) !important;
+}
+html.dark .tg-logs-apple__stat--success,
+html.dark .tg-logs-apple__stat--danger {
+  border-color: rgba(51,65,85,0.86) !important;
+  background: rgba(2,6,23,0.30) !important;
+}
+.tg-logs-apple__statHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tg-logs-apple__statHead > span:last-child {
+  display: block;
+  margin: 0 !important;
+}
+.tg-logs-apple__statIcon {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  border: 1px solid rgba(203,213,225,0.95);
+  background: rgba(255,255,255,0.9);
+  color: rgb(71,85,105);
+}
+html.dark .tg-logs-apple__statIcon {
+  border-color: rgba(51,65,85,0.95);
+  background: rgba(15,23,42,0.74);
+  color: rgb(203,213,225);
+}
+.tg-logs-apple__stat--success .tg-logs-apple__statIcon { color: rgb(22,101,52); }
+.tg-logs-apple__stat--danger .tg-logs-apple__statIcon { color: rgb(185,28,28); }
+html.dark .tg-logs-apple__stat--success .tg-logs-apple__statIcon { color: rgb(134,239,172); }
+html.dark .tg-logs-apple__stat--danger .tg-logs-apple__statIcon { color: rgb(252,165,165); }
+
+.tg-logs-apple__filters {
+  border-color: rgba(226,232,240,0.92) !important;
+  background: rgba(248,250,252,0.72) !important;
+}
+html.dark .tg-logs-apple__filters {
+  border-color: rgba(51,65,85,0.82) !important;
+  background: rgba(2,6,23,0.22) !important;
+}
+
+/* Table wrap gets an inner safe zone so rows don't stick to the outer box */
+.tg-logs-apple__tableWrap {
+  padding: 10px 10px 12px !important;
+  border-radius: 24px !important;
+  background: rgba(248,250,252,0.82) !important;
+}
+html.dark .tg-logs-apple__tableWrap {
+  background: rgba(2,6,23,0.22) !important;
+}
+.tg-logs-apple__table {
+  overflow: hidden;
+  border: 1px solid rgba(226,232,240,0.92);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.94);
+}
+html.dark .tg-logs-apple__table {
+  border-color: rgba(51,65,85,0.82);
+  background: rgba(15,23,42,0.72);
+}
+.tg-logs-apple__table thead th:first-child { border-top-right-radius: 16px; }
+.tg-logs-apple__table thead th:last-child { border-top-left-radius: 16px; }
+.tg-logs-apple__table th,
+.tg-logs-apple__table td {
+  padding: 12px 12px !important;
+}
+.tg-logs-apple__table tbody tr:first-child td { border-top-width: 1px; }
+.tg-logs-apple__table tbody tr td:first-child { padding-right: 14px !important; }
+.tg-logs-apple__table tbody tr td:last-child { padding-left: 14px !important; }
+.tg-logs-apple__table tbody tr:hover { background: rgba(248,250,252,0.86) !important; }
+html.dark .tg-logs-apple__table tbody tr:hover { background: rgba(30,41,59,0.46) !important; }
+
+.tg-logs-apple__pagination {
+  margin-top: 12px;
+  padding-inline: 4px;
+}
+
+@media (max-width: 900px) {
+  .tg-logs-apple__stat { min-height: 78px !important; }
+}

@@ -1,0 +1,209 @@
+/* Phase 05 — Telegram Logs Redesign
+   Scoped additions for operational logs: inline guidance accordion + compact pagination.
+   This file intentionally sits after telegram-ui-foundation.css and does not change API/data logic. */
+
+.tg-logs-apple__fixRow td {
+  padding: 0 10px 12px !important;
+  background: linear-gradient(180deg, var(--ds-surface-card), var(--ds-surface-card));
+}
+
+html.dark .tg-logs-apple__fixRow td {
+  background: linear-gradient(180deg, var(--ds-surface-page), var(--ds-surface-page));
+}
+
+.tg-logs-apple__inlineFix {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 2px;
+  border: 1px solid color-mix(in srgb, var(--ds-warning) 28%, transparent);
+  border-radius: 18px;
+  background: var(--ds-surface-page);
+  padding: 12px;
+  box-shadow: 0 14px 38px -34px color-mix(in srgb, var(--ds-primary) 28%, transparent);
+}
+
+html.dark .tg-logs-apple__inlineFix {
+  border-color: color-mix(in srgb, var(--ds-warning) 28%, transparent);
+  background: var(--ds-warning-soft);
+  box-shadow: none;
+}
+
+.tg-logs-apple__inlineFixIcon {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 1px solid color-mix(in srgb, var(--ds-warning) 28%, transparent);
+  background: var(--ds-surface-card);
+  color: var(--ds-warning);
+}
+
+html.dark .tg-logs-apple__inlineFixIcon {
+  border-color: color-mix(in srgb, var(--ds-warning) 26%, transparent);
+  background: var(--ds-surface-page);
+  color: var(--ds-warning);
+}
+
+.tg-logs-apple__inlineFixBody {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.tg-logs-apple__inlineFixBody span {
+  color: var(--ds-warning);
+  font-size: 0.68rem;
+  font-weight: 950;
+}
+
+.tg-logs-apple__inlineFixBody strong {
+  overflow: hidden;
+  color: var(--ds-warning);
+  font-size: 0.82rem;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tg-logs-apple__inlineFixBody p,
+.tg-logs-apple__inlineFixBody small {
+  margin: 0;
+  color: var(--ds-warning);
+  font-size: 0.74rem;
+  font-weight: 760;
+  line-height: 1.75;
+}
+
+.tg-logs-apple__inlineFixBody small {
+  color: var(--ds-warning);
+  opacity: 0.82;
+}
+
+html.dark .tg-logs-apple__inlineFixBody span,
+html.dark .tg-logs-apple__inlineFixBody small {
+  color: var(--ds-warning);
+}
+
+html.dark .tg-logs-apple__inlineFixBody strong {
+  color: var(--ds-text-primary);
+}
+
+html.dark .tg-logs-apple__inlineFixBody p {
+  color: var(--ds-warning);
+}
+
+.tg-logs-apple__inlineFixActions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.tg-logs-apple__quickFixBtn {
+  border-radius: 999px !important;
+  min-height: 30px !important;
+  padding-inline: 10px !important;
+}
+
+.tg-logs-apple__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  border: 1px solid var(--ds-border-strong);
+  border-radius: 20px;
+  background: var(--ds-surface-card);
+  padding: 10px 12px;
+}
+
+html.dark .tg-logs-apple__pagination {
+  border-color: var(--ds-border-subtle);
+  background: var(--ds-surface-page);
+}
+
+.tg-logs-apple__pageSummary,
+.tg-logs-apple__pageActions {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tg-logs-apple__pageSummary {
+  color: var(--ds-text-secondary);
+  font-size: 0.76rem;
+  font-weight: 850;
+}
+
+.tg-logs-apple__pageSummary strong {
+  color: var(--ds-text-primary);
+  font-weight: 950;
+}
+
+html.dark .tg-logs-apple__pageSummary { color: var(--ds-text-muted); }
+html.dark .tg-logs-apple__pageSummary strong { color: var(--ds-text-primary); }
+
+.tg-logs-apple__pageBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 999px;
+  background: var(--ds-surface-card);
+  padding: 0 10px;
+  color: var(--ds-text-primary);
+  font-size: 0.72rem;
+  font-weight: 920;
+  white-space: nowrap;
+}
+
+html.dark .tg-logs-apple__pageBadge {
+  border-color: var(--ds-border-subtle);
+  background: var(--ds-surface-page);
+  color: var(--ds-text-primary);
+}
+
+@media (max-width: 900px) {
+  .tg-logs-apple__inlineFix {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .tg-logs-apple__inlineFixActions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .tg-logs-apple__inlineFixActions .ux-btn {
+    flex: 1 1 140px;
+    justify-content: center !important;
+  }
+
+  .tg-logs-apple__pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .tg-logs-apple__pageActions {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 560px) {
+  .tg-logs-apple__inlineFix {
+    grid-template-columns: 1fr;
+  }
+
+  .tg-logs-apple__inlineFixIcon {
+    justify-self: start;
+  }
+
+  .tg-logs-apple__inlineFixBody strong {
+    white-space: normal;
+  }
+}

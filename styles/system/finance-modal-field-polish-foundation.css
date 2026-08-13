@@ -1,0 +1,132 @@
+/* Phase 18 — Finance modal field polish foundation.
+   Preserves the previous 08e cascade position while moving finance-modal field styles into system CSS. */
+
+/* ===== Finance modal polish fix pack ===== */
+.people-finance-modal__grid,
+.people-ledger-type-grid {
+  align-items: start;
+}
+
+.people-finance-modal .premium-input-leading-chip {
+  width: 1.95rem !important;
+  height: 1.95rem !important;
+  min-width: 1.95rem !important;
+  min-height: 1.95rem !important;
+  border-radius: 14px !important;
+}
+
+.people-finance-modal .premium-input-leading-chip i {
+  width: .84rem !important;
+  height: .84rem !important;
+  font-size: .84rem !important;
+}
+
+.people-finance-field--date .premium-input-leading-chip {
+  display: none !important;
+}
+
+.people-finance-field--date .unified-date-trigger {
+  padding-inline: .75rem .8rem !important;
+}
+
+.people-finance-field--date .unified-date-trigger__icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 14px !important;
+}
+
+.people-ledger-type-card {
+  gap: .65rem;
+  padding-inline: .8rem;
+}
+
+.people-ledger-type-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
+}
+
+.people-ledger-type-card__icon i {
+  font-size: .82rem;
+}
+
+.people-ledger-type-card__check {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  font-size: .64rem;
+}
+
+.people-crm-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+
+.people-crm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .24rem;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240 / .8);
+  background: rgb(255 255 255 / .95);
+  color: rgb(51 65 85);
+  padding: .2rem .5rem;
+  font-size: .69rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+.people-crm-tag__remove {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: .9rem;
+  height: .9rem;
+  min-width: .9rem;
+  min-height: .9rem;
+  padding: 0;
+  margin: 0;
+  border-radius: 999px;
+  color: rgb(148 163 184);
+  transition: color .16s ease, transform .16s ease;
+  font-size: .72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.people-crm-tag__remove:hover {
+  color: rgb(225 29 72);
+  transform: scale(1.04);
+}
+
+.dark .people-crm-tag {
+  border-color: rgb(51 65 85 / .8);
+  background: rgb(15 23 42 / .78);
+  color: rgb(226 232 240);
+}
+
+.dark .people-crm-tag__remove:hover {
+  background: transparent !important;
+}
+
+.people-crm-add-panel .flex {
+  align-items: center;
+}
+
+.people-crm-add-btn {
+  min-height: 2.55rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .people-crm-add-panel .flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+

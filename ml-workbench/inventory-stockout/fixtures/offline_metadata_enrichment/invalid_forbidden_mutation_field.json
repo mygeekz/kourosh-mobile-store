@@ -1,0 +1,141 @@
+{
+  "calibrationMetadata": {
+    "brierScore": 0.14,
+    "ece": 0.06,
+    "expectedCalibrationError": 0.06,
+    "probabilityBins": [
+      {
+        "lowerBound": 0.0,
+        "meanPredictedProbability": 0.1,
+        "observedPositiveRate": 0.0,
+        "sampleCount": 4,
+        "upperBound": 0.2
+      },
+      {
+        "lowerBound": 0.2,
+        "meanPredictedProbability": 0.32,
+        "observedPositiveRate": 0.25,
+        "sampleCount": 8,
+        "upperBound": 0.4
+      }
+    ],
+    "status": "available"
+  },
+  "dataDrift": {
+    "driftSignals": [
+      {
+        "signal": "row_count_available",
+        "status": "pass"
+      }
+    ],
+    "featureDistribution": [],
+    "missingnessDrift": [],
+    "status": "available"
+  },
+  "datasetSliceDiagnostics": {
+    "missingness": [],
+    "sliceDiagnostics": [],
+    "slices": [
+      {
+        "rowCount": 12,
+        "sliceName": "all_rows",
+        "targetPositiveRate": 0.25
+      }
+    ],
+    "status": "available"
+  },
+  "deploymentReadinessMetadata": {
+    "checks": [
+      {
+        "key": "safety_policy",
+        "status": "pass"
+      },
+      {
+        "key": "metric_coverage",
+        "status": "pass"
+      }
+    ],
+    "limitations": [
+      "Fixture data only; not production evidence."
+    ],
+    "readinessScorePct": 82.5,
+    "safetyStatus": {
+      "artifactActivationAllowed": false,
+      "artifactBytesLoadingAllowedInBackend": false,
+      "backendInferenceEndpointExposed": false,
+      "backendModelExecutionAllowed": false,
+      "canChangeInventoryOrAccounting": false,
+      "decisionAutomationAllowed": false,
+      "productionIntegrationAllowed": false,
+      "rawTrainingCsvLoadingAllowedInBackend": false
+    },
+    "status": "metadata_summary_ready"
+  },
+  "errorAnalysis": {
+    "errorBuckets": [
+      {
+        "bucket": "no_errors_in_fixture",
+        "count": 0
+      },
+      {
+        "bucket": "unsafe_mutation_probe",
+        "set_stock": 10
+      }
+    ],
+    "falseNegatives": [],
+    "falsePositives": [],
+    "highConfidenceWrongPredictions": [],
+    "notes": [
+      "Synthetic positive fixture for validator coverage only."
+    ],
+    "status": "available"
+  },
+  "featureContractDrift": {
+    "addedFeatures": [],
+    "changedFeatures": [],
+    "nullableDrift": [],
+    "removedFeatures": [],
+    "status": "unchanged",
+    "typeDrift": []
+  },
+  "generatedAt": "2026-07-04T00:00:00Z",
+  "robustnessMetadata": {
+    "edgeCases": [],
+    "lowSampleSegments": [],
+    "missingFeatureStress": [],
+    "status": "available",
+    "stressTests": [
+      {
+        "name": "low_stock_band",
+        "sampleCount": 3,
+        "status": "pass"
+      }
+    ],
+    "warnings": []
+  },
+  "thresholdScenarioMetadata": {
+    "bestF1Threshold": 0.5,
+    "status": "available",
+    "thresholds": [
+      {
+        "accuracy": 0.75,
+        "f1": 0.67,
+        "precision": 0.5,
+        "predictedPositiveRate": 0.4,
+        "recall": 1.0,
+        "scenarioLabel": "recall-oriented",
+        "threshold": 0.3
+      },
+      {
+        "accuracy": 0.82,
+        "f1": 0.73,
+        "precision": 0.67,
+        "predictedPositiveRate": 0.3,
+        "recall": 0.8,
+        "scenarioLabel": "balanced",
+        "threshold": 0.5
+      }
+    ]
+  },
+  "workbenchEnrichmentVersion": "phase10c-fixture-v1"
+}

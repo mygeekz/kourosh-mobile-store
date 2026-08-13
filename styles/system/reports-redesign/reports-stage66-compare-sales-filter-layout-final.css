@@ -1,0 +1,238 @@
+/* Stage 66 — Compare sales filter compact layout
+   Scope: /reports/periodic-comparison only.
+   Fixes the filter panel rhythm: one compact primary row, no divider, calculate button beside fields. */
+
+.compare-sales-executive-page .compare-sales-filter-panel {
+  padding: 10px 14px !important;
+  gap: 8px !important;
+  min-height: 0 !important;
+  background: #fff !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row,
+.compare-sales-executive-page .compare-sales-filter-row--primary,
+.compare-sales-executive-page .compare-sales-filter-row--secondary {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  direction: rtl !important;
+  box-sizing: border-box !important;
+}
+
+/* Primary row: presets, date range, baseline and calculate button all in the same flow. */
+.compare-sales-executive-page .compare-sales-filter-row--primary {
+  min-height: 44px !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-presets,
+.compare-sales-executive-page .compare-sales-date-presets .report-date-presets__chips,
+.compare-sales-executive-page .report-date-presets,
+.compare-sales-executive-page .report-date-presets__chips {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  margin: 0 0 0 12px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.compare-sales-executive-page .report-date-preset-chip,
+.compare-sales-executive-page .compare-sales-filter-row--secondary button,
+.compare-sales-executive-page .compare-sales-refresh-button {
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: none !important;
+  transform: none !important;
+  font-size: .78rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+.compare-sales-executive-page .report-date-preset-chip.is-active {
+  background: #0f172a !important;
+  color: #fff !important;
+  border-color: #0f172a !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box,
+.compare-sales-executive-page .compare-sales-baseline-select {
+  flex: 0 0 142px !important;
+  width: 142px !important;
+  min-width: 142px !important;
+  max-width: 142px !important;
+  min-height: 42px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  gap: 3px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-baseline-select {
+  flex-basis: 154px !important;
+  width: 154px !important;
+  min-width: 154px !important;
+  max-width: 154px !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box > span,
+.compare-sales-executive-page .compare-sales-baseline-select > span {
+  display: block !important;
+  height: 12px !important;
+  line-height: 12px !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  color: #64748b !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-size: .62rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+  text-align: right !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field,
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__control,
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__control.compare-sales-date-input {
+  width: 100% !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__input,
+.compare-sales-executive-page .compare-sales-date-box input[data-app-date-input='true'],
+.compare-sales-executive-page .compare-sales-baseline-select select {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  color: #0f172a !important;
+  font-size: .8rem !important;
+  font-weight: 900 !important;
+  line-height: 30px !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__input,
+.compare-sales-executive-page .compare-sales-date-box input[data-app-date-input='true'] {
+  direction: ltr !important;
+  text-align: center !important;
+}
+
+.compare-sales-executive-page .compare-sales-baseline-select select {
+  direction: rtl !important;
+  text-align: right !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+.compare-sales-executive-page .compare-sales-date-box .app-date-field__icon {
+  display: none !important;
+}
+
+.compare-sales-executive-page .compare-sales-refresh-button {
+  margin: 0 !important;
+  align-self: flex-end !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  border-color: rgba(148, 163, 184, .38) !important;
+}
+
+.compare-sales-executive-page .compare-sales-refresh-button:hover {
+  background: #f8fafc !important;
+}
+
+/* Secondary row: compact presets, visually tied to the filter panel, no hard divider. */
+.compare-sales-executive-page .compare-sales-filter-row--secondary {
+  padding-top: 2px !important;
+  margin-top: 0 !important;
+  border-top: 0 !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-label {
+  height: 30px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0 2px 0 8px !important;
+  color: #64748b !important;
+  font-size: .7rem !important;
+  font-weight: 850 !important;
+  white-space: nowrap !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--secondary button {
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 11px !important;
+  font-size: .74rem !important;
+  background: #fff !important;
+}
+
+.compare-sales-executive-page .compare-sales-filter-row--secondary button:hover {
+  background: #f8fafc !important;
+  border-color: rgba(59, 130, 246, .24) !important;
+}
+
+@media (max-width: 900px) {
+  .compare-sales-executive-page .compare-sales-date-presets,
+  .compare-sales-executive-page .compare-sales-date-presets .report-date-presets__chips,
+  .compare-sales-executive-page .report-date-presets,
+  .compare-sales-executive-page .report-date-presets__chips {
+    margin-left: 0 !important;
+  }
+
+  .compare-sales-executive-page .compare-sales-date-box,
+  .compare-sales-executive-page .compare-sales-baseline-select {
+    flex: 1 1 140px !important;
+    width: auto !important;
+    min-width: 140px !important;
+    max-width: none !important;
+  }
+}

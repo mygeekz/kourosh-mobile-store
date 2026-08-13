@@ -1,0 +1,134 @@
+
+/* v72 — Root fixes:
+   1) Loading/refresh button text readability across the app.
+   2) Telegram logs duration should no longer show misleading 0 ms (logic in TSX).
+   3) Telegram recipient search field should not show an inner colored box over the search surface. */
+
+/* -------------------------------------------------------------------------- */
+/* 1) GLOBAL loading button readability                                       */
+/* -------------------------------------------------------------------------- */
+
+/* Preserve the active Button variant while an operation is pending. The
+   canonical loading structure/motion is owned by shared-action-buttons. */
+button[data-loading="true"],
+.ux-btn[data-loading="true"],
+.premium-submit-btn[data-loading="true"] {
+  opacity: 1 !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+button[data-loading="true"] *,
+.ux-btn[data-loading="true"] *,
+.premium-submit-btn[data-loading="true"] * {
+  opacity: 1 !important;
+  color: inherit !important;
+  text-shadow: none !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2) Telegram logs: table status/duration spacing/readability */
+/* -------------------------------------------------------------------------- */
+
+.tg-logs-apple__table td,
+.tg-logs-apple__table th {
+  vertical-align: middle !important;
+}
+
+.tg-logs-apple__table .tg-logs-apple__status,
+.tg-logs-apple__table [class*="status"] {
+  white-space: nowrap !important;
+}
+
+.tg-logs-apple__table td .tg-logs-apple__muted,
+.tg-logs-apple__table td small {
+  color: rgb(71, 85, 105) !important;
+  font-weight: 800 !important;
+}
+
+html.dark .tg-logs-apple__table td .tg-logs-apple__muted,
+html.dark .tg-logs-apple__table td small {
+  color: rgb(203, 213, 225) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3) Telegram recipient search field: remove inner colored box overlay */
+/* -------------------------------------------------------------------------- */
+
+/* Search wrapper in logs panel */
+.tg-logs-apple__search,
+.tg-logs-apple__filters .tg-logs-apple__search {
+  position: relative !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+/* The actual input should be the surface, no extra colored layer. */
+.tg-logs-apple__search input,
+.tg-logs-apple__filters input[type="search"],
+.tg-logs-apple__filters input[type="text"] {
+  width: 100% !important;
+  min-height: 2.45rem !important;
+  height: 2.45rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  color: rgb(15, 23, 42) !important;
+  padding-inline: 2.45rem 0.85rem !important;
+  font-size: 0.76rem !important;
+}
+
+/* Remove pseudo/inner highlight layer if TextField/app styles inject it. */
+.tg-logs-apple__search::before,
+.tg-logs-apple__search::after,
+.tg-logs-apple__filters .tg-logs-apple__search::before,
+.tg-logs-apple__filters .tg-logs-apple__search::after {
+  display: none !important;
+  content: none !important;
+}
+
+.tg-logs-apple__search *,
+.tg-logs-apple__filters .tg-logs-apple__search * {
+  box-shadow: none !important;
+}
+
+/* Icon should sit cleanly, not create another large box over the input. */
+.tg-logs-apple__search svg,
+.tg-logs-apple__search i {
+  position: absolute !important;
+  inset-inline-start: 0.78rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: rgb(100, 116, 139) !important;
+  z-index: 2 !important;
+}
+
+/* Flatten any nested app input capsule inside logs search. */
+.tg-logs-apple__search .app-input,
+.tg-logs-apple__search .modal-control-premium,
+.tg-logs-apple__search .premium-input-wrap,
+.tg-logs-apple__search .app-field__control-wrap,
+.tg-logs-apple__search .app-form-field__control-wrap {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Dark mode search */
+html.dark .tg-logs-apple__search,
+html.dark .tg-logs-apple__filters .tg-logs-apple__search {
+  background: rgba(15, 23, 42, 0.74) !important;
+  border-color: rgba(51, 65, 85, 0.95) !important;
+}
+
+html.dark .tg-logs-apple__search input,
+html.dark .tg-logs-apple__filters input[type="search"],
+html.dark .tg-logs-apple__filters input[type="text"] {
+  color: rgb(248, 250, 252) !important;
+}

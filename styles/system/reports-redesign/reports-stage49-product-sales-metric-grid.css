@@ -1,0 +1,217 @@
+/* Stage 49 — Product sales responsive metric cards
+   Scope: /reports/product-sales only.
+   Converts KPI cards to a clean CSS Grid system: responsive, equal rhythm, no text overlays. */
+
+.product-sales-executive-page .product-sales-metrics-section {
+  padding: .88rem !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-metrics-section + .product-sales-metrics-section {
+  margin-top: .9rem !important;
+}
+
+.product-sales-executive-page .product-sales-section-head {
+  margin-bottom: .72rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-section-head h3 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: .96rem !important;
+  line-height: 1.8 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.01em !important;
+}
+
+.product-sales-executive-page .product-sales-section-head p {
+  margin: .12rem 0 0 !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  line-height: 1.8 !important;
+  font-weight: 750 !important;
+}
+
+.product-sales-executive-page .product-sales-metrics-grid,
+.product-sales-executive-page .product-sales-metrics-grid--primary,
+.product-sales-executive-page .product-sales-metrics-grid--secondary {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: .72rem !important;
+  align-items: stretch !important;
+  width: 100% !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card,
+.product-sales-executive-page .product-sales-metric-card.is-compact {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 42px !important;
+  grid-template-areas: "body icon" !important;
+  align-items: start !important;
+  min-height: 112px !important;
+  height: auto !important;
+  padding: .92rem !important;
+  gap: .78rem !important;
+  border: 1px solid rgba(148, 163, 184, .32) !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card::before,
+.product-sales-executive-page .product-sales-metric-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon {
+  grid-area: icon !important;
+  display: grid !important;
+  place-items: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(37, 99, 235, .16) !important;
+  background: #f8fafc !important;
+  color: #2563eb !important;
+  font-size: .95rem !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon i,
+.product-sales-executive-page .product-sales-metric-card__icon i::before {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  color: currentColor !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon.is-green {
+  color: #059669 !important;
+  background: rgba(5, 150, 105, .08) !important;
+  border-color: rgba(5, 150, 105, .18) !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon.is-orange {
+  color: #d97706 !important;
+  background: rgba(217, 119, 6, .08) !important;
+  border-color: rgba(217, 119, 6, .18) !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon.is-blue {
+  color: #2563eb !important;
+  background: rgba(37, 99, 235, .08) !important;
+  border-color: rgba(37, 99, 235, .18) !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon.is-violet {
+  color: #7c3aed !important;
+  background: rgba(124, 58, 237, .08) !important;
+  border-color: rgba(124, 58, 237, .18) !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__icon.is-slate {
+  color: #475569 !important;
+  background: #f8fafc !important;
+  border-color: rgba(148, 163, 184, .28) !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__body {
+  grid-area: body !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+  gap: .12rem !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__label,
+.product-sales-executive-page .product-sales-metric-card strong,
+.product-sales-executive-page .product-sales-metric-card small,
+.product-sales-executive-page .product-sales-metric-card em {
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__label {
+  display: block !important;
+  color: #64748b !important;
+  font-size: .68rem !important;
+  line-height: 1.65 !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card strong {
+  display: block !important;
+  margin: .04rem 0 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1rem, 1.2vw, 1.22rem) !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+  letter-spacing: -.02em !important;
+  white-space: normal !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card small,
+.product-sales-executive-page .product-sales-metric-card em {
+  display: block !important;
+  margin: 0 !important;
+  color: #64748b !important;
+  font-size: .66rem !important;
+  line-height: 1.7 !important;
+  font-style: normal !important;
+  font-weight: 780 !important;
+}
+
+.product-sales-executive-page .product-sales-date-value {
+  font-size: clamp(.92rem, 1vw, 1.08rem) !important;
+  line-height: 1.55 !important;
+}
+
+@media (max-width: 900px) {
+  .product-sales-executive-page .product-sales-metrics-grid,
+  .product-sales-executive-page .product-sales-metrics-grid--primary,
+  .product-sales-executive-page .product-sales-metrics-grid--secondary {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .product-sales-executive-page .product-sales-metrics-section {
+    padding: .72rem !important;
+    border-radius: 18px !important;
+  }
+
+  .product-sales-executive-page .product-sales-metric-card,
+  .product-sales-executive-page .product-sales-metric-card.is-compact {
+    min-height: 96px !important;
+    padding: .78rem !important;
+    grid-template-columns: minmax(0, 1fr) 38px !important;
+  }
+
+  .product-sales-executive-page .product-sales-metric-card__icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+}

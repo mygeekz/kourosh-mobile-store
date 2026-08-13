@@ -1,0 +1,64 @@
+/* Phase 42: remove harsh black button stroke project-wide */
+.ux-btn,
+.ux-btn--native,
+button.rounded-lg.border:not(.ux-btn),
+button.rounded-xl.border:not(.ux-btn),
+button.rounded-2xl.border:not(.ux-btn),
+button[class*="rounded"][class*="bg-"],
+button[class*="rounded"][class*="border"],
+button[class*="bg-"][class*="px-"],
+button[class*="border"][class*="px-"] {
+  border-color: rgba(226, 232, 240, 0.82) !important;
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, 0.20);
+}
+
+.dark .ux-btn,
+.dark .ux-btn--native,
+.dark button.rounded-lg.border:not(.ux-btn),
+.dark button.rounded-xl.border:not(.ux-btn),
+.dark button.rounded-2xl.border:not(.ux-btn),
+.dark button[class*="rounded"][class*="bg-"],
+.dark button[class*="rounded"][class*="border"],
+.dark button[class*="bg-"][class*="px-"],
+.dark button[class*="border"][class*="px-"] {
+  border-color: rgba(71, 85, 105, 0.60) !important;
+  box-shadow: 0 18px 34px -26px rgba(2, 6, 23, 0.72);
+}
+
+.ux-btn-primary,
+.ux-btn-success,
+.ux-btn-warning,
+.ux-btn-danger,
+.ux-btn--native.ux-btn-primary,
+.ux-btn--native.ux-btn-success,
+.ux-btn--native.ux-btn-warning,
+.ux-btn--native.ux-btn-danger {
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.dark .ux-btn-primary,
+.dark .ux-btn-success,
+.dark .ux-btn-warning,
+.dark .ux-btn-danger,
+.dark .ux-btn--native.ux-btn-primary,
+.dark .ux-btn--native.ux-btn-success,
+.dark .ux-btn--native.ux-btn-warning,
+.dark .ux-btn--native.ux-btn-danger {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ux-btn-secondary,
+.ux-btn-ghost,
+.ux-btn--native.ux-btn-secondary,
+.ux-btn--native.ux-btn-ghost {
+  border-color: rgba(226, 232, 240, 0.92) !important;
+}
+
+.dark .ux-btn-secondary,
+.dark .ux-btn-ghost,
+.dark .ux-btn--native.ux-btn-secondary,
+.dark .ux-btn--native.ux-btn-ghost {
+  border-color: rgba(71, 85, 105, 0.74) !important;
+}
+
+

@@ -1,0 +1,29 @@
+/* Stage 22 — Reports hub shell cleanup
+   UI-only: remove duplicate inner hub header and colored wash behind report headers. */
+
+.reports-layout-executive.reports-redesign-v1::before,
+.reports-hub.reports-redesign-v1::before {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+}
+
+.reports-redesign-v1 .reports-executive-header {
+  background: #ffffff !important;
+  box-shadow: 0 10px 28px -24px rgba(15, 23, 42, 0.26) !important;
+  backdrop-filter: none !important;
+}
+
+.dark .reports-redesign-v1 .reports-executive-header,
+html.dark .reports-redesign-v1 .reports-executive-header {
+  background: rgb(15 23 42) !important;
+  box-shadow: 0 12px 30px -24px rgba(0, 0, 0, 0.55) !important;
+}
+
+.reports-hub.reports-redesign-v1 {
+  padding-top: 0 !important;
+}
+
+.reports-hub.reports-redesign-v1 > section:first-child {
+  margin-top: 0 !important;
+}

@@ -1,0 +1,314 @@
+/* Phase 14 — Notifications / Reminders / Action Center Foundation
+   Scoped, plain CSS only. */
+
+:root {
+  --notif-radius-xl: 28px;
+  --notif-radius-lg: 22px;
+  --notif-surface: rgba(255,255,255,0.96);
+  --notif-surface-soft: rgba(248,250,252,0.92);
+  --notif-border: rgba(226,232,240,0.86);
+  --notif-shadow: 0 26px 68px -48px rgba(15,23,42,0.34);
+  --notif-shadow-hover: 0 34px 78px -48px rgba(15,23,42,0.42);
+}
+
+.dark {
+  --notif-surface: rgba(2,6,23,0.88);
+  --notif-surface-soft: rgba(15,23,42,0.68);
+  --notif-border: rgba(51,65,85,0.82);
+  --notif-shadow: 0 28px 76px -50px rgba(2,6,23,0.78);
+  --notif-shadow-hover: 0 36px 90px -52px rgba(2,6,23,0.86);
+}
+
+[data-ui-notifications-page="true"],
+[data-ui-action-center="dashboard"],
+[data-ui-reminders-builder="true"] {
+  isolation: isolate;
+  text-rendering: optimizeLegibility;
+}
+
+[data-ui-notifications-hero="true"],
+.action-center-foundation [data-ui-action-center-header="true"],
+[data-ui-reminders-header="true"] {
+  border: 1px solid var(--notif-border);
+  border-radius: var(--notif-radius-xl);
+  background: linear-gradient(180deg, var(--notif-surface), var(--notif-surface-soft));
+  box-shadow: var(--notif-shadow);
+}
+
+[data-ui-notifications-hero="true"] {
+  padding: 18px;
+}
+
+.notifications-apple-hero__title,
+[data-ui-reminders-header="true"] > div:first-child {
+  min-width: 0;
+}
+
+.notifications-apple-hero__title h1,
+[data-ui-reminders-header="true"] .text-2xl,
+.action-center-foundation h3 {
+  letter-spacing: -0.015em;
+}
+
+.notifications-apple-hero__title p,
+[data-ui-reminders-header="true"] .app-subtle,
+.action-center-foundation p {
+  line-height: 1.85;
+}
+
+[data-ui-notifications-stats="true"],
+.action-center-foundation .grid.grid-cols-3 {
+  display: grid;
+  gap: 12px;
+}
+
+[data-ui-notifications-stats="true"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.notifications-apple-stat-card,
+.action-center-stat,
+.reminder-config-card .rounded-\[22px\] {
+  border-color: var(--notif-border) !important;
+  background: var(--notif-surface) !important;
+  box-shadow: 0 16px 36px -30px rgba(15,23,42,0.28) !important;
+}
+
+.notifications-apple-stat-card__value,
+.action-center-stat .text-lg,
+[data-ui-reminders-builder="true"] input[type="number"],
+[data-ui-notifications-page="true"] [dir="ltr"] {
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: plaintext;
+}
+
+[data-ui-notifications-list="true"] {
+  scrollbar-gutter: stable;
+  padding-inline: 4px;
+}
+
+[data-ui-notifications-section] {
+  border-radius: 24px;
+}
+
+.notifications-apple-section__head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 6px 2px 10px;
+  background: linear-gradient(180deg, var(--notif-surface-soft), rgba(255,255,255,0));
+  backdrop-filter: blur(10px);
+}
+
+.dark .notifications-apple-section__head {
+  background: linear-gradient(180deg, rgba(2,6,23,0.72), rgba(2,6,23,0));
+}
+
+.notifications-category-badge,
+.notifications-apple-meta span,
+[data-ui-header-quick-action] .header-quick-role-pill {
+  border-radius: 999px !important;
+  white-space: nowrap;
+}
+
+.notifications-apple-item,
+.action-center-item {
+  border-radius: var(--notif-radius-lg) !important;
+  background: var(--notif-surface) !important;
+  border-color: var(--notif-border) !important;
+  box-shadow: 0 18px 46px -38px rgba(15,23,42,0.24) !important;
+}
+
+.notifications-apple-item:hover,
+.action-center-item:hover {
+  box-shadow: var(--notif-shadow-hover) !important;
+}
+
+.notifications-apple-item__title,
+.action-center-item h4 {
+  line-height: 1.65;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+
+.notifications-apple-item__description,
+.action-center-item p {
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  line-clamp: unset !important;
+  white-space: normal !important;
+  word-break: break-word;
+}
+
+.notifications-apple-actions,
+[data-ui-action-center-command="open"] {
+  flex-wrap: wrap;
+}
+
+.notifications-apple-actions > *,
+[data-ui-notification-action="open"],
+[data-ui-reminder-action] {
+  min-height: 38px;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+[data-ui-notifications-modal="sms-compose"] > div {
+  border-radius: 28px !important;
+  border-color: var(--notif-border) !important;
+  background: var(--notif-surface) !important;
+  box-shadow: 0 34px 100px -42px rgba(15,23,42,0.45) !important;
+}
+
+[data-ui-control-kind="notification-sms-text"] {
+  min-height: 176px;
+  line-height: 1.9;
+  resize: vertical;
+  border-radius: 20px !important;
+}
+
+[data-ui-action-center="dashboard"] {
+  border-color: var(--notif-border) !important;
+  background: linear-gradient(180deg, var(--notif-surface), var(--notif-surface-soft)) !important;
+}
+
+[data-ui-action-center-shortcuts="true"] .ux-quick-link {
+  border-radius: 22px;
+  min-height: 76px;
+}
+
+[data-ui-action-center-list="true"] {
+  max-height: min(620px, 70vh);
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+[data-action-priority="High"] {
+  outline: 1px solid rgba(244,63,94,0.16);
+}
+
+[data-action-priority="Medium"] {
+  outline: 1px solid rgba(245,158,11,0.15);
+}
+
+[data-ui-reminders-builder="true"] {
+  --reminder-card-bg: var(--notif-surface);
+}
+
+.reminder-config-card,
+[data-ui-reminders-builder="true"] > .rounded-\[28px\] {
+  border-color: var(--notif-border) !important;
+  background: var(--reminder-card-bg) !important;
+  box-shadow: var(--notif-shadow) !important;
+}
+
+[data-ui-reminders-builder="true"] input,
+[data-ui-reminders-builder="true"] select,
+[data-ui-reminders-builder="true"] textarea,
+[data-ui-reminders-editor="true"] input,
+[data-ui-reminders-editor="true"] select,
+[data-ui-reminders-editor="true"] textarea {
+  border-radius: 16px !important;
+  min-height: 44px;
+  border-color: var(--notif-border) !important;
+}
+
+[data-ui-reminders-builder="true"] textarea,
+[data-ui-reminders-editor="true"] textarea {
+  min-height: 140px;
+  line-height: 1.85;
+  resize: vertical;
+}
+
+[data-ui-reminders-editor="true"] details {
+  overflow: hidden;
+}
+
+[data-ui-reminders-editor="true"] summary {
+  min-height: 58px;
+}
+
+[data-ui-reminders-editor="true"] summary::-webkit-details-marker {
+  display: none;
+}
+
+[data-ui-reminders-editor="true"] .line-clamp-3 {
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  line-height: 1.85;
+}
+
+[data-ui-header-quick-action] > button {
+  position: relative;
+}
+
+[data-ui-notification-beacon="true"]::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #f59e0b;
+  opacity: 0;
+  box-shadow: 0 0 0 0 rgba(245,158,11,0.42);
+  transition: opacity .2s ease;
+}
+
+[data-ui-notification-beacon="true"][data-header-alert-count]:not([data-header-alert-count="0"])::after {
+  opacity: 1;
+  animation: notificationBeaconPulse 1.8s ease-out infinite;
+}
+
+@keyframes notificationBeaconPulse {
+  0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.42); }
+  70% { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+  100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); }
+}
+
+[data-ui-header-quick-panel] {
+  backdrop-filter: none !important;
+}
+
+[data-ui-header-quick-panel="notifications"] .line-clamp-2 {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  line-height: 1.75;
+}
+
+@media (max-width: 768px) {
+  [data-ui-notifications-stats="true"] {
+    grid-template-columns: 1fr;
+  }
+
+  .notifications-apple-actions,
+  [data-ui-notifications-modal="sms-compose"] .mt-3.flex.justify-end {
+    display: grid !important;
+    grid-template-columns: 1fr;
+  }
+
+  .notifications-apple-actions > *,
+  [data-ui-notifications-modal="sms-compose"] button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  [data-ui-action-center-shortcuts="true"] .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  [data-ui-reminders-builder="true"] .flex.items-center.gap-2 {
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ui-notification-beacon="true"]::after,
+  .notifications-apple-item,
+  .action-center-item {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.server.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "../../server",
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+    "../../server/miniapp/**/*.ts",
+    "../../server/repositories/miniAppIdentity.repo.ts",
+    "../../server/services/miniAppIdentity.service.ts",
+    "../../server/services/miniAppCustomer.service.ts",
+    "../../server/services/miniAppPartner.service.ts"
+  ],
+  "exclude": ["../../node_modules", "../../dist"]
+}

@@ -1,0 +1,152 @@
+
+/* v66 — Compact scale for "بررسی و ادامه ارسال".
+   Based on v65. Scoped to the direct v64 class:
+   #tg-anchor-quick-check.telegram-quick-check-v64 */
+
+#telegram-settings-form.telegram-redesign-v1 #tg-anchor-quick-check.telegram-quick-check-v64 {
+  margin-top: 0.85rem !important;
+}
+
+/* Main FormSection shell */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 [class*="premium-form-section"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section {
+  padding: 0.85rem 0.95rem !important;
+  border-radius: 24px !important;
+  box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.18) !important;
+}
+
+/* Header inside FormSection: compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section > :first-child,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section > :first-child {
+  margin-bottom: 0.7rem !important;
+  padding-bottom: 0.62rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section h3,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section h2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section .text-lg,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section h3,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section h2 {
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section .app-subtle,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section p {
+  font-size: 0.72rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Layout gap */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__grid {
+  gap: 0.72rem !important;
+  padding: 0 !important;
+  align-items: end !important;
+}
+
+/* Field card compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field [data-ui-field="true"] {
+  padding: 0.72rem 0.78rem !important;
+  border-radius: 18px !important;
+  min-height: 0 !important;
+}
+
+/* Label row + status pill */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field-label {
+  margin-bottom: 0.45rem !important;
+  padding-inline: 0 !important;
+  font-size: 0.74rem !important;
+  line-height: 1.5 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field-label .rounded-full,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field label .rounded-full {
+  padding: 0.18rem 0.48rem !important;
+  font-size: 0.6rem !important;
+  line-height: 1.3 !important;
+  gap: 0.28rem !important;
+}
+
+/* Input compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field select {
+  min-height: 2.35rem !important;
+  height: 2.35rem !important;
+  border-radius: 15px !important;
+  padding-inline: 0.8rem !important;
+  font-size: 0.76rem !important;
+}
+
+/* Hint compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field-feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-error {
+  margin-top: 0.38rem !important;
+  padding-inline: 0 !important;
+  font-size: 0.66rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Button/action column compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action {
+  padding: 0 !important;
+  align-items: end !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action .premium-submit-btn,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action button {
+  min-height: 2.45rem !important;
+  height: 2.45rem !important;
+  border-radius: 16px !important;
+  padding-inline: 0.9rem !important;
+  font-size: 0.74rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action .premium-submit-btn i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action button i {
+  font-size: 0.78rem !important;
+}
+
+/* Reduce accidental large utility spacing inside this section */
+#telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.65rem !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section {
+    padding: 0.78rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__grid {
+    gap: 0.65rem !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64 .premium-form-section,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__section {
+    padding: 0.72rem !important;
+    border-radius: 20px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__field [data-ui-field="true"] {
+    padding: 0.65rem !important;
+    border-radius: 16px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action .premium-submit-btn,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-quick-check-v64__action button {
+    width: 100% !important;
+  }
+}

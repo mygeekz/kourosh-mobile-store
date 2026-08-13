@@ -1,0 +1,86 @@
+/* Stage 113 — Partner tabs true RTL flush-right
+   Root cause: stage108 converted .responsive-filter-bar into a CSS grid, so the PageKit secondaryRow
+   (tabs) was rendered inside a grid column instead of spanning the full header width.
+   This forces only the secondary row to span all grid columns and starts the tab rail from the RTL edge. */
+
+.partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary {
+  grid-column: 1 / -1 !important;
+  justify-self: stretch !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  box-sizing: border-box !important;
+  direction: rtl !important;
+  display: block !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary > .partner-report-tabs-wrap {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  direction: rtl !important;
+  justify-content: flex-start !important; /* RTL: start = right */
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary > .partner-report-tabs-wrap > .partner-report-tabs-shell {
+  direction: rtl !important;
+  display: inline-flex !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  margin-inline: 0 !important;
+  padding: 8px !important;
+  justify-content: flex-start !important; /* RTL: start = right */
+  align-items: center !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary > .partner-report-tabs-wrap > .partner-report-tabs-shell::-webkit-scrollbar {
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+}
+
+/* If any older stage used auto margins to simulate alignment, neutralize them here. */
+.partner-performance-executive-page .partner-report-tabs-wrap,
+.partner-performance-executive-page .partner-report-tabs-shell,
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button:first-child,
+.partner-performance-executive-page .partner-report-tabs-shell .partner-tab-button:last-child {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary > .partner-report-tabs-wrap {
+    overflow: hidden !important;
+  }
+
+  .partner-performance-executive-page .responsive-filter-bar > .responsive-filter-bar__secondary > .partner-report-tabs-wrap > .partner-report-tabs-shell {
+    width: 100% !important;
+    flex: 1 1 auto !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+}

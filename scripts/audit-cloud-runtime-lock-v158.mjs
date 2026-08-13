@@ -1,0 +1,18 @@
+import fs from "node:fs";
+const failures=[];const pass=(condition,message)=>{if(condition)console.log(`[v158-lock-audit] PASS: ${message}`);else failures.push(message);};
+const state=fs.readFileSync("cloud/runtime/cloudRuntimeState.mjs","utf8");
+const startup=fs.readFileSync("cloud/relay-server/index.mjs","utf8");
+const styleAudit=fs.readFileSync("scripts/audit-style-manifest.mjs","utf8");
+const settingsAudit=fs.readFileSync("scripts/audit-settings-imports.mjs","utf8");
+pass(/linux_abstract_unix_socket/.test(state)&&/net\.createServer\(\)/.test(state)&&/EADDRINUSE/.test(state),"Linux Pilot ownership uses a kernel-atomic abstract UNIX socket with EADDRINUSE contention");
+pass(/crypto\.randomBytes\(32\)/.test(state)&&/lockId/.test(state),"Each filesystem metadata owner has a cryptographically random 256-bit ownership token");
+pass(/releaseCloudRuntimeLockOwnership/.test(state)&&/value\.lockId/.test(state)&&/!==expected/.test(state),"Release is compare-by-ownership-token and cannot blindly remove a replacement owner");
+pass(/lstatSync/.test(state)&&/isSymbolicLink\(\)/.test(state)&&/CLOUD_RUNTIME_LOCK_UNSAFE_PATH/.test(state),"Lock path and owner metadata reject symlinks without following targets");
+pass(state.indexOf("const kernel=await acquireKernelMutex(runtimeDataDir)")<state.indexOf("quarantineExistingLock(runtimeDataDir,lockId)"),"Stale metadata reclamation occurs only after atomic kernel ownership is acquired");
+pass(!/existsSync\(file\).*unlinkSync\(file\).*flag:\s*["']wx["']/s.test(state),"Unsafe exists -> unlink -> wx acquisition pattern is absent");
+pass(/boot_id/.test(state)&&/\/proc\/\$\{value\}\/stat/.test(state)&&/actual\.identity===storedIdentity/.test(state),"v157 PID-reuse process-instance identity hardening remains intact");
+pass(startup.indexOf("await acquireCloudRuntimeLock(config.runtimeDataDir)")<startup.indexOf("openOperationalCloudControlDatabase(config.controlDbPath)"),"Atomic single-instance ownership remains before operational SQLite recovery");
+pass(/miniapp-bundled-source/.test(styleAudit),"Style manifest supports the legitimate Mini App bundled Tailwind source without injecting it into Dashboard bootstrap");
+pass(!/path\.join\(projectRoot,\s*['"]docs['"]\).*settings-import-export-audit-latest/s.test(settingsAudit)&&/os\.tmpdir\(\)/.test(settingsAudit),"Settings audit output is generated outside tracked source docs by default");
+pass(!/Bot Token|bot_token|telegram_token|credential/i.test(state),"Runtime lock metadata contains no application credentials");
+if(failures.length){for(const failure of failures)console.error(`[v158-lock-audit] FAIL: ${failure}`);process.exit(1);}console.log("[v158-lock-audit] Atomic runtime-lock and release-artifact audit completed successfully.");

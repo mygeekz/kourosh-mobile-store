@@ -1,0 +1,34 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.*
+*.log
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+data/advisory-models/
+private_uploads/
+.venv/
+__pycache__/
+*.pyc
+*.joblib
+ml-workbench/inventory-stockout/output/**
+!ml-workbench/inventory-stockout/output/.gitkeep
+
+# Generated local HTTPS trust material (never commit/share private keys)
+certs/current-*
+certs/*.pfx
+certs/*.pem
+certs/*.cer
+certs/*.csr
+certs/*.srl
+certs/generate-local-cert.ps1
+certs/openssl-local*.cnf
+certs/local-domain-runtime.json
+
+# Local production-PWA build fingerprint
+.kourosh-runtime/
+miniapp_public_url.txt
+tools/cloudflared/cloudflared.exe

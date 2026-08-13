@@ -1,0 +1,126 @@
+/* Stage 213 — Smart Insights view mode control
+   Neutral, low-noise operator toggle.
+*/
+
+.smart-insight-mode-v213 {
+  direction: rtl;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.98);
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.035);
+}
+
+.smart-insight-mode-v213__copy {
+  min-width: 0;
+  text-align: right;
+}
+
+.smart-insight-mode-v213__copy span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.smart-insight-mode-v213__copy strong {
+  display: block;
+  margin-top: 6px;
+  color: #0f172a;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  font-weight: 950;
+}
+
+.smart-insight-mode-v213__copy p {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.85;
+  font-weight: 800;
+}
+
+.smart-insight-mode-v213__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 18px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(248,250,252,0.92);
+}
+
+.smart-insight-mode-v213__actions button {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 14px;
+  padding: 0 14px;
+  background: transparent;
+  color: #475569;
+  font-size: 0.8rem;
+  font-weight: 950;
+  transition: transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.smart-insight-mode-v213__actions button:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.95);
+}
+
+.smart-insight-mode-v213__actions button.is-active {
+  background: #0f172a;
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+}
+
+.dark .smart-insight-mode-v213 {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15,23,42,0.92);
+}
+
+.dark .smart-insight-mode-v213__copy strong {
+  color: #f8fafc;
+}
+
+.dark .smart-insight-mode-v213__copy p,
+.dark .smart-insight-mode-v213__copy span {
+  color: #cbd5e1;
+}
+
+.dark .smart-insight-mode-v213__actions {
+  border-color: rgba(51, 65, 85, 0.96);
+  background: rgba(2, 6, 23, 0.72);
+}
+
+.dark .smart-insight-mode-v213__actions button {
+  color: #cbd5e1;
+}
+
+.dark .smart-insight-mode-v213__actions button.is-active {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+@media (max-width: 860px) {
+  .smart-insight-mode-v213 {
+    grid-template-columns: 1fr;
+  }
+
+  .smart-insight-mode-v213__actions {
+    width: 100%;
+  }
+
+  .smart-insight-mode-v213__actions button {
+    flex: 1;
+  }
+}

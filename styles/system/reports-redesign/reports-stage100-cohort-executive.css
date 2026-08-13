@@ -1,0 +1,394 @@
+/* Stage 100 — Cohort / customer retention executive redesign
+   Scope: /reports/cohort only. */
+
+.cohort-executive-page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #0f172a;
+}
+
+.cohort-summary-panel,
+.cohort-section {
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.cohort-summary-panel { padding: 14px; }
+.cohort-section { padding: 14px; }
+
+.cohort-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.cohort-metric-card {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 88px;
+  border: 1px solid rgba(148, 163, 184, .32);
+  border-radius: 18px;
+  background: #fff;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.cohort-metric-card,
+.cohort-metric-card * {
+  background-image: none !important;
+}
+
+.cohort-metric-card > div,
+.cohort-metric-card__label,
+.cohort-metric-card strong,
+.cohort-metric-card small {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.cohort-metric-card__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 13px;
+  border: 1px solid rgba(59, 130, 246, .16);
+  background: #f8fafc;
+  color: #1d4ed8;
+}
+
+.cohort-metric-card__label {
+  display: block;
+  color: #64748b;
+  font-size: .74rem;
+  font-weight: 850;
+  margin-bottom: 4px;
+}
+
+.cohort-metric-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1.08rem;
+  font-weight: 950;
+  line-height: 1.5;
+}
+
+.cohort-metric-card small {
+  display: block;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 750;
+  margin-top: 2px;
+}
+
+.cohort-section__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.cohort-section__title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cohort-section__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, .28);
+  background: #f8fafc;
+  color: #0f172a;
+  flex: 0 0 auto;
+}
+
+.cohort-section__head h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.cohort-section__head p {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: .78rem;
+  font-weight: 750;
+  line-height: 1.8;
+}
+
+.cohort-tools {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  direction: ltr;
+  flex: 0 0 auto;
+}
+
+.cohort-search {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 330px;
+  max-width: min(330px, 54vw);
+  height: 38px;
+  min-height: 38px;
+  padding: 0 12px 0 36px;
+  margin: 0;
+  border: 1px solid rgba(148, 163, 184, .42);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.cohort-search > i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: .78rem;
+  pointer-events: none;
+}
+
+.cohort-search input {
+  all: unset;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #0f172a;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 38px;
+  direction: rtl;
+  text-align: right;
+}
+
+.cohort-search input::placeholder { color: #94a3b8; opacity: 1; }
+
+.cohort-page-size {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 58px 132px;
+  align-items: stretch;
+  direction: ltr;
+  width: 190px;
+  height: 38px;
+  min-height: 38px;
+  border: 1px solid rgba(148, 163, 184, .36);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.cohort-page-size select {
+  all: unset;
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  width: 58px;
+  height: 38px;
+  padding: 2px 0 0;
+  color: #0f172a;
+  text-align: center;
+  text-align-last: center;
+  font-size: .8rem;
+  font-weight: 950;
+  line-height: 38px;
+  cursor: pointer;
+}
+
+.cohort-page-size span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 12px;
+  border-left: 1px solid rgba(226, 232, 240, .9);
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.cohort-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(226, 232, 240, .9);
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.cohort-legend-copy {
+  color: #64748b;
+  font-size: .76rem;
+  font-weight: 750;
+}
+
+.cohort-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.cohort-legend i {
+  display: block;
+  width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .24);
+}
+
+.cohort-table-shell {
+  overflow: auto;
+  border: 1px solid rgba(148, 163, 184, .3);
+  border-radius: 18px;
+  background: #fff;
+}
+
+.cohort-table {
+  min-width: 980px;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cohort-table th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: .72rem;
+  font-weight: 900;
+  text-align: right;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, .9);
+  white-space: nowrap;
+}
+
+.cohort-table td {
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 800;
+  text-align: right;
+  padding: 11px 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, .78);
+  white-space: nowrap;
+}
+
+.cohort-table tbody tr:last-child td { border-bottom: 0; }
+.cohort-table tbody tr:hover td { background-color: rgba(248, 250, 252, .85); }
+
+.cohort-sticky-col { position: sticky; background: inherit; }
+.cohort-sticky-col--month { right: 0; z-index: 2; min-width: 132px; }
+.cohort-sticky-col--count { right: 132px; z-index: 2; min-width: 118px; }
+.cohort-table th.cohort-sticky-col { z-index: 4; background: #f8fafc; }
+
+.cohort-heat-cell {
+  min-width: 92px;
+}
+
+.cohort-heat-cell strong,
+.cohort-heat-cell span {
+  display: inline-block;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.cohort-heat-cell strong { margin-left: 8px; font-weight: 950; }
+.cohort-heat-cell span { color: #475569; font-size: .72rem; font-weight: 850; }
+
+.cohort-empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 140px;
+  color: #64748b;
+  font-size: .86rem;
+  font-weight: 850;
+  border: 1px dashed rgba(148, 163, 184, .36);
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.cohort-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: .76rem;
+  font-weight: 850;
+}
+
+.cohort-pagination div { display: inline-flex; gap: 8px; }
+
+.cohort-pagination button {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, .34);
+  background: #fff;
+  color: #0f172a;
+  font-size: .76rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cohort-pagination button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .cohort-section__head,
+  .cohort-legend-row,
+  .cohort-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .cohort-tools { width: 100%; flex-direction: column; align-items: stretch; }
+  .cohort-search { width: 100%; max-width: 100%; }
+  .cohort-page-size { width: 190px; }
+}

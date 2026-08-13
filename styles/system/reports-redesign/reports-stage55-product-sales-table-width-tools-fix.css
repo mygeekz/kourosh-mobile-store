@@ -1,0 +1,173 @@
+/* Stage 55 — Product sales table width and toolbar fix
+   Scope: /reports/product-sales table only.
+   Fixes: clipped action buttons, oversized columns, nested-looking search/page-size controls. */
+
+/* Toolbar: one clean search field + one clean page-size control. */
+.product-sales-executive-page .product-sales-table-tools {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .5rem !important;
+  flex-wrap: wrap !important;
+  direction: rtl !important;
+}
+
+.product-sales-executive-page .product-sales-table-search {
+  width: clamp(18rem, 32vw, 26rem) !important;
+  min-width: 18rem !important;
+  max-width: 100% !important;
+  height: 40px !important;
+  position: relative !important;
+  display: block !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.product-sales-executive-page .product-sales-table-search i {
+  position: absolute !important;
+  left: .85rem !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  color: #94a3b8 !important;
+  font-size: .82rem !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input,
+.product-sales-executive-page .product-sales-table-search input[type='search'] {
+  all: unset !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 1rem 0 2.35rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  direction: rtl !important;
+  text-align: right !important;
+  color: #0f172a !important;
+  font-family: var(--font-sans), Tahoma, system-ui, sans-serif !important;
+  font-size: .84rem !important;
+  font-weight: 800 !important;
+  line-height: 40px !important;
+}
+
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-decoration,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-cancel-button,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-results-button,
+.product-sales-executive-page .product-sales-table-search input::-webkit-search-results-decoration {
+  display: none !important;
+  -webkit-appearance: none !important;
+}
+
+.product-sales-executive-page .product-sales-table-tools label {
+  height: 40px !important;
+  min-width: 8.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  padding: 0 .75rem !important;
+  border: 1px solid rgba(148, 163, 184, .36) !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #475569 !important;
+}
+
+.product-sales-executive-page .product-sales-table-tools label span {
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+.product-sales-executive-page .product-sales-table-tools select {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 3.2rem !important;
+  height: 28px !important;
+  text-align: center !important;
+  direction: rtl !important;
+  color: #0f172a !important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  line-height: 28px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+/* Table: rebalance columns so the action column is fully visible. */
+.product-sales-executive-page .product-sales-compact-table {
+  width: 100% !important;
+  min-width: 0 !important;
+  table-layout: fixed !important;
+}
+
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-date { width: 12% !important; }
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-item { width: 24% !important; }
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-doc { width: 10% !important; }
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-money { width: 16% !important; }
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-profit { width: 16% !important; }
+.product-sales-executive-page .product-sales-compact-table .product-sales-col-action { width: 22% !important; }
+
+.product-sales-executive-page .product-sales-compact-table thead th,
+.product-sales-executive-page .product-sales-compact-table tbody td {
+  padding-inline: .72rem !important;
+}
+
+.product-sales-executive-page .product-sales-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: .45rem !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.product-sales-executive-page .product-sales-row-actions .report-direct-action,
+.product-sales-executive-page .product-sales-row-actions button.report-direct-action {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 5.4rem !important;
+  height: 34px !important;
+  padding: 0 .72rem !important;
+  border-radius: 12px !important;
+  font-size: .74rem !important;
+  font-weight: 950 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.product-sales-executive-page .product-sales-row-actions .report-direct-action span {
+  display: inline-block !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+@media (max-width: 1180px) {
+  .product-sales-executive-page .product-sales-compact-table {
+    min-width: 960px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-table-search,
+  .product-sales-executive-page .product-sales-table-tools label {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+}

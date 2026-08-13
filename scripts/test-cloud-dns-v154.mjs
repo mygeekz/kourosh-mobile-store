@@ -1,0 +1,21 @@
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { DatabaseSync } from "node:sqlite";
+import { buildTenantAssignment, DNS_LABEL_PATTERN, generateTenantHostLabel, requireCloudBaseDomain, validateDnsHostname } from "../cloud/shared/cloudHostname.mjs";
+import { PersistentCloudTenantRegistry } from "../cloud/control-plane/PersistentCloudTenantRegistry.mjs";
+import { migrateCloudControlDatabaseExplicit } from "../cloud/operations/cloudControlLifecycle.mjs";
+
+const labels=new Set();
+for(let i=0;i<10_000;i+=1){const label=generateTenantHostLabel();assert(DNS_LABEL_PATTERN.test(label));assert.equal(label,label.toLowerCase());assert.equal(label.includes("_"),false);assert(label.length<=32);assert.equal(labels.has(label),false);labels.add(label);const a=buildTenantAssignment({baseDomain:"example.invalid",hostLabel:label});assert.equal(a.assignedHost,`${label}.apps.example.invalid`);assert.equal(a.assignedPublicUrl,`https://${label}.apps.example.invalid/miniapp.html`);}
+for(const bad of ["https://example.com","example.com/path","example.com:443","*.example.com","foo..example.com","_foo.example.com","127.0.0.1","-foo.example.com","foo-.example.com","tést.example.com","example.com."])assert.throws(()=>requireCloudBaseDomain(bad));
+for(const bad of ["_x.example.com","-x.example.com","x-.example.com","x..example.com","é.example.com","x.example.com:443","https://x.example.com"])assert.equal(validateDnsHostname(bad).ok,false);
+
+// Simulate an existing v153 DB: schema readable, invalid underscore host preserved, migration is versioned, no silent reassignment.
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),"kourosh-v154-dns-"));const dbPath=path.join(temp,"control.db");const db=new DatabaseSync(dbPath);db.exec(`CREATE TABLE cloud_tenants (installation_id TEXT PRIMARY KEY,assigned_store_id TEXT NOT NULL UNIQUE,public_key_pem TEXT NOT NULL,public_key_fingerprint TEXT NOT NULL UNIQUE,assigned_host TEXT NOT NULL COLLATE NOCASE UNIQUE,assigned_public_url TEXT NOT NULL,tenant_status TEXT NOT NULL DEFAULT 'active',credential_version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,last_connected_at TEXT,last_disconnected_at TEXT,revoked_at TEXT);CREATE TABLE cloud_enrollment_codes(code_id TEXT PRIMARY KEY,code_hash TEXT NOT NULL,purpose TEXT NOT NULL,target_store_id TEXT,expires_at TEXT NOT NULL,used_at TEXT,attempts INTEGER NOT NULL DEFAULT 0,max_attempts INTEGER NOT NULL DEFAULT 8,created_at TEXT NOT NULL);`);
+const pair=crypto.generateKeyPairSync("ed25519",{publicKeyEncoding:{format:"pem",type:"spki"},privateKeyEncoding:{format:"pem",type:"pkcs8"}});const fp=`ed25519_${crypto.createHash("sha256").update(pair.publicKey,"utf8").digest("base64url")}`;const now=new Date().toISOString();const legacyHost="store_legacyopaque.app.example.invalid";db.prepare("INSERT INTO cloud_tenants VALUES(?,?,?,?,?,?, 'active',1,?,?,?,?,NULL)").run("inst_ABCDEFGHIJKLMNOPQRSTUVWX","store_ABCDEFGHIJKLMNOP",pair.publicKey,fp,legacyHost,`https://${legacyHost}/miniapp.html`,now,now,null,null);db.exec("PRAGMA user_version=1");db.close();
+await migrateCloudControlDatabaseExplicit({config:{runtimeDataDir:temp,controlDbPath:dbPath,backupDir:path.join(temp,"backups"),backupRetention:7},confirm:"MIGRATE"});
+const registry=new PersistentCloudTenantRegistry({dbPath});assert.equal(registry.getSchemaVersion(),2);const before=await registry.getTenantByStoreId("store_ABCDEFGHIJKLMNOP");assert.equal(before.assignedHost,legacyHost);assert.deepEqual(registry.getHostReadinessIssues(),[{storeId:"store_ABCDEFGHIJKLMNOP",code:"HOST_REASSIGNMENT_REQUIRED"}]);const reassigned=await registry.reassignTenantHost("store_ABCDEFGHIJKLMNOP",{baseDomain:"example.invalid"});assert.notEqual(reassigned.assignedHost,legacyHost);assert.equal(reassigned.assignedHost.includes("_"),false);assert.match(reassigned.assignedHost,/^s-[a-f0-9]{16}\.apps\.example\.invalid$/);assert.equal(reassigned.assignmentVersion,2);assert.deepEqual(registry.getHostReadinessIssues(),[]);registry.close();
+console.log(JSON.stringify({dnsHostAllocation:"PASS",generatedLabels:labels.size,legacyHostPreserved:true,legacyReadiness:"HOST_REASSIGNMENT_REQUIRED",explicitReassignment:true,schemaVersion:2},null,2));

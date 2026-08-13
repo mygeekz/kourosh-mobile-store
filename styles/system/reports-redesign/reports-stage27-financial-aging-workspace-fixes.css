@@ -1,0 +1,43 @@
+/* Stage 27 — report follow-up fixes
+   - Workspace drawer must render above sidebar/header.
+   - Financial overview keeps only the top ReportsLayout title; filters become one compact plain surface.
+   - Aging receivables customer names are plain text actions, not boxed chips. */
+
+/* Workspace drawer: portal-safe, above every app shell layer. */
+.reports-workspace--drawer {
+  z-index: 360 !important;
+  isolation: isolate;
+}
+
+.reports-workspace--drawer .reports-workspace__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.28) !important;
+  backdrop-filter: blur(2px);
+}
+
+.reports-workspace--drawer .reports-workspace__drawer {
+  position: absolute !important;
+  inset-block: 0 !important;
+  inset-inline-end: 0 !important;
+  z-index: 2 !important;
+  width: min(460px, calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+  background: rgba(255,255,255,.98) !important;
+  border-inline-start: 1px solid rgba(148,163,184,.28) !important;
+  box-shadow: -24px 0 70px rgba(15,23,42,.14) !important;
+}
+
+.dark .reports-workspace--drawer .reports-workspace__drawer {
+  background: rgba(2,6,23,.98) !important;
+  border-inline-start-color: rgba(51,65,85,.9) !important;
+  box-shadow: -24px 0 70px rgba(0,0,0,.42) !important;
+}
+
+/* Financial overview: remove the second title/action shell entirely. */
+
+/* The old range summary card duplicated the filter information and created a second header feel. */
+
+/* One clean commercial filter surface. */
+
+/* Aging receivables: customer field should not look like a nested chip. */

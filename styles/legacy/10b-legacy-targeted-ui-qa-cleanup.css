@@ -1,0 +1,39 @@
+/* Phase 77: targeted UI QA cleanup */
+.app-card,
+.report-card,
+.dashboard-widget,
+.sales-panel,
+.settings-panel,
+.page-shell-modern,
+.section-shell {
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.app-card .app-subtle,
+.report-card .app-subtle,
+.dashboard-widget .app-subtle,
+.sales-panel .app-subtle {
+  line-height: 1.65;
+}
+
+button,
+.button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.overflow-x-auto > table th,
+.overflow-x-auto > table td {
+  vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+  .page-shell-modern,
+  .section-shell,
+  .dashboard-widget,
+  .report-card,
+  .sales-panel {
+    border-radius: 20px;
+  }
+}
+

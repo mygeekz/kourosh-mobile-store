@@ -1,0 +1,156 @@
+/* Stage 124 — ABC filter density + row spacing polish
+   Scope-limited to /reports/abc so earlier report filters stay untouched. */
+
+.abc-executive-page .abc-filter-bar {
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  padding-block: 0 !important;
+}
+
+.abc-executive-page .abc-filter-presets {
+  flex: 1 1 380px !important;
+  min-width: min(100%, 360px) !important;
+  max-width: 470px !important;
+}
+
+/* Remove the unnecessary outer frame around Today / Yesterday / Week / Month. */
+.abc-executive-page .abc-filter-presets.report-date-presets,
+.abc-executive-page .abc-filter-presets.report-date-presets.report-date-presets--modern,
+.abc-executive-page [data-ui-report-date-presets="true"].abc-filter-presets {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-presets .report-date-presets__chips,
+.abc-executive-page .abc-filter-presets [data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.abc-executive-page .abc-filter-presets .report-date-preset-chip,
+.abc-executive-page .abc-filter-presets [data-ui-report-date-preset="true"] {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 999px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(226, 232, 240, .9) !important;
+  background: rgba(255, 255, 255, .92) !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .045) !important;
+}
+
+.abc-executive-page .abc-filter-presets .report-date-preset-chip.is-active,
+.abc-executive-page .abc-filter-presets [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(15, 23, 42, .88) !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .14) !important;
+}
+
+.abc-executive-page .abc-filter-field {
+  flex: 1 1 178px !important;
+  min-width: 172px !important;
+  max-width: 214px !important;
+  gap: 4px !important;
+}
+
+.abc-executive-page .abc-filter-field.report-filter-field {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.abc-executive-page .abc-filter-field .report-filter-field__head {
+  min-height: 18px !important;
+  height: 18px !important;
+  gap: 6px !important;
+  padding-inline: 2px !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+}
+
+.abc-executive-page .abc-filter-field .report-filter-field__icon {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  font-size: 9px !important;
+}
+
+.abc-executive-page .abc-filter-field .report-filter-field__body {
+  min-height: 0 !important;
+}
+
+.abc-executive-page .abc-filter-field :where(.app-date-field, .app-date-field__control),
+.abc-executive-page .abc-filter-field :where(.app-date-field__input, input[data-app-date-input="true"]),
+.abc-executive-page .abc-filter-select {
+  min-height: 40px !important;
+  height: 40px !important;
+  border-radius: 15px !important;
+}
+
+.abc-executive-page .abc-filter-select {
+  padding-inline: 14px !important;
+  font-size: .79rem !important;
+}
+
+.abc-executive-page .abc-apply-button {
+  align-self: flex-end !important;
+  height: 40px !important;
+  min-width: 92px !important;
+  border-radius: 15px !important;
+}
+
+/* Give the KPI row breathing room after the filter row without adding layout patches. */
+.abc-executive-kpi-grid {
+  margin-top: 22px !important;
+  margin-bottom: 16px !important;
+  gap: 14px !important;
+}
+
+.dark .abc-executive-page .abc-filter-presets .report-date-preset-chip,
+.dark .abc-executive-page .abc-filter-presets [data-ui-report-date-preset="true"] {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .78) !important;
+  box-shadow: none !important;
+}
+
+.dark .abc-executive-page .abc-filter-presets .report-date-preset-chip.is-active,
+.dark .abc-executive-page .abc-filter-presets [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(248, 250, 252, .78) !important;
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+@media (max-width: 900px) {
+  .abc-executive-page .abc-filter-bar {
+    align-items: stretch !important;
+  }
+
+  .abc-executive-page .abc-filter-presets,
+  .abc-executive-page .abc-filter-field,
+  .abc-executive-page .abc-apply-button {
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+
+  .abc-executive-page .abc-filter-presets .report-date-presets__chips,
+  .abc-executive-page .abc-filter-presets [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .abc-executive-kpi-grid {
+    margin-top: 18px !important;
+  }
+}

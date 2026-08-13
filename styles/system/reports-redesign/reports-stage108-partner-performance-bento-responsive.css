@@ -1,0 +1,186 @@
+/* Stage 108 — Partner performance Bento responsive redesign
+   Responsive rules remembered for this project: grid-first, auto-fit/minmax, no rigid desktop-only card rows. */
+
+.partner-performance-executive-page {
+  --partner-card-min: 220px;
+  --partner-card-gap: 14px;
+  --partner-radius: 22px;
+  --partner-shadow-soft: 0 18px 48px -34px rgba(15, 23, 42, .35);
+  --partner-shadow-card: 0 20px 52px -38px rgba(15, 23, 42, .45);
+}
+
+/* Main vertical rhythm: compact, consistent, responsive. */
+.partner-performance-executive-page .space-y-5 {
+  display: grid !important;
+  gap: 16px !important;
+}
+
+/* Executive top bento: avoid rigid xl-only columns. */
+.partner-performance-executive-page .space-y-5 > .grid:first-child,
+.partner-performance-executive-page div[class*="xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"] {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)) !important;
+  gap: 14px !important;
+}
+
+/* KPI grids: true bento responsive; no fixed 5-col desktop assumptions. */
+.partner-performance-executive-page .grid.grid-cols-1.md\:grid-cols-2.xl\:grid-cols-5,
+.partner-performance-executive-page .grid.grid-cols-1.md\:grid-cols-2.xl\:grid-cols-4 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--partner-card-min)), 1fr)) !important;
+  gap: var(--partner-card-gap) !important;
+}
+
+.partner-performance-executive-page .partner-premium-card {
+  min-height: 118px !important;
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  border-radius: var(--partner-radius) !important;
+  border: 1px solid rgba(148, 163, 184, .30) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.88)),
+    radial-gradient(circle at top right, rgba(59,130,246,.08), transparent 42%) !important;
+  box-shadow: var(--partner-shadow-card) !important;
+  overflow: hidden !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__icon {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(135deg, rgba(239,246,255,.96), rgba(255,255,255,.80)) !important;
+  border: 1px solid rgba(96,165,250,.22) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 14px 28px -24px rgba(37,99,235,.55) !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__content {
+  min-width: 0 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__label,
+.partner-performance-executive-page .partner-premium-card__hint {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__value {
+  font-size: clamp(1.12rem, 1.25vw, 1.55rem) !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Filter bar: responsive grid, not a wide single desktop row. */
+.partner-performance-executive-page .responsive-filter-bar {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), max-content)) !important;
+  align-items: end !important;
+  justify-content: start !important;
+  gap: 10px !important;
+  padding: 12px !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.84)) !important;
+  box-shadow: var(--partner-shadow-soft) !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar > * {
+  min-width: 0 !important;
+}
+
+.partner-performance-executive-page .report-date-presets__chips {
+  flex-wrap: wrap !important;
+  height: auto !important;
+  min-height: 44px !important;
+}
+
+.partner-performance-executive-page .report-filter-button--primary {
+  min-height: 44px !important;
+  align-self: end !important;
+}
+
+/* Tabs: responsive segmented bento row. */
+.partner-performance-executive-page .partner-tabs-shell {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)) !important;
+  gap: 8px !important;
+  padding: 8px !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.88) !important;
+  box-shadow: var(--partner-shadow-soft) !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell button {
+  width: 100% !important;
+  min-width: 0 !important;
+  white-space: normal !important;
+  min-height: 42px !important;
+}
+
+/* Content cards/shells: premium but readable. */
+.partner-performance-executive-page :where(.space-y-5 > div[class*="rounded-[26px]"], .space-y-5 > div[class*="rounded-[22px]"]) {
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.9)) !important;
+  box-shadow: 0 18px 54px -42px rgba(15,23,42,.45) !important;
+}
+
+.partner-performance-executive-page .overflow-x-auto {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: 18px !important;
+}
+
+.partner-performance-executive-page table {
+  min-width: 760px !important;
+}
+
+.partner-performance-executive-page thead th {
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page td {
+  vertical-align: middle !important;
+}
+
+.partner-performance-executive-page table a,
+.partner-performance-executive-page table button:not([role="switch"]),
+.partner-performance-executive-page .partner-action-button {
+  min-height: 36px !important;
+  padding-inline: 12px !important;
+  border-radius: 14px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page {
+    --partner-card-min: 180px;
+    --partner-card-gap: 10px;
+  }
+
+  .partner-performance-executive-page .partner-premium-card {
+    min-height: 104px !important;
+    grid-template-columns: 40px minmax(0, 1fr) !important;
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .partner-performance-executive-page .partner-premium-card__icon {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .partner-performance-executive-page .responsive-filter-bar {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-performance-executive-page .partner-tabs-shell {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  }
+}

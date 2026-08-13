@@ -1,0 +1,39 @@
+/* ===== Phone edit horizontal modal override ===== */
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > *,
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__grid > * {
+  grid-column: auto !important;
+  grid-row: auto !important;
+}
+
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--model,
+.phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__field--imei,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--supplier,
+.phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__field--status {
+  grid-column: span 2 / span 2 !important;
+}
+
+.phone-edit-horizontal-form .phone-operations-block--edit .phone-operations-block__field--notes {
+  grid-column: 1 / -1 !important;
+}
+
+@media (max-width: 767px) {
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .phone-edit-horizontal-form .phone-identity-block--edit .phone-identity-block__grid > *,
+  .phone-edit-horizontal-form .phone-finance-block--edit .phone-finance-block__grid > * {
+    grid-column: 1 / -1 !important;
+  }
+}

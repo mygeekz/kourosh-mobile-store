@@ -1,0 +1,316 @@
+import React from 'react';
+import PartnerDetailHeaderSection from './PartnerDetailHeaderSection';
+import PartnerPhoneCapitalSection from './PartnerPhoneCapitalSection';
+import PartnerOverviewKpiSection from './PartnerOverviewKpiSection';
+import PartnerSettlementWorkspaceSection from './PartnerSettlementSubmitUiIntegrationSection';
+import PartnerTelegramConversationSection, { type PartnerTelegramConversationContext } from './PartnerTelegramConversationSection';
+import PartnerLedgerWorkspaceSection, { type PartnerLedgerWorkspaceContext } from './PartnerLedgerWorkspaceSection';
+import PartnerPurchaseHistorySection, { type PartnerPurchaseHistoryContext } from './PartnerPurchaseHistorySection';
+import PartnerDetailModalStack, { type PartnerDetailModalStackContext } from './PartnerDetailModalStack';
+
+type Props = {
+  ctx: PartnerTelegramConversationContext &
+    PartnerLedgerWorkspaceContext &
+    PartnerPurchaseHistoryContext &
+    PartnerDetailModalStackContext;
+};
+
+const PartnerDetailRender: React.FC<Props> = ({ ctx }) => {
+  const {
+    BULK_SETTLEMENT_LAST_NOTE_KEY,
+    Button,
+    FinancialProgressBar,
+    FormErrorSummary,
+    MessageComposerModal,
+    Modal,
+    ModalActions,
+    ModalField,
+    Notification,
+    PARTNER_TYPES,
+    PriceInput,
+    ShamsiDatePicker,
+    TelegramLinkModal,
+    activeBatchLedgerMetrics,
+    activeLedgerBatchId,
+    amount,
+    applyBulkSettlementNoteTemplate,
+    assetKey,
+    balance,
+    bulkSettlementAmount,
+    bulkSettlementAmountValue,
+    bulkSettlementBatchId,
+    bulkSettlementDistribution,
+    bulkSettlementIdSet,
+    bulkSettlementNote,
+    bulkSettlementNoteTemplates,
+    bulkSettlementPriority,
+    closedSaleFiles,
+    credit,
+    current,
+    currentUser,
+    customerInstallmentRemainingAmount,
+    debit,
+    deepLink,
+    editFormErrors,
+    editingEntry,
+    editingPartner,
+    el,
+    entries,
+    entry,
+    errors,
+    expanded,
+    expandedLedgerEntryId,
+    expandedPhoneSettlementTimelineId,
+    expandedPurchaseHistoryId,
+    exportPartnerCapitalRows,
+    filteredLedgerEntries,
+    filteredSoldPhoneDailyPriceDeltaTotal,
+    filteredSoldPhoneDailyPriceRows,
+    filteredSoldPhoneDailyPriceTotal,
+    filteredSoldPhoneProductSettlementBalanceTotal,
+    filteredSoldPhoneProductSettlementPaidTotal,
+    formatCurrencyText,
+    formatIsoToShamsi,
+    formatIsoToShamsiDateTime,
+    formatLedgerTransactionDate,
+    formatPartnerLedgerCurrency,
+    formatPrice,
+    fullSettlementAmounts,
+    getBalanceLabel,
+    getBalanceState,
+    getLedgerSystemKind,
+    getPartnerCapitalMeta,
+    getPurchaseSystemId,
+    getSaleClosureMeta,
+    groupedLedgerEntries,
+    handleBulkSettlementAmountChange,
+    handleBulkSettlementClear,
+    handleBulkSettlementSelectAll,
+    handleBulkSettlementSubmit,
+    handleEditInputChange,
+    handleEditSubmit,
+    handleExportActiveBatchCsv,
+    handleFullSettlementPhoneSubmit,
+    handleLedgerDelete,
+    handleLedgerEdit,
+    handleLedgerInputChange,
+    handleLedgerSubmit,
+    handlePhoneSettlementAmountChange,
+    handlePhoneSettlementSubmit,
+    handlePrintActiveBatch,
+    id,
+    identifier,
+    imei,
+    initialPurchasePrice,
+    inputClass,
+    isDeletingEntry,
+    isEditModalOpen,
+    isFullPhoneSettlementModalOpen,
+    isSettlementManualConfirmationModalOpen,
+    isLedgerColumnPickerOpen,
+    isLedgerModalOpen,
+    isMessageModalOpen,
+    isSubmittingBulkSettlement,
+    isSubmittingEdit,
+    isSubmittingFullSettlementPhoneId,
+    isSubmittingLedger,
+    isSubmittingPhoneSettlement,
+    item,
+    jumpToFirstPartnerTgResult,
+    kind,
+    lastBulkSettlementNote,
+    lastSubmittedBulkSettlementBatchId,
+    ledger,
+    ledgerColumnPickerButtonRef,
+    ledgerColumnPickerPanelRef,
+    ledgerDateSelected,
+    ledgerDetailLines,
+    ledgerDirection,
+    ledgerDisplayMode,
+    ledgerEmptyState,
+    ledgerFormErrors,
+    ledgerRange,
+    ledgerRecordedAt,
+    ledgerSearch,
+    ledgerSettlementBatchOptions,
+    ledgerSystemFilter,
+    ledgerSystemOptions,
+    ledgerTableColumnCount,
+    ledgerTypeBadge,
+    ledgerViewFilter,
+    ledgerVisibleColumns,
+    name,
+    nearBottom,
+    newLedgerEntry,
+    nextValue,
+    note,
+    notification,
+    num,
+    openEditModal,
+    openLedgerModal,
+    openPartnerQrLinkModal,
+    openSoldPhoneSettlementRows,
+    openTelegramReport,
+    parsePartnerLedgerMeta,
+    partnerCapitalReturnedAmount,
+    partnerCapitalWaitingAmount,
+    partnerRegisteredDateLabel,
+    partnerRiskFactors,
+    partnerTgConvError,
+    partnerTgConvItems,
+    partnerTgConvLoading,
+    partnerTgDirectionFilter,
+    partnerTgFilteredConvItems,
+    partnerTgNewSinceScroll,
+    partnerTgPreset,
+    partnerTgQuickReply,
+    partnerTgTimelineRef,
+    partnerTypeLabel,
+    partnerUnifiedStatusTotals,
+    phone,
+    phoneId,
+    phoneSettlementAmount,
+    phoneSettlementBalance,
+    phoneSettlementDateSelected,
+    phoneSettlementErrors,
+    phoneSettlementItem,
+    phoneSettlementNote,
+    phoneSettlementNoteTemplates,
+    phoneSettlementPaidAmount,
+    phoneSettlementPaymentsByPhoneId,
+    prefillChannels,
+    prefillMessageText,
+    profile,
+    purchaseHistoryBySystemId,
+    purchaseHistoryCounts,
+    purchaseHistoryFilter,
+    purchaseHistoryVisible,
+    qty,
+    readStoredCurrencyUnit,
+    recommendation,
+    recordedAt,
+    referenceType,
+    relatedPurchase,
+    renderLedgerTransactionCard,
+    renderPhoneSaleSourceLink,
+    rows,
+    saleId,
+    score,
+    selectedBulkSettlementBalanceTotal,
+    selectedBulkSettlementRows,
+    setActiveLedgerBatchId,
+    setBulkSettlementAmount,
+    setBulkSettlementNote,
+    setBulkSettlementPhoneIds,
+    setBulkSettlementPriority,
+    setEditFormErrors,
+    setEditingEntry,
+    setEditingPartner,
+    setExpandedLedgerEntryId,
+    setExpandedPhoneSettlementTimelineId,
+    setExpandedPurchaseHistoryId,
+    setFullSettlementAmounts,
+    setIsEditModalOpen,
+    setIsFullPhoneSettlementModalOpen,
+    setIsSettlementManualConfirmationModalOpen,
+    setIsLedgerColumnPickerOpen,
+    setIsLedgerModalOpen,
+    setIsMessageModalOpen,
+    setLastBulkSettlementNote,
+    setLedgerDateSelected,
+    setLedgerDirection,
+    setLedgerDisplayMode,
+    setLedgerRange,
+    setLedgerSearch,
+    setLedgerSystemFilter,
+    setLedgerViewFilter,
+    setLedgerVisibleColumns,
+    setNotification,
+    setPartnerTgDirectionFilter,
+    setPartnerTgNewSinceScroll,
+    setPartnerTgQuickReply,
+    setPartnerTgSearchQuery,
+    setPhoneSettlementAmount,
+    setPhoneSettlementDateSelected,
+    setPhoneSettlementErrors,
+    setPhoneSettlementItem,
+    setPhoneSettlementNote,
+    setPrefillChannels,
+    setPrefillMessageText,
+    setPurchaseHistoryFilter,
+    setSoldPhoneCapitalSearch,
+    setSoldPhoneCapitalSort,
+    setSoldPhoneSettlementFilter,
+    setTgQrOpen,
+    settlementPurchasePrice,
+    soldPhoneCapitalSearchRef,
+    soldPhoneCapitalSort,
+    soldPhoneDailyPriceRows,
+    soldPhoneSettlementFilter,
+    soldPhoneSettlementFilterCounts,
+    soldPhonesCurrentPurchaseAmount,
+    soldPhonesCurrentPurchaseBalance,
+    soldPhonesInitialPurchaseAmount,
+    soldPhonesProductSettlementBalance,
+    soldPhonesProductSettlementPaidAmount,
+    sourceLabel,
+    systemId,
+    target,
+    text,
+    tgBotUsernameMissing,
+    tgQrDeepLink,
+    tgQrLoading,
+    tgQrOpen,
+    token,
+    tone,
+    total,
+    totalCredit,
+    totalCredits,
+    totalDebit,
+    totalDebits,
+    unallocatedPartnerPaymentAmount,
+    unsoldInventoryAmount,
+    value,
+  } = ctx;
+
+  return (
+    <div
+      className="partner-detail-page-root space-y-8"
+      dir="rtl"
+      data-ui-partner-detail-page-root="true"
+    >
+      <Notification message={notification} onClose={() => setNotification(null)} />
+
+      <div
+        className="detail-page-shell people-detail-apple customer-detail-apple people-detail-redesign-v1 people-detail-redesign-v1--customer people-foundation people-detail-foundation space-y-8"
+        data-ui-people-page="partner-detail"
+        data-ui-people-scope="detail"
+        data-ui-partner-header-shell="customer-parity-v137"
+      >
+        <div className="customer-detail-hero detail-hero-card" data-ui-people-surface="detail-hero">
+          <PartnerDetailHeaderSection ctx={ctx} />
+        </div>
+      </div>
+
+      <div
+        className="detail-page-shell people-detail-apple partner-detail-apple partner-detail-safe-gutter-v84 partner-detail-responsive-root people-detail-redesign-v1 people-detail-redesign-v1--partner people-foundation people-detail-foundation space-y-5"
+        data-ui-people-page="partner-detail"
+        data-ui-people-scope="detail"
+        data-ui-partner-detail-shell="operational-content"
+      >
+        <PartnerOverviewKpiSection ctx={ctx} />
+        <PartnerPhoneCapitalSection ctx={ctx} />
+        <PartnerSettlementWorkspaceSection ctx={ctx} />
+        <PartnerTelegramConversationSection ctx={ctx} />
+        {/* Ledger */}
+        <div id="partner-ledger-section" className="detail-card partner-customer-sync-ledger partner-ledger-v128 partner-ledger-v130 partner-ledger-v132" data-ui-people-ledger="partner">
+          <PartnerLedgerWorkspaceSection ctx={ctx} />
+        </div>
+        <PartnerPurchaseHistorySection ctx={ctx} />
+        <PartnerDetailModalStack ctx={ctx} />
+      </div>
+    </div>
+  );
+};
+
+export default PartnerDetailRender;

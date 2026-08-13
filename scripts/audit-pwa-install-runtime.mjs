@@ -1,0 +1,167 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const read = (relativePath) => fs.readFileSync(path.join(root, relativePath), 'utf8');
+
+const packageJson = JSON.parse(read('package.json'));
+const vite = read('vite.config.ts');
+const startHttps = read('start_https.bat');
+const buildEnsurer = read('scripts/ensure-local-pwa-build.mjs');
+const httpsBootstrap = read('scripts/ensure-local-https-runtime.ts');
+const productionServer = read('scripts/serve-local-pwa.mjs');
+const httpsRuntimeTest = read('scripts/test-local-pwa-https-runtime.mjs');
+const localRoutes = read('server/routes/localSettings.routes.ts');
+const indexHtml = read('index.html');
+const installPage = read('pages/InstallApp.tsx');
+const connectionHealth = read('hooks/useLocalConnectionHealth.ts');
+const overlay = read('components/PwaInstallOverlay.tsx');
+const manager = read('hooks/usePwaInstall.ts');
+const login = read('pages/Login.tsx');
+const authShell = read('components/auth/AuthPageShell.tsx');
+const loginLogo = read('components/LoginLogoMotionV3.tsx');
+const authBrandLogo = read('components/auth/AuthBrandLogo.tsx');
+const sidebarBrand = read('components/sidebar/SidebarBrandBar.tsx');
+const appLoadingScreen = read('components/AppLoadingScreen.tsx');
+const defaultLogo = read('components/assets/kourosh-final-symbol-gold.svg');
+const publicLogo = read('public/kourosh-logo.svg');
+const faviconLogo = read('public/favicon.svg');
+const settingsLocalPanel = read('pages/settings/SettingsLocalPanel.tsx');
+
+assert.equal(packageJson.scripts['start:https'], 'npm run https:bootstrap && npm run pwa:build:ensure && npm run serve:https', 'HTTPS launcher must establish trust before preparing and serving the production PWA build.');
+assert.match(packageJson.scripts['pwa:preview'], /vite preview[\s\S]*--port 5173[\s\S]*--strictPort/, 'Production PWA preview must stay on the reviewed HTTPS port.');
+assert.match(packageJson.scripts['serve:https'], /--kill-others-on-fail[\s\S]*npm run server:runtime[\s\S]*serve-local-pwa\.mjs[\s\S]*local-domain:redirect/, 'HTTPS runtime must start the non-watch backend, dedicated production server and no-port redirect as one failure-safe unit.');
+assert.doesNotMatch(packageJson.scripts['serve:https'], /pwa:preview/, 'The installed runtime must not depend on Vite preview.');
+assert.equal(packageJson.scripts['test:local-pwa-https-runtime'], 'node scripts/test-local-pwa-https-runtime.mjs', 'Setup must retain the trusted HTTPS end-to-end runtime test.');
+assert.match(startHttps, /VITE_ENABLE_PWA_DEV=0/, 'Install launcher must not depend on the development service worker.');
+assert.match(startHttps, /npm run start:https/, 'Windows launcher must use the production PWA runtime.');
+assert.match(startHttps, /LOCAL_HOSTS_IP=%LAN_IP%/, 'Windows launcher must pass the selected LAN IP into certificate SAN validation.');
+assert.match(startHttps, /KOUROSH_ALLOW_EXTERNAL_TLS_FILES=0/, 'Windows production launch must ignore stale external certificate-file overrides.');
+assert.match(httpsBootstrap, /validateCertificateRuntime/, 'HTTPS bootstrap must validate certificate chain, SAN and expiry before launch.');
+assert.match(httpsBootstrap, /ensureWindowsRootTrust/, 'HTTPS bootstrap must establish Current User Root trust on Windows.');
+assert.match(httpsBootstrap, /certificateHasEnoughLifetime/, 'HTTPS bootstrap must renew expiring local leaf certificates before they break installation.');
+assert.match(httpsBootstrap, /stopStaleWindowsRuntime/, 'HTTPS bootstrap must retire a stale Kourosh listener before launching with a refreshed LAN certificate.');
+assert.match(productionServer, /validateProductionRuntime/, 'Dedicated runtime must validate its generated app shell before listening.');
+assert.match(productionServer, /remoteAccessVerified/, 'Runtime health must retain a short-lived, in-memory confirmation after a mobile device reaches the LAN endpoint.');
+assert.match(productionServer, /REMOTE_ACCESS_TTL_MS/, 'Mobile reachability confirmation must expire instead of becoming a permanent or database-backed claim.');
+assert.match(productionServer, /Service-Worker-Allowed/, 'Dedicated runtime must publish the reviewed root service-worker scope.');
+assert.match(productionServer, /application\/manifest\+json/, 'Dedicated runtime must serve webmanifest with its install MIME type.');
+assert.match(productionServer, /no-store, no-cache, must-revalidate/, 'Manifest, service worker and app shell must not be trapped behind a stale HTTP cache.');
+assert.match(productionServer, /max-age=31536000, immutable/, 'Hashed production assets must retain safe immutable caching.');
+assert.match(productionServer, /x-forwarded-proto'[\]] = testHttpMode \? 'http' : 'https'/, 'Same-origin API proxy must report HTTPS to the trusted loopback backend.');
+assert.match(productionServer, /path\.relative\(distDir, candidate\)/, 'Static serving must keep decoded paths inside dist.');
+assert.match(productionServer, /path\.extname\(pathname\)/, 'Missing file-like paths such as sw.js must return 404 instead of the SPA shell.');
+assert.match(httpsRuntimeTest, /rejectUnauthorized:\s*true/, 'HTTPS runtime test must verify the generated Root CA instead of bypassing TLS errors.');
+assert.match(httpsRuntimeTest, /servedLeafCertificate\.checkIP\(publishedLanIp\)/, 'HTTPS runtime test must verify the LAN IP against the certificate actually served in the TLS handshake.');
+assert.match(httpsRuntimeTest, /servedLeafCertificate\.fingerprint256[\s\S]*expectedLeafCertificate\.fingerprint256/, 'HTTPS runtime test must compare the served leaf with the validated leaf artifact.');
+assert.match(httpsRuntimeTest, /missing-sw\.js[\s\S]*status, 404/, 'HTTPS runtime test must prove that missing worker assets cannot become the SPA shell.');
+assert.match(buildEnsurer, /dist[\\',\s]+sw\.js/, 'Build ensurer must require the generated production service worker.');
+assert.match(buildEnsurer, /manifest\.webmanifest/, 'Build ensurer must require the generated production manifest.');
+assert.match(buildEnsurer, /Production build is current; reusing dist/, 'Daily startup must reuse a current production build instead of rebuilding every time.');
+assert.match(buildEnsurer, /postcss\.config\.cjs/, 'PWA build fingerprint must include the actual PostCSS configuration.');
+assert.match(buildEnsurer, /tailwind\.config\.cjs/, 'PWA build fingerprint must include the actual Tailwind configuration.');
+assert.match(buildEnsurer, /'config'/, 'PWA build fingerprint must include central frontend configuration such as style palettes.');
+assert.match(buildEnsurer, /validateGeneratedOutputs/, 'Cached dist output must pass structural manifest and service-worker validation before reuse.');
+
+assert.match(vite, /injectRegister:\s*false/, 'Service worker registration must be explicit so registration failures are observable.');
+assert.match(vite, /clientsClaim:\s*true/, 'Production Workbox worker must claim clients.');
+assert.match(vite, /skipWaiting:\s*true/, 'Production Workbox worker must activate without remaining stuck in waiting.');
+assert.match(vite, /cleanupOutdatedCaches:\s*true/, 'Old PWA caches must be cleaned up.');
+assert.match(vite, /preview:\s*\{[\s\S]*port:\s*5173[\s\S]*https:\s*httpsServerOptions\(\)[\s\S]*proxy:/, 'Vite preview must serve the production build over the reviewed certificate and API proxy.');
+assert.match(vite, /id:\s*'\/'/, 'Manifest id must be a stable fragment-free app identity.');
+assert.match(vite, /start_url:\s*'\/\?source=pwa#\/'/, 'Manifest start URL must launch the HashRouter app while preserving stable identity.');
+assert.match(vite, /sizes:\s*'192x192'/, 'Manifest must declare the 192px install icon.');
+assert.match(vite, /sizes:\s*'512x512'/, 'Manifest must declare the 512px install icon.');
+assert.match(vite, /purpose:\s*'maskable'/, 'Manifest must declare a maskable app icon.');
+assert.match(vite, /related_applications:\s*\[[\s\S]*platform:\s*'webapp'[\s\S]*url:\s*'\/manifest\.webmanifest'[\s\S]*id:\s*'\/'/, 'Manifest must declare itself so supported browsers can verify whether this PWA is already installed.');
+assert.match(vite, /background_color:\s*'#08090d'/, 'PWA splash background must match the dark authentication theme.');
+assert.doesNotMatch(indexHtml, /rel="manifest" href="\/manifest\.json"/, 'The page must not load a second stale manifest beside vite-plugin-pwa.');
+assert.match(indexHtml, /apple-touch-icon\.png/, 'Apple touch icon must use the generated opaque PNG.');
+assert.match(indexHtml, /favicon\.ico/, 'The browser must expose a Windows-compatible favicon fallback.');
+assert.match(vite, /kourosh-logo\.svg/, 'The approved gold SVG must be shipped with the PWA assets.');
+
+const expectedPngs = [
+  ['public/icons/icon-192.png', 192, 192],
+  ['public/icons/icon-512.png', 512, 512],
+  ['public/icons/maskable-512.png', 512, 512],
+  ['public/apple-touch-icon.png', 180, 180],
+];
+const readPngSize = (filePath) => {
+  const buffer = fs.readFileSync(path.join(root, filePath));
+  assert.equal(buffer.toString('ascii', 1, 4), 'PNG', `${filePath} must be a real PNG.`);
+  return [buffer.readUInt32BE(16), buffer.readUInt32BE(20)];
+};
+for (const [filePath, width, height] of expectedPngs) {
+  assert.deepEqual(readPngSize(filePath), [width, height], `${filePath} must have the reviewed dimensions.`);
+}
+
+assert.match(manager, /navigator\.serviceWorker\.register\(EXPECTED_SW_PATH,[\s\S]*scope:\s*'\/'[\s\S]*updateViaCache:\s*'none'/, 'The production service worker must register the generated same-origin sw.js directly.');
+assert.match(manager, /!import\.meta\.env\.PROD[\s\S]*!window\.isSecureContext/, 'Service-worker registration must never contaminate development or insecure origins.');
+assert.match(manager, /unregisterBrokenOriginRegistrations/, 'Invalid or legacy registrations must be recoverable before a fresh registration.');
+assert.match(manager, /validateServiceWorkerAsset/, 'Runtime must verify that sw.js is reachable and is not an HTML fallback before registration.');
+assert.doesNotMatch(manager, /registration\.update\(/, 'The install flow must not force update() on a stale or half-removed registration.');
+assert.match(manager, /navigator\.serviceWorker\.ready/, 'Runtime must wait for the actual active service worker.');
+assert.match(manager, /serviceWorkerControlling/, 'Install diagnostics must distinguish registration from actual page control.');
+assert.match(manager, /window\.location\.reload\(\)/, 'The first active worker must be allowed to take control through a guarded reload.');
+assert.match(manager, /detectPwaPlatform/, 'The install manager must detect desktop and mobile operating-system families.');
+assert.match(manager, /getInstalledRelatedApps/, 'Supported browsers must verify installed state through the related-apps API.');
+assert.match(manager, /INSTALLED_MARKER_KEY/, 'Install state must retain a local fallback marker for browsers without related-app verification.');
+assert.match(manager, /beforeinstallprompt/, 'The install manager must retain Chrome install events across lazy routes.');
+assert.match(manager, /manifestInstallable/, 'Install diagnostics must validate the web app manifest.');
+assert.match(manager, /export const resetPwaRuntime/, 'The PWA manager must expose one reviewed full-reset operation.');
+assert.match(manager, /unregisterAllOriginRegistrations/, 'Full reset must remove current-origin registrations before rebuilding them.');
+assert.match(manager, /clearAllOriginCaches/, 'Full reset must clear current-origin Cache Storage without touching application data stores.');
+assert.match(manager, /readManifest\(\)/, 'Full reset must revalidate the generated manifest.');
+assert.match(manager, /validateServiceWorkerAsset\(\)/, 'Full reset must revalidate sw.js before registration.');
+assert.match(manager, /registerExpectedServiceWorker\(false\)/, 'Full reset must register the reviewed same-origin worker after cleanup.');
+assert.match(overlay, /installReady \|\| iosReady/, 'The global install overlay must only open when installation can be actioned.');
+assert.match(overlay, /diagnostics\?\.secureContext/, 'iOS overlay readiness must also require a trusted HTTPS context.');
+assert.match(overlay, /surface="glass"/, 'The install overlay must use the reviewed glass surface.');
+assert.match(overlay, /scheme="dark"[\s\S]*variant="auth"/, 'The install overlay must use the canonical full-dark auth surface instead of the adaptive modal surface.');
+assert.match(overlay, /data-ui-auth-surface="pwa-install-overlay"/, 'The install overlay must expose the reviewed auth-surface marker.');
+assert.match(overlay, /className="login-page auth-liquid-shell fixed/, 'The install overlay must remain inside the canonical auth boundary and outside broad commercial light-surface overrides.');
+assert.doesNotMatch(overlay, /variant="ghost"/, 'The install overlay dismiss action must not inherit the light global ghost-button treatment.');
+assert.match(overlay, /<AuthBrandLogo animated=\{false\} size="install" \/>/, 'The install overlay must use the reviewed static mobile brand mark.');
+assert.match(installPage, /Runtime تولیدی PWA/, 'The install page must expose whether the production PWA runtime is actually being served.');
+assert.match(installPage, /serviceWorkerControlling/, 'The install page must require actual service-worker control, not registration alone.');
+assert.match(installPage, /prepareServiceWorker/, 'The primary install action must activate and control the service worker before waiting for Chrome promotion.');
+assert.match(installPage, /api\/local-runtime\/root-ca\.crt/, 'The public install page must expose the read-only mobile Root CA recovery download.');
+assert.match(installPage, /data-ui-pwa-root-ca-download/, 'The Root CA action must remain visible to runtime and responsive QA.');
+assert.match(installPage, /QRCodeSVG/, 'The connection-health page must render a scannable QR from the reviewed dependency.');
+assert.match(installPage, /connectionHealth\.setupRequired === false/, 'The QR must remain blocked until the one-time administrator setup is complete.');
+assert.match(installPage, /platform\.family === 'desktop'[\s\S]*connectionHealth\.hostDevice/, 'Only the runtime host desktop may display the connection QR.');
+assert.match(installPage, /data-ui-mobile-access-status/, 'Host UI must expose live mobile reachability confirmation.');
+assert.doesNotMatch(installPage, /<style|\.css['"]/, 'Connection health must use existing auth/Tailwind primitives without page-specific CSS.');
+assert.match(connectionHealth, /Promise\.allSettled/, 'Runtime and API health probes must be isolated so one failure still produces useful diagnostics.');
+assert.match(connectionHealth, /apiFetch\('\/api\/setup\/status'/, 'API health must use the reviewed same-origin transport and real setup route.');
+assert.match(localRoutes, /app\.get\("\/api\/local-runtime\/root-ca\.crt", sendLocalRootCertificate\)/, 'A new device must be able to download the public Root CA before authentication.');
+assert.doesNotMatch(localRoutes, /api\/local-runtime\/root-ca\.crt"\s*,\s*authorizeRole/, 'The public Root CA endpoint must not require a session that cannot yet cross untrusted HTTPS.');
+assert.match(installPage, /variant="liquid"/, 'The dedicated install page must use the login liquid-glass shell.');
+assert.match(installPage, /liquidLayout="compact"/, 'The install page must use the compact mobile liquid layout.');
+assert.match(installPage, /liquidAppearance="install"/, 'The install page must request the dedicated full-dark auth presentation.');
+assert.match(installPage, /<details[\s\S]*جزئیات فنی نصب/, 'Verbose diagnostics must remain collapsible so the primary mobile action stays reachable.');
+assert.match(authShell, /login-page auth-liquid-shell/, 'All liquid auth flows must remain outside broad commercial light-surface overrides.');
+assert.match(authShell, /liquidLayout\?: 'default' \| 'compact'/, 'The shared auth shell must expose the reviewed compact layout contract.');
+assert.match(authShell, /liquidAppearance\?: 'animated' \| 'install' \| 'setup'/, 'The shared auth shell must expose dedicated full-dark install and initial-setup presentations without page CSS.');
+assert.match(authShell, /const staticDarkAppearance = installAppearance \|\| setupAppearance;/, 'Install and initial-setup presentations must share the reviewed static dark appearance gate.');
+assert.match(authShell, /variant=\{staticDarkAppearance \? 'auth'/, 'Every static dark authentication presentation must use the dark auth surface primitive.');
+assert.match(loginLogo, /size\?: 'default' \| 'compact' \| 'mini'/, 'The animated login logo must retain its reviewed size contract.');
+assert.match(loginLogo, /kourosh-final-symbol-gold\.svg\?raw/, 'The animated login brand must use the approved gold SVG.');
+assert.match(authBrandLogo, /kourosh-final-symbol-gold\.svg/, 'The static install brand must use the approved gold SVG.');
+assert.match(sidebarBrand, /kourosh-final-symbol-gold\.svg/, 'The sidebar fallback must use the approved gold SVG instead of a generic store glyph.');
+assert.match(appLoadingScreen, /kourosh-final-symbol-gold\.svg/, 'The application splash must use the approved gold SVG.');
+assert.match(defaultLogo, /id="kourosh-symbol"[\s\S]*fill="#A98A64"/, 'The default source must retain the approved single-color gold symbol.');
+assert.equal(publicLogo, defaultLogo, 'The PWA SVG and React source SVG must remain byte-identical.');
+assert.equal(faviconLogo, defaultLogo, 'The favicon SVG and React source SVG must remain byte-identical.');
+assert.match(authShell, /animated=\{!installAppearance\}/, 'Only the install presentation must switch to the static mobile logo.');
+assert.match(login, /installationChecked && !pwaInstalled/, 'The login install entry must disappear when the app is already installed.');
+assert.match(login, /platform\.installLabel/, 'The login install entry must use the detected operating-system label instead of always saying mobile.');
+assert.match(login, /href="#\/install"/, 'The login form must expose the platform-aware install page without changing its animated background.');
+assert.match(settingsLocalPanel, /بازنشانی کامل PWA/, 'Local settings must expose the reviewed administrator PWA reset action.');
+assert.match(settingsLocalPanel, /isAdmin &&/, 'The destructive PWA reset control must remain administrator-only.');
+assert.match(settingsLocalPanel, /resetPwaRuntime\(/, 'The settings action must use the shared PWA lifecycle reset instead of duplicating browser cleanup logic.');
+assert.doesNotMatch(settingsLocalPanel, /<style|\.css['"]/, 'The PWA reset UI must not add page-specific CSS.');
+
+console.log('PWA install runtime audit passed (trusted certificate bootstrap, dedicated HTTPS production server, explicit SW lifecycle, stable manifest identity, public Root CA recovery and responsive install UX).');

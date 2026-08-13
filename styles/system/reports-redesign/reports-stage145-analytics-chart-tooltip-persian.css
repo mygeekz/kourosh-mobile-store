@@ -1,0 +1,52 @@
+/* Stage 145 — Analytics chart tooltip Persian polish
+   Fixes raw Recharts labels like "revenue", softens hover cursor, and localizes chart value display. */
+
+.analytics-executive-card .recharts-default-tooltip {
+  direction: rtl !important;
+  text-align: right !important;
+  border: 1px solid rgba(226, 232, 240, .92) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, .98) !important;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, .10) !important;
+  padding: 10px 12px !important;
+}
+
+.analytics-executive-card .recharts-tooltip-label {
+  color: #0f172a !important;
+  font-size: .76rem !important;
+  font-weight: 950 !important;
+  margin-bottom: 4px !important;
+}
+
+.analytics-executive-card .recharts-tooltip-item {
+  color: #334155 !important;
+  font-size: .74rem !important;
+  font-weight: 850 !important;
+  padding: 1px 0 !important;
+}
+
+.analytics-executive-card .recharts-bar-rectangle path {
+  transition: opacity .16s ease !important;
+}
+
+.analytics-executive-card .recharts-layer.recharts-bar-rectangle:hover path {
+  opacity: .92 !important;
+}
+
+.analytics-executive-card .recharts-cartesian-axis-tick text {
+  direction: rtl !important;
+}
+
+.dark .analytics-executive-card .recharts-default-tooltip {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .96) !important;
+  box-shadow: none !important;
+}
+
+.dark .analytics-executive-card .recharts-tooltip-label {
+  color: #f8fafc !important;
+}
+
+.dark .analytics-executive-card .recharts-tooltip-item {
+  color: #e2e8f0 !important;
+}

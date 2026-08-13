@@ -1,0 +1,296 @@
+/* Auto-generated UI Foundation: global commercial QA safeguards.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/03a-global-commercial-qa.css ===== */
+
+/* Global QA, sidebar, dashboard, telegram monitor and stable panel fixes.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== GLOBAL COMMERCIAL UI FINAL QA PASS =====
+   Purpose: neutralize remaining oversized colorful cards, heavy gradients, and loud shadows across commercial modules.
+   This is intentionally broad but avoids print/receipt and auth hero surfaces. */
+
+:root {
+  --commercial-surface: #ffffff;
+  --commercial-surface-muted: rgb(248 250 252);
+  --commercial-border: rgb(226 232 240);
+  --commercial-text: rgb(15 23 42);
+  --commercial-muted: rgb(100 116 139);
+}
+
+.dark {
+  --commercial-surface: rgb(2 6 23);
+  --commercial-surface-muted: rgb(15 23 42);
+  --commercial-border: rgb(30 41 59);
+  --commercial-text: rgb(241 245 249);
+  --commercial-muted: rgb(148 163 184);
+}
+
+/* Main app surfaces only; do not touch auth/print/receipt specialized layouts. */
+main :where(
+  .app-card,
+  .ux-form-shell,
+  .premium-form-section,
+  .premium-panel,
+  .premium-card,
+  .glass-card,
+  .dashboard-card,
+  .widget-card,
+  .stat-card,
+  .kpi-card,
+  .settings-card,
+  .report-card,
+  .rounded-3xl,
+  [class*="rounded-[28px]"],
+  [class*="rounded-[30px]"],
+  [class*="rounded-[32px]"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  border-color: var(--commercial-border) !important;
+  border-radius: 18px !important;
+  background-color: var(--commercial-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Neutralize gradients/noisy backgrounds in app content. */
+main :where(
+  [class*="bg-gradient"],
+  [class*="from-"],
+  [class*="via-"],
+  [class*="to-"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  background-image: none !important;
+}
+
+/* Heavy shadows become flat commercial UI. */
+main :where(
+  .shadow,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl,
+  .shadow-2xl,
+  [class*="shadow-["]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  box-shadow: none !important;
+}
+
+/* Large colorful card backgrounds become calm surfaces. */
+main :where(
+  [class*="bg-rose"],
+  [class*="bg-red"],
+  [class*="bg-orange"],
+  [class*="bg-amber"],
+  [class*="bg-yellow"],
+  [class*="bg-lime"],
+  [class*="bg-green"],
+  [class*="bg-emerald"],
+  [class*="bg-teal"],
+  [class*="bg-cyan"],
+  [class*="bg-sky"],
+  [class*="bg-blue"],
+  [class*="bg-indigo"],
+  [class*="bg-violet"],
+  [class*="bg-purple"],
+  [class*="bg-fuchsia"],
+  [class*="bg-pink"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *):not(.text-red-600):not(.text-rose-600) {
+  background-color: var(--commercial-surface-muted) !important;
+}
+
+/* Dark mode counterpart. */
+.dark main :where(
+  [class*="bg-rose"],
+  [class*="bg-red"],
+  [class*="bg-orange"],
+  [class*="bg-amber"],
+  [class*="bg-yellow"],
+  [class*="bg-lime"],
+  [class*="bg-green"],
+  [class*="bg-emerald"],
+  [class*="bg-teal"],
+  [class*="bg-cyan"],
+  [class*="bg-sky"],
+  [class*="bg-blue"],
+  [class*="bg-indigo"],
+  [class*="bg-violet"],
+  [class*="bg-purple"],
+  [class*="bg-fuchsia"],
+  [class*="bg-pink"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  background-color: var(--commercial-surface-muted) !important;
+}
+
+/* Strong colored text on cards becomes monochrome, except explicit error/success semantic labels. */
+main :where(
+  [class*="text-sky"],
+  [class*="text-blue"],
+  [class*="text-indigo"],
+  [class*="text-violet"],
+  [class*="text-purple"],
+  [class*="text-fuchsia"],
+  [class*="text-pink"],
+  [class*="text-amber"],
+  [class*="text-orange"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(51 65 85) !important;
+}
+
+.dark main :where(
+  [class*="text-sky"],
+  [class*="text-blue"],
+  [class*="text-indigo"],
+  [class*="text-violet"],
+  [class*="text-purple"],
+  [class*="text-fuchsia"],
+  [class*="text-pink"],
+  [class*="text-amber"],
+  [class*="text-orange"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(226 232 240) !important;
+}
+
+/* Keep semantic red/green, but quiet. */
+main :where([class*="text-rose"], [class*="text-red"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(190 18 60) !important;
+}
+
+main :where([class*="text-emerald"], [class*="text-green"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(4 120 87) !important;
+}
+
+.dark main :where([class*="text-rose"], [class*="text-red"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(253 164 175) !important;
+}
+
+.dark main :where([class*="text-emerald"], [class*="text-green"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(110 231 183) !important;
+}
+
+/* Oversized buttons/cards: compact Apple dimensions. */
+main :where(button, a[role="button"], .btn, .button):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+main :where(button:hover, a[role="button"]:hover, .btn:hover, .button:hover):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  transform: none !important;
+}
+
+main :where(button[class*="p-4"], button[class*="p-5"], button[class*="p-6"], a[class*="p-4"], a[class*="p-5"], a[class*="p-6"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  padding: 8px 10px !important;
+  min-height: 36px !important;
+  border-radius: 12px !important;
+}
+
+/* Big status/info cards should not feel like posters. */
+main :where(.grid > [class*="p-6"], .grid > [class*="p-5"], .grid > [class*="p-4"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  padding: 12px !important;
+}
+
+/* Icon containers: exact alignment next to title. */
+main :where(
+  [class*="h-11"][class*="w-11"],
+  [class*="h-12"][class*="w-12"],
+  [class*="h-14"][class*="w-14"],
+  [class*="h-16"][class*="w-16"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  border-radius: 12px !important;
+  border-color: var(--commercial-border) !important;
+  background: var(--commercial-surface-muted) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+.dark main :where(
+  [class*="h-11"][class*="w-11"],
+  [class*="h-12"][class*="w-12"],
+  [class*="h-14"][class*="w-14"],
+  [class*="h-16"][class*="w-16"]
+):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  color: rgb(226 232 240) !important;
+}
+
+/* Every icon has a predictable box so it does not overlap labels. */
+main i[class*="fa-"]:not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  width: 16px;
+  min-width: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Pills and badges become quiet Apple chips by default. */
+main :where(span.rounded-full, .badge, .chip):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+  border-color: var(--commercial-border) !important;
+  background: var(--commercial-surface-muted) !important;
+  box-shadow: none !important;
+}
+
+/* Tables: final alignment and calm header. */
+main table:not(.receipt-page *):not(.print-page *) {
+  border-color: var(--commercial-border) !important;
+  box-shadow: none !important;
+}
+
+main thead th:not(.receipt-page *):not(.print-page *) {
+  background: var(--commercial-surface-muted) !important;
+  color: var(--commercial-muted) !important;
+  text-align: right !important;
+  font-weight: 900 !important;
+}
+
+main tbody td:not(.receipt-page *):not(.print-page *) {
+  text-align: right !important;
+}
+
+/* Dashboard/action widgets final calming */
+.dashboard-page :where(.rounded-3xl, [class*="bg-gradient"], [class*="shadow-["]),
+main :where(.action-center-widget, .clock-widget, .kpi-widget, .widget-shell) {
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: var(--commercial-border) !important;
+}
+
+/* Settings and profile remaining giant cards */
+.settings-shell :where(.rounded-3xl, [class*="rounded-[30px]"], [class*="bg-gradient"]),
+.profile-page :where(.rounded-3xl, [class*="rounded-[30px]"], [class*="bg-gradient"]) {
+  border-radius: 18px !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* Mobile: reduce leftover visual bulk. */
+@media (max-width: 768px) {
+  main :where(.rounded-3xl, [class*="rounded-[28px]"], [class*="rounded-[30px]"], [class*="rounded-[32px]"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+    border-radius: 16px !important;
+  }
+
+  main :where([class*="p-6"], [class*="p-5"]):not(.receipt-page *):not(.print-page *):not(.login-page *) {
+    padding: 12px !important;
+  }
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.app-root,
+.app-shell,
+.main-content,
+.page-shell,
+.page-shell-modern {
+  min-width: 0;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary, #0ea5e9) 70%, transparent);
+  outline-offset: 2px;
+}

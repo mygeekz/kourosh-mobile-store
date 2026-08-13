@@ -1,0 +1,34 @@
+/* Stage 48 — Product sales date left breathing space
+   Scope: /reports/product-sales only.
+   Goal: move the date boxes a bit further left so they don't sit lip-to-lip with the preset group. */
+
+.product-sales-executive-page .product-sales-control-panel__row--dates {
+  column-gap: .68rem !important;
+  row-gap: .5rem !important;
+  align-items: flex-start !important;
+}
+
+/* In RTL, this physical left margin on the preset group pushes the date block a bit further left. */
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+.product-sales-executive-page .report-date-presets,
+.product-sales-executive-page .report-date-presets__chips {
+  margin-left: 2.15rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-box {
+  margin-top: .08rem !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-presets,
+  .product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+  .product-sales-executive-page .report-date-presets,
+  .product-sales-executive-page .report-date-presets__chips {
+    margin-left: 0 !important;
+  }
+
+  .product-sales-executive-page .product-sales-control-panel__row--dates {
+    align-items: stretch !important;
+  }
+}

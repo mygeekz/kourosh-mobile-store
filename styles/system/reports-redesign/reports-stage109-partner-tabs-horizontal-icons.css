@@ -1,0 +1,69 @@
+/* Stage 109 — Partner report tabs: horizontal responsive row + icons
+   The tabs are navigation controls, not KPI cards; keep them in one row on desktop. */
+
+.partner-performance-executive-page .partner-tabs-shell {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 8px !important;
+  border-radius: 22px !important;
+  scroll-snap-type: x proximity !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell::-webkit-scrollbar {
+  height: 0 !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell .partner-tab-button,
+.partner-performance-executive-page .partner-tabs-shell button {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+  min-height: 42px !important;
+  padding: 0 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  scroll-snap-align: start !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell .partner-tab-button i,
+.partner-performance-executive-page .partner-tabs-shell button i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  font-size: .82rem !important;
+  line-height: 1 !important;
+}
+
+.partner-performance-executive-page .partner-tabs-shell .partner-tab-button span,
+.partner-performance-executive-page .partner-tabs-shell button span {
+  display: inline-block !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-tabs-shell {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+  }
+
+  .partner-performance-executive-page .partner-tabs-shell .partner-tab-button,
+  .partner-performance-executive-page .partner-tabs-shell button {
+    min-height: 40px !important;
+    padding: 0 12px !important;
+    font-size: .78rem !important;
+  }
+}

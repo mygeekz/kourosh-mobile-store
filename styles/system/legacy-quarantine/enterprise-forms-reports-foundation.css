@@ -1,0 +1,4214 @@
+/* ===== Enterprise actions / horizontal forms / reports filters quarantine ===== */
+/* This file preserves the original cascade order of legacy runtime overrides. */
+
+/* ===== Source: styles/runtime-overrides/06a-enterprise-actions-fields-validation.css ===== */
+/* Enterprise actions, forms, reports, navigation, accessibility and RTL QA.
+   Extracted from index.css to keep the CSS entrypoint small while preserving cascade order. */
+
+/* ===== Enterprise action system rollout — phones, backup, headers, modals, details, reports ===== */
+.ux-btn,
+.ux-btn--native,
+.unified-action-button {
+  --enterprise-action-radius: 999px;
+  border-radius: var(--enterprise-action-radius) !important;
+  letter-spacing: -0.01em !important;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background-color .16s ease, color .16s ease !important;
+}
+
+.ux-btn:not(:disabled):not([aria-disabled="true"]):hover,
+.ux-btn--native:not(:disabled):hover,
+.unified-action-button:not(:disabled):hover,
+.unified-action-trigger:hover,
+.unified-action-trigger[aria-expanded='true'] {
+  transform: translateY(-1px);
+}
+
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before,
+.unified-action-button :where(i, svg),
+.unified-action-trigger :where(i, svg) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.modal-actions .ux-btn,
+.premium-modal-actions .ux-btn,
+.modal-premium-header .ux-btn,
+.premium-drawer-panel__header .ux-btn,
+.people-detail-action-btn,
+.people-list-action-btn,
+.ledger-action-btn,
+.inventory-table-action-btn,
+.report-action-btn,
+.reports-action-btn,
+.settings-data-panel .ux-btn,
+.backup-file-action,
+.unified-action-button {
+  min-height: 2.25rem !important;
+  padding-inline: .85rem !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 10px 24px -22px rgba(15, 23, 42, .24) !important;
+}
+
+.modal-actions .ux-btn:hover,
+.premium-modal-actions .ux-btn:hover,
+.modal-premium-header .ux-btn:hover,
+.premium-drawer-panel__header .ux-btn:hover,
+.people-detail-action-btn:hover,
+.people-list-action-btn:hover,
+.ledger-action-btn:hover,
+.inventory-table-action-btn:hover,
+.report-action-btn:hover,
+.reports-action-btn:hover,
+.settings-data-panel .ux-btn:hover,
+.backup-file-action:hover,
+.unified-action-button:hover {
+  box-shadow: 0 14px 28px -24px rgba(15, 23, 42, .28) !important;
+}
+
+.unified-action-trigger {
+  box-shadow: 0 10px 24px -22px rgba(15, 23, 42, .26) !important;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background-color .16s ease, color .16s ease !important;
+}
+
+.unified-action-trigger:hover,
+.unified-action-trigger[aria-expanded='true'] {
+  box-shadow: 0 14px 28px -22px rgba(15, 23, 42, .28) !important;
+}
+
+.unified-action-menu {
+  padding: .4rem !important;
+  border-radius: 1.1rem !important;
+  box-shadow: 0 22px 42px -26px rgba(15, 23, 42, .34) !important;
+}
+
+.unified-action-menu__item {
+  min-height: 2rem;
+  border-radius: .85rem !important;
+  padding-inline: .7rem !important;
+  transition: transform .15s ease, background-color .15s ease, color .15s ease !important;
+}
+
+.unified-action-menu__item:hover { transform: translateX(-1px); }
+.unified-action-menu__item :where(i, svg) { width: 1rem; text-align: center; opacity: .95; }
+.unified-action-menu__item--neutral:hover { background-color: rgba(241, 245, 249, .92) !important; }
+.unified-action-menu__item--info:hover { background-color: rgba(239, 246, 255, .96) !important; }
+.unified-action-menu__item--success:hover { background-color: rgba(236, 253, 245, .96) !important; }
+.unified-action-menu__item--warning:hover { background-color: rgba(255, 251, 235, .98) !important; }
+.unified-action-menu__item--danger:hover { background-color: rgba(255, 241, 242, .98) !important; }
+.unified-action-menu__divider { opacity: .9; }
+
+.phone-inventory-table-v2 tbody tr {
+  height: 7rem;
+  transition: background-color .16s ease, box-shadow .16s ease;
+}
+.phone-inventory-table-v2 tbody tr:hover {
+  box-shadow: inset 3px 0 0 rgba(var(--brand-rgb, 59, 130, 246), .18);
+}
+.phone-inventory-table-v2 th,
+.phone-inventory-table-v2 td { vertical-align: middle; }
+.phone-inventory-table-v2 th:nth-child(3),
+.phone-inventory-table-v2 td:nth-child(3) { width: 12.25rem; }
+.phone-inventory-table-v2 th:nth-child(4),
+.phone-inventory-table-v2 td:nth-child(4) { overflow: visible !important; }
+.phone-inventory-table-v2 .phone-table-device-stack,
+.phone-inventory-table-v2 .phone-table-finance-stack,
+.phone-inventory-table-v2 .phone-table-actions-wrap { min-height: 5.75rem; }
+.phone-inventory-table-v2 .phone-table-actions-cell,
+.phone-inventory-table-v2 .phone-table-actions-wrap { overflow: visible !important; }
+.phone-inventory-table-v2 .phone-table-actions-cell { position: relative; }
+.phone-inventory-table-v2 .phone-table-actions-menu { max-width: calc(100vw - 2rem); transform-origin: top left; }
+
+.settings-data-panel .backup-file-card {
+  position: relative;
+  border-color: rgb(226 232 240) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+  box-shadow: 0 16px 32px -28px rgba(15, 23, 42, 0.14) !important;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.settings-data-panel .backup-file-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, .72) !important;
+  box-shadow: 0 20px 40px -30px rgba(15, 23, 42, 0.18) !important;
+}
+.settings-data-panel .backup-file-card__icon {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.settings-data-panel .backup-file-card:hover .backup-file-card__icon {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, .8) !important;
+  box-shadow: 0 14px 30px -22px rgba(15, 23, 42, 0.2) !important;
+}
+.settings-data-panel .backup-file-card__badge,
+.settings-data-panel .backup-file-card__meta-pill {
+  transition: border-color .18s ease, background-color .18s ease, color .18s ease;
+}
+.settings-data-panel .backup-file-card:hover .backup-file-card__badge,
+.settings-data-panel .backup-file-card:hover .backup-file-card__meta-pill {
+  border-color: rgba(148, 163, 184, .7) !important;
+  background-color: rgba(248, 250, 252, .98) !important;
+}
+.settings-data-panel .backup-file-card__actions {
+  transition: transform .18s ease, opacity .18s ease;
+}
+@media (min-width: 1280px) {
+  .settings-data-panel .backup-file-card__actions { opacity: .88; transform: translateX(-4px); }
+  .settings-data-panel .backup-file-card:hover .backup-file-card__actions { opacity: 1; transform: translateX(0); }
+}
+
+html.dark .modal-actions .ux-btn,
+html.dark .premium-modal-actions .ux-btn,
+html.dark .settings-data-panel .ux-btn,
+html.dark .backup-file-action,
+html.dark .unified-action-button,
+html.dark .unified-action-trigger { box-shadow: 0 12px 24px -24px rgba(2, 6, 23, .6) !important; }
+html.dark .unified-action-menu { box-shadow: 0 24px 44px -26px rgba(2, 6, 23, .74) !important; }
+html.dark .unified-action-menu__item--neutral:hover { background-color: rgba(30, 41, 59, .92) !important; }
+html.dark .unified-action-menu__item--info:hover { background-color: rgba(12, 74, 110, .26) !important; }
+html.dark .unified-action-menu__item--success:hover { background-color: rgba(6, 78, 59, .28) !important; }
+html.dark .unified-action-menu__item--warning:hover { background-color: rgba(120, 53, 15, .28) !important; }
+html.dark .unified-action-menu__item--danger:hover { background-color: rgba(127, 29, 29, .28) !important; }
+html.dark .settings-data-panel .backup-file-card {
+  background: linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.95)) !important;
+  border-color: rgb(30 41 59) !important;
+  box-shadow: 0 18px 34px -28px rgba(2, 6, 23, 0.55) !important;
+}
+html.dark .settings-data-panel .backup-file-card:hover {
+  border-color: rgb(51 65 85) !important;
+  box-shadow: 0 24px 40px -30px rgba(2, 6, 23, 0.68) !important;
+}
+html.dark .settings-data-panel .backup-file-card:hover .backup-file-card__badge,
+html.dark .settings-data-panel .backup-file-card:hover .backup-file-card__meta-pill {
+  background-color: rgba(15, 23, 42, .92) !important;
+  border-color: rgba(71, 85, 105, .8) !important;
+}
+
+
+/* ===== Final field unification override ===== */
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input) {
+  min-height: var(--ux-control-height, 46px) !important;
+  border-radius: var(--ux-control-radius, 18px) !important;
+}
+
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input):focus {
+  border-color: var(--ux-control-focus-border, rgba(14, 165, 233, 0.64)) !important;
+}
+
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input)::placeholder {
+  color: var(--ux-control-muted, rgb(100, 116, 139)) !important;
+}
+
+.unified-date-trigger {
+  min-height: calc(var(--ux-control-height, 46px) + 10px) !important;
+}
+
+
+/* ===== Unified validation UX system ===== */
+:root {
+  --ux-validation-error: 225 29 72;
+  --ux-validation-error-soft: 255 241 242;
+  --ux-validation-warning: 217 119 6;
+  --ux-validation-focus: 14 165 233;
+}
+
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[aria-invalid="true"],
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea).modal-control-error,
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[data-field-state="error"] {
+  border-color: rgba(var(--ux-validation-error), .72) !important;
+  background-color: rgba(var(--ux-validation-error-soft), .72) !important;
+  box-shadow: 0 0 0 1px rgba(var(--ux-validation-error), .10), 0 14px 30px -28px rgba(var(--ux-validation-error), .32) !important;
+}
+
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[aria-invalid="true"]:focus,
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea).modal-control-error:focus,
+:where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[data-field-state="error"]:focus {
+  border-color: rgba(var(--ux-validation-error), .88) !important;
+  box-shadow: 0 0 0 4px rgba(var(--ux-validation-error), .12), 0 18px 38px -30px rgba(var(--ux-validation-error), .38) !important;
+  outline: none !important;
+}
+
+.modal-field-premium--error,
+.form-field--error,
+[data-field-state="error"] {
+  position: relative;
+}
+
+.modal-field-premium--error .modal-field-label,
+.form-field--error label,
+[data-field-state="error"] label {
+  color: rgb(var(--ux-validation-error)) !important;
+}
+
+.modal-field-premium--error .premium-input-wrap::after,
+.form-field--error .premium-input-wrap::after {
+  content: "\f06a";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  color: rgb(var(--ux-validation-error));
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(var(--ux-validation-error), .18);
+  pointer-events: none;
+}
+
+.app-field-feedback {
+  margin-top: .45rem;
+  min-height: 1.35rem;
+}
+
+.app-field-feedback :where(.app-error, .app-help) {
+  display: flex;
+  align-items: flex-start;
+  gap: .45rem;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.85;
+}
+
+.app-field-feedback .app-error {
+  color: rgb(var(--ux-validation-error)) !important;
+}
+
+.app-field-feedback .app-help {
+  color: rgb(100 116 139) !important;
+}
+
+.app-field-feedback :where(i, svg) {
+  flex: 0 0 auto;
+  margin-top: .22rem;
+  width: .85rem;
+  text-align: center;
+}
+
+.ux-validation-summary,
+.form-error-summary {
+  border-color: rgba(var(--ux-validation-error), .22) !important;
+  background: linear-gradient(180deg, rgba(255, 241, 242, .92), rgba(255,255,255,.94)) !important;
+  box-shadow: 0 20px 42px -34px rgba(var(--ux-validation-error), .32) !important;
+}
+
+.ux-validation-summary__item,
+.form-error-summary__item {
+  border: 1px solid rgba(var(--ux-validation-error), .12) !important;
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: 0 12px 24px -22px rgba(var(--ux-validation-error), .25) !important;
+}
+
+.ux-validation-summary__item:hover,
+.form-error-summary__item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(var(--ux-validation-error), .24) !important;
+  box-shadow: 0 16px 30px -24px rgba(var(--ux-validation-error), .32) !important;
+}
+
+.ux-validation-summary__item-icon {
+  border: 1px solid rgba(var(--ux-validation-error), .16);
+  background: rgba(255, 241, 242, .86) !important;
+}
+
+.ux-field-attention,
+[data-validation-attention="true"] {
+  animation: ux-field-attention-pulse 1.35s ease both;
+}
+
+@keyframes ux-field-attention-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(var(--ux-validation-error), .0); }
+  18% { box-shadow: 0 0 0 5px rgba(var(--ux-validation-error), .16), 0 16px 34px -24px rgba(var(--ux-validation-error), .34); }
+  62% { box-shadow: 0 0 0 3px rgba(var(--ux-validation-error), .10), 0 14px 30px -26px rgba(var(--ux-validation-error), .28); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--ux-validation-error), .0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-field-attention,
+  [data-validation-attention="true"],
+  .ux-validation-summary__item,
+  .form-error-summary__item {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+html.dark :where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[aria-invalid="true"],
+html.dark :where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea).modal-control-error,
+html.dark :where(.app-input, .app-select, .app-textarea, .search-input, .header-search-input, .phone-list-apple-head__search-input, .price-input__field, .phone-addable-autocomplete input, .addable-autocomplete input, input, select, textarea)[data-field-state="error"] {
+  background-color: rgba(76, 5, 25, .22) !important;
+  border-color: rgba(251, 113, 133, .68) !important;
+  box-shadow: 0 0 0 1px rgba(251, 113, 133, .12), 0 16px 34px -28px rgba(251, 113, 133, .36) !important;
+}
+
+html.dark .ux-validation-summary,
+html.dark .form-error-summary {
+  background: linear-gradient(180deg, rgba(76, 5, 25, .22), rgba(2, 6, 23, .94)) !important;
+  border-color: rgba(251, 113, 133, .22) !important;
+  box-shadow: 0 22px 42px -34px rgba(2, 6, 23, .72) !important;
+}
+
+html.dark .ux-validation-summary__item,
+html.dark .form-error-summary__item {
+  background: rgba(15, 23, 42, .72) !important;
+  border-color: rgba(251, 113, 133, .16) !important;
+}
+
+html.dark .app-field-feedback .app-help {
+  color: rgb(148 163 184) !important;
+}
+
+/* ===== Form QA pass — functional validation wiring ===== */
+:where(input, select, textarea, button)[data-error-key],
+:where(input, select, textarea, button)[data-field-key] {
+  scroll-margin-top: 7rem;
+}
+
+.modal-field-premium[data-error-key],
+.phone-identity-block__field:has([aria-invalid="true"]),
+.phone-finance-block__field:has([aria-invalid="true"]),
+.phone-operations-block__field:has([aria-invalid="true"]) {
+  scroll-margin-top: 7rem;
+}
+
+.ux-field-attention-control {
+  animation: ux-field-control-attention 1.25s ease both;
+}
+
+@keyframes ux-field-control-attention {
+  0% { outline: 0 solid rgba(var(--ux-validation-error), 0); }
+  18% { outline: 3px solid rgba(var(--ux-validation-error), .18); outline-offset: 2px; }
+  100% { outline: 0 solid rgba(var(--ux-validation-error), 0); outline-offset: 0; }
+}
+
+.form-error-summary + .grid,
+.ux-validation-summary + .grid {
+  margin-top: .75rem;
+}
+
+@supports not selector(:has(*)) {
+  .modal-field-premium[data-error-key],
+  [data-validation-attention="true"] {
+    scroll-margin-top: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-field-attention-control {
+    animation: none !important;
+  }
+}
+
+/* ===== Source: styles/runtime-overrides/06b-horizontal-forms-modals-header.css ===== */
+/* ===== Horizontal edit forms — partner/customer ===== */
+.people-modal-form--horizontal {
+  grid-template-columns: minmax(260px, .88fr) minmax(0, 1.12fr) !important;
+  align-items: start;
+  gap: 1rem !important;
+}
+
+.people-modal-form--horizontal > .people-form-error-summary {
+  grid-column: 1 / -1;
+}
+
+.people-modal-form__side {
+  min-width: 0;
+  display: grid;
+  gap: .9rem;
+}
+
+.people-modal-form__main {
+  min-width: 0;
+  display: grid;
+  gap: .9rem;
+}
+
+.people-modal-summary-card {
+  display: grid;
+  gap: .75rem;
+  padding: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(248,250,252,0.95), rgba(255,255,255,0.98));
+  box-shadow: 0 18px 42px -34px rgba(15,23,42,.18);
+}
+
+.people-modal-summary-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: .4rem;
+  padding: .36rem .72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(191, 219, 254, 0.95);
+  background: rgba(239, 246, 255, 0.9);
+  color: rgb(29 78 216);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.people-modal-summary-card__title {
+  color: rgb(15 23 42);
+  font-size: 1.12rem;
+  font-weight: 950;
+  line-height: 1.8;
+}
+
+.people-modal-summary-card__text {
+  color: rgb(100 116 139);
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1.95;
+}
+
+.people-modal-summary-metrics {
+  display: grid;
+  gap: .65rem;
+}
+
+.people-modal-summary-metric {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .78rem .82rem;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(255,255,255,0.94);
+}
+
+.people-modal-summary-metric__icon {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(191, 219, 254, 0.9);
+  background: rgba(239, 246, 255, 0.9);
+  color: rgb(37 99 235);
+}
+
+.people-modal-summary-metric__copy {
+  min-width: 0;
+  display: grid;
+  gap: .12rem;
+}
+
+.people-modal-summary-metric__copy span {
+  color: rgb(100 116 139);
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.people-modal-summary-metric__copy strong {
+  color: rgb(15 23 42);
+  font-size: .82rem;
+  font-weight: 950;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.people-modal-form--horizontal .people-modal-form__section {
+  grid-column: auto;
+}
+
+.people-modal-form--horizontal .people-modal-form__section--wide {
+  grid-template-columns: 1fr;
+}
+
+.dark .people-modal-summary-card {
+  border-color: rgba(51,65,85,.95);
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.98));
+  box-shadow: 0 18px 42px -34px rgba(2,6,23,.55);
+}
+
+.dark .people-modal-summary-card__eyebrow {
+  border-color: rgba(30, 64, 175, 0.45);
+  background: rgba(30, 64, 175, 0.18);
+  color: rgb(191 219 254);
+}
+
+.dark .people-modal-summary-card__title {
+  color: rgb(248 250 252);
+}
+
+.dark .people-modal-summary-card__text,
+.dark .people-modal-summary-metric__copy span {
+  color: rgb(148 163 184);
+}
+
+.dark .people-modal-summary-metric {
+  border-color: rgba(51,65,85,.95);
+  background: rgba(15,23,42,.82);
+}
+
+.dark .people-modal-summary-metric__icon {
+  border-color: rgba(30, 64, 175, 0.4);
+  background: rgba(30, 64, 175, 0.18);
+  color: rgb(191 219 254);
+}
+
+.dark .people-modal-summary-metric__copy strong {
+  color: rgb(248 250 252);
+}
+
+@media (max-width: 980px) {
+  .people-modal-form--horizontal {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ===== Form QA Pass — edit/detail financial modals ===== */
+.people-form-error-summary {
+  margin-bottom: 1rem;
+}
+
+.people-modal-form > .people-form-error-summary,
+.people-finance-modal > .people-form-error-summary {
+  grid-column: 1 / -1;
+}
+
+.people-finance-modal .form-error-summary,
+.people-modal-form .form-error-summary {
+  box-shadow: 0 18px 38px -30px rgba(185, 28, 28, .24) !important;
+}
+
+[data-error-key],
+[aria-invalid='true'] {
+  scroll-margin-top: 7rem;
+}
+
+/* ===== Header quick actions — existing KPI consolidation polish ===== */
+.header-finance-pulse-tile,
+.header-finance-pulse-mini {
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background-color .16s ease;
+}
+
+.header-finance-pulse-tile:hover,
+.header-finance-pulse-mini:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px -28px rgba(15, 23, 42, .22) !important;
+}
+
+.header-finance-pulse-mini :where(a, button) {
+  border-radius: 999px;
+}
+
+html.dark .header-finance-pulse-tile:hover,
+html.dark .header-finance-pulse-mini:hover {
+  box-shadow: 0 20px 38px -30px rgba(2, 6, 23, .72) !important;
+}
+
+/* ===== Source: styles/runtime-overrides/06c-reports-consolidation-filters.css ===== */
+/* ===== Reports anti-duplication consolidation polish ===== */
+.reports-consolidation-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+}
+
+.dark .reports-consolidation-panel {
+  background: linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.96)) !important;
+}
+
+.reports-scope-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  border-radius: 999px;
+  padding: .18rem .62rem;
+  font-size: 10px;
+  font-weight: 900;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  color: rgb(71 85 105);
+}
+
+.reports-scope-badge--overview {
+  border-color: rgba(14, 165, 233, .24);
+  background: rgba(240, 249, 255, .92);
+  color: rgb(3 105 161);
+}
+
+.reports-scope-badge--drilldown {
+  border-color: rgba(124, 58, 237, .24);
+  background: rgba(245, 243, 255, .92);
+  color: rgb(109 40 217);
+}
+
+.reports-scope-badge--control {
+  border-color: rgba(245, 158, 11, .28);
+  background: rgba(255, 251, 235, .96);
+  color: rgb(180 83 9);
+}
+
+.reports-scope-badge--operational {
+  border-color: rgba(16, 185, 129, .22);
+  background: rgba(236, 253, 245, .92);
+  color: rgb(4 120 87);
+}
+
+.dark .reports-scope-badge {
+  border-color: rgb(51 65 85);
+  background: rgba(15, 23, 42, .86);
+  color: rgb(203 213 225);
+}
+
+.dark .reports-scope-badge--overview {
+  border-color: rgba(14, 165, 233, .28);
+  background: rgba(12, 74, 110, .24);
+  color: rgb(125 211 252);
+}
+
+.dark .reports-scope-badge--drilldown {
+  border-color: rgba(124, 58, 237, .32);
+  background: rgba(76, 29, 149, .22);
+  color: rgb(196 181 253);
+}
+
+.dark .reports-scope-badge--control {
+  border-color: rgba(245, 158, 11, .32);
+  background: rgba(120, 53, 15, .22);
+  color: rgb(252 211 77);
+}
+
+.dark .reports-scope-badge--operational {
+  border-color: rgba(16, 185, 129, .26);
+  background: rgba(6, 78, 59, .24);
+  color: rgb(110 231 183);
+}
+
+/* ===== ReportsLayout anti-duplication action hub ===== */
+.reports-central-action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: .55rem;
+  margin-top: .75rem;
+}
+
+.reports-central-action-bar__group {
+  display: inline-flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+  border: 1px solid rgb(226 232 240);
+  background: rgba(255, 255, 255, .96);
+  border-radius: 1rem;
+  padding: .35rem;
+  box-shadow: 0 14px 30px -26px rgba(15, 23, 42, .18);
+}
+
+.reports-central-action-bar__group .report-action-btn {
+  border-radius: .85rem !important;
+  min-height: 2.35rem !important;
+  padding-inline: .8rem !important;
+  white-space: nowrap;
+}
+
+.reports-central-action-bar__group .report-action-btn :where(i, svg) {
+  width: 1rem;
+  text-align: center;
+}
+
+.reports-central-action-bar__hint {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgb(226 232 240);
+  background: rgb(248 250 252);
+  color: rgb(100 116 139);
+  border-radius: 999px;
+  padding: .35rem .7rem;
+  font-size: 10.5px;
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+.reports-central-action-bar__hint i {
+  color: rgb(71 85 105);
+}
+
+@media (min-width: 768px) {
+  .reports-central-action-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .reports-central-action-bar__group {
+    width: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .reports-central-action-bar__group .report-action-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: calc(33.333% - .4rem);
+    padding-inline: .55rem !important;
+  }
+
+  .reports-central-action-bar__hint {
+    width: 100%;
+    border-radius: .9rem;
+  }
+}
+
+html.dark .reports-central-action-bar__group {
+  border-color: rgb(30 41 59);
+  background: rgba(2, 6, 23, .96);
+  box-shadow: 0 14px 32px -26px rgba(2, 6, 23, .7);
+}
+
+html.dark .reports-central-action-bar__hint {
+  border-color: rgb(30 41 59);
+  background: rgba(15, 23, 42, .92);
+  color: rgb(148 163 184);
+}
+
+html.dark .reports-central-action-bar__hint i {
+  color: rgb(203 213 225);
+}
+
+
+/* ===== Reports date filter anti-duplication polish ===== */
+.report-date-filter-source-note {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 2.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, .9);
+  background: rgba(248, 250, 252, .82);
+  padding: .45rem .75rem;
+  color: rgb(100 116 139);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.report-date-filter-source-note i {
+  font-size: 10px;
+  color: rgb(71 85 105);
+}
+
+.report-date-exception-strip {
+  border: 1px solid rgba(226, 232, 240, .86);
+  background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(248,250,252,.72));
+  border-radius: 18px;
+  padding: .65rem .75rem;
+}
+
+html.dark .report-date-filter-source-note {
+  border-color: rgba(51, 65, 85, .9);
+  background: rgba(15, 23, 42, .7);
+  color: rgb(148 163 184);
+}
+
+html.dark .report-date-filter-source-note i {
+  color: rgb(203 213 225);
+}
+
+html.dark .report-date-exception-strip {
+  border-color: rgba(51, 65, 85, .9);
+  background: linear-gradient(180deg, rgba(15,23,42,.84), rgba(2,6,23,.62));
+}
+
+
+/* ===== Reports Saved Views anti-duplication clarity ===== */
+.report-local-snapshot-bar {
+  margin-bottom: 1.25rem;
+}
+
+.report-local-saved-views {
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+  border-color: rgb(226 232 240) !important;
+  box-shadow: 0 18px 38px -34px rgba(15, 23, 42, .22) !important;
+  overflow: hidden;
+}
+
+.report-local-saved-views__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .85rem 1rem .65rem;
+  border-bottom: 1px solid rgba(226, 232, 240, .86);
+  background: rgba(248, 250, 252, .72);
+}
+
+.report-local-saved-views__title {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: rgb(15 23 42);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+
+.report-local-saved-views__title i {
+  color: rgb(100 116 139);
+  font-size: .75rem;
+}
+
+.report-local-saved-views__hint {
+  max-width: 44rem;
+  color: rgb(100 116 139);
+  font-size: .70rem;
+  font-weight: 700;
+  line-height: 1.9;
+  text-align: left;
+}
+
+.report-local-saved-views .ux-input,
+.report-local-saved-views select,
+.report-local-saved-views input {
+  min-height: 2.5rem !important;
+}
+
+.report-local-saved-views .ux-btn {
+  border-radius: 999px !important;
+}
+
+@media (max-width: 767px) {
+  .report-local-saved-views__head {
+    flex-direction: column;
+  }
+
+  .report-local-saved-views__hint {
+    text-align: right;
+  }
+}
+
+html.dark .report-local-saved-views {
+  background: linear-gradient(180deg, rgba(2,6,23,.96), rgba(15,23,42,.92)) !important;
+  border-color: rgb(30 41 59) !important;
+  box-shadow: 0 18px 38px -32px rgba(2, 6, 23, .68) !important;
+}
+
+html.dark .report-local-saved-views__head {
+  border-bottom-color: rgba(30, 41, 59, .96);
+  background: rgba(15, 23, 42, .66);
+}
+
+html.dark .report-local-saved-views__title {
+  color: rgb(241 245 249);
+}
+
+html.dark .report-local-saved-views__title i,
+html.dark .report-local-saved-views__hint {
+  color: rgb(148 163 184);
+}
+
+
+/* ===== Shared report filter grid ===== */
+.report-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .75rem;
+  align-items: start;
+}
+
+.report-filter-grid > * {
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .report-filter-grid--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .report-filter-grid--date-pair,
+  .report-filter-grid--wide,
+  .report-filter-grid--dates-xl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .report-filter-grid--compact {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .report-filter-grid--date-pair {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .report-filter-grid--wide {
+    grid-template-columns: minmax(0, 1.25fr) auto auto;
+  }
+
+  .report-filter-grid--dates-xl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ===== Reports search/filter anti-duplication polish ===== */
+.report-local-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  min-height: 1.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, .95);
+  background: rgba(248, 250, 252, .92);
+  color: rgb(100 116 139);
+  padding: .2rem .55rem;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: -.01em;
+  white-space: nowrap;
+}
+
+.report-local-filter-pill::before {
+  content: "\f002";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 9px;
+  opacity: .82;
+}
+
+.report-local-filter-pill--dark {
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.10);
+  color: rgba(255,255,255,.78);
+}
+
+.report-local-search-input {
+  transition: border-color .16s ease, box-shadow .16s ease, background-color .16s ease;
+}
+
+.report-local-search-input:focus,
+.report-local-search-input:focus-visible {
+  border-color: rgba(59, 130, 246, .38) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, .10), 0 10px 24px -22px rgba(15, 23, 42, .18) !important;
+}
+
+html.dark .report-local-filter-pill {
+  border-color: rgba(51, 65, 85, .95);
+  background: rgba(15, 23, 42, .78);
+  color: rgb(203 213 225);
+}
+
+html.dark .report-local-search-input:focus,
+html.dark .report-local-search-input:focus-visible {
+  border-color: rgba(96, 165, 250, .42) !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, .12), 0 12px 26px -22px rgba(2, 6, 23, .68) !important;
+}
+
+/* ===== Reports KPI anti-duplication clarity ===== */
+.report-kpi-definition-note {
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, .92);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94));
+  padding: 16px;
+  box-shadow: 0 18px 42px -36px rgba(15, 23, 42, .22);
+}
+
+.report-kpi-definition-note__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.report-kpi-definition-note__icon {
+  display: inline-grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(226, 232, 240, .92);
+  border-radius: 16px;
+  background: #fff;
+  color: rgb(71 85 105);
+  box-shadow: 0 12px 28px -24px rgba(15, 23, 42, .22);
+}
+
+.report-kpi-definition-note__title {
+  color: rgb(15 23 42);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.report-kpi-definition-note__desc {
+  margin-top: 4px;
+  color: rgb(100 116 139);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.9;
+}
+
+.report-kpi-definition-note__grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+@media (min-width: 768px) {
+  .report-kpi-definition-note__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .report-kpi-definition-note__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.report-kpi-definition-note__item {
+  min-width: 0;
+  border: 1px solid rgba(226, 232, 240, .82);
+  border-radius: 18px;
+  background: rgba(255,255,255,.74);
+  padding: 11px 12px;
+  transition: border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+
+.report-kpi-definition-note__item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, .72);
+  box-shadow: 0 14px 28px -26px rgba(15, 23, 42, .24);
+}
+
+.report-kpi-definition-note__item-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  color: rgb(30 41 59);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.report-kpi-definition-note__item-title i {
+  width: 14px;
+  text-align: center;
+  color: rgb(100 116 139);
+}
+
+.report-kpi-definition-note__item-title span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.report-kpi-definition-note__item-title em {
+  margin-right: auto;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgb(241 245 249);
+  padding: 3px 8px;
+  color: rgb(71 85 105);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.report-kpi-definition-note__item p {
+  margin-top: 7px;
+  color: rgb(100 116 139);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.9;
+}
+
+.report-kpi-definition-note__item--recognized .report-kpi-definition-note__item-title i,
+.report-kpi-definition-note__item--collection .report-kpi-definition-note__item-title i {
+  color: rgb(5 150 105);
+}
+
+.report-kpi-definition-note__item--audit .report-kpi-definition-note__item-title i {
+  color: rgb(217 119 6);
+}
+
+.report-kpi-definition-note__item--master .report-kpi-definition-note__item-title i {
+  color: rgb(79 70 229);
+}
+
+html.dark .report-kpi-definition-note {
+  border-color: rgb(30 41 59);
+  background: linear-gradient(180deg, rgba(2,6,23,.98), rgba(15,23,42,.94));
+  box-shadow: 0 20px 42px -34px rgba(2, 6, 23, .72);
+}
+
+html.dark .report-kpi-definition-note__icon,
+html.dark .report-kpi-definition-note__item {
+  border-color: rgb(30 41 59);
+  background: rgba(15, 23, 42, .72);
+}
+
+html.dark .report-kpi-definition-note__title,
+html.dark .report-kpi-definition-note__item-title {
+  color: rgb(241 245 249);
+}
+
+html.dark .report-kpi-definition-note__desc,
+html.dark .report-kpi-definition-note__item p {
+  color: rgb(148 163 184);
+}
+
+html.dark .report-kpi-definition-note__item-title em {
+  background: rgba(30, 41, 59, .92);
+  color: rgb(203 213 225);
+}
+
+
+/* ===== Customer profile edit modal full redesign ===== */
+.customer-profile-edit-overlay .modal-surface {
+  border-radius: 32px !important;
+}
+
+.customer-profile-edit-modal {
+  display: grid;
+  gap: 14px;
+}
+
+.customer-profile-edit-modal__layout {
+  display: grid;
+  grid-template-columns: minmax(280px, .9fr) minmax(0, 1.1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.customer-profile-edit-modal__errors {
+  margin-bottom: 0 !important;
+}
+
+.customer-profile-edit-modal__side,
+.customer-profile-edit-modal__main {
+  min-width: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.customer-profile-edit-hero {
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(191, 219, 254, .95);
+  background: linear-gradient(180deg, rgba(239,246,255,.94), rgba(255,255,255,.98));
+  box-shadow: 0 24px 56px -42px rgba(37,99,235,.28);
+}
+
+.customer-profile-edit-hero__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.82);
+  border: 1px solid rgba(191,219,254,.95);
+  color: rgb(29 78 216);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.customer-profile-edit-hero__title {
+  font-size: 21px;
+  line-height: 1.6;
+  font-weight: 950;
+  color: rgb(15 23 42);
+}
+
+.customer-profile-edit-hero__text {
+  margin: 0;
+  color: rgb(71 85 105);
+  font-size: 12px;
+  line-height: 2;
+  font-weight: 700;
+}
+
+.customer-profile-edit-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.customer-profile-edit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(203,213,225,.95);
+  background: rgba(255,255,255,.92);
+  color: rgb(51 65 85);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.customer-profile-edit-insights {
+  display: grid;
+  gap: 10px;
+}
+
+.customer-profile-edit-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(226,232,240,.95);
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 18px 40px -36px rgba(15,23,42,.18);
+}
+
+.customer-profile-edit-mini-card__icon {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(191,219,254,.95);
+  background: rgba(239,246,255,.94);
+  color: rgb(37 99 235);
+}
+
+.customer-profile-edit-mini-card__copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.customer-profile-edit-mini-card__copy span {
+  color: rgb(100 116 139);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.customer-profile-edit-mini-card__copy strong {
+  color: rgb(15 23 42);
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 900;
+  word-break: break-word;
+}
+
+.customer-profile-edit-section {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(226,232,240,.95);
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow: 0 20px 46px -38px rgba(15,23,42,.18);
+}
+
+.customer-profile-edit-section__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.customer-profile-edit-section__icon {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(191,219,254,.95);
+  background: rgba(239,246,255,.94);
+  color: rgb(37 99 235);
+}
+
+.customer-profile-edit-section__head h4 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 950;
+}
+
+.customer-profile-edit-section__head p {
+  margin: 3px 0 0;
+  color: rgb(100 116 139);
+  font-size: 11.5px;
+  line-height: 1.9;
+  font-weight: 700;
+}
+
+.customer-profile-edit-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.customer-profile-edit-grid--double {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.customer-profile-edit-section .modal-field-premium {
+  margin-bottom: 0;
+}
+
+.customer-profile-edit-section .modal-field-label {
+  margin-bottom: 8px;
+  color: rgb(51 65 85);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.customer-profile-edit-section .premium-input-leading-chip {
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  font-size: 12px;
+}
+
+.customer-profile-edit-section :where(.app-input,.app-textarea,.app-select).modal-control-premium {
+  min-height: 48px;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.customer-profile-edit-section textarea.modal-control-premium {
+  min-height: 128px;
+  resize: vertical;
+  padding-top: 14px;
+}
+
+.customer-profile-edit-section .app-help,
+.customer-profile-edit-section .app-error {
+  font-size: 10.5px;
+  line-height: 1.8;
+}
+
+.customer-profile-edit-actions {
+  margin-top: 2px;
+  padding: 10px 0 0;
+}
+
+.customer-profile-edit-actions .premium-helper-inline--card {
+  max-width: 420px;
+  border-radius: 18px;
+}
+
+.customer-profile-edit-actions .premium-submit-btn,
+.customer-profile-edit-actions .premium-cancel-btn {
+  min-height: 40px;
+  border-radius: 14px;
+}
+
+.dark .customer-profile-edit-hero {
+  border-color: rgba(30,64,175,.42);
+  background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(2,6,23,.98));
+  box-shadow: 0 22px 52px -40px rgba(2,6,23,.62);
+}
+
+.dark .customer-profile-edit-hero__eyebrow {
+  border-color: rgba(51,65,85,.95);
+  background: rgba(15,23,42,.82);
+  color: rgb(191 219 254);
+}
+
+.dark .customer-profile-edit-hero__title,
+.dark .customer-profile-edit-mini-card__copy strong,
+.dark .customer-profile-edit-section__head h4 {
+  color: rgb(248 250 252);
+}
+
+.dark .customer-profile-edit-hero__text,
+.dark .customer-profile-edit-mini-card__copy span,
+.dark .customer-profile-edit-section__head p,
+.dark .customer-profile-edit-section .modal-field-label {
+  color: rgb(148 163 184);
+}
+
+.dark .customer-profile-edit-chip,
+.dark .customer-profile-edit-mini-card,
+.dark .customer-profile-edit-section {
+  border-color: rgba(51,65,85,.95);
+  background: rgba(15,23,42,.9);
+  box-shadow: 0 20px 42px -34px rgba(2,6,23,.58);
+}
+
+.dark .customer-profile-edit-chip {
+  color: rgb(226 232 240);
+}
+
+.dark .customer-profile-edit-mini-card__icon,
+.dark .customer-profile-edit-section__icon {
+  border-color: rgba(30,64,175,.45);
+  background: rgba(30,64,175,.18);
+  color: rgb(191 219 254);
+}
+
+@media (max-width: 1100px) {
+  .customer-profile-edit-modal__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-profile-edit-grid--double {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-profile-edit-hero,
+  .customer-profile-edit-section {
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .customer-profile-edit-actions .premium-helper-inline--card {
+    max-width: none;
+  }
+}
+
+
+/* v48 — customer edit modal layout fix + hide close button support */
+.customer-profile-edit-modal {
+  grid-template-columns: 1fr !important;
+  gap: 14px !important;
+}
+
+.customer-profile-edit-modal__layout,
+.customer-profile-edit-actions {
+  grid-column: 1 / -1 !important;
+}
+
+.customer-profile-edit-modal__layout {
+  width: 100% !important;
+}
+
+.customer-profile-edit-modal__main,
+.customer-profile-edit-modal__side,
+.customer-profile-edit-section,
+.customer-profile-edit-grid,
+.customer-profile-edit-grid--double {
+  min-width: 0 !important;
+}
+
+.customer-profile-edit-section,
+.customer-profile-edit-hero,
+.customer-profile-edit-mini-card {
+  width: 100% !important;
+}
+
+.customer-profile-edit-grid--double > *,
+.customer-profile-edit-grid > * {
+  min-width: 0 !important;
+}
+
+.customer-profile-edit-modal .modal-field-premium .app-field__control-wrap,
+.customer-profile-edit-modal .modal-field-premium .modal-control-premium,
+.customer-profile-edit-modal .modal-field-premium textarea.modal-control-premium {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.customer-profile-edit-modal .modal-field-premium textarea.modal-control-premium {
+  min-height: 132px !important;
+}
+
+.customer-profile-edit-overlay .modal-premium-header {
+  padding-inline-start: 22px !important;
+}
+
+.customer-profile-edit-overlay .app-modal-title-row {
+  padding-inline-end: 0 !important;
+}
+
+@media (max-width: 1100px) {
+  .customer-profile-edit-modal__layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v49 — compact + rebalance customer edit modal */
+.customer-profile-edit-overlay {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.customer-profile-edit-overlay .modal-surface {
+  width: min(980px, calc(100vw - 28px)) !important;
+  max-height: min(84vh, 860px) !important;
+  margin: auto !important;
+  align-self: center !important;
+  border-radius: 28px !important;
+}
+
+.customer-profile-edit-overlay .modal-body-premium {
+  padding: 12px !important;
+}
+
+.customer-profile-edit-overlay .modal-premium-header {
+  min-height: 66px !important;
+  padding: 10px 18px !important;
+}
+
+.customer-profile-edit-overlay .app-modal-title-row {
+  min-height: 0 !important;
+}
+
+.customer-profile-edit-modal {
+  gap: 10px !important;
+}
+
+.customer-profile-edit-modal__layout {
+  grid-template-columns: minmax(270px, .9fr) minmax(0, 1.1fr) !important;
+  gap: 10px !important;
+}
+
+.customer-profile-edit-modal__side,
+.customer-profile-edit-modal__main {
+  gap: 10px !important;
+}
+
+.customer-profile-edit-hero {
+  gap: 10px !important;
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+
+.customer-profile-edit-hero__eyebrow {
+  min-height: 26px !important;
+  padding: 4px 10px !important;
+  font-size: 10px !important;
+}
+
+.customer-profile-edit-hero__title {
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+}
+
+.customer-profile-edit-hero__text {
+  font-size: 11px !important;
+  line-height: 1.9 !important;
+}
+
+.customer-profile-edit-chip {
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  font-size: 10px !important;
+  border-radius: 999px !important;
+}
+
+.customer-profile-edit-insights {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px !important;
+}
+
+.customer-profile-edit-insights > :last-child {
+  grid-column: 1 / -1;
+}
+
+.customer-profile-edit-mini-card {
+  padding: 10px 10px !important;
+  border-radius: 18px !important;
+  gap: 8px !important;
+}
+
+.customer-profile-edit-mini-card__icon {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+.customer-profile-edit-mini-card__copy span {
+  font-size: 10px !important;
+}
+
+.customer-profile-edit-mini-card__copy strong {
+  font-size: 11.5px !important;
+  line-height: 1.6 !important;
+}
+
+.customer-profile-edit-section {
+  gap: 12px !important;
+  padding: 14px !important;
+  border-radius: 22px !important;
+}
+
+.customer-profile-edit-section__head {
+  gap: 10px !important;
+}
+
+.customer-profile-edit-section__icon {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+.customer-profile-edit-section__head h4 {
+  font-size: 13px !important;
+}
+
+.customer-profile-edit-section__head p {
+  font-size: 10px !important;
+  line-height: 1.8 !important;
+}
+
+.customer-profile-edit-grid,
+.customer-profile-edit-grid--double {
+  gap: 10px !important;
+}
+
+.customer-profile-edit-section--details .customer-profile-edit-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.customer-profile-edit-section .modal-field-label {
+  font-size: 11px !important;
+  margin-bottom: 6px !important;
+}
+
+.customer-profile-edit-section .premium-input-leading-chip {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+.customer-profile-edit-section :where(.app-input,.app-textarea,.app-select).modal-control-premium {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+}
+
+.customer-profile-edit-section textarea.modal-control-premium,
+.customer-profile-edit-modal .modal-field-premium textarea.modal-control-premium {
+  min-height: 104px !important;
+  padding-top: 12px !important;
+}
+
+.customer-profile-edit-section .app-help,
+.customer-profile-edit-section .app-error {
+  font-size: 9.5px !important;
+  line-height: 1.7 !important;
+}
+
+.customer-profile-edit-actions {
+  padding-top: 2px !important;
+}
+
+.customer-profile-edit-actions .premium-helper-inline--card {
+  max-width: 360px !important;
+  border-radius: 14px !important;
+  padding: 8px 10px !important;
+}
+
+.customer-profile-edit-actions .premium-submit-btn,
+.customer-profile-edit-actions .premium-cancel-btn {
+  min-height: 36px !important;
+  height: 36px !important;
+  border-radius: 12px !important;
+  font-size: 10.5px !important;
+}
+
+@media (max-width: 900px) {
+  .customer-profile-edit-overlay .modal-surface {
+    width: min(100vw - 20px, 760px) !important;
+  }
+
+  .customer-profile-edit-modal__layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-profile-edit-section--details .customer-profile-edit-grid,
+  .customer-profile-edit-insights {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-profile-edit-insights > :last-child {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-profile-edit-grid--double {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* v50 — full approved redesign for customer edit modal */
+.customer-edit-v2-overlay {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.customer-edit-v2-overlay .modal-surface {
+  width: min(1080px, calc(100vw - 28px)) !important;
+  max-height: min(90vh, 920px) !important;
+  border-radius: 30px !important;
+  margin: auto !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-header {
+  min-height: 78px !important;
+  padding: 18px 24px !important;
+  border-bottom: 1px solid rgba(226,232,240,.92) !important;
+}
+
+.customer-edit-v2-overlay .modal-body-premium {
+  padding: 20px 22px 16px !important;
+  overflow-y: auto !important;
+}
+
+.customer-edit-v2 {
+  display: grid;
+  gap: 16px;
+}
+
+.customer-edit-v2__errors {
+  margin: 0 !important;
+}
+
+.customer-edit-v2__layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.customer-edit-v2__summary,
+.customer-edit-v2__main {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.customer-edit-v2-card {
+  border: 1px solid rgba(226,232,240,.94);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.97));
+  box-shadow: 0 18px 40px -34px rgba(15,23,42,.16);
+}
+
+.customer-edit-v2-card--summary {
+  padding: 18px;
+}
+
+.customer-edit-v2-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.customer-edit-v2-card__head h4,
+.customer-edit-v2-panel__head h4 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1.5;
+}
+
+.customer-edit-v2-card__head p {
+  margin: 4px 0 0;
+  color: rgb(100 116 139);
+  font-size: 12px;
+  line-height: 1.9;
+  font-weight: 700;
+}
+
+.customer-edit-v2-card__head-icon,
+.customer-edit-v2-panel__head span {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(187,247,208,.9);
+  background: rgba(240,253,244,.9);
+  color: rgb(22 163 74);
+}
+
+.customer-edit-v2-status-list {
+  display: grid;
+  gap: 12px;
+}
+
+.customer-edit-v2-status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(226,232,240,.96);
+  background: rgba(255,255,255,.96);
+}
+
+.customer-edit-v2-status-item__copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.customer-edit-v2-status-item__copy span {
+  color: rgb(71 85 105);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-status-item__copy strong {
+  color: rgb(15 23 42);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+.customer-edit-v2-status-item__copy em {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.customer-edit-v2-status-item__copy .is-positive { color: rgb(22 163 74); }
+.customer-edit-v2-status-item__copy .is-info { color: rgb(59 130 246); }
+.customer-edit-v2-status-item__copy .is-neutral { color: rgb(100 116 139); }
+
+.customer-edit-v2-status-item__icon {
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid rgba(187,247,208,.92);
+  background: rgba(240,253,244,.9);
+  color: rgb(22 163 74);
+}
+
+.customer-edit-v2-status-item__icon.is-indigo {
+  border-color: rgba(199,210,254,.95);
+  background: rgba(238,242,255,.95);
+  color: rgb(79 70 229);
+}
+
+.customer-edit-v2-card--hero {
+  padding: 18px 20px;
+  background: linear-gradient(180deg, rgba(249,253,250,.96), rgba(255,255,255,.99));
+  border-color: rgba(187,247,208,.92);
+}
+
+.customer-edit-v2-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.customer-edit-v2-hero__copy {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.customer-edit-v2-hero__eyebrow {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(191,219,254,.95);
+  background: rgba(255,255,255,.92);
+  color: rgb(37 99 235);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-hero h3 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 950;
+}
+
+.customer-edit-v2-hero p {
+  margin: 0;
+  color: rgb(71 85 105);
+  font-size: 12.5px;
+  line-height: 1.95;
+  font-weight: 700;
+}
+
+.customer-edit-v2-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.customer-edit-v2-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(203,213,225,.95);
+  background: rgba(255,255,255,.94);
+  color: rgb(71 85 105);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-hero__avatar {
+  width: 64px;
+  min-width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: rgba(240,253,244,.95);
+  color: rgb(22 163 74);
+  border: 1px solid rgba(187,247,208,.95);
+  font-size: 24px;
+}
+
+.customer-edit-v2-card--panel {
+  padding: 18px;
+}
+
+.customer-edit-v2-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.customer-edit-v2-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.customer-edit-v2-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.customer-edit-v2-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.customer-edit-v2-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgb(71 85 105);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-field__label em {
+  color: rgb(244 63 94);
+  font-style: normal;
+}
+
+.customer-edit-v2-field__control {
+  position: relative;
+  min-width: 0;
+}
+
+.customer-edit-v2-field__icon {
+  position: absolute;
+  inset-inline-start: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(226,232,240,.95);
+  background: rgba(248,250,252,.95);
+  color: rgb(100 116 139);
+  pointer-events: none;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-field__icon {
+  top: 12px;
+  transform: none;
+}
+
+.customer-edit-v2-input.app-input,
+.customer-edit-v2-input.app-textarea {
+  width: 100% !important;
+  min-height: 48px !important;
+  padding-inline: 16px 58px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203,213,225,.96) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+  box-shadow: none !important;
+}
+
+.customer-edit-v2-textarea.app-textarea {
+  min-height: 92px !important;
+  padding-top: 14px !important;
+  resize: vertical !important;
+}
+
+.customer-edit-v2-field__error {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(225 29 72);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.customer-edit-v2__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(226,232,240,.92);
+}
+
+.customer-edit-v2__footer-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgb(100 116 139);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.customer-edit-v2__footer-note i {
+  color: rgb(71 85 105);
+}
+
+.customer-edit-v2__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customer-edit-v2__cancel-btn,
+.customer-edit-v2__submit-btn {
+  min-height: 42px !important;
+  border-radius: 16px !important;
+  padding-inline: 20px !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+.customer-edit-v2__cancel-btn {
+  background: rgba(255,255,255,.96) !important;
+  border: 1px solid rgba(203,213,225,.95) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.customer-edit-v2__submit-btn {
+  box-shadow: 0 18px 34px -24px rgba(22,163,74,.46) !important;
+}
+
+.dark .customer-edit-v2-card,
+.dark .customer-edit-v2__cancel-btn {
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.96)) !important;
+  border-color: rgba(51,65,85,.95) !important;
+}
+
+.dark .customer-edit-v2-card__head h4,
+.dark .customer-edit-v2-panel__head h4,
+.dark .customer-edit-v2-status-item__copy strong,
+.dark .customer-edit-v2-hero h3,
+.dark .customer-edit-v2-input.app-input,
+.dark .customer-edit-v2-input.app-textarea {
+  color: rgb(248 250 252) !important;
+}
+
+.dark .customer-edit-v2-card__head p,
+.dark .customer-edit-v2-status-item__copy span,
+.dark .customer-edit-v2-hero p,
+.dark .customer-edit-v2-field__label,
+.dark .customer-edit-v2__footer-note {
+  color: rgb(148 163 184) !important;
+}
+
+.dark .customer-edit-v2-status-item,
+.dark .customer-edit-v2-input.app-input,
+.dark .customer-edit-v2-input.app-textarea,
+.dark .customer-edit-v2-field__icon,
+.dark .customer-edit-v2-chip {
+  border-color: rgba(51,65,85,.96) !important;
+  background: rgba(15,23,42,.82) !important;
+}
+
+.dark .customer-edit-v2-card--hero {
+  border-color: rgba(30,64,175,.42) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(2,6,23,.98)) !important;
+}
+
+.dark .customer-edit-v2-status-item__icon,
+.dark .customer-edit-v2-card__head-icon,
+.dark .customer-edit-v2-panel__head span,
+.dark .customer-edit-v2-hero__avatar {
+  border-color: rgba(30,64,175,.42) !important;
+  background: rgba(30,64,175,.16) !important;
+  color: rgb(191 219 254) !important;
+}
+
+@media (max-width: 980px) {
+  .customer-edit-v2__layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-edit-v2-overlay .modal-surface {
+    width: min(calc(100vw - 16px), 100%) !important;
+  }
+
+  .customer-edit-v2-overlay .modal-premium-header {
+    padding: 14px 16px !important;
+  }
+
+  .customer-edit-v2-overlay .modal-body-premium {
+    padding: 14px !important;
+  }
+
+  .customer-edit-v2-grid--two {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-edit-v2__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .customer-edit-v2__footer-actions {
+    justify-content: stretch;
+  }
+
+  .customer-edit-v2__cancel-btn,
+  .customer-edit-v2__submit-btn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+}
+
+
+/* v51 — customer edit modal compact sizing + field icon separation */
+.customer-edit-v2-overlay .modal-surface {
+  width: min(980px, calc(100vw - 28px)) !important;
+  max-height: min(88vh, 860px) !important;
+  border-radius: 26px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-header {
+  min-height: 64px !important;
+  padding: 14px 18px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-kicker {
+  font-size: 10px !important;
+  margin-bottom: 2px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-title {
+  font-size: 19px !important;
+  line-height: 1.45 !important;
+}
+
+.customer-edit-v2-overlay .modal-body-premium {
+  padding: 16px 18px 14px !important;
+}
+
+.customer-edit-v2 {
+  gap: 12px !important;
+}
+
+.customer-edit-v2__layout {
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  gap: 12px !important;
+}
+
+.customer-edit-v2__summary,
+.customer-edit-v2__main {
+  gap: 12px !important;
+}
+
+.customer-edit-v2-card {
+  border-radius: 20px !important;
+  box-shadow: 0 14px 30px -30px rgba(15,23,42,.16) !important;
+}
+
+.customer-edit-v2-card--summary,
+.customer-edit-v2-card--panel,
+.customer-edit-v2-card--hero {
+  padding: 14px !important;
+}
+
+.customer-edit-v2-card__head,
+.customer-edit-v2-panel__head {
+  margin-bottom: 10px !important;
+}
+
+.customer-edit-v2-card__head h4,
+.customer-edit-v2-panel__head h4 {
+  font-size: 15px !important;
+}
+
+.customer-edit-v2-card__head p,
+.customer-edit-v2-hero p,
+.customer-edit-v2__footer-note,
+.customer-edit-v2-field__label,
+.customer-edit-v2-status-item__copy span,
+.customer-edit-v2-status-item__copy em {
+  font-size: 11px !important;
+}
+
+.customer-edit-v2-card__head-icon,
+.customer-edit-v2-panel__head span {
+  width: 32px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+}
+
+.customer-edit-v2-status-list {
+  gap: 10px !important;
+}
+
+.customer-edit-v2-status-item {
+  padding: 11px 12px !important;
+  border-radius: 16px !important;
+}
+
+.customer-edit-v2-status-item__copy {
+  gap: 3px !important;
+}
+
+.customer-edit-v2-status-item__copy strong {
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+}
+
+.customer-edit-v2-status-item__icon {
+  width: 38px !important;
+  min-width: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  font-size: 13px !important;
+}
+
+.customer-edit-v2-hero {
+  gap: 14px !important;
+}
+
+.customer-edit-v2-hero__copy {
+  gap: 6px !important;
+}
+
+.customer-edit-v2-hero__eyebrow {
+  min-height: 26px !important;
+  padding: 0 9px !important;
+  font-size: 10px !important;
+}
+
+.customer-edit-v2-hero h3 {
+  font-size: 18px !important;
+}
+
+.customer-edit-v2-hero__chips {
+  gap: 6px !important;
+}
+
+.customer-edit-v2-chip {
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  font-size: 10.5px !important;
+}
+
+.customer-edit-v2-hero__avatar {
+  width: 52px !important;
+  min-width: 52px !important;
+  height: 52px !important;
+  border-radius: 18px !important;
+  font-size: 20px !important;
+}
+
+.customer-edit-v2-grid {
+  gap: 12px !important;
+}
+
+.customer-edit-v2-field {
+  gap: 6px !important;
+}
+
+.customer-edit-v2-field__label {
+  font-size: 11.5px !important;
+}
+
+.customer-edit-v2-field__control {
+  position: relative !important;
+}
+
+.customer-edit-v2-field__control::after {
+  content: '';
+  position: absolute;
+  inset-inline-start: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 22px;
+  background: rgba(203,213,225,.95);
+  pointer-events: none;
+}
+
+.customer-edit-v2-field__control--textarea::after {
+  top: 12px;
+  transform: none;
+  height: 26px;
+}
+
+.customer-edit-v2-field__icon {
+  inset-inline-start: 8px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+.customer-edit-v2-input.app-input,
+.customer-edit-v2-input.app-textarea {
+  min-height: 42px !important;
+  border-radius: 14px !important;
+  font-size: 12.5px !important;
+  line-height: 1.75 !important;
+  padding-inline: 12px 60px !important;
+}
+
+.customer-edit-v2-input.app-input[dir='ltr'],
+.customer-edit-v2-input.app-textarea[dir='ltr'] {
+  padding-inline: 60px 12px !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2-textarea.app-textarea {
+  min-height: 82px !important;
+  padding-top: 12px !important;
+}
+
+.customer-edit-v2-field__error {
+  font-size: 10px !important;
+}
+
+.customer-edit-v2__footer {
+  padding-top: 12px !important;
+  gap: 10px !important;
+}
+
+.customer-edit-v2__footer-actions {
+  gap: 8px !important;
+}
+
+.customer-edit-v2__cancel-btn,
+.customer-edit-v2__submit-btn {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 14px !important;
+  padding-inline: 16px !important;
+  font-size: 12px !important;
+}
+
+@media (max-width: 980px) {
+  .customer-edit-v2__layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-edit-v2-overlay .modal-surface {
+    width: min(calc(100vw - 16px), 100%) !important;
+  }
+
+  .customer-edit-v2-overlay .modal-body-premium {
+    padding: 12px !important;
+  }
+
+  .customer-edit-v2-grid--two {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-edit-v2__footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+
+/* v52 — hard compact pass + absolute RTL field icon separation */
+.customer-edit-v2-overlay .modal-surface {
+  width: min(900px, calc(100vw - 28px)) !important;
+  max-height: min(86vh, 820px) !important;
+  border-radius: 24px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-header {
+  min-height: 56px !important;
+  padding: 10px 16px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-title {
+  font-size: 17px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-kicker {
+  font-size: 9px !important;
+}
+
+.customer-edit-v2-overlay .modal-body-premium {
+  padding: 12px 14px !important;
+}
+
+.customer-edit-v2 {
+  gap: 10px !important;
+}
+
+.customer-edit-v2__layout {
+  grid-template-columns: 260px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.customer-edit-v2__summary,
+.customer-edit-v2__main {
+  gap: 10px !important;
+}
+
+.customer-edit-v2-card {
+  border-radius: 18px !important;
+  box-shadow: 0 10px 24px -26px rgba(15,23,42,.16) !important;
+}
+
+.customer-edit-v2-card--summary,
+.customer-edit-v2-card--panel,
+.customer-edit-v2-card--hero {
+  padding: 11px !important;
+}
+
+.customer-edit-v2-card__head,
+.customer-edit-v2-panel__head {
+  margin-bottom: 8px !important;
+  gap: 8px !important;
+}
+
+.customer-edit-v2-card__head h4,
+.customer-edit-v2-panel__head h4 {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+.customer-edit-v2-card__head p,
+.customer-edit-v2-hero p {
+  font-size: 9.5px !important;
+  line-height: 1.65 !important;
+}
+
+.customer-edit-v2-card__head-icon,
+.customer-edit-v2-panel__head span {
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+.customer-edit-v2-status-list {
+  gap: 7px !important;
+}
+
+.customer-edit-v2-status-item {
+  min-height: 64px !important;
+  padding: 8px 9px !important;
+  border-radius: 14px !important;
+  gap: 8px !important;
+}
+
+.customer-edit-v2-status-item__copy {
+  gap: 1px !important;
+}
+
+.customer-edit-v2-status-item__copy span,
+.customer-edit-v2-status-item__copy em {
+  font-size: 9.5px !important;
+  line-height: 1.4 !important;
+}
+
+.customer-edit-v2-status-item__copy strong {
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
+
+.customer-edit-v2-status-item__icon {
+  width: 30px !important;
+  min-width: 30px !important;
+  height: 30px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+}
+
+.customer-edit-v2-hero {
+  gap: 10px !important;
+}
+
+.customer-edit-v2-hero__copy {
+  gap: 5px !important;
+}
+
+.customer-edit-v2-hero__eyebrow {
+  min-height: 22px !important;
+  padding: 0 8px !important;
+  font-size: 9px !important;
+}
+
+.customer-edit-v2-hero h3 {
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+}
+
+.customer-edit-v2-chip {
+  min-height: 26px !important;
+  padding: 0 9px !important;
+  font-size: 9.5px !important;
+}
+
+.customer-edit-v2-hero__avatar {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  border-radius: 15px !important;
+  font-size: 17px !important;
+}
+
+.customer-edit-v2-grid {
+  gap: 9px !important;
+}
+
+.customer-edit-v2-field {
+  gap: 5px !important;
+}
+
+.customer-edit-v2-field__label {
+  font-size: 10.5px !important;
+  line-height: 1.3 !important;
+}
+
+/* Hard RTL field geometry:
+   icon always sits on the right; text gets fixed right padding so it never goes under icon. */
+.customer-edit-v2-field__control {
+  position: relative !important;
+}
+
+.customer-edit-v2-field__icon {
+  right: 7px !important;
+  left: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+  font-size: 10px !important;
+  z-index: 2 !important;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-field__icon {
+  top: 8px !important;
+  transform: none !important;
+}
+
+.customer-edit-v2-field__control::after {
+  right: 42px !important;
+  left: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203,213,225,.92) !important;
+  content: '' !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.customer-edit-v2-field__control--textarea::after {
+  top: 10px !important;
+  transform: none !important;
+  height: 22px !important;
+}
+
+/* override app input paddings completely */
+.customer-edit-v2 .customer-edit-v2-input.app-input,
+.customer-edit-v2 .customer-edit-v2-input.app-textarea,
+.customer-edit-v2 input.customer-edit-v2-input,
+.customer-edit-v2 textarea.customer-edit-v2-input {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  padding-right: 52px !important;
+  padding-left: 10px !important;
+  padding-inline-start: 52px !important;
+  padding-inline-end: 10px !important;
+  border-radius: 12px !important;
+  font-size: 11.5px !important;
+  line-height: 1.6 !important;
+  text-align: right !important;
+  box-sizing: border-box !important;
+}
+
+/* phone is LTR but still reserves icon space on the right */
+.customer-edit-v2 input.customer-edit-v2-input[dir='ltr'] {
+  direction: ltr !important;
+  text-align: left !important;
+  padding-right: 52px !important;
+  padding-left: 10px !important;
+  padding-inline-start: 10px !important;
+  padding-inline-end: 52px !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-textarea.app-textarea,
+.customer-edit-v2 textarea.customer-edit-v2-textarea {
+  min-height: 70px !important;
+  height: 70px !important;
+  padding-top: 10px !important;
+  resize: vertical !important;
+}
+
+.customer-edit-v2-field__error {
+  font-size: 9.5px !important;
+}
+
+.customer-edit-v2__footer {
+  padding-top: 10px !important;
+  gap: 8px !important;
+}
+
+.customer-edit-v2__footer-note {
+  font-size: 10px !important;
+}
+
+.customer-edit-v2__footer-actions {
+  gap: 7px !important;
+}
+
+.customer-edit-v2__cancel-btn,
+.customer-edit-v2__submit-btn {
+  min-height: 34px !important;
+  height: 34px !important;
+  border-radius: 11px !important;
+  padding-inline: 13px !important;
+  font-size: 10.5px !important;
+}
+
+@media (max-width: 980px) {
+  .customer-edit-v2__layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-edit-v2-overlay .modal-surface {
+    width: min(calc(100vw - 16px), 100%) !important;
+  }
+
+  .customer-edit-v2-overlay .modal-body-premium {
+    padding: 10px !important;
+  }
+
+  .customer-edit-v2-grid--two {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-edit-v2__footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+
+/* v53 — rebalanced customer edit modal + clean field icons */
+.customer-edit-v2-overlay {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.customer-edit-v2-overlay .modal-surface {
+  width: min(940px, calc(100vw - 24px)) !important;
+  max-height: min(88vh, 840px) !important;
+  margin: auto !important;
+  border-radius: 24px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-header {
+  min-height: 60px !important;
+  padding: 12px 16px !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-title {
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+}
+
+.customer-edit-v2-overlay .modal-premium-kicker {
+  font-size: 9px !important;
+  margin-bottom: 2px !important;
+}
+
+.customer-edit-v2-overlay .modal-body-premium {
+  padding: 12px 14px !important;
+  overflow-y: auto !important;
+}
+
+.customer-edit-v2 {
+  display: grid;
+  gap: 10px !important;
+}
+
+.customer-edit-v2__layout {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr) !important;
+  gap: 10px !important;
+  align-items: start;
+}
+
+.customer-edit-v2__summary,
+.customer-edit-v2__main {
+  min-width: 0;
+  display: grid;
+  gap: 10px !important;
+}
+
+.customer-edit-v2-card {
+  border: 1px solid rgba(226,232,240,.95) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.98)) !important;
+  box-shadow: 0 12px 24px -26px rgba(15,23,42,.16) !important;
+}
+
+.customer-edit-v2-card--summary,
+.customer-edit-v2-card--panel,
+.customer-edit-v2-card--hero {
+  padding: 12px !important;
+}
+
+.customer-edit-v2-card__head,
+.customer-edit-v2-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px !important;
+}
+
+.customer-edit-v2-card__head h4,
+.customer-edit-v2-panel__head h4 {
+  margin: 0;
+  font-size: 14px !important;
+  line-height: 1.4;
+  font-weight: 950;
+  color: rgb(15 23 42);
+}
+
+.customer-edit-v2-card__head p {
+  margin: 2px 0 0;
+  font-size: 10px !important;
+  line-height: 1.6;
+  color: rgb(100 116 139);
+  font-weight: 700;
+}
+
+.customer-edit-v2-card__head-icon,
+.customer-edit-v2-panel__head span {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(187,247,208,.92);
+  background: rgba(240,253,244,.96);
+  color: rgb(22 163 74);
+  font-size: 10px;
+}
+
+.customer-edit-v2-status-list {
+  display: grid;
+  gap: 8px;
+}
+
+.customer-edit-v2-status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 62px;
+  padding: 9px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(226,232,240,.96);
+  background: rgba(255,255,255,.96);
+}
+
+.customer-edit-v2-status-item__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.customer-edit-v2-status-item__copy span,
+.customer-edit-v2-status-item__copy em {
+  font-size: 9.5px;
+  line-height: 1.45;
+}
+
+.customer-edit-v2-status-item__copy span {
+  color: rgb(71 85 105);
+  font-weight: 900;
+}
+
+.customer-edit-v2-status-item__copy strong {
+  color: rgb(15 23 42);
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 950;
+}
+
+.customer-edit-v2-status-item__copy em {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.customer-edit-v2-status-item__copy .is-positive { color: rgb(22 163 74); }
+.customer-edit-v2-status-item__copy .is-info { color: rgb(59 130 246); }
+.customer-edit-v2-status-item__copy .is-neutral { color: rgb(100 116 139); }
+
+.customer-edit-v2-status-item__icon {
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(187,247,208,.92);
+  background: rgba(240,253,244,.96);
+  color: rgb(22 163 74);
+  font-size: 10px;
+}
+
+.customer-edit-v2-status-item__icon.is-indigo {
+  border-color: rgba(199,210,254,.95);
+  background: rgba(238,242,255,.95);
+  color: rgb(79 70 229);
+}
+
+.customer-edit-v2-card--hero-side {
+  border-color: rgba(191,219,254,.95) !important;
+  background: linear-gradient(180deg, rgba(248,250,255,.98), rgba(255,255,255,.98)) !important;
+}
+
+.customer-edit-v2-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.customer-edit-v2-hero__copy {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.customer-edit-v2-hero__eyebrow {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(191,219,254,.95);
+  background: rgba(255,255,255,.96);
+  color: rgb(37 99 235);
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-hero h3 {
+  margin: 0;
+  color: rgb(15 23 42);
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 950;
+}
+
+.customer-edit-v2-hero p {
+  margin: 0;
+  color: rgb(71 85 105);
+  font-size: 10px;
+  line-height: 1.7;
+  font-weight: 700;
+}
+
+.customer-edit-v2-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.customer-edit-v2-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 26px;
+  padding: 0 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(203,213,225,.95);
+  background: rgba(255,255,255,.96);
+  color: rgb(71 85 105);
+  font-size: 9.5px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-hero__avatar {
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(187,247,208,.95);
+  background: rgba(240,253,244,.96);
+  color: rgb(22 163 74);
+  font-size: 16px;
+}
+
+.customer-edit-v2-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.customer-edit-v2-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.customer-edit-v2-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.customer-edit-v2-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: rgb(71 85 105);
+  font-size: 10.5px;
+  font-weight: 900;
+}
+
+.customer-edit-v2-field__label em {
+  color: rgb(244 63 94);
+  font-style: normal;
+}
+
+.customer-edit-v2-field__control {
+  position: relative;
+  min-width: 0;
+}
+
+.customer-edit-v2-field__control::after {
+  content: '';
+  position: absolute;
+  left: 41px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 18px;
+  background: rgba(203,213,225,.95);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.customer-edit-v2-field__control--textarea::after {
+  top: 10px;
+  transform: none;
+  height: 22px;
+}
+
+.customer-edit-v2-field__icon {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid rgba(226,232,240,.95);
+  background: rgba(248,250,252,.96);
+  color: rgb(100 116 139);
+  font-size: 10px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-field__icon {
+  top: 8px;
+  transform: none;
+}
+
+.customer-edit-v2-input--field {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 38px;
+  height: 38px;
+  padding: 0 12px 0 52px !important;
+  border-radius: 12px;
+  border: 1px solid rgba(203,213,225,.96);
+  background: #fff;
+  color: rgb(15 23 42);
+  font-size: 11.5px;
+  line-height: 1.55;
+  text-align: right;
+  outline: none;
+  box-shadow: none;
+}
+
+.customer-edit-v2-input--field::placeholder {
+  color: rgb(148 163 184);
+}
+
+.customer-edit-v2-input--ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.customer-edit-v2-textarea {
+  min-height: 78px;
+  height: auto;
+  padding-top: 10px !important;
+  resize: vertical;
+}
+
+.customer-edit-v2-input--field.is-error {
+  border-color: rgb(244 63 94);
+  box-shadow: 0 0 0 1px rgba(244,63,94,.12);
+}
+
+.customer-edit-v2-field__error {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgb(225 29 72);
+  font-size: 9.5px;
+  font-weight: 800;
+}
+
+.customer-edit-v2__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(226,232,240,.92);
+}
+
+.customer-edit-v2__footer-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(100 116 139);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.customer-edit-v2__footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.customer-edit-v2__cancel-btn,
+.customer-edit-v2__submit-btn {
+  min-height: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  padding-inline: 14px !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+}
+
+.customer-edit-v2__cancel-btn {
+  background: rgba(255,255,255,.98) !important;
+  border: 1px solid rgba(203,213,225,.95) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.dark .customer-edit-v2-card,
+.dark .customer-edit-v2__cancel-btn,
+.dark .customer-edit-v2-input--field,
+.dark .customer-edit-v2-status-item,
+.dark .customer-edit-v2-field__icon,
+.dark .customer-edit-v2-chip {
+  background: rgba(15,23,42,.92) !important;
+  border-color: rgba(51,65,85,.95) !important;
+}
+
+.dark .customer-edit-v2-card__head h4,
+.dark .customer-edit-v2-panel__head h4,
+.dark .customer-edit-v2-status-item__copy strong,
+.dark .customer-edit-v2-hero h3,
+.dark .customer-edit-v2-input--field {
+  color: rgb(248 250 252) !important;
+}
+
+.dark .customer-edit-v2-card__head p,
+.dark .customer-edit-v2-status-item__copy span,
+.dark .customer-edit-v2-status-item__copy em,
+.dark .customer-edit-v2-hero p,
+.dark .customer-edit-v2-field__label,
+.dark .customer-edit-v2__footer-note {
+  color: rgb(148 163 184) !important;
+}
+
+.dark .customer-edit-v2-card__head-icon,
+.dark .customer-edit-v2-panel__head span,
+.dark .customer-edit-v2-status-item__icon,
+.dark .customer-edit-v2-hero__avatar {
+  border-color: rgba(30,64,175,.42) !important;
+  background: rgba(30,64,175,.16) !important;
+  color: rgb(191 219 254) !important;
+}
+
+@media (max-width: 900px) {
+  .customer-edit-v2__layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .customer-edit-v2-grid--two {
+    grid-template-columns: 1fr !important;
+  }
+
+  .customer-edit-v2__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+
+/* v54 — hero moved up + field icons fixed inside control */
+.customer-edit-v2-field__control {
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-field__control::after {
+  left: auto !important;
+  right: 41px !important;
+}
+
+.customer-edit-v2-field__control--textarea::after {
+  left: auto !important;
+  right: 41px !important;
+}
+
+.customer-edit-v2-field__icon {
+  left: auto !important;
+  right: 7px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-field__icon {
+  top: 8px !important;
+  transform: none !important;
+}
+
+.customer-edit-v2-input--field {
+  padding: 0 52px 0 12px !important;
+}
+
+.customer-edit-v2-input--ltr {
+  padding: 0 52px 0 12px !important;
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+.customer-edit-v2-hero p {
+  max-width: 42ch !important;
+}
+
+
+/* v55 — remove field focus ring, fix full-name icon overlap, shorten hero copy */
+.customer-edit-v2-input--field,
+.customer-edit-v2-input--field:hover,
+.customer-edit-v2-input--field:active,
+.customer-edit-v2-input--field:focus,
+.customer-edit-v2-input--field:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.customer-edit-v2-input--field:focus,
+.customer-edit-v2-input--field:focus-visible {
+  border-color: rgba(203,213,225,.96) !important;
+}
+
+.customer-edit-v2-textarea:focus,
+.customer-edit-v2-textarea:focus-visible {
+  border-color: rgba(203,213,225,.96) !important;
+}
+
+.customer-edit-v2-field__control:focus-within::after {
+  background: rgba(203,213,225,.95) !important;
+}
+
+.customer-edit-v2-field__control:focus-within .customer-edit-v2-field__icon {
+  border-color: rgba(226,232,240,.95) !important;
+  background: rgba(248,250,252,.96) !important;
+  color: rgb(100 116 139) !important;
+}
+
+/* extra room on right-side icon for RTL text fields */
+.customer-edit-v2-input--field:not(.customer-edit-v2-input--ltr) {
+  padding-right: 60px !important;
+  padding-left: 12px !important;
+}
+
+/* keep phone field comfortable too */
+.customer-edit-v2-input--ltr {
+  padding-right: 60px !important;
+  padding-left: 12px !important;
+}
+
+.customer-edit-v2-hero p {
+  max-width: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  font-size: 9.5px !important;
+}
+
+@media (max-width: 900px) {
+  .customer-edit-v2-hero p {
+    white-space: normal !important;
+  }
+}
+
+
+/* v56 — absolute focus removal for customer edit identity fields + name padding fix */
+.customer-edit-v2 .customer-edit-v2-field__control,
+.customer-edit-v2 .customer-edit-v2-field__control:focus,
+.customer-edit-v2 .customer-edit-v2-field__control:focus-within,
+.customer-edit-v2 .customer-edit-v2-field__control:has(input:focus),
+.customer-edit-v2 .customer-edit-v2-field__control:has(textarea:focus) {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* remove all Tailwind/app focus rings that may survive from shared form classes */
+.customer-edit-v2 input.customer-edit-v2-input--field,
+.customer-edit-v2 textarea.customer-edit-v2-input--field,
+.customer-edit-v2 input.customer-edit-v2-input--field:hover,
+.customer-edit-v2 textarea.customer-edit-v2-input--field:hover,
+.customer-edit-v2 input.customer-edit-v2-input--field:focus,
+.customer-edit-v2 textarea.customer-edit-v2-input--field:focus,
+.customer-edit-v2 input.customer-edit-v2-input--field:focus-visible,
+.customer-edit-v2 textarea.customer-edit-v2-input--field:focus-visible {
+  outline: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+  border-color: rgba(203,213,225,.96) !important;
+}
+
+/* keep invalid state red even without focus ring */
+.customer-edit-v2 input.customer-edit-v2-input--field.is-error,
+.customer-edit-v2 textarea.customer-edit-v2-input--field.is-error {
+  border-color: rgb(244 63 94) !important;
+  box-shadow: none !important;
+}
+
+/* force icon to stay fully inside the input at the right side */
+.customer-edit-v2 .customer-edit-v2-field__icon {
+  right: 8px !important;
+  left: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 10px !important;
+  z-index: 4 !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-field__control::after {
+  right: 44px !important;
+  left: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+}
+
+/* larger reserved space for the full-name field so text never enters icon zone */
+.customer-edit-v2 input.customer-edit-v2-input--name {
+  padding-right: 72px !important;
+  padding-left: 12px !important;
+  text-align: right !important;
+}
+
+/* phone remains LTR, but keeps its right icon space */
+.customer-edit-v2 input.customer-edit-v2-input--phone {
+  padding-right: 72px !important;
+  padding-left: 12px !important;
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+/* textarea also keeps icon separation without blue focus */
+.customer-edit-v2 textarea.customer-edit-v2-textarea {
+  padding-right: 72px !important;
+  padding-left: 12px !important;
+}
+
+/* prevent blue outline on WebKit/Chrome autofill/focus rendering */
+.customer-edit-v2 input.customer-edit-v2-input--field:-webkit-autofill,
+.customer-edit-v2 input.customer-edit-v2-input--field:-webkit-autofill:focus {
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  outline: none !important;
+}
+
+
+/* v57 — inline icon controls for identity fields + hard focus removal */
+.customer-edit-v2-field__control--inline {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 28px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 38px !important;
+  padding: 0 10px !important;
+  border: 1px solid rgba(203,213,225,.96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  direction: ltr !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-field__control--inline::after {
+  content: '' !important;
+  position: absolute !important;
+  right: 46px !important;
+  left: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203,213,225,.95) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.customer-edit-v2-field__control--inline,
+.customer-edit-v2-field__control--inline:hover,
+.customer-edit-v2-field__control--inline:active,
+.customer-edit-v2-field__control--inline:focus,
+.customer-edit-v2-field__control--inline:focus-within {
+  border-color: rgba(203,213,225,.96) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-field__icon {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+  grid-column: 2 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  background: rgba(248,250,252,.96) !important;
+  color: rgb(100 116 139) !important;
+  z-index: 3 !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--field {
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 0 !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--name {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--phone {
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+.customer-edit-v2-field__control--inline input:focus,
+.customer-edit-v2-field__control--inline input:focus-visible {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+}
+
+
+/* v58 — single-box identity inputs + visible textarea icons + absolute focus reset */
+.customer-edit-v2 input,
+.customer-edit-v2 textarea,
+.customer-edit-v2 input:hover,
+.customer-edit-v2 textarea:hover,
+.customer-edit-v2 input:focus,
+.customer-edit-v2 textarea:focus,
+.customer-edit-v2 input:focus-visible,
+.customer-edit-v2 textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+/* identity controls: exactly one box */
+.customer-edit-v2-field__control--inline {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) 28px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 38px !important;
+  padding: 0 10px 0 10px !important;
+  border: 1px solid rgba(203,213,225,.96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-field__control--inline:focus,
+.customer-edit-v2-field__control--inline:focus-within,
+.customer-edit-v2-field__control--inline:hover {
+  border-color: rgba(203,213,225,.96) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2-field__control--inline::after {
+  content: '' !important;
+  position: absolute !important;
+  right: 46px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203,213,225,.95) !important;
+  pointer-events: none !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--field {
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--name {
+  direction: rtl !important;
+  text-align: right !important;
+  padding-right: 8px !important;
+  padding-left: 2px !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--phone {
+  direction: ltr !important;
+  text-align: left !important;
+  padding-right: 8px !important;
+  padding-left: 2px !important;
+}
+
+.customer-edit-v2-field__control--inline .customer-edit-v2-field__icon {
+  position: relative !important;
+  grid-column: 2 !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  background: rgba(248,250,252,.96) !important;
+  color: rgb(100 116 139) !important;
+}
+
+/* textarea controls: keep visible icons inside and consistent */
+.customer-edit-v2-field__control--textarea {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-field__control--textarea::after {
+  content: '' !important;
+  position: absolute !important;
+  right: 44px !important;
+  top: 10px !important;
+  width: 1px !important;
+  height: 22px !important;
+  background: rgba(203,213,225,.95) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-field__icon {
+  position: absolute !important;
+  right: 8px !important;
+  left: auto !important;
+  top: 8px !important;
+  transform: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  background: rgba(248,250,252,.96) !important;
+  color: rgb(100 116 139) !important;
+  z-index: 3 !important;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-textarea {
+  width: 100% !important;
+  min-height: 78px !important;
+  padding: 10px 56px 10px 12px !important;
+  border: 1px solid rgba(203,213,225,.96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  resize: vertical !important;
+}
+
+.customer-edit-v2-field__control--textarea .customer-edit-v2-textarea:focus,
+.customer-edit-v2-field__control--textarea .customer-edit-v2-textarea:focus-visible {
+  border-color: rgba(203,213,225,.96) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* keep error state */
+.customer-edit-v2-field__control--inline .customer-edit-v2-input--field.is-error,
+.customer-edit-v2-field__control--textarea .customer-edit-v2-textarea.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+
+/* v59 — final native single-box controls for customer name/phone */
+.customer-edit-v2 .customer-edit-v2-native-field {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 8px 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  overflow: hidden !important;
+  direction: rtl !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-field:hover,
+.customer-edit-v2 .customer-edit-v2-native-field:focus,
+.customer-edit-v2 .customer-edit-v2-native-field:focus-within,
+.customer-edit-v2 .customer-edit-v2-native-field:has(input:focus),
+.customer-edit-v2 .customer-edit-v2-native-field:has(input:focus-visible) {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-field.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-input {
+  grid-column: 1 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15 23 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-input--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-input--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-input:hover,
+.customer-edit-v2 .customer-edit-v2-native-input:active,
+.customer-edit-v2 .customer-edit-v2-native-input:focus,
+.customer-edit-v2 .customer-edit-v2-native-input:focus-visible {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-input::placeholder {
+  color: rgb(148 163 184) !important;
+  font-weight: 800 !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  border-radius: 999px !important;
+  background: rgba(203, 213, 225, .96) !important;
+}
+
+.customer-edit-v2 .customer-edit-v2-native-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100 116 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+/* Neutralize any shared form selectors that may still target the native inputs */
+.customer-edit-v2 input.customer-edit-v2-native-input[data-ui-control],
+.customer-edit-v2 input.customer-edit-v2-native-input.app-input,
+.customer-edit-v2 input.customer-edit-v2-native-input.modal-control-premium,
+.customer-edit-v2 input.customer-edit-v2-native-input.app-form-field__control {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Browser autofill should not recreate a nested box */
+.customer-edit-v2 .customer-edit-v2-native-input:-webkit-autofill,
+.customer-edit-v2 .customer-edit-v2-native-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  transition: background-color 9999s ease-out 0s !important;
+}
+
+/* keep textarea controls visually aligned with the native input language */
+.customer-edit-v2-field__control--textarea .customer-edit-v2-textarea {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.dark .customer-edit-v2 .customer-edit-v2-native-field {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2 .customer-edit-v2-native-input {
+  color: rgb(248 250 252) !important;
+}
+
+.dark .customer-edit-v2 .customer-edit-v2-native-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203 213 225) !important;
+}
+
+.dark .customer-edit-v2 .customer-edit-v2-native-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}
+
+
+/* v61 — dedicated customer-edit controls: no double box, no blue focus */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:active,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  all: unset !important;
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input::placeholder {
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  background: rgba(203, 213, 225, .96) !important;
+  border-radius: 999px !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: rgb(15, 23, 42) !important;
+  caret-color: rgb(15, 23, 42) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-input {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-control-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}
+
+
+/* v62 — crash fix cleanup: no React focus state dependency */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell.is-editing {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay .customer-edit-v2-control-input:focus-visible {
+  box-shadow: none !important;
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+
+/* v64 — force the inner input layer to be visually invisible; wrapper is the only box */
+.customer-edit-v2-overlay .customer-edit-v2-control-shell,
+.customer-edit-v2-overlay .customer-edit-v2-native-field {
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-control-shell:focus-within,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:hover,
+.customer-edit-v2-overlay .customer-edit-v2-native-field:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.customer-edit-v2-overlay input.customer-edit-v2-control-input,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-control-input:focus-visible,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:hover,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus,
+.customer-edit-v2-overlay input.customer-edit-v2-native-input:focus-visible {
+  border: 0 !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}
+
+
+/* v65 — final: no real input for customer name/phone, so global input focus CSS cannot apply */
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 30px !important;
+  align-items: center !important;
+  column-gap: 8px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(203, 213, 225, .96) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(203, 213, 225, .96) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: #fff !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-shell.is-error {
+  border-color: rgb(244 63 94) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 34px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:focus-visible,
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:active {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: transparent !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgb(148, 163, 184) !important;
+  font-weight: 800 !important;
+  pointer-events: none !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  grid-column: 2 !important;
+  display: block !important;
+  width: 1px !important;
+  height: 18px !important;
+  border-radius: 999px !important;
+  background: rgba(203, 213, 225, .96) !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  grid-column: 3 !important;
+  width: 28px !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  background: rgba(248, 250, 252, .96) !important;
+  color: rgb(100, 116, 139) !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.customer-edit-v2-overlay .customer-edit-v2-clean-icon i {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:hover,
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-shell:focus-within {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(15, 23, 42, .82) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-editor {
+  color: rgb(248, 250, 252) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-icon {
+  border-color: rgba(51, 65, 85, .96) !important;
+  background: rgba(30, 41, 59, .92) !important;
+  color: rgb(203, 213, 225) !important;
+}
+
+.dark .customer-edit-v2-overlay .customer-edit-v2-clean-divider {
+  background: rgba(71, 85, 105, .92) !important;
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase9a/training_manifest.schema.json",
+  "title": "Kourosh Offline Inventory Stockout Training Manifest",
+  "type": "object",
+  "required": ["target", "split"],
+  "anyOf": [
+    { "required": ["datasetKey"] },
+    { "required": ["datasetIdentity"] }
+  ],
+  "properties": {
+    "packageKey": { "type": "string" },
+    "packageVersion": { "type": "string" },
+    "datasetKey": { "type": "string" },
+    "datasetVersion": { "type": "string" },
+    "datasetIdentity": { "type": "object" },
+    "createdAt": { "type": "string" },
+    "target": {
+      "type": "object",
+      "required": ["key"],
+      "properties": {
+        "key": { "type": "string" },
+        "type": { "type": "string" },
+        "positiveClass": {},
+        "negativeClass": {},
+        "description": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "featureSchema": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key"],
+        "properties": {
+          "key": { "type": "string" },
+          "type": { "type": "string" },
+          "nullable": { "type": "boolean" },
+          "description": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "featureContract": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "split": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

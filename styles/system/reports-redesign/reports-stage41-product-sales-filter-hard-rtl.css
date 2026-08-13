@@ -1,0 +1,109 @@
+/* Stage 41 — Product sales filter hard RTL placement
+   The panel controls were visually stuck on the left because earlier responsive rules
+   made rows full-width/left-start. This file hard-pins each filter row to the right
+   while keeping the internal RTL order intact. */
+
+.product-sales-executive-page .product-sales-control-panel {
+  width: 100% !important;
+  direction: rtl !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: .5rem !important;
+  padding: .62rem .72rem !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row,
+.product-sales-executive-page .product-sales-control-panel__row--dates,
+.product-sales-executive-page .product-sales-control-panel__row--modes {
+  direction: rtl !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: .42rem !important;
+  width: max-content !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 0 auto !important;
+  align-self: flex-end !important;
+  justify-self: end !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-control-panel__row > *,
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-field,
+.product-sales-executive-page .product-sales-refresh-button,
+.product-sales-executive-page .product-sales-segment {
+  flex: 0 0 auto !important;
+}
+
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: max-content !important;
+}
+
+.product-sales-executive-page .product-sales-date-field {
+  width: 10.25rem !important;
+  min-width: 10.25rem !important;
+  max-width: 10.25rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  padding-inline: .18rem !important;
+  margin-bottom: .18rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head i {
+  display: none !important;
+}
+
+.product-sales-executive-page .product-sales-refresh-button,
+.product-sales-executive-page .report-date-presets__chips button,
+.product-sales-executive-page .product-sales-segment button {
+  height: 35px !important;
+  min-height: 35px !important;
+}
+
+@media (max-width: 1100px) {
+  .product-sales-executive-page .product-sales-control-panel {
+    align-items: flex-end !important;
+  }
+
+  .product-sales-executive-page .product-sales-control-panel__row,
+  .product-sales-executive-page .product-sales-control-panel__row--dates,
+  .product-sales-executive-page .product-sales-control-panel__row--modes {
+    width: max-content !important;
+    max-width: 100% !important;
+    justify-content: flex-end !important;
+    margin: 0 0 0 auto !important;
+    align-self: flex-end !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-control-panel {
+    align-items: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-control-panel__row,
+  .product-sales-executive-page .product-sales-control-panel__row--dates,
+  .product-sales-executive-page .product-sales-control-panel__row--modes {
+    width: 100% !important;
+    margin: 0 !important;
+    justify-content: flex-start !important;
+    align-self: stretch !important;
+  }
+
+  .product-sales-executive-page .product-sales-date-field {
+    flex: 1 1 10rem !important;
+    width: auto !important;
+    min-width: min(100%, 9rem) !important;
+    max-width: none !important;
+  }
+}

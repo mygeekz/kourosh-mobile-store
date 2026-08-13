@@ -1,0 +1,90 @@
+name: Partner Settlement Safety Guards
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/partner-settlement-safety-guards.yml'
+      - 'package.json'
+      - 'app/**'
+      - 'components/**'
+      - 'config/**'
+      - 'contexts/**'
+      - 'hooks/**'
+      - 'ml-workbench/**'
+      - 'pages/**'
+      - 'server/**'
+      - 'services/**'
+      - 'shared/**'
+      - 'styles/**'
+      - 'types/**'
+      - 'utils/**'
+      - 'migrations/**'
+      - 'scripts/partner-settlement-safety-guard-*.mjs'
+      - 'scripts/run-partner-settlement-safety-guard-*.mjs'
+      - 'docs/architecture/partner-settlement-safety-guard-*.md'
+      - 'docs/release/partner-settlement-safety-guard-*.json'
+      - 'docs/release/partner-settlement-protected-source-scope-manifest.v1.json'
+  push:
+    paths:
+      - '.github/workflows/partner-settlement-safety-guards.yml'
+      - 'package.json'
+      - 'app/**'
+      - 'components/**'
+      - 'config/**'
+      - 'contexts/**'
+      - 'hooks/**'
+      - 'ml-workbench/**'
+      - 'pages/**'
+      - 'server/**'
+      - 'services/**'
+      - 'shared/**'
+      - 'styles/**'
+      - 'types/**'
+      - 'utils/**'
+      - 'migrations/**'
+      - 'scripts/partner-settlement-safety-guard-*.mjs'
+      - 'scripts/run-partner-settlement-safety-guard-*.mjs'
+      - 'docs/architecture/partner-settlement-safety-guard-*.md'
+      - 'docs/release/partner-settlement-safety-guard-*.json'
+      - 'docs/release/partner-settlement-protected-source-scope-manifest.v1.json'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: partner-settlement-safety-guards-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  safety-guards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Plan relevant guard scope
+        id: scope
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: node scripts/partner-settlement-safety-guard-ci-plan.mjs --base "$BASE_SHA" --head "$HEAD_SHA" --github-output "$GITHUB_OUTPUT"
+
+      - name: Run focused safety guards
+        if: steps.scope.outputs.run == 'true'
+        run: npm run test:partners-settlement-safety-guards:ci
+
+      - name: Report safe skip
+        if: steps.scope.outputs.run != 'true'
+        run: echo "No protected Partner Settlement or guard-infrastructure path changed."

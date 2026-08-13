@@ -1,0 +1,40 @@
+/* Phase 33 — Telegram detail fields: remove the perceived leftover broad box by avoiding half-empty rows.
+   The public URL field now spans the full grid width; layout wrappers stay transparent. */
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid {
+  width: 100% !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  gap: 16px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid .telegram-field--wide,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid .telegram-base-url-field {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
+/* Do not let surrounding advanced-mode wrappers draw a broad white plate behind these fields. */
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-mode,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-mode .premium-form-section {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid .modal-field,
+#telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid .app-field {
+  min-width: 0 !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1.telegram-apple-base-v29 .telegram-detail-core-grid {
+    gap: 12px !important;
+  }
+}

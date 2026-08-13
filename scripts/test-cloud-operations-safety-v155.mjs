@@ -1,0 +1,46 @@
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import net from "node:net";
+import os from "node:os";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { DatabaseSync } from "node:sqlite";
+import { PersistentCloudTenantRegistry } from "../cloud/control-plane/PersistentCloudTenantRegistry.mjs";
+import { inspectCloudControlDatabase } from "../cloud/control-plane/cloudControlSchema.mjs";
+import { initializeCloudControlDatabase, migrateCloudControlDatabaseExplicit } from "../cloud/operations/cloudControlLifecycle.mjs";
+import { createControlDatabaseBackup, restoreControlDatabase } from "../cloud/operations/controlDbBackup.mjs";
+import { acquireCloudRuntimeLock } from "../cloud/runtime/cloudRuntimeState.mjs";
+import { runCloudPreflight } from "../cloud/runtime/cloudPreflight.mjs";
+
+const hash=file=>crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+const temp=fs.mkdtempSync(path.join(os.tmpdir(),"kourosh-v155-ops-"));
+const makeConfig=(name,port=0)=>{const runtimeDataDir=path.join(temp,name),controlDbPath=path.join(runtimeDataDir,"control.db"),backupDir=path.join(runtimeDataDir,"backups");return {environment:"production",production:true,runtimeDataDir,controlDbPath,backupDir,publicBaseDomain:"example.invalid",tenantNamespace:"apps.example.invalid",controlHost:"control.example.invalid",connectorHost:"connector.example.invalid",connectorPublicEndpoint:"wss://connector.example.invalid/connector",bindHost:"127.0.0.1",port:port||8787,instanceCount:1,backupRetention:7,edgeClientIpMode:"direct",shutdownTimeoutMs:10000,limits:{}};};
+const envFrom=config=>({...process.env,NODE_ENV:"production",KOUROSH_CLOUD_RUNTIME_DIR:config.runtimeDataDir,KOUROSH_CLOUD_CONTROL_DB_PATH:config.controlDbPath,KOUROSH_CLOUD_BACKUP_DIR:config.backupDir,KOUROSH_CLOUD_PUBLIC_BASE_DOMAIN:config.publicBaseDomain,KOUROSH_CLOUD_CONTROL_HOST:config.controlHost,KOUROSH_CLOUD_CONNECTOR_HOST:config.connectorHost,KOUROSH_CLOUD_INSTANCE_COUNT:"1",KOUROSH_CLOUD_DEV_PROVISIONING:"0",KOUROSH_CLOUD_EDGE_CLIENT_IP_MODE:"direct",KOUROSH_CLOUD_RELAY_BIND_HOST:config.bindHost,KOUROSH_CLOUD_RELAY_PORT:String(config.port)});
+const makeV1=(file)=>{fs.mkdirSync(path.dirname(file),{recursive:true});const db=new DatabaseSync(file);db.exec(`CREATE TABLE cloud_tenants (installation_id TEXT PRIMARY KEY,assigned_store_id TEXT NOT NULL UNIQUE,public_key_pem TEXT NOT NULL,public_key_fingerprint TEXT NOT NULL UNIQUE,assigned_host TEXT NOT NULL COLLATE NOCASE UNIQUE,assigned_public_url TEXT NOT NULL,tenant_status TEXT NOT NULL DEFAULT 'active',credential_version INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,last_connected_at TEXT,last_disconnected_at TEXT,revoked_at TEXT);CREATE TABLE cloud_enrollment_codes(code_id TEXT PRIMARY KEY,code_hash TEXT NOT NULL,purpose TEXT NOT NULL,target_store_id TEXT,expires_at TEXT NOT NULL,used_at TEXT,attempts INTEGER NOT NULL DEFAULT 0,max_attempts INTEGER NOT NULL DEFAULT 8,created_at TEXT NOT NULL);PRAGMA user_version=1;`);db.close();};
+try{
+  // CLI init is explicit and idempotent.
+  const cliConfig=makeConfig("cli-init");const cliEnv={...envFrom(cliConfig),NODE_ENV:"development"};let cli=spawnSync(process.execPath,["cloud/control-plane/cli.mjs","init"],{cwd:process.cwd(),env:cliEnv,encoding:"utf8"});assert.equal(cli.status,0,cli.stderr);assert.equal(inspectCloudControlDatabase(cliConfig.controlDbPath).schemaVersion,2);cli=spawnSync(process.execPath,["cloud/control-plane/cli.mjs","init"],{cwd:process.cwd(),env:cliEnv,encoding:"utf8"});assert.equal(cli.status,0,cli.stderr);assert.match(cli.stdout,/alreadyInitialized/);
+
+  // Production-like persistent startup path does not auto-init when DB is absent (tested under development runtime because this session is not Node 24).
+  const startupConfig=makeConfig("startup-absent",0);const startupEnv={...envFrom(startupConfig),NODE_ENV:"development",KOUROSH_CLOUD_RELAY_PORT:"18787"};const startup=spawnSync(process.execPath,["cloud/relay-server/index.mjs"],{cwd:process.cwd(),env:startupEnv,encoding:"utf8",timeout:4000});assert.notEqual(startup.status,0);assert.match(`${startup.stdout}\n${startup.stderr}`,/CONTROL_DB_NOT_INITIALIZED|not initialized/i);assert.equal(fs.existsSync(startupConfig.controlDbPath),false);
+
+  // CLI migration creates a verified backup and upgrades v1 -> v2 explicitly.
+  const migrateConfig=makeConfig("cli-migrate");makeV1(migrateConfig.controlDbPath);fs.mkdirSync(migrateConfig.backupDir,{recursive:true});const migrateEnv={...envFrom(migrateConfig),NODE_ENV:"development"};const migration=spawnSync(process.execPath,["cloud/control-plane/cli.mjs","migrate","--confirm","MIGRATE"],{cwd:process.cwd(),env:migrateEnv,encoding:"utf8"});assert.equal(migration.status,0,migration.stderr);const migrated=inspectCloudControlDatabase(migrateConfig.controlDbPath);assert.equal(migrated.schemaVersion,2);assert.equal(migrated.integrity,"ok");assert(fs.readdirSync(migrateConfig.backupDir).some(n=>/^pre-migrate-.*\.db$/.test(n)));
+
+  // Failed migration rolls back schema and keeps the verified backup.
+  const failConfig=makeConfig("migrate-fail");makeV1(failConfig.controlDbPath);fs.mkdirSync(failConfig.backupDir,{recursive:true});await assert.rejects(()=>migrateCloudControlDatabaseExplicit({config:failConfig,confirm:"MIGRATE",failureInjector:stage=>{if(stage==="after-v1-schema")throw new Error("INJECTED_MIGRATION_FAILURE");}}),/INJECTED_MIGRATION_FAILURE/);const failed=inspectCloudControlDatabase(failConfig.controlDbPath);assert.equal(failed.schemaVersion,1);const failDb=new DatabaseSync(failConfig.controlDbPath,{readOnly:true});assert.equal(failDb.prepare("PRAGMA table_info(cloud_tenants)").all().some(r=>r.name==="assignment_version"),false);failDb.close();assert(fs.readdirSync(failConfig.backupDir).some(n=>/^pre-migrate-.*\.db$/.test(n)));
+
+  // Backup does not mutate the source DB bytes/logical schema.
+  const backupConfig=makeConfig("backup-safe");initializeCloudControlDatabase({config:backupConfig});let registry=new PersistentCloudTenantRegistry({dbPath:backupConfig.controlDbPath});const pair=crypto.generateKeyPairSync("ed25519",{publicKeyEncoding:{format:"pem",type:"spki"},privateKeyEncoding:{format:"pem",type:"pkcs8"}});const code=registry.createEnrollmentCode({ttlMs:60_000});const tenant=registry.enrollTenant({installationId:"inst_ABCDEFGHIJKLMNOPQRSTUVWX",publicKeyPem:pair.publicKey,enrollmentCode:code.code,baseDomain:"example.invalid",connectorEndpoint:"wss://connector.example.invalid/connector"});registry.close();for(const suffix of ["-wal","-shm"]){try{fs.unlinkSync(`${backupConfig.controlDbPath}${suffix}`);}catch{}}const beforeBackupHash=hash(backupConfig.controlDbPath);const backup=await createControlDatabaseBackup({dbPath:backupConfig.controlDbPath,backupDir:backupConfig.backupDir,retention:7});assert.equal(hash(backupConfig.controlDbPath),beforeBackupHash);assert.equal(backup.tenantCount,1);
+
+  // Restore refuses active lock and a listening Relay port even if no lock is present.
+  const lock=await acquireCloudRuntimeLock(backupConfig.runtimeDataDir);await assert.rejects(()=>restoreControlDatabase({dbPath:backupConfig.controlDbPath,backupDir:backupConfig.backupDir,runtimeDataDir:backupConfig.runtimeDataDir,sourceFile:backup.file,confirm:"RESTORE"}),e=>e?.code==="CLOUD_RUNTIME_ACTIVE");await lock.release();
+  const server=net.createServer();await new Promise(r=>server.listen(0,"127.0.0.1",r));const livePort=server.address().port;await assert.rejects(()=>restoreControlDatabase({dbPath:backupConfig.controlDbPath,backupDir:backupConfig.backupDir,runtimeDataDir:backupConfig.runtimeDataDir,sourceFile:backup.file,relayHost:"127.0.0.1",relayPort:livePort,confirm:"RESTORE"}),e=>e?.code==="CLOUD_RELAY_STILL_LISTENING");await new Promise(r=>server.close(r));
+  registry=new PersistentCloudTenantRegistry({dbPath:backupConfig.controlDbPath});registry.revokeTenant(tenant.assignedStoreId);registry.close();const restored=await restoreControlDatabase({dbPath:backupConfig.controlDbPath,backupDir:backupConfig.backupDir,runtimeDataDir:backupConfig.runtimeDataDir,sourceFile:backup.file,confirm:"RESTORE"});assert.equal(restored.restored,true);registry=new PersistentCloudTenantRegistry({dbPath:backupConfig.controlDbPath});assert.equal((await registry.getTenant("inst_ABCDEFGHIJKLMNOPQRSTUVWX")).tenantStatus,"active");registry.close();
+
+  // Preflight is reversible and cannot claim PILOT_READY on this non-Node-24 session.
+  const beforePreflightHash=hash(backupConfig.controlDbPath);const preflight=runCloudPreflight(envFrom(backupConfig));assert.equal(hash(backupConfig.controlDbPath),beforePreflightHash);if(Number(process.versions.node.split(".")[0])!==24){assert.equal(preflight.pilotReadiness,"PILOT_NOT_READY");assert.equal(preflight.checks.find(c=>c.name==="runtime")?.status,"FAIL");}
+
+  console.log(JSON.stringify({cloudOperationsSafety:"PASS",explicitInit:true,explicitMigration:true,migrationBackup:true,migrationRollback:true,backupSourceByteStable:true,restoreActiveLockRejected:true,restoreListeningPortRejected:true,restoreValidated:true,pilotReadiness:preflight.pilotReadiness,node:process.versions.node},null,2));
+}finally{fs.rmSync(temp,{recursive:true,force:true});}

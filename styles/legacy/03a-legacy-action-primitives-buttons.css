@@ -1,0 +1,109 @@
+/* dark bg moved below if needed */
+.people-table-shell { }
+/* dark bg moved below if needed */
+
+.people-table-shell table { }
+
+@keyframes ux-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+@keyframes ux-spin {
+  to { transform: rotate(360deg); }
+}
+
+@layer components {
+  .ux-action-link {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-action-link-secondary {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-action-link-danger {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-legacy-panel {
+  }
+
+  .ux-form-grid {
+  }
+}
+
+/* stronger unification for legacy action zones */
+@layer utilities {
+  .premium-submit-btn, .premium-cancel-btn {
+    min-height: 44px;
+  }
+
+  .report-action-btn, .people-primary-btn {
+    text-decoration: none;
+  }
+
+  .report-action-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .people-primary-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  button.rounded-lg.border:not(.ux-btn),
+  button.rounded-xl.border:not(.ux-btn),
+  button.rounded-2xl.border:not(.ux-btn) {
+    position: relative;
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(226 232 240 / 1);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    color: rgb(51 65 85 / 1);
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,245,249,0.96));
+    box-shadow: 0 14px 28px -24px rgba(15,23,42,0.26);
+    transition: all 200ms;
+    isolation: isolate;
+  }
+
+  button.rounded-lg.border:not(.ux-btn):focus,
+  button.rounded-xl.border:not(.ux-btn):focus,
+  button.rounded-2xl.border:not(.ux-btn):focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(226,232,240,0.8), 0 14px 28px -24px rgba(15,23,42,0.26);
+  }
+
+  button.rounded-lg.border:not(.ux-btn):disabled,
+  button.rounded-xl.border:not(.ux-btn):disabled,
+  button.rounded-2xl.border:not(.ux-btn):disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+@layer components {
+  .report-action-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .report-action-btn-primary {
+    display: inline-flex;
+    isolation: isolate;
+  }
+}
+

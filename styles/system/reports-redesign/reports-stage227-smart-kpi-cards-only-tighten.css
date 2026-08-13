@@ -1,0 +1,92 @@
+/* Stage 227 — safe rollback from v226: keep ONLY the four bottom KPI reference cards compact.
+   Do not touch Smart Insights hero/header, side panels, filters, readiness summary, or modal lanes. */
+
+.smart-brain-page .smart-kpi-reference-grid-v166,
+.smart-kpi-reference-grid-v166 {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  padding: 12px !important;
+  align-items: stretch !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166,
+.smart-kpi-reference-card-v166 {
+  min-height: 116px !important;
+  max-height: 128px !important;
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) !important;
+  grid-template-rows: auto 24px !important;
+  gap: 8px 10px !important;
+  padding: 11px 12px !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__icon,
+.smart-kpi-reference-card-v166__icon {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 14px !important;
+  font-size: .9rem !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__content,
+.smart-kpi-reference-card-v166__content {
+  min-width: 0 !important;
+  display: block !important;
+  text-align: right !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__content h3,
+.smart-kpi-reference-card-v166__content h3 {
+  font-size: .76rem !important;
+  line-height: 1.45 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__content strong,
+.smart-kpi-reference-card-v166__content strong {
+  margin-top: 3px !important;
+  font-size: 1.28rem !important;
+  line-height: 1 !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__delta,
+.smart-kpi-reference-card-v166__delta {
+  margin-top: 6px !important;
+  font-size: .66rem !important;
+  line-height: 1.35 !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__sparkline,
+.smart-kpi-reference-card-v166__sparkline {
+  grid-column: 1 / -1 !important;
+  grid-row: 2 !important;
+  height: 24px !important;
+  width: 100% !important;
+  align-self: end !important;
+  margin-top: 0 !important;
+  position: static !important;
+}
+
+.smart-brain-page .smart-kpi-reference-card-v166__sparkline polyline,
+.smart-kpi-reference-card-v166__sparkline polyline {
+  stroke-width: 2 !important;
+}
+
+@media (max-width: 1180px) {
+  .smart-brain-page .smart-kpi-reference-grid-v166,
+  .smart-kpi-reference-grid-v166 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-brain-page .smart-kpi-reference-grid-v166,
+  .smart-kpi-reference-grid-v166 {
+    grid-template-columns: 1fr !important;
+  }
+}

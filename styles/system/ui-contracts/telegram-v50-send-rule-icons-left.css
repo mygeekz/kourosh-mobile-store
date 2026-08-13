@@ -1,0 +1,44 @@
+
+/* v50 — based on v49.
+   Move the icons of the exact send-rule fields to the visual LEFT side,
+   and protect the input value from sitting under the icon. */
+
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-form-field__leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-input-leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-input-leading-chip {
+  left: 0.5rem !important;
+  right: auto !important;
+  inset-inline-start: auto !important;
+  inset-inline-end: auto !important;
+}
+
+/* The fields are numeric/LTR or code-like. Icon on visual left needs left padding. */
+#telegram-settings-form .telegram-send-rule-field-v49 input,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-input,
+#telegram-settings-form .telegram-send-rule-field-v49 .modal-control-premium,
+#telegram-settings-form .telegram-send-rule-field-v49 input.premium-has-leading-icon {
+  padding-left: 2.65rem !important;
+  padding-right: 0.85rem !important;
+  text-align: right !important;
+}
+
+/* For explicitly LTR inputs, keep the value readable while still clearing left icon. */
+#telegram-settings-form .telegram-send-rule-field-v49 input[dir="ltr"],
+#telegram-settings-form .telegram-send-rule-field-v49 .ux-ltr-token {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: right !important;
+  padding-left: 2.65rem !important;
+  padding-right: 0.85rem !important;
+}
+
+/* Helper text icons should remain inline with text, not affected by field icon placement. */
+#telegram-settings-form .telegram-send-rule-field-v49 .app-help i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-error i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field-feedback i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__feedback i {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+}

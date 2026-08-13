@@ -1,0 +1,24 @@
+{
+  "workbenchVersion": "phase9a-v1",
+  "modelKey": "inventory_stockout_stockout_risk_candidate",
+  "modelFamily": "sklearn_baseline",
+  "createdBy": "offline_inventory_stockout_workbench",
+  "randomSeed": 42,
+  "defaultHorizonDays": 14,
+  "maxCandidateOutputRows": 20,
+  "classification": {
+    "preferredAlgorithm": "LogisticRegression",
+    "fallbackAlgorithm": "DummyClassifier"
+  },
+  "regression": {
+    "preferredAlgorithm": "RandomForestRegressor"
+  },
+  "safetyPolicy": {
+    "backendModelExecutionAllowed": false,
+    "backendInferenceEndpointExposed": false,
+    "productionIntegrationAllowed": false,
+    "decisionAutomationAllowed": false,
+    "canChangeInventoryOrAccounting": false,
+    "artifactActivationAllowed": false
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kourosh.shadow_score_metadata_only_regression_fixture_coverage_summary.schema.json",
+  "title": "Kourosh Phase 13U Metadata-only Regression Fixture Coverage Summary",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "summaryKind",
+    "summaryMode",
+    "coverageSummaryOnly",
+    "evidenceOnly",
+    "metadataOnly",
+    "boundaryCount",
+    "regressionFixtureCoveredBoundaryCount",
+    "documentedOnlyBoundaryCount",
+    "uncoveredBoundaryCount",
+    "coverageComplete",
+    "coverageSummaryValidated",
+    "allowed",
+    "ready",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "routeExposed",
+    "coverageRows",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13U"
+    },
+    "summaryKind": {
+      "const": "metadata_only_regression_fixture_coverage_summary"
+    },
+    "sourcePhase": {
+      "const": "Phase 13T"
+    },
+    "sourceFixtureKind": {
+      "const": "metadata_only_migration_apply_evidence_diff_drift_stability_regression_fixture"
+    },
+    "summaryMode": {
+      "const": "coverage_summary_only_no_migration_application"
+    },
+    "coverageSummaryOnly": {
+      "const": true
+    },
+    "evidenceOnly": {
+      "const": true
+    },
+    "metadataOnly": {
+      "const": true
+    },
+    "deterministicRuleBasedOnly": {
+      "const": true
+    },
+    "noMlClassifier": {
+      "const": true
+    },
+    "boundaryCount": {
+      "const": 13
+    },
+    "regressionFixtureCoveredBoundaryCount": {
+      "const": 3
+    },
+    "documentedOnlyBoundaryCount": {
+      "const": 10
+    },
+    "uncoveredBoundaryCount": {
+      "const": 0
+    },
+    "actionableBoundaryCount": {
+      "const": 0
+    },
+    "migrationAllowedBoundaryCount": {
+      "const": 0
+    },
+    "sqlAllowedBoundaryCount": {
+      "const": 0
+    },
+    "databaseWriteAllowedBoundaryCount": {
+      "const": 0
+    },
+    "routeExposedBoundaryCount": {
+      "const": 0
+    },
+    "unsafeBoundaryCount": {
+      "const": 0
+    },
+    "coverageComplete": {
+      "const": true
+    },
+    "coverageSummaryValidated": {
+      "const": true
+    },
+    "sourceScenarioCount": {
+      "const": 3
+    },
+    "sourceBlockedScenarioCount": {
+      "const": 3
+    },
+    "sourceRegressionFixtureValidated": {
+      "const": true
+    },
+    "sourceUnsafeMigrationAllowedScenarioCount": {
+      "const": 0
+    },
+    "operatorApproved": {
+      "const": false
+    },
+    "allowed": {
+      "const": false
+    },
+    "ready": {
+      "const": false
+    },
+    "migrationApplicationAllowed": {
+      "const": false
+    },
+    "migrationApplicationPerformed": {
+      "const": false
+    },
+    "migrationRunnerRegistered": {
+      "const": false
+    },
+    "migrationRegistryMutated": {
+      "const": false
+    },
+    "sqlTextLoadedFromDisk": {
+      "const": false
+    },
+    "sqlExecutionAllowed": {
+      "const": false
+    },
+    "databaseConnectionAllowed": {
+      "const": false
+    },
+    "databaseWriteAllowed": {
+      "const": false
+    },
+    "tableCreationApplied": {
+      "const": false
+    },
+    "tableCreated": {
+      "const": false
+    },
+    "repositoryWriteAllowed": {
+      "const": false
+    },
+    "routeExposed": {
+      "const": false
+    },
+    "coveredScenarioKinds": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "enum": [
+          "stable_safe_noop",
+          "unstable_but_blocked",
+          "unsafe_boundary_drift"
+        ]
+      }
+    },
+    "documentedOnlyBoundaryKinds": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10
+    },
+    "coverageRows": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "coverageId",
+          "coverageKind",
+          "coverageClass",
+          "coveredByRegressionFixture",
+          "documentedOnly",
+          "actionable",
+          "migrationApplicationAllowed",
+          "sqlExecutionAllowed",
+          "databaseWriteAllowed",
+          "routeExposed",
+          "canMutateBusinessRecords",
+          "evidenceOnly",
+          "metadataOnly"
+        ],
+        "properties": {
+          "coverageClass": {
+            "enum": [
+              "regression_fixture_covered",
+              "documented_only_boundary"
+            ]
+          },
+          "actionable": {
+            "const": false
+          },
+          "allowed": {
+            "const": false
+          },
+          "migrationApplicationAllowed": {
+            "const": false
+          },
+          "sqlExecutionAllowed": {
+            "const": false
+          },
+          "databaseConnectionAllowed": {
+            "const": false
+          },
+          "databaseWriteAllowed": {
+            "const": false
+          },
+          "tableCreated": {
+            "const": false
+          },
+          "routeExposed": {
+            "const": false
+          },
+          "modelExecutionAllowed": {
+            "const": false
+          },
+          "artifactActivationAllowed": {
+            "const": false
+          },
+          "canMutateBusinessRecords": {
+            "const": false
+          },
+          "evidenceOnly": {
+            "const": true
+          },
+          "metadataOnly": {
+            "const": true
+          }
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "coverageSummaryOnly": {
+          "const": true
+        },
+        "noMlClassifier": {
+          "const": true
+        },
+        "noRuntimeSqlExecution": {
+          "const": true
+        },
+        "noDatabaseConnection": {
+          "const": true
+        },
+        "noDatabaseWrite": {
+          "const": true
+        },
+        "noMigrationApplication": {
+          "const": true
+        },
+        "modelExecutionAllowed": {
+          "const": false
+        },
+        "inferenceEndpointExposed": {
+          "const": false
+        },
+        "artifactActivationAllowed": {
+          "const": false
+        },
+        "canMutateBusinessRecords": {
+          "const": false
+        }
+      }
+    }
+  }
+}

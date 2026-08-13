@@ -1,0 +1,256 @@
+/* Stage 236 — canonical live-data surfaces for sales-risk decisions and realized profit. */
+
+.sales-risk-report {
+  --live-border: rgba(148, 163, 184, .30);
+  --live-border-soft: rgba(226, 232, 240, .92);
+  --live-surface: #fff;
+  --live-soft: #f8fafc;
+  --live-text: #0f172a;
+  --live-muted: #64748b;
+  --live-primary: var(--color-primary, #2563eb);
+}
+
+.sales-risk-report { display: grid; gap: 14px; min-width: 0; color: var(--live-text); }
+
+.sales-risk-source,
+.sales-risk-controls,
+.sales-risk-kpi,
+.sales-risk-log {
+  border: 1px solid var(--live-border);
+  background: var(--live-surface);
+  box-shadow: 0 16px 38px -34px rgba(15, 23, 42, .42);
+}
+
+.sales-risk-source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-radius: 18px;
+}
+
+.sales-risk-source > div { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.sales-risk-source > div > span { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 36px; border-radius: 12px; background: #ecfdf5; color: #047857; }
+.sales-risk-source p { margin: 0; }
+.sales-risk-source strong { display: block; font-size: .78rem; font-weight: 950; }
+.sales-risk-source small { display: block; margin-top: 2px; color: var(--live-muted); font-size: .66rem; font-weight: 720; line-height: 1.7; }
+.sales-risk-source > p { color: var(--live-muted); font-size: .66rem; font-weight: 800; white-space: nowrap; }
+.sales-risk-source > p i { margin-left: 5px; }
+
+.sales-risk-controls {
+  display: grid;
+  grid-template-columns: minmax(300px, 1.15fr) repeat(2, minmax(126px, .5fr)) minmax(190px, .85fr) 104px;
+  align-items: end;
+  gap: 9px;
+  min-width: 0;
+  padding: 11px;
+  border-radius: 20px;
+  background: var(--live-soft);
+}
+
+.sales-risk-presets,
+.sales-risk-presets.report-date-presets {
+  min-width: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.sales-risk-presets .report-date-presets__chips {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 4px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.sales-risk-presets .report-date-preset-chip {
+  min-width: 0 !important;
+  min-height: 42px !important;
+  padding: 0 5px !important;
+  border: 1px solid var(--live-border) !important;
+  border-radius: 12px !important;
+  background: #fff !important;
+  color: #475569 !important;
+  font-size: .61rem !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.sales-risk-presets .report-date-preset-chip i { display: none !important; }
+.sales-risk-presets .report-date-preset-chip.is-active {
+  border-color: color-mix(in srgb, var(--live-primary) 38%, transparent) !important;
+  background: color-mix(in srgb, var(--live-primary) 9%, white) !important;
+  color: var(--live-primary) !important;
+}
+
+.sales-risk-field,
+.sales-risk-search { display: grid; gap: 5px; min-width: 0; }
+.sales-risk-field > span,
+.sales-risk-search > span { display: flex; align-items: center; gap: 5px; min-height: 14px; padding-inline: 3px; color: #475569; font-size: .65rem; font-weight: 900; line-height: 1; }
+.sales-risk-field > span i,
+.sales-risk-search > span i { color: var(--live-primary); font-size: .63rem; }
+
+.sales-risk-date {
+  --ds-control-height-lg: 42px;
+  --ds-control-radius: 13px;
+  --ds-control-border: var(--live-border);
+  --ds-control-bg: #fff;
+  --ds-control-fg: var(--live-text);
+  --ds-control-shadow: none;
+  --ds-control-padding-x: 10px;
+  --ds-control-font-size: .74rem;
+  --ds-control-font-weight: 850;
+  --ds-control-letter-spacing: 0;
+  --ds-control-line-height: 1.5;
+}
+
+.sales-risk-date.app-date-field,
+.sales-risk-date.app-date-field:hover,
+.sales-risk-date.app-date-field:focus,
+.sales-risk-date.app-date-field:focus-within,
+.sales-risk-date.app-date-field[data-open='true'] {
+  width: 100% !important;
+  min-width: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+}
+
+.sales-risk-date.app-date-field > .app-date-field__control,
+.sales-risk-date.app-date-field > .app-date-field__control:hover,
+.sales-risk-date.app-date-field > .app-date-field__control:focus,
+.sales-risk-date.app-date-field > .app-date-field__control:focus-within,
+.sales-risk-date.app-date-field[data-open='true'] > .app-date-field__control {
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.sales-risk-date input[data-date-geometry-lock='true'],
+.sales-risk-date input[data-date-geometry-lock='true']:hover,
+.sales-risk-date input[data-date-geometry-lock='true']:focus,
+.sales-risk-date input[data-date-geometry-lock='true']:focus-visible,
+.sales-risk-date input[data-date-geometry-lock='true']:active {
+  height: 42px !important;
+  min-height: 42px !important;
+  max-height: 42px !important;
+  padding-block: 0 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  transition-property: border-color, background-color, box-shadow !important;
+}
+
+.sales-risk-search .app-search-field,
+.sales-risk-search .app-search-field__control-wrap,
+.sales-risk-search .app-search-field__input { width: 100%; min-width: 0; margin: 0; }
+.sales-risk-search .app-search-field__input { height: 42px; min-height: 42px; max-height: 42px; border-radius: 13px; font-size: .72rem; }
+
+.sales-risk-refresh { width: 100%; min-width: 0 !important; min-height: 42px !important; border-radius: 13px !important; font-size: .69rem !important; white-space: nowrap; }
+
+.sales-risk-error { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #fecdd3; border-radius: 17px; background: #fff1f2; color: #be123c; }
+.sales-risk-error > div { display: grid; flex: 1; gap: 2px; }
+.sales-risk-error strong { font-size: .76rem; font-weight: 950; }
+.sales-risk-error small { font-size: .67rem; font-weight: 720; }
+
+.sales-risk-loading { display: grid; gap: 12px; }
+.sales-risk-loading > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.sales-risk-loading__kpi { height: 104px; }
+.sales-risk-loading__table { height: 300px; }
+
+.sales-risk-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.sales-risk-kpi { display: flex; align-items: flex-start; gap: 10px; min-width: 0; min-height: 102px; padding: 13px; border-radius: 17px; }
+.sales-risk-kpi > span { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 36px; border-radius: 12px; background: #f1f5f9; color: #475569; }
+.sales-risk-kpi > div { display: grid; gap: 2px; min-width: 0; }
+.sales-risk-kpi small { color: var(--live-muted); font-size: .66rem; font-weight: 850; }
+.sales-risk-kpi strong { font-size: 1rem; font-weight: 950; }
+.sales-risk-kpi p { margin: 0; color: var(--live-muted); font-size: .61rem; font-weight: 700; }
+.sales-risk-kpi--primary > span { background: #eff6ff; color: #2563eb; }
+.sales-risk-kpi--success > span { background: #ecfdf5; color: #047857; }
+.sales-risk-kpi--warning > span { background: #fffbeb; color: #b45309; }
+
+.sales-risk-log { min-width: 0; overflow: hidden; border-radius: 20px; }
+.sales-risk-log > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 13px 15px; border-bottom: 1px solid var(--live-border-soft); }
+.sales-risk-log h2 { margin: 0; font-size: .84rem; font-weight: 950; }
+.sales-risk-log header p { margin: 3px 0 0; color: var(--live-muted); font-size: .65rem; font-weight: 700; line-height: 1.7; }
+.sales-risk-log header > span { padding: 5px 9px; border-radius: 999px; background: #f1f5f9; color: #475569; font-size: .65rem; font-weight: 900; white-space: nowrap; }
+.sales-risk-filter-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--live-border-soft); background: var(--live-soft); }
+.sales-risk-filter-tabs .ux-btn { min-height: 33px; border-radius: 10px; box-shadow: none; }
+.sales-risk-empty { margin: 14px; }
+.sales-risk-canonical-table { border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+.sales-risk-canonical-table .ux-table-shell__body { overflow-x: auto; }
+.sales-risk-canonical-table .sales-risk-table { width: 100%; min-width: 1020px; }
+.sales-risk-table-cell { display: grid; gap: 3px; min-width: 0; }
+.sales-risk-table-cell > strong { color: var(--live-text); font-weight: 900; }
+.sales-risk-table-cell > small { color: var(--live-muted); font-size: .62rem; font-weight: 700; white-space: nowrap; }
+.sales-risk-customer-link,
+.sales-risk-mobile-card footer a { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 9px; border: 1px solid var(--live-border); border-radius: 9px; background: #fff; color: #334155; font-size: .62rem; font-weight: 900; white-space: nowrap; }
+.sales-risk-mobile-list { display: none; }
+.sales-risk-status { display: inline-flex; align-items: center; gap: 5px; min-height: 27px; padding: 0 8px; border: 1px solid #e2e8f0; border-radius: 999px; background: #f8fafc; color: #475569; font-size: .61rem; font-weight: 900; white-space: nowrap; }
+.sales-risk-status--success { border-color: #a7f3d0; background: #ecfdf5; color: #047857; }
+.sales-risk-status--warning { border-color: #fde68a; background: #fffbeb; color: #b45309; }
+
+/* Realized profit: one commercial header, one responsive filter row, live source note. */
+
+.dark .sales-risk-report {
+  --live-border: rgba(71, 85, 105, .62);
+  --live-border-soft: rgba(51, 65, 85, .72);
+  --live-surface: #0f172a;
+  --live-soft: #111c30;
+  --live-text: #f8fafc;
+  --live-muted: #94a3b8;
+}
+.dark .sales-risk-date { --ds-control-border: #334155; --ds-control-bg: #0b1324; --ds-control-fg: #cbd5e1; }
+.dark .sales-risk-presets .report-date-preset-chip,
+.dark .sales-risk-customer-link,
+.dark .sales-risk-mobile-card footer a { border-color: #334155; background: #0b1324; color: #cbd5e1; }
+
+@media (max-width: 1180px) {
+  .sales-risk-controls { grid-template-columns: minmax(260px, 1fr) repeat(2, minmax(120px, .48fr)) minmax(170px, .75fr) 96px; gap: 7px; }
+  .sales-risk-kpis,
+  .sales-risk-loading > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .sales-risk-source { align-items: flex-start; flex-direction: column; }
+  .sales-risk-source > p { white-space: normal; }
+  .sales-risk-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sales-risk-presets,
+  .sales-risk-search { grid-column: 1 / -1; }
+  .sales-risk-refresh { width: 100%; }
+}
+
+@media (max-width: 640px) {
+  .sales-risk-report { gap: 10px; }
+  .sales-risk-controls { grid-template-columns: 1fr; padding: 10px; border-radius: 16px; }
+  .sales-risk-presets,
+  .sales-risk-search { grid-column: auto; }
+  .sales-risk-kpis,
+  .sales-risk-loading > div { grid-template-columns: 1fr; }
+  .sales-risk-kpi { min-height: 92px; }
+  .sales-risk-log > header { padding: 12px; }
+  .sales-risk-canonical-table { display: none; }
+  .sales-risk-mobile-list { display: grid; gap: 9px; padding: 9px; }
+  .sales-risk-mobile-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: hidden; border: 1px solid var(--live-border); border-radius: 14px; background: var(--live-surface); }
+  .sales-risk-mobile-card header,
+  .sales-risk-mobile-card footer { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px; background: var(--live-soft); }
+  .sales-risk-mobile-card header small { color: var(--live-muted); font-size: .6rem; font-weight: 750; }
+  .sales-risk-mobile-card > div { display: grid; gap: 3px; padding: 9px; border-top: 1px solid var(--live-border-soft); }
+  .sales-risk-mobile-card > div small { color: var(--live-muted); font-size: .58rem; font-weight: 800; }
+  .sales-risk-mobile-card > div strong { overflow-wrap: anywhere; font-size: .68rem; font-weight: 900; }
+  .sales-risk-mobile-card footer { border-top: 1px solid var(--live-border-soft); background: transparent; color: var(--live-muted); font-size: .62rem; font-weight: 800; }
+}
+
+@media (max-width: 390px) {
+  .sales-risk-mobile-card { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,710 @@
+/* Phase 11 — Shared action/button primitive foundation.
+   Preserves previous shared primitive cascade while adding a small semantic contract. */
+
+/* ===== Source: styles/runtime-overrides/01a7-shared-primitives-button-system.css ===== */
+/* Phase 104: shared People UI primitives - modal/filter/header/icon consistency */
+.modal-premium-badge,
+.detail-severity-badge,
+.people-shared-icon,
+.people-filter-chip .ux-btn__icon,
+.customers-filter-chip .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  min-width: 2.25rem !important;
+  min-height: 2.25rem !important;
+  flex: 0 0 2.25rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+}
+
+.people-filter-chip .ux-btn__icon,
+.customers-filter-chip .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon {
+  width: 1.35rem !important;
+  height: 1.35rem !important;
+  min-width: 1.35rem !important;
+  min-height: 1.35rem !important;
+  flex-basis: 1.35rem !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, .06) !important;
+  color: currentColor !important;
+}
+
+.dark .people-filter-chip .ux-btn__icon,
+.dark .customers-filter-chip .ux-btn__icon,
+.dark .ledger-action-btn .ux-btn__icon {
+  background: rgba(255,255,255,.08) !important;
+}
+
+.people-filter-chip .ux-btn__icon i,
+.customers-filter-chip .ux-btn__icon i,
+.ledger-action-btn .ux-btn__icon i,
+.modal-premium-badge i,
+.detail-severity-badge i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  line-height: 1 !important;
+  font-size: 12px !important;
+  transform: none !important;
+}
+
+.modal-premium-badge i,
+.detail-severity-badge i { font-size: 15px !important; }
+
+.people-filter-chip--unified,
+.people-filter-chip,
+.customers-filter-chip {
+  min-height: 40px !important;
+  height: 40px !important;
+  padding: .45rem .9rem !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .5rem !important;
+  white-space: nowrap !important;
+}
+
+.people-filter-chip .ux-btn__content,
+.customers-filter-chip .ux-btn__content,
+.ledger-action-btn .ux-btn__content {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  min-height: 0 !important;
+}
+
+.people-ledger-timeline-index,
+.people-ledger-timeline-index-fallback {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 2.5rem !important;
+}
+.people-ledger-timeline-index__number,
+.people-ledger-timeline-index > span:first-child,
+.people-ledger-timeline-index-fallback > span:first-child {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  font-size: .86rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 10px 24px -18px rgba(15,23,42,.35) !important;
+}
+.dark .people-ledger-timeline-index__number,
+.dark .people-ledger-timeline-index > span:first-child,
+.dark .people-ledger-timeline-index-fallback > span:first-child {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(30 41 59) !important;
+  color: rgb(241 245 249) !important;
+}
+.people-ledger-timeline-index__line,
+.people-ledger-timeline-index > span:nth-child(2),
+.people-ledger-timeline-index-fallback > span:nth-child(2) {
+  margin-top: .5rem !important;
+  width: 1px !important;
+  height: 2rem !important;
+  background: rgb(226 232 240) !important;
+}
+.dark .people-ledger-timeline-index__line,
+.dark .people-ledger-timeline-index > span:nth-child(2),
+.dark .people-ledger-timeline-index-fallback > span:nth-child(2) {
+  background: rgb(51 65 85) !important;
+}
+
+.people-detail-eye-btn,
+.people-detail-eye-btn.ux-btn,
+.people-detail-action-btn,
+.people-list-action-btn {
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: .45rem .75rem !important;
+  border-radius: 14px !important;
+  align-items: center !important;
+}
+.people-detail-eye-btn .ux-btn__icon,
+.people-detail-action-btn .ux-btn__icon,
+.people-list-action-btn .ux-btn__icon {
+  width: 1.45rem !important;
+  height: 1.45rem !important;
+  min-width: 1.45rem !important;
+  min-height: 1.45rem !important;
+  flex-basis: 1.45rem !important;
+  border-radius: 10px !important;
+  background: rgba(15,23,42,.06) !important;
+}
+.dark .people-detail-eye-btn .ux-btn__icon,
+.dark .people-detail-action-btn .ux-btn__icon,
+.dark .people-list-action-btn .ux-btn__icon {
+  background: rgba(255,255,255,.08) !important;
+}
+
+/* Phase 105 late override — global button system must win over legacy/page CSS. */
+.ux-btn,
+.ux-btn--native,
+a.ux-btn,
+.people-action-btn,
+.people-primary-btn,
+.people-secondary-btn,
+.premium-submit-btn,
+.premium-cancel-btn,
+.inventory-inline-add,
+.inventory-table-action-btn,
+.ledger-action-btn,
+.ux-pagination-btn,
+.report-filter-button,
+button[data-ux-enhanced='true'] {
+  min-height: var(--ux-btn-h, 44px) !important;
+  border-radius: var(--ux-btn-radius, var(--btn-radius, 18px)) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--ux-btn-gap, .55rem) !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+}
+.ux-btn__content,
+.ux-btn__label,
+.ux-btn__label-main {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.ux-btn__content { gap: var(--ux-btn-gap, .55rem) !important; width: 100% !important; }
+.ux-btn__icon,
+.ux-btn__spinner,
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before,
+.people-detail-eye-btn__icon,
+.people-action-btn > i,
+.inventory-table-action-btn > i,
+.ledger-action-btn > i {
+  width: var(--ux-btn-icon, 30px) !important;
+  height: var(--ux-btn-icon, 30px) !important;
+  min-width: var(--ux-btn-icon, 30px) !important;
+  min-height: var(--ux-btn-icon, 30px) !important;
+  flex: 0 0 var(--ux-btn-icon, 30px) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+.ux-btn-sm .ux-btn__icon,
+.ux-btn-sm .ux-btn__spinner,
+.ux-btn-sm.ux-btn--native[data-ux-icon-glyph]::before,
+.people-action-btn-tight .ux-btn__icon,
+.inventory-table-action-btn .ux-btn__icon,
+.ledger-action-btn .ux-btn__icon,
+.ledger-action-btn > i {
+  width: var(--ux-btn-icon-sm, 26px) !important;
+  height: var(--ux-btn-icon-sm, 26px) !important;
+  min-width: var(--ux-btn-icon-sm, 26px) !important;
+  min-height: var(--ux-btn-icon-sm, 26px) !important;
+  flex-basis: var(--ux-btn-icon-sm, 26px) !important;
+}
+.ux-btn-xs .ux-btn__icon,
+.ux-btn-xs .ux-btn__spinner,
+.ux-btn-xs.ux-btn--native[data-ux-icon-glyph]::before,
+.ledger-action-btn.ux-btn-xs .ux-btn__icon,
+.inventory-table-action-btn.ux-btn-xs .ux-btn__icon {
+  width: var(--ux-btn-icon-xs, 22px) !important;
+  height: var(--ux-btn-icon-xs, 22px) !important;
+  min-width: var(--ux-btn-icon-xs, 22px) !important;
+  min-height: var(--ux-btn-icon-xs, 22px) !important;
+  flex-basis: var(--ux-btn-icon-xs, 22px) !important;
+}
+.ux-btn__icon i,
+.ux-btn__icon svg,
+.ux-btn__spinner i,
+.ux-btn__spinner svg,
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before,
+.people-action-btn i,
+.inventory-table-action-btn i,
+.ledger-action-btn i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 1em !important;
+  height: 1em !important;
+  font-size: 12px !important;
+  line-height: 1 !important;
+}
+.ux-btn--native[data-ux-icon-glyph]::before,
+button[data-ux-enhanced='true'][data-ux-icon-glyph]::before {
+  content: attr(data-ux-icon-glyph) !important;
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900 !important;
+}
+.ux-table-row-actions,
+.inventory-table-row-actions,
+.installment-table-actions,
+.installment-card-actions,
+.ledger-actions-row,
+.customer-ledger-actions,
+.partner-ledger-actions,
+.people-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+  gap: 1px !important;
+}
+.installment-table-actions > :where(a, button),
+.installment-table-actions .ux-btn-table-icon {
+  width: 30px !important;
+  min-width: 30px !important;
+  max-width: 30px !important;
+  flex: 0 0 30px !important;
+}
+.ux-btn:hover:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+.ux-btn--native:hover:not(:disabled):not([aria-disabled='true']):not([data-loading='true']),
+a.ux-btn:hover,
+.people-action-btn:hover,
+.inventory-table-action-btn:hover,
+.ledger-action-btn:hover { transform: translateY(-2px) !important; }
+.ux-btn:active:not(:disabled):not([aria-disabled='true']),
+.ux-btn--native:active:not(:disabled):not([aria-disabled='true']),
+a.ux-btn:active,
+.people-action-btn:active,
+.inventory-table-action-btn:active,
+.ledger-action-btn:active { transform: translateY(0) scale(.99) !important; }
+.ux-btn[disabled],
+.ux-btn:disabled,
+.ux-btn[aria-disabled='true'],
+.ux-btn--native:disabled,
+button[data-ux-enhanced='true']:disabled,
+button[data-ux-enhanced='true'][aria-disabled='true'] {
+  cursor: not-allowed !important;
+  opacity: .58 !important;
+  filter: saturate(.8) !important;
+  transform: none !important;
+}
+html[data-button-icon-side='end'] .ux-btn__content,
+html[data-button-icon-side='end'] .ux-btn--native,
+html[data-button-icon-side='end'] button[data-ux-enhanced='true'] { flex-direction: row-reverse !important; }
+html[data-button-icon-side='start'] .ux-btn__content,
+html[data-button-icon-side='start'] .ux-btn--native,
+html[data-button-icon-side='start'] button[data-ux-enhanced='true'] { flex-direction: row !important; }
+
+
+/* ===== Phase 11 contract additions ===== */
+:root {
+  --kourosh-action-min-height: 2.25rem;
+  --kourosh-action-radius: 0.95rem;
+  --kourosh-action-gap: 0.45rem;
+  --kourosh-action-icon-size: 1.05rem;
+}
+
+:where(.ux-btn, .people-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) {
+  min-width: 0;
+  vertical-align: middle;
+}
+
+:where(.ux-btn, .people-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) > :where(svg, i, .ux-btn__icon, .button-icon) {
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+:where(.ux-btn, .people-action-btn, .ledger-action-btn, .finance-table-action, .product-row-action-btn, .inventory-table-action-btn, .product-management-row-btn) > :where(span, strong, small) {
+  min-width: 0;
+}
+
+:where(.people-table-shell, .product-list-table, .finance-table, .report-page table) :where(.ux-btn, button, a[class*="btn"]) {
+  white-space: nowrap;
+}
+
+/* ===== Stage 24 — canonical adaptive loading button contract =====
+   Inspired by the Dribbble loading-button interaction. This is the single
+   runtime owner for loading/success motion, responsive sizing and theme-safe
+   progress rendering. */
+
+.ux-btn[data-loading-layout='adaptive'],
+.ux-btn[data-success-pulse='true'] {
+  box-sizing: border-box;
+  transform: none;
+  cursor: progress;
+}
+
+.ux-btn[data-loading-layout='adaptive'] .ux-btn__content--state,
+.ux-btn[data-success-pulse='true'] .ux-btn__content--state {
+  max-width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: clamp(.42rem, 1.5vw, .65rem);
+  color: inherit;
+  position: relative;
+}
+
+.ux-btn__state-copy {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: .22rem;
+  min-width: 0;
+  max-width: 100%;
+  color: inherit;
+  text-align: center;
+}
+
+.ux-btn__state-main,
+.ux-btn__state-hint {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  color: inherit;
+  text-align: center;
+}
+
+.ux-btn__state-main {
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.ux-btn__state-hint {
+  line-height: 1.35;
+  font-size: .72em;
+  font-weight: 750;
+  opacity: .78;
+}
+
+.ux-btn__state-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  min-width: 1.35rem;
+  min-height: 1.35rem;
+  flex: 0 0 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  line-height: 1;
+}
+
+.ux-btn__state-icon > :where(i, svg) {
+  width: 1rem;
+  height: 1rem;
+  color: inherit;
+  animation: none;
+}
+
+.ux-btn__state-spinner {
+  animation: ux-btn-state-spin .82s linear infinite !important;
+  transform-origin: center;
+}
+
+.ux-btn__state-icon--success {
+  animation: ux-btn-state-check-in 260ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.ux-btn__loading-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 4.5rem;
+  height: .22rem;
+  margin-top: .18rem;
+  overflow: hidden;
+  border-radius: 999px;
+  direction: ltr;
+  background: transparent;
+  color: inherit;
+  isolation: isolate;
+}
+
+.ux-btn__loading-track::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: .2;
+  pointer-events: none;
+}
+
+.ux-btn__loading-runner {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  display: block;
+  width: 42%;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: .92;
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.ux-btn__loading-track[data-progress-mode='indeterminate'] .ux-btn__loading-runner {
+  animation: ux-btn-loading-runner 1.12s cubic-bezier(.42,0,.2,1) infinite;
+}
+
+.ux-btn__loading-track[data-progress-mode='determinate'] .ux-btn__loading-runner,
+.ux-btn__loading-track[data-progress-mode='complete'] .ux-btn__loading-runner {
+  width: 100%;
+  transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+}
+
+.ux-btn__loading-track[data-progress-mode='complete'] .ux-btn__loading-runner {
+  transform: scaleX(1);
+}
+
+.ux-btn__intrinsic-measure {
+  position: fixed;
+  left: -100000px;
+  top: -100000px;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(.42rem, 1.5vw, .65rem);
+  width: max-content;
+  max-width: none;
+  min-width: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.ux-btn__intrinsic-measure .ux-btn__state-copy {
+  width: max-content;
+  max-width: none;
+}
+
+.ux-btn__intrinsic-measure .ux-btn__state-main {
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.ux-btn__intrinsic-measure .ux-btn__state-hint {
+  width: max-content;
+  max-width: min(18rem, calc(100vw - 5rem));
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.ux-btn__intrinsic-measure .ux-btn__loading-track {
+  width: 100%;
+}
+
+.ux-btn[data-loading-layout='compact'] .ux-btn__spinner--compact {
+  display: inline-flex;
+  color: currentColor;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.ux-btn[data-loading='true']::after,
+.ux-btn[data-success-pulse='true']::after {
+  content: none;
+  animation: none;
+}
+
+@keyframes ux-btn-loading-runner {
+  0% { transform: translateX(-112%) scaleX(.62); }
+  48% { transform: translateX(72%) scaleX(1); }
+  100% { transform: translateX(246%) scaleX(.68); }
+}
+
+@keyframes ux-btn-state-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ux-btn-state-check-in {
+  from { transform: scale(.72); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 640px) {
+  .ux-btn[data-loading-layout='adaptive'] .ux-btn__content--state,
+  .ux-btn[data-success-pulse='true'] .ux-btn__content--state {
+    width: 100%;
+  }
+
+  .ux-btn[data-loading-wrap='true'] .ux-btn__state-icon {
+    display: none;
+  }
+
+  .ux-btn[data-loading-wrap='true'] :where(.ux-btn__state-main, .ux-btn__state-hint) {
+    line-height: 1.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-btn__loading-track[data-progress-mode='indeterminate'] .ux-btn__loading-runner {
+    width: 100%;
+    transform: scaleX(.56);
+    transform-origin: center;
+    animation: ux-btn-loading-reduced-pulse 1.4s ease-in-out infinite;
+  }
+
+  .ux-btn__state-spinner,
+  .ux-btn__state-icon--success {
+    animation: none !important;
+  }
+}
+
+html[data-ui-reduced-motion='true'] .ux-btn__state-spinner {
+  animation: none !important;
+}
+
+html[data-ui-reduced-motion='true'] .ux-btn__loading-track[data-progress-mode='indeterminate'] .ux-btn__loading-runner {
+  width: 100%;
+  transform: scaleX(.56);
+  transform-origin: center;
+  animation: ux-btn-loading-reduced-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes ux-btn-loading-reduced-pulse {
+  0%, 100% { opacity: .48; }
+  50% { opacity: .92; }
+}
+
+/* Stage 28 — canonical loading content owns its visible track in every
+   runtime surface. The Component applies the same important inline contract
+   in the style laboratory and real pages; this selector only removes the old
+   pseudo-track so the two render paths cannot visually diverge. */
+.ux-btn[data-loading-contract='canonical-v2'] .ux-btn__loading-track::before {
+  content: none;
+}
+
+/* Canonical neutral selection and filter controls.
+   Feature pages consume these variants through Button/FilterChipsBar; no page-level
+   color or gradient overrides are required. */
+.ux-btn-neutral,
+.ux-filter-button.ux-btn-neutral {
+  border-color: rgb(15 23 42) !important;
+  background: rgb(15 23 42) !important;
+  background-image: none !important;
+  color: rgb(255 255 255) !important;
+  box-shadow: none !important;
+}
+
+.ux-btn-neutral:hover:not(:disabled):not([aria-disabled='true']),
+.ux-filter-button.ux-btn-neutral:hover:not(:disabled):not([aria-disabled='true']) {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(30 41 59) !important;
+  background-image: none !important;
+  color: rgb(255 255 255) !important;
+}
+
+.dark .ux-btn-neutral,
+.dark .ux-filter-button.ux-btn-neutral {
+  border-color: rgb(71 85 105) !important;
+  background: rgb(15 23 42) !important;
+  background-image: none !important;
+  color: rgb(248 250 252) !important;
+}
+
+.ux-filter-button {
+  --ux-btn-h: 40px;
+  --ux-btn-radius: 15px;
+  --ux-btn-icon: 22px;
+  --ux-btn-gap: .42rem;
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  padding-inline: .78rem !important;
+  box-shadow: none !important;
+}
+
+.ux-filter-button.ux-btn-secondary {
+  border-color: rgb(203 213 225 / .88) !important;
+  background: rgb(248 250 252) !important;
+  background-image: none !important;
+  color: rgb(51 65 85) !important;
+}
+
+.ux-filter-button.ux-btn-secondary:hover:not(:disabled):not([aria-disabled='true']) {
+  border-color: rgb(148 163 184 / .8) !important;
+  background: rgb(241 245 249) !important;
+  background-image: none !important;
+  color: rgb(15 23 42) !important;
+}
+
+.dark .ux-filter-button.ux-btn-secondary {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42 / .78) !important;
+  background-image: none !important;
+  color: rgb(203 213 225) !important;
+}
+
+.dark .ux-filter-button.ux-btn-secondary:hover:not(:disabled):not([aria-disabled='true']) {
+  border-color: rgb(71 85 105) !important;
+  background: rgb(30 41 59) !important;
+  color: rgb(248 250 252) !important;
+}
+
+.ux-filter-button .ux-btn__content {
+  width: auto !important;
+}
+
+.ux-filter-button .ux-btn__icon {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.ux-filter-button__label {
+  line-height: 1.2 !important;
+}
+
+.ux-filter-button__count {
+  display: inline !important;
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: currentColor !important;
+  box-shadow: none !important;
+  font-size: .7rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+
+.ux-filter-button.ux-btn-neutral .ux-filter-button__count,
+.dark .ux-filter-button.ux-btn-secondary .ux-filter-button__count {
+  background: transparent !important;
+  color: currentColor !important;
+}

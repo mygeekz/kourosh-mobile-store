@@ -1,0 +1,249 @@
+/* Stage 116 — Centralized PartnerPhoneCapital section
+   This removes the section from ad-hoc Tailwind visual styling by using dedicated classes.
+   Scope is only [data-partner-phone-capital-section="true"].
+*/
+
+.partner-detail-apple [data-partner-phone-capital-section="true"].partner-phone-capital-section {
+  position: relative !important;
+  z-index: 30 !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  padding: 1.25rem !important;
+  border-radius: 28px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: 0 18px 46px -38px rgba(15, 23, 42, .24) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  transform: none !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"]::before,
+.partner-detail-apple [data-partner-phone-capital-section="true"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] * {
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.partner-phone-capital-header {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.25rem !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+}
+
+@media (min-width: 1024px) {
+  .partner-phone-capital-header {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+  }
+}
+
+.partner-phone-capital-copy {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-phone-capital-eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  width: fit-content !important;
+  border-radius: 999px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+  padding: .25rem .75rem !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  box-shadow: none !important;
+}
+
+.partner-phone-capital-eyebrow i {
+  color: rgb(100 116 139) !important;
+}
+
+.partner-phone-capital-title {
+  margin-top: .75rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 950 !important;
+  letter-spacing: -.01em !important;
+}
+
+.partner-phone-capital-description {
+  margin-top: .5rem !important;
+  max-width: 48rem !important;
+  color: rgb(71 85 105) !important;
+  font-size: 12px !important;
+  line-height: 1.85 !important;
+  font-weight: 700 !important;
+}
+
+.partner-phone-capital-summary-card {
+  width: 100% !important;
+  border-radius: 24px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+  padding: 1rem 1.25rem !important;
+  text-align: right !important;
+  box-shadow: 0 16px 36px -34px rgba(15,23,42,.28) !important;
+}
+
+@media (min-width: 1024px) {
+  .partner-phone-capital-summary-card {
+    width: 330px !important;
+    flex: 0 0 330px !important;
+  }
+}
+
+.partner-phone-capital-summary-label,
+.partner-phone-capital-metric-label {
+  color: rgb(71 85 105) !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+
+.partner-phone-capital-summary-icon {
+  display: inline-flex !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.partner-phone-capital-summary-value {
+  margin-top: .75rem !important;
+  color: rgb(15 23 42) !important;
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+  font-weight: 950 !important;
+}
+
+.partner-phone-capital-summary-note,
+.partner-phone-capital-metric-hint {
+  color: rgb(71 85 105) !important;
+  font-size: 11px !important;
+  line-height: 1.65 !important;
+  font-weight: 700 !important;
+}
+
+.partner-phone-capital-metrics {
+  margin-top: 1.25rem !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: .75rem !important;
+}
+
+@media (min-width: 640px) {
+  .partner-phone-capital-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .partner-phone-capital-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+.partner-phone-capital-metric-card {
+  border-radius: 22px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  padding: 1rem !important;
+  box-shadow: 0 12px 30px -28px rgba(15,23,42,.20) !important;
+}
+
+.partner-phone-capital-table-shell {
+  margin-top: 1.25rem !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: #fff !important;
+  box-shadow: 0 12px 30px -28px rgba(15,23,42,.20) !important;
+}
+
+.partner-phone-capital-table-scroll {
+  background: #fff !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] table,
+.partner-detail-apple [data-partner-phone-capital-section="true"] tbody,
+.partner-detail-apple [data-partner-phone-capital-section="true"] tr,
+.partner-detail-apple [data-partner-phone-capital-section="true"] td {
+  background: #fff !important;
+  color: rgb(15 23 42) !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] thead th {
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  border-color: rgb(226 232 240) !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] :where([class*="text-rose"], [class*="text-red"]) {
+  color: rgb(190 18 60) !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] :where([class*="text-emerald"], [class*="text-green"]) {
+  color: rgb(4 120 87) !important;
+}
+
+.partner-detail-apple [data-partner-phone-capital-section="true"] :where([class*="text-amber"], [class*="text-yellow"]) {
+  color: rgb(180 83 9) !important;
+}
+
+/* Dark mode */
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"].partner-phone-capital-section,
+html.dark .partner-phone-capital-summary-card,
+html.dark .partner-phone-capital-metric-card,
+html.dark .partner-phone-capital-table-shell,
+html.dark .partner-phone-capital-table-scroll,
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"] table,
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"] tbody,
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"] tr,
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"] td {
+  background: rgb(2 6 23) !important;
+  color: rgb(248 250 252) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-phone-capital-eyebrow,
+html.dark .partner-phone-capital-summary-icon,
+html.dark .partner-detail-apple [data-partner-phone-capital-section="true"] thead th {
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+  border-color: rgb(30 41 59) !important;
+}
+
+html.dark .partner-phone-capital-title,
+html.dark .partner-phone-capital-summary-value {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark .partner-phone-capital-description,
+html.dark .partner-phone-capital-summary-label,
+html.dark .partner-phone-capital-summary-note,
+html.dark .partner-phone-capital-metric-label,
+html.dark .partner-phone-capital-metric-hint {
+  color: rgb(203 213 225) !important;
+}

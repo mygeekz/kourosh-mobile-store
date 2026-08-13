@@ -1,0 +1,383 @@
+/* Stage 150 — Smart Insights super premium
+   A more executive, Apple-minimal command center: premium hero surfaces,
+   decision command panel, bento metrics, refined chips/cards, and stronger hierarchy. */
+
+.smart-brain-page {
+  --si-deep: #0f172a;
+  --si-line: rgba(148, 163, 184, .24);
+  --si-soft: rgba(248, 250, 252, .78);
+  --si-card: rgba(255, 255, 255, .96);
+  --si-emerald: #059669;
+  --si-indigo: #4f46e5;
+  --si-amber: #d97706;
+  --si-rose: #e11d48;
+}
+
+.smart-brain-page .smart-brain-hero {
+  position: relative !important;
+  padding: 22px !important;
+  overflow: hidden !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.99) 0%, rgba(248,250,252,.96) 56%, rgba(241,245,249,.92) 100%),
+    radial-gradient(circle at 8% 0%, rgba(79,70,229,.10), transparent 34%),
+    radial-gradient(circle at 100% 0%, rgba(16,185,129,.09), transparent 30%) !important;
+  box-shadow:
+    0 26px 70px -54px rgba(15,23,42,.42),
+    inset 0 1px 0 rgba(255,255,255,.84) !important;
+}
+
+.smart-brain-page .smart-brain-hero::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 12px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  border: 1px solid rgba(255,255,255,.70) !important;
+  border-radius: 26px !important;
+}
+
+.smart-brain-page .smart-brain-hero > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 560px) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:first-child {
+  min-height: 100% !important;
+  padding: 18px !important;
+  border: 1px solid rgba(226,232,240,.76) !important;
+  border-radius: 28px !important;
+  background: rgba(255,255,255,.58) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.68) !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div {
+  min-height: 150px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 26px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.82)) !important;
+  box-shadow: 0 14px 36px rgba(15,23,42,.055) !important;
+}
+
+.smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div.sm\:col-span-2 {
+  grid-column: 1 / -1 !important;
+}
+
+.smart-brain-page .smart-brain-kicker {
+  height: 34px !important;
+  padding-inline: 13px !important;
+  border-color: rgba(79,70,229,.18) !important;
+  color: #4338ca !important;
+  background: rgba(238,242,255,.74) !important;
+  letter-spacing: .14em !important;
+}
+
+.smart-brain-page .smart-brain-hero h1 {
+  max-width: 720px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.55rem, 2.6vw, 2.45rem) !important;
+  line-height: 1.25 !important;
+}
+
+.smart-brain-page .smart-brain-hero p {
+  max-width: 780px !important;
+}
+
+.smart-insights-control-dock {
+  margin-top: 16px !important;
+  padding: 14px !important;
+  border-radius: 26px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.70), rgba(248,250,252,.62)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.78),
+    0 12px 34px -30px rgba(15,23,42,.35) !important;
+}
+
+.smart-insights-filter-group {
+  background: rgba(255,255,255,.72) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.64) !important;
+}
+
+.smart-insights-filter-chip {
+  box-shadow: 0 6px 16px rgba(15,23,42,.035) !important;
+}
+
+.smart-insights-command-center {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, .75fr) !important;
+  gap: 14px !important;
+  border: 1px solid rgba(148,163,184,.24) !important;
+  border-radius: 30px !important;
+  padding: 14px !important;
+  background:
+    linear-gradient(135deg, rgba(15,23,42,.97), rgba(30,41,59,.94)),
+    radial-gradient(circle at 16% 0%, rgba(99,102,241,.30), transparent 38%),
+    radial-gradient(circle at 100% 20%, rgba(20,184,166,.22), transparent 38%) !important;
+  box-shadow: 0 28px 70px -54px rgba(15,23,42,.68) !important;
+  color: #fff !important;
+  overflow: hidden !important;
+}
+
+.smart-insights-command-center__main,
+.smart-insights-command-center__action {
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.07) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+.smart-insights-command-center__main {
+  padding: 20px !important;
+}
+
+.smart-insights-command-center__eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  height: 30px !important;
+  padding-inline: 10px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.78) !important;
+  font-size: .68rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-command-center__pulse {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: #38bdf8 !important;
+  box-shadow: 0 0 0 4px rgba(56,189,248,.12) !important;
+}
+
+.smart-insights-command-center__pulse--emerald { background: #34d399 !important; box-shadow: 0 0 0 4px rgba(52,211,153,.12) !important; }
+.smart-insights-command-center__pulse--amber { background: #fbbf24 !important; box-shadow: 0 0 0 4px rgba(251,191,36,.12) !important; }
+.smart-insights-command-center__pulse--rose { background: #fb7185 !important; box-shadow: 0 0 0 4px rgba(251,113,133,.12) !important; }
+
+.smart-insights-command-center h2 {
+  margin: 14px 0 0 !important;
+  color: #fff !important;
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.6 !important;
+}
+
+.smart-insights-command-center p {
+  margin: 8px 0 0 !important;
+  color: rgba(226,232,240,.82) !important;
+  font-size: .82rem !important;
+  font-weight: 760 !important;
+  line-height: 2 !important;
+}
+
+.smart-insights-command-center__metrics {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 18px !important;
+}
+
+.smart-insights-command-center__metrics div {
+  padding: 13px !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.07) !important;
+}
+
+.smart-insights-command-center__metrics span,
+.smart-insights-command-center__action-head,
+.smart-insights-command-center__action-footer small {
+  color: rgba(203,213,225,.78) !important;
+  font-size: .70rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-insights-command-center__metrics strong {
+  display: block !important;
+  margin-top: 4px !important;
+  color: #fff !important;
+  font-size: 1.12rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-command-center__action {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 18px !important;
+}
+
+.smart-insights-command-center__action-head {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.smart-insights-command-center__action-head span {
+  display: grid !important;
+  place-items: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 13px !important;
+  background: rgba(250,204,21,.14) !important;
+  color: #fde68a !important;
+}
+
+.smart-insights-command-center__action h3 {
+  margin: 14px 0 0 !important;
+  color: #fff !important;
+  font-size: 1.02rem !important;
+  font-weight: 950 !important;
+  line-height: 1.8 !important;
+}
+
+.smart-insights-command-center__action-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-top: 16px !important;
+}
+
+.smart-insights-command-center__button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  padding-inline: 14px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+}
+
+.smart-insights-signal-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.smart-insights-signal-grid > div {
+  min-height: 112px !important;
+  padding: 17px !important;
+  border-radius: 24px !important;
+  border-color: rgba(148,163,184,.25) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.045) !important;
+}
+
+.smart-insights-cards-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+
+.smart-insights-cards-grid article {
+  position: relative !important;
+  overflow: hidden !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.94)) !important;
+  border-color: rgba(148,163,184,.24) !important;
+}
+
+.smart-insights-cards-grid article::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 16px !important;
+  inset-inline-start: 0 !important;
+  width: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(79,70,229,.52) !important;
+}
+
+.smart-brain-page .smart-action-link {
+  background: #111827 !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 12px 24px rgba(15,23,42,.12) !important;
+}
+
+.dark .smart-brain-page .smart-brain-hero {
+  background:
+    linear-gradient(145deg, rgba(15,23,42,.96), rgba(2,6,23,.96)),
+    radial-gradient(circle at 8% 0%, rgba(99,102,241,.18), transparent 34%),
+    radial-gradient(circle at 100% 0%, rgba(20,184,166,.14), transparent 30%) !important;
+}
+
+.dark .smart-brain-page .smart-brain-hero > div:first-child > div:first-child,
+.dark .smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div,
+.dark .smart-insights-signal-grid > div,
+.dark .smart-insights-cards-grid article {
+  border-color: rgba(51,65,85,.72) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-insights-command-center {
+  border-color: rgba(255,255,255,.08) !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1180px) {
+  .smart-brain-page .smart-brain-hero > div:first-child,
+  .smart-insights-command-center {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-brain-page .smart-brain-hero {
+    padding: 14px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-brain-page .smart-brain-hero > div:first-child > div:first-child,
+  .smart-brain-page .smart-brain-hero > div:first-child > div:nth-child(2) > div {
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-insights-command-center {
+    padding: 10px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-insights-command-center__main,
+  .smart-insights-command-center__action {
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-insights-command-center__action-footer {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .smart-insights-command-center__button {
+    width: 100% !important;
+  }
+}

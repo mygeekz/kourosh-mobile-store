@@ -1,0 +1,144 @@
+/* استایل مخصوص چاپ */
+@media print {
+  /* جلوگیری از چاپ هدر و فوتر مرورگر */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* پنهان کردن المان‌هایی که کلاس print:hidden دارند */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* پس‌زمینهٔ سفید و قلم */
+  html, body {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 0;
+    background: #fff !important;
+    color: #222 !important;
+    font-family: 'Vazir', Tahoma, sans-serif;
+    direction: rtl;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* کانتینر فاکتور */
+  .receipt-container {
+    width: 100%;
+    max-width: 190mm;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Header */
+  .receipt-container .header {
+    text-align: center;
+    margin-bottom: 6mm;
+  }
+  .receipt-container .store-name {
+    font-size: 26px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 2px;
+  }
+  .receipt-container .divider {
+    width: 60px;
+    height: 3px;
+    background: #2980b9;
+    margin: 8px auto 12px;
+  }
+  .receipt-container .store-info {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.4;
+  }
+
+  /* Meta */
+  .receipt-container .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8mm;
+    font-size: 13px;
+    color: #333;
+  }
+  .receipt-container .meta > div {
+    width: 48%;
+  }
+
+  /* جدول آیتم‌ها */
+  .receipt-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8mm;
+    page-break-inside: avoid;
+  }
+  .receipt-container thead th {
+    background: #ecf0f1;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 8px;
+    border-bottom: 2px solid #bdc3c7;
+    text-align: right;
+    font-size: 13px;
+  }
+  .receipt-container tbody td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+    color: #333;
+    font-size: 13px;
+  }
+  .receipt-container tbody tr:nth-child(even) {
+    background: #fafafa;
+  }
+
+  /* باکس خلاصه */
+  .receipt-container .summary {
+    background: #f7f9fa;
+    border: 1px solid #dde4ea;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 8mm;
+    font-size: 13px;
+  }
+  .receipt-container .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .receipt-container .summary-row .label {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  .receipt-container .summary-row .value {
+    color: #2c3e50;
+  }
+
+  /* یادداشت‌ها */
+  .receipt-container .notes {
+    font-size: 11px;
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10mm;
+  }
+
+  /* امضاها */
+  .receipt-container .signatures {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    margin-top: 15mm;
+  }
+  .receipt-container .sig-box {
+    width: 45%;
+    text-align: center;
+  }
+  .receipt-container .sig-line {
+    border-top: 1px solid #333;
+    margin-top: 12mm;
+  }
+}

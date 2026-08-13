@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "phase": "UI-0G-Dashboard-Widgets-Canonical-Interaction-Repair",
+  "owner": "dashboard-foundation",
+  "styleContract": "styles/system/dashboard-smart-widgets-foundation.css",
+  "pageRoot": ".app-dashboard-page",
+  "families": {
+    "metric": {
+      "component": "pages/dashboard/DashboardMetric.tsx",
+      "selector": ".app-dashboard-metric"
+    },
+    "header": {
+      "component": "pages/dashboard/DashboardWidgetHeader.tsx",
+      "selector": ".app-dashboard-widget-header"
+    },
+    "spotlight": {
+      "component": "pages/dashboard/DashboardSpotlightCard.tsx",
+      "selector": ".app-dashboard-spotlight-card"
+    },
+    "operational": {
+      "component": "pages/dashboard/OperationalWidgetLayout.tsx",
+      "selector": ".app-dashboard-operational"
+    },
+    "fixedFrame": {
+      "component": "pages/dashboard/FixedWidgetFrame.tsx",
+      "selector": ".app-dashboard-widget-frame"
+    },
+    "headerLink": {
+      "component": "pages/dashboard/DashboardHeaderLink.tsx",
+      "selector": ".app-dashboard-header-link"
+    }
+  },
+  "standards": {
+    "singleSurface": true,
+    "compactTypography": true,
+    "semanticToneOnly": true,
+    "noGradient": true,
+    "noHoverMotion": true,
+    "noDecorativeGlow": true,
+    "scrollOwnedByOperationalViewport": true,
+    "noSubstringClassSelectors": true,
+    "fixedFrameOwnsOperationalSurface": true,
+    "framelessRangeTabs": true,
+    "compactHeaderActions": true,
+    "noQuickActionPanel": true,
+    "noLegacyRowActionCollision": true,
+    "pulseUsesCanonicalPrimitives": true
+  }
+}

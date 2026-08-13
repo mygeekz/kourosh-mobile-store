@@ -1,0 +1,30 @@
+import { runAsync } from "../../query";
+
+export const createMlBenchmarksSchema = async (): Promise<void> => {
+  await runAsync(`
+    CREATE TABLE IF NOT EXISTS ml_baseline_benchmarks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      benchmark_key TEXT NOT NULL,
+      dataset_key TEXT NOT NULL,
+      dataset_version TEXT NOT NULL DEFAULT 'v1',
+      split_key TEXT NOT NULL,
+      split_strategy TEXT NOT NULL,
+      seed TEXT NOT NULL,
+      test_ratio REAL NOT NULL,
+      train_rows INTEGER NOT NULL DEFAULT 0,
+      test_rows INTEGER NOT NULL DEFAULT 0,
+      best_candidate_key TEXT,
+      best_f1_pct REAL,
+      best_balanced_accuracy_pct REAL,
+      metrics_json TEXT,
+      summary_json TEXT,
+      created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')),
+      user_id INTEGER,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `);
+
+  await runAsync(
+    `CREATE INDEX IF NOT EXISTS idx_ml_baseline_benchmarks_key ON ml_baseline_benchmarks(benchmark_key, created_at)`,
+  );
+};

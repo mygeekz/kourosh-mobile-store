@@ -1,0 +1,150 @@
+/* Phase 47: global modal + drawer unification */
+:root {
+  --ux-overlay-bg-light: rgba(15, 23, 42, 0.36);
+  --ux-overlay-bg-dark: rgba(2, 6, 23, 0.72);
+  --ux-panel-radius-unified: 26px;
+  --ux-panel-border-light: rgba(226, 232, 240, 0.92);
+  --ux-panel-border-dark: rgba(51, 65, 85, 0.9);
+  --ux-panel-bg-light: rgba(255, 255, 255, 0.96);
+  --ux-panel-bg-dark: rgba(2, 6, 23, 0.9);
+  --ux-panel-shadow-light: 0 30px 70px -42px rgba(15, 23, 42, 0.24);
+  --ux-panel-shadow-dark: 0 34px 80px -44px rgba(2, 6, 23, 0.68);
+}
+
+.modal-overlay,
+.drawer-overlay,
+[class*="modal-overlay"],
+[class*="drawer-overlay"] {
+  background: var(--ux-overlay-bg-light);
+  backdrop-filter: blur(8px);
+}
+
+.dark .modal-overlay,
+.dark .drawer-overlay,
+.dark [class*="modal-overlay"],
+.dark [class*="drawer-overlay"] {
+  background: var(--ux-overlay-bg-dark);
+}
+
+.modal-content,
+.drawer-content,
+.modal-panel,
+.drawer-panel,
+[class*="modal-content"],
+[class*="drawer-content"],
+[class*="modal-panel"],
+[class*="drawer-panel"] {
+  border-radius: var(--ux-panel-radius-unified);
+  border: 1px solid var(--ux-panel-border-light);
+  background: var(--ux-panel-bg-light);
+  box-shadow: var(--ux-panel-shadow-light);
+  overflow: hidden;
+}
+
+.dark .modal-content,
+.dark .drawer-content,
+.dark .modal-panel,
+.dark .drawer-panel,
+.dark [class*="modal-content"],
+.dark [class*="drawer-content"],
+.dark [class*="modal-panel"],
+.dark [class*="drawer-panel"] {
+  border-color: var(--ux-panel-border-dark);
+  background: var(--ux-panel-bg-dark);
+  box-shadow: var(--ux-panel-shadow-dark);
+}
+
+.modal-header,
+.drawer-header,
+[class*="modal-header"],
+[class*="drawer-header"] {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+  padding: 1rem 1.1rem;
+}
+
+.dark .modal-header,
+.dark .drawer-header,
+.dark [class*="modal-header"],
+.dark [class*="drawer-header"] {
+  border-bottom-color: rgba(51, 65, 85, 0.9);
+}
+
+.modal-footer,
+.drawer-footer,
+[class*="modal-footer"],
+[class*="drawer-footer"] {
+  border-top: 1px solid rgba(226, 232, 240, 0.88);
+  padding: 0.95rem 1.1rem;
+  background: rgba(248, 250, 252, 0.88);
+}
+
+.dark .modal-footer,
+.dark .drawer-footer,
+.dark [class*="modal-footer"],
+.dark [class*="drawer-footer"] {
+  border-top-color: rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.84);
+}
+
+.modal-body,
+.drawer-body,
+[class*="modal-body"],
+[class*="drawer-body"] {
+  padding: 1rem 1.1rem;
+}
+
+.modal-title,
+.drawer-title,
+[class*="modal-title"],
+[class*="drawer-title"] {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.modal-subtitle,
+.drawer-subtitle,
+[class*="modal-subtitle"],
+[class*="drawer-subtitle"] {
+  margin-top: 0.2rem;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgb(100 116 139);
+}
+
+.dark .modal-subtitle,
+.dark .drawer-subtitle,
+.dark [class*="modal-subtitle"],
+.dark [class*="drawer-subtitle"] {
+  color: rgb(148 163 184);
+}
+
+@media (max-width: 767px) {
+  .modal-content,
+  .drawer-content,
+  .modal-panel,
+  .drawer-panel,
+  [class*="modal-content"],
+  [class*="drawer-content"],
+  [class*="modal-panel"],
+  [class*="drawer-panel"] {
+    border-radius: 22px;
+  }
+
+  .modal-header,
+  .drawer-header,
+  [class*="modal-header"],
+  [class*="drawer-header"],
+  .modal-body,
+  .drawer-body,
+  [class*="modal-body"],
+  [class*="drawer-body"],
+  .modal-footer,
+  .drawer-footer,
+  [class*="modal-footer"],
+  [class*="drawer-footer"] {
+    padding-inline: 0.9rem;
+  }
+}
+
+

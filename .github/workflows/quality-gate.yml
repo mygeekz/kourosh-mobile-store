@@ -1,0 +1,58 @@
+name: Quality Gate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NODE_ENV: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Client typecheck ratchet
+        run: npm run typecheck:ci:client
+
+      - name: Server typecheck
+        run: npm run typecheck:ci:server
+
+      - name: ESLint ratchet
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Integration tests on temporary SQLite
+        run: npm run test:integration
+
+      - name: Security guards
+        run: npm run test:security
+
+      - name: Phase 4 API transport guards
+        run: npm run test:phase4-api-transport && npm run test:phase4-api-fetch-contract
+
+      - name: Production build
+        run: npm run build

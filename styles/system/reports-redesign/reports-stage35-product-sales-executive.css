@@ -1,0 +1,154 @@
+/* Stage 35 — Product sales report executive polish
+   Scope: /reports/product-sales PageKit body only. No API or route changes. */
+
+.product-sales-executive-page.reports-single-title-body {
+  --ps-border: rgba(15, 23, 42, 0.10);
+  --ps-surface: rgba(255, 255, 255, 0.92);
+  --ps-muted: #64748b;
+}
+
+.dark .product-sales-executive-page.reports-single-title-body {
+  --ps-border: rgba(255, 255, 255, 0.10);
+  --ps-surface: rgba(2, 6, 23, 0.78);
+  --ps-muted: #94a3b8;
+}
+
+/* keep the single top header; remove duplicated PageKit body header if global styles miss it */
+.product-sales-executive-page .page-kit-header,
+.product-sales-executive-page [data-pagekit-header],
+.product-sales-executive-page .report-page-hero,
+.product-sales-executive-page .report-hero,
+.product-sales-executive-page .reports-inner-header {
+  display: none !important;
+}
+
+/* Filter bar: one clean operational surface */
+.product-sales-executive-page .responsive-filter-bar,
+.product-sales-executive-page [data-ui-responsive-filter-bar],
+.product-sales-executive-page .report-filter-bar {
+  border: 1px solid var(--ps-border) !important;
+  border-radius: 22px !important;
+  background: var(--ps-surface) !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-presets {
+  flex: 0 1 auto !important;
+  min-width: min(100%, 25rem) !important;
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 1 13.75rem !important;
+  min-width: 13.75rem !important;
+}
+
+.product-sales-executive-page .report-simple-date-input {
+  min-height: 42px !important;
+  height: 42px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.product-sales-executive-page .report-simple-date-input input,
+.product-sales-executive-page .report-simple-date-input [contenteditable],
+.product-sales-executive-page .report-simple-date-input .ux-input {
+  height: 42px !important;
+  min-height: 42px !important;
+  border: 1px solid var(--ps-border) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  font-size: 0.82rem !important;
+  font-weight: 850 !important;
+  color: #0f172a !important;
+  text-align: center !important;
+}
+
+.dark .product-sales-executive-page .report-simple-date-input input,
+.dark .product-sales-executive-page .report-simple-date-input [contenteditable],
+.dark .product-sales-executive-page .report-simple-date-input .ux-input {
+  background: rgba(2, 6, 23, 0.88) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Make report internal cards look like commercial cards, not old glass widgets */
+.product-sales-executive-page > div > .grid:first-of-type > div,
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div {
+  position: relative !important;
+  border: 1px solid var(--ps-border) !important;
+  border-radius: 18px !important;
+  background: var(--ps-surface) !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.product-sales-executive-page > div > .grid:first-of-type > div::before,
+.product-sales-executive-page > div > .grid:first-of-type > div::after,
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div::before,
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div::after {
+  display: none !important;
+  content: none !important;
+}
+
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > div:first-child {
+  color: var(--ps-muted) !important;
+  font-size: 0.72rem !important;
+  font-weight: 850 !important;
+}
+
+.product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > div:nth-child(2) {
+  color: #0f172a !important;
+  font-size: 1.28rem !important;
+  line-height: 1.45 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.dark .product-sales-executive-page .grid.grid-cols-1.sm\:grid-cols-2.xl\:grid-cols-4 > div > div:nth-child(2) {
+  color: #f8fafc !important;
+}
+
+/* Audit/profit/risk/health panels: reduce visual noise without removing features */
+.product-sales-executive-page .rounded-\[26px\],
+.product-sales-executive-page .rounded-\[28px\] {
+  box-shadow: none !important;
+}
+
+.product-sales-executive-page .bg-indigo-50\/35,
+.product-sales-executive-page .bg-indigo-50\/90,
+.product-sales-executive-page .bg-emerald-50\/80,
+.product-sales-executive-page .bg-amber-50\/80 {
+  background-color: rgba(248, 250, 252, 0.92) !important;
+}
+
+.dark .product-sales-executive-page .bg-indigo-950\/10,
+.dark .product-sales-executive-page .bg-indigo-950\/20,
+.dark .product-sales-executive-page .bg-emerald-950\/20 {
+  background-color: rgba(2, 6, 23, 0.72) !important;
+}
+
+/* Direct actions must size to their text */
+.product-sales-executive-page .report-direct-action,
+.product-sales-executive-page button:has(> span) {
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* Product/customer names and tables: readable spacing */
+.product-sales-executive-page table th,
+.product-sales-executive-page table td {
+  vertical-align: middle !important;
+}
+
+.product-sales-executive-page table td {
+  line-height: 1.8 !important;
+}
+
+.product-sales-executive-page .min-w-\[260px\] {
+  min-width: 18rem !important;
+  padding-inline: 1rem !important;
+}

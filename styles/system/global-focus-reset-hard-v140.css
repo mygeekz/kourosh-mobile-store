@@ -1,0 +1,175 @@
+/* v140/v149 — Safe final focus-box removal
+   Imported last in v148. This intentionally removes ONLY visual focus boxes/rings.
+   It does NOT touch hover, active, background, border, dimensions, overflow,
+   transform, opacity, positioning, or modal/table layout. */
+
+/* 1) Native interactive elements: remove visible focus outline/ring only. */
+html body :where(
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  summary,
+  [role="button"],
+  [role="link"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  [tabindex],
+  [contenteditable="true"]
+):focus,
+html body :where(
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  summary,
+  [role="button"],
+  [role="link"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  [tabindex],
+  [contenteditable="true"]
+):focus-visible {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/) !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* 2) Tailwind/shadcn focus utilities on the focused control itself. */
+html body :where(
+  [class*="focus:"],
+  [class*="focus-visible:"],
+  [class*="focus-within:"],
+  [class*="focus\\:"],
+  [class*="focus-visible\\:"],
+  [class*="focus-within\\:"]
+):focus,
+html body :where(
+  [class*="focus:"],
+  [class*="focus-visible:"],
+  [class*="focus-within:"],
+  [class*="focus\\:"],
+  [class*="focus-visible\\:"],
+  [class*="focus-within\\:"]
+):focus-visible,
+html body :where(
+  [class*="focus-within:"],
+  [class*="focus-within\\:"]
+):focus-within {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/) !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* 3) Known field shells that previously created the large blue focus box.
+   This list is deliberately limited to input/control wrappers, not generic divs,
+   so cards, modals, tables, dropdowns, and report panels keep their design shadow. */
+html body :where(
+  .app-field,
+  .ux-field,
+  .app-search-field,
+  .app-select-field,
+  .app-input,
+  .app-select,
+  .app-textarea,
+  .premium-field-shell,
+  .premium-input-shell,
+  .sales-select-shell,
+  .date-field,
+  .select-field,
+  .customer-edit-v2-control-shell,
+  .customer-edit-v2-native-field,
+  .partner-ledger-v133__search-wrap,
+  .partner-ledger-v133__search-grid,
+  .partner-ledger-edit-v147__description-shell,
+  .kourosh-sidebar-search-grid,
+  .header-search-shell,
+  .tg-input,
+  .tg-select,
+  .tg-textarea
+):focus-within {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/) !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+/* 4) Partner Ledger modal description field: exact final guard. */
+html body .partner-ledger-edit-modal-v141 :where(
+  .partner-ledger-edit-v147__description-shell,
+  .partner-ledger-edit-v147__description-input,
+  textarea,
+  input,
+  button
+):focus,
+html body .partner-ledger-edit-modal-v141 :where(
+  .partner-ledger-edit-v147__description-shell,
+  .partner-ledger-edit-v147__description-input,
+  textarea,
+  input,
+  button
+):focus-visible,
+html body .partner-ledger-edit-modal-v141 :where(
+  .partner-ledger-edit-v147__description-shell,
+  .partner-ledger-edit-v147__description-input
+):focus-within {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/) !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+html body button::-moz-focus-inner,
+html body input::-moz-focus-inner {
+  border: 0 !important;
+}
+
+html body :where(button, a, input, select, textarea, [role="button"], [tabindex]) {
+  -webkit-tap-highlight-color: transparent !important;
+}

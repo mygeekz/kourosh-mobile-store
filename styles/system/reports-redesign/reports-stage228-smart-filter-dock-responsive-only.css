@@ -1,0 +1,198 @@
+/* Stage 228 — Smart Insights filter dock responsive-only repair.
+   Scope: the filter/date dock inside Smart Insights hero. This intentionally does not
+   alter the hero header, side cards, modals, or KPI reference cards. */
+
+.smart-brain-page .smart-insights-hero-v153 {
+  container-type: inline-size;
+  container-name: smart-insight-hero-v228;
+}
+
+.smart-brain-page .smart-insights-control-dock {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+@container smart-insight-hero-v228 (max-width: 1180px) {
+  .smart-brain-page .smart-insights-control-dock {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "presets presets from to"
+      "refresh reset type type"
+      "severity severity severity severity" !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    margin-top: 14px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-brain-page .smart-insights-control-dock > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .smart-brain-page .smart-insights-control-dock > :nth-child(1) { grid-area: presets !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(2) { grid-area: from !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(3) { grid-area: to !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(4) { grid-area: refresh !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(5) { grid-area: reset !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(6) { grid-area: type !important; }
+  .smart-brain-page .smart-insights-control-dock > :nth-child(7) { grid-area: severity !important; }
+
+  .smart-brain-page .smart-insights-date-presets,
+  .smart-brain-page .smart-insights-filter-field,
+  .smart-brain-page .smart-insights-control-dock .report-filter-field,
+  .smart-brain-page .smart-insights-filter-group,
+  .smart-brain-page .smart-insights-filter-group--wide {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    align-self: stretch !important;
+  }
+
+  .smart-brain-page .smart-insights-date-presets {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    align-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 7px !important;
+    padding: 9px 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-brain-page .smart-insights-date-presets .report-date-presets__chips,
+  .smart-brain-page .smart-insights-date-presets [data-ui-report-date-preset-group="true"] {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+  }
+
+  .smart-brain-page .smart-insights-date-presets .report-date-preset-chip,
+  .smart-brain-page .smart-insights-date-presets [data-ui-report-date-preset="true"] {
+    min-height: 34px !important;
+    padding: 0 11px !important;
+    font-size: .78rem !important;
+    white-space: nowrap !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-field,
+  .smart-brain-page .smart-insights-control-dock .report-filter-field {
+    min-height: 74px !important;
+    padding: 10px 12px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-field .report-filter-field__head,
+  .smart-brain-page .smart-insights-control-dock .report-filter-field__head {
+    margin-bottom: 5px !important;
+    gap: 6px !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-field .report-filter-field__label,
+  .smart-brain-page .smart-insights-control-dock .report-filter-field__label {
+    font-size: .68rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-field .shamsi-date-picker,
+  .smart-brain-page .smart-insights-filter-field [class*="picker"] {
+    min-height: 40px !important;
+  }
+
+  .smart-brain-page .smart-insights-refresh-button,
+  .smart-brain-page .smart-insights-reset-button {
+    min-height: 48px !important;
+    align-self: stretch !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 0 13px !important;
+    border-radius: 18px !important;
+    font-size: .82rem !important;
+    white-space: nowrap !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-group,
+  .smart-brain-page .smart-insights-filter-group--wide {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-group__label {
+    font-size: .78rem !important;
+    line-height: 1.45 !important;
+    white-space: nowrap !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-chips {
+    min-width: 0 !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-chip {
+    min-height: 34px !important;
+    padding: 0 11px !important;
+    border-radius: 999px !important;
+    font-size: .78rem !important;
+    white-space: nowrap !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-chip--severity {
+    min-width: 72px !important;
+  }
+}
+
+@container smart-insight-hero-v228 (max-width: 920px) {
+  .smart-brain-page .smart-insights-control-dock {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-areas:
+      "presets presets"
+      "from to"
+      "refresh reset"
+      "type type"
+      "severity severity" !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-group,
+  .smart-brain-page .smart-insights-filter-group--wide {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+    gap: 8px !important;
+  }
+
+  .smart-brain-page .smart-insights-filter-chips {
+    justify-content: flex-start !important;
+  }
+}
+
+@container smart-insight-hero-v228 (max-width: 620px) {
+  .smart-brain-page .smart-insights-control-dock {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "presets"
+      "from"
+      "to"
+      "refresh"
+      "reset"
+      "type"
+      "severity" !important;
+    padding: 10px !important;
+    gap: 9px !important;
+  }
+
+  .smart-brain-page .smart-insights-refresh-button,
+  .smart-brain-page .smart-insights-reset-button {
+    width: 100% !important;
+  }
+}

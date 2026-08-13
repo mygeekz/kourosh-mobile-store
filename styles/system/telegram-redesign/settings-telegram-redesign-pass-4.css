@@ -1,0 +1,502 @@
+/* Phase 65 — Settings > Telegram Redesign Pass 4
+   Scope: Telegram logs / timeline / debug modal polish.
+   This file is intentionally scoped to Telegram settings only. */
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple {
+  position: relative;
+  isolation: isolate;
+  margin-top: 1.1rem;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 78%, transparent);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at top right, hsl(var(--primary) / 0.12), transparent 34%),
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.96), rgb(var(--palette-surface-muted-rgb) / 0.88));
+  box-shadow: 0 24px 60px -48px color-mix(in srgb, var(--ds-danger) 58%, transparent);
+  overflow: hidden;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 24px;
+  inset-inline-end: 24px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ds-danger-soft), var(--ds-danger-soft), transparent);
+  pointer-events: none;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__head {
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity {
+  min-width: 0;
+  align-items: center;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 58%, transparent);
+  background: linear-gradient(145deg, var(--ds-danger-soft), var(--ds-danger-soft));
+  color: var(--ds-danger);
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.85), 0 16px 30px -28px color-mix(in srgb, var(--ds-danger) 80%, transparent);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity h3 {
+  margin: 0;
+  color: var(--ds-danger);
+  font-size: 16px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity p {
+  max-width: 760px;
+  margin-top: 5px;
+  color: var(--ds-danger);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__refresh {
+  min-height: 38px;
+  border-radius: 14px !important;
+  border-color: color-mix(in srgb, var(--ds-danger) 82%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  color: var(--ds-danger) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat {
+  min-height: 76px;
+  border-radius: 22px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 78%, transparent);
+  background: var(--ds-danger-soft);
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.72);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat span {
+  color: var(--ds-danger);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat strong {
+  color: var(--ds-danger);
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--success {
+  border-color: color-mix(in srgb, var(--ds-success) 55%, transparent);
+  background: linear-gradient(180deg, var(--ds-success-soft), var(--ds-success-soft));
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--danger {
+  border-color: color-mix(in srgb, var(--ds-danger) 56%, transparent);
+  background: linear-gradient(180deg, var(--ds-danger-soft), var(--ds-danger-soft));
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(220px, 1fr) minmax(260px, 1.2fr);
+  gap: 12px;
+  align-items: end;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 70%, transparent);
+  border-radius: 24px;
+  background: var(--ds-danger-soft);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field {
+  gap: 7px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field > span {
+  color: var(--ds-danger);
+  font-size: 11px;
+  font-weight: 950;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field select,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox {
+  min-height: 42px;
+  border-radius: 16px !important;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 86%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.76) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-inline: 12px;
+  color: var(--ds-danger);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox input {
+  min-width: 0;
+  flex: 1 1 auto;
+  border: 0 !important;
+  background: transparent !important;
+  outline: 0 !important;
+  color: var(--ds-danger);
+  font-size: 12.5px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__tableWrap {
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 78%, transparent);
+  background: var(--ds-danger-soft);
+  box-shadow: 0 18px 42px -38px color-mix(in srgb, var(--ds-danger) 50%, transparent);
+  overflow: hidden;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+  font-size: 11px;
+  font-weight: 950;
+  border-bottom: 1px solid color-mix(in srgb, var(--ds-danger) 78%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow) {
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow):hover {
+  background: var(--ds-danger-soft);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td {
+  vertical-align: middle;
+  border-bottom: 1px solid color-mix(in srgb, var(--ds-danger) 72%, transparent);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__date {
+  color: var(--ds-danger);
+  font-size: 11.5px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event strong {
+  color: var(--ds-danger);
+  font-weight: 950;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event span,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__muted {
+  color: var(--ds-danger);
+  font-size: 11px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__code {
+  display: inline-flex;
+  max-width: 100%;
+  padding: 6px 9px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 75%, transparent);
+  border-radius: 999px;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge {
+  min-height: 28px;
+  border-radius: 999px;
+  font-weight: 950;
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.62);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--success {
+  border: 1px solid color-mix(in srgb, var(--ds-success) 72%, transparent);
+  background: var(--ds-success-soft);
+  color: var(--ds-success);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--danger {
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 76%, transparent);
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__actions {
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__actions .btn,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__actions button {
+  border-radius: 12px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__fixRow td {
+  padding: 0 12px 12px;
+  background: linear-gradient(180deg, var(--ds-danger-soft), var(--ds-danger-soft));
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFix {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 34%, transparent);
+  border-radius: 22px;
+  background: var(--ds-danger-soft);
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.70), 0 18px 38px -34px color-mix(in srgb, var(--ds-danger) 45%, transparent);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody span {
+  color: var(--ds-danger);
+  font-size: 10.5px;
+  font-weight: 950;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody strong {
+  color: var(--ds-danger);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody p,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody small {
+  color: var(--ds-danger);
+  line-height: 1.8;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pagination {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--ds-danger) 72%, transparent);
+  border-radius: 20px;
+  background: var(--ds-danger-soft);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pageBadge {
+  border-radius: 999px;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+  font-weight: 950;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__empty {
+  border-radius: 22px;
+  background: var(--ds-danger-soft);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__modalGrid {
+  gap: 10px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__detailCard,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__modalError {
+  border-radius: 22px !important;
+  border-color: color-mix(in srgb, var(--ds-danger) 78%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  box-shadow: 0 16px 34px -32px color-mix(in srgb, var(--ds-danger) 45%, transparent) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox pre,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__technicalError pre {
+  border-radius: 16px;
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple {
+  border-color: color-mix(in srgb, var(--ds-danger) 94%, transparent);
+  background:
+    radial-gradient(circle at top right, hsl(var(--primary) / 0.14), transparent 36%),
+    linear-gradient(180deg, rgb(var(--palette-surface-rgb) / 0.84), rgb(var(--palette-page-rgb) / 0.66));
+  box-shadow: 0 24px 60px -48px rgba(0,0,0,0.88);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity h3,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody strong {
+  color: var(--ds-danger);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__muted,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody small {
+  color: var(--ds-danger);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__icon,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__tableWrap,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pagination,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__detailCard,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__modalError {
+  border-color: color-mix(in srgb, var(--ds-danger) 94%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.04) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox input {
+  color: var(--ds-danger);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field select,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__code,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pageBadge {
+  border-color: color-mix(in srgb, var(--ds-danger) 90%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  color: var(--ds-danger) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead th {
+  border-color: color-mix(in srgb, var(--ds-danger) 94%, transparent);
+  background: var(--ds-danger-soft);
+  color: var(--ds-danger);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td {
+  border-color: color-mix(in srgb, var(--ds-danger) 82%, transparent);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow):hover {
+  background: var(--ds-danger-soft);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__fixRow td {
+  background: linear-gradient(180deg, var(--ds-danger-soft), var(--ds-danger-soft));
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFix {
+  border-color: color-mix(in srgb, var(--ds-danger) 26%, transparent);
+  background: var(--ds-danger-soft);
+}
+
+@media (max-width: 920px) {
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stats,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field--search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__head,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stats,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters {
+    grid-template-columns: 1fr;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__tableWrap {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tr,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td {
+    display: block;
+    width: 100%;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead {
+    display: none;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow) {
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid color-mix(in srgb, var(--ds-danger) 72%, transparent);
+    border-radius: 22px;
+    background: var(--ds-danger-soft);
+  }
+
+  html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow) {
+    border-color: color-mix(in srgb, var(--ds-danger) 92%, transparent);
+    background: var(--ds-danger-soft);
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td {
+    padding: 8px 0 !important;
+    border: 0;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__actions,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixActions {
+    justify-content: stretch;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__actions button,
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixActions button {
+    width: 100%;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFix {
+    grid-template-columns: 1fr;
+    text-align: right;
+  }
+}

@@ -1,0 +1,70 @@
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* === Shiny Text (reactbits-style) === */
+@layer utilities {
+  @keyframes shine {
+    0%   { background-position-x: 0%; }
+    100% { background-position-x: 200%; }
+  }
+  .shiny-text {
+    background-image: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.15) 0%,
+      rgba(255,255,255,0.95) 50%,
+      rgba(255,255,255,0.15) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 18px rgba(255,255,255,0.15);
+    animation: shine 2.2s linear infinite;
+  }
+}
+
+/* === Variable Proximity base styles === */
+@layer utilities {
+  .vp-wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    cursor: default;
+    line-height: 1.15;
+    will-change: transform;
+  }
+  .vp-letter {
+    display: inline-block;
+    transition:
+      font-variation-settings 90ms linear,
+      font-weight 90ms linear,
+      transform 90ms linear,
+      opacity 90ms linear;
+    will-change: font-variation-settings, transform, opacity;
+    font-variation-settings: "wght" 300;
+    transform-origin: center center;
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* کلاس‌های کمکی */
+.text-gradient-animated {
+  background-image: linear-gradient(90deg, #a78bfa 0%, #22d3ee 50%, #34d399 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 8s ease infinite;
+}

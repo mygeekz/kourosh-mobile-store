@@ -1,0 +1,148 @@
+/* v28: hard-neutral Apple surface for Telegram monitor center.
+   Fixes older telegram redesign selectors that injected blue gradients/glows. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  direction: rtl !important;
+  padding: 18px !important;
+  border: 1px solid rgb(218 226 236) !important;
+  border-radius: 30px !important;
+  background: rgb(248 250 252) !important;
+  background-color: rgb(248 250 252) !important;
+  background-image: none !important;
+  box-shadow: 0 18px 48px -44px rgba(15, 23, 42, 0.28) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  background-color: rgb(2 6 23) !important;
+  background-image: none !important;
+  box-shadow: 0 22px 52px -44px rgba(0, 0, 0, 0.72) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28::before,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28::after,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28::before,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28::after {
+  display: none !important;
+  opacity: 0 !important;
+  content: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head {
+  border: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  padding: 0 0 14px !important;
+  gap: 14px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head::before,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head::after,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head::before,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-head::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-score,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-panel,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-score,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-panel {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(255 255 255) !important;
+  background-color: rgb(255 255 255) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-score,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-panel,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-score,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-panel {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  background-color: rgb(15 23 42) !important;
+  background-image: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-titlebox h2,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-titlebox h2 {
+  color: rgb(15 23 42) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-titlebox p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-titlebox p,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-v2-kicker {
+  color: rgb(71 85 105) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 i,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 i {
+  color: rgb(100 116 139) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-pill,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .telegram-monitor-neutral-pill,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .rounded-full,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .rounded-full {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(248 250 252) !important;
+  background-color: rgb(248 250 252) !important;
+  background-image: none !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"],
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"] {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(255 255 255) !important;
+  background-color: rgb(255 255 255) !important;
+  background-image: none !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"]:hover,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn:hover,
+#telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"]:hover {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .rounded-full,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .rounded-full,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"],
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 .ux-btn,
+html.dark #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 button[data-ui-button="true"] {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(248 250 252) !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28,
+  #telegram-settings-form .telegram-monitor-section-v2.telegram-monitor-apple-surface-v28 {
+    padding: 14px !important;
+    border-radius: 26px !important;
+  }
+}

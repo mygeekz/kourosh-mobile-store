@@ -1,0 +1,91 @@
+
+/* v84 — PartnerDetail RTL safe gutter fix.
+   The persistent issue at 100% zoom is caused by content touching/clipping against
+   the left-side scrollbar area in RTL layouts. At 80% zoom there is more width,
+   so the issue disappears. This adds a physical left safe gutter and shrinks the
+   content box so every shared section stays inside the visible frame. */
+
+.partner-detail-safe-gutter-v84 {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  padding-left: 42px !important; /* physical left: RTL scrollbar side */
+  padding-right: 0 !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable both-edges;
+}
+
+/* All first-level visual sections must respect the new content box. */
+.partner-detail-safe-gutter-v84 > :where(
+  .detail-hero-card,
+  .partner-detail-section-shell,
+  .partner-phone-capital-section,
+  .partner-customer-sync-section,
+  .partner-customer-sync-extra-grid,
+  .partner-customer-sync-telegram,
+  .detail-card,
+  section
+) {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Some partner sections had mx-6 / internal margins; keep them inside the safe frame. */
+.partner-detail-safe-gutter-v84 .partner-phone-capital-section,
+.partner-detail-safe-gutter-v84 .partner-detail-section-shell {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Hero/action area: no physical left spill, even when old action CSS remains loaded. */
+.partner-detail-safe-gutter-v84 .partner-detail-hero-clean,
+.partner-detail-safe-gutter-v84 .detail-hero-card.partner-detail-hero-clean,
+.partner-detail-safe-gutter-v84 .detail-hero-card__head,
+.partner-detail-safe-gutter-v84 .partner-detail-hero__top,
+.partner-detail-safe-gutter-v84 .partner-detail-actions,
+.partner-detail-safe-gutter-v84 .partner-detail-actions--customer-parity,
+.partner-detail-safe-gutter-v84 .partner-detail-actions-v82 {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* If the action grid is still displayed as desktop layout, it must stay capped. */
+.partner-detail-safe-gutter-v84 .partner-detail-actions,
+.partner-detail-safe-gutter-v84 .partner-detail-actions--customer-parity,
+.partner-detail-safe-gutter-v84 .partner-detail-actions-v82 {
+  width: min(100%, 420px) !important;
+  overflow: hidden !important;
+}
+
+/* Prevent long financial chips from widening the hero card. */
+.partner-detail-safe-gutter-v84 :where(.people-chip, .partner-telegram-status-chip, [class*="rounded-full"]) {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Keep table sections scrollable internally instead of widening the page. */
+.partner-detail-safe-gutter-v84 :where(.partner-phone-capital-table-scroll, .people-table-shell, .partner-ledger-shell) {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
+/* On smaller screens, the gutter can be lighter. */
+@media (max-width: 900px) {
+  .partner-detail-safe-gutter-v84 {
+    padding-left: 24px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .partner-detail-safe-gutter-v84 {
+    padding-left: 14px !important;
+  }
+}

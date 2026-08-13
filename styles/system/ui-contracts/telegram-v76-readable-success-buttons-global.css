@@ -1,0 +1,242 @@
+
+/* v76 — Global readable success/completed button states.
+   Fixes unreadable pale-green text in completed/success/disabled buttons
+   across restore, refresh, save, update, and similar operation buttons. */
+
+/* -------------------------------------------------------------------------- */
+/* 1) Global semantic success button readability */
+/* -------------------------------------------------------------------------- */
+
+button[class*="success"],
+.ux-btn[class*="success"],
+.premium-submit-btn[class*="success"],
+button[class*="emerald"],
+.ux-btn[class*="emerald"],
+.premium-submit-btn[class*="emerald"],
+button[class*="green"],
+.ux-btn[class*="green"],
+.premium-submit-btn[class*="green"] {
+  text-shadow: none !important;
+}
+
+/* Filled success buttons should have readable white text */
+button[class*="bg-emerald"],
+button[class*="bg-green"],
+.ux-btn[class*="bg-emerald"],
+.ux-btn[class*="bg-green"],
+.premium-submit-btn[class*="bg-emerald"],
+.premium-submit-btn[class*="bg-green"],
+button[data-variant="success"],
+.ux-btn[data-variant="success"],
+.premium-submit-btn[data-variant="success"],
+button.variant-success,
+.ux-btn.variant-success,
+.premium-submit-btn.variant-success {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* All children must inherit the readable button color */
+button[class*="bg-emerald"] *,
+button[class*="bg-green"] *,
+.ux-btn[class*="bg-emerald"] *,
+.ux-btn[class*="bg-green"] *,
+.premium-submit-btn[class*="bg-emerald"] *,
+.premium-submit-btn[class*="bg-green"] *,
+button[data-variant="success"] *,
+.ux-btn[data-variant="success"] *,
+.premium-submit-btn[data-variant="success"] *,
+button.variant-success *,
+.ux-btn.variant-success *,
+.premium-submit-btn.variant-success * {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* Disabled/completed success buttons often became pale-green on pale background.
+   Use a solid but calm success surface with strong contrast. */
+button[disabled][class*="emerald"],
+button[disabled][class*="green"],
+button[aria-disabled="true"][class*="emerald"],
+button[aria-disabled="true"][class*="green"],
+.ux-btn[disabled][class*="emerald"],
+.ux-btn[disabled][class*="green"],
+.ux-btn[aria-disabled="true"][class*="emerald"],
+.ux-btn[aria-disabled="true"][class*="green"],
+.premium-submit-btn[disabled][class*="emerald"],
+.premium-submit-btn[disabled][class*="green"],
+.premium-submit-btn[aria-disabled="true"][class*="emerald"],
+.premium-submit-btn[aria-disabled="true"][class*="green"] {
+  opacity: 1 !important;
+  color: rgb(6, 78, 59) !important;
+  background: rgba(209, 250, 229, 0.96) !important;
+  border-color: rgba(52, 211, 153, 0.72) !important;
+  box-shadow: none !important;
+}
+
+button[disabled][class*="emerald"] *,
+button[disabled][class*="green"] *,
+button[aria-disabled="true"][class*="emerald"] *,
+button[aria-disabled="true"][class*="green"] *,
+.ux-btn[disabled][class*="emerald"] *,
+.ux-btn[disabled][class*="green"] *,
+.ux-btn[aria-disabled="true"][class*="emerald"] *,
+.ux-btn[aria-disabled="true"][class*="green"] *,
+.premium-submit-btn[disabled][class*="emerald"] *,
+.premium-submit-btn[disabled][class*="green"] *,
+.premium-submit-btn[aria-disabled="true"][class*="emerald"] *,
+.premium-submit-btn[aria-disabled="true"][class*="green"] * {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 2) Text-based completed/saved operation buttons that don't expose variant */
+/* -------------------------------------------------------------------------- */
+
+/* Common Persian operation states: target button text through structural classes
+   and common app button classes. */
+button:has(> span),
+.ux-btn:has(> span),
+.premium-submit-btn:has(> span) {
+  text-shadow: none !important;
+}
+
+/* Completed/saved buttons often use a soft success class without a proper variant. */
+button[class*="is-success"],
+button[class*="is-done"],
+button[class*="is-complete"],
+button[class*="is-completed"],
+.ux-btn[class*="is-success"],
+.ux-btn[class*="is-done"],
+.ux-btn[class*="is-complete"],
+.ux-btn[class*="is-completed"],
+.premium-submit-btn[class*="is-success"],
+.premium-submit-btn[class*="is-done"],
+.premium-submit-btn[class*="is-complete"],
+.premium-submit-btn[class*="is-completed"] {
+  color: rgb(6, 78, 59) !important;
+  background: rgba(209, 250, 229, 0.96) !important;
+  border-color: rgba(52, 211, 153, 0.72) !important;
+  opacity: 1 !important;
+}
+
+button[class*="is-success"] *,
+button[class*="is-done"] *,
+button[class*="is-complete"] *,
+button[class*="is-completed"] *,
+.ux-btn[class*="is-success"] *,
+.ux-btn[class*="is-done"] *,
+.ux-btn[class*="is-complete"] *,
+.ux-btn[class*="is-completed"] *,
+.premium-submit-btn[class*="is-success"] *,
+.premium-submit-btn[class*="is-done"] *,
+.premium-submit-btn[class*="is-complete"] *,
+.premium-submit-btn[class*="is-completed"] * {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* Generic disabled neutral buttons should not use washed-out text either. */
+button[disabled]:not([class*="bg-blue"]):not([class*="bg-sky"]):not([class*="bg-indigo"]):not([class*="bg-red"]):not([class*="bg-rose"]),
+button[aria-disabled="true"]:not([class*="bg-blue"]):not([class*="bg-sky"]):not([class*="bg-indigo"]):not([class*="bg-red"]):not([class*="bg-rose"]),
+.ux-btn[disabled]:not([class*="bg-blue"]):not([class*="bg-sky"]):not([class*="bg-indigo"]):not([class*="bg-red"]):not([class*="bg-rose"]),
+.ux-btn[aria-disabled="true"]:not([class*="bg-blue"]):not([class*="bg-sky"]):not([class*="bg-indigo"]):not([class*="bg-red"]):not([class*="bg-rose"]) {
+  opacity: 1 !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 3) Specific operation cards/buttons in Settings > Data / Backup Restore */
+/* -------------------------------------------------------------------------- */
+
+.settings-data-panel button[disabled],
+.settings-data-panel button[aria-disabled="true"],
+.settings-data-panel .ux-btn[disabled],
+.settings-data-panel .ux-btn[aria-disabled="true"] {
+  opacity: 1 !important;
+}
+
+.settings-data-panel button[disabled] *,
+.settings-data-panel button[aria-disabled="true"] *,
+.settings-data-panel .ux-btn[disabled] *,
+.settings-data-panel .ux-btn[aria-disabled="true"] * {
+  opacity: 1 !important;
+}
+
+/* The pale "تکمیل شد / عملیات با موفقیت ثبت شد" button shown in screenshot */
+.settings-data-panel button[class*="emerald"],
+.settings-data-panel .ux-btn[class*="emerald"],
+.settings-data-panel button[class*="green"],
+.settings-data-panel .ux-btn[class*="green"],
+.settings-data-panel button[class*="success"],
+.settings-data-panel .ux-btn[class*="success"] {
+  color: rgb(6, 78, 59) !important;
+  background: rgba(209, 250, 229, 0.96) !important;
+  border-color: rgba(52, 211, 153, 0.72) !important;
+}
+
+.settings-data-panel button[class*="emerald"] *,
+.settings-data-panel .ux-btn[class*="emerald"] *,
+.settings-data-panel button[class*="green"] *,
+.settings-data-panel .ux-btn[class*="green"] *,
+.settings-data-panel button[class*="success"] *,
+.settings-data-panel .ux-btn[class*="success"] * {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* Toast success action/button readability too */
+.toast button[class*="success"],
+.toast button[class*="emerald"],
+.toast .ux-btn[class*="success"],
+.toast .ux-btn[class*="emerald"],
+[role="status"] button[class*="success"],
+[role="status"] button[class*="emerald"],
+[role="alert"] button[class*="success"],
+[role="alert"] button[class*="emerald"] {
+  color: rgb(6, 78, 59) !important;
+  background: rgba(209, 250, 229, 0.96) !important;
+  border-color: rgba(52, 211, 153, 0.72) !important;
+}
+
+.toast button[class*="success"] *,
+.toast button[class*="emerald"] *,
+.toast .ux-btn[class*="success"] *,
+.toast .ux-btn[class*="emerald"] *,
+[role="status"] button[class*="success"] *,
+[role="status"] button[class*="emerald"] *,
+[role="alert"] button[class*="success"] *,
+[role="alert"] button[class*="emerald"] * {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* 4) Dark mode */
+/* -------------------------------------------------------------------------- */
+
+html.dark button[disabled][class*="emerald"],
+html.dark button[disabled][class*="green"],
+html.dark button[aria-disabled="true"][class*="emerald"],
+html.dark button[aria-disabled="true"][class*="green"],
+html.dark .ux-btn[disabled][class*="emerald"],
+html.dark .ux-btn[disabled][class*="green"],
+html.dark .ux-btn[aria-disabled="true"][class*="emerald"],
+html.dark .ux-btn[aria-disabled="true"][class*="green"],
+html.dark button[class*="is-success"],
+html.dark button[class*="is-done"],
+html.dark button[class*="is-complete"],
+html.dark button[class*="is-completed"],
+html.dark .ux-btn[class*="is-success"],
+html.dark .ux-btn[class*="is-done"],
+html.dark .ux-btn[class*="is-complete"],
+html.dark .ux-btn[class*="is-completed"],
+html.dark .settings-data-panel button[class*="emerald"],
+html.dark .settings-data-panel .ux-btn[class*="emerald"],
+html.dark .settings-data-panel button[class*="green"],
+html.dark .settings-data-panel .ux-btn[class*="green"],
+html.dark .settings-data-panel button[class*="success"],
+html.dark .settings-data-panel .ux-btn[class*="success"] {
+  color: rgb(167, 243, 208) !important;
+  background: rgba(6, 78, 59, 0.42) !important;
+  border-color: rgba(52, 211, 153, 0.42) !important;
+}

@@ -1,0 +1,554 @@
+
+/* Stage 184 — Today Commands compact polish
+   Scope: only the "امروز چه کار کنم؟ / TODAY COMMANDS" section.
+   Fixes:
+   - compact card scale, icon size, fonts, and spacing
+   - right-aligned title block like the approved concept
+   - button colors are controlled by section/card style, not arbitrary black/green
+   - responsive grid keeps Bento behavior without fixed desktop-only layout
+*/
+
+.smart-today-v183 {
+  border-radius: 26px !important;
+  border-color: rgb(var(--palette-border-subtle-rgb) / .9) !important;
+  background: linear-gradient(180deg, rgb(var(--palette-surface-rgb) / .98), rgb(var(--palette-surface-muted-rgb) / .92)) !important;
+  box-shadow: 0 14px 36px rgb(0 0 0 / .045) !important;
+}
+
+.smart-today-v183__header {
+  direction: ltr !important;
+  align-items: flex-start !important;
+  padding: 18px 22px 20px !important;
+  gap: 14px !important;
+  border-bottom-color: rgb(var(--palette-border-subtle-rgb) / .82) !important;
+}
+
+.smart-today-v183__heading {
+  direction: rtl !important;
+  text-align: right !important;
+  margin-inline-start: auto !important;
+  max-width: 720px !important;
+}
+
+.smart-today-v183__eyebrow {
+  justify-content: flex-end !important;
+  color: var(--ds-text-muted) !important;
+  font-size: .70rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .09em !important;
+}
+
+.smart-today-v183__heading h2 {
+  margin-top: 8px !important;
+  font-size: clamp(1.7rem, 2.4vw, 2.55rem) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.035em !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.smart-today-v183__heading p {
+  margin-top: 8px !important;
+  color: var(--ds-text-muted) !important;
+  font-size: .86rem !important;
+  line-height: 1.9 !important;
+  font-weight: 850 !important;
+}
+
+.smart-today-v183__count {
+  direction: rtl !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  color: var(--ds-text-primary) !important;
+  background: rgb(var(--palette-surface-rgb) / .92) !important;
+  box-shadow: none !important;
+}
+
+.smart-today-v183__count i {
+  font-size: .82rem !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.smart-today-v183__grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 14px !important;
+  padding: 16px 18px 18px !important;
+}
+
+.smart-today-v183__card {
+  --today-accent: hsl(var(--primary));
+  --today-accent-soft: rgb(var(--palette-primary-soft-rgb) / .92);
+  --today-accent-border: hsl(var(--primary-highlight) / .62);
+  min-height: 290px !important;
+  padding: 16px !important;
+  border-radius: 20px !important;
+  background: rgb(var(--palette-surface-rgb) / .94) !important;
+  box-shadow: 0 10px 26px rgb(0 0 0 / .038) !important;
+}
+
+.smart-today-v183__card--info {
+  --today-accent: hsl(var(--primary));
+  --today-accent-soft: rgb(var(--palette-primary-soft-rgb) / .92);
+  --today-accent-border: hsl(var(--primary-highlight) / .64);
+}
+
+.smart-today-v183__card--high {
+  --today-accent: var(--ds-warning);
+  --today-accent-soft: rgb(var(--warning-soft-rgb) / .94);
+  --today-accent-border: hsl(var(--warning) / .48);
+}
+
+.smart-today-v183__card--critical {
+  --today-accent: var(--ds-danger);
+  --today-accent-soft: rgb(var(--danger-soft-rgb) / .94);
+  --today-accent-border: hsl(var(--danger) / .48);
+}
+
+.smart-today-v183__card::before {
+  width: 2px !important;
+  background: var(--today-accent) !important;
+}
+
+.smart-today-v183__card-top {
+  align-items: flex-start !important;
+  gap: 10px !important;
+}
+
+.smart-today-v183__meta-row {
+  gap: 8px !important;
+}
+
+.smart-today-v183__score-pill,
+.smart-today-v183__priority-pill {
+  min-height: 32px !important;
+  padding: 0 10px !important;
+  font-size: .70rem !important;
+  font-weight: 950 !important;
+  border-color: rgb(var(--palette-border-subtle-rgb) / .92) !important;
+  background: rgb(var(--palette-surface-rgb) / .88) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+.smart-today-v183__priority-pill {
+  color: var(--today-accent) !important;
+}
+
+.smart-today-v183__priority-dot {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.smart-today-v183__icon-bubble {
+  width: 54px !important;
+  height: 54px !important;
+  flex-basis: 54px !important;
+  border-radius: 18px !important;
+  font-size: 1.18rem !important;
+  color: var(--today-accent) !important;
+  background: var(--today-accent-soft) !important;
+  border-color: var(--today-accent-border) !important;
+}
+
+.smart-today-v183__card h3 {
+  margin-top: 18px !important;
+  color: var(--ds-text-primary) !important;
+  font-size: clamp(1.08rem, 1.35vw, 1.38rem) !important;
+  line-height: 1.85 !important;
+  font-weight: 950 !important;
+}
+
+.smart-today-v183__card p {
+  margin-top: 9px !important;
+  color: var(--ds-text-secondary) !important;
+  font-size: .82rem !important;
+  line-height: 1.95 !important;
+  font-weight: 820 !important;
+}
+
+.smart-today-v183__divider {
+  margin: 14px 0 14px !important;
+  background: rgb(var(--palette-surface-muted-rgb) / .9) !important;
+}
+
+.smart-today-v183__cta {
+  min-height: 42px !important;
+  border-radius: 13px !important;
+  border:1px solid var(--ds-action-primary-border)!important;
+  background:var(--ds-action-primary-bg)!important;
+  color:var(--ds-action-primary-fg)!important;
+  box-shadow:var(--ds-action-primary-shadow)!important;
+  font-size: .82rem !important;
+  font-weight: 950 !important;
+  gap: 8px !important;
+}
+
+.smart-today-v183__cta:hover {
+  transform: translateY(-1px) !important;
+  filter: none !important;
+  box-shadow:var(--ds-action-primary-shadow)!important;
+  background:var(--ds-action-primary-bg-hover)!important;
+}
+
+.smart-today-v183__footer-actions {
+  grid-template-columns: 1fr 96px !important;
+  gap: 8px !important;
+  margin-top: 9px !important;
+}
+
+.smart-today-v183__sub-btn {
+  min-height: 36px !important;
+  border-radius: 12px !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  gap: 6px !important;
+}
+
+.smart-today-v183__sub-btn--success {
+  background: rgb(var(--palette-surface-muted-rgb) / .95) !important;
+  border-color: rgb(var(--palette-border-subtle-rgb) / .92) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.smart-today-v183__sub-btn--success i {
+  color: var(--ds-success) !important;
+}
+
+.smart-today-v183__sub-btn--ghost {
+  background: rgb(var(--palette-surface-rgb) / .92) !important;
+  border-color: rgb(var(--palette-border-subtle-rgb) / .92) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+@media (max-width: 1500px) {
+  .smart-today-v183__header {
+    padding: 16px 18px !important;
+  }
+
+  .smart-today-v183__grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 12px !important;
+    padding: 14px 16px 16px !important;
+  }
+
+  .smart-today-v183__card {
+    min-height: 270px !important;
+    padding: 14px !important;
+  }
+
+  .smart-today-v183__card h3 {
+    font-size: 1.04rem !important;
+    line-height: 1.8 !important;
+  }
+
+  .smart-today-v183__card p {
+    font-size: .76rem !important;
+    line-height: 1.9 !important;
+  }
+
+  .smart-today-v183__icon-bubble {
+    width: 48px !important;
+    height: 48px !important;
+    flex-basis: 48px !important;
+    font-size: 1.05rem !important;
+  }
+
+  .smart-today-v183__cta {
+    min-height: 39px !important;
+    font-size: .76rem !important;
+  }
+
+  .smart-today-v183__sub-btn {
+    min-height: 34px !important;
+    font-size: .68rem !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .smart-today-v183__header {
+    direction: rtl !important;
+  }
+
+  .smart-today-v183__heading {
+    margin-inline-start: 0 !important;
+  }
+
+  .smart-today-v183__grid {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .smart-today-v183 {
+    border-radius: 22px !important;
+  }
+
+  .smart-today-v183__header {
+    padding: 14px !important;
+  }
+
+  .smart-today-v183__heading h2 {
+    font-size: 1.65rem !important;
+  }
+
+  .smart-today-v183__heading p {
+    font-size: .78rem !important;
+  }
+
+  .smart-today-v183__grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    padding: 12px !important;
+  }
+
+  .smart-today-v183__footer-actions {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.dark .smart-today-v183 {
+  border-color: rgb(var(--palette-border-strong-rgb) / .86) !important;
+  background: linear-gradient(180deg, rgb(var(--palette-surface-elevated-rgb) / .92), rgb(var(--palette-surface-elevated-rgb) / .82)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-today-v183__card {
+  border-color: rgb(var(--palette-border-strong-rgb) / .76) !important;
+  background: rgb(var(--palette-surface-elevated-rgb) / .72) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-today-v183__heading h2,
+.dark .smart-today-v183__card h3,
+.dark .smart-today-v183__score-pill {
+  color: var(--ds-text-primary) !important;
+}
+
+.dark .smart-today-v183__heading p,
+.dark .smart-today-v183__card p {
+  color: var(--ds-text-secondary) !important;
+}
+
+.dark .smart-today-v183__count,
+.dark .smart-today-v183__score-pill,
+.dark .smart-today-v183__priority-pill,
+.dark .smart-today-v183__sub-btn--success,
+.dark .smart-today-v183__sub-btn--ghost {
+  border-color: rgb(var(--palette-border-strong-rgb) / .78) !important;
+  background: rgb(var(--palette-surface-elevated-rgb) / .72) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.dark .smart-today-v183__cta {
+  background:var(--ds-action-primary-bg)!important;
+}
+
+
+/* Stage 421 - Today commands footer alignment and action emphasis */
+.smart-today-v183__card {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.smart-today-v183__divider {
+  margin-top: auto !important;
+}
+
+.smart-today-v183__cta {
+  margin-top: 0 !important;
+}
+
+.smart-today-v183__footer-actions {
+  align-items: stretch !important;
+  margin-top: 10px !important;
+}
+
+.smart-today-v183__sub-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 40px !important;
+  padding: 0 12px !important;
+  border-radius: 13px !important;
+}
+
+.smart-today-v183__sub-btn--pending {
+  border: 1px solid hsl(var(--primary) / .96) !important;
+  background: linear-gradient(180deg, rgb(var(--palette-primary-soft-rgb) / .98), rgb(var(--palette-primary-soft-rgb) / .94)) !important;
+  color: hsl(var(--primary)) !important;
+  box-shadow: 0 10px 20px hsl(var(--primary) / .1) !important;
+}
+
+.smart-today-v183__sub-btn--pending i {
+  color: hsl(var(--primary)) !important;
+}
+
+.smart-today-v183__sub-btn--done {
+  border: 1px solid hsl(var(--success) / .48) !important;
+  background: linear-gradient(180deg, rgb(var(--success-soft-rgb) / .98), rgb(var(--success-soft-rgb) / .94)) !important;
+  color: var(--ds-success) !important;
+  box-shadow: 0 10px 20px hsl(var(--success) / .08) !important;
+}
+
+.smart-today-v183__sub-btn--done i {
+  color: var(--ds-success) !important;
+}
+
+.smart-today-v183__sub-btn--ghost {
+  border: 1px solid rgb(var(--palette-border-subtle-rgb) / .96) !important;
+  background: rgb(var(--palette-surface-rgb) / .98) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.dark .smart-today-v183__sub-btn--pending {
+  border-color: hsl(var(--primary) / .45) !important;
+  background: linear-gradient(180deg, hsl(var(--primary) / .42), rgb(var(--palette-surface-elevated-rgb) / .92)) !important;
+  color: hsl(var(--primary-highlight)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-today-v183__sub-btn--pending i {
+  color: hsl(var(--primary-highlight)) !important;
+}
+
+.dark .smart-today-v183__sub-btn--done {
+  border-color: hsl(var(--success) / .38) !important;
+  background: linear-gradient(180deg, hsl(var(--success) / .38), rgb(var(--palette-surface-elevated-rgb) / .92)) !important;
+  color: var(--ds-success) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-today-v183__sub-btn--ghost {
+  border-color: rgb(var(--palette-border-strong-rgb) / .82) !important;
+  background: rgb(var(--palette-surface-elevated-rgb) / .88) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+
+/* Stage 423 - Today Commands final equal-card alignment */
+.smart-today-v183__grid {
+  align-items: stretch !important;
+}
+
+.smart-today-v183__card {
+  height: 100% !important;
+}
+
+.smart-today-v183__card h3 {
+  min-height: 4.1em !important;
+}
+
+.smart-today-v183__card p {
+  min-height: 4.2em !important;
+}
+
+.smart-today-v183__cta {
+  margin-top: auto !important;
+}
+
+.smart-today-v183__footer-actions {
+  min-height: 40px !important;
+}
+
+@media (max-width: 1023px) {
+  .smart-today-v183__card h3,
+  .smart-today-v183__card p {
+    min-height: auto !important;
+  }
+}
+
+/* Stage 427 - Safe Today Commands Safari/Chrome normalization without layout override */
+.smart-today-v183__card {
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+
+.smart-today-v183__card * {
+  box-sizing: border-box !important;
+}
+
+.smart-today-v183__sub-btn,
+.smart-today-v183__cta {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  line-height: 1.45 !important;
+  transform: translateZ(0) !important;
+}
+
+.smart-today-v183__sub-btn--pending {
+  background: linear-gradient(180deg, var(--ds-surface-card-muted), var(--ds-surface-card-muted)) !important;
+  border: 1px solid rgb(var(--palette-border-subtle-rgb) / .82) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.smart-today-v183__sub-btn--done {
+  background: linear-gradient(180deg, var(--ds-success-soft), var(--ds-success-soft)) !important;
+  border: 1px solid hsl(var(--success) / .45) !important;
+  color: var(--ds-success) !important;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .smart-today-v183__card {
+    font-synthesis-weight: none !important;
+  }
+}
+
+/* Stage 428 - Today Commands footer action hierarchy */
+.smart-today-v183__divider {
+  border-top: 1px solid rgb(var(--palette-border-subtle-rgb) / .92) !important;
+}
+
+.smart-today-v183__cta {
+  min-height: 42px !important;
+  padding: 0 18px !important;
+  border-radius: 16px !important;
+  background:var(--ds-action-primary-bg)!important;
+  border:1px solid var(--ds-action-primary-border)!important;
+  color:var(--ds-action-primary-fg)!important;
+  box-shadow:var(--ds-action-primary-shadow)!important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+}
+
+.smart-today-v183__cta:hover {
+  transform: translateY(-1px) !important;
+  background:var(--ds-action-primary-bg-hover)!important;
+}
+
+.smart-today-v183__sub-btn {
+  min-height: 40px !important;
+  padding: 0 15px !important;
+  border-radius: 15px !important;
+  font-weight: 900 !important;
+}
+
+.smart-today-v183__sub-btn--pending {
+  background: linear-gradient(180deg, var(--ds-surface-card-muted), var(--ds-surface-card-muted)) !important;
+  border: 1px solid rgb(var(--palette-border-subtle-rgb) / .78) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.smart-today-v183__sub-btn--done {
+  background: linear-gradient(180deg, var(--ds-success-soft), var(--ds-success-soft)) !important;
+  border: 1px solid hsl(var(--success) / .45) !important;
+  color: var(--ds-success) !important;
+}
+
+.smart-today-v183__sub-btn--ghost {
+  background: var(--ds-surface-card) !important;
+  border: 1px solid rgb(var(--palette-border-strong-rgb) / .96) !important;
+  color: var(--ds-text-secondary) !important;
+}
+
+.dark .smart-today-v183__divider {
+  border-top-color: rgb(var(--palette-border-strong-rgb) / .82) !important;
+}
+
+.dark .smart-today-v183__cta {
+  background:var(--ds-action-primary-bg)!important;
+  border-color:var(--ds-action-primary-border)!important;
+  color:var(--ds-action-primary-fg)!important;
+  box-shadow:var(--ds-action-primary-shadow)!important;
+}

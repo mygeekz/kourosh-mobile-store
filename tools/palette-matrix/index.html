@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ماتریس تصویری پالت‌های کوروش</title>
+  <link rel="stylesheet" href="/styles/themes.css" />
+  <link rel="stylesheet" href="/styles/system/design-tokens.css" />
+  <link rel="stylesheet" href="/styles/legacy/02h-legacy-ux-button-motion-presets.css" />
+  <link rel="stylesheet" href="/styles/components/cards.css" />
+  <link rel="stylesheet" href="/styles/components/forms.css" />
+  <link rel="stylesheet" href="/styles/components/modal-system.css" />
+  <link rel="stylesheet" href="/styles/components/badges.css" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Tahoma,Arial,sans-serif}
+    body{background:var(--ds-surface-page);color:var(--ds-text-primary);padding:16px}
+    button,input,select,textarea{font:inherit}
+    .matrix-page{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:16px}
+    .matrix-sidebar,.matrix-header,.matrix-section,.matrix-modal{background:var(--ds-surface-card);border:1px solid var(--ds-border-subtle);box-shadow:var(--ds-shadow-card)}
+    .matrix-sidebar{border-radius:22px;padding:16px;min-height:calc(100vh - 32px)}
+    .matrix-main{min-width:0;display:flex;flex-direction:column;gap:14px}
+    .matrix-header{border-radius:22px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .matrix-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .matrix-section{border-radius:22px;padding:16px;min-width:0}
+    .matrix-section h2,.matrix-section h3,.matrix-header h1{margin:0;color:var(--ds-text-primary)}
+    .matrix-section p,.matrix-muted{color:var(--ds-text-muted)}
+    .matrix-stack{display:flex;flex-direction:column;gap:10px}
+    .matrix-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+    .matrix-nav{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+    .matrix-nav-item{display:flex;align-items:center;gap:10px;min-height:42px;border-radius:16px;padding:0 12px;background:var(--ds-surface-card-muted);border:1px solid var(--ds-border-subtle);color:var(--ds-text-secondary)}
+    .matrix-nav-item[data-active="true"]{background:color-mix(in srgb,hsl(var(--primary)) 9%,var(--ds-surface-card));border-color:color-mix(in srgb,hsl(var(--primary)) 28%,var(--ds-border-strong));color:hsl(var(--primary))}
+    .matrix-swatch{width:28px;height:28px;border-radius:10px;border:1px solid var(--ds-border-strong);background:hsl(var(--primary))}
+    .matrix-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .matrix-kpi{border-radius:18px;border:1px solid var(--ds-border-subtle);background:var(--ds-surface-card-muted);padding:12px}
+    .matrix-kpi strong{display:block;font-size:20px;margin-top:6px;color:var(--ds-text-primary)}
+    .matrix-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .matrix-table-wrap{overflow:auto;border:1px solid var(--ds-border-subtle);border-radius:18px}
+    .matrix-table{width:100%;border-collapse:collapse;min-width:520px}
+    .matrix-table th,.matrix-table td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--ds-border-subtle)}
+    .matrix-table th{background:var(--ds-surface-card-muted);color:var(--ds-text-secondary)}
+    .matrix-table td{color:var(--ds-text-primary)}
+    .matrix-modal{border-radius:24px;padding:16px}
+    .matrix-status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;border:1px solid transparent}
+    .matrix-status--success{background:var(--ds-success-soft);color:var(--ds-success);border-color:color-mix(in srgb,var(--ds-success) 30%,transparent)}
+    .matrix-status--warning{background:var(--ds-warning-soft);color:var(--ds-warning);border-color:color-mix(in srgb,var(--ds-warning) 30%,transparent)}
+    .matrix-status--danger{background:var(--ds-danger-soft);color:var(--ds-danger);border-color:color-mix(in srgb,var(--ds-danger) 30%,transparent)}
+    .matrix-button{min-height:46px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden}
+    .matrix-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .matrix-field input,.matrix-field select{min-height:46px}
+    @media(max-width:900px){.matrix-page{grid-template-columns:1fr}.matrix-sidebar{display:none}.matrix-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){body{padding:10px}.matrix-header{align-items:flex-start;flex-direction:column}.matrix-kpis{grid-template-columns:1fr}.matrix-form-grid{grid-template-columns:1fr}.matrix-section{padding:13px}.matrix-row>*{max-width:100%}}
+  </style>
+</head>
+<body>
+  <main class="matrix-page" id="matrix-root">
+    <aside class="matrix-sidebar">
+      <div class="matrix-row">
+        <span class="matrix-swatch" aria-hidden="true"></span>
+        <div><strong>فروشگاه کوروش</strong><div class="matrix-muted" id="matrix-style-label"></div></div>
+      </div>
+      <nav class="matrix-nav">
+        <div class="matrix-nav-item" data-active="true">داشبورد</div>
+        <div class="matrix-nav-item">فروش</div>
+        <div class="matrix-nav-item">کالا و موجودی</div>
+        <div class="matrix-nav-item">مشتریان</div>
+        <div class="matrix-nav-item">گزارش‌ها</div>
+        <div class="matrix-nav-item">تنظیمات</div>
+      </nav>
+    </aside>
+
+    <section class="matrix-main">
+      <header class="matrix-header">
+        <div><h1>کنترل کیفیت سیستم رنگ</h1><div class="matrix-muted" id="matrix-meta"></div></div>
+        <div class="matrix-row"><span class="matrix-status matrix-status--success">سامانه فعال</span><span class="matrix-status matrix-status--warning">۲ هشدار</span></div>
+      </header>
+
+      <section class="matrix-grid">
+        <article class="app-card matrix-section" id="sample-card">
+          <div class="matrix-stack">
+            <div><h2>سطوح و کارت‌ها</h2><p>نمونه Surface اصلی، متن و مرزبندی وابسته به پالت.</p></div>
+            <div class="matrix-kpis">
+              <div class="matrix-kpi"><span class="matrix-muted">فروش امروز</span><strong>۱۲۸٬۵۰۰٬۰۰۰</strong></div>
+              <div class="matrix-kpi"><span class="matrix-muted">سفارش فعال</span><strong>۲۴</strong></div>
+              <div class="matrix-kpi"><span class="matrix-muted">موجودی کم</span><strong>۷</strong></div>
+            </div>
+            <div class="matrix-row">
+              <button id="primary-button" class="ux-btn ux-btn-primary ux-btn-md matrix-button">ثبت فروش</button>
+              <button class="ux-btn ux-btn-secondary ux-btn-md matrix-button">مشاهده جزئیات</button>
+              <button class="ux-btn ux-btn-success ux-btn-md matrix-button">تأیید دریافت</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ux-form-shell matrix-section" id="sample-form">
+          <div class="matrix-stack">
+            <div><h2>فرم و کنترل‌ها</h2><p>ورودی، انتخاب‌گر، Checkbox و Toggle.</p></div>
+            <div class="matrix-form-grid">
+              <label class="matrix-field"><span class="ux-field-label">نام کالا</span><input id="sample-input" class="app-input" value="گوشی نمونه" /></label>
+              <label class="matrix-field"><span class="ux-field-label">دسته‌بندی</span><select class="app-select"><option>گوشی موبایل</option></select></label>
+            </div>
+            <div class="matrix-row">
+              <label class="matrix-row"><input type="checkbox" checked /> فعال</label>
+              <label class="matrix-row"><input type="radio" checked /> گزینه اصلی</label>
+              <button class="app-toggle-switch" data-state="on" aria-label="فعال"><span class="app-toggle-switch__track"><span class="app-toggle-switch__thumb"></span></span></button>
+            </div>
+            <div class="app-field-feedback app-field-feedback--hint">راهنمای کنترل با رنگ خنثی پالت.</div>
+          </div>
+        </article>
+      </section>
+
+      <section class="app-card matrix-section">
+        <div class="matrix-stack">
+          <div><h2>جدول و وضعیت‌های معنایی</h2><p>رنگ‌های وضعیت مستقل از پالت باقی می‌مانند.</p></div>
+          <div class="matrix-table-wrap">
+            <table class="matrix-table">
+              <thead><tr><th>سفارش</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th></tr></thead>
+              <tbody>
+                <tr><td>KR-1042</td><td>مشتری نمونه</td><td>۴۵٬۰۰۰٬۰۰۰</td><td><span class="matrix-status matrix-status--success">تسویه‌شده</span></td></tr>
+                <tr><td>KR-1043</td><td>فروشگاه همکار</td><td>۱۸٬۲۰۰٬۰۰۰</td><td><span class="matrix-status matrix-status--warning">در انتظار</span></td></tr>
+                <tr><td>KR-1044</td><td>مشتری اعتباری</td><td>۶٬۸۰۰٬۰۰۰</td><td><span class="matrix-status matrix-status--danger">سررسید گذشته</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="matrix-grid">
+        <article class="premium-modal-shell matrix-modal" id="sample-modal">
+          <div class="matrix-stack">
+            <div class="matrix-row"><span class="premium-modal-icon">◆</span><div><h3>نمونه پنجره عملیاتی</h3><div class="matrix-muted">Surface مرتفع و مرزهای هماهنگ با پالت</div></div></div>
+            <div class="premium-modal-note">این بخش نباید در Dark یا Light به رنگ ثابت سفید/سرمه‌ای قفل شود.</div>
+            <div class="matrix-row"><button class="modal-btn modal-btn-primary matrix-button">ذخیره</button><button class="modal-btn modal-btn-secondary matrix-button">انصراف</button></div>
+          </div>
+        </article>
+        <article class="app-card-muted matrix-section">
+          <div class="matrix-stack"><h3>کنترل کنتراست</h3><div class="matrix-muted">متن ثانویه باید در تمام ۱۰ حالت رنگی خوانا بماند.</div><div class="matrix-row"><span class="matrix-status matrix-status--success">موفق</span><span class="matrix-status matrix-status--warning">هشدار</span><span class="matrix-status matrix-status--danger">خطا</span></div></div>
+        </article>
+      </section>
+    </section>
+  </main>
+  <script id="palette-matrix-result" type="application/json">{}</script>
+  <script>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      const palette = params.get('palette') || 'classic';
+      const theme = params.get('theme') === 'dark' ? 'dark' : 'light';
+      const labels = { aurora: 'لوکس اجرایی', classic: 'کلاسیک iOS', ocean: 'اقیانوس مدرن', sunset: 'فروش پرانرژی', midnight: 'شب حرفه‌ای', gold: 'طلایی مات' };
+      const presets = { aurora: 'luxury', classic: 'classic', ocean: 'ocean', sunset: 'sunset', midnight: 'mono', gold: 'luxury' };
+      const root = document.documentElement;
+      root.dataset.palette = palette;
+      root.dataset.theme = theme;
+      root.dataset.buttonPreset = presets[palette] || 'classic';
+      root.classList.toggle('dark', theme === 'dark');
+      document.getElementById('matrix-style-label').textContent = labels[palette] || palette;
+      document.getElementById('matrix-meta').textContent = `${labels[palette] || palette} · ${theme === 'dark' ? 'تاریک' : 'روشن'} · ${innerWidth}×${innerHeight}`;
+
+      const rgb = value => {
+        const match = String(value).match(/rgba?\(([^)]+)\)/i);
+        if (!match) return null;
+        const parts = match[1].replaceAll(',', ' ').split(/\s+/).filter(Boolean).slice(0,3).map(Number);
+        return parts.length === 3 && parts.every(Number.isFinite) ? parts : null;
+      };
+      const luminance = parts => {
+        const values = parts.map(v => { const x=v/255; return x <= .03928 ? x/12.92 : Math.pow((x+.055)/1.055,2.4); });
+        return .2126*values[0]+.7152*values[1]+.0722*values[2];
+      };
+      const contrast = (a,b) => { const ra=rgb(a), rb=rgb(b); if(!ra||!rb) return null; const la=luminance(ra),lb=luminance(rb); return (Math.max(la,lb)+.05)/(Math.min(la,lb)+.05); };
+      const sample = id => getComputedStyle(document.getElementById(id));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const bodyStyle=getComputedStyle(document.body), card=sample('sample-card'), input=sample('sample-input'), button=sample('primary-button'), modal=sample('sample-modal');
+        const result = {
+          palette, theme, viewport:{width:innerWidth,height:innerHeight},
+          overflow:{horizontal:document.documentElement.scrollWidth>document.documentElement.clientWidth+1,scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth},
+          colors:{bodyBackground:bodyStyle.backgroundColor,bodyText:bodyStyle.color,cardBackground:card.backgroundColor,cardText:card.color,cardBorder:card.borderTopColor,inputBackground:input.backgroundColor,inputText:input.color,inputBorder:input.borderTopColor,buttonBackground:button.backgroundImage || button.backgroundColor,buttonText:button.color,modalBackground:modal.backgroundColor,modalText:modal.color},
+          contrast:{body:contrast(bodyStyle.color,bodyStyle.backgroundColor),card:contrast(card.color,card.backgroundColor),input:contrast(input.color,input.backgroundColor)},
+          tokens:{primary:getComputedStyle(root).getPropertyValue('--primary').trim(),page:getComputedStyle(root).getPropertyValue('--palette-page-rgb').trim(),surface:getComputedStyle(root).getPropertyValue('--palette-surface-rgb').trim(),text:getComputedStyle(root).getPropertyValue('--palette-text-rgb').trim()}
+        };
+        document.getElementById('palette-matrix-result').textContent=JSON.stringify(result);
+        document.body.dataset.matrixReady='true';
+      }));
+    })();
+  </script>
+</body>
+</html>

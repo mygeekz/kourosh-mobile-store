@@ -1,0 +1,311 @@
+
+/* v114 — Partner Telegram conversation panel redesign */
+.partner-telegram-v114 {
+  direction: rtl !important;
+  margin: 18px 24px 0 !important;
+  padding: 18px !important;
+  border-radius: 26px !important;
+  border-color: rgba(226, 232, 240, .96) !important;
+  background:
+    radial-gradient(circle at 96% 8%, rgba(14, 165, 233, .07), transparent 28%),
+    linear-gradient(180deg, #fff 0%, #fbfdff 100%) !important;
+  box-shadow: 0 18px 42px -40px rgba(15, 23, 42, .30) !important;
+}
+
+.partner-telegram-v114 *,
+.partner-telegram-v114 *::before,
+.partner-telegram-v114 *::after {
+  box-sizing: border-box !important;
+}
+
+.partner-telegram-v114__head {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+  margin-bottom: 16px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .92) !important;
+}
+
+.partner-telegram-v114__head > .flex:first-child {
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  text-align: right !important;
+  gap: 12px !important;
+}
+
+.partner-telegram-v114__head > .flex:first-child > span {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 18px !important;
+  border-color: rgba(186, 230, 253, .95) !important;
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff) !important;
+  color: #0284c7 !important;
+  box-shadow: none !important;
+  font-size: 20px !important;
+}
+
+.partner-telegram-v114__head h2 {
+  font-size: 21px !important;
+  line-height: 1.45 !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.035em !important;
+  color: #0f172a !important;
+}
+
+.partner-telegram-v114__head p {
+  margin-top: 4px !important;
+  font-size: 12px !important;
+  line-height: 1.8 !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+}
+
+.partner-telegram-v114__head > .flex:last-child {
+  justify-content: flex-start !important;
+  gap: 10px !important;
+}
+
+.partner-telegram-v114__head button,
+.partner-telegram-v114__head .inline-flex.h-11 {
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+  padding-inline: 12px !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+}
+
+.partner-telegram-v114__head button span.inline-flex {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 10px !important;
+}
+
+/* auto refresh capsule */
+.partner-telegram-v114__head > .flex:last-child > div {
+  height: 38px !important;
+  border-radius: 14px !important;
+  padding-inline: 10px !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+/* Unlinked card */
+.partner-telegram-v114__empty {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 58px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 18px !important;
+  min-height: 148px !important;
+  padding: 24px !important;
+  border: 1px solid rgba(254, 205, 211, .98) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at 92% 50%, rgba(244, 63, 94, .10), transparent 18%),
+    linear-gradient(135deg, rgba(255, 241, 242, .94), rgba(255, 255, 255, .88)) !important;
+  color: #be123c !important;
+  overflow: hidden !important;
+}
+
+.partner-telegram-v114__empty-icon {
+  width: 58px !important;
+  height: 58px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 20px !important;
+  background: #ffe4e6 !important;
+  color: #e11d48 !important;
+  font-size: 24px !important;
+}
+
+.partner-telegram-v114__empty-copy {
+  text-align: right !important;
+  min-width: 0 !important;
+}
+
+.partner-telegram-v114__status-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  min-height: 30px !important;
+  padding: 5px 12px !important;
+  border-radius: 999px !important;
+  background: #ffe4e6 !important;
+  color: #be123c !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+}
+
+.partner-telegram-v114__status-pill i {
+  font-size: 8px !important;
+}
+
+.partner-telegram-v114__empty h3 {
+  margin: 12px 0 0 !important;
+  color: #be123c !important;
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+  font-weight: 950 !important;
+}
+
+.partner-telegram-v114__empty p {
+  margin: 6px 0 0 !important;
+  color: #64748b !important;
+  font-size: 12px !important;
+  line-height: 1.9 !important;
+  font-weight: 750 !important;
+}
+
+.partner-telegram-v114__primary-action {
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 16px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #2563eb, #0284c7) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  cursor: pointer !important;
+  box-shadow: 0 14px 28px -20px rgba(37, 99, 235, .60) !important;
+}
+
+/* Linked inner panel polish */
+.partner-telegram-v114 > .grid {
+  gap: 16px !important;
+}
+
+.partner-telegram-v114 > .grid > section {
+  border-radius: 24px !important;
+  box-shadow: 0 18px 40px -36px rgba(15, 23, 42, .24) !important;
+}
+
+.dark .partner-telegram-v114 {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background:
+    radial-gradient(circle at 96% 8%, rgba(14, 165, 233, .13), transparent 28%),
+    linear-gradient(180deg, rgb(15, 23, 42), rgb(2, 6, 23)) !important;
+}
+
+.dark .partner-telegram-v114__head h2 {
+  color: #f8fafc !important;
+}
+
+.dark .partner-telegram-v114__head p,
+.dark .partner-telegram-v114__empty p {
+  color: #94a3b8 !important;
+}
+
+.dark .partner-telegram-v114__empty {
+  border-color: rgba(244, 63, 94, .34) !important;
+  background: linear-gradient(135deg, rgba(127, 29, 29, .30), rgba(15, 23, 42, .75)) !important;
+}
+
+.dark .partner-telegram-v114__head > .flex:last-child > div {
+  background: rgba(15,23,42,.88) !important;
+}
+
+@media (max-width: 900px) {
+  .partner-telegram-v114 {
+    margin-inline: 12px !important;
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .partner-telegram-v114__head {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-telegram-v114__empty {
+    grid-template-columns: 1fr !important;
+    justify-items: start !important;
+  }
+
+  .partner-telegram-v114__primary-action {
+    width: 100% !important;
+  }
+}
+
+
+/* v115 fixes: header fully right-aligned + compact unlinked card */
+.partner-telegram-v114__head {
+  grid-template-columns: minmax(0,1fr) auto !important;
+}
+
+.partner-telegram-v114__head > .flex:first-child {
+  justify-self: end !important;
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  flex-direction: row-reverse !important;
+  align-items: center !important;
+  text-align: right !important;
+}
+
+.partner-telegram-v114__head > .flex:first-child > div {
+  text-align: right !important;
+}
+
+.partner-telegram-v114__head h2,
+.partner-telegram-v114__head p {
+  text-align: right !important;
+}
+
+.partner-telegram-v114__empty {
+  grid-template-columns: 48px minmax(0,1fr) auto !important;
+  gap: 14px !important;
+  min-height: 112px !important;
+  padding: 18px 20px !important;
+  border-radius: 20px !important;
+}
+
+.partner-telegram-v114__empty-icon {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+  font-size: 20px !important;
+}
+
+.partner-telegram-v114__empty h3 {
+  margin-top: 8px !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+}
+
+.partner-telegram-v114__empty p {
+  margin-top: 3px !important;
+  font-size: 11px !important;
+  line-height: 1.8 !important;
+}
+
+.partner-telegram-v114__status-pill {
+  min-height: 26px !important;
+  padding: 4px 10px !important;
+  font-size: 10px !important;
+}
+
+.partner-telegram-v114__primary-action {
+  height: 36px !important;
+  min-width: 110px !important;
+  padding: 0 14px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 900px) {
+  .partner-telegram-v114__head > .flex:first-child {
+    justify-self: stretch !important;
+    margin-left: 0 !important;
+  }
+
+  .partner-telegram-v114__empty {
+    padding: 16px !important;
+    min-height: unset !important;
+  }
+}

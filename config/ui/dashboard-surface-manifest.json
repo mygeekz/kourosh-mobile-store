@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "version": "2.1.0",
+  "phase": "UI-0G-Dashboard-Widgets-Interaction-Repair",
+  "owner": "dashboard-foundation",
+  "canonicalStyle": {
+    "path": "styles/system/dashboard-smart-widgets-foundation.css",
+    "bootstrapOrder": 25,
+    "status": "provisional-canonical"
+  },
+  "canonicalFixedSurface": {
+    "component": "pages/dashboard/FixedWidgetFrame.tsx",
+    "selector": ".app-dashboard-widget-frame",
+    "dataSelector": "[data-ui-dashboard-fixed-frame=\"true\"]",
+    "surfaceCount": 1,
+    "decorativeShadowAllowed": false,
+    "motionOnHoverAllowed": false
+  },
+  "canonicalOperationalLayout": {
+    "component": "pages/dashboard/OperationalWidgetLayout.tsx",
+    "rootSelector": ".app-dashboard-operational",
+    "headerSelector": ".app-dashboard-operational__header",
+    "bodySelector": ".app-dashboard-operational__body",
+    "viewportSelector": ".app-dashboard-operational__viewport",
+    "scrollViewportInset": true
+  },
+  "canonicalPrimitives": [
+    "pages/dashboard/DashboardWidgetHeader.tsx",
+    "pages/dashboard/DashboardMetric.tsx",
+    "pages/dashboard/DashboardSpotlightCard.tsx",
+    "pages/dashboard/DashboardHeaderLink.tsx"
+  ],
+  "fixedOperationalWidgets": [
+    "sales_chart",
+    "installment_calendar",
+    "recent_activities"
+  ],
+  "widgetComponents": [
+    "pages/dashboard/widgets/AssetWidget.tsx",
+    "pages/dashboard/widgets/KPIWidget.tsx",
+    "pages/dashboard/widgets/ProductSalesKPIWidget.tsx",
+    "pages/dashboard/widgets/SalesChartWidget.tsx",
+    "pages/dashboard/widgets/InstallmentCalendarWidget.tsx",
+    "pages/dashboard/widgets/RecentActivitiesWidget.tsx",
+    "pages/dashboard/widgets/KouroshPulseCard.tsx",
+    "components/ActionCenterWidget.tsx"
+  ],
+  "surfacePolicy": {
+    "oneOuterSurface": true,
+    "nestedCardSurfaceAllowed": false,
+    "decorativeGradientAllowed": false,
+    "hoverTranslationAllowed": false,
+    "focusGlowAllowed": false,
+    "globalButtonEnhancerInsideSegmentedControls": false,
+    "fixedFrameOwnsOperationalSurface": true,
+    "framelessRangeTabs": true,
+    "quickActionPanelAllowed": false
+  },
+  "scaleContract": {
+    "widgetHeaderMinHeightPx": 54,
+    "metricValueMaxPx": 17,
+    "metricIconPx": 26,
+    "listRowMinHeightPx": 48,
+    "segmentHeightPx": 23,
+    "salesChartHeightPx": 390,
+    "sideWidgetHeightPx": 350
+  },
+  "removedLegacySources": [
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-1.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-2.css",
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-5.css",
+    "styles/system/ui-contracts/dashboard-widgets-foundation-phase13.css"
+  ]
+}

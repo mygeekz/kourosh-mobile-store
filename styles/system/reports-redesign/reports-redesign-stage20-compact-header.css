@@ -1,0 +1,20 @@
+/* Stage 20 — Reports hub compact commercial header.
+   UI-only cleanup: removes the oversized hero feel after command cards were removed. */
+
+.reports-hub.reports-redesign-v1 .reports-hub-hero--compact {
+  border-radius: 22px !important;
+  padding: 14px 18px !important;
+  min-height: 0 !important;
+  box-shadow: 0 16px 42px -36px rgba(15, 23, 42, 0.42) !important;
+}
+
+.reports-hub.reports-redesign-v1 .reports-hub-hero--compact h1 {
+  letter-spacing: -0.015em;
+}
+
+@media (max-width: 768px) {
+  .reports-hub.reports-redesign-v1 .reports-hub-hero--compact {
+    border-radius: 18px !important;
+    padding: 12px 14px !important;
+  }
+}

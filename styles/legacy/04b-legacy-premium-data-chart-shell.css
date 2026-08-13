@@ -1,0 +1,118 @@
+
+@layer components {
+  .premium-data-shell {
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-data-shell {
+    border-color: rgb(30 41 59 / 0.85);
+    background-image: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.96));
+  }
+  .premium-data-shell::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(99,102,241,0), rgba(99,102,241,0.45), rgba(34,197,94,0.18), rgba(99,102,241,0));
+    pointer-events: none;
+  }
+  .premium-data-shell > * { position: relative; }
+
+  .premium-data-header {
+    display: flex;
+  }
+  .premium-data-title {
+  }
+  .premium-data-subtitle {
+  }
+  .premium-data-icon {
+    display: inline-flex;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-data-icon {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-data-segment {
+    display: inline-flex;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .premium-data-segment:hover {
+  }
+  .premium-data-segment.is-active {
+  }
+  .dark .premium-data-segment {
+  }
+  .dark .premium-data-segment:hover {
+  }
+  .dark .premium-data-segment.is-active {
+  }
+  .premium-chart-stage {
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-chart-stage {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-chart-empty {
+    display: flex;
+    flex-direction: column;
+    border-color: rgb(226 232 240 / 0.85);
+    background-color: rgb(248 250 252 / 0.55);
+  }
+  .dark .premium-chart-empty {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-chart-empty__icon {
+    display: inline-flex;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-chart-empty__icon {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-chart-empty__title {
+  }
+  .premium-chart-empty__text {
+  }
+  .premium-stat-card {
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-stat-card {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-stat-card::after {
+    content: "";
+    position: absolute;
+    inset-inline: 14px;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(148,163,184,0), rgba(148,163,184,0.26), rgba(148,163,184,0));
+    pointer-events: none;
+  }
+  .premium-stat-card__label {
+  }
+  .premium-stat-card__value {
+  }
+  .premium-stat-card__hint {
+  }
+  .premium-stat-card__icon {
+    display: inline-flex;
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-stat-card__icon {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-data-grid {
+  }
+  .premium-chart-card {
+    border-color: rgb(226 232 240 / 0.85);
+  }
+  .dark .premium-chart-card {
+    border-color: rgb(30 41 59 / 0.85);
+  }
+  .premium-chart-card__header {
+    display: flex;
+  }
+  .premium-chart-card__title {
+  }
+  .premium-chart-card__subtitle {
+  }
+}

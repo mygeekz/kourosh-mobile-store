@@ -1,0 +1,54 @@
+{
+  "description": "Deterministic positive and negative fixtures for offline_metadata_enrichment.json validation. These fixtures are local-only and must not enable backend model execution, inference, activation, or business mutation.",
+  "fixturePackVersion": "phase10c-v1",
+  "fixtures": [
+    {
+      "expectedErrorContains": [],
+      "expectedStatus": "pass",
+      "file": "valid_enrichment.json"
+    },
+    {
+      "expectedErrorContains": [
+        "Missing required enrichment section: calibrationMetadata"
+      ],
+      "expectedStatus": "fail",
+      "file": "invalid_missing_required_section.json"
+    },
+    {
+      "expectedErrorContains": [
+        "Forbidden execution/mutation/artifact field"
+      ],
+      "expectedStatus": "fail",
+      "file": "invalid_forbidden_mutation_field.json"
+    },
+    {
+      "expectedErrorContains": [
+        "calibrationMetadata.bins[0].meanPredictedProbability",
+        "calibrationMetadata.bins[0].sampleCount"
+      ],
+      "expectedStatus": "fail",
+      "file": "invalid_calibration_bins.json"
+    },
+    {
+      "expectedErrorContains": [
+        "thresholdScenarioMetadata.thresholds[0].threshold",
+        "thresholdScenarioMetadata.thresholds[0].recall"
+      ],
+      "expectedStatus": "fail",
+      "file": "invalid_threshold_scenario.json"
+    },
+    {
+      "expectedErrorContains": [
+        "backendModelExecutionAllowed"
+      ],
+      "expectedStatus": "fail",
+      "file": "invalid_readiness_safety_flag.json"
+    }
+  ],
+  "safetyPolicy": {
+    "artifactActivationAllowed": false,
+    "backendInferenceEndpointExposed": false,
+    "backendModelExecutionAllowed": false,
+    "canMutateBusinessRecords": false
+  }
+}

@@ -1,0 +1,78 @@
+@layer components {
+  .dark .ux-btn-success {
+    box-shadow: 0 16px 30px -22px rgba(16,185,129,0.65);
+  }
+
+  .dark .page-shell-actions > .ux-btn,
+  .dark .page-shell-actions > a.ux-btn,
+  .dark .page-shell-actions > button.ux-btn {
+    border-color: rgba(56,189,248,0.14);
+  }
+
+  .dark .installment-table-actions .ux-btn,
+  .dark .installment-card-actions .ux-btn {
+    min-height: 34px;
+  }
+}
+
+@layer components {
+  .dark .ux-table-shell { background-color: rgb(2 6 23 / 0.82); }
+  .dark .ux-table-shell__header { background-image: linear-gradient(180deg, rgba(15,23,42,0.9), rgba(2,6,23,0.95)); }
+  .dark .ux-table-shell__kicker { }
+}
+
+.inventory-pastel-card-compact { min-height: 120px; padding: 1rem; }
+  .dark .inventory-pastel-card { background-image: linear-gradient(180deg, rgba(15,23,42,0.96), rgba(2,6,23,0.92)); border-color: rgba(51,65,85,0.84); }
+  .dark .inventory-pastel-card .text-slate-950 { color: rgb(248 250 252); }
+
+@layer components {
+  .installments-page .page-shell-kicker {
+  }
+
+  .installments-page .page-shell-status-chip {
+  }
+
+  .installments-page .ux-toolbar-search__input,
+  .products-page .ux-toolbar-search__input {
+    min-height: 3rem;
+    background-color: rgb(255 255 255 / 0.96);
+  }
+
+  .dark .installments-page .ux-toolbar-search__input,
+  .dark .products-page .ux-toolbar-search__input {
+    min-height: 3rem;
+    background-color: rgb(2 6 23 / 0.92);
+  }
+
+  .installments-page .ux-toolbar-search__icon,
+  .products-page .ux-toolbar-search__icon {
+  }
+
+  .installment-form-page .app-input,
+  .installment-form-page .app-select,
+  .installment-form-page .app-textarea,
+  .installment-form-page input:not([type='checkbox']):not([type='radio']),
+  .installment-form-page select,
+  .installment-form-page textarea {
+  }
+
+  .installment-form-page .app-select,
+  .installment-form-page select {
+    padding-inline-start: 1rem;
+    padding-inline-end: 1rem;
+  }
+}
+
+  .app-toast-loading {
+    border-color: rgba(14,165,233,0.22);
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(239,246,255,0.98));
+    box-shadow: 0 22px 44px -34px rgba(14,165,233,0.24);
+  }
+
+  .dark .app-toast-loading {
+    border-color: rgba(14,165,233,0.28);
+    background-image: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(12,25,43,0.98));
+    box-shadow: 0 24px 48px -34px rgba(2,132,199,0.3);
+  }
+
+/* Button loading/progress visuals moved to the shared action-button foundation. */

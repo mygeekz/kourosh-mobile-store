@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "phase": "UI-0F-Dashboard-Clock-Canonical",
+  "owner": "dashboard-clock",
+  "component": "pages/dashboard/widgets/ClockWidget.tsx",
+  "styleContract": "styles/components/dashboard-clock.css",
+  "runtimeOrder": 26,
+  "rootSelector": ".app-dashboard-clock",
+  "modes": [
+    "auto",
+    "minimal",
+    "manager",
+    "cinematic"
+  ],
+  "densities": [
+    "compact",
+    "regular",
+    "wide"
+  ],
+  "surfacePolicy": {
+    "outerSurfaceOwnedByDashboardHero": true,
+    "nestedCardSurfacesAllowed": false,
+    "gradientAllowed": false,
+    "decorativeShadowAllowed": false,
+    "hoverTranslationAllowed": false
+  },
+  "scaleContract": {
+    "wideDigitalMaxPx": 50,
+    "regularDigitalPx": 40,
+    "compactDigitalPx": 34,
+    "wideAnalogMaxPx": 158,
+    "regularAnalogPx": 132,
+    "modeControlHeightPx": 28
+  },
+  "legacySourcesRemoved": [
+    "styles/system/dashboard-redesign/dashboard-redesign-pass-3.css"
+  ],
+  "legacySelectorsRemovedFromActiveSources": [
+    "dashboard-clock-card",
+    "dashboard-smart-clock-card",
+    "dashboard-clock-executive-card",
+    "dashboard-clock-mode-switcher",
+    "dashboard-clock-analog-face",
+    "data-ui-dashboard-clock-mode",
+    "data-dashboard-clock-mode"
+  ],
+  "deadDashboardLogicRemoved": [
+    "ClockWidgetPrefs",
+    "CLOCK_WIDGET_PREFS_KEY",
+    "liveNow one-second timer",
+    "liveClock memo"
+  ]
+}
