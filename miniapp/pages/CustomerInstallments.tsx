@@ -13,7 +13,7 @@ export const CustomerInstallments: React.FC = () => {
   return (
     <section aria-labelledby="installments-title">
       <h1 id="installments-title" className="m-0 text-2xl font-black">اقساط من</h1>
-      <p className="mb-4 mt-1 text-sm leading-7 text-mutedText">وضعیت واقعی قراردادها و سررسیدها</p>
+      <p className="mb-4 mt-1 text-sm leading-7 text-mutedText">وضعیت قراردادها و سررسیدها</p>
       <MiniAppDataState empty={!query.data.length} emptyText="قرارداد اقساطی ثبت نشده است." />
       <ul className="m-0 list-none divide-y divide-border p-0">
         {query.data.map((sale) => (

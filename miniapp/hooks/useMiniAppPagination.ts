@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchMiniAppData, MiniAppApiError } from "../apiClient";
+import { useMiniAppDataAvailability } from "../dataAvailability/MiniAppDataAvailabilityContext";
 
 type PageData<TItem> = {
   items: TItem[];
@@ -19,20 +20,37 @@ export const useMiniAppPagination = <TItem, TData extends PageData<TItem>>(
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [attempt, setAttempt] = useState(0);
+  const { beginRequest, reportMeta, clearAvailability } = useMiniAppDataAvailability();
 
   const loadPage = useCallback(async (page: number, append: boolean) => {
     append ? setLoadingMore(true) : setLoading(true);
     setError(null);
+    const separator = endpoint.includes("?") ? "&" : "?";
+    const requestPath = `${endpoint}${separator}page=${page}&pageSize=${pageSize}`;
+    beginRequest(requestPath);
     try {
-      const separator = endpoint.includes("?") ? "&" : "?";
-      const data = await fetchMiniAppData<TData>(`${endpoint}${separator}page=${page}&pageSize=${pageSize}`);
+      const result = await fetchMiniAppData<TData>(requestPath);
+      const data = result.data;
+      if (!data || !Array.isArray(data.items) || !Number.isFinite(Number(data.page)) || !Number.isFinite(Number(data.totalPages))) {
+        throw new MiniAppApiError(
+          "MINIAPP_PAGE_RESPONSE_INVALID",
+          "ساختار فهرست دریافتی از کوروش معتبر نیست.",
+          502,
+          undefined,
+          result.meta,
+        );
+      }
+      reportMeta(requestPath, result.meta);
       setPages((current) => append ? [...current.filter((existing) => existing.page !== data.page), data] : [data]);
     } catch (caught: unknown) {
-      setError(caught instanceof MiniAppApiError ? caught.message : "دریافت اطلاعات انجام نشد.");
+      const apiError = caught instanceof MiniAppApiError ? caught : null;
+      if (apiError?.responseMeta) reportMeta(requestPath, apiError.responseMeta);
+      else clearAvailability(requestPath);
+      setError(apiError?.message || "دریافت اطلاعات انجام نشد.");
     } finally {
       append ? setLoadingMore(false) : setLoading(false);
     }
-  }, [endpoint, pageSize]);
+  }, [beginRequest, clearAvailability, endpoint, pageSize, reportMeta]);
 
   useEffect(() => {
     setPages([]);

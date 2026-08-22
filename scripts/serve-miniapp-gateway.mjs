@@ -18,6 +18,7 @@ import { ensureGatewayRelaySecret, readGatewayRelayAssignment } from "../server/
 import { readMiniAppGatewayRuntimeConfig } from "../server/miniapp/miniAppGatewayRuntimeConfig.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+export const MINIAPP_GATEWAY_RUNTIME_VERSION = "v197";
 const DEFAULT_BODY_LIMIT = MINI_APP_AUTH_BODY_LIMIT;
 const DEFAULT_TIMEOUT_MS = 30_000;
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9._:-]{8,128}$/;
@@ -27,6 +28,7 @@ const MIME_TYPES = new Map([
   [".html", "text/html; charset=utf-8"],
   [".js", "text/javascript; charset=utf-8"],
   [".svg", "image/svg+xml; charset=utf-8"],
+  [".webp", "image/webp"],
   [".woff2", "font/woff2"],
 ]);
 
@@ -109,6 +111,7 @@ const send = (res, status, body, contentType, extraHeaders = {}) => {
     "Cache-Control": "no-store",
     "Content-Length": payload.length,
     "Content-Type": contentType,
+    "X-Kourosh-Gateway-Version": MINIAPP_GATEWAY_RUNTIME_VERSION,
     ...extraHeaders,
   });
   res.end(payload);
@@ -224,7 +227,7 @@ export const createMiniAppGateway = (options = {}) => {
       if (runtimeResult.state === "valid") {
         const runtime = runtimeResult.config;
         if (runtime.mode === "disabled") return { gatewayMode: "disabled", expectedHost: null, source: "runtime" };
-        if (runtime.mode === "self_hosted" || runtime.mode === "external_tunnel") return { gatewayMode: "self_hosted", expectedHost: normalizeExpectedHost(runtime.expectedPublicHost), source: "runtime" };
+        if (runtime.mode === "self_hosted" || runtime.mode === "external_tunnel" || runtime.mode === "stable_tunnel") return { gatewayMode: "self_hosted", expectedHost: normalizeExpectedHost(runtime.expectedPublicHost), source: "runtime" };
         if (runtime.mode === "relay") return { gatewayMode: "cloud_relay_internal", expectedHost: null, source: "runtime" };
       }
       // Legacy ENV compatibility is intentionally limited to an ABSENT runtime config.
@@ -386,7 +389,7 @@ export const createMiniAppGateway = (options = {}) => {
       writeMiniAppSecurityLog("gateway_rejected_path", eventFields(404, "STATIC_PATH_NOT_ALLOWED"), logSink);
       return send(res, 404, "Not Found", "text/plain; charset=utf-8", { "X-Request-ID": requestId });
     }
-    const assetIsHashed = resolved.publicPath.startsWith("/assets/") && /[-_][A-Za-z0-9_-]{8,}\.(?:js|css)$/.test(path.basename(resolved.filePath));
+    const assetIsHashed = resolved.publicPath.startsWith("/assets/") && /[-_][A-Za-z0-9_-]{8,}\.(?:js|css|webp)$/.test(path.basename(resolved.filePath));
     const body = req.method === "HEAD" ? Buffer.alloc(0) : fs.readFileSync(resolved.filePath);
     return send(res, 200, body, resolved.mime, {
       "Cache-Control": resolved.publicPath === "/miniapp.html" ? "no-store, no-cache, must-revalidate" : assetIsHashed ? "public, max-age=31536000, immutable" : "public, max-age=3600, must-revalidate",

@@ -26,6 +26,31 @@ import FinancialStatusBadge from '../components/FinancialStatusBadge';
 import InstallmentCancellationRefundModal from '../components/InstallmentCancellationRefundModal';
 import FilterChipsBar from '../components/FilterChipsBar';
 import { useMountedRef, useTimeoutGuards } from '../utils/asyncGuards';
+import FormErrorSummary, { FormErrors } from '../components/FormErrorSummary';
+import { focusFirstError } from '../utils/focusFirstError';
+
+type CheckEditErrorKey =
+  | 'ownershipType'
+  | 'issuerName'
+  | 'issuerNationalCode'
+  | 'sayadiId'
+  | 'checkNumber'
+  | 'bankName'
+  | 'dueDate';
+
+const normalizeIdentityDigits = (value: unknown) => String(value ?? '')
+  .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+  .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+  .replace(/\D/g, '');
+
+const parseStoredCheckDate = (value: unknown): Date | null => {
+  const raw = String(value || '').trim();
+  if (!raw) return null;
+  const jalali = moment(raw, 'jYYYY/jMM/jDD', true);
+  if (jalali.isValid()) return jalali.toDate();
+  const iso = moment(raw, 'YYYY-MM-DD', true);
+  return iso.isValid() ? iso.toDate() : null;
+};
 
 const CHECK_STATUSES_OPTIONS: CheckStatus[] = [
   'نزد فروشنده',
@@ -140,6 +165,8 @@ const InstallmentSaleDetailPage: React.FC = () => {
   // ویرایش اطلاعات وضعیت چک
   const [isEditCheckModalOpen, setIsEditCheckModalOpen] = useState(false);
   const [editingCheck, setEditingCheck] = useState<InstallmentCheckInfo | null>(null);
+  const [editingCheckDueDate, setEditingCheckDueDate] = useState<Date | null>(null);
+  const [editCheckErrors, setEditCheckErrors] = useState<Partial<Record<CheckEditErrorKey, string>>>({});
   const [isCheckCashModalOpen, setIsCheckCashModalOpen] = useState(false);
   const [cashCheck, setCashCheck] = useState<InstallmentCheckInfo | null>(null);
   const [checkCashAmount, setCheckCashAmount] = useState<string | number>('');
@@ -316,6 +343,22 @@ const InstallmentSaleDetailPage: React.FC = () => {
   const isOverdue = (due: string, status: InstallmentPaymentStatus) =>
     moment(due, 'jYYYY/jMM/jDD').isBefore(moment(), 'day') && status !== 'پرداخت شده';
 
+
+  const openInstallmentContractPrint = () => {
+    if (!saleData?.id) {
+      setNotification({ type: 'error', text: 'اطلاعات فروش برای چاپ قرارداد هنوز آماده نیست.' });
+      return;
+    }
+    const base = `${window.location.origin}${window.location.pathname}`;
+    const printUrl = `${base}#/print/installment-contract/${saleData.id}?mode=print`;
+    const popup = window.open(printUrl, '_blank', 'noopener,noreferrer');
+    if (!popup) {
+      setNotification({
+        type: 'warning',
+        text: 'مرورگر بازشدن تب چاپ را مسدود کرد. اجازه Pop-up را برای این برنامه فعال و دوباره «چاپ قرارداد» را انتخاب کنید.',
+      });
+    }
+  };
 
   // ---------- data ----------
   const fetchInstallmentSaleDetail = async () => {
@@ -527,29 +570,117 @@ const paymentStageIcon = paymentStageProgress === 1
 
   const openEditCheckModal = (check: InstallmentCheckInfo) => {
     if (guardCanceledMutation()) return;
-    setEditingCheck({ ...check });
+    const buyerNationalCode = normalizeIdentityDigits(saleData?.buyerNationalCode);
+    const issuerNationalCode = normalizeIdentityDigits(check.issuerNationalCode);
+    setEditingCheck({
+      ...check,
+      ownershipType: check.ownershipType || (buyerNationalCode && issuerNationalCode === buyerNationalCode ? 'buyer' : 'third_party'),
+    });
+    setEditingCheckDueDate(parseStoredCheckDate(check.dueDate));
+    setEditCheckErrors({});
     setIsEditCheckModalOpen(true);
   };
 
-  const handleEditCheckChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const clearEditCheckError = (key: string) => {
+    setEditCheckErrors(prev => {
+      const next = { ...prev };
+      delete next[key as CheckEditErrorKey];
+      return next;
+    });
+  };
+
+  const handleEditCheckChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (!editingCheck) return;
-    setEditingCheck(prev => (prev ? { ...prev, status: e.target.value as CheckStatus } : null));
+    const { name, value } = e.target;
+    if (name === 'ownershipType') {
+      const buyerName = String(saleData?.buyerFullName || saleData?.customerFullName || '').trim();
+      const buyerNationalCode = normalizeIdentityDigits(saleData?.buyerNationalCode);
+      setEditingCheck(prev => prev ? ({
+        ...prev,
+        ownershipType: value === 'third_party' ? 'third_party' : 'buyer',
+        issuerName: value === 'buyer' ? buyerName : (String(prev.issuerName || '').trim() === buyerName ? '' : prev.issuerName),
+        issuerNationalCode: value === 'buyer' ? buyerNationalCode : (normalizeIdentityDigits(prev.issuerNationalCode) === buyerNationalCode ? '' : prev.issuerNationalCode),
+      }) : null);
+      clearEditCheckError('ownershipType');
+      clearEditCheckError('issuerName');
+      clearEditCheckError('issuerNationalCode');
+      return;
+    }
+    const normalizedValue = name === 'issuerNationalCode' || name === 'sayadiId'
+      ? normalizeIdentityDigits(value)
+      : value;
+    setEditingCheck(prev => (prev ? { ...prev, [name]: normalizedValue } : null));
+    clearEditCheckError(name);
   };
 
   const handleSaveCheckChanges = async () => {
     if (guardCanceledMutation()) return;
     if (!editingCheck || !editingCheck.id) return;
+    const errors: Partial<Record<CheckEditErrorKey, string>> = {};
+    const issuerName = String(editingCheck.issuerName || '').trim();
+    const issuerNationalCode = normalizeIdentityDigits(editingCheck.issuerNationalCode);
+    const sayadiId = normalizeIdentityDigits(editingCheck.sayadiId);
+    const checkNumber = String(editingCheck.checkNumber || '').trim();
+    const bankName = String(editingCheck.bankName || '').trim();
+    const buyerNationalCode = normalizeIdentityDigits(saleData?.buyerNationalCode);
+    if (!['buyer', 'third_party'].includes(String(editingCheck.ownershipType || ''))) {
+      errors.ownershipType = 'مشخص کنید چک متعلق به خریدار است یا شخص ثالث.';
+    }
+    if (!issuerName) errors.issuerName = 'نام و نام خانوادگی صادرکننده را وارد کنید.';
+    if (issuerNationalCode.length !== 10) errors.issuerNationalCode = 'کد ملی صادرکننده باید دقیقاً ۱۰ رقم باشد.';
+    else if (editingCheck.ownershipType === 'buyer' && issuerNationalCode !== buyerNationalCode) {
+      errors.issuerNationalCode = 'برای چک خریدار، کد ملی صادرکننده باید با کد ملی خریدار یکسان باشد.';
+    } else if (editingCheck.ownershipType === 'third_party' && issuerNationalCode === buyerNationalCode) {
+      errors.ownershipType = 'این کد ملی متعلق به خریدار است؛ نوع مالکیت را «چک خریدار» انتخاب کنید.';
+    }
+    if (sayadiId.length !== 16) errors.sayadiId = 'شناسه صیادی باید دقیقاً ۱۶ رقم باشد.';
+    if (!checkNumber) errors.checkNumber = 'شماره چک را وارد کنید.';
+    if (!bankName) errors.bankName = 'نام بانک صادرکننده را وارد کنید.';
+    if (!editingCheckDueDate) {
+      errors.dueDate = 'تاریخ سررسید چک را انتخاب کنید.';
+    } else {
+      const saleDate = parseStoredCheckDate(saleData?.saleDate || saleData?.phoneSaleDate || saleData?.dateCreated);
+      if (saleDate && moment(editingCheckDueDate).startOf('day').isBefore(moment(saleDate).startOf('day'))) {
+        errors.dueDate = 'تاریخ سررسید نمی‌تواند قبل از تاریخ فروش باشد.';
+      }
+    }
+
+    setEditCheckErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setNotification({ type: 'error', text: `تغییرات ذخیره نشد؛ ${Object.keys(errors).length} مورد را تکمیل یا اصلاح کنید.` });
+      scheduleTimeout(() => focusFirstError(errors as FormErrors, {
+        ownershipType: 'editCheckOwnershipType',
+        issuerName: 'editCheckIssuerName',
+        issuerNationalCode: 'editCheckIssuerNationalCode',
+        sayadiId: 'editCheckSayadiId',
+        checkNumber: 'editCheckNumber',
+        bankName: 'editCheckBankName',
+        dueDate: 'editCheckDueDate',
+      }), 0);
+      return;
+    }
     setNotification({ type: 'info', text: 'در حال ذخیره تغییرات چک...' });
     try {
       const res = await apiFetch(`/api/installment-sales/check/${editingCheck.id}`, {
         method: 'PUT',
-        body: JSON.stringify({ status: editingCheck.status }),
+        body: JSON.stringify({
+          status: editingCheck.status,
+          checkNumber,
+          bankName,
+          ownershipType: editingCheck.ownershipType,
+          issuerName,
+          issuerNationalCode,
+          sayadiId,
+          dueDate: moment(editingCheckDueDate).locale('fa').format('jYYYY/jMM/jDD'),
+        }),
       });
       const js = await res.json().catch(() => ({}));
       if (!res.ok || js?.success === false) throw new Error(js?.message || 'خطا در تغییر وضعیت چک');
-      setNotification({ type: 'success', text: `وضعیت چک شماره ${editingCheck.checkNumber} به‌روز شد.` });
+      setNotification({ type: 'success', text: `مشخصات قراردادی و وضعیت چک شماره ${editingCheck.checkNumber} به‌روز شد.` });
       setIsEditCheckModalOpen(false);
       setEditingCheck(null);
+      setEditingCheckDueDate(null);
+      setEditCheckErrors({});
       fetchInstallmentSaleDetail();
     } catch (error: any) {
       setNotification({ type: 'error', text: `خطا در به‌روزرسانی چک: ${error.message}` });
@@ -788,6 +919,16 @@ const paymentStageIcon = paymentStageProgress === 1
         icon={<i className="fa-solid fa-file-invoice-dollar" aria-hidden="true" />}
         actions={
           <div className="flex w-full flex-wrap items-center justify-start gap-2 sm:w-auto sm:justify-end">
+            <Button
+              type="button"
+              onClick={openInstallmentContractPrint}
+              variant="primary"
+              size="sm"
+              title="چاپ قرارداد کامل ۸ ماده‌ای"
+              leftIcon={<i className="fa-solid fa-print" aria-hidden="true" />}
+            >
+              چاپ قرارداد
+            </Button>
             {!isCanceled && !isSaleSettled ? (
               <Button
                 type="button"
@@ -2545,36 +2686,115 @@ const paymentStageIcon = paymentStageProgress === 1
         return (
           <Modal
             title={`ویرایش چک شماره ${editingCheck.checkNumber}`}
-            onClose={() => setIsEditCheckModalOpen(false)}
-            widthClass="max-w-5xl"
+            onClose={() => {
+              setIsEditCheckModalOpen(false);
+              setEditCheckErrors({});
+            }}
+            widthClass="max-w-4xl"
             iconClass="fa-solid fa-money-check"
-            variant="expansive"
+            variant="operational"
             layout="horizontal"
-            ariaDescription="مرور مشخصات چک و تغییر وضعیت وصول با حفظ اطلاعات مالی سند"
+            ariaDescription="تکمیل مشخصات قراردادی، تاریخ سررسید و وضعیت وصول چک با حفظ مبلغ مالی ثبت‌شده"
           >
             <div className="min-w-0 space-y-4 text-sm" dir="rtl">
-              <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(18rem,0.92fr)_minmax(0,1.18fr)]">
+              <FormErrorSummary
+                errors={editCheckErrors as FormErrors}
+                labels={{
+                  ownershipType: 'مالک چک',
+                  issuerName: 'نام صادرکننده',
+                  issuerNationalCode: 'کد ملی صادرکننده',
+                  sayadiId: 'شناسه صیادی',
+                  checkNumber: 'شماره چک',
+                  bankName: 'نام بانک',
+                  dueDate: 'تاریخ سررسید',
+                }}
+                fieldIdMap={{
+                  ownershipType: 'editCheckOwnershipType',
+                  issuerName: 'editCheckIssuerName',
+                  issuerNationalCode: 'editCheckIssuerNationalCode',
+                  sayadiId: 'editCheckSayadiId',
+                  checkNumber: 'editCheckNumber',
+                  bankName: 'editCheckBankName',
+                  dueDate: 'editCheckDueDate',
+                }}
+              />
+
+              <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(17rem,0.85fr)]">
                 <PanelCard
-                  title={`چک شماره ${editingCheck.checkNumber || '—'}`}
-                  subtitle="مشخصات مالی ثبت‌شده این سند"
+                  title="اطلاعات چک و صادرکننده"
+                  subtitle="اطلاعات ناقص رکوردهای قبلی را همین‌جا تکمیل یا اصلاح کنید."
                   icon={<i className="fa-solid fa-money-check-dollar" aria-hidden="true" />}
                   actions={<FinancialStatusBadge label={editingCheck.status || 'بدون وضعیت'} tone={statusTone} size="sm" />}
                   density="compact"
                 >
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <PanelCard variant="metric" title="بانک" metricValue={editingCheck.bankName || 'ثبت نشده'} metricHint="بانک صادرکننده" tone="neutral" icon={<i className="fa-solid fa-building-columns" aria-hidden="true" />} density="compact" />
-                    <PanelCard variant="metric" title="سررسید" metricValue={formatIsoToShamsi(editingCheck.dueDate)} metricHint="تاریخ وصول" tone="neutral" icon={<i className="fa-regular fa-calendar-check" aria-hidden="true" />} density="compact" />
-                    <PanelCard variant="metric" title="مبلغ چک" metricValue={formatPrice(editingCheck.amount)} metricHint="ارزش اسمی سند" tone="neutral" icon={<i className="fa-solid fa-sack-dollar" aria-hidden="true" />} density="compact" className="sm:col-span-2" />
+                    <ModalField
+                      label="مالک چک"
+                      iconClass="fa-solid fa-user-check"
+                      required
+                      error={editCheckErrors.ownershipType}
+                      hint="با تغییر این گزینه، نسخه حقوقی قرارداد چاپی نیز تغییر می‌کند."
+                      className="sm:col-span-2"
+                    >
+                      <SelectField
+                        id="editCheckOwnershipType"
+                        name="ownershipType"
+                        value={editingCheck.ownershipType || ''}
+                        onChange={handleEditCheckChange}
+                      >
+                        <option value="buyer">چک متعلق به خود خریدار است</option>
+                        <option value="third_party">چک متعلق به شخص ثالث است</option>
+                      </SelectField>
+                    </ModalField>
+                    <ModalField label="نام و نام خانوادگی صادرکننده" iconClass="fa-solid fa-user" required error={editCheckErrors.issuerName}>
+                      <TextField id="editCheckIssuerName" name="issuerName" value={editingCheck.issuerName || ''} onChange={handleEditCheckChange} autoComplete="off" />
+                    </ModalField>
+                    <ModalField label="کد ملی صادرکننده" iconClass="fa-solid fa-id-card" required error={editCheckErrors.issuerNationalCode}>
+                      <TextField id="editCheckIssuerNationalCode" name="issuerNationalCode" value={editingCheck.issuerNationalCode || ''} onChange={handleEditCheckChange} inputMode="numeric" dir="ltr" maxLength={10} autoComplete="off" />
+                    </ModalField>
+                    <ModalField label="شناسه صیادی" iconClass="fa-solid fa-barcode" required error={editCheckErrors.sayadiId}>
+                      <TextField id="editCheckSayadiId" name="sayadiId" value={editingCheck.sayadiId || ''} onChange={handleEditCheckChange} inputMode="numeric" dir="ltr" maxLength={16} autoComplete="off" />
+                    </ModalField>
+                    <ModalField label="شماره چک" iconClass="fa-solid fa-hashtag" required error={editCheckErrors.checkNumber}>
+                      <TextField id="editCheckNumber" name="checkNumber" value={editingCheck.checkNumber || ''} onChange={handleEditCheckChange} autoComplete="off" />
+                    </ModalField>
+                    <ModalField label="نام بانک" iconClass="fa-solid fa-building-columns" required error={editCheckErrors.bankName} className="sm:col-span-2">
+                      <TextField id="editCheckBankName" name="bankName" value={editingCheck.bankName || ''} onChange={handleEditCheckChange} autoComplete="off" />
+                    </ModalField>
                   </div>
                 </PanelCard>
 
                 <PanelCard
-                  title="وضعیت وصول"
-                  subtitle="فقط وضعیت عملیاتی چک را تغییر بده؛ مبلغ و سررسید اینجا دست‌کاری نمی‌شوند."
+                  title="سررسید و وضعیت وصول"
+                  subtitle="مبلغ چک یک سند مالی تثبیت‌شده است؛ تاریخ و وضعیت قابل اصلاح‌اند."
                   icon={<i className="fa-solid fa-list-check" aria-hidden="true" />}
                   tone={statusTone === 'danger' ? 'danger' : statusTone === 'warning' ? 'warning' : statusTone === 'success' ? 'success' : 'info'}
                   density="compact"
                 >
+                  <div className="space-y-3">
+                    <PanelCard
+                      variant="metric"
+                      title="مبلغ ثبت‌شده چک"
+                      metricValue={formatPrice(editingCheck.amount)}
+                      metricHint="برای حفظ سازگاری قرارداد و دفتر حساب قابل ویرایش نیست."
+                      tone="neutral"
+                      icon={<i className="fa-solid fa-sack-dollar" aria-hidden="true" />}
+                      density="compact"
+                    />
+
+                    <ModalField label="تاریخ سررسید" required error={editCheckErrors.dueDate}>
+                      <ShamsiDatePicker
+                        id="editCheckDueDate"
+                        selectedDate={editingCheckDueDate}
+                        onDateChange={(date) => {
+                          setEditingCheckDueDate(date);
+                          clearEditCheckError('dueDate');
+                        }}
+                        invalid={Boolean(editCheckErrors.dueDate)}
+                        size="standard"
+                      />
+                    </ModalField>
+
                   <ModalField
                     label="وضعیت جدید چک"
                     iconClass="fa-solid fa-list-check"
@@ -2593,7 +2813,7 @@ const paymentStageIcon = paymentStageProgress === 1
                     </SelectField>
                   </ModalField>
 
-                  <div className="mt-4">
+                  <div>
                     <FinancialStatusBadge
                       label={CHECK_STATUS_COPY[editingCheck.status]?.caption || 'وضعیت چک ثبت شده است'}
                       tone={statusTone}
@@ -2601,11 +2821,15 @@ const paymentStageIcon = paymentStageProgress === 1
                       size="sm"
                     />
                   </div>
+                  </div>
                 </PanelCard>
               </div>
 
               <DialogActions
-                onCancel={() => setIsEditCheckModalOpen(false)}
+                onCancel={() => {
+                  setIsEditCheckModalOpen(false);
+                  setEditCheckErrors({});
+                }}
                 cancelText="انصراف"
                 submitText="ذخیره تغییرات"
                 submitType="button"

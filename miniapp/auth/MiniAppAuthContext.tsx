@@ -6,6 +6,7 @@ import {
 } from "../apiClient";
 import { getTelegramWebApp } from "../telegram";
 import type { MiniAppAuthData, MiniAppIdentity } from "../types";
+import { useMiniAppDataAvailability } from "../dataAvailability/MiniAppDataAvailabilityContext";
 import { resolveMiniAppLaunch } from "../startParam";
 
 type MiniAppAuthStatus =
@@ -27,6 +28,7 @@ type MiniAppAuthState = {
 const MiniAppAuthContext = createContext<MiniAppAuthState | null>(null);
 
 export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const { reportMeta, clearAvailability } = useMiniAppDataAvailability();
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<Omit<MiniAppAuthState, "retry">>({
     status: "loading",
@@ -38,6 +40,7 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
 
   const retry = useCallback(() => {
     clearMiniAppSession();
+    clearAvailability();
     setState({
       status: "loading",
       identity: null,
@@ -46,7 +49,7 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
       code: null,
     });
     setAttempt((value) => value + 1);
-  }, []);
+  }, [clearAvailability]);
 
   useEffect(() => {
     let active = true;
@@ -69,7 +72,10 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
         // A fresh Telegram WebView boot must validate this launch's initData.
         // Rotating the session ensures a still-valid stored token cannot hide a
         // newer startapp navigation context.
-        const auth = await authenticateMiniApp(webApp.initData);
+        const authResult = await authenticateMiniApp(webApp.initData);
+        if (!active) return;
+        reportMeta("/api/miniapp/auth", authResult.meta);
+        const auth = authResult.data;
         const directLaunchHint = new URLSearchParams(window.location.search).get("kourosh_start");
         const hintedLaunch = directLaunchHint
           ? resolveMiniAppLaunch(directLaunchHint, auth.identity.kind)
@@ -89,6 +95,8 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
       } catch (error: unknown) {
         if (!active) return;
         const apiError = error instanceof MiniAppApiError ? error : null;
+        if (apiError?.responseMeta) reportMeta("/api/miniapp/auth", apiError.responseMeta);
+        else clearAvailability("/api/miniapp/auth");
         const isUnlinked = apiError?.code === "MINIAPP_ACCOUNT_UNLINKED";
         setState({
           status: isUnlinked ? "unlinked" : "error",
@@ -103,7 +111,7 @@ export const MiniAppAuthProvider: React.FC<React.PropsWithChildren> = ({ childre
     return () => {
       active = false;
     };
-  }, [attempt]);
+  }, [attempt, clearAvailability, reportMeta]);
 
   const value = useMemo<MiniAppAuthState>(
     () => ({ ...state, retry }),

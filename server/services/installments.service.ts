@@ -228,9 +228,57 @@ export const installmentsService = {
     id: number,
     status: any,
     notifyCustomer?: NotifyCustomer,
+    contractIdentity?: {
+      checkNumber?: unknown;
+      bankName?: unknown;
+      ownershipType?: unknown;
+      issuerName?: unknown;
+      issuerNationalCode?: unknown;
+      sayadiId?: unknown;
+      dueDate?: unknown;
+    },
   ) => {
     if (!CHECK_STATUSES_OPTIONS_SERVER.includes(status)) {
       return { validationMessage: 'وضعیت چک نامعتبر است.' };
+    }
+
+    const hasContractIdentity = contractIdentity && [
+      contractIdentity.issuerName,
+      contractIdentity.issuerNationalCode,
+      contractIdentity.sayadiId,
+      contractIdentity.checkNumber,
+      contractIdentity.bankName,
+      contractIdentity.ownershipType,
+      contractIdentity.dueDate,
+    ].some((value) => value !== undefined);
+    if (hasContractIdentity) {
+      const normalizeIdentityDigits = (value: unknown) => String(value ?? '')
+        .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+        .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+        .replace(/\D/g, '');
+      const issuerName = String(contractIdentity?.issuerName || '').trim().replace(/\s+/g, ' ');
+      const issuerNationalCode = normalizeIdentityDigits(contractIdentity?.issuerNationalCode);
+      const sayadiId = normalizeIdentityDigits(contractIdentity?.sayadiId);
+      const checkNumber = String(contractIdentity?.checkNumber || '').trim();
+      const bankName = String(contractIdentity?.bankName || '').trim().replace(/\s+/g, ' ');
+      const ownershipType = String(contractIdentity?.ownershipType || '').trim();
+      const dueDate = String(contractIdentity?.dueDate || '').trim();
+      if (!issuerName) return { validationMessage: 'نام صادرکننده چک الزامی است.' };
+      if (issuerNationalCode.length !== 10) return { validationMessage: 'کد ملی صادرکننده چک باید دقیقاً ۱۰ رقم باشد.' };
+      if (sayadiId.length !== 16) return { validationMessage: 'شناسه صیادی باید دقیقاً ۱۶ رقم باشد.' };
+      if (!checkNumber) return { validationMessage: 'شماره چک الزامی است.' };
+      if (!bankName) return { validationMessage: 'نام بانک صادرکننده الزامی است.' };
+      if (!['buyer', 'third_party'].includes(ownershipType)) return { validationMessage: 'مالک چک باید خریدار یا شخص ثالث باشد.' };
+      if (!dueDate) return { validationMessage: 'تاریخ سررسید چک الزامی است.' };
+      await installmentsRepo.updateInstallmentCheckContractIdentity(id, {
+        checkNumber,
+        bankName,
+        ownershipType: ownershipType as 'buyer' | 'third_party',
+        issuerName,
+        issuerNationalCode,
+        sayadiId,
+        dueDate,
+      });
     }
 
     const ok = await installmentsRepo.updateInstallmentCheckStatus(id, status);
@@ -263,6 +311,14 @@ export const installmentsService = {
       notes,
     );
     return { data };
+  },
+
+  prepareInstallmentSaleContractForPrint: async (saleId: number) => {
+    if (!Number.isInteger(saleId) || saleId <= 0) {
+      return { validationMessage: 'شناسه فروش اقساطی نامعتبر است.' };
+    }
+    const data = await installmentsRepo.prepareInstallmentSaleContractForPrint(saleId);
+    return data ? { data } : { notFound: true as const };
   },
 
   createInstallmentSale: async ({ payload, user, notifyCustomer }: CreateInstallmentSaleOptions) => {

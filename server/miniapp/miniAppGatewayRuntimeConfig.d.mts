@@ -1,4 +1,4 @@
-export type MiniAppGatewayRuntimeMode = "disabled" | "self_hosted" | "external_tunnel" | "relay";
+export type MiniAppGatewayRuntimeMode = "disabled" | "self_hosted" | "external_tunnel" | "stable_tunnel" | "relay";
 export type MiniAppGatewayRuntimeConfig = { version: number; mode: MiniAppGatewayRuntimeMode; expectedPublicHost: string | null; updatedAt: string };
 export type MiniAppGatewayRuntimeConfigReadResult =
   | { state: "absent" }

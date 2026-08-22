@@ -79,6 +79,7 @@ const CustomerDetailController: React.FC = () => {
   const [ledgerReturnRestoring, setLedgerReturnRestoring] = React.useState(false);
 
   const [ledgerPrintRows, setLedgerPrintRows] = React.useState<CustomerLedgerEntry[]>([]);
+  const contractEditOpenedRef = React.useRef(false);
 
 
   const sendLedgerAction = async (type: 'REMINDER' | 'NOTE' | 'FLAG_HIGH_RISK', note?: string) => {
@@ -564,6 +565,7 @@ const fetchCustomerTrustHistory = async (customerId: number) => {
     if (!customerData?.profile) return;
     setEditingCustomer({
       fullName: customerData.profile.fullName,
+      nationalCode: customerData.profile.nationalCode || '',
       phoneNumber: customerData.profile.phoneNumber || '',
       address: customerData.profile.address || '',
       notes: customerData.profile.notes || '',
@@ -584,10 +586,28 @@ const fetchCustomerTrustHistory = async (customerId: number) => {
     if (editingCustomer.phoneNumber && !/^\d{10,15}$/.test(editingCustomer.phoneNumber.trim())) {
       errors.phoneNumber = 'شماره تماس نامعتبر است (باید ۱۰ تا ۱۵ رقم باشد).';
     }
+    const nationalCode = String(editingCustomer.nationalCode || '').replace(/\D/g, '');
+    if ((nationalCode || contractEditOpenedRef.current) && nationalCode.length !== 10) {
+      errors.nationalCode = contractEditOpenedRef.current
+        ? 'برای چاپ قرارداد، کد ملی ۱۰ رقمی الزامی است.'
+        : 'کد ملی باید دقیقاً ۱۰ رقم باشد.';
+    }
+    if (contractEditOpenedRef.current && !String(editingCustomer.address || '').trim()) {
+      errors.address = 'برای چاپ قرارداد، آدرس محل سکونت خریدار الزامی است.';
+    }
     setEditFormErrors(errors);
-    focusErrorsSoon(errors as any, { fullName: 'editFullName', phoneNumber: 'editPhoneNumber' });
+    focusErrorsSoon(errors as any, { fullName: 'editFullName', nationalCode: 'editNationalCode', phoneNumber: 'editPhoneNumber', address: 'editAddress' });
     return Object.keys(errors).length === 0;
   };
+
+  useEffect(() => {
+    if (!customerData?.profile || contractEditOpenedRef.current) return;
+    const params = new URLSearchParams(location.search || '');
+    if (params.get('edit') !== 'contract') return;
+    contractEditOpenedRef.current = true;
+    openEditModal();
+    navigate(location.pathname, { replace: true });
+  }, [customerData?.profile?.id, location.pathname, location.search]);
 
   const handleEditSubmit = async (e: FormEvent) => {
     e.preventDefault();

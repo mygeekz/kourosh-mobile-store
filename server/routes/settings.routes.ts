@@ -26,7 +26,8 @@ import {
   pickTelegramSettings,
 } from "../connectivity/settingsScopes";
 import { normalizeLocalHostname, normalizeLocalSuffix } from "../utils/localSettingsHelpers";
-import { resolveMiniAppPublicAccessMode, validateTelegramMiniAppPublicUrl } from "../connectivity/telegramPublicAccess";
+import { resolveMiniAppPublicAccessMode, validateMiniAppLiveOriginUrl, validateTelegramMiniAppPublicUrl, validateTelegramStableMiniAppCanonicalUrl } from "../connectivity/telegramPublicAccess";
+import { resolveMiniAppStableTunnelProvider } from "../connectivity/stableTunnelProvider";
 import {
   getCloudConnectorRuntimeStatus,
   initializeCloudConnectorRuntime,
@@ -45,6 +46,15 @@ import { resolveRelayControlUrl, resolveRelayConnectorUrl, resolveRelayProvider,
 import { enrollCloudConnector, rotateCloudConnectorCredential } from "../cloud/cloudEnrollment";
 import { writeMiniAppGatewayRuntimeConfigFromSettings } from "../miniapp/miniAppGatewayRuntimeConfig.mjs";
 import { getMiniAppPublicSyncStatus } from "../services/miniAppPublicUrlSync.service";
+import { syncTelegramMenuButton } from "../services/telegramMenuSync.service";
+import {
+  getMiniAppSnapshotProvisioningDescriptor,
+  getMiniAppSnapshotRuntimeStatus,
+  initializeMiniAppSnapshotRuntime,
+  prepareMiniAppSnapshotProvisioningDescriptor,
+  renderMiniAppSnapshotProvisioningSql,
+  runMiniAppSnapshotReconciliation,
+} from "../cloud/snapshots/miniAppSnapshotRuntime";
 
 type AuthorizeRole = (allowed: string[]) => RequestHandler;
 
@@ -105,6 +115,68 @@ export const registerSettingsRoutes = (
   app.get("/api/settings/miniapp-public-sync/status", authorizeRole(["Admin"]), async (_req, res) => {
     res.setHeader("Cache-Control", "no-store");
     return res.json({ success: true, data: getMiniAppPublicSyncStatus() });
+  });
+
+  app.get("/api/settings/miniapp-snapshot/status", authorizeRole(["Admin"]), async (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    return res.json({ success: true, data: getMiniAppSnapshotRuntimeStatus() });
+  });
+
+  app.get("/api/settings/miniapp-snapshot/provisioning", authorizeRole(["Admin"]), async (_req, res, next) => {
+    try {
+      const settings = await getAllSettingsAsObject();
+      const descriptor = getMiniAppSnapshotProvisioningDescriptor(settings);
+      res.setHeader("Cache-Control", "no-store");
+      return res.json({
+        success: true,
+        data: {
+          ...descriptor,
+          provisioningSql: renderMiniAppSnapshotProvisioningSql(descriptor),
+        },
+      });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.post("/api/settings/miniapp-snapshot/prepare", authorizeRole(["Admin"]), async (_req, res, next) => {
+    try {
+      const settings = await getAllSettingsAsObject();
+      const descriptor = prepareMiniAppSnapshotProvisioningDescriptor(settings);
+      res.setHeader("Cache-Control", "no-store");
+      return res.status(descriptor.ready ? 200 : 409).json({
+        success: descriptor.ready,
+        code: descriptor.ready ? undefined : "MINIAPP_SNAPSHOT_RUNTIME_NOT_READY",
+        data: {
+          ...descriptor,
+          provisioningSql: renderMiniAppSnapshotProvisioningSql(descriptor),
+        },
+      });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.post("/api/settings/miniapp-snapshot/refresh", authorizeRole(["Admin"]), async (_req, res, next) => {
+    try {
+      const settings = await getAllSettingsAsObject();
+      initializeMiniAppSnapshotRuntime(settings);
+      const result = await runMiniAppSnapshotReconciliation();
+      res.setHeader("Cache-Control", "no-store");
+      const responseStatus = result.state === "not_ready" ? 409 : result.state === "degraded" ? 503 : 200;
+      const success = result.state === "idle";
+      return res.status(responseStatus).json({
+        success,
+        code: success
+          ? undefined
+          : result.state === "not_ready"
+            ? "MINIAPP_SNAPSHOT_RUNTIME_NOT_READY"
+            : result.lastErrorCode || "MINIAPP_SNAPSHOT_RECONCILIATION_FAILED",
+        data: result,
+      });
+    } catch (error) {
+      return next(error);
+    }
   });
 
 
@@ -310,6 +382,7 @@ export const registerSettingsRoutes = (
       await persistScopedSettings(config);
       const nextSettings = { ...current, ...config };
       initializeCloudConnectorRuntime(nextSettings, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
+      initializeMiniAppSnapshotRuntime(nextSettings);
       return res.json({ success: true, message: relay.provider === "custom" ? "رله شخصی ثبت شد و Connector امن در حال اتصال است." : "رله مدیریت‌شده کوروش ثبت شد و Connector امن در حال اتصال است.", data: { provider: relay.provider, assignedStoreId: enrolled.assignedStoreId, assignedPublicUrl: enrolled.assignedPublicUrl, status: getCloudConnectorRuntimeStatus() } });
     } catch (e: any) {
       const code = String(e?.code || "RELAY_ENROLLMENT_FAILED");
@@ -333,7 +406,9 @@ export const registerSettingsRoutes = (
       const rotated = await rotateCloudConnectorCredential({ installationId, recoveryCode, controlPlaneUrl: relay.controlUrl, expectedConnectorEndpoint: relay.provider === "custom" ? relay.connectorUrl || undefined : undefined });
       const config: Record<string, unknown> = { relay_provider: relay.provider, relay_assignment_provider: relay.provider, ...(relay.provider === "custom" ? { custom_relay_control_url: relay.controlUrl, custom_relay_connector_url: rotated.connectorEndpoint } : {}), kourosh_cloud_endpoint: rotated.connectorEndpoint, kourosh_cloud_assigned_store_id: rotated.assignedStoreId, kourosh_cloud_assigned_public_url: rotated.assignedPublicUrl, kourosh_cloud_assignment_version: String(rotated.assignmentVersion || 1), kourosh_cloud_connection_state: "connecting", kourosh_cloud_credential_configured: "1", kourosh_cloud_credential_version: String(rotated.credentialVersion || 1), kourosh_cloud_telegram_relay_healthy: "0", kourosh_cloud_miniapp_relay_healthy: "0" };
       await persistScopedSettings(config);
-      initializeCloudConnectorRuntime({ ...current, ...config }, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
+      const nextSettings = { ...current, ...config };
+      initializeCloudConnectorRuntime(nextSettings, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
+      initializeMiniAppSnapshotRuntime(nextSettings);
       return res.json({ success: true, message: "کلید Connector رله با موفقیت چرخش داده شد.", data: { provider: relay.provider, assignedPublicUrl: rotated.assignedPublicUrl, status: getCloudConnectorRuntimeStatus() } });
     } catch (e: any) {
       const code = String(e?.code || "RELAY_KEY_ROTATION_FAILED");
@@ -354,7 +429,9 @@ export const registerSettingsRoutes = (
       const provisioned = await provisionDevelopmentCloudConnector(installationId);
       const config = { relay_provider: "managed_kourosh", relay_assignment_provider: "managed_kourosh", kourosh_cloud_enabled: "1", kourosh_cloud_provisioned: "1", kourosh_cloud_endpoint: provisioned.endpoint, kourosh_cloud_assigned_store_id: provisioned.assignedStoreId, kourosh_cloud_assigned_public_url: provisioned.assignedPublicUrl, kourosh_cloud_connection_state: "connecting", kourosh_cloud_credential_configured: provisioned.credentialConfigured ? "1" : "0", kourosh_cloud_relay_mode: "telegram_and_miniapp", kourosh_cloud_telegram_relay_healthy: "0", kourosh_cloud_miniapp_relay_healthy: "0" };
       await persistScopedSettings(config);
-      initializeCloudConnectorRuntime({ ...current, ...config }, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
+      const nextSettings = { ...current, ...config };
+      initializeCloudConnectorRuntime(nextSettings, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
+      initializeMiniAppSnapshotRuntime(nextSettings);
       return res.json({ success: true, message: "Development managed Relay provisioned.", data: getCloudConnectorRuntimeStatus() });
     } catch (e) { return next(e); }
   });
@@ -456,11 +533,28 @@ export const registerSettingsRoutes = (
         }
       }
 
-      if (miniAppMode === "self_hosted" || miniAppMode === "external_tunnel") {
+      if (miniAppMode === "self_hosted" || miniAppMode === "external_tunnel" || miniAppMode === "stable_tunnel") {
         const publicUrl = String(proposed.telegram_miniapp_public_url || "").trim();
-        const normalizedPublicUrl = validateTelegramMiniAppPublicUrl(publicUrl);
-        if (!normalizedPublicUrl) return res.status(400).json({ success: false, code: "INVALID_TELEGRAM_MINIAPP_PUBLIC_URL", message: miniAppMode === "external_tunnel" ? "برای Tunnel یک Public HTTPS URL معتبر لازم است." : "برای Self-Hosted Mini App یک Public HTTPS URL معتبر لازم است." });
+        const normalizedPublicUrl = miniAppMode === "stable_tunnel"
+          ? validateTelegramStableMiniAppCanonicalUrl(publicUrl)
+          : validateTelegramMiniAppPublicUrl(publicUrl);
+        if (!normalizedPublicUrl) return res.status(400).json({ success: false, code: miniAppMode === "stable_tunnel" ? "INVALID_TELEGRAM_STABLE_MINIAPP_URL" : "INVALID_TELEGRAM_MINIAPP_PUBLIC_URL", message: miniAppMode === "stable_tunnel" ? "برای Production یک URL ثابت HTTPS روی /miniapp.html لازم است؛ آدرس‌های موقت trycloudflare مجاز نیستند." : miniAppMode === "external_tunnel" ? "برای Tunnel یک Public HTTPS URL معتبر لازم است." : "برای Self-Hosted Mini App یک Public HTTPS URL معتبر لازم است." });
         scoped.telegram_miniapp_public_url = normalizedPublicUrl;
+      }
+      if (miniAppMode === "stable_tunnel") {
+        const liveOriginUrl = validateMiniAppLiveOriginUrl(proposed.miniapp_live_origin_url);
+        if (!liveOriginUrl) return res.status(400).json({ success: false, code: "INVALID_MINIAPP_LIVE_ORIGIN_URL", message: "برای دسترسی Live یک HTTPS Live Origin ثابت و معتبر لازم است." });
+        const publicUrl = validateTelegramStableMiniAppCanonicalUrl(proposed.telegram_miniapp_public_url);
+        if (!publicUrl) return res.status(400).json({ success: false, code: "INVALID_TELEGRAM_STABLE_MINIAPP_URL", message: "برای Production یک URL ثابت HTTPS روی /miniapp.html لازم است." });
+        if (new URL(publicUrl).origin === new URL(liveOriginUrl).origin) {
+          return res.status(400).json({
+            success: false,
+            code: "MINIAPP_PUBLIC_EDGE_LIVE_ORIGIN_MUST_DIFFER",
+            message: "آدرس عمومی Mini App باید به Edge متصل باشد و با Live Origin فروشگاه متفاوت باشد؛ در غیر این صورت هنگام خاموش بودن فروشگاه Snapshot در دسترس نخواهد بود.",
+          });
+        }
+        scoped.miniapp_live_origin_url = liveOriginUrl;
+        scoped.miniapp_stable_tunnel_provider = resolveMiniAppStableTunnelProvider(proposed);
       }
 
       const savedKeys = await persistScopedSettings(scoped);
@@ -492,13 +586,34 @@ export const registerSettingsRoutes = (
       configureTelegramTransportRuntime(savedSettings);
       // Provider/strategy changes re-evaluate whether the generic Relay Connector should run at all.
       initializeCloudConnectorRuntime(savedSettings, { updateSetting: async (key, value) => { await persistScopedSettings({ [key]: value }); } });
-      return res.json({ success: true, message: "تنظیمات اتصال تلگرام و Mini App ذخیره شد.", data: { savedKeys, transportMode, miniAppMode, relayProvider, gatewayRuntimeConfig, gatewayRestartRequired: false } });
+      // Snapshot sync is independent from Relay. Re-evaluate it whenever Mini App connectivity changes.
+      // It is outbound-only and never blocks Local Kourosh if Cloud is unavailable.
+      initializeMiniAppSnapshotRuntime(savedSettings);
+      let telegramMenuSync: { state: string; attempts: number; message?: string } | null = null;
+      if (miniAppMode === "stable_tunnel") {
+        telegramMenuSync = await syncTelegramMenuButton(savedSettings).catch((error) => ({
+          state: "error",
+          attempts: 0,
+          message: error instanceof Error ? error.message : String(error || "Telegram Menu sync failed."),
+        }));
+      }
+      return res.json({ success: true, message: "تنظیمات اتصال تلگرام و Mini App ذخیره شد.", data: { savedKeys, transportMode, miniAppMode, relayProvider, gatewayRuntimeConfig, gatewayRestartRequired: false, telegramMenuSync } });
     } catch (e) { return next(e); }
   });
 
   app.post("/api/settings", authorizeRole(["Admin"]), async (req, res, next) => {
     try {
       const config = pickGenericWritableSettings(req.body);
+      if (Object.prototype.hasOwnProperty.call(config, "installment_contract_seller_national_code")) {
+        const nationalCode = String(config.installment_contract_seller_national_code || "")
+          .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)))
+          .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)))
+          .replace(/\D/g, "");
+        if (nationalCode && nationalCode.length !== 10) {
+          return res.status(400).json({ success: false, message: "کد ملی فروشنده/نماینده قانونی باید دقیقاً ۱۰ رقم باشد." });
+        }
+        config.installment_contract_seller_national_code = nationalCode;
+      }
       await persistScopedSettings(config);
       res.json({ success: true, message: "تنظیمات با موفقیت ذخیره شد." });
     } catch (e) {

@@ -4,8 +4,7 @@ import type { Partner } from '../../types';
 import { PARTNER_TYPES } from '../../constants';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../../utils/currency';
 import { formatIsoToShamsiDateTime } from '../../utils/dateUtils';
-import Button from '../Button';
-import { DataTableShell, SelectField, Surface, TableActionGroup } from '@/components/ui';
+import { ManagementDirectoryPagination, TableActionGroup } from '@/components/ui';
 
 type PartnerDirectoryListProps = {
   partners: Partner[];
@@ -15,7 +14,6 @@ type PartnerDirectoryListProps = {
   totalPages: number;
   pageStart: number;
   pageEnd: number;
-  visiblePages: number[];
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: '25' | '50' | '100') => void;
   onSendReport: (partner: Partner) => void | Promise<void>;
@@ -31,6 +29,8 @@ type PartnerBalanceMeta = {
   statusClassName: string;
   urgent: boolean;
 };
+
+const PARTNER_DIRECTORY_ROW_CLASS = 'bg-white hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900';
 
 const getPartnerTypeLabel = (partnerType: string) =>
   PARTNER_TYPES.find((item) => item.value === partnerType)?.label || partnerType || 'تعریف نشده';
@@ -84,14 +84,21 @@ const getPartnerBalanceMeta = (value?: number | null): PartnerBalanceMeta => {
   };
 };
 
-const PartnerBalance: React.FC<{ value?: number | null; compact?: boolean }> = ({ value, compact = false }) => {
+const getPartnerBalanceRowRailClass = (meta: PartnerBalanceMeta): string => {
+  if (meta.urgent) return 'border-s-4 border-s-rose-500';
+  if (meta.amount > 0) return 'border-s-4 border-s-amber-400';
+  if (meta.amount < 0) return 'border-s-4 border-s-emerald-500';
+  return 'border-s-4 border-s-slate-300 dark:border-s-slate-700';
+};
+
+const PartnerBalance: React.FC<{ value?: number | null }> = ({ value }) => {
   const meta = getPartnerBalanceMeta(value);
   return (
     <div className="min-w-0" title={`${meta.amountText} · ${meta.label}`}>
-      <strong className={`block whitespace-nowrap font-black tabular-nums ${compact ? 'text-[13px]' : 'text-[14px]'} ${meta.amountClassName}`}>
+      <strong className={`block whitespace-nowrap text-sm font-black tabular-nums ${meta.amountClassName}`}>
         {meta.amountText}
       </strong>
-      <span className={`mt-1 inline-flex min-w-0 items-center gap-1.5 text-[10px] font-black leading-5 ${meta.statusClassName}`}>
+      <span className={`mt-0.5 inline-flex min-w-0 items-center gap-1.5 text-[10px] font-black leading-5 ${meta.statusClassName}`}>
         <i className={`fa-solid ${meta.icon} shrink-0`} aria-hidden="true" />
         <span className="min-w-0">{meta.label}</span>
       </span>
@@ -103,11 +110,10 @@ const PartnerActions: React.FC<{
   partner: Partner;
   onSendReport: (partner: Partner) => void | Promise<void>;
   onDelete: (partner: Partner) => void;
-  mobile?: boolean;
-}> = ({ partner, onSendReport, onDelete, mobile = false }) => (
+}> = ({ partner, onSendReport, onDelete }) => (
   <TableActionGroup
     ariaLabel={`عملیات همکار ${partner.partnerName}`}
-    collapseBelow={mobile ? 'md' : 'xl'}
+    collapseBelow="lg"
     align="end"
     actions={[
       {
@@ -150,169 +156,112 @@ const PartnerDirectoryList: React.FC<PartnerDirectoryListProps> = ({
   totalPages,
   pageStart,
   pageEnd,
-  visiblePages,
   onPageChange,
   onPageSizeChange,
   onSendReport,
   onDelete,
 }) => (
-  <DataTableShell
-    title="فهرست همکاران"
-    titleIcon={<i className="fa-solid fa-address-book" aria-hidden="true" />}
-    kicker="اشخاص"
-    kickerIcon={<i className="fa-solid fa-building" aria-hidden="true" />}
-    subtitle={`نمایش ${pageStart.toLocaleString('fa-IR')} تا ${pageEnd.toLocaleString('fa-IR')} از ${total.toLocaleString('fa-IR')} همکار`}
-    meta={(
-      <span className="inline-flex min-w-0 items-start gap-1.5 text-[10px] font-bold leading-5 text-slate-500 dark:text-slate-400">
-        <i className="fa-solid fa-circle-info mt-0.5 shrink-0 text-blue-500" aria-hidden="true" />
-        <span>مانده حساب و شاخص‌های تأمین از دفتر و خریدهای ثبت‌شده محاسبه می‌شوند.</span>
-      </span>
-    )}
-    className="@container min-w-0"
-    data-ui-people-directory-list="partners"
-    data-ui-people-directory-layout="utility-only"
-    footer={(
-      <div className="grid min-w-0 gap-3 @[620px]:grid-cols-[auto_minmax(0,1fr)] @[620px]:items-center @[900px]:grid-cols-[auto_minmax(0,1fr)_auto]">
-        <div className="flex min-w-0 items-center gap-2 text-[10px] font-bold text-slate-500 dark:text-slate-400 sm:text-[11px]">
-          <span className="shrink-0">تعداد در صفحه</span>
-          <SelectField
-            value={pageSize}
-            onValueChange={(value) => onPageSizeChange(value as '25' | '50' | '100')}
-            ariaLabel="تعداد همکار در هر صفحه"
-            size="sm"
-            wrapperClassName="w-[88px] shrink-0"
-            options={[
-              { value: '25', label: '۲۵' },
-              { value: '50', label: '۵۰' },
-              { value: '100', label: '۱۰۰' },
-            ]}
-          />
-        </div>
-
-        <nav className="flex min-w-0 flex-wrap items-center justify-start gap-1.5 @[620px]:justify-center" aria-label="صفحه‌بندی فهرست همکاران">
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            autoIcon={false}
-            disabled={page <= 1}
-            onClick={() => onPageChange(Math.max(1, page - 1))}
-            aria-label="صفحه قبل"
-            leftIcon={<i className="fa-solid fa-chevron-right" />}
-          />
-          {visiblePages.map((item) => (
-            <Button
-              key={item}
-              type="button"
-              variant={item === page ? 'primary' : 'secondary'}
-              size="icon"
-              autoIcon={false}
-              data-active={item === page}
-              onClick={() => onPageChange(item)}
-              aria-label={`صفحه ${item.toLocaleString('fa-IR')}`}
-            >
-              {item.toLocaleString('fa-IR')}
-            </Button>
-          ))}
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            autoIcon={false}
-            disabled={page >= totalPages}
-            onClick={() => onPageChange(Math.min(totalPages, page + 1))}
-            aria-label="صفحه بعد"
-            leftIcon={<i className="fa-solid fa-chevron-left" />}
-          />
-        </nav>
-
-        <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 @[620px]:col-span-2 @[620px]:text-center @[620px]:text-[11px] @[900px]:col-span-1 @[900px]:text-left">
-          {pageStart.toLocaleString('fa-IR')}–{pageEnd.toLocaleString('fa-IR')} از {total.toLocaleString('fa-IR')}
-        </span>
-      </div>
-    )}
+  <section
+    className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950"
+    dir="rtl"
+    data-ui-partners-directory="true"
   >
-    <div className="hidden min-w-0 @[900px]:block">
-      <table className="w-full table-fixed border-collapse text-right text-[12px]" data-ui-people-table="partners">
-        <thead className="border-b border-slate-200/90 bg-slate-50/70 text-slate-500 dark:border-slate-700/80 dark:bg-slate-900/65 dark:text-slate-300">
-          <tr>
-            <th scope="col" className="w-[34%] px-4 py-3 font-black">همکار و ارتباط</th>
-            <th scope="col" className="w-[27%] px-4 py-3 font-black">حساب و همکاری</th>
-            <th scope="col" className="w-[23%] px-4 py-3 font-black">تأمین و فعالیت</th>
-            <th scope="col" className="w-[16%] px-4 py-3 text-center font-black">عملیات</th>
+    <header className="flex flex-col gap-2 border-b border-slate-200 px-3 py-2.5 lg:flex-row lg:items-center lg:justify-between dark:border-slate-800">
+      <div className="min-w-0">
+        <h3 className="text-sm font-black text-slate-950 dark:text-slate-50">فهرست همکاران</h3>
+        <p className="mt-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+          نمایش {pageStart.toLocaleString('fa-IR')} تا {pageEnd.toLocaleString('fa-IR')} از {total.toLocaleString('fa-IR')} همکار
+        </p>
+      </div>
+      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+        <i className="fa-solid fa-circle-info text-sky-600" aria-hidden="true" />
+        مانده حساب و شاخص‌های تأمین از دفتر و خریدهای ثبت‌شده محاسبه می‌شوند.
+      </span>
+    </header>
+
+    <div className="w-full overflow-x-auto overscroll-x-contain" role="region" aria-label="جدول فهرست همکاران" tabIndex={0}>
+      <table
+        className="w-full min-w-[62rem] table-fixed border-collapse text-xs"
+        dir="rtl"
+        data-ui-table="true"
+        data-ui-bidi-scope="rtl-table"
+        data-ui-table-layout="managed"
+        data-ui-table-density="compact"
+      >
+        <caption className="sr-only">فهرست همکاران، وضعیت حساب، تأمین و فعالیت و عملیات پرونده</caption>
+        <colgroup>
+          <col className="w-[33%]" />
+          <col className="w-[28%]" />
+          <col className="w-[25%]" />
+          <col className="w-[14%]" />
+        </colgroup>
+        <thead className="bg-slate-50 text-slate-600 dark:bg-slate-900/70 dark:text-slate-300">
+          <tr className="border-b border-slate-200 text-right dark:border-slate-800">
+            <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">همکار و ارتباط</th>
+            <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">حساب و همکاری</th>
+            <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">تأمین و فعالیت</th>
+            <th scope="col" className="sticky end-0 z-20 bg-slate-50 px-2 py-2 text-center font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">عملیات</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-200/80 dark:divide-slate-800/90">
+        <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
           {partners.map((partner) => {
             const balance = getPartnerBalanceMeta(partner.currentBalance);
+            const unsoldPhonesCount = Number(partner.unsoldPhonesCount || 0);
             return (
-              <tr
-                key={partner.id}
-                className={balance.urgent
-                  ? '[&>td]:bg-rose-50/45 dark:[&>td]:bg-rose-950/10'
-                  : 'transition-colors hover:[&>td]:bg-slate-50/65 dark:hover:[&>td]:bg-slate-900/55'}
-              >
-                <td className="px-4 py-3.5 align-middle">
-                  <div className="grid min-w-0 grid-cols-[40px_minmax(0,1fr)] gap-3">
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border border-slate-200 bg-slate-50 text-[13px] font-black text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
-                      {(partner.partnerName || '?').trim().charAt(0)}
-                    </span>
-                    <div className="min-w-0">
-                      <strong className="block truncate text-[13px] font-black text-slate-950 dark:text-slate-50">{partner.partnerName}</strong>
-                      <small className="mt-0.5 block text-[10px] font-semibold text-slate-500 dark:text-slate-400">پرونده #{partner.id.toLocaleString('fa-IR')}</small>
-                      <div className="mt-2 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-bold text-slate-600 dark:text-slate-300">
-                        <span dir="ltr" className="inline-flex min-w-0 items-center gap-1.5">
-                          <i className="fa-solid fa-phone shrink-0 text-blue-500" aria-hidden="true" />
-                          <span className="truncate">{partner.phoneNumber || 'ثبت نشده'}</span>
-                        </span>
-                        <span className="inline-flex min-w-0 items-center gap-1.5">
-                          <i className="fa-solid fa-location-dot shrink-0 text-slate-400" aria-hidden="true" />
-                          <span className="truncate">{partner.address || 'بدون آدرس'}</span>
-                        </span>
+              <tr key={partner.id} className={PARTNER_DIRECTORY_ROW_CLASS}>
+                <td className={`px-3 py-2.5 align-top ${getPartnerBalanceRowRailClass(balance)}`}>
+                  <div className="min-w-0 space-y-2">
+                    <div className="flex min-w-0 items-start gap-2.5">
+                      <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-black text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
+                        {(partner.partnerName || '?').trim().charAt(0)}
+                      </span>
+                      <div className="min-w-0">
+                        <strong className="allow-truncate block truncate text-sm font-black text-slate-950 dark:text-slate-50">{partner.partnerName}</strong>
+                        <small className="allow-truncate mt-0.5 block truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
+                          پرونده #{Number(partner.id || 0).toLocaleString('fa-IR')} · {getPartnerTypeLabel(String(partner.partnerType || ''))}
+                        </small>
                       </div>
                     </div>
+                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 ps-11 text-[10px] font-semibold leading-5 text-slate-500 dark:text-slate-400">
+                      <span className="inline-flex items-center gap-1.5">
+                        <i className="fa-solid fa-phone shrink-0 text-sky-600" aria-hidden="true" />
+                        <bdi dir="ltr">{partner.phoneNumber || 'ثبت نشده'}</bdi>
+                      </span>
+                      <span className="inline-flex min-w-0 items-start gap-1.5">
+                        <i className="fa-solid fa-location-dot mt-0.5 shrink-0 text-cyan-600" aria-hidden="true" />
+                        <span className="allow-line-clamp line-clamp-1">{partner.address || 'بدون آدرس'}</span>
+                      </span>
+                    </div>
                   </div>
                 </td>
-
-                <td className="px-4 py-3.5 align-middle">
-                  <div className="grid min-w-0 gap-2.5">
+                <td className="px-3 py-2.5 align-top">
+                  <div className="space-y-2">
                     <PartnerBalance value={partner.currentBalance} />
-                    <div className="flex min-w-0 flex-wrap items-center gap-2 text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 px-2 py-1 dark:border-slate-700">
-                        <i className="fa-solid fa-handshake-angle" aria-hidden="true" />
-                        {getPartnerTypeLabel(String(partner.partnerType || ''))}
-                      </span>
-                      <span className="truncate">{partner.contactPerson ? `رابط: ${partner.contactPerson}` : 'بدون رابط معرفی‌شده'}</span>
+                    <span className="inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[10px] font-bold leading-5 text-slate-500 dark:text-slate-400">
+                      <i className="fa-solid fa-handshake-angle shrink-0 text-violet-600" aria-hidden="true" />
+                      {partner.contactPerson ? `رابط: ${partner.contactPerson}` : 'بدون رابط معرفی‌شده'}
+                    </span>
+                  </div>
+                </td>
+                <td className="px-3 py-2.5 align-top">
+                  <div className="min-w-0 space-y-1.5">
+                    <span className={`inline-flex items-center gap-1.5 font-black ${unsoldPhonesCount > 0 ? 'text-amber-700 dark:text-amber-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
+                      <i className={`fa-solid ${unsoldPhonesCount > 0 ? 'fa-box-open' : 'fa-circle-check'}`} aria-hidden="true" />
+                      {unsoldPhonesCount.toLocaleString('fa-IR')} گوشی موجود
+                    </span>
+                    <div className="min-w-0 space-y-1 text-[10px] text-slate-600 dark:text-slate-300">
+                      <strong className="flex flex-wrap items-center gap-1.5 font-bold leading-5">
+                        <i className="fa-regular fa-clock shrink-0 text-slate-400" aria-hidden="true" />
+                        {partner.dateAdded ? formatIsoToShamsiDateTime(partner.dateAdded) : 'بدون تاریخ فعالیت'}
+                      </strong>
+                      <small className="flex flex-wrap gap-x-3 gap-y-1 font-semibold text-slate-500 dark:text-slate-400">
+                        <span><i className="fa-solid fa-mobile-screen-button me-1 text-violet-600" aria-hidden="true" />{Number(partner.totalPhonesSupplied || 0).toLocaleString('fa-IR')} گوشی</span>
+                        <span><i className="fa-solid fa-file-invoice-dollar me-1 text-rose-600" aria-hidden="true" />{Number(partner.openInstallmentSalesCount || 0).toLocaleString('fa-IR')} قسطی باز</span>
+                      </small>
                     </div>
                   </div>
                 </td>
-
-                <td className="px-4 py-3.5 align-middle">
-                  <div className="grid min-w-0 gap-2 text-[10px] font-bold text-slate-600 dark:text-slate-300">
-                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
-                      <span className="inline-flex items-center gap-1.5">
-                        <i className="fa-solid fa-mobile-screen-button text-slate-400" aria-hidden="true" />
-                        {Number(partner.totalPhonesSupplied || 0).toLocaleString('fa-IR')} گوشی دریافتی
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <i className="fa-solid fa-box-open text-slate-400" aria-hidden="true" />
-                        {Number(partner.unsoldPhonesCount || 0).toLocaleString('fa-IR')} موجود
-                      </span>
-                    </div>
-                    <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-slate-500 dark:text-slate-400">
-                      <span className="inline-flex items-center gap-1.5">
-                        <i className="fa-solid fa-file-invoice-dollar text-slate-400" aria-hidden="true" />
-                        {Number(partner.openInstallmentSalesCount || 0).toLocaleString('fa-IR')} فروش قسطی باز
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                        <i className="fa-regular fa-calendar text-slate-400" aria-hidden="true" />
-                        {partner.dateAdded ? formatIsoToShamsiDateTime(partner.dateAdded) : '—'}
-                      </span>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="px-3 py-3.5 text-center align-middle">
+                <td className="sticky end-0 z-10 bg-inherit px-2 py-2.5 text-center align-middle">
                   <PartnerActions partner={partner} onSendReport={onSendReport} onDelete={onDelete} />
                 </td>
               </tr>
@@ -322,60 +271,20 @@ const PartnerDirectoryList: React.FC<PartnerDirectoryListProps> = ({
       </table>
     </div>
 
-    <div className="grid min-w-0 gap-3 p-3 @[520px]:p-4 @[900px]:hidden" data-ui-people-card-list="partners">
-      {partners.map((partner) => {
-        const balance = getPartnerBalanceMeta(partner.currentBalance);
-        return (
-          <Surface
-            key={partner.id}
-            surface="glass"
-            variant="subtle"
-            scheme="adaptive"
-            wrapContent={false}
-            className={`min-w-0 rounded-[18px] p-3.5 ${balance.urgent ? 'border-rose-200/90 dark:border-rose-900/60' : ''}`}
-          >
-            <div className="flex min-w-0 items-start justify-between gap-3">
-              <div className="flex min-w-0 flex-1 items-center gap-3">
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] border border-slate-200 bg-slate-50 text-[13px] font-black text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
-                  {(partner.partnerName || '?').trim().charAt(0)}
-                </span>
-                <div className="min-w-0">
-                  <strong className="block truncate text-[14px] font-black text-slate-950 dark:text-slate-50">{partner.partnerName}</strong>
-                  <span className="mt-1 inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 px-2 py-1 text-[9.5px] font-black text-slate-600 dark:border-slate-700 dark:text-slate-300">
-                    <i className="fa-solid fa-handshake-angle shrink-0" aria-hidden="true" />
-                    <span className="truncate">{getPartnerTypeLabel(String(partner.partnerType || ''))}</span>
-                  </span>
-                </div>
-              </div>
-              <PartnerBalance value={partner.currentBalance} compact />
-            </div>
-
-            <div className="mt-3 grid min-w-0 gap-2 @[520px]:grid-cols-2">
-              <div className="min-w-0 border-t border-slate-200/80 pt-2.5 dark:border-slate-700/80">
-                <span className="block text-[9px] font-black text-slate-500 dark:text-slate-400">ارتباط</span>
-                <strong dir="ltr" className="mt-1 block truncate text-[11px] font-black text-slate-800 dark:text-slate-200">{partner.phoneNumber || 'ثبت نشده'}</strong>
-                <small className="mt-1 block truncate text-[9.5px] font-semibold text-slate-500 dark:text-slate-400">{partner.contactPerson ? `رابط: ${partner.contactPerson}` : 'بدون رابط معرفی‌شده'}</small>
-              </div>
-              <div className="min-w-0 border-t border-slate-200/80 pt-2.5 dark:border-slate-700/80">
-                <span className="block text-[9px] font-black text-slate-500 dark:text-slate-400">تأمین و تعهد</span>
-                <strong className="mt-1 block text-[11px] font-black text-slate-800 dark:text-slate-200">
-                  {Number(partner.totalPhonesSupplied || 0).toLocaleString('fa-IR')} گوشی · {Number(partner.unsoldPhonesCount || 0).toLocaleString('fa-IR')} موجود
-                </strong>
-                <small className="mt-1 block text-[9.5px] font-semibold text-slate-500 dark:text-slate-400">{Number(partner.openInstallmentSalesCount || 0).toLocaleString('fa-IR')} فروش قسطی باز</small>
-              </div>
-            </div>
-
-            <div className="mt-3 flex min-w-0 items-center justify-between gap-2 border-t border-slate-200/80 pt-3 dark:border-slate-700/80">
-              <span className="min-w-0 truncate text-[9.5px] font-bold text-slate-500 dark:text-slate-400">
-                پرونده #{partner.id.toLocaleString('fa-IR')} · {partner.dateAdded ? formatIsoToShamsiDateTime(partner.dateAdded) : '—'}
-              </span>
-              <PartnerActions partner={partner} onSendReport={onSendReport} onDelete={onDelete} mobile />
-            </div>
-          </Surface>
-        );
-      })}
-    </div>
-  </DataTableShell>
+    <ManagementDirectoryPagination
+      page={page}
+      totalPages={totalPages}
+      pageSize={Number(pageSize)}
+      pageSizeOptions={[25, 50, 100]}
+      total={total}
+      pageStart={pageStart}
+      pageEnd={pageEnd}
+      ariaLabel="صفحه‌بندی همکاران"
+      pageSizeAriaLabel="تعداد همکار در هر صفحه"
+      onPageChange={onPageChange}
+      onPageSizeChange={(value) => onPageSizeChange(String(value) as '25' | '50' | '100')}
+    />
+  </section>
 );
 
 export default PartnerDirectoryList;

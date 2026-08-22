@@ -10,11 +10,11 @@ assert.ok(headerCss.includes('--app-header-control-h: 34px;'), 'Canonical header
 assert.ok(headerCss.includes('--app-header-icon-h: 32px;'), 'Canonical header icon buttons must use the compact 32px contract.');
 
 for (const token of [
-  'data-ui-installment-directory="true"',
   'مرکز کنترل اقساط',
   'نمای کلی فروش اقساطی',
   'فهرست فروش اقساطی',
-  'aria-label="خلاصه فروش اقساطی"',
+  'ManagementKpiGrid',
+  'ManagementFilterSurface',
   'ariaLabel="جستجوی فروش اقساطی"',
   'ariaLabel="فیلتر وضعیت قرارداد"',
   'ariaLabel="فیلتر ریسک وصول"',
@@ -24,6 +24,8 @@ for (const token of [
   'آخرین دریافت',
   'سررسید و ریسک',
   'CollectionRiskPill',
+  'unstyled-table',
+  'overflow-x-auto',
 ]) {
   assert.ok(page.includes(token), `Installment reference directory must include ${token}`);
 }
@@ -31,11 +33,12 @@ for (const token of [
 assert.ok(!page.includes('title="کنترل اقساط"'), 'Reference directory must not restore the old control card.');
 assert.ok(!page.includes('FilterChipsBar'), 'Reference directory must not restore the fragmented status-chip toolbar.');
 assert.ok(!page.includes('headerLayout="inline"'), 'Reference directory search must stay in the filter surface, not the global PageKit header.');
-assert.equal((page.match(/data-ui-installment-kpi=/g) || []).length, 5, 'Reference directory must expose five equal-weight KPI cards.');
-assert.ok(page.includes('lg:grid-cols-5'), 'Reference KPI row must use the five-column desktop directory rhythm.');
-assert.ok(page.includes('lg:grid-cols-12'), 'Reference filter surface must use the responsive 12-column control grid.');
-assert.ok(page.includes('min-w-[980px] table-fixed text-[11px] xl:text-xs'), 'Reference installment table must keep enough desktop width for financial and collection-state columns.');
+assert.equal((page.match(/key: '(all|outstanding|overdue|settled|due-soon)'/g) || []).length, 5, 'Reference directory must expose five equal-weight KPI items through the shared primitive.');
+assert.ok(!page.includes('lg:grid-cols-12'), 'Reference filters must not restore the cramped feature-owned 12-column grid.');
+assert.ok(page.includes('unstyled-table w-full min-w-[62rem] table-fixed border-collapse text-xs'), 'Reference installment table must use native semantic styling outside the legacy table-shell cascade.');
 assert.ok(page.includes('قرارداد و مشتری') && page.includes('وصول و مانده') && page.includes('آخرین دریافت') && page.includes('سررسید و ریسک'), 'Reference table must expose balance, last collection, next due and operational collection risk without opening the contract.');
-assert.ok(page.includes('data-ui-installment-view="cards"'), 'Reference installment list must preserve the mobile-card representation.');
+assert.ok(!page.includes('data-ui-installment-view="cards"'), 'Reference comparative list must not auto-cardify; the native table region owns local horizontal overflow.');
+assert.ok(!page.includes('installment-sales-responsive'), 'Reference list must not depend on installment-only container-query CSS.');
+assert.ok(!page.includes('DataTableShell'), 'Reference list must not inherit legacy ux-table-shell table classes.');
 
-console.log('Installment reference-list contract passed: customer-grade hierarchy, five KPI rhythm, status/risk filters, balance and collection visibility, next-due risk context, dense desktop table, and mobile cards.');
+console.log('Installment reference-list contract passed: customer-grade hierarchy, five KPI rhythm, complete shared filters, balance and collection visibility, next-due risk context, compact semantic table, local overflow, and unified pagination.');

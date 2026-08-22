@@ -14,6 +14,14 @@ if errorlevel 1 (
   echo [RUNTIME ERROR] Node.js was not found in PATH.
   exit /b 1
 )
+set "NODE_EXE="
+for /f "delims=" %%N in ('where node') do (
+  if not defined NODE_EXE set "NODE_EXE=%%N"
+)
+if not defined NODE_EXE (
+  echo [RUNTIME ERROR] Node.js executable path could not be resolved.
+  exit /b 1
+)
 where npm >nul 2>&1
 if errorlevel 1 (
   echo [RUNTIME ERROR] npm was not found in PATH.
@@ -80,29 +88,17 @@ echo.
 <nul set /p="!ESC![31m%S%Do not close this window while the application is running.!ESC![0m"&echo.
 echo.
 
-<nul set /p="!ESC![33m%S%[MINI APP] Building the standalone Mini App bundle...!ESC![0m"&echo.
-call npm run build:miniapp
+<nul set /p="!ESC![33m%S%[MINI APP] Scheduling Mini App bundle/Gateway/Tunnel independently after Local Backend readiness...!ESC![0m"&echo.
+<nul set /p="!ESC![36m%S%[STARTUP] Local Kourosh does not wait for Mini App build, Tunnel or Cloud connectivity.!ESC![0m"&echo.
+:: Start the Mini App coordinator in its own visible console. Do NOT use /B:
+:: /B attaches the child to this console and prevents the second CMD window.
+:: Resolve node.exe explicitly so Windows START does not depend on command-name parsing.
+cmd /c exit /b 0
+start "KOUROSH MINI APP" /D "%~dp0" "!NODE_EXE!" "scripts\windows-miniapp-startup-coordinator.mjs"
 if errorlevel 1 (
-  <nul set /p="!ESC![91m%S%[MINI APP ERROR] Production Mini App build failed.!ESC![0m"&echo.
-  pause
-  exit /b 1
-)
-
-<nul set /p="!ESC![33m%S%[MINI APP] Ensuring one Gateway instance on 127.0.0.1:4180...!ESC![0m"&echo.
-node scripts\windows-miniapp-gateway-launcher.mjs
-if errorlevel 1 (
-  <nul set /p="!ESC![91m%S%[MINI APP ERROR] Gateway startup/reuse validation failed. Port 4180 was not modified forcefully.!ESC![0m"&echo.
-  pause
-  exit /b 1
-)
-
-if /I "%KOUROSH_SKIP_MINIAPP_TUNNEL%"=="1" (
-  <nul set /p="!ESC![36m%S%[MINI APP TUNNEL] Optional helper skipped by KOUROSH_SKIP_MINIAPP_TUNNEL=1.!ESC![0m"&echo.
-) else if exist "start_tunnel.bat" (
-  <nul set /p="!ESC![33m%S%[MINI APP TUNNEL] Starting optional external HTTPS Tunnel helper...!ESC![0m"&echo.
-  start "Kourosh Mini App Tunnel" /D "%~dp0" "%~dp0start_tunnel.bat"
+  <nul set /p="!ESC![93m%S%[MINI APP WARNING] Could not open the Mini App console. Local Dashboard/PWA will still start.!ESC![0m"&echo.
 ) else (
-  <nul set /p="!ESC![36m%S%[MINI APP TUNNEL] Optional start_tunnel.bat not found; Local runtime continues without Tunnel.!ESC![0m"&echo.
+  <nul set /p="!ESC![32m%S%[MINI APP] Mini App console launched. It will wait for Backend readiness automatically.!ESC![0m"&echo.
 )
 
 <nul set /p="!ESC![36m%S%Developer : Behzad Halili!ESC![0m"&echo.

@@ -42,11 +42,11 @@ export const authGoldControlWrapClasses = [
   'hover:!border-[#ceb17a]/50',
   'hover:!bg-[linear-gradient(145deg,rgba(255,255,255,0.09),rgba(169,138,100,0.075)_48%,rgba(3,4,10,0.16))]',
   'focus-within:!border-[#e5c88d]/[0.72]',
-  'focus-within:!bg-[linear-gradient(145deg,rgba(255,255,255,0.1),rgba(169,138,100,0.09)_48%,rgba(3,4,10,0.12))]',
   'focus-within:!shadow-[0_30px_72px_-34px_rgba(0,0,0,1),0_0_0_3px_rgba(213,180,122,0.085),0_0_34px_-20px_rgba(229,200,141,0.72),inset_0_1px_0_rgba(255,244,217,0.22)]',
 ].join(' ');
 
 export const authGoldInputClasses = [
+  '!bg-transparent hover:!bg-transparent focus:!bg-transparent active:!bg-transparent',
   '!text-[#d8bd89]',
   'placeholder:!text-[#b79b6a] placeholder:!opacity-[0.82]',
   '[&&::placeholder]:!text-[#b79b6a] [&&::placeholder]:!opacity-[0.82]',
@@ -56,6 +56,7 @@ export const authGoldInputClasses = [
   'transition-[color,opacity,filter] duration-200',
   'hover:!text-[#dec695] focus:!text-[#e2c995] focus:!caret-[#d5b77f] focus:[-webkit-text-fill-color:#e2c995]',
   '[&&:-webkit-autofill]:[-webkit-text-fill-color:#d8bd89]',
+  '[&&:-webkit-autofill]:!bg-transparent [&&:-webkit-autofill:hover]:!bg-transparent [&&:-webkit-autofill:focus]:!bg-transparent',
   '[&&:-webkit-autofill]:[caret-color:#c9a86f]',
   '[&&:-webkit-autofill]:[-webkit-box-shadow:inset_0_0_0_1000px_rgba(169,138,100,0.055)]',
   '[&&:-webkit-autofill]:[-webkit-background-clip:text]',

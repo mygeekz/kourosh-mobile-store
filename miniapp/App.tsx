@@ -11,6 +11,7 @@ import { CustomerPurchases } from "./pages/CustomerPurchases";
 import { PartnerAccount } from "./pages/PartnerAccount";
 import { PartnerHome } from "./pages/PartnerHome";
 import { PartnerLedger } from "./pages/PartnerLedger";
+import { PartnerMore } from "./pages/PartnerMore";
 import { PartnerPhones } from "./pages/PartnerPhones";
 import { PartnerPurchases } from "./pages/PartnerPurchases";
 import { StaffHome } from "./pages/StaffHome";
@@ -39,8 +40,16 @@ const FullPageState: React.FC<{
   </main>
 );
 
+const resolveBootstrapTitle = (status: string, code: string | null): string => {
+  if (status === "unlinked") return "اتصال حساب لازم است";
+  if (code === "MINIAPP_OFFLINE_SNAPSHOT_UNAVAILABLE") return "فروشگاه آفلاین است";
+  if (code === "MINIAPP_OFFLINE_SNAPSHOT_EXPIRED") return "اطلاعات ذخیره‌شده منقضی شده است";
+  if (code === "MINIAPP_EDGE_STORAGE_UNAVAILABLE") return "دسترسی آفلاین آماده نیست";
+  return "ورود انجام نشد";
+};
+
 const MiniAppRoutes: React.FC = () => {
-  const { status, identity, launch, message, retry } = useMiniAppAuth();
+  const { status, identity, launch, message, code, retry } = useMiniAppAuth();
   const navigate = useNavigate();
   const consumedLaunch = useRef(false);
   useEffect(() => {
@@ -50,7 +59,7 @@ const MiniAppRoutes: React.FC = () => {
   }, [launch, navigate, status]);
   if (status === "loading") return <FullPageState loading title="اتصال امن به کوروش" message={message} />;
   if (status !== "authenticated") {
-    return <FullPageState title={status === "unlinked" ? "اتصال حساب لازم است" : "ورود انجام نشد"} message={message} retry={status === "outside_telegram" ? undefined : retry} />;
+    return <FullPageState title={resolveBootstrapTitle(status, code)} message={message} retry={status === "outside_telegram" ? undefined : retry} />;
   }
   if (identity?.kind === "staff") {
     const allowed = (capability: StaffCapability) => identity.capabilities.includes(capability);
@@ -79,6 +88,7 @@ const MiniAppRoutes: React.FC = () => {
         <Route path="purchases" element={<PartnerPurchases />} />
         <Route path="phones" element={<PartnerPhones />} />
         <Route path="account" element={<PartnerAccount />} />
+        <Route path="more" element={<PartnerMore />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

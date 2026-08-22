@@ -60,6 +60,10 @@ const toNumber = (v: any) => {
   const n = parseNumLoose(v, 0);
   return Number.isNaN(n) ? 0 : n;
 };
+const normalizeDigits = (value: any) => String(value ?? '')
+  .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+  .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
+const normalizeNumericIdentity = (value: any) => normalizeDigits(value).replace(/\D/g, '');
 const pickFirstNumber = (obj: any, keys: string[]) => {
   for (const k of keys) {
     const n = parseNumLoose(obj?.[k]);
@@ -107,6 +111,16 @@ type ServiceLine = {
 
 type SaleType = 'installment' | 'check';
 
+type CheckFormErrorKey =
+  | 'ownershipType'
+  | 'issuerName'
+  | 'issuerNationalCode'
+  | 'sayadiId'
+  | 'checkNumber'
+  | 'bankName'
+  | 'amount'
+  | 'dueDate';
+
 type InstallmentCustomerOption = {
   value: number;
   label: string;
@@ -139,6 +153,7 @@ const AddInstallmentSalePage: React.FC = () => {
 
   const initialFormState: NewInstallmentSaleData = {
     customerId: null,
+    buyerNationalCode: '',
     phoneId: null, // اگر فقط ۱ گوشی بود همچنان پر می‌شود
     actualSalePrice: '',
     downPayment: '',
@@ -194,11 +209,16 @@ const AddInstallmentSalePage: React.FC = () => {
   const initialCheckState: Omit<InstallmentCheckInfo, 'id' | 'status'> = {
     checkNumber: '',
     bankName: '',
+    ownershipType: 'buyer',
+    issuerName: '',
+    issuerNationalCode: '',
+    sayadiId: '',
     dueDate: moment().locale('fa').format('jYYYY/jMM/jDD'),
     amount: 0,
   };
   const [currentCheck, setCurrentCheck] = useState(initialCheckState);
   const [currentCheckDueDate, setCurrentCheckDueDate] = useState<Date | null>(new Date());
+  const [checkFormErrors, setCheckFormErrors] = useState<Partial<Record<CheckFormErrorKey, string>>>({});
 
   // تاریخ واقعی فروش/خرید اقساطی و تاریخ شروع اقساط
   const [saleDatePicker, setSaleDatePicker] = useState<Date | null>(new Date());
@@ -221,6 +241,7 @@ const AddInstallmentSalePage: React.FC = () => {
 
   const fieldIdMap: Record<string, string> = {
     customerId: 'customerId',
+    buyerNationalCode: 'buyerNationalCode',
     items: 'items-section',
     actualSalePrice: 'actualSalePrice',
     downPayment: 'downPayment',
@@ -236,6 +257,7 @@ const AddInstallmentSalePage: React.FC = () => {
 
   const errorLabels: Record<string, string> = {
     customerId: 'مشتری',
+    buyerNationalCode: 'کد ملی خریدار',
     items: 'اقلام فروش',
     actualSalePrice: 'قیمت نهایی',
     downPayment: 'پیش‌پرداخت',
@@ -403,7 +425,11 @@ const AddInstallmentSalePage: React.FC = () => {
         const customer = (result.data || [])[0] as Customer | undefined;
         if (!customer) return;
         mergeCustomers([customer]);
-        setFormData((prev) => ({ ...prev, customerId: prefillCustomerId as any }));
+        setFormData((prev) => ({
+          ...prev,
+          customerId: prefillCustomerId as any,
+          buyerNationalCode: String(customer.nationalCode || ''),
+        }));
       } catch (error: any) {
         if (error?.name !== 'AbortError') setNotification({ type: 'error', text: 'مشتری انتخاب‌شده برای پیش‌فرض پیدا نشد.' });
       }
@@ -447,7 +473,7 @@ const AddInstallmentSalePage: React.FC = () => {
   ) => {
     const { name, value } = e.target;
 
-    if (name === 'downPayment' || name === 'numberOfInstallments' || name === 'installmentAmount' || name === 'notes') {
+    if (name === 'downPayment' || name === 'numberOfInstallments' || name === 'installmentAmount' || name === 'notes' || name === 'buyerNationalCode') {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
 
@@ -505,45 +531,113 @@ const AddInstallmentSalePage: React.FC = () => {
   };
 
   /* ---------------- Checks handlers ---------------- */
+  const clearCheckFormError = (key: string) => {
+    setCheckFormErrors(prev => {
+      const next = { ...prev };
+      delete next[key as CheckFormErrorKey];
+      return next;
+    });
+  };
+
   const handleCheckInputChange = (
-    e: ChangeEvent<HTMLInputElement> | { target: { name: string; value: string } }
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string } }
   ) => {
     const { name, value } = e.target;
+    if (name === 'ownershipType') {
+      const buyer = customers.find((customer) => customer.id === Number(formData.customerId || 0));
+      const buyerName = String(buyer?.fullName || '').trim();
+      const buyerNationalCode = normalizeNumericIdentity(formData.buyerNationalCode || buyer?.nationalCode);
+      setCurrentCheck(prev => ({
+        ...prev,
+        ownershipType: value === 'third_party' ? 'third_party' : 'buyer',
+        issuerName: value === 'buyer' ? buyerName : (String(prev.issuerName || '').trim() === buyerName ? '' : prev.issuerName),
+        issuerNationalCode: value === 'buyer' ? buyerNationalCode : (normalizeNumericIdentity(prev.issuerNationalCode) === buyerNationalCode ? '' : prev.issuerNationalCode),
+      }));
+      clearCheckFormError('ownershipType');
+      clearCheckFormError('issuerName');
+      clearCheckFormError('issuerNationalCode');
+      return;
+    }
     if (name === 'amount') {
       setCurrentCheck(prev => ({ ...prev, amount: toNumber(value) }));
     } else {
-      setCurrentCheck(prev => ({ ...prev, [name]: value }));
+      const normalizedValue = name === 'issuerNationalCode' || name === 'sayadiId'
+        ? normalizeNumericIdentity(value)
+        : value;
+      setCurrentCheck(prev => ({ ...prev, [name]: normalizedValue }));
     }
+    clearCheckFormError(name);
   };
-  const addCheckToList = () => {
-    if (!currentCheck.checkNumber.trim() || !currentCheck.bankName.trim() || Number(currentCheck.amount) <= 0) {
-      setNotification({ type: 'error', text: 'اطلاعات چک ناقص یا نامعتبر است.' });
-      return;
+
+  const validateCurrentCheck = () => {
+    const errors: Partial<Record<CheckFormErrorKey, string>> = {};
+    const issuerName = String(currentCheck.issuerName || '').trim();
+    const issuerNationalCode = normalizeNumericIdentity(currentCheck.issuerNationalCode);
+    const sayadiId = normalizeNumericIdentity(currentCheck.sayadiId);
+    const checkNumber = currentCheck.checkNumber.trim();
+    const bankName = currentCheck.bankName.trim();
+    const buyerNationalCode = normalizeNumericIdentity(formData.buyerNationalCode);
+
+    if (!['buyer', 'third_party'].includes(String(currentCheck.ownershipType || ''))) {
+      errors.ownershipType = 'مشخص کنید چک متعلق به خریدار است یا شخص ثالث.';
     }
+    if (!issuerName) errors.issuerName = 'نام و نام خانوادگی صادرکننده را وارد کنید.';
+    if (issuerNationalCode.length !== 10) errors.issuerNationalCode = 'کد ملی صادرکننده باید دقیقاً ۱۰ رقم باشد.';
+    else if (currentCheck.ownershipType === 'buyer' && issuerNationalCode !== buyerNationalCode) {
+      errors.issuerNationalCode = 'برای چک خریدار، کد ملی صادرکننده باید با کد ملی خریدار یکسان باشد.';
+    } else if (currentCheck.ownershipType === 'third_party' && issuerNationalCode === buyerNationalCode) {
+      errors.ownershipType = 'این کد ملی متعلق به خریدار است؛ نوع مالکیت را «چک خریدار» انتخاب کنید.';
+    }
+    if (sayadiId.length !== 16) errors.sayadiId = 'شناسه صیادی باید دقیقاً ۱۶ رقم باشد.';
+    if (!checkNumber) errors.checkNumber = 'شماره چک را وارد کنید.';
+    if (!bankName) errors.bankName = 'نام بانک صادرکننده را وارد کنید.';
+    if (toNumber(currentCheck.amount) <= 0) errors.amount = 'مبلغ چک باید بیشتر از صفر باشد.';
     if (!currentCheckDueDate) {
-      setNotification({ type: 'error', text: 'تاریخ سررسید چک را مشخص کنید.' });
-      return;
+      errors.dueDate = 'تاریخ سررسید چک را انتخاب کنید.';
+    } else if (saleDatePicker && moment(currentCheckDueDate).startOf('day').isBefore(moment(saleDatePicker).startOf('day'))) {
+      errors.dueDate = 'تاریخ سررسید نمی‌تواند قبل از تاریخ فروش باشد.';
     }
-    if (saleDatePicker && moment(currentCheckDueDate).startOf('day').isBefore(moment(saleDatePicker).startOf('day'))) {
-      setNotification({ type: 'error', text: 'تاریخ سررسید چک نمی‌تواند قبل از تاریخ فروش باشد.' });
+    if (checkNumber && formData.checks.some((check) => check.checkNumber.trim() === checkNumber)) {
+      errors.checkNumber = 'این شماره چک قبلاً به قرارداد اضافه شده است.';
+    }
+    return errors;
+  };
+
+  const addCheckToList = () => {
+    const issuerNationalCode = normalizeNumericIdentity(currentCheck.issuerNationalCode);
+    const sayadiId = normalizeNumericIdentity(currentCheck.sayadiId);
+    const errors = validateCurrentCheck();
+    setCheckFormErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      setNotification({ type: 'error', text: `چک اضافه نشد؛ ${Object.keys(errors).length} مورد را تکمیل یا اصلاح کنید.` });
+      scheduleTimeout(() => focusFirstError(errors as FormErrors, {
+        ownershipType: 'checkOwnershipType',
+        issuerName: 'checkIssuerName',
+        issuerNationalCode: 'checkIssuerNationalCode',
+        sayadiId: 'checkSayadiId',
+        checkNumber: 'checkNumber',
+        bankName: 'checkBankName',
+        amount: 'checkAmount',
+        dueDate: 'checkDueDate',
+      }), 0);
       return;
     }
     const normalizedCheckNumber = currentCheck.checkNumber.trim();
-    if (formData.checks.some((check) => check.checkNumber.trim() === normalizedCheckNumber)) {
-      setNotification({ type: 'error', text: 'این شماره چک قبلاً به قرارداد اضافه شده است.' });
-      return;
-    }
     setFormData(prev => ({
       ...prev,
       checks: [...prev.checks, {
         ...currentCheck,
         checkNumber: normalizedCheckNumber,
         bankName: currentCheck.bankName.trim(),
+        issuerName: String(currentCheck.issuerName || '').trim(),
+        issuerNationalCode,
+        sayadiId,
         status: 'نزد فروشنده' as const,
       }],
     }));
     setCurrentCheck(initialCheckState);
     setCurrentCheckDueDate(new Date());
+    setCheckFormErrors({});
     setIsCheckModalOpen(false);
   };
 
@@ -695,6 +789,16 @@ const AddInstallmentSalePage: React.FC = () => {
     const errors: Partial<Record<keyof NewInstallmentSaleData | 'checks' | 'discount' | 'profitPercent' | 'saleType' | 'checkMonths' | 'items' | 'installmentsStartDate', string>> = {};
 
     if (!formData.customerId) errors.customerId = 'انتخاب مشتری الزامی است.';
+    const selectedCustomerForContract = customers.find((customer) => customer.id === Number(formData.customerId || 0));
+    if (selectedCustomerForContract) {
+      if (!String(selectedCustomerForContract.phoneNumber || '').trim()) {
+        errors.customerId = 'برای قرارداد چاپی، شماره تماس مشتری باید در پرونده مشتری ثبت شده باشد.';
+      } else if (!String(selectedCustomerForContract.address || '').trim()) {
+        errors.customerId = 'برای قرارداد چاپی، آدرس مشتری باید در پرونده مشتری ثبت شده باشد.';
+      }
+    }
+    const buyerNationalCode = normalizeNumericIdentity(formData.buyerNationalCode);
+    if (buyerNationalCode.length !== 10) errors.buyerNationalCode = 'کد ملی خریدار باید دقیقاً ۱۰ رقم باشد.';
     if (phoneLines.length === 0 && accessories.length === 0 && serviceLines.length === 0) {
       errors.items = 'حداقل یک قلم (موبایل/لوازم/خدمات) را انتخاب کنید.';
     }
@@ -799,6 +903,7 @@ const AddInstallmentSalePage: React.FC = () => {
     const monthsInstallments = Math.max(1, toNumber(formData.numberOfInstallments));
     const payload: InstallmentSalePayload & any = {
       ...formData,
+      buyerNationalCode: normalizeNumericIdentity(formData.buyerNationalCode),
       // سازگاری با بک‌اندِ قبلی:
       phoneId: phoneLines.length === 1 ? (phoneLines[0].id as any) : null,
       // داده‌ی جدید:
@@ -840,7 +945,7 @@ const AddInstallmentSalePage: React.FC = () => {
 
     try {
       setSubmitStageHint('در حال آماده‌سازی اقلام، مبالغ و برنامه اقساط');
-      await runWithFeedback(
+      const createdResult = await runWithFeedback(
         parseApiResult<any>(
           await (() => {
             setSubmitStageHint('در حال ثبت اطلاعات فروش و ایجاد اقساط');
@@ -862,8 +967,9 @@ const AddInstallmentSalePage: React.FC = () => {
       );
 
       if (!mountedRef.current) return;
-      setNotification({ type: 'success', text: 'فروش اقساطی با موفقیت ثبت شد و اقساط این مشتری آماده پیگیری است.' });
-      scheduleTimeout(() => navigate('/installment-sales'), 1500);
+      const createdSaleId = Number(createdResult?.data?.id || 0);
+      setNotification({ type: 'success', text: 'فروش اقساطی با موفقیت ثبت شد؛ قرارداد ۸ ماده‌ای از صفحه جزئیات آماده چاپ است.' });
+      scheduleTimeout(() => navigate(createdSaleId > 0 ? `/installment-sales/${createdSaleId}?created=1` : '/installment-sales'), 900);
     } catch (error: any) {
       if (mountedRef.current) setNotification({ type: 'error', text: humanizeErrorMessage(error.message || 'خطا در ثبت فروش اقساطی', { endpoint: '/api/installment-sales', action: 'ثبت فروش اقساطی' }) });
     } finally {
@@ -1006,6 +1112,12 @@ const submitStageIcon = submitStageProgress === 1
       customer: selectedInstallmentCustomer,
     };
   }, [selectedInstallmentCustomer]);
+
+  useEffect(() => {
+    const profileNationalCode = String(selectedInstallmentCustomer?.nationalCode || '').trim();
+    if (!profileNationalCode || String(formData.buyerNationalCode || '').trim()) return;
+    setFormData((prev) => ({ ...prev, buyerNationalCode: profileNationalCode }));
+  }, [selectedInstallmentCustomer?.id, selectedInstallmentCustomer?.nationalCode]);
 
 
 
@@ -1480,7 +1592,7 @@ const submitStageIcon = submitStageProgress === 1
             subtitle="مشتری، نوع فروش و تاریخ‌های واقعی قرارداد را مشخص کنید."
             icon={<i className="fa-solid fa-user-plus" aria-hidden="true" />}
           >
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {/* مشتری */}
             <div>
               <label htmlFor="customerId" className={labelClass}>
@@ -1494,10 +1606,15 @@ const submitStageIcon = submitStageProgress === 1
                 valueOption={selectedCustomerOption}
                 value={formData.customerId ? Number(formData.customerId) : null}
                 onValueChange={(value) => {
-                  setFormData((prev) => ({ ...prev, customerId: value ? (value as any) : null }));
+                  const nextCustomer = customers.find((customer) => customer.id === Number(value || 0));
+                  setFormData((prev) => ({
+                    ...prev,
+                    customerId: value ? (value as any) : null,
+                    buyerNationalCode: value ? String(nextCustomer?.nationalCode || '') : '',
+                  }));
                   if (formErrors.customerId) setFormErrors((prev) => ({ ...prev, customerId: undefined }));
                 }}
-                placeholder="نام، موبایل یا کد مشتری را تایپ کنید…"
+                placeholder="نام، موبایل، کد ملی یا کد مشتری را تایپ کنید…"
                 debounceMs={240}
                 virtualizeThreshold={36}
                 clearable
@@ -1519,6 +1636,28 @@ const submitStageIcon = submitStageProgress === 1
               />
               <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">با تایپ ابتدای نام، فقط مشتریان منطبق نمایش داده می‌شوند؛ شماره موبایل هم قابل جستجو است.</p>
               {formErrors.customerId && <p className="app-error">{formErrors.customerId}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="buyerNationalCode" className={labelClass}>
+                کد ملی خریدار <span className="text-red-500">*</span>
+              </label>
+              <TextField
+                controlOnly
+                id="buyerNationalCode"
+                name="buyerNationalCode"
+                value={formData.buyerNationalCode || ''}
+                onChange={handleFormInputChange}
+                className={inputClass('buyerNationalCode')}
+                dir="ltr"
+                inputMode="numeric"
+                autoComplete="off"
+                maxLength={10}
+                placeholder="0012345678"
+                aria-invalid={Boolean(formErrors.buyerNationalCode)}
+              />
+              <p className="mt-1.5 text-[11px] text-slate-500 dark:text-slate-400">از پروفایل مشتری تکمیل می‌شود؛ در قرارداد به‌صورت snapshot ذخیره خواهد شد.</p>
+              {formErrors.buyerNationalCode && <p className="app-error">{formErrors.buyerNationalCode}</p>}
             </div>
 
             {/* نوع فروش */}
@@ -2270,8 +2409,15 @@ const submitStageIcon = submitStageProgress === 1
               <Button
                 type="button"
                 onClick={() => {
-                  setCurrentCheck(initialCheckState);
+                  const buyer = customers.find((customer) => customer.id === Number(formData.customerId || 0));
+                  setCurrentCheck({
+                    ...initialCheckState,
+                    ownershipType: 'buyer',
+                    issuerName: String(buyer?.fullName || '').trim(),
+                    issuerNationalCode: normalizeNumericIdentity(formData.buyerNationalCode || buyer?.nationalCode),
+                  });
                   setCurrentCheckDueDate(new Date());
+                  setCheckFormErrors({});
                   setIsCheckModalOpen(true);
                 }}
                 variant="primary"
@@ -2327,6 +2473,8 @@ const submitStageIcon = submitStageProgress === 1
                 <thead className="bg-gray-50 dark:bg-gray-700/50">
                   <tr>
                     <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">شماره چک</th>
+                    <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">صادرکننده</th>
+                    <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">شناسه صیادی</th>
                     <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">بانک</th>
                     <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">مبلغ</th>
                     <th className="px-3 py-2 text-right font-medium text-gray-600 dark:text-gray-300">سررسید</th>
@@ -2337,6 +2485,14 @@ const submitStageIcon = submitStageProgress === 1
                   {formData.checks.map((check, index) => (
                     <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700/40">
                       <td className="px-3 py-2 whitespace-nowrap">{check.checkNumber}</td>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        <div className="font-semibold">{check.issuerName || '—'}</div>
+                        <div className="mt-0.5 text-[10px] font-semibold text-slate-500">
+                          {check.ownershipType === 'buyer' ? 'چک خریدار' : 'چک شخص ثالث'}
+                        </div>
+                        <div className="mt-0.5 text-[10px] text-slate-400" dir="ltr">{check.issuerNationalCode || '—'}</div>
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap font-mono text-[11px]" dir="ltr">{check.sayadiId || '—'}</td>
                       <td className="px-3 py-2 whitespace-nowrap">{check.bankName}</td>
                       <td className="px-3 py-2 whitespace-nowrap">
                         {formatCurrencyText(Number(check.amount), readStoredCurrencyUnit())}
@@ -2372,23 +2528,105 @@ const submitStageIcon = submitStageProgress === 1
         {isCheckModalOpen && (
           <Modal
             title="افزودن چک به قرارداد"
-            onClose={() => setIsCheckModalOpen(false)}
+            onClose={() => {
+              setCheckFormErrors({});
+              setIsCheckModalOpen(false);
+            }}
             widthClass="max-w-4xl"
             iconClass="fa-solid fa-money-check-dollar"
             variant="operational"
             layout="horizontal"
-            ariaDescription="ثبت شماره چک، بانک، مبلغ و تاریخ سررسید برای پیگیری وصول قرارداد"
+            ariaDescription="ثبت مشخصات کامل صادرکننده، شناسه صیادی، شماره چک، بانک، مبلغ و تاریخ سررسید برای قرارداد و پیگیری وصول"
           >
+            <FormErrorSummary
+              errors={checkFormErrors as FormErrors}
+              labels={{
+                ownershipType: 'مالک چک',
+                issuerName: 'نام صادرکننده',
+                issuerNationalCode: 'کد ملی صادرکننده',
+                sayadiId: 'شناسه صیادی',
+                checkNumber: 'شماره چک',
+                bankName: 'نام بانک',
+                amount: 'مبلغ چک',
+                dueDate: 'تاریخ سررسید',
+              }}
+              fieldIdMap={{
+                ownershipType: 'checkOwnershipType',
+                issuerName: 'checkIssuerName',
+                issuerNationalCode: 'checkIssuerNationalCode',
+                sayadiId: 'checkSayadiId',
+                checkNumber: 'checkNumber',
+                bankName: 'checkBankName',
+                amount: 'checkAmount',
+                dueDate: 'checkDueDate',
+              }}
+              className="mb-4"
+            />
             <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.95fr)]" dir="rtl">
               <PanelCard
                 title="مشخصات چک"
-                subtitle="شماره چک و بانک برای جلوگیری از خطا در پیگیری وصول دقیق ثبت شوند."
+                subtitle="مشخصات صادرکننده و شناسه صیادی برای تکمیل قرارداد ۸ ماده‌ای و پیگیری وصول دقیق ثبت شوند."
                 icon={<i className="fa-solid fa-money-check" aria-hidden="true" />}
                 density="compact"
               >
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <ModalField label="شماره چک" iconClass="fa-solid fa-hashtag" required>
+                  <ModalField
+                    label="مالک چک"
+                    iconClass="fa-solid fa-user-check"
+                    required
+                    error={checkFormErrors.ownershipType}
+                    hint="این انتخاب، بندهای حقوقی قرارداد چاپی را تعیین می‌کند."
+                    className="sm:col-span-2"
+                  >
+                    <SelectField
+                      id="checkOwnershipType"
+                      name="ownershipType"
+                      value={currentCheck.ownershipType || ''}
+                      onChange={handleCheckInputChange}
+                    >
+                      <option value="buyer">چک متعلق به خود خریدار است</option>
+                      <option value="third_party">چک متعلق به شخص ثالث است</option>
+                    </SelectField>
+                  </ModalField>
+                  <ModalField label="نام و نام خانوادگی صادرکننده" iconClass="fa-solid fa-user" required error={checkFormErrors.issuerName}>
                     <TextField
+                      id="checkIssuerName"
+                      type="text"
+                      name="issuerName"
+                      value={currentCheck.issuerName || ''}
+                      onChange={handleCheckInputChange}
+                      autoComplete="off"
+                    />
+                  </ModalField>
+                  <ModalField label="کد ملی صادرکننده" iconClass="fa-solid fa-id-card" required error={checkFormErrors.issuerNationalCode}>
+                    <TextField
+                      id="checkIssuerNationalCode"
+                      type="text"
+                      name="issuerNationalCode"
+                      value={currentCheck.issuerNationalCode || ''}
+                      onChange={handleCheckInputChange}
+                      autoComplete="off"
+                      inputMode="numeric"
+                      dir="ltr"
+                      maxLength={10}
+                    />
+                  </ModalField>
+                  <ModalField label="شناسه صیادی" iconClass="fa-solid fa-barcode" required error={checkFormErrors.sayadiId}>
+                    <TextField
+                      id="checkSayadiId"
+                      type="text"
+                      name="sayadiId"
+                      value={currentCheck.sayadiId || ''}
+                      onChange={handleCheckInputChange}
+                      autoComplete="off"
+                      inputMode="numeric"
+                      dir="ltr"
+                      maxLength={16}
+                    />
+                  </ModalField>
+                  <ModalField label="شماره چک" iconClass="fa-solid fa-hashtag" required error={checkFormErrors.checkNumber}>
+                    <TextField
+                      id="checkNumber"
                       type="text"
                       name="checkNumber"
                       value={currentCheck.checkNumber}
@@ -2396,8 +2634,9 @@ const submitStageIcon = submitStageProgress === 1
                       autoComplete="off"
                     />
                   </ModalField>
-                  <ModalField label="نام بانک" iconClass="fa-solid fa-building-columns" required>
+                  <ModalField label="نام بانک" iconClass="fa-solid fa-building-columns" required error={checkFormErrors.bankName}>
                     <TextField
+                      id="checkBankName"
                       type="text"
                       name="bankName"
                       value={currentCheck.bankName}
@@ -2414,8 +2653,8 @@ const submitStageIcon = submitStageProgress === 1
                 icon={<i className="fa-regular fa-calendar-check" aria-hidden="true" />}
                 density="compact"
               >
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  <ModalField label={`مبلغ چک (${getCurrencyUnitLabel(readStoredCurrencyUnit())})`} iconClass="fa-solid fa-coins" required>
+                <div className="grid gap-3">
+                  <ModalField label={`مبلغ چک (${getCurrencyUnitLabel(readStoredCurrencyUnit())})`} iconClass="fa-solid fa-coins" required error={checkFormErrors.amount}>
                     <PriceInput
                       id="checkAmount"
                       name="amount"
@@ -2426,11 +2665,16 @@ const submitStageIcon = submitStageProgress === 1
                       showWords={false}
                     />
                   </ModalField>
-                  <ModalField label="تاریخ سررسید" iconClass="fa-solid fa-calendar-day" required>
+                  <ModalField label="تاریخ سررسید" required error={checkFormErrors.dueDate}>
                     <ShamsiDatePicker
                       id="checkDueDate"
                       selectedDate={currentCheckDueDate}
-                      onDateChange={setCurrentCheckDueDate}
+                      onDateChange={(date) => {
+                        setCurrentCheckDueDate(date);
+                        clearCheckFormError('dueDate');
+                      }}
+                      invalid={Boolean(checkFormErrors.dueDate)}
+                      size="standard"
                     />
                   </ModalField>
                 </div>
@@ -2438,12 +2682,14 @@ const submitStageIcon = submitStageProgress === 1
             </div>
 
             <DialogActions
-              onCancel={() => setIsCheckModalOpen(false)}
+              onCancel={() => {
+                setCheckFormErrors({});
+                setIsCheckModalOpen(false);
+              }}
               cancelText="انصراف"
               submitText="افزودن چک"
               submitType="button"
               onSubmitClick={addCheckToList}
-              submitDisabled={!currentCheck.checkNumber.trim() || !currentCheck.bankName.trim() || toNumber(currentCheck.amount) <= 0}
               submitVariant="success"
               submitIconClass="fa-solid fa-circle-plus"
               align="end"

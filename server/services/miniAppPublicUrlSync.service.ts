@@ -1,4 +1,5 @@
-import { resolveMiniAppPublicAccessMode, validateTelegramMiniAppPublicUrl } from "../connectivity/telegramPublicAccess";
+import { isTemporaryQuickTunnelMiniAppUrl, resolveMiniAppLiveOriginUrl, resolveMiniAppPublicAccessMode, resolveTelegramMiniAppUrl, validateTelegramMiniAppPublicUrl } from "../connectivity/telegramPublicAccess";
+import { resolveMiniAppStableTunnelProvider } from "../connectivity/stableTunnelProvider";
 import { resolveTelegramTransportMode } from "../telegram/TelegramTransport";
 import { writeMiniAppGatewayRuntimeConfigFromSettings } from "../miniapp/miniAppGatewayRuntimeConfig.mjs";
 import { syncTelegramMenuButton, type TelegramMenuSyncResult } from "./telegramMenuSync.service";
@@ -130,13 +131,31 @@ const syncTelegramMenu = async (settings: Record<string, unknown>, deps: SyncDep
 export const createMiniAppPublicUrlSyncService = (overrides: Partial<SyncDeps> = {}) => {
   const deps: SyncDeps = { ...defaultDeps, ...overrides };
 
-  const preflight = async () => {
+  const preflight = async (input: { intent?: unknown } = {}) => {
     const settings = await deps.getSettings();
     const mode = resolveMiniAppPublicAccessMode(settings);
-    if (mode === "self_hosted" || mode === "relay") {
-      return { allowed: false, protectedMode: mode, reason: "MANUAL_OR_RELAY_MODE_PROTECTED" as const };
+    if (mode === "stable_tunnel") {
+      const provider = resolveMiniAppStableTunnelProvider(settings);
+      const publicUrl = resolveTelegramMiniAppUrl(settings);
+      const liveOriginUrl = resolveMiniAppLiveOriginUrl(settings);
+      return {
+        allowed: false,
+        protectedMode: mode,
+        reason: publicUrl && liveOriginUrl ? "STABLE_TUNNEL_PROTECTED" as const : "STABLE_TUNNEL_NOT_CONFIGURED" as const,
+        startupAction: publicUrl && liveOriginUrl && provider === "cloudflare_named" ? "stable_tunnel" as const : "none" as const,
+        stableTunnel: { provider, publicUrl, liveOriginUrl, configured: Boolean(publicUrl && liveOriginUrl) },
+      };
     }
-    return { allowed: true, protectedMode: null, reason: null };
+    if (mode === "self_hosted" || mode === "relay") {
+      return { allowed: false, protectedMode: mode, reason: "MANUAL_OR_RELAY_MODE_PROTECTED" as const, startupAction: "none" as const };
+    }
+    const quickTunnelRequested = String(input.intent || "").trim() === "quick_tunnel";
+    return {
+      allowed: true,
+      protectedMode: null,
+      reason: quickTunnelRequested ? "QUICK_TUNNEL_DIAGNOSTIC_REQUESTED" as const : "QUICK_TUNNEL_MANUAL_ONLY" as const,
+      startupAction: quickTunnelRequested ? "quick_tunnel" as const : "none" as const,
+    };
   };
 
   const sync = async (input: SyncInput) => {
@@ -161,7 +180,7 @@ export const createMiniAppPublicUrlSyncService = (overrides: Partial<SyncDeps> =
 
     const current = await deps.getSettings();
     const currentMode = resolveMiniAppPublicAccessMode(current);
-    if (currentMode === "self_hosted" || currentMode === "relay") {
+    if (currentMode === "self_hosted" || currentMode === "relay" || currentMode === "stable_tunnel") {
       const protectedStatus = updateStatus({
         phase: "TUNNEL_READY",
         tunnel: "ready",
@@ -224,6 +243,23 @@ export const createMiniAppPublicUrlSyncService = (overrides: Partial<SyncDeps> =
     }
 
     updateStatus({ phase: "PUBLIC_URL_READY", gateway: "ready", tunnel: "ready", message: null });
+    const diagnosticQuickTunnel = provider === "cloudflare_quick_tunnel" || isTemporaryQuickTunnelMiniAppUrl(normalizedPublicUrl);
+    if (diagnosticQuickTunnel) {
+      const diagnosticStatus = updateStatus({
+        phase: "PUBLIC_URL_READY",
+        telegramMenu: "idle",
+        message: "Quick Tunnel is diagnostic only; Telegram Menu and Main Mini App canonical URL were not changed.",
+      });
+      return {
+        success: true,
+        ready: true,
+        publicUrl: normalizedPublicUrl,
+        hostname,
+        publicHealth,
+        menuSync: "skipped_diagnostic" as const,
+        status: diagnosticStatus,
+      };
+    }
     const menuStatus = await syncTelegramMenu(saved, deps);
     return {
       success: true,

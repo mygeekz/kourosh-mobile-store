@@ -6,6 +6,8 @@ import { ensureInstallationId } from "../../connectivity/installationIdentity";
 export const ensureDefaultBusinessSettings = async (): Promise<void> => {
   const defaultSettings: SettingItem[] = [
     { key: "store_name", value: "فروشگاه کوروش" },
+    { key: "installment_contract_seller_name", value: "" },
+    { key: "installment_contract_seller_national_code", value: "" },
     { key: "store_address_line1", value: "خیابان اصلی، پلاک ۱۲۳" },
     { key: "store_city_state_zip", value: "تهران، استان تهران، ۱۲۳۴۵-۶۷۸" },
     { key: "store_phone", value: "۰۲۱-۱۲۳۴۵۶۷۸" },

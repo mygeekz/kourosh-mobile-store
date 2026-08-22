@@ -1,11 +1,11 @@
-import { TextareaField } from '@/components/ui';
 import React from 'react';
+import { TextareaField } from '@/components/ui';
 import type { SettlementNoteTemplate } from '../viewBoundaryTypes';
 
 type PhoneSettlementErrors = { amount?: string; transactionDate?: string; note?: string };
 
 export type PartnerPhoneSettlementModalContext = Record<string, any> & {
-    phoneSettlementNoteTemplates: SettlementNoteTemplate[];
+  phoneSettlementNoteTemplates: SettlementNoteTemplate[];
   setPhoneSettlementErrors: React.Dispatch<React.SetStateAction<PhoneSettlementErrors>>;
 };
 
@@ -15,6 +15,7 @@ type Props = {
 
 const PartnerPhoneSettlementModal: React.FC<Props> = ({ ctx }) => {
   const {
+    Button,
     FinancialProgressBar,
     FormErrorSummary,
     Modal,
@@ -22,180 +23,172 @@ const PartnerPhoneSettlementModal: React.FC<Props> = ({ ctx }) => {
     ModalField,
     PriceInput,
     ShamsiDatePicker,
-    amount,
-    errors,
     formatCurrencyText,
     handlePhoneSettlementAmountChange,
     handlePhoneSettlementSubmit,
-    id,
-    identifier,
-    inputClass,
     isSubmittingPhoneSettlement,
-    name,
-    note,
-    phone,
     phoneSettlementAmount,
     phoneSettlementDateSelected,
     phoneSettlementErrors,
     phoneSettlementItem,
     phoneSettlementNote,
     phoneSettlementNoteTemplates,
-    phoneSettlementPaidAmount,
     readStoredCurrencyUnit,
-    rows,
     setPhoneSettlementAmount,
     setPhoneSettlementDateSelected,
     setPhoneSettlementErrors,
     setPhoneSettlementItem,
     setPhoneSettlementNote,
-    settlementPurchasePrice,
-    summary,
-    target,
-    text,
     token,
-    tone,
-    value,
   } = ctx;
 
+  if (!phoneSettlementItem) return null;
+
+  const settlementBasis = Number(phoneSettlementItem.settlementPurchasePrice || phoneSettlementItem.soldDailyPurchasePrice || phoneSettlementItem.purchasePrice || 0);
+  const settlementPaid = Number(phoneSettlementItem.phoneSettlementPaidAmount || 0);
+  const settlementRemaining = Math.max(0, settlementBasis - settlementPaid);
+  const settlementProgress = settlementBasis > 0 ? Math.min(100, Math.max(0, Math.round((settlementPaid / settlementBasis) * 100))) : 0;
+  const quickAmounts = [
+    { label: 'کل مانده', value: settlementRemaining, icon: 'fa-circle-check' },
+    { label: 'نصف مانده', value: Math.floor(settlementRemaining / 2), icon: 'fa-percent' },
+    { label: '۵ میلیون', value: Math.min(5000000, settlementRemaining), icon: 'fa-coins' },
+    { label: '۱۰ میلیون', value: Math.min(10000000, settlementRemaining), icon: 'fa-sack-dollar' },
+  ].filter((chip, index, rows) => chip.value > 0 && rows.findIndex((row) => row.value === chip.value) === index);
+
   return (
-    <>
-{/* Product-based phone settlement modal */}
-      {phoneSettlementItem && (() => {
-        const settlementBasis = Number(phoneSettlementItem.settlementPurchasePrice || phoneSettlementItem.soldDailyPurchasePrice || phoneSettlementItem.purchasePrice || 0);
-        const settlementPaid = Number(phoneSettlementItem.phoneSettlementPaidAmount || 0);
-        const settlementRemaining = Math.max(0, settlementBasis - settlementPaid);
-        const settlementProgress = settlementBasis > 0 ? Math.min(100, Math.max(0, Math.round((settlementPaid / settlementBasis) * 100))) : 0;
-        const quickAmounts = [
-          { label: 'کل مانده', value: settlementRemaining, icon: 'fa-circle-check' },
-          { label: 'نصف مانده', value: Math.floor(settlementRemaining / 2), icon: 'fa-percent' },
-          { label: '۵ میلیون', value: Math.min(5000000, settlementRemaining), icon: 'fa-coins' },
-          { label: '۱۰ میلیون', value: Math.min(10000000, settlementRemaining), icon: 'fa-sack-dollar' },
-        ].filter((chip, index, arr) => chip.value > 0 && arr.findIndex((x) => x.value === chip.value) === index);
+    <Modal
+      title="ثبت پرداخت مرتبط با گوشی"
+      onClose={() => setPhoneSettlementItem(null)}
+      widthClass="max-w-4xl"
+      iconClass="fa-solid fa-mobile-screen-button"
+      tone="warning"
+      variant="operational"
+    >
+      <form onSubmit={handlePhoneSettlementSubmit} className="space-y-4" dir="rtl">
+        <FormErrorSummary
+          errors={phoneSettlementErrors as any}
+          labels={{ amount: 'مبلغ پرداخت روی همین گوشی', transactionDate: 'تاریخ پرداخت', note: 'شرح پرداخت' }}
+          fieldIdMap={{ amount: 'phoneSettlementAmount', transactionDate: 'phoneSettlementDate', note: 'phoneSettlementNote' }}
+        />
 
-        return (
-          <Modal title="ثبت پرداخت مرتبط با گوشی" onClose={() => setPhoneSettlementItem(null)} widthClass="max-w-4xl" iconClass="fa-solid fa-mobile-screen-button" tone="warning" variant="operational" layout="split" bodyClassName="partner-phone-settlement-modal-body">
-            <form onSubmit={handlePhoneSettlementSubmit} className="people-finance-modal modal-template-form modal-template-form--finance people-finance-modal--horizontal phone-settlement-finance-modal premium-modal-stack p-1">
-              <div className="people-finance-modal__side modal-template-side">
-                <div className="people-finance-modal__summary phone-settlement-finance-modal__summary">
-                <div>
-                  <div className="people-finance-modal__eyebrow">پرداخت متصل به همین گوشی</div>
-                  <div className="people-finance-modal__title">{phoneSettlementItem.name || 'گوشی فروخته‌شده'}</div>
-                  <div className="people-finance-modal__hint">
-                    این پرداخت فقط برای پرداخت‌های مستقیم و مرتبط با همین گوشی استفاده می‌شود؛ فروش‌های اقساطی از پرونده اقساط خوانده می‌شوند.
+        <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)]">
+          <aside className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+            <div>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">پرداخت متصل به همین گوشی</p>
+              <h3 className="mt-1 break-words text-base font-bold text-slate-950 dark:text-white">{phoneSettlementItem.name || 'گوشی فروخته‌شده'}</h3>
+              <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
+                {phoneSettlementItem.identifier ? (
+                  <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 dark:border-slate-700 dark:bg-slate-950">
+                    <i className="fa-solid fa-barcode" aria-hidden="true" />
+                    <bdi dir="ltr">IMEI: {phoneSettlementItem.identifier}</bdi>
+                  </span>
+                ) : null}
+                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 dark:border-slate-700 dark:bg-slate-950">
+                  <i className="fa-solid fa-tag" aria-hidden="true" />
+                  {phoneSettlementItem.settlementPriceSourceLabel || 'قیمت خرید روز'}
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-900/50 dark:bg-amber-950/30">
+              <p className="text-xs text-amber-800 dark:text-amber-200">مانده سرمایه همین گوشی</p>
+              <p className="mt-1 break-words text-lg font-bold text-amber-900 dark:text-amber-100">{formatCurrencyText(settlementRemaining, readStoredCurrencyUnit())}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: 'مبنای سرمایه', value: formatCurrencyText(settlementBasis, readStoredCurrencyUnit()) },
+                { label: 'سرمایه بازگشتی', value: formatCurrencyText(settlementPaid, readStoredCurrencyUnit()) },
+              ].map((metric) => (
+                <div key={metric.label} className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-950">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{metric.label}</p>
+                  <p className="mt-1 break-words text-sm font-bold text-slate-950 dark:text-white">{metric.value}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <div className="mb-2 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>پیشرفت تسویه</span>
+                <span>{settlementProgress.toLocaleString('fa-IR')}٪</span>
+              </div>
+              <FinancialProgressBar value={settlementProgress} showPercent={false} tone={settlementProgress >= 100 ? 'emerald' : settlementProgress > 0 ? 'amber' : 'slate'} ariaLabel={`پیشرفت تسویه ${settlementProgress} درصد`} />
+            </div>
+          </aside>
+
+          <section className="min-w-0 space-y-4" aria-label="فرم ثبت پرداخت گوشی">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ModalField label="مبلغ پرداخت روی همین گوشی" iconClass="fa-solid fa-coins" required error={phoneSettlementErrors.amount}>
+                <PriceInput id="phoneSettlementAmount" name="amount" value={String(phoneSettlementAmount || '')} onChange={handlePhoneSettlementAmountChange} preview="مثال: ۵۰۰۰۰۰۰" />
+                {quickAmounts.length ? (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {quickAmounts.map((chip) => (
+                      <Button
+                        key={chip.label}
+                        type="button"
+                        onClick={() => {
+                          setPhoneSettlementAmount(chip.value);
+                          if (phoneSettlementErrors.amount) setPhoneSettlementErrors((previous) => ({ ...previous, amount: undefined }));
+                        }}
+                        variant="secondary"
+                        size="sm"
+                        leftIcon={<i className={`fa-solid ${chip.icon}`} aria-hidden="true" />}
+                      >
+                        {chip.label}
+                      </Button>
+                    ))}
                   </div>
-                  <div className="mt-2 flex flex-wrap items-center gap-2 justify-end">
-                    {phoneSettlementItem.identifier ? (
-                      <span className="phone-settlement-chip" dir="ltr"><i className="fa-solid fa-barcode" /> IMEI: {phoneSettlementItem.identifier}</span>
-                    ) : null}
-                    <span className="phone-settlement-chip"><i className="fa-solid fa-tag" /> {phoneSettlementItem.settlementPriceSourceLabel || 'قیمت خرید روز'}</span>
-                  </div>
-                </div>
-                <div className="people-finance-modal__balance phone-settlement-finance-modal__balance">
-                  <span>مانده سرمایه همین گوشی</span>
-                  <strong>{formatCurrencyText(settlementRemaining, readStoredCurrencyUnit())}</strong>
-                  <small>{settlementRemaining > 0 ? 'قابل پرداخت به همکار' : 'این گوشی تسویه شده است'}</small>
-                </div>
-                </div>
-
-                <div className="phone-settlement-metrics-grid">
-                <div className="phone-settlement-metric-card">
-                  <span>مبنای سرمایه</span>
-                  <strong>{formatCurrencyText(settlementBasis, readStoredCurrencyUnit())}</strong>
-                </div>
-                <div className="phone-settlement-metric-card">
-                  <span>سرمایه بازگشتی</span>
-                  <strong>{formatCurrencyText(settlementPaid, readStoredCurrencyUnit())}</strong>
-                </div>
-                <div className="phone-settlement-metric-card">
-                  <span>پیشرفت تسویه</span>
-                  <strong>{settlementProgress.toLocaleString('fa-IR')}٪</strong>
-                </div>
-              </div>
-
-                <FinancialProgressBar
-                  className="phone-settlement-progress"
-                  value={settlementProgress}
-                  showPercent={false}
-                  tone={settlementProgress >= 100 ? 'emerald' : settlementProgress > 0 ? 'amber' : 'slate'}
-                  ariaLabel={`پیشرفت تسویه ${settlementProgress} درصد`}
-                />
-              </div>
-
-              <div className="people-finance-modal__main modal-template-main">
-                <FormErrorSummary errors={phoneSettlementErrors as any} labels={{ amount: 'مبلغ پرداخت روی همین گوشی', transactionDate: 'تاریخ پرداخت', note: 'شرح پرداخت' }} fieldIdMap={{ amount: 'phoneSettlementAmount', transactionDate: 'phoneSettlementDate', note: 'phoneSettlementNote' }} className="people-form-error-summary" />
-
-              <div className="people-finance-modal__grid">
-                <ModalField label="مبلغ پرداخت روی همین گوشی" iconClass="fa-solid fa-coins" required error={phoneSettlementErrors.amount}>
-                  <PriceInput id="phoneSettlementAmount" name="amount" value={String(phoneSettlementAmount || '')} onChange={handlePhoneSettlementAmountChange} className={inputClass(!!phoneSettlementErrors.amount)} preview="مثال: ۵۰۰۰۰۰۰" />
-                  {quickAmounts.length ? (
-                    <div className="people-amount-chip-row">
-                      {quickAmounts.map((chip) => (
-                        <button
-                          key={chip.label}
-                          type="button"
-                          onClick={() => { setPhoneSettlementAmount(chip.value); if (phoneSettlementErrors.amount) setPhoneSettlementErrors(prev => ({ ...prev, amount: undefined })); }}
-                          className="people-amount-chip"
-                        >
-                          <i className={`fa-solid ${chip.icon}`} />
-                          {chip.label}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </ModalField>
-
-                <ModalField label="تاریخ پرداخت" iconClass="fa-solid fa-calendar-day" required error={phoneSettlementErrors.transactionDate}>
-                  <ShamsiDatePicker id="phoneSettlementDate" selectedDate={phoneSettlementDateSelected} onDateChange={setPhoneSettlementDateSelected} invalid={Boolean(phoneSettlementErrors.transactionDate)} size="compact" hideIcon />
-                </ModalField>
-              </div>
-
-              <ModalField label="شرح پرداخت" iconClass="fa-solid fa-note-sticky" required error={phoneSettlementErrors.note}>
-                <TextareaField controlOnly
-                  id="phoneSettlementNote"
-                  value={phoneSettlementNote}
-                  onChange={(e) => { setPhoneSettlementNote(e.target.value); if (phoneSettlementErrors.note) setPhoneSettlementErrors(prev => ({ ...prev, note: undefined })); }}
-                  rows={3}
-                  className={inputClass(!!phoneSettlementErrors.note, true)}
-                  placeholder="مثلاً: کارت‌به‌کارت بابت تسویه همین گوشی / شماره پیگیری ..."
-                />
-                <div className="people-note-template-row">
-                  {phoneSettlementNoteTemplates.map((template) => (
-                    <button
-                      key={template.label}
-                      type="button"
-                      onClick={() => { setPhoneSettlementNote(template.text); if (phoneSettlementErrors.note) setPhoneSettlementErrors(prev => ({ ...prev, note: undefined })); }}
-                      className="people-note-template"
-                    >
-                      <i className={`fa-solid ${template.icon}`} />
-                      {template.label}
-                    </button>
-                  ))}
-                  {phoneSettlementNote ? (
-                    <button
-                      type="button"
-                      onClick={() => setPhoneSettlementNote('')}
-                      className="people-note-template"
-                    >
-                      <i className="fa-solid fa-eraser" />
-                      پاک‌کردن توضیح
-                    </button>
-                  ) : null}
-                </div>
+                ) : null}
               </ModalField>
 
-                <ModalActions
-                  onCancel={() => setPhoneSettlementItem(null)}
-                  submitText="ثبت پرداخت همین گوشی"
-                  submittingText="در حال ثبت پرداخت..."
-                  isSubmitting={isSubmittingPhoneSettlement}
-                  submitDisabled={!token || settlementRemaining <= 0}
-                />
+              <ModalField label="تاریخ پرداخت" iconClass="fa-solid fa-calendar-day" required error={phoneSettlementErrors.transactionDate}>
+                <ShamsiDatePicker id="phoneSettlementDate" selectedDate={phoneSettlementDateSelected} onDateChange={setPhoneSettlementDateSelected} invalid={Boolean(phoneSettlementErrors.transactionDate)} size="compact" hideIcon />
+              </ModalField>
+            </div>
+
+            <ModalField label="شرح پرداخت" iconClass="fa-solid fa-note-sticky" required error={phoneSettlementErrors.note}>
+              <TextareaField
+                id="phoneSettlementNote"
+                value={phoneSettlementNote}
+                onChange={(event) => {
+                  setPhoneSettlementNote(event.target.value);
+                  if (phoneSettlementErrors.note) setPhoneSettlementErrors((previous) => ({ ...previous, note: undefined }));
+                }}
+                rows={3}
+                placeholder="مثلاً: کارت‌به‌کارت بابت تسویه همین گوشی"
+              />
+              <div className="mt-2 flex flex-wrap gap-2">
+                {phoneSettlementNoteTemplates.map((template) => (
+                  <Button
+                    key={template.label}
+                    type="button"
+                    onClick={() => {
+                      setPhoneSettlementNote(template.text);
+                      if (phoneSettlementErrors.note) setPhoneSettlementErrors((previous) => ({ ...previous, note: undefined }));
+                    }}
+                    variant={phoneSettlementNote === template.text ? 'primary' : 'secondary'}
+                    size="sm"
+                    aria-pressed={phoneSettlementNote === template.text}
+                    leftIcon={<i className={`fa-solid ${template.icon}`} aria-hidden="true" />}
+                  >
+                    {template.label}
+                  </Button>
+                ))}
+                {phoneSettlementNote ? <Button type="button" onClick={() => setPhoneSettlementNote('')} variant="ghost" size="sm">پاک‌کردن توضیح</Button> : null}
               </div>
-            </form>
-          </Modal>
-        );
-      })()}
-    </>
+            </ModalField>
+          </section>
+        </div>
+
+        <ModalActions
+          onCancel={() => setPhoneSettlementItem(null)}
+          submitText="ثبت پرداخت همین گوشی"
+          submittingText="در حال ثبت پرداخت..."
+          isSubmitting={isSubmittingPhoneSettlement}
+          submitDisabled={!token || settlementRemaining <= 0}
+          align="end"
+        />
+      </form>
+    </Modal>
   );
 };
 

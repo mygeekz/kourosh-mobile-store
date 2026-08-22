@@ -1,6 +1,5 @@
-import { TextareaField } from '@/components/ui';
-import { IconGlyph, inferIconGlyphTone } from '@/components/ui';
-import { apiFetch } from "../../utils/apiFetch";
+import { Button, IconGlyph, TextareaField, TextField } from '@/components/ui';
+import { apiFetch } from '../../utils/apiFetch';
 import React from 'react';
 import type { CustomerDetailsPageData } from '../../types';
 import type { TelegramConversationItem } from '../viewBoundaryTypes';
@@ -131,7 +130,7 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
       />
 
       {/* Telegram Command Center */}
-      <section className="rounded-[32px] border border-slate-200 bg-white p-5 text-slate-900 shadow-[0_28px_80px_-52px_rgba(15,23,42,0.35)] dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50" aria-label="مرکز گفتگوی تلگرام مشتری">
+      <section className="rounded-2xl border border-slate-200 bg-white p-3 text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50 sm:p-4" aria-label="مرکز گفتگوی تلگرام مشتری">
         {(() => {
           const chatId = String((profile as any).telegramChatId || (profile as any).telegram_chat_id || tgConvMeta?.chatId || '').trim();
           const telegramUserId = String((profile as any).telegram_user_id || '').trim();
@@ -279,35 +278,26 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
           };
 
           return (
-            <div className="space-y-4">
-              <div className="customer-telegram-header flex flex-col gap-4 border-b border-slate-200 pb-5 dark:border-slate-800 xl:flex-row xl:items-start xl:justify-between">
+            <div className="space-y-3">
+              <div className="flex flex-col gap-3 border-b border-slate-200 pb-3 dark:border-slate-800 lg:flex-row lg:items-start lg:justify-between">
                 <div className="flex items-start gap-3">
-                  <IconGlyph tone="info" className="h-14 w-14" aria-hidden="true"><i className="fa-brands fa-telegram text-[24px]" /></IconGlyph>
+                  <IconGlyph tone="info" className="h-8 w-8" aria-hidden="true"><i className="fa-brands fa-telegram text-sm" /></IconGlyph>
                   <div>
-                    <div className="customer-telegram-actions flex flex-wrap items-center gap-2">
-                      <h2 className="text-[24px] font-black tracking-[-0.03em] text-slate-950 dark:text-slate-50">گفتگو تلگرام مشتری</h2>
-                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-[11px] font-black text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">Inbox + Outbox</span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-base font-black text-slate-950 dark:text-slate-50 sm:text-lg">گفتگو تلگرام مشتری</h2>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-black text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">دریافتی و ارسالی</span>
                     </div>
-                    <p className="mt-1 text-[13px] leading-7 text-slate-500 dark:text-slate-400">مرکز فرمان ارتباط با مشتری؛ گفتگو، ارسال سریع، مدیریت Chat ID و خطاهای ارسال در یک پنل واحد.</p>
+                    <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">مرکز فرمان ارتباط با مشتری؛ گفتگو، ارسال سریع، مدیریت Chat ID و خطاهای ارسال در یک پنل واحد.</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <button type="button" onClick={() => fetchTelegramConversation(profile.id)} disabled={tgConvLoading} className="customer-telegram-action-btn inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-[11px] font-black text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-60 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
-                    <i className={["fa-solid fa-rotate", tgConvLoading ? "fa-spin" : ""].join(' ')} />
-                    تازه‌سازی
-                  </button>
-                  <button type="button" onClick={() => sendTelegramAction('status')} disabled={!canSendTelegram || tgIsSending} className="customer-telegram-action-btn inline-flex h-10 items-center gap-2 rounded-xl border border-sky-200 bg-sky-50 px-3.5 text-[11px] font-black text-sky-700 shadow-sm transition hover:bg-sky-100 disabled:opacity-50 dark:border-sky-900/40 dark:bg-sky-950/25 dark:text-sky-200">
-                    <i className="fa-solid fa-wallet" />
-                    ارسال وضعیت حساب
-                  </button>
-                  <button type="button" onClick={() => sendTelegramAction('menu')} disabled={!canSendTelegram || !secureLinked || tgIsSending} className="customer-telegram-action-btn inline-flex h-10 items-center gap-2 rounded-xl bg-blue-600 px-3.5 text-[11px] font-black text-white shadow-[0_18px_36px_-22px_rgba(37,99,235,0.9)] transition hover:bg-blue-700 disabled:opacity-50">
-                    <i className="fa-solid fa-paper-plane" />
-                    ارسال منوی ربات
-                  </button>
+                  <Button type="button" onClick={() => fetchTelegramConversation(profile.id)} disabled={tgConvLoading} variant="secondary" size="sm" leftIcon={<i className={["fa-solid fa-rotate", tgConvLoading ? "fa-spin" : ""].join(' ')} />}>تازه‌سازی</Button>
+                  <Button type="button" onClick={() => sendTelegramAction('status')} disabled={!canSendTelegram || tgIsSending} variant="secondary" size="sm" leftIcon={<i className="fa-solid fa-wallet" />}>ارسال وضعیت حساب</Button>
+                  <Button type="button" onClick={() => sendTelegramAction('menu')} disabled={!canSendTelegram || !secureLinked || tgIsSending} variant="primary" size="sm" leftIcon={<i className="fa-solid fa-paper-plane" />}>ارسال منوی ربات</Button>
                 </div>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-5">
+              <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
                 {[
                   { label: 'کل پیام‌ها', value: tgConvItems.length.toLocaleString('fa-IR'), icon: 'fa-regular fa-message', tone: 'text-slate-700 bg-slate-50 border-slate-200' },
                   { label: 'دریافتی', value: inboxCount.toLocaleString('fa-IR'), icon: 'fa-solid fa-arrow-down', tone: 'text-emerald-700 bg-emerald-50 border-emerald-100' },
@@ -315,36 +305,34 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                   { label: 'ناموفق', value: failedCount.toLocaleString('fa-IR'), icon: 'fa-solid fa-triangle-exclamation', tone: failedCount ? 'text-rose-700 bg-rose-50 border-rose-100' : 'text-slate-600 bg-slate-50 border-slate-200' },
                   { label: 'آخرین تعامل', value: lastInteractionAt ? formatIsoToShamsi(lastInteractionAt) : '—', icon: 'fa-regular fa-clock', tone: 'text-violet-700 bg-violet-50 border-violet-100' },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-[22px] border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                  <div key={item.label} className="rounded-xl border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-950">
                     <div className="flex items-center justify-between gap-3">
                       <div className="text-right">
-                        <div className="text-[11px] font-black text-slate-500 dark:text-slate-400">{item.label}</div>
-                        <div className="mt-1 text-[18px] font-black text-slate-950 dark:text-slate-50">{item.value}</div>
+                        <div className="text-xs font-black text-slate-500 dark:text-slate-400">{item.label}</div>
+                        <div className="mt-0.5 text-base font-black leading-6 text-slate-950 dark:text-slate-50">{item.value}</div>
                       </div>
-                      <IconGlyph tone={inferIconGlyphTone(item.tone)} className="h-10 w-10 shrink-0 text-[15px]" aria-hidden="true">
-                        <i className={item.icon} />
-                      </IconGlyph>
+                      <i className={`${item.icon} ${item.tone.split(' ').filter((token: string) => token.startsWith('text-')).join(' ')}`} aria-hidden="true" />
                     </div>
                   </div>
                 ))}
               </div>
 
               {legacyDelivery ? (
-                <div className="rounded-[24px] border border-amber-200 bg-amber-50/80 p-4 text-right text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
-                  <div className="text-[14px] font-black">اتصال تلگرام قدیمی — نیازمند تأیید امن مجدد</div>
-                  <p className="mt-1 text-[12px] leading-6">این Chat ID فقط برای ارسال خروجی حفظ شده است و دسترسی به منو، اطلاعات مالی یا Mini App ایجاد نمی‌کند.</p>
+                <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-right text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
+                  <div className="text-sm font-black">اتصال تلگرام قدیمی — نیازمند تأیید امن مجدد</div>
+                  <p className="mt-1 text-xs leading-6">این Chat ID فقط برای ارسال خروجی حفظ شده است و دسترسی به منو، اطلاعات مالی یا Mini App ایجاد نمی‌کند.</p>
                 </div>
               ) : !linked ? (
-                <div className="rounded-[24px] border border-amber-200 bg-amber-50/80 p-4 text-right text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
-                  <div className="text-[14px] font-black">اتصال امن تأیید نشده است.</div>
-                  <p className="mt-1 text-[12px] leading-6">برای دسترسی تعاملی، لینک امن را صادر کنید. Chat ID دستی فقط مقصد ارسال است.</p>
+                <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-right text-amber-800 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200">
+                  <div className="text-sm font-black">اتصال امن تأیید نشده است.</div>
+                  <p className="mt-1 text-xs leading-6">برای دسترسی تعاملی، لینک امن را صادر کنید. Chat ID دستی فقط مقصد ارسال است.</p>
                 </div>
               ) : null}
 
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,1.55fr)_minmax(390px,0.75fr)]">
-                <div className="space-y-4">
-                  <div className="rounded-[28px] border border-slate-200 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-900/35">
-                    <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div className="grid gap-3 lg:grid-cols-[minmax(0,1.65fr)_minmax(17rem,0.7fr)]">
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-slate-900/35">
+                    <div className="mb-3 flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
                       <div className="flex flex-wrap items-center gap-2">
                         {([
                           { key: 'all', label: 'همه' },
@@ -352,94 +340,44 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                           { key: 'out', label: 'ارسالی' },
                           { key: 'failed', label: 'ناموفق' },
                         ] as const).map((item) => (
-                          <button key={item.key} type="button" onClick={() => setTgDirectionFilter(item.key)} className={["inline-flex h-10 items-center rounded-2xl border px-4 text-[12px] font-black transition", tgDirectionFilter === item.key ? 'border-blue-600 bg-blue-600 text-white shadow-[0_12px_28px_-18px_rgba(37,99,235,0.85)]' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200'].join(' ')}>
+                          <button key={item.key} type="button" onClick={() => setTgDirectionFilter(item.key)} className={["inline-flex h-9 items-center rounded-xl border px-3 text-xs font-black transition", tgDirectionFilter === item.key ? 'border-blue-600 bg-blue-600 text-white shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200'].join(' ')}>
                             {item.label}
                           </button>
                         ))}
                       </div>
-                      <div
-                        style={{
-                          height: 44,
-                          minWidth: 280,
-                          maxWidth: 420,
-                          flex: '1 1 280px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 8,
-                          borderRadius: 16,
-                          border: '1px solid rgb(226, 232, 240)',
-                          background: '#fff',
-                          padding: '0 12px',
-                          boxShadow: '0 1px 2px rgba(15, 23, 42, 0.04)',
-                          overflow: 'hidden',
-                          position: 'relative',
-                        }}
-                      >
-                        <div
-                          role="textbox"
-                          contentEditable
-                          suppressContentEditableWarning
-                          onInput={(e) => setTgSearchQuery(e.currentTarget.textContent || '')}
+                      <label className="relative flex h-10 min-w-0 flex-1 basis-64 items-center rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+                        <TextField controlOnly
+                          value={tgSearchQuery}
+                          onChange={(e) => setTgSearchQuery(e.target.value)}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
                               jumpToFirstTgResult();
                             }
                           }}
-                          style={{
-                            flex: '1 1 auto',
-                            minWidth: 0,
-                            height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            border: 'none',
-                            outline: 'none',
-                            boxShadow: 'none',
-                            background: 'transparent',
-                            padding: 0,
-                            margin: 0,
-                            color: '#334155',
-                            fontSize: 14,
-                            fontWeight: 700,
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {tgSearchQuery ? tgSearchQuery : ''}
-                        </div>
-                        {!tgSearchQuery ? (
-                          <span
-                            style={{
-                              position: 'absolute',
-                              pointerEvents: 'none',
-                              color: '#94a3b8',
-                              fontSize: 14,
-                              fontWeight: 700,
-                              marginRight: 0,
-                            }}
-                          >
-                            جستجو در گفتگو...
-                          </span>
-                        ) : null}
-                        <i className="fa-solid fa-magnifying-glass shrink-0 text-xs text-slate-400" />
-                      </div>
-                      <button type="button" onClick={jumpToFirstTgResult} disabled={!tgFilteredConvItems.length} className="inline-flex h-11 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-[12px] font-black text-slate-600 shadow-sm disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
+                          placeholder="جستجو در گفتگو..."
+                          className="h-full min-w-0 flex-1 bg-transparent pe-9 ps-3 text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 dark:text-slate-100"
+                          aria-label="جستجو در گفتگوی تلگرام"
+                        />
+                        <i className="fa-solid fa-magnifying-glass pointer-events-none absolute end-3 text-xs text-slate-400" />
+                      </label>
+                      <button type="button" onClick={jumpToFirstTgResult} disabled={!tgFilteredConvItems.length} className="inline-flex h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-black text-slate-600 shadow-sm disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
                         <i className="fa-solid fa-location-crosshairs" />
                         پرش
                       </button>
                     </div>
 
-                    <div className="relative rounded-[26px] border border-slate-200 bg-white p-4 shadow-inner dark:border-slate-800 dark:bg-slate-950">
-                      <div ref={tgTimelineRef} onScroll={(e) => { const el = e.currentTarget; const nearBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 140; if (nearBottom) setTgNewSinceScroll(false); }} className="max-h-[560px] space-y-4 overflow-y-auto px-2 py-1">
+                    <div className="relative rounded-2xl border border-slate-200 bg-white p-3 shadow-inner dark:border-slate-800 dark:bg-slate-950">
+                      <div ref={tgTimelineRef} onScroll={(e) => { const el = e.currentTarget; const nearBottom = (el.scrollHeight - el.scrollTop - el.clientHeight) < 140; if (nearBottom) setTgNewSinceScroll(false); }} className="max-h-[520px] space-y-3 overflow-y-auto px-1 py-1">
                         {tgConvError ? (
                           <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-200">{tgConvError}</div>
                         ) : null}
 
                         {tgFilteredConvItems.length === 0 && !tgConvLoading ? (
-                          <div className="rounded-[24px] border border-dashed border-slate-300 bg-slate-50 px-5 py-10 text-center dark:border-slate-700 dark:bg-slate-900/50">
-                            <i className="fa-brands fa-telegram mb-3 text-[34px] text-slate-300 dark:text-slate-600" />
-                            <div className="text-[14px] font-black text-slate-600 dark:text-slate-300">هنوز پیامی برای نمایش وجود ندارد.</div>
-                            <p className="mt-1 text-[12px] text-slate-500 dark:text-slate-400">با ارسال اولین پیام، تایم‌لاین گفتگو اینجا نمایش داده می‌شود.</p>
+                          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center dark:border-slate-700 dark:bg-slate-900/50">
+                            <i className="fa-brands fa-telegram mb-2 text-2xl text-slate-300 dark:text-slate-600" />
+                            <div className="text-sm font-black text-slate-600 dark:text-slate-300">هنوز پیامی برای نمایش وجود ندارد.</div>
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">با ارسال اولین پیام، تایم‌لاین گفتگو اینجا نمایش داده می‌شود.</p>
                           </div>
                         ) : null}
 
@@ -452,9 +390,9 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                           const statusLabel = !outgoing ? 'دریافتی' : isSent ? 'ارسال‌شده' : isFailed ? 'ناموفق' : isPending ? 'در صف ارسال' : 'در حال پردازش';
 
                           return (
-                            <div id={`tg-customer-msg-${m.id}`} key={m.id} className={["flex items-end gap-3", outgoing ? "justify-start" : "justify-end"].join(' ')}>
-                              {outgoing ? <IconGlyph tone="info" className="h-10 w-10 shrink-0" aria-hidden="true"><i className="fa-brands fa-telegram" /></IconGlyph> : null}
-                              <div className={["max-w-[78%] rounded-[24px] border px-4 py-3 text-sm leading-7 shadow-sm transition", outgoing ? (isFailed ? "border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-100" : "border-blue-100 bg-blue-50/90 text-slate-800 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-slate-100") : "border-slate-200 bg-white text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"].join(' ')}>
+                            <div id={`tg-customer-msg-${m.id}`} key={m.id} className={["flex items-end gap-3", outgoing ?"justify-start" :"justify-end"].join(' ')}>
+                              {outgoing ? <IconGlyph tone="info" className="h-8 w-8 shrink-0" aria-hidden="true"><i className="fa-brands fa-telegram" /></IconGlyph> : null}
+                              <div className={["max-w-[84%] rounded-xl border px-3 py-2 text-xs leading-6 shadow-sm transition", outgoing ? (isFailed ?"border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-100" :"border-blue-100 bg-blue-50/90 text-slate-800 dark:border-blue-900/40 dark:bg-blue-950/20 dark:text-slate-100") :"border-slate-200 bg-white text-slate-800 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"].join(' ')}>
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -463,7 +401,7 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                                   }}
                                   className="w-full text-right"
                                 >
-                                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-[11px] font-bold text-slate-400 dark:text-slate-500">
+                                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-xs font-bold text-slate-400 dark:text-slate-500">
                                     <span>{outgoing ? 'شما' : profile.fullName}</span>
                                     <span>{formatIsoToShamsi(m.createdAt)}</span>
                                   </div>
@@ -476,28 +414,28 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                                   )}
                                 </button>
                                 <div className="mt-3 flex flex-wrap items-center gap-2">
-                                  <span className={["inline-flex rounded-full border px-2.5 py-1 text-[10px] font-black", !outgoing ? 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300' : isSent ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200' : isFailed ? 'border-rose-200 bg-white text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-200' : 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200'].join(' ')}>{statusLabel}</span>
-                                  {outgoing && m.errorCategory ? <span className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300" title={m.lastError || ''}>{m.errorCategory}</span> : null}
+                                  <span className={["inline-flex rounded-full border px-2.5 py-1 text-xs font-black", !outgoing ? 'border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300' : isSent ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200' : isFailed ? 'border-rose-200 bg-white text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-200' : 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/20 dark:text-amber-200'].join(' ')}>{statusLabel}</span>
+                                  {outgoing && m.errorCategory ? <span className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300" title={m.lastError || ''}>{m.errorCategory}</span> : null}
                                   {isFailed ? (
                                     <>
-                                      <button type="button" onClick={() => retryTelegramOutbox(String(m.id))} disabled={tgIsSending} className="inline-flex rounded-full border border-rose-200 bg-white px-2.5 py-1 text-[10px] font-black text-rose-700 transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/40 dark:bg-slate-950 dark:text-rose-200">
-                                        <i className="fa-solid fa-rotate-left ml-1" />
+                                      <button type="button" onClick={() => retryTelegramOutbox(String(m.id))} disabled={tgIsSending} className="inline-flex rounded-full border border-rose-200 bg-white px-2.5 py-1 text-xs font-black text-rose-700 transition hover:bg-rose-50 disabled:opacity-50 dark:border-rose-900/40 dark:bg-slate-950 dark:text-rose-200">
+                                        <i className="fa-solid fa-rotate-left ms-1" />
                                         تلاش مجدد
                                       </button>
-                                      <button type="button" onClick={() => setNotification({ type: 'error', text: m.lastError || 'خطای ثبت‌شده برای این پیام موجود نیست.' })} className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-black text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200">
+                                      <button type="button" onClick={() => setNotification({ type: 'error', text: m.lastError || 'خطای ثبت‌شده برای این پیام موجود نیست.' })} className="inline-flex rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-black text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200">
                                         مشاهده خطا
                                       </button>
                                     </>
                                   ) : null}
                                 </div>
                               </div>
-                              {!outgoing ? <IconGlyph tone="neutral" className="h-10 w-10 shrink-0" aria-hidden="true"><i className="fa-regular fa-user" /></IconGlyph> : null}
+                              {!outgoing ? <IconGlyph tone="neutral" className="h-8 w-8 shrink-0" aria-hidden="true"><i className="fa-regular fa-user" /></IconGlyph> : null}
                             </div>
                           );
                         })}
 
                         {tgNewSinceScroll ? (
-                          <button type="button" onClick={() => { const el = tgTimelineRef.current; if (el) { el.scrollTop = el.scrollHeight; setTgNewSinceScroll(false); } }} className="absolute bottom-5 left-5 rounded-full bg-slate-900 px-4 py-2 text-xs font-black text-white shadow-lg dark:bg-white dark:text-slate-900">
+                          <button type="button" onClick={() => { const el = tgTimelineRef.current; if (el) { el.scrollTop = el.scrollHeight; setTgNewSinceScroll(false); } }} className="mt-3 inline-flex h-9 items-center rounded-xl bg-slate-900 px-3 text-xs font-black text-white dark:bg-white dark:text-slate-900">
                             مشاهده جدیدترین پیام‌ها
                           </button>
                         ) : null}
@@ -505,7 +443,7 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                     </div>
                   </div>
 
-                  <div className="rounded-[28px] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                     <div className="mb-3 flex flex-wrap items-center gap-2">
                       {[
                         { key: 'hello', label: 'سلام' },
@@ -513,11 +451,11 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
                         { key: 'payment_link', label: 'پیگیری مانده حساب' },
                         { key: 'custom', label: 'متن آزاد' },
                       ].map((preset: any) => (
-                        <button key={preset.key} type="button" onClick={() => applyTgQuickPreset(preset.key)} className={["inline-flex h-9 items-center rounded-2xl border px-3 text-[11px] font-black transition", tgQuickPreset === preset.key ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'].join(' ')}>
+                        <button key={preset.key} type="button" onClick={() => applyTgQuickPreset(preset.key)} className={["inline-flex h-9 items-center rounded-2xl border px-3 text-xs font-black transition", tgQuickPreset === preset.key ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'].join(' ')}>
                           {preset.label}
                         </button>
                       ))}
-                      <label className="mr-auto inline-flex h-9 items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-[11px] font-black text-slate-600 transition hover:bg-white cursor-pointer dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+                      <label className="ms-auto inline-flex h-9 cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-xs font-black text-slate-600 transition hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
                         <i className="fa-solid fa-paperclip" />
                         پیوست
                         <input type="file" className="hidden" accept="image/png,image/jpeg,image/webp,application/pdf" onChange={(e) => { const f = e.target.files?.[0]; if (f) uploadTelegramAttachment(f); e.currentTarget.value = ''; }} />
@@ -526,113 +464,120 @@ const CustomerTelegramConversationSection: React.FC<Props> = ({ ctx }) => {
 
                     {tgReplyTo ? (
                       <div className="mb-3 rounded-2xl border border-sky-200 bg-sky-50/70 px-3 py-2 text-xs text-sky-800 dark:border-sky-900/40 dark:bg-sky-950/20 dark:text-sky-200">
-                        <div className="flex items-center justify-between gap-2"><div className="truncate"><span className="font-black ml-2">Reply:</span> #{tgReplyTo.telegramMessageId} — {tgReplyTo.preview}</div><button type="button" onClick={() => setTgReplyTo(null)} data-skip-global-button="true" className="grid h-8 w-8 place-items-center !border-0 !bg-transparent text-sky-700 !shadow-none transition hover:text-sky-900 dark:text-sky-200 dark:hover:text-sky-100"><i className="fa-solid fa-xmark" /></button></div>
+                        <div className="flex items-center justify-between gap-2"><div className="truncate"><span className="font-black ms-2">Reply:</span> #{tgReplyTo.telegramMessageId} — {tgReplyTo.preview}</div><button type="button" onClick={() => setTgReplyTo(null)} data-skip-global-button="true" className="grid h-8 w-8 place-items-center border-0 bg-transparent text-sky-700 shadow-none transition hover:text-sky-900 dark:text-sky-200 dark:hover:text-sky-100"><i className="fa-solid fa-xmark" /></button></div>
                       </div>
                     ) : null}
 
                     {tgAttachment ? (
                       <div className="mb-3 rounded-2xl border border-emerald-200 bg-emerald-50/70 px-3 py-2 text-xs text-emerald-800 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200">
-                        <div className="flex items-center justify-between gap-2"><div className="truncate"><span className="font-black ml-2">پیوست:</span>{tgAttachment.originalName || tgAttachment.relPath}</div><button type="button" onClick={() => setTgAttachment(null)} data-skip-global-button="true" className="grid h-8 w-8 place-items-center !border-0 !bg-transparent text-emerald-700 !shadow-none transition hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-100"><i className="fa-solid fa-xmark" /></button></div>
+                        <div className="flex items-center justify-between gap-2"><div className="truncate"><span className="font-black ms-2">پیوست:</span>{tgAttachment.originalName || tgAttachment.relPath}</div><button type="button" onClick={() => setTgAttachment(null)} data-skip-global-button="true" className="grid h-8 w-8 place-items-center border-0 bg-transparent text-emerald-700 shadow-none transition hover:text-emerald-900 dark:text-emerald-200 dark:hover:text-emerald-100"><i className="fa-solid fa-xmark" /></button></div>
                       </div>
                     ) : null}
 
-                    <div className="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(280px,0.55fr)]">
+                    <div className="grid gap-3 lg:grid-cols-[minmax(0,1.45fr)_minmax(15rem,0.55fr)]">
                       <div>
-                        <TextareaField controlOnly value={tgQuickReply} onChange={(e) => setTgQuickReply(e.target.value)} rows={5} placeholder="متن پیام خود را بنویسید..." className="w-full resize-y rounded-[22px] border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-800 outline-none transition    dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100 " />
+                        <TextareaField controlOnly value={tgQuickReply} onChange={(e) => setTgQuickReply(e.target.value)} rows={4} placeholder="متن پیام خود را بنویسید..." className="w-full resize-y rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm leading-6 text-slate-800 outline-none transition dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" />
                         <div className="mt-2 flex flex-wrap items-center gap-2">
                           {["{name}","{phone}","{amount}","{dueDate}","{link}","{installmentNo}","{remainingAmount}"].map((ch) => (
-                            <button key={ch} type="button" onClick={() => setTgQuickReply(v => (v || '') + ch)} className="inline-flex h-8 items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 text-[10px] font-black text-slate-600 hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">{ch}</button>
+                            <button key={ch} type="button" onClick={() => setTgQuickReply(v => (v || '') + ch)} className="inline-flex h-8 items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 text-xs font-black text-slate-600 hover:bg-white dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">{ch}</button>
                           ))}
                         </div>
                       </div>
-                      <div className="rounded-[22px] border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-900/45">
-                        <div className="text-[11px] font-black text-slate-500 dark:text-slate-400">پیش‌نمایش متن پیام</div>
-                        <div className="mt-2 max-h-[118px] overflow-y-auto whitespace-pre-wrap text-[12px] leading-6 text-slate-700 dark:text-slate-200">{tgQuickPreviewText || 'هنوز متنی برای پیش‌نمایش وارد نشده است.'}</div>
+                      <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-900/45">
+                        <div className="text-xs font-black text-slate-500 dark:text-slate-400">پیش‌نمایش متن پیام</div>
+                        <div className="mt-2 max-h-[118px] overflow-y-auto whitespace-pre-wrap text-xs leading-6 text-slate-700 dark:text-slate-200">{tgQuickPreviewText || 'هنوز متنی برای پیش‌نمایش وارد نشده است.'}</div>
                       </div>
                     </div>
 
                     <div className="mt-3 flex flex-wrap items-center gap-2">
-                      <button type="button" onClick={sendTgQuickReply} disabled={tgIsSending || !canSendTelegram || (!tgQuickReply.trim() && !tgAttachment)} className="inline-flex h-12 min-w-[220px] items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 text-sm font-black text-white shadow-[0_18px_36px_-20px_rgba(37,99,235,0.9)] transition hover:bg-blue-700 disabled:opacity-50">
-                        <i className={["fa-solid fa-paper-plane", tgIsSending ? "fa-bounce" : ""].join(' ')} />
+                      <Button
+                        type="button"
+                        onClick={sendTgQuickReply}
+                        disabled={tgIsSending || !canSendTelegram || (!tgQuickReply.trim() && !tgAttachment)}
+                        variant="primary"
+                        size="sm"
+                        className="w-full sm:w-auto"
+                        leftIcon={<i className={["fa-solid fa-paper-plane", tgIsSending ? "fa-bounce" : ""].join(' ')} />}
+                      >
                         {tgIsSending ? 'در حال ارسال...' : 'ارسال تلگرام'}
-                      </button>
+                      </Button>
 
-                      <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500">پیوست، Reply و متغیرهای سریع پشتیبانی می‌شود.</span>
+                      <span className="text-xs font-bold text-slate-400 dark:text-slate-500">پیوست، Reply و متغیرهای سریع پشتیبانی می‌شود.</span>
                     </div>
                   </div>
                 </div>
 
-                <aside className="space-y-4">
-                  <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                    <div className="customer-extra-card-header mb-4 flex items-start justify-between gap-3">
+                <aside className="space-y-3">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                    <div className="mb-3 flex items-start justify-between gap-3">
                       <div className="text-right">
-                        <div className="text-[16px] font-black text-slate-900 dark:text-slate-50">کارت تلگرام مشتری</div>
-                        <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">اتصال، دریافت پیام و Chat ID مشتری.</p>
+                        <div className="text-base font-black text-slate-900 dark:text-slate-50">کارت تلگرام مشتری</div>
+                        <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">اتصال، دریافت پیام و شناسه مقصد تلگرام مشتری.</p>
                       </div>
-                      <IconGlyph tone="neutral" className="h-11 w-11" aria-hidden="true"><i className="fa-solid fa-id-card" /></IconGlyph>
+                      <IconGlyph tone="neutral" className="h-8 w-8" aria-hidden="true"><i className="fa-solid fa-id-card" /></IconGlyph>
                     </div>
 
-                    <div className="rounded-[22px] border border-slate-200 bg-slate-50/75 p-4 dark:border-slate-800 dark:bg-slate-900/35">
-                      <div className="text-[18px] font-black text-slate-950 dark:text-slate-50">{profile.fullName}</div>
-                      <div className="mt-1 text-[12px] font-bold text-slate-500 dark:text-slate-400">مشتری #{profile.id.toLocaleString('fa-IR')}</div>
-                      <div className="mt-4 grid grid-cols-2 gap-2">
-                        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-right dark:border-emerald-900/40 dark:bg-emerald-950/20">
-                          <div className="text-[11px] font-black text-emerald-700 dark:text-emerald-200">وضعیت ارتباط</div>
-                          <div className="mt-1 text-[13px] font-black text-emerald-700 dark:text-emerald-200">{secureLinked && !invalid ? 'متصل امن' : legacyDelivery ? 'قدیمی؛ فقط ارسال' : invalid ? 'خطادار' : 'بدون اتصال امن'}</div>
+                    <div className="rounded-xl border border-slate-200 bg-slate-50/75 p-3 dark:border-slate-800 dark:bg-slate-900/35">
+                      <div className="text-base font-black text-slate-950 dark:text-slate-50">{profile.fullName}</div>
+                      <div className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-400">مشتری #{profile.id.toLocaleString('fa-IR')}</div>
+                      <div className="mt-3 grid grid-cols-2 gap-2">
+                        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 text-right dark:border-emerald-900/40 dark:bg-emerald-950/20">
+                          <div className="text-xs font-black text-emerald-700 dark:text-emerald-200">وضعیت ارتباط</div>
+                          <div className="mt-1 text-sm font-black text-emerald-700 dark:text-emerald-200">{secureLinked && !invalid ? 'متصل امن' : legacyDelivery ? 'قدیمی؛ فقط ارسال' : invalid ? 'خطادار' : 'بدون اتصال امن'}</div>
                         </div>
-                        <div className="rounded-2xl border border-slate-200 bg-white p-3 text-right dark:border-slate-800 dark:bg-slate-950">
-                          <div className="text-[11px] font-black text-slate-500 dark:text-slate-400">آخرین فعالیت</div>
-                          <div className="mt-1 text-[13px] font-black text-slate-900 dark:text-slate-50">{lastInteractionAt ? formatIsoToShamsi(lastInteractionAt) : '—'}</div>
+                        <div className="rounded-xl border border-slate-200 bg-white p-2.5 text-right dark:border-slate-800 dark:bg-slate-950">
+                          <div className="text-xs font-black text-slate-500 dark:text-slate-400">آخرین فعالیت</div>
+                          <div className="mt-1 text-sm font-black text-slate-900 dark:text-slate-50">{lastInteractionAt ? formatIsoToShamsi(lastInteractionAt) : '—'}</div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-4 rounded-[22px] border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-950">
+                    <div className="mt-3 rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
                       <div className="mb-2 flex items-center justify-between gap-3">
-                        <div className="text-[12px] font-black text-slate-700 dark:text-slate-200">Chat ID</div>
-                        <button type="button" onClick={() => setTgShowChatId(v => !v)} disabled={!tgChatIdInput.trim()} className="inline-flex h-8 items-center rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] font-black text-slate-600 transition hover:bg-white disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">{tgShowChatId ? 'مخفی' : 'نمایش'}</button>
+                        <div className="text-xs font-black text-slate-700 dark:text-slate-200">شناسه مقصد تلگرام</div>
+                        <button type="button" onClick={() => setTgShowChatId(v => !v)} disabled={!tgChatIdInput.trim()} className="inline-flex h-8 items-center rounded-full border border-slate-200 bg-slate-50 px-3 text-xs font-black text-slate-600 transition hover:bg-white disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">{tgShowChatId ? 'مخفی' : 'نمایش'}</button>
                       </div>
                       <div className="flex gap-2">
                         <input type={tgShowChatId ? 'text' : 'password'} inputMode="numeric" dir="ltr" value={tgChatIdInput} onChange={(e) => setTgChatIdInput(e.target.value)} placeholder="مثلاً -1001234567890" className="h-11 min-w-0 flex-1 rounded-2xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-900 outline-none    dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" />
-                        <button type="button" onClick={async () => { if (!tgChatIdInput.trim()) return; try { await navigator.clipboard.writeText(tgChatIdInput.trim()); setNotification({ type: 'success', text: 'Chat ID کپی شد.' }); } catch { setNotification({ type: 'error', text: 'کپی Chat ID انجام نشد.' }); } }} disabled={!tgChatIdInput.trim()} data-skip-global-button="true" className="inline-flex h-6 w-6 items-center justify-center !border-0 !bg-transparent text-slate-500 !shadow-none transition hover:text-slate-900 disabled:opacity-50 dark:text-slate-300 dark:hover:text-white"><i className="fa-regular fa-copy" /></button>
+                        <button type="button" onClick={async () => { if (!tgChatIdInput.trim()) return; try { await navigator.clipboard.writeText(tgChatIdInput.trim()); setNotification({ type: 'success', text: 'شناسه مقصد تلگرام کپی شد.' }); } catch { setNotification({ type: 'error', text: 'کپی شناسه مقصد تلگرام انجام نشد.' }); } }} disabled={!tgChatIdInput.trim()} data-skip-global-button="true" className="inline-flex h-6 w-6 items-center justify-center border-0 bg-transparent text-slate-500 shadow-none transition hover:text-slate-900 disabled:opacity-50 dark:text-slate-300 dark:hover:text-white"><i className="fa-regular fa-copy" /></button>
                       </div>
                       <div className="mt-3 grid grid-cols-2 gap-2">
-                        <button type="button" onClick={saveManualChatId} disabled={tgIsSending || !tgChatIdInput.trim()} className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 text-[12px] font-black text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200"><i className="fa-regular fa-floppy-disk" /> ذخیره مقصد ارسال</button>
-                        <button type="button" onClick={unlinkChatId} disabled={tgIsSending || !linked} className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 text-[12px] font-black text-rose-700 transition hover:bg-rose-100 disabled:opacity-50 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-200"><i className="fa-regular fa-trash-can" /> حذف اتصال</button>
+                        <button type="button" onClick={saveManualChatId} disabled={tgIsSending || !tgChatIdInput.trim()} className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 text-xs font-black text-emerald-700 transition hover:bg-emerald-100 disabled:opacity-50 dark:border-emerald-900/40 dark:bg-emerald-950/20 dark:text-emerald-200"><i className="fa-regular fa-floppy-disk" /> ذخیره مقصد ارسال</button>
+                        <button type="button" onClick={unlinkChatId} disabled={tgIsSending || !linked} className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl border border-rose-200 bg-rose-50 px-3 text-xs font-black text-rose-700 transition hover:bg-rose-100 disabled:opacity-50 dark:border-rose-900/40 dark:bg-rose-950/20 dark:text-rose-200"><i className="fa-regular fa-trash-can" /> حذف اتصال</button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                    <div className="mb-4 text-[15px] font-black text-slate-900 dark:text-slate-50">وضعیت دریافت پیام</div>
-                    <div className="grid gap-3">
-                      <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-                        <span className="text-[12px] font-black text-slate-500 dark:text-slate-400">دریافت پیام</span>
-                        <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-black ${optedOut ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-200' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200'}`}><i className={`fa-solid ${optedOut ? 'fa-ban' : 'fa-circle-check'}`} />{optedOut ? 'غیرفعال' : 'فعال'}</span>
+                  <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                    <div className="mb-3 text-sm font-black text-slate-900 dark:text-slate-50">وضعیت دریافت پیام</div>
+                    <div className="grid gap-2">
+                      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900">
+                        <span className="text-xs font-black text-slate-500 dark:text-slate-400">دریافت پیام</span>
+                        <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black ${optedOut ? 'bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-200' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200'}`}><i className={`fa-solid ${optedOut ? 'fa-ban' : 'fa-circle-check'}`} />{optedOut ? 'غیرفعال' : 'فعال'}</span>
                       </div>
-                      <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
-                        <span className="text-[12px] font-black text-slate-500 dark:text-slate-400">ارسال پیام</span>
-                        <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-black ${canSendTelegram ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200' : 'bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-200'}`}><i className={`fa-solid ${canSendTelegram ? 'fa-signal' : 'fa-triangle-exclamation'}`} />{canSendTelegram ? 'فعال' : 'متوقف'}</span>
+                      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900">
+                        <span className="text-xs font-black text-slate-500 dark:text-slate-400">ارسال پیام</span>
+                        <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black ${canSendTelegram ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-emerald-200' : 'bg-rose-50 text-rose-700 dark:bg-rose-950/20 dark:text-rose-200'}`}><i className={`fa-solid ${canSendTelegram ? 'fa-signal' : 'fa-triangle-exclamation'}`} />{canSendTelegram ? 'فعال' : 'متوقف'}</span>
                       </div>
                     </div>
-                    <button type="button" onClick={toggleTelegramOptout} disabled={tgIsSending} className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-[12px] font-black text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
+                    <button type="button" onClick={toggleTelegramOptout} disabled={tgIsSending} className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-black text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200">
                       <i className="fa-solid fa-toggle-on" />
                       {optedOut ? 'فعال‌سازی دریافت پیام' : 'غیرفعال‌سازی دریافت پیام'}
                     </button>
-                    <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 text-center text-[12px] leading-6 text-slate-500 dark:border-slate-800 dark:bg-slate-900/45 dark:text-slate-400">
+                    <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50/80 p-3 text-center text-xs leading-6 text-slate-500 dark:border-slate-800 dark:bg-slate-900/45 dark:text-slate-400">
                       اطلاعات ارتباط فقط برای ارسال پیام‌های تجاری و پیگیری مشتری استفاده می‌شود.
                     </div>
                   </div>
 
-                  <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
                     <div className="flex items-center justify-between gap-3">
                       <div className="text-right">
-                        <div className="text-[14px] font-black text-slate-900 dark:text-slate-50">اطلاعات بیشتر</div>
-                        <p className="mt-1 text-[12px] text-slate-500 dark:text-slate-400">جزئیات اتصال و تاریخچه پیام‌ها</p>
+                        <div className="text-sm font-black text-slate-900 dark:text-slate-50">اطلاعات بیشتر</div>
+                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">جزئیات اتصال و تاریخچه پیام‌ها</p>
                       </div>
                       <i className="fa-solid fa-chevron-down text-slate-400" />
                     </div>
-                    <div className="mt-4 space-y-3 text-[12px] font-bold text-slate-500 dark:text-slate-400">
+                    <div className="mt-3 space-y-2 text-xs font-bold text-slate-500 dark:text-slate-400">
                       <div className="flex justify-between gap-3"><span>نام کاربری</span><span dir="ltr">{(profile as any).telegramUsername || (profile as any).telegram_username || '—'}</span></div>
                       <div className="flex justify-between gap-3"><span>تاریخ اتصال</span><span>{(profile as any).telegram_linked_at ? formatIsoToShamsi((profile as any).telegram_linked_at) : '—'}</span></div>
                       <div className="flex justify-between gap-3"><span>تعداد پیام‌ها</span><span>{tgConvItems.length.toLocaleString('fa-IR')}</span></div>

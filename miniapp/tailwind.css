@@ -1,4 +1,17 @@
 @config "../tailwind.miniapp.config.cjs";
+
+@font-face {
+  font-family: "Vazir";
+  src: url("/fonts/Vazir-FD-WOL.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: "Vazir", Tahoma, system-ui, sans-serif;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

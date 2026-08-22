@@ -16,7 +16,7 @@ export const CustomerAccount: React.FC = () => {
       <h1 id="account-title" className="m-0 text-2xl font-black">حساب من</h1>
       <p className="mb-4 mt-1 text-sm leading-7 text-mutedText">مانده و آخرین گردش‌های ثبت‌شده</p>
       <section className="rounded-[var(--radius-lg)] border border-border bg-card p-4">
-        <div className="flex items-center justify-between gap-4"><span className="text-xs text-mutedText">وضعیت فعلی</span><strong className={`text-sm ${accountTone(data.account.code)}`}>{data.account.label}</strong></div>
+        <div className="flex items-center justify-between gap-4"><span className="text-xs text-mutedText">وضعیت حساب</span><strong className={`text-sm ${accountTone(data.account.code)}`}>{data.account.label}</strong></div>
         <p className="mb-0 mt-2 text-2xl font-black tabular-nums">{formatToman(data.account.amount)}</p>
       </section>
       <dl className="my-4 grid grid-cols-2 gap-3 text-xs"><div className="border-b border-border py-3"><dt className="text-mutedText">جمع بدهکار</dt><dd className="m-0 mt-1 font-extrabold tabular-nums">{formatToman(data.totalDebit)}</dd></div><div className="border-b border-border py-3"><dt className="text-mutedText">جمع بستانکار</dt><dd className="m-0 mt-1 font-extrabold tabular-nums">{formatToman(data.totalCredit)}</dd></div></dl>

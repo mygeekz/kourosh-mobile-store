@@ -1,4 +1,4 @@
-import { DataTableShell, FinancialTimeline, FinancialTimelineEvent, IconGlyph, SelectField, TableActionGroup } from '@/components/ui';
+import { AppSearchField, DataTableShell, FinancialTimeline, FinancialTimelineEvent, IconGlyph, SelectField, TableActionGroup } from '@/components/ui';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import type { PartnerLedgerEntry } from '../../types';
@@ -31,6 +31,9 @@ const toTimelineLink = (target: FinancialSourceTarget | null, onClick: () => voi
   iconClass: target.icon,
   title: target.label,
 }) : null;
+
+const getSettlementBatchLabel = (batch: LedgerSettlementBatchOption, index: number) =>
+  `تسویه گروهی ${Number(index + 1).toLocaleString('fa-IR')} — ${Number(batch.count || 0).toLocaleString('fa-IR')} تراکنش — ${Number(batch.amount || 0).toLocaleString('fa-IR')} تومان`;
 
 const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
   const location = useLocation();
@@ -119,39 +122,46 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
     value,
   } = ctx;
 
+  const activeLedgerBatchIndex = ledgerSettlementBatchOptions.findIndex((batch) => batch.id === activeLedgerBatchId);
+  const activeLedgerBatchOption = activeLedgerBatchIndex >= 0 ? ledgerSettlementBatchOptions[activeLedgerBatchIndex] : null;
+  const activeLedgerBatchLabel = activeLedgerBatchOption
+    ? getSettlementBatchLabel(activeLedgerBatchOption, activeLedgerBatchIndex)
+    : 'تسویه گروهی انتخاب‌شده';
+
   return (
     <>
-<div id="partner-ledger-section" className="partner-customer-sync-ledger-head scroll-mt-24 mb-4 flex flex-col gap-3 border-b border-slate-200 pb-4 dark:border-slate-800 lg:flex-row lg:items-center lg:justify-between">
+      <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-5" aria-labelledby="partner-ledger-title">
+        <div id="partner-ledger-heading" className="mb-4 flex scroll-mt-24 flex-col gap-3 border-b border-slate-200 pb-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <IconGlyph tone="success" className="h-10 w-10 shrink-0" aria-hidden="true"><i className="fa-solid fa-book-open" /></IconGlyph>
             <div>
-              <h2 className="text-lg font-black text-slate-900 dark:text-slate-50">دفتر حساب همکار</h2>
-              <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">مرور مانده، پرداخت‌ها و سوابق مالی همکار.</p>
+              <h2 id="partner-ledger-title" className="text-xl font-black text-slate-900 dark:text-slate-50">دفتر حساب همکار</h2>
+              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">مرور مانده، پرداخت‌ها و سوابق مالی همکار.</p>
             </div>
           </div>
-          <Button type="button" onClick={openLedgerModal} variant="primary" size="sm" leftIcon={<i className="fa-solid fa-money-bill-transfer" />}>
+          <Button type="button" onClick={openLedgerModal} variant="primary" size="md" leftIcon={<i className="fa-solid fa-money-bill-transfer" />}>
             ثبت اطلاعات دریافت / پرداخت
           </Button>
         </div>
 
-        <div className="partner-customer-sync-ledger-stats mb-4 grid grid-cols-1 gap-2.5 md:grid-cols-3">
-          <div className="partner-customer-sync-ledger-stat partner-ledger-v130__stat-card partner-ledger-hover-card rounded-[18px] border border-emerald-100 bg-emerald-50/80 p-3.5 dark:border-emerald-900/40 dark:bg-emerald-950/20">
-            <div className="partner-ledger-v130__stat-head" style={{ direction: 'rtl' }}>
-              <span className="partner-ledger-v130__box-icon is-emerald"><i className="fa-solid fa-wallet" /></span>
+        <div className="mb-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+            <div className="flex items-center gap-2">
+              <IconGlyph tone="success" className="h-9 w-9 shrink-0" aria-hidden="true"><i className="fa-solid fa-wallet" /></IconGlyph>
               <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-200">مانده نهایی حساب</div>
             </div>
             <div className="mt-1.5 text-base font-black leading-6 text-slate-900 dark:text-slate-50">{formatPartnerLedgerCurrency(profile.currentBalance, 'balance')}</div>
           </div>
-          <div className="partner-customer-sync-ledger-stat partner-ledger-v130__stat-card partner-ledger-hover-card rounded-[18px] border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-950/20">
-            <div className="partner-ledger-v130__stat-head" style={{ direction: 'rtl' }}>
-              <span className="partner-ledger-v130__box-icon is-violet"><i className="fa-solid fa-list-check" /></span>
+          <div className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 dark:border-slate-800 dark:bg-slate-900/50">
+            <div className="flex items-center gap-2">
+              <IconGlyph tone="neutral" className="h-9 w-9 shrink-0" aria-hidden="true"><i className="fa-solid fa-list-check" /></IconGlyph>
               <div className="text-xs font-semibold text-slate-500 dark:text-slate-400">تعداد تراکنش‌ها</div>
             </div>
             <div className="mt-1.5 text-base font-black leading-6 text-slate-900 dark:text-slate-50">{Number(ledgerDirectory?.summary?.total || 0).toLocaleString('fa-IR')}</div>
           </div>
-          <div className="partner-customer-sync-ledger-stat partner-ledger-v130__stat-card partner-ledger-hover-card rounded-[18px] border border-sky-100 bg-sky-50/80 p-3.5 dark:border-sky-900/40 dark:bg-sky-950/20">
-            <div className="partner-ledger-v130__stat-head" style={{ direction: 'rtl' }}>
-              <span className="partner-ledger-v130__box-icon is-sky is-calendar-fallback"><i className="fa-solid fa-calendar" /></span>
+          <div className="rounded-2xl border border-sky-100 bg-sky-50/80 p-4 dark:border-sky-900/40 dark:bg-sky-950/20">
+            <div className="flex items-center gap-2">
+              <IconGlyph tone="info" className="h-9 w-9 shrink-0" aria-hidden="true"><i className="fa-solid fa-calendar" /></IconGlyph>
               <div className="text-xs font-semibold text-sky-700 dark:text-sky-200">آخرین به‌روزرسانی پرونده</div>
             </div>
             <div className="mt-2 text-base font-black text-slate-900 dark:text-slate-50">{partnerRegisteredDateLabel}</div>
@@ -161,55 +171,48 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
         {filteredLedgerEntries.length > 0 && Number(ledgerPage || 1) === 1 ? (
           <div className="mb-4 grid grid-cols-1 gap-2.5 md:grid-cols-3">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-              <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">اولین رکورد قابل مشاهده</div>
+              <div className="text-xs font-black text-slate-400 dark:text-slate-500">اولین رکورد قابل مشاهده</div>
               <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{ledger[ledger.length - 1] ? formatIsoToShamsi(ledger[ledger.length - 1].transactionDate) : '—'}</div>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-              <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">آخرین عملیات مالی</div>
+              <div className="text-xs font-black text-slate-400 dark:text-slate-500">آخرین عملیات مالی</div>
               <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{ledger[0] ? formatIsoToShamsi(ledger[0].transactionDate) : '—'}</div>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-              <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">میانگین ارزش تراکنش‌های صفحه</div>
+              <div className="text-xs font-black text-slate-400 dark:text-slate-500">میانگین ارزش تراکنش‌های صفحه</div>
               <div className="mt-1 text-[12px] font-black text-slate-900 dark:text-slate-100">{formatPartnerLedgerCurrency(ledger.length ? Math.round(ledger.reduce((sum, item) => sum + Math.max(item.credit || 0, item.debit || 0), 0) / ledger.length) : 0, 'balance')}</div>
             </div>
           </div>
         ) : null}
 
 
-        <div className="partner-ledger-v132__transactions-panel partner-ledger-hover-surface mb-4 rounded-2xl border border-slate-200/80 bg-white p-3 dark:border-slate-800 dark:bg-slate-950/80">
+        <div className="mb-4 rounded-2xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/30">
           <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
             <div className="flex-1 space-y-4">
-              <div className="partner-ledger-v132__panel-head flex flex-wrap items-center justify-between gap-2">
-                <div className="partner-ledger-v132__panel-title">
-                  <span className="partner-ledger-v132__panel-icon"><i className="fa-solid fa-file-invoice-dollar" /></span>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <IconGlyph tone="neutral" className="h-9 w-9" aria-hidden="true"><i className="fa-solid fa-file-invoice-dollar" /></IconGlyph>
                   <div>
-                    <div className="text-[11px] font-black tracking-[0.16em] text-slate-400 dark:text-slate-500">مدیریت تراکنش‌های مالی</div>
+                    <div className="text-xs font-black text-slate-500 dark:text-slate-400">مدیریت تراکنش‌های مالی</div>
                     <div className="mt-1 text-sm font-black text-slate-900 dark:text-slate-50">جستجو، فیلترها، خروجی و نمای نمایش</div>
                   </div>
                 </div>
-                <span className="partner-ledger-v132__record-pill inline-flex h-[34px] items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+                <span className="inline-flex min-h-9 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
                   <i className="fa-solid fa-filter-circle-dollar" />
                   {filteredLedgerEntries.length.toLocaleString('fa-IR')} رکورد
                 </span>
               </div>
 
-              <div className="partner-ledger-v133__search-grid grid gap-3 xl:grid-cols-[minmax(320px,0.92fr)_minmax(420px,1.08fr)]">
-                <div className="partner-ledger-v133__search-wrap relative">
-                  <i className="fa-solid fa-magnifying-glass pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    value={ledgerSearch}
-                    onChange={(e) => setLedgerSearch(e.target.value)}
-                    placeholder="جستجو در شرح، مبلغ، تاریخ، شناسه سیستم یا مرجع..."
-                    className="partner-ledger-v133__search-input w-full rounded-2xl border border-slate-200 bg-slate-50 py-2.5 pr-3 pl-10 text-sm text-slate-700 outline-none transition     dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100  "
-                  />
-                </div>
+              <div className="grid gap-3 xl:grid-cols-2">
+                <AppSearchField value={ledgerSearch} onChange={setLedgerSearch} placeholder="جستجو در شرح، مبلغ، تاریخ، شناسه سیستم یا مرجع…" ariaLabel="جستجو در دفتر حساب همکار" size="md" clearable />
                 <div className="flex flex-wrap items-center gap-2 justify-end xl:justify-end">
-                  <div className="flex min-w-0 flex-[1.15] items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-2 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                    <i className="fa-solid fa-barcode text-[11px] text-violet-500" />
-                    <SelectField controlOnly unstyled showChevron={false}
+                  <div className="min-w-0 flex-1">
+                    <SelectField
                       value={ledgerSystemFilter}
                       onChange={(e) => setLedgerSystemFilter(e.target.value)}
-                      className="h-[34px] min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-2 text-[11px] font-black text-slate-700 outline-none transition  dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                      ariaLabel="فیلتر دفتر حساب بر اساس شناسه سیستم"
+                      size="md"
+                      iconClassName="fa-solid fa-barcode"
                       title="فیلتر حسابداری بر اساس شناسه سیستم"
                     >
                       <option value="all">همه شناسه‌های سیستم</option>
@@ -221,19 +224,10 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                     </SelectField>
                   </div>
                   <div className="relative">
-                    <button
-                      ref={ledgerColumnPickerButtonRef}
-                      type="button"
-                      onClick={() => setIsLedgerColumnPickerOpen((current) => !current)}
-                      aria-expanded={isLedgerColumnPickerOpen}
-                      className={`inline-flex h-[34px] items-center gap-2 rounded-2xl border px-3 text-[11px] font-black shadow-sm transition ${isLedgerColumnPickerOpen ? 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-900/40 dark:bg-violet-950/25 dark:text-violet-200' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800'}`}
-                    >
-                      <i className="fa-solid fa-table-columns" />
-                      ستون‌ها
-                    </button>
+                    <Button ref={ledgerColumnPickerButtonRef} type="button" onClick={() => setIsLedgerColumnPickerOpen((current) => !current)} aria-expanded={isLedgerColumnPickerOpen} variant={isLedgerColumnPickerOpen ? 'primary' : 'secondary'} size="md" leftIcon={<i className="fa-solid fa-table-columns" />}>ستون‌ها</Button>
                     {isLedgerColumnPickerOpen ? (
-                      <div ref={ledgerColumnPickerPanelRef} className="absolute left-0 top-full z-20 mt-2 w-80 rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_24px_60px_-30px_rgba(15,23,42,0.35)] dark:border-slate-700 dark:bg-slate-950">
-                        <div className="text-[11px] font-black tracking-[0.12em] text-slate-400 dark:text-slate-500">ستون‌های اختیاری</div>
+                      <div ref={ledgerColumnPickerPanelRef} className="absolute start-0 top-full z-20 mt-2 w-72 rounded-2xl border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-950">
+                        <div className="text-xs font-black text-slate-500 dark:text-slate-400">ستون‌های اختیاری</div>
                         <div className="mt-3 space-y-2">
                           {[
                             { key: 'systemId', label: 'شناسه سیستم', hint: 'نمایش شناسه دارایی در جدول' },
@@ -250,31 +244,24 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                                   className="peer sr-only"
                                 />
                                 <span className="min-w-0 flex-1">
-                                  <span className="block text-[13px] font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
-                                  <span className="block text-[11px] leading-5 text-slate-500 dark:text-slate-400">{item.hint}</span>
+                                  <span className="block text-sm font-bold text-slate-800 dark:text-slate-100">{item.label}</span>
+                                  <span className="block text-xs leading-5 text-slate-500 dark:text-slate-400">{item.hint}</span>
                                 </span>
-                                <span className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-all duration-200 ${checked ? 'border-violet-500 bg-violet-500 shadow-[0_10px_24px_-16px_rgba(99,102,241,0.8)]' : 'border-slate-300 bg-slate-200 dark:border-slate-600 dark:bg-slate-700'}`}>
-                                  <span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200 ${checked ? 'right-1 -translate-x-0' : 'right-1 translate-x-5'}`} />
+                                <span className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors ${checked ? 'border-violet-500 bg-violet-500' : 'border-slate-300 bg-slate-200 dark:border-slate-600 dark:bg-slate-700'}`}>
+                                  <span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${checked ? 'end-1' : 'end-6'}`} />
                                 </span>
                               </label>
                             );
                           })}
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setIsLedgerColumnPickerOpen(false)}
-                          className="mt-3 inline-flex h-[30px] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-[11px] font-black text-slate-600 transition hover:bg-white dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-                        >
-                          <i className="fa-solid fa-check" />
-                          بستن
-                        </button>
+                        <Button type="button" onClick={() => setIsLedgerColumnPickerOpen(false)} variant="secondary" size="sm" className="mt-3" leftIcon={<i className="fa-solid fa-check" />}>بستن</Button>
                       </div>
                     ) : null}
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 justify-end">
+              <div className="flex flex-wrap items-center justify-start gap-2">
                 {[
                   { key: 'all', label: 'همه', icon: 'fa-layer-group' },
                   { key: 'today', label: 'امروز', icon: 'fa-calendar-day' },
@@ -286,8 +273,8 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                     type="button"
                     onClick={() => setLedgerRange(item.key as any)}
                     variant={ledgerRange === item.key ? 'primary' : 'secondary'}
-                    size="xs"
-                    className={`people-action-btn people-action-btn-tight people-action-btn-primary partner-detail-action-btn partner-ledger-v135-filter-btn !px-3 !text-[11px] ${ledgerRange === item.key ? 'is-active' : ''}`}
+                    size="sm"
+                    aria-pressed={ledgerRange === item.key}
                     leftIcon={<i className={`fa-solid ${item.icon}`} />}
                   >
                     {item.label}
@@ -304,88 +291,88 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                     type="button"
                     onClick={() => setLedgerViewFilter(item.key as any)}
                     variant={ledgerViewFilter === item.key ? 'primary' : 'secondary'}
-                    size="xs"
-                    className={`people-action-btn people-action-btn-tight people-action-btn-secondary partner-detail-action-btn partner-ledger-v135-filter-btn !px-3 !text-[11px] ${ledgerViewFilter === item.key ? 'is-active' : ''}`}
+                    size="sm"
+                    aria-pressed={ledgerViewFilter === item.key}
                     leftIcon={<i className={`fa-solid ${item.icon}`} />}
                   >
                     {item.label}
                   </Button>
                 ))}
                 {ledgerSettlementBatchOptions.length > 0 ? (
-                  <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-white px-2 py-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-950/70">
-                    <i className="fa-solid fa-link text-[11px] text-slate-400" />
-                    <SelectField controlOnly unstyled showChevron={false}
+                  <div className="w-full min-w-0 sm:w-96">
+                    <SelectField
                       value={activeLedgerBatchId}
                       onChange={(e) => setActiveLedgerBatchId(e.target.value)}
-                      className="h-[30px] min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-2 text-[11px] font-black text-slate-700 outline-none transition   dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                      ariaLabel="فیلتر دفتر حساب بر اساس دسته تسویه"
+                      size="md"
+                      iconClassName="fa-solid fa-link"
                       title="نمایش پرداخت‌های یک دسته تسویه"
                     >
-                      <option value="">همه دسته‌های تسویه</option>
-                      {ledgerSettlementBatchOptions.map((batch) => (
+                      <option value="">همه تسویه‌های گروهی</option>
+                      {ledgerSettlementBatchOptions.map((batch, batchIndex) => (
                         <option key={batch.id} value={batch.id}>
-                          {batch.id} · {batch.count.toLocaleString('fa-IR')} رکورد · {batch.amount.toLocaleString('fa-IR')}
+                          {getSettlementBatchLabel(batch, batchIndex)}
                         </option>
                       ))}
                     </SelectField>
                   </div>
                 ) : null}
-                <div className="inline-flex items-center gap-1 rounded-2xl border border-slate-200 bg-slate-50 p-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                <div className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900" role="group" aria-label="نوع نمایش دفتر حساب">
                   {[
                     { key: 'table', label: 'جدول', icon: 'fa-table-cells-large' },
                     { key: 'timeline', label: 'تایم‌لاین', icon: 'fa-timeline' },
                   ].map((item) => (
-                    <button
+                    <Button
                       key={item.key}
                       type="button"
                       onClick={() => setLedgerDisplayMode(item.key as 'table' | 'timeline')}
-                      className={`inline-flex h-[30px] items-center gap-2 rounded-xl px-3 text-[11px] font-black transition ${
-                        ledgerDisplayMode === item.key
-                          ? 'bg-slate-950 text-white shadow-sm dark:bg-white dark:text-slate-950'
-                          : 'bg-transparent text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-                      }`}
+                      variant={ledgerDisplayMode === item.key ? 'primary' : 'secondary'}
+                      size="md"
                       title={item.label}
+                      aria-pressed={ledgerDisplayMode === item.key}
+                      leftIcon={<i className={`fa-solid ${item.icon}`} aria-hidden="true" />}
                     >
-                      <i className={`fa-solid ${item.icon}`} />
                       {item.label}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
               {activeLedgerBatchId ? (
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={handlePrintActiveBatch} className="inline-flex h-[30px] items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50 px-2 text-[10px] font-black text-slate-600 transition hover:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"><i className="fa-solid fa-print" /> چاپ</button>
-                  <button type="button" onClick={handleExportActiveBatchCsv} className="inline-flex h-[30px] items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-2 text-[10px] font-black text-emerald-700 transition hover:bg-white dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-200"><i className="fa-solid fa-file-excel" /> Excel</button>
-                  <button type="button" onClick={() => setActiveLedgerBatchId('')} className="inline-flex h-[30px] items-center gap-1 rounded-xl px-2 text-[10px] font-black text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-100"><i className="fa-solid fa-xmark" /> حذف فیلتر</button>
+                  <Button type="button" onClick={handlePrintActiveBatch} variant="secondary" size="sm" leftIcon={<i className="fa-solid fa-print" />}>چاپ</Button>
+                  <Button type="button" onClick={handleExportActiveBatchCsv} variant="success" size="sm" leftIcon={<i className="fa-solid fa-file-excel" />}>Excel</Button>
+                  <Button type="button" onClick={() => setActiveLedgerBatchId('')} variant="ghost" size="sm" leftIcon={<i className="fa-solid fa-xmark" />}>حذف فیلتر</Button>
                 </div>
               ) : null}
             </div>
           </div>
+        </div>
 
         {activeLedgerBatchId && activeBatchLedgerMetrics ? (
-          <div className="partner-ledger-batch-sticky-summary sticky top-24 z-10 mb-5">
-            <div className="partner-ledger-batch-sticky-summary__surface">
-              <div className="partner-ledger-batch-sticky-summary__head">
+          <div className="sticky top-24 z-10 mb-4 rounded-2xl border border-sky-200 bg-sky-50 p-4 shadow-sm dark:border-sky-900/50 dark:bg-sky-950/30">
+            <div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <div className="partner-ledger-batch-sticky-summary__eyebrow">خلاصه دسته تسویه انتخاب‌شده</div>
-                  <div className="partner-ledger-batch-sticky-summary__title">{activeLedgerBatchId}</div>
+                  <div className="text-xs font-black text-sky-700 dark:text-sky-300">خلاصه تسویه گروهی انتخاب‌شده</div>
+                  <div className="mt-1 text-sm font-black text-slate-950 dark:text-slate-50">{activeLedgerBatchLabel}</div>
                 </div>
-                <div className="partner-ledger-batch-sticky-summary__meta">
-                  <span className="partner-ledger-batch-sticky-summary__pill"><i className="fa-solid fa-layer-group" /> {activeBatchLedgerMetrics.count.toLocaleString('fa-IR')} رکورد</span>
-                  <span className="partner-ledger-batch-sticky-summary__pill"><i className="fa-solid fa-clock-rotate-left" /> آخرین ثبت: {activeBatchLedgerMetrics.latestDate}</span>
+                <div className="flex flex-wrap gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                  <span className="rounded-full border border-sky-200 bg-white px-3 py-1.5 dark:border-sky-900 dark:bg-slate-950"><i className="fa-solid fa-layer-group" /> {activeBatchLedgerMetrics.count.toLocaleString('fa-IR')} رکورد</span>
+                  <span className="rounded-full border border-sky-200 bg-white px-3 py-1.5 dark:border-sky-900 dark:bg-slate-950"><i className="fa-solid fa-clock-rotate-left" /> آخرین ثبت: {activeBatchLedgerMetrics.latestDate}</span>
                 </div>
               </div>
-              <div className="partner-ledger-batch-sticky-summary__grid">
-                <article className="partner-ledger-batch-sticky-summary__card">
-                  <span className="partner-ledger-batch-sticky-summary__label">جمع پرداخت‌ها</span>
-                  <strong className="partner-ledger-batch-sticky-summary__value">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.totalDebit, 'debit')}</strong>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <article className="rounded-xl border border-sky-200 bg-white p-3 dark:border-sky-900 dark:bg-slate-950">
+                  <span className="block text-xs font-bold text-slate-500 dark:text-slate-400">جمع پرداخت‌ها</span>
+                  <strong className="mt-1 block text-sm text-slate-950 dark:text-slate-50">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.totalDebit, 'debit')}</strong>
                 </article>
-                <article className="partner-ledger-batch-sticky-summary__card">
-                  <span className="partner-ledger-batch-sticky-summary__label">جمع دریافت‌ها</span>
-                  <strong className="partner-ledger-batch-sticky-summary__value">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.totalCredit, 'credit')}</strong>
+                <article className="rounded-xl border border-sky-200 bg-white p-3 dark:border-sky-900 dark:bg-slate-950">
+                  <span className="block text-xs font-bold text-slate-500 dark:text-slate-400">جمع دریافت‌ها</span>
+                  <strong className="mt-1 block text-sm text-slate-950 dark:text-slate-50">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.totalCredit, 'credit')}</strong>
                 </article>
-                <article className="partner-ledger-batch-sticky-summary__card">
-                  <span className="partner-ledger-batch-sticky-summary__label">مانده بعد از فیلتر</span>
-                  <strong className="partner-ledger-batch-sticky-summary__value">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.latestBalance, 'balance')}</strong>
+                <article className="rounded-xl border border-sky-200 bg-white p-3 dark:border-sky-900 dark:bg-slate-950">
+                  <span className="block text-xs font-bold text-slate-500 dark:text-slate-400">مانده بعد از فیلتر</span>
+                  <strong className="mt-1 block text-sm text-slate-950 dark:text-slate-50">{formatPartnerLedgerCurrency(activeBatchLedgerMetrics.latestBalance, 'balance')}</strong>
                 </article>
               </div>
             </div>
@@ -393,16 +380,13 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
         ) : null}
 
         {filteredLedgerEntries.length === 0 ? (
-          <div className="partner-ledger-empty-state" dir="rtl">
-            <div className="partner-ledger-empty-state__icon"><i className={`fa-solid ${ledgerEmptyState.icon}`} /></div>
-            <div className="partner-ledger-empty-state__content">
-              <h3>{ledgerEmptyState.title}</h3>
-              <p>{ledgerEmptyState.description}</p>
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900/50" dir="rtl">
+            <IconGlyph tone="neutral" className="mx-auto h-12 w-12" aria-hidden="true"><i className={`fa-solid ${ledgerEmptyState.icon}`} /></IconGlyph>
+            <div>
+              <h3 className="mt-3 text-base font-black text-slate-900 dark:text-slate-50">{ledgerEmptyState.title}</h3>
+              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{ledgerEmptyState.description}</p>
             </div>
-            <button type="button" onClick={ledgerEmptyState.action} className="partner-ledger-empty-state__action">
-              <i className={`fa-solid ${Number(ledgerDirectory?.summary?.total || 0) === 0 ? 'fa-plus' : 'fa-rotate-left'}`} />
-              {ledgerEmptyState.actionLabel}
-            </button>
+            <Button type="button" onClick={ledgerEmptyState.action} variant="primary" size="md" className="mt-4" leftIcon={<i className={`fa-solid ${Number(ledgerDirectory?.summary?.total || 0) === 0 ? 'fa-plus' : 'fa-rotate-left'}`} />}>{ledgerEmptyState.actionLabel}</Button>
           </div>
         ) : ledgerDisplayMode === 'timeline' ? (
           <FinancialTimeline
@@ -597,15 +581,15 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                     )}
                     badges={(
                       <>
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[10px] font-black text-violet-700 dark:border-violet-900/40 dark:bg-violet-950/30 dark:text-violet-200" dir="ltr">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-xs font-black text-violet-700 dark:border-violet-900/40 dark:bg-violet-950/30 dark:text-violet-200" dir="ltr">
                           <i className="fa-solid fa-barcode" />
                           {group.systemId}
                         </span>
-                        {batchId ? <button type="button" onClick={() => setActiveLedgerBatchId(batchId)} className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[10px] font-black text-sky-700 dark:border-sky-900/40 dark:bg-sky-950/30 dark:text-sky-200"><i className="fa-solid fa-link" /> دسته {batchId}</button> : null}
-                        <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+                        {batchId ? <Button type="button" onClick={() => setActiveLedgerBatchId(batchId)} variant="secondary" size="sm" leftIcon={<i className="fa-solid fa-link" aria-hidden="true" />}>دسته {batchId}</Button> : null}
+                        <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                           مانده بعد از رویداد: {formatCurrencyText(Math.abs(balanceValue), readStoredCurrencyUnit())}
                         </span>
-                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                        <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                           ثبت سیستمی: {ledgerRecordedAt(entry)}
                         </span>
                       </>
@@ -614,27 +598,27 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                     {expanded ? (
                       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,.9fr)]">
                         <div className="min-w-0 space-y-2">
-                          <div className="text-[11px] font-black text-slate-700 dark:text-slate-200">جزئیات سند</div>
+                          <div className="text-xs font-black text-slate-700 dark:text-slate-200">جزئیات سند</div>
                           {details.map((line) => (
-                            <div key={line} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] font-semibold leading-5 text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">{line}</div>
+                            <div key={line} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold leading-5 text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-300">{line}</div>
                           ))}
                         </div>
                         <div className="min-w-0 space-y-2">
                           <div className="flex items-center justify-between gap-2">
-                            <div className="text-[11px] font-black text-slate-700 dark:text-slate-200">تاریخچه دارایی مرتبط</div>
-                            {relatedPurchase?.history?.length ? <span className="text-[10px] font-black text-slate-400">{relatedPurchase.history.length.toLocaleString('fa-IR')} تغییر</span> : null}
+                            <div className="text-xs font-black text-slate-700 dark:text-slate-200">تاریخچه دارایی مرتبط</div>
+                            {relatedPurchase?.history?.length ? <span className="text-xs font-black text-slate-400">{relatedPurchase.history.length.toLocaleString('fa-IR')} تغییر</span> : null}
                           </div>
                           {relatedPurchase?.history?.length ? relatedPurchase.history.slice().reverse().slice(0, 8).map((historyItem: any, historyIndex: number) => (
                             <div key={`${group.systemId}-timeline-history-${historyIndex}`} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800 dark:bg-slate-900/60">
                               <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-[11px] font-black text-slate-800 dark:text-slate-100">{historyItem.title || 'رویداد ثبت‌شده'}</span>
-                                <span className="text-[10px] font-bold text-slate-400">{formatIsoToShamsiDateTime(historyItem.changedAt, 'jYYYY/jMM/jDD HH:mm')}</span>
+                                <span className="text-xs font-black text-slate-800 dark:text-slate-100">{historyItem.title || 'رویداد ثبت‌شده'}</span>
+                                <span className="text-xs font-bold text-slate-400">{formatIsoToShamsiDateTime(historyItem.changedAt, 'jYYYY/jMM/jDD HH:mm')}</span>
                               </div>
-                              {historyItem.description ? <div className="mt-1 text-[10px] font-semibold leading-5 text-slate-500 dark:text-slate-400">{String(historyItem.description)}</div> : null}
-                              {historyItem.newPurchasePrice != null ? <div className="mt-1 text-[10px] font-black text-slate-700 dark:text-slate-200">قیمت خرید: {formatCurrencyText(Number(historyItem.newPurchasePrice || 0), readStoredCurrencyUnit())}</div> : null}
+                              {historyItem.description ? <div className="mt-1 text-xs font-semibold leading-5 text-slate-500 dark:text-slate-400">{String(historyItem.description)}</div> : null}
+                              {historyItem.newPurchasePrice != null ? <div className="mt-1 text-xs font-black text-slate-700 dark:text-slate-200">قیمت خرید: {formatCurrencyText(Number(historyItem.newPurchasePrice || 0), readStoredCurrencyUnit())}</div> : null}
                             </div>
                           )) : (
-                            <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-[11px] font-semibold text-slate-400 dark:border-slate-800 dark:text-slate-500">برای این دارایی تاریخچه تغییر مستقلی ثبت نشده است.</div>
+                            <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-xs font-semibold text-slate-400 dark:border-slate-800 dark:text-slate-500">برای این دارایی تاریخچه تغییر مستقلی ثبت نشده است.</div>
                           )}
                         </div>
                       </div>
@@ -645,73 +629,69 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
             </div>
           </FinancialTimeline>
         ) : (
-          <div className="people-ledger-grid partner-ledger-grid">
-            <div className="partner-ledger-summary-grid partner-ledger-v133__summary-grid">
-              <article className="partner-ledger-summary-card partner-ledger-v133__summary-card is-violet">
-                <div className="partner-ledger-v133__summary-head">
-                  <span className="partner-ledger-v133__summary-icon"><i className="fa-solid fa-barcode" /></span>
-                  <span className="partner-ledger-summary-card__label">شناسه‌های سیستم</span>
+          <div>
+            <div className="mb-3 grid gap-2 sm:grid-cols-3">
+              <article className="rounded-xl border border-violet-200 bg-violet-50 p-3 dark:border-violet-900/50 dark:bg-violet-950/20">
+                <div className="flex items-center gap-2 text-xs font-bold text-violet-700 dark:text-violet-300">
+                  <i className="fa-solid fa-barcode" />
+                  <span>شناسه‌های سیستم</span>
                 </div>
-                <strong className="partner-ledger-summary-card__value">{groupedLedgerEntries.length.toLocaleString('fa-IR')}</strong>
-                <span className="partner-ledger-summary-card__meta">گروه‌بندی براساس محصول / گوشی</span>
+                <strong className="mt-2 block text-lg text-slate-950 dark:text-slate-50">{groupedLedgerEntries.length.toLocaleString('fa-IR')}</strong>
+                <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">گروه‌بندی براساس محصول / گوشی</span>
               </article>
-              <article className="partner-ledger-summary-card partner-ledger-v133__summary-card is-emerald">
-                <div className="partner-ledger-v133__summary-head">
-                  <span className="partner-ledger-v133__summary-icon"><i className="fa-solid fa-receipt" /></span>
-                  <span className="partner-ledger-summary-card__label">تراکنش‌های فیلترشده</span>
+              <article className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+                  <i className="fa-solid fa-receipt" />
+                  <span>تراکنش‌های فیلترشده</span>
                 </div>
-                <strong className="partner-ledger-summary-card__value">{Number(ledgerDirectory?.total || 0).toLocaleString('fa-IR')}</strong>
-                <span className="partner-ledger-summary-card__meta">مطابق فیلترهای فعلی در همه صفحات</span>
+                <strong className="mt-2 block text-lg text-slate-950 dark:text-slate-50">{Number(ledgerDirectory?.total || 0).toLocaleString('fa-IR')}</strong>
+                <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">مطابق فیلترهای فعلی در همه صفحات</span>
               </article>
-              <article className="partner-ledger-summary-card partner-ledger-v133__summary-card is-amber">
-                <div className="partner-ledger-v133__summary-head">
-                  <span className="partner-ledger-v133__summary-icon"><i className="fa-solid fa-link" /></span>
-                  <span className="partner-ledger-summary-card__label">شناسه‌های خرید مرتبط صفحه</span>
+              <article className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-900/50 dark:bg-amber-950/20">
+                <div className="flex items-center gap-2 text-xs font-bold text-amber-700 dark:text-amber-300">
+                  <i className="fa-solid fa-link" />
+                  <span>شناسه‌های خرید مرتبط صفحه</span>
                 </div>
-                <strong className="partner-ledger-summary-card__value">{purchaseHistoryBySystemId.size.toLocaleString('fa-IR')}</strong>
-                <span className="partner-ledger-summary-card__meta">فقط دارایی‌های مرتبط با صفحه جاری</span>
+                <strong className="mt-2 block text-lg text-slate-950 dark:text-slate-50">{purchaseHistoryBySystemId.size.toLocaleString('fa-IR')}</strong>
+                <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">فقط دارایی‌های مرتبط با صفحه جاری</span>
               </article>
             </div>
-            <DataTableShell className="people-table-shell partner-ledger-shell" data-ui-partner-ledger-table="true">
-              <table className="partner-ledger-table min-w-[880px] table-fixed divide-y divide-slate-200 text-xs dark:divide-slate-800">
-                <thead className="partner-ledger-table__head bg-slate-50/95 dark:bg-slate-900/80">
-                  <tr className="partner-ledger-table__head-row text-right [&>th]:px-4 [&>th]:py-3 [&>th]:font-bold [&>th]:text-slate-600 dark:[&>th]:text-slate-200">
-                    <th className={`${ledgerVisibleColumns.systemId ? 'w-40' : 'hidden'}`}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-barcode text-violet-500" /> شناسه سیستم</span></th>
-                    <th className={`${ledgerVisibleColumns.createdAt ? 'w-36' : 'hidden'}`}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-calendar-check text-sky-500" /> تاریخ ثبت</span></th>
-                    <th className={`${ledgerVisibleColumns.transactionDate ? 'w-36' : 'hidden'}`}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-calendar-day text-cyan-500" /> تاریخ تراکنش</span></th>
-                    <th className="w-64"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-align-right text-indigo-500" /> شرح</span></th>
-                    <th className="w-28"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-arrow-up text-rose-500" /> بدهکار</span></th>
-                    <th className="w-28"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-arrow-down text-emerald-500" /> بستانکار</span></th>
-                    <th className="w-32"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-scale-balanced text-amber-500" /> مانده</span></th>
-                    <th className="w-[19rem]"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-gear text-slate-500" /> عملیات</span></th>
+            <DataTableShell className="overflow-hidden rounded-2xl" data-ui-partner-ledger-table="true" aria-label="جدول دفتر حساب همکار">
+              <table className="w-full min-w-max table-auto divide-y divide-slate-200 text-xs dark:divide-slate-800">
+                <caption className="sr-only">تراکنش‌های دفتر حساب همکار</caption>
+                <thead className="bg-slate-50 dark:bg-slate-900">
+                  <tr className="text-right [&>th]:px-3 [&>th]:py-3 [&>th]:font-bold [&>th]:text-slate-600 dark:[&>th]:text-slate-200">
+                    <th scope="col" className={ledgerVisibleColumns.systemId ? '' : 'hidden'}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-barcode text-violet-500" /> شناسه سیستم</span></th>
+                    <th scope="col" className={ledgerVisibleColumns.createdAt ? '' : 'hidden'}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-calendar-check text-sky-500" /> تاریخ ثبت</span></th>
+                    <th scope="col" className={ledgerVisibleColumns.transactionDate ? '' : 'hidden'}><span className="inline-flex items-center gap-2"><i className="fa-solid fa-calendar-day text-cyan-500" /> تاریخ تراکنش</span></th>
+                    <th scope="col"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-align-right text-indigo-500" /> شرح</span></th>
+                    <th scope="col"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-arrow-up text-rose-500" /> بدهکار</span></th>
+                    <th scope="col"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-arrow-down text-emerald-500" /> بستانکار</span></th>
+                    <th scope="col"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-scale-balanced text-amber-500" /> مانده</span></th>
+                    <th scope="col"><span className="inline-flex items-center gap-2"><i className="fa-solid fa-gear text-slate-500" /> عملیات</span></th>
                   </tr>
                 </thead>
-                <tbody className="partner-ledger-table__body bg-white divide-y divide-slate-200 dark:bg-slate-900/40 dark:divide-slate-800">
+                <tbody className="divide-y divide-slate-200 bg-white dark:divide-slate-800 dark:bg-slate-950/40">
                   {groupedLedgerEntries.map((group) => {
                     const relatedPurchase = purchaseHistoryBySystemId.get(group.systemId);
                     return (
                       <React.Fragment key={group.systemId}>
-                        <tr className="partner-ledger-group-row bg-violet-50/80 dark:bg-violet-950/20">
+                        <tr className="bg-violet-50/80 dark:bg-violet-950/20">
                           <td colSpan={ledgerTableColumnCount} className="px-4 py-3">
                             <div className="flex flex-wrap items-center justify-between gap-3">
                               <div className="flex flex-wrap items-center gap-2 justify-end">
-                                <div className="partner-system-id-block partner-system-id-block--right flex w-[148px] flex-col items-end gap-1 rounded-3xl border border-violet-200 bg-white px-3 py-2 text-right text-violet-700 dark:border-violet-900/40 dark:bg-slate-950 dark:text-violet-300">
-                                  <span className="text-[10px] font-black tracking-[0.14em] opacity-80">شناسه سیستم</span>
-                                  <span
-                                    className="partner-system-id-value block w-full text-right font-mono text-xs font-black leading-none tracking-[0.02em]"
-                                    dir="ltr"
-                                  >
-                                    {group.systemId}
-                                  </span>
+                                <div className="flex min-w-36 flex-col items-end gap-1 rounded-xl border border-violet-200 bg-white px-3 py-2 text-right text-violet-700 dark:border-violet-900/40 dark:bg-slate-950 dark:text-violet-300">
+                                  <span className="text-xs font-black opacity-80">شناسه سیستم</span>
+                                  <bdi className="block w-full text-right font-mono text-xs font-black leading-none" dir="ltr">{group.systemId}</bdi>
                                 </div>
-                                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
+                                <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300">
                                   <i className="fa-solid fa-layer-group" /> {group.entries.length.toLocaleString('fa-IR')} تراکنش
                                 </span>
-                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-700 dark:border-emerald-900/40 dark:bg-slate-950 dark:text-emerald-200">
+                                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:border-emerald-900/40 dark:bg-slate-950 dark:text-emerald-200">
                                   <i className="fa-solid fa-pen-to-square" /> ثبت: {ledgerRecordedAt(group.entries[group.entries.length - 1] || group.entries[0])}
                                 </span>
                               </div>
-                              <div className="flex flex-wrap items-center gap-2 justify-end text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                              <div className="flex flex-wrap items-center justify-end gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
                                 <span>آخرین تراکنش: {formatLedgerTransactionDate(group.entries[0]?.transactionDate || group.entries[0]?.createdAt || '')}</span>
                                 {relatedPurchase ? <span className="inline-flex items-center gap-1 rounded-full border border-fuchsia-200 bg-white px-2.5 py-1 dark:border-fuchsia-900/40 dark:bg-slate-950"><i className="fa-solid fa-box-archive text-fuchsia-500" /> تاریخچه خرید مرتبط موجود است</span> : null}
                               </div>
@@ -725,33 +705,33 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                           const expanded = expandedLedgerEntryId === entry.id;
                           return (
                             <React.Fragment key={entry.id}>
-                              <tr className={`partner-ledger-row partner-ledger-hover-row transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40 ${expanded ? 'partner-ledger-row--expanded bg-slate-50/60 dark:bg-slate-800/30' : ''}`}>
+                              <tr className={`transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40 ${expanded ? 'bg-slate-50/60 dark:bg-slate-800/30' : ''}`}>
                                 <td className={`${ledgerVisibleColumns.systemId ? 'px-4 py-3 whitespace-nowrap align-middle' : 'hidden'}`}>
-                                  <div className="partner-system-id-block partner-system-id-block--right flex w-full min-w-[124px] flex-col items-end gap-1.5 rounded-2xl border border-violet-100 bg-white px-3 py-2 text-right shadow-[0_12px_26px_-22px_rgba(15,23,42,0.18)] dark:border-violet-900/40 dark:bg-slate-950/90">
-                                    <div className="partner-system-id-value block w-full text-right font-mono text-xs font-bold text-violet-700 dark:text-violet-300" dir="ltr">{systemId}</div>
-                                    <div className="inline-flex items-center justify-center gap-1.5 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-                                      <i className="fa-solid fa-boxes-stacked text-[9px] text-violet-400" />
+                                  <div className="flex w-full min-w-32 flex-col items-end gap-1.5 rounded-xl border border-violet-100 bg-white px-3 py-2 text-right dark:border-violet-900/40 dark:bg-slate-950/90">
+                                    <bdi className="block w-full text-right font-mono text-xs font-bold text-violet-700 dark:text-violet-300" dir="ltr">{systemId}</bdi>
+                                    <div className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                                      <i className="fa-solid fa-boxes-stacked text-violet-400" />
                                       {entry.referenceType ? String(entry.referenceType) : 'بدون مرجع'}
                                     </div>
                                   </div>
                                 </td>
-                                <td className={`${ledgerVisibleColumns.createdAt ? 'px-4 py-3 whitespace-nowrap align-middle text-slate-700 dark:text-slate-200' : 'hidden'}`}><span className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 font-semibold shadow-[0_12px_26px_-24px_rgba(15,23,42,0.2)] dark:border-slate-700 dark:bg-slate-900/70">{recordedAt}</span></td>
-                                <td className={`${ledgerVisibleColumns.transactionDate ? 'px-4 py-3 whitespace-nowrap align-middle text-slate-700 dark:text-slate-200' : 'hidden'}`}><span className="inline-flex items-center rounded-2xl border border-cyan-100 bg-cyan-50 px-3 py-2 font-semibold shadow-[0_12px_26px_-24px_rgba(15,23,42,0.2)] dark:border-cyan-900/30 dark:bg-cyan-950/20">{formatLedgerTransactionDate(entry.transactionDate)}</span></td>
+                                <td className={`${ledgerVisibleColumns.createdAt ? 'px-3 py-3 whitespace-nowrap align-middle text-slate-700 dark:text-slate-200' : 'hidden'}`}><span className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold dark:border-slate-700 dark:bg-slate-900/70">{recordedAt}</span></td>
+                                <td className={`${ledgerVisibleColumns.transactionDate ? 'px-3 py-3 whitespace-nowrap align-middle text-slate-700 dark:text-slate-200' : 'hidden'}`}><span className="inline-flex items-center rounded-xl border border-cyan-100 bg-cyan-50 px-3 py-2 font-semibold dark:border-cyan-900/30 dark:bg-cyan-950/20">{formatLedgerTransactionDate(entry.transactionDate)}</span></td>
                                 <td className="px-3 py-3 align-middle">
-                                  <div className="group min-w-0 max-w-[250px]" title={ledgerDetailLines(entry, meta).join('\n')}>
+                                  <div className="group min-w-56 max-w-sm" title={ledgerDetailLines(entry, meta).join('\n')}>
                                     <div className="flex flex-wrap items-center gap-2 justify-end">
-                                      <span className="block min-w-0 max-w-[230px] truncate font-semibold leading-6 text-slate-900 dark:text-slate-100">{meta.summary}</span>
+                                      <span className="block min-w-0 whitespace-normal font-semibold leading-6 text-slate-900 dark:text-slate-100">{meta.summary}</span>
                                     </div>
-                                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400">
+                                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                                       {meta.imei ? <span>IMEI: {meta.imei}</span> : null}
                                       {meta.saleId ? <span>شناسه فروش: {meta.saleId}</span> : null}
                                     </div>
-                                    <span className="mt-1 block text-[11px] text-slate-400 dark:text-slate-500">برای مشاهده اطلاعات کامل، ردیف را باز کنید.</span>
+                                    <span className="mt-1 block text-xs text-slate-400 dark:text-slate-500">برای مشاهده اطلاعات کامل، ردیف را باز کنید.</span>
                                   </div>
                                 </td>
-                                <td className="px-4 py-3 whitespace-nowrap align-middle"><span className="inline-flex min-w-[76px] justify-center rounded-2xl border border-rose-100 bg-rose-50 px-3 py-2 shadow-[0_12px_26px_-24px_rgba(15,23,42,0.2)] dark:border-rose-900/30 dark:bg-rose-950/20">{formatPartnerLedgerCurrency(entry.debit, 'debit')}</span></td>
-                                <td className="px-4 py-3 whitespace-nowrap align-middle"><span className="inline-flex min-w-[76px] justify-center rounded-2xl border border-emerald-100 bg-emerald-50 px-3 py-2 shadow-[0_12px_26px_-24px_rgba(15,23,42,0.2)] dark:border-emerald-900/30 dark:bg-emerald-950/20">{formatPartnerLedgerCurrency(entry.credit, 'credit')}</span></td>
-                                <td className="px-4 py-3 whitespace-nowrap align-middle"><span className="partner-ledger-balance-pill inline-flex min-w-[96px] justify-center rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 shadow-[0_12px_26px_-24px_rgba(15,23,42,0.2)] dark:border-slate-700 dark:bg-slate-900/70">{formatPartnerLedgerCurrency(entry.balance, 'balance')}</span></td>
+                                <td className="px-3 py-3 whitespace-nowrap align-middle"><span className="inline-flex min-w-20 justify-center rounded-xl border border-rose-100 bg-rose-50 px-3 py-2 dark:border-rose-900/30 dark:bg-rose-950/20">{formatPartnerLedgerCurrency(entry.debit, 'debit')}</span></td>
+                                <td className="px-3 py-3 whitespace-nowrap align-middle"><span className="inline-flex min-w-20 justify-center rounded-xl border border-emerald-100 bg-emerald-50 px-3 py-2 dark:border-emerald-900/30 dark:bg-emerald-950/20">{formatPartnerLedgerCurrency(entry.credit, 'credit')}</span></td>
+                                <td className="px-3 py-3 whitespace-nowrap align-middle"><span className="inline-flex min-w-24 justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-700 dark:bg-slate-900/70">{formatPartnerLedgerCurrency(entry.balance, 'balance')}</span></td>
                                 <td className="px-3 py-3 whitespace-nowrap align-middle" dir="rtl">
                                   <TableActionGroup
                                     ariaLabel={`عملیات رکورد دفتر همکار ${entry.id}`}
@@ -791,26 +771,16 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                                 </td>
                               </tr>
                               {expanded ? (
-                                <tr className="partner-ledger-expanded-row bg-slate-50/70 dark:bg-slate-900/60">
+                                <tr className="bg-slate-50/70 dark:bg-slate-900/60">
                                   <td colSpan={ledgerTableColumnCount} className="px-4 pb-4">
-                                    <div className="partner-ledger-expanded-panel partner-ledger-expanded-panel--solid rounded-3xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-950/60">
+                                    <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-950/60">
                                       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                                         <div className="flex flex-col items-end w-full">
   <div className="w-full text-right text-xs text-slate-500">
     شناسه سیستم
   </div>
 
-  <div
-    className="mt-1 w-full font-mono text-sm font-semibold text-violet-700 dark:text-violet-300 !text-right"
-    dir="ltr"
-    style={{
-      direction: 'ltr',
-      textAlign: 'right',
-      unicodeBidi: 'plaintext'
-    }}
-  >
-    {systemId}
-  </div>
+  <bdi className="mt-1 block w-full text-right font-mono text-sm font-semibold text-violet-700 dark:text-violet-300" dir="ltr">{systemId}</bdi>
 </div>
                                         <div><div className="text-xs text-slate-500">شرح کوتاه</div><div className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{meta.summary}</div></div>
                                         <div><div className="text-xs text-slate-500">IMEI</div><div className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{meta.imei || '—'}</div></div>
@@ -822,20 +792,20 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                                         <div><div className="text-xs text-slate-500">مانده</div><div className="mt-1 font-semibold text-slate-900 dark:text-slate-100">{formatPartnerLedgerCurrency(entry.balance, 'balance')}</div></div>
                                       </div>
                                       {relatedPurchase?.history?.length ? (
-                                        <div className="partner-ledger-history-card mt-4 rounded-3xl border border-fuchsia-100 bg-fuchsia-50/40 p-4 dark:border-fuchsia-900/30 dark:bg-fuchsia-950/10">
+                                        <div className="mt-4 rounded-2xl border border-fuchsia-100 bg-fuchsia-50/40 p-4 dark:border-fuchsia-900/30 dark:bg-fuchsia-950/10">
                                           <div className="flex items-center justify-between gap-2">
                                             <div>
-                                              <div className="text-xs font-black tracking-[0.12em] text-fuchsia-700 dark:text-fuchsia-200">تاریخچه همین شناسه محصول</div>
+                                              <div className="text-xs font-black text-fuchsia-700 dark:text-fuchsia-200">تاریخچه همین شناسه محصول</div>
                                               <div className="mt-1 text-sm font-black text-slate-900 dark:text-slate-50">{relatedPurchase.name}</div>
                                             </div>
                                             <div className="text-xs text-slate-500 dark:text-slate-400">{relatedPurchase.history.length.toLocaleString('fa-IR')} تغییر</div>
                                           </div>
-                                          <div className="partner-ledger-history-grid mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                                          <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                                             {relatedPurchase.history.slice().reverse().map((h: any, idx: number) => (
                                               <div key={`${systemId}-hist-${idx}`} className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950/60">
                                                 <div className="flex items-center justify-between gap-2">
-                                                  <div className="text-[11px] font-black text-slate-500 dark:text-slate-400">{h.title || 'رویداد ثبت‌شده'}</div>
-                                                  <div className="text-[11px] text-slate-400 dark:text-slate-500">{formatIsoToShamsiDateTime(h.changedAt, 'jYYYY/jMM/jDD HH:mm')}</div>
+                                                  <div className="text-xs font-black text-slate-500 dark:text-slate-400">{h.title || 'رویداد ثبت‌شده'}</div>
+                                                  <div className="text-xs text-slate-400 dark:text-slate-500">{formatIsoToShamsiDateTime(h.changedAt, 'jYYYY/jMM/jDD HH:mm')}</div>
                                                 </div>
                                                 <div className="mt-2 text-xs leading-6 text-slate-600 dark:text-slate-300">
                                                   {h.description ? <div>{String(h.description)}</div> : null}
@@ -843,7 +813,7 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
                                                   {h.newPrice != null ? <div>قیمت جدید: <span className="font-black text-slate-900 dark:text-slate-50">{formatCurrencyText(Number(h.newPrice || 0), readStoredCurrencyUnit())}</span></div> : null}
                                                   {h.newPurchasePrice != null ? <div>قیمت خرید: <span className="font-black text-slate-900 dark:text-slate-50">{formatCurrencyText(Number(h.newPurchasePrice || 0), readStoredCurrencyUnit())}</span></div> : null}
                                                   {h.newSalePrice != null ? <div>قیمت فروش: <span className="font-black text-slate-900 dark:text-slate-50">{formatCurrencyText(Number(h.newSalePrice || 0), readStoredCurrencyUnit())}</span></div> : null}
-                                                  {h.note ? <div className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">{h.note}</div> : null}
+                                                  {h.note ? <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{h.note}</div> : null}
                                                 </div>
                                               </div>
                                             ))}
@@ -867,14 +837,14 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
         )}
 
         {Number(ledgerDirectory?.summary?.total || 0) > 0 ? (
-          <footer className="customers-directory-v73__pagination people-directory-pagination mt-5" aria-label="صفحه‌بندی دفتر همکار">
-            <div className="customers-directory-v73__pagination-size">
-              <span>تعداد در صفحه</span>
+          <footer className="mt-5 flex flex-col gap-3 border-t border-slate-200 pt-4 text-xs font-bold text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:flex-row sm:items-center sm:justify-between" aria-label="صفحه‌بندی دفتر همکار">
+            <div className="flex items-center gap-2">
+              <span className="whitespace-nowrap">تعداد در صفحه</span>
               <SelectField
                 value={ledgerPageSize}
                 onValueChange={setLedgerPageSize}
                 ariaLabel="تعداد تراکنش دفتر همکار در هر صفحه"
-                size="sm"
+                size="md"
                 options={[
                   { value: '25', label: '۲۵' },
                   { value: '50', label: '۵۰' },
@@ -883,19 +853,19 @@ const PartnerLedgerWorkspaceSection: React.FC<Props> = ({ ctx }) => {
               />
             </div>
             <nav className="flex items-center gap-2" aria-label="صفحه‌بندی تراکنش‌های همکار">
-              <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={ledgerLoading || Number(ledgerPage || 1) <= 1} onClick={() => setLedgerPage((current: number) => Math.max(1, current - 1))} aria-label="صفحه قبل" leftIcon={<i className="fa-solid fa-chevron-right" />} />
-              <span className="min-w-[110px] text-center text-xs font-bold text-slate-500 dark:text-slate-400">
+              <Button type="button" variant="secondary" size="md" autoIcon={false} disabled={ledgerLoading || Number(ledgerPage || 1) <= 1} onClick={() => setLedgerPage((current: number) => Math.max(1, current - 1))} aria-label="صفحه قبل" leftIcon={<i className="fa-solid fa-chevron-right" />} />
+              <span className="min-w-28 text-center text-xs font-bold text-slate-500 dark:text-slate-400">
                 صفحه {Number(ledgerDirectory?.page || ledgerPage || 1).toLocaleString('fa-IR')} از {Number(ledgerDirectory?.totalPages || 1).toLocaleString('fa-IR')}
               </span>
-              <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={ledgerLoading || Number(ledgerPage || 1) >= Number(ledgerDirectory?.totalPages || 1)} onClick={() => setLedgerPage((current: number) => Math.min(Number(ledgerDirectory?.totalPages || 1), current + 1))} aria-label="صفحه بعد" leftIcon={<i className="fa-solid fa-chevron-left" />} />
+              <Button type="button" variant="secondary" size="md" autoIcon={false} disabled={ledgerLoading || Number(ledgerPage || 1) >= Number(ledgerDirectory?.totalPages || 1)} onClick={() => setLedgerPage((current: number) => Math.min(Number(ledgerDirectory?.totalPages || 1), current + 1))} aria-label="صفحه بعد" leftIcon={<i className="fa-solid fa-chevron-left" />} />
             </nav>
             <span>
               نمایش {Number(ledgerDirectory?.total || 0) ? (((Number(ledgerDirectory?.page || 1) - 1) * Number(ledgerDirectory?.pageSize || ledgerPageSize)) + 1).toLocaleString('fa-IR') : '۰'} تا {Math.min(Number(ledgerDirectory?.total || 0), Number(ledgerDirectory?.page || 1) * Number(ledgerDirectory?.pageSize || ledgerPageSize)).toLocaleString('fa-IR')} از {Number(ledgerDirectory?.total || 0).toLocaleString('fa-IR')} رکورد
             </span>
           </footer>
         ) : null}
-        {ledgerLoading ? <div className="mt-3 text-center text-xs font-semibold text-slate-400"><i className="fa-solid fa-spinner fa-spin ml-2" />در حال به‌روزرسانی دفتر…</div> : null}
-      </div>
+        {ledgerLoading ? <div className="mt-3 text-center text-xs font-semibold text-slate-400"><i className="fa-solid fa-spinner fa-spin me-2" />در حال به‌روزرسانی دفتر…</div> : null}
+      </section>
     </>
   );
 };

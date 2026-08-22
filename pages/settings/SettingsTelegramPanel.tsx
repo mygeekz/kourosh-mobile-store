@@ -158,6 +158,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
         if (publicUrl && ['PUBLIC_URL_READY', 'MENU_SYNC_PENDING', 'MENU_SYNCED', 'ERROR'].includes(String(data?.phase || ''))) {
           setBusinessInfo((previous) => {
             const current = previous as TelegramBusinessInfo;
+            if (current.miniapp_public_access_mode === 'stable_tunnel') return previous;
             if (String(current.telegram_miniapp_public_url || '').trim() === publicUrl && current.miniapp_public_access_mode === 'external_tunnel') return previous;
             return { ...current, miniapp_public_access_mode: 'external_tunnel', telegram_miniapp_public_url: publicUrl };
           });
@@ -213,7 +214,7 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
   const telegramMiniAppUrl = String(telegramInfo.telegram_miniapp_public_url || '').trim();
   const explicitMiniAppMode = String(telegramInfo.miniapp_public_access_mode || '').trim();
   const legacyPublicMode = String(telegramInfo.telegram_public_access_mode || '').trim();
-  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'relay'].includes(explicitMiniAppMode)
+  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'stable_tunnel', 'relay'].includes(explicitMiniAppMode)
     ? explicitMiniAppMode
     : legacyPublicMode === 'cloud_managed' ? 'relay' : legacyPublicMode === 'self_hosted' ? 'self_hosted' : legacyPublicMode === 'disabled' ? 'disabled' : telegramMiniAppUrl ? 'self_hosted' : 'disabled';
   const relayProvider = String(telegramInfo.relay_provider || '').trim() === 'custom' ? 'custom' : 'managed_kourosh';
@@ -226,6 +227,8 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
   const cloudConnected = cloudConnectionState === 'connected';
   const cloudTelegramReady = cloudConnected && String(telegramInfo.kourosh_cloud_telegram_relay_healthy || '') === '1';
   const cloudMiniAppReady = cloudConnected && String(telegramInfo.kourosh_cloud_miniapp_relay_healthy || '') === '1' && Boolean(String(telegramInfo.kourosh_cloud_assigned_public_url || '').trim());
+  const hasMainMiniApp = Boolean(tgDiagnostics?.bot?.data?.result?.has_main_web_app);
+  const stableMiniAppConfigured = telegramPublicAccessMode === 'stable_tunnel' && Boolean(telegramMiniAppUrl) && Boolean(String(telegramInfo.miniapp_live_origin_url || '').trim());
   const cloudStateLabel = !cloudProvisioned
     ? 'آماده‌سازی نشده'
     : cloudConnectionState === 'connected'
@@ -240,8 +243,10 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
     : telegramPublicAccessMode === 'self_hosted'
       ? { label: telegramMiniAppUrl ? 'میزبانی شخصی آماده تنظیم Gateway' : 'Public HTTPS URL لازم است', tone: telegramMiniAppUrl ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' }
       : telegramPublicAccessMode === 'external_tunnel'
-        ? { label: telegramMiniAppUrl ? 'URL تانل ثبت شده' : 'Public HTTPS URL تانل لازم است', tone: telegramMiniAppUrl ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' }
-        : { label: cloudMiniAppReady ? 'Mini App Relay آماده' : `Relay: ${cloudStateLabel}`, tone: cloudMiniAppReady ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' };
+        ? { label: telegramMiniAppUrl ? 'URL تانل موقت ثبت شده' : 'Public HTTPS URL تانل لازم است', tone: telegramMiniAppUrl ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' }
+        : telegramPublicAccessMode === 'stable_tunnel'
+          ? { label: stableMiniAppConfigured ? 'URL ثابت Production آماده است' : 'URL ثابت عمومی و Live Origin لازم است', tone: stableMiniAppConfigured ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' }
+          : { label: cloudMiniAppReady ? 'Mini App Relay آماده' : `Relay: ${cloudStateLabel}`, tone: cloudMiniAppReady ? 'text-emerald-700 dark:text-emerald-300' : 'text-amber-700 dark:text-amber-300' };
 
   return (
     <>
@@ -320,11 +325,12 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                       <SelectField id="miniapp_public_access_mode" name="miniapp_public_access_mode" value={telegramPublicAccessMode} onChange={handleBusinessInfoChange} wrapperClassName="mt-3 mb-0">
                         <option value="disabled">غیرفعال</option>
                         <option value="self_hosted">میزبانی شخصی</option>
-                        <option value="external_tunnel">تانل خارجی</option>
+                        <option value="external_tunnel">تانل موقت / عیب‌یابی</option>
+                        <option value="stable_tunnel">تانل پایدار</option>
                         <option value="relay">رله</option>
                       </SelectField>
                       <div className={`mt-2 text-xs font-black ${telegramMiniAppState.tone}`}>{telegramMiniAppState.label}</div>
-                      <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">Tunnel lifecycle خارج از Kourosh مدیریت می‌شود؛ Kourosh هیچ command یا executable دلخواهی از Settings اجرا نمی‌کند.</p>
+                      <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">حالت پایدار از URL ثابت استفاده می‌کند؛ تانل موقت فقط برای عیب‌یابی و بررسی اتصال باقی می‌ماند.</p>
                     </div>
                   </div>
 
@@ -377,10 +383,10 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                     {cloudProvisioned && String(telegramInfo.kourosh_cloud_assigned_public_url || '').trim() && <p className="mt-3 text-xs leading-6 text-slate-500 dark:text-slate-400" dir="ltr">{String(telegramInfo.kourosh_cloud_assigned_public_url || '')}</p>}
                   </div>
 
-                  {(telegramPublicAccessMode === 'self_hosted' || telegramPublicAccessMode === 'external_tunnel') && (
+                  {(telegramPublicAccessMode === 'self_hosted' || telegramPublicAccessMode === 'external_tunnel' || telegramPublicAccessMode === 'stable_tunnel') && (
                     <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(240px,0.45fr)]" data-ui-settings-grid="form">
                       <div>
-                        <label className={labelClass} htmlFor="telegram_miniapp_public_url"><i className="fa-solid fa-globe ml-2" />{telegramPublicAccessMode === 'external_tunnel' ? 'Public HTTPS URL تانل' : 'Public HTTPS URL میزبانی شخصی'}</label>
+                        <label className={labelClass} htmlFor="telegram_miniapp_public_url"><i className="fa-solid fa-globe ml-2" />{telegramPublicAccessMode === 'stable_tunnel' ? 'نشانی Canonical ثابت Mini App' : telegramPublicAccessMode === 'external_tunnel' ? 'Public HTTPS URL تانل موقت' : 'Public HTTPS URL میزبانی شخصی'}</label>
                         <TextField type="url" id="telegram_miniapp_public_url" name="telegram_miniapp_public_url" value={telegramMiniAppUrl} onChange={handleBusinessInfoChange} className={`${inputClass} ux-ltr-token`} dir="ltr" placeholder="https://miniapp.example.com/miniapp.html" inputMode="url" />
                         <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">فقط URL صریح همین strategy استفاده می‌شود؛ هیچ fallback به Local URL، app_base_url یا Relay URL وجود ندارد.</p>
                       </div>
@@ -392,6 +398,36 @@ export default function SettingsTelegramPanel(props: SettingsTelegramPanelProps)
                         <div>Telegram Menu: {miniAppPublicSyncStatus?.telegramMenu === 'synced' ? '● همگام' : miniAppPublicSyncStatus?.telegramMenu === 'pending' ? '● در انتظار اتصال تلگرام' : miniAppPublicSyncStatus?.telegramMenu === 'error' ? 'نیازمند تلاش مجدد' : 'نامشخص'}</div>
                         {miniAppPublicSyncStatus?.message ? <div className="mt-2 text-slate-500 dark:text-slate-400">{miniAppPublicSyncStatus.message}</div> : null}
                       </div>
+                    </div>
+                  )}
+
+                  {telegramPublicAccessMode === 'stable_tunnel' && (
+                    <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2" data-ui-settings-grid="form">
+                      <div>
+                        <label className={labelClass} htmlFor="miniapp_live_origin_url"><i className="fa-solid fa-link ml-2" />نشانی HTTPS مبدأ زنده فروشگاه</label>
+                        <TextField type="url" id="miniapp_live_origin_url" name="miniapp_live_origin_url" value={String(telegramInfo.miniapp_live_origin_url || '')} onChange={handleBusinessInfoChange} className={`${inputClass} ux-ltr-token`} dir="ltr" placeholder="https://live-store.example.com/" inputMode="url" />
+                        <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">این آدرس فقط مسیر زنده فروشگاه است و با نشانی عمومی مینی‌اپ یکی نیست.</p>
+                      </div>
+                      {settingsViewMode === 'advanced' && (
+                        <div>
+                          <label className={labelClass} htmlFor="miniapp_stable_tunnel_provider">Provider دسترسی ثابت</label>
+                          <SelectField id="miniapp_stable_tunnel_provider" name="miniapp_stable_tunnel_provider" value={String(telegramInfo.miniapp_stable_tunnel_provider || 'cloudflare_named')} onChange={handleBusinessInfoChange}>
+                            <option value="cloudflare_named">Cloudflare Named Tunnel</option>
+                            <option value="external">External Stable Tunnel</option>
+                          </SelectField>
+                          <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">جزئیات Credential فقط در Runtime محلی نگه‌داری می‌شود و داخل مرورگر یا Settings ذخیره نمی‌شود.</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {telegramPublicAccessMode === 'stable_tunnel' && (
+                    <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3 text-xs leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300">
+                      <div className="font-black text-slate-800 dark:text-slate-100">Main Mini App / BotFather</div>
+                      <div className="mt-1">{hasMainMiniApp ? '● Main Mini App در Telegram فعال است.' : '● Main Mini App هنوز در BotFather فعال تشخیص داده نشده است.'}</div>
+                      <div>URL قابل ثبت یک‌باره: <span className="ux-ltr-token font-bold" dir="ltr">{telegramMiniAppUrl || '—'}</span></div>
+                      <div>Menu Button کوروش روی همین URL ثابت همگام می‌شود؛ Restart ویندوز، کوروش یا Named Tunnel نباید این URL را تغییر دهد.</div>
+                      <div className="mt-1 text-slate-500 dark:text-slate-400">تنظیم Main Mini App در BotFather یک عملیات دستی یک‌باره است؛ کوروش آن را هنگام هر Restart بازنویسی نمی‌کند.</div>
                     </div>
                   )}
 

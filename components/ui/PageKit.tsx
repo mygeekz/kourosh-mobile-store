@@ -93,6 +93,9 @@ const PageKit: React.FC<Props> = ({
   hideAutoHeader = false,
 }) => {
   const location = useLocation();
+  const hasPresentedContentRef = React.useRef(!isLoading);
+  if (!isLoading) hasPresentedContentRef.current = true;
+  const showInitialLoadingState = Boolean(isLoading && !hasPresentedContentRef.current);
   const isReportRoute = location.pathname.startsWith('/reports');
   const hasActionBar = Boolean(onExport || onPrint || onReset || actionLeft || actionRight);
   const headerWrapClass = stickyToolbar ? 'sticky top-0 z-10' : '';
@@ -186,15 +189,26 @@ const PageKit: React.FC<Props> = ({
         </div>
       ) : null}
 
-      {isLoading ? (
-        <div className="space-y-3">
-          <div className="app-inline-alert app-inline-alert--info flex items-start gap-3">
-            <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center border-0 bg-transparent text-sky-500 shadow-none dark:text-sky-300">
-              <i className="fa-solid fa-spinner fa-spin" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1 space-y-1">
-              <p className="m-0 text-sm font-black leading-6 text-text">در حال آماده‌سازی اطلاعات این بخش</p>
-              <p className="m-0 text-xs leading-6 text-muted">چند لحظه صبر کنید؛ داده‌ها، فیلترها و وضعیت عملیات در حال دریافت اطلاعات هستند.</p>
+      {showInitialLoadingState ? (
+        <div className="space-y-3" role="status" aria-live="polite">
+          <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
+            <div className="flex min-w-0 items-center gap-3 px-4 py-3.5 sm:px-5 sm:py-4">
+              <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2 dark:border-slate-700 dark:bg-slate-900">
+                <img src="/kourosh-logo.svg" alt="" className="h-full w-full object-contain" aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                  <p className="m-0 text-sm font-black leading-6 text-slate-900 dark:text-slate-50">در حال آماده‌سازی {title}</p>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-sky-700 dark:text-sky-300">
+                    <i className="fa-solid fa-spinner fa-spin" aria-hidden="true" />
+                    دریافت اطلاعات
+                  </span>
+                </div>
+                <p className="mt-0.5 mb-0 text-xs font-medium leading-6 text-slate-600 dark:text-slate-300">اطلاعات، فیلترها و وضعیت‌های این بخش در حال همگام‌سازی هستند؛ صفحه پس از دریافت داده‌ها خودکار آماده می‌شود.</p>
+              </div>
+            </div>
+            <div className="h-1 w-full overflow-hidden bg-slate-100 dark:bg-slate-900" aria-hidden="true">
+              <div className="h-full w-2/5 animate-pulse rounded-full bg-sky-500" />
             </div>
           </div>
           <div className="grid gap-3">
@@ -210,7 +224,9 @@ const PageKit: React.FC<Props> = ({
           onAction={onEmptyAction}
         />
       ) : (
-        children
+        <div aria-busy={Boolean(isLoading)} data-ui-page-refreshing={isLoading ? 'true' : 'false'}>
+          {children}
+        </div>
       )}
     </PageShell>
   );

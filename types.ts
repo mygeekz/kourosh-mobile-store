@@ -597,6 +597,8 @@ export interface SalesOrderPayload {
 export interface Customer {
   id: number;
   fullName: string;
+  /** کد ملی ۱۰ رقمی؛ منبع مشخصات هویتی خریدار در قراردادهای اقساطی */
+  nationalCode?: string | null;
   phoneNumber: string | null;
   address: string | null;
   notes: string | null;
@@ -614,6 +616,7 @@ export interface Customer {
 
 export interface NewCustomerData { // For frontend form
   fullName: string;
+  nationalCode?: string;
   phoneNumber?: string;
   address?: string;
   notes?: string;
@@ -1023,6 +1026,10 @@ export interface SettingItem {
 
 export interface BusinessInformationSettings {
   store_name?: string;
+  /** نام و نام خانوادگی فروشنده/نماینده قانونی برای قراردادهای چاپی */
+  installment_contract_seller_name?: string;
+  /** کد ملی فروشنده/نماینده قانونی برای قراردادهای چاپی */
+  installment_contract_seller_national_code?: string;
   store_address_line1?: string;
   store_address_line2?: string;
   store_city_state_zip?: string;
@@ -1252,11 +1259,13 @@ export interface BusinessInformationSettings {
   /** Telegram outbound network strategy. Legacy cloud_relay is accepted only by the compatibility resolver. */
   telegram_transport_mode?: 'disabled' | 'direct' | 'proxy' | 'relay' | 'cloud_relay';
   /** Canonical Mini App public access strategy; independent from Telegram outbound transport. */
-  miniapp_public_access_mode?: 'disabled' | 'self_hosted' | 'external_tunnel' | 'relay';
+  miniapp_public_access_mode?: 'disabled' | 'self_hosted' | 'external_tunnel' | 'stable_tunnel' | 'relay';
   /** Legacy v151-v158 Mini App public access key retained for explicit compatibility only. */
   telegram_public_access_mode?: 'disabled' | 'self_hosted' | 'cloud_managed';
   /** Explicit public HTTPS URL for self-hosted or external-tunnel Mini App access. */
   telegram_miniapp_public_url?: string;
+  miniapp_live_origin_url?: string;
+  miniapp_stable_tunnel_provider?: string;
   /** Relay provider used only when a Telegram or Mini App strategy selects relay. */
   relay_provider?: 'managed_kourosh' | 'custom';
   /** Custom/self-hosted Relay Control Plane HTTPS URL. */
@@ -1453,6 +1462,7 @@ export interface SaleDataPayload { // For POST /api/sales
 
 export interface CustomerPayload { // For POST/PUT /api/customers
   fullName: string;
+  nationalCode?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
   notes?: string | null;
@@ -1490,6 +1500,7 @@ export interface OldMobilePhonePayload { // For old endpoint, if used
 
 // --- Types for Installment Sales ---
 export type CheckStatus = "نزد فروشنده" | "در جریان وصول" | "نقد شد" | "برگشت خورد" | "به مشتری برگشت داده شده";
+export type CheckOwnershipType = 'buyer' | 'third_party';
 export type InstallmentPaymentStatus = "پرداخت نشده" | "پرداخت جزئی" | "پرداخت شده" | "دیرکرد";
 export type OverallInstallmentStatus = "در حال پرداخت" | "تکمیل شده" | "معوق" | "فسخ شده";
 
@@ -1497,6 +1508,14 @@ export interface InstallmentCheckInfo {
   id?: number; // Optional for new checks before saving
   checkNumber: string;
   bankName: string;
+  /** مالک حساب/صادرکننده چک؛ مبنای انتخاب بندهای قرارداد چاپی */
+  ownershipType?: CheckOwnershipType | null;
+  /** نام صادرکننده چک برای درج در قرارداد چاپی */
+  issuerName?: string | null;
+  /** کد ملی صادرکننده چک؛ برای رکوردهای قدیمی ممکن است خالی باشد */
+  issuerNationalCode?: string | null;
+  /** شناسه ۱۶ رقمی صیادی؛ برای رکوردهای قدیمی ممکن است خالی باشد */
+  sayadiId?: string | null;
   dueDate: string; // Shamsi Date YYYY/MM/DD from DatePicker, stored as Shamsi
   amount: number;
   status: CheckStatus;
@@ -1543,6 +1562,18 @@ export interface InstallmentSale {
   id: number;
   customerId: number;
   customerFullName?: string; // For display in list
+  /** snapshot هویتی خریدار در زمان ثبت قرارداد */
+  buyerFullName?: string | null;
+  buyerNationalCode?: string | null;
+  buyerPhoneNumber?: string | null;
+  buyerAddress?: string | null;
+  /** snapshot هویتی فروشنده/فروشگاه در زمان ثبت قرارداد */
+  sellerFullName?: string | null;
+  sellerNationalCode?: string | null;
+  sellerStoreName?: string | null;
+  sellerPhoneNumber?: string | null;
+  sellerAddress?: string | null;
+  contractVersion?: string | null;
   phoneId?: number | null;
   phoneModel?: string; // For display
   phoneImei?: string;  // For display
@@ -1551,7 +1582,19 @@ export interface InstallmentSale {
   phoneSaleDate?: string | null;
   saleType?: 'installment' | 'check';
   itemsSummary?: string | null;
-  items?: Array<{ itemType: 'phone' | 'inventory' | 'service'; itemId?: number | null; description: string; quantity: number; unitPrice: number; buyPrice?: number; totalPrice: number }>;
+  items?: Array<{
+    itemType: 'phone' | 'inventory' | 'service';
+    itemId?: number | null;
+    description: string;
+    quantity: number;
+    unitPrice: number;
+    buyPrice?: number;
+    totalPrice: number;
+    phoneModel?: string | null;
+    phoneColor?: string | null;
+    phoneStorage?: string | null;
+    phoneImei?: string | null;
+  }>;
   actualSalePrice: number;
   downPayment: number;
   numberOfInstallments: number;
@@ -1631,6 +1674,8 @@ export interface InstallmentSale {
 
 export interface NewInstallmentSaleData { // For frontend form
   customerId: number | string | null;
+  /** کد ملی خریدار برای snapshot قرارداد چاپی */
+  buyerNationalCode?: string;
   phoneId: number | string | null;
   actualSalePrice: number | string;
   downPayment: number | string;

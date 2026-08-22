@@ -284,6 +284,413 @@
   }
 }
 
+/* v203 — Partner detail compact density contract.
+   This is intentionally scoped to the partner detail root so customer pages,
+   finance semantics and modal sizing remain untouched. */
+.partner-detail-page-root.partner-detail-compact-v203 {
+  --partner-detail-compact-gap: 12px;
+}
+
+.partner-detail-page-root.partner-detail-compact-v203 > * + * {
+  margin-top: var(--partner-detail-compact-gap) !important;
+}
+
+.partner-detail-compact-v203 :where([data-ui-partner-header-shell], [data-ui-partner-detail-shell]) {
+  padding: 8px !important;
+}
+
+.partner-detail-compact-v203 [data-ui-partner-detail-shell] > * + * {
+  margin-top: var(--partner-detail-compact-gap) !important;
+}
+
+.partner-detail-compact-v203 [data-ui-partner-header-shell] .detail-hero-card__head {
+  padding: 12px !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-hero__top {
+  gap: 12px !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-hero__top > div:first-child {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .detail-hero-card__icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 14px !important;
+  font-size: 16px !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-hero__top .space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 5px !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-hero__top h2 {
+  font-size: 20px !important;
+  line-height: 1.4 !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-hero__top h2 + p {
+  margin-top: 2px !important;
+  font-size: 11px !important;
+  line-height: 1.75 !important;
+}
+
+.partner-detail-compact-v203 .customer-hero-chip-row {
+  margin-top: 8px !important;
+  gap: 5px !important;
+}
+
+.partner-detail-compact-v203 .customer-hero-chip-row :where(.customer-hero-chip, .financial-status-badge) {
+  min-height: 26px !important;
+  padding: 3px 8px !important;
+  gap: 5px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-actions {
+  gap: 6px !important;
+}
+
+.partner-detail-compact-v203 .customer-detail-actions .people-action-btn {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding-inline: 10px !important;
+  border-radius: 11px !important;
+  font-size: 10px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-dashboard {
+  margin-top: 10px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-dashboard > * + * {
+  margin-top: 10px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-dashboard-grid {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-card {
+  padding: 11px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-balance-value,
+.partner-detail-compact-v203 .partner-detail-risk-label {
+  margin-top: 6px !important;
+  font-size: 19px !important;
+  line-height: 1.5 !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-balance-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 13px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-balance-icon i {
+  font-size: 15px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-recommendation {
+  margin-top: 8px !important;
+  padding: 6px 9px !important;
+  border-radius: 11px !important;
+  font-size: 10px !important;
+  line-height: 1.7 !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-ledger-jump {
+  margin-top: 7px !important;
+  height: 32px !important;
+  border-radius: 11px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-card > .mb-4 {
+  margin-bottom: 8px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-card > .grid {
+  border-radius: 14px !important;
+}
+
+.partner-detail-compact-v203 .customer-overview-metric-cell {
+  min-height: 82px !important;
+  padding: 9px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-finance-metric-value {
+  margin-top: 6px !important;
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-finance-metric-icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-risk-ring,
+.partner-detail-compact-v203 .partner-detail-risk-ring-svg {
+  width: 108px !important;
+  height: 108px !important;
+  min-width: 108px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-risk-ring {
+  margin-top: 6px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-risk-score {
+  font-size: 23px !important;
+}
+
+.partner-detail-compact-v203 .partner-detail-risk-summary {
+  margin-top: 6px !important;
+  padding: 5px 8px !important;
+  border-radius: 11px !important;
+  font-size: 10px !important;
+}
+
+.partner-detail-compact-v203 :where(
+  [data-partner-overview="true"],
+  .partner-phone-capital-section,
+  .partner-settlement-workspace,
+  .partner-telegram-customer-copy-v119,
+  .detail-card.partner-customer-sync-ledger,
+  .partner-purchase-history-section
+) {
+  margin: 0 !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 [data-partner-overview="true"] > .mb-4 {
+  margin-bottom: 9px !important;
+}
+
+.partner-detail-compact-v203 [data-partner-overview="true"] > .grid {
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 [data-partner-overview="true"] article {
+  padding: 10px !important;
+  border-radius: 14px !important;
+}
+
+.partner-detail-compact-v203 [data-partner-overview="true"] article .mt-2 {
+  margin-top: 5px !important;
+  font-size: 15px !important;
+}
+
+.partner-detail-compact-v203 [data-partner-overview="true"] article .h-9.w-9 {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111 {
+  margin-top: 0 !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__header {
+  gap: 5px !important;
+  margin-bottom: 9px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__copy h3 {
+  margin-top: 4px !important;
+  font-size: clamp(17px, 1.4vw, 20px) !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__copy p {
+  margin-top: 3px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__grid {
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__card,
+.partner-detail-compact-v203 .partner-overview-v111__grid > .partner-overview-v111__card:nth-child(-n+3) {
+  min-height: 88px !important;
+  padding: 9px 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__card-inner,
+.partner-detail-compact-v203 .partner-overview-v111__metric {
+  min-height: 68px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__value,
+.partner-detail-compact-v203 .partner-overview-v111__grid > .partner-overview-v111__card:nth-child(-n+3) .partner-overview-v111__value {
+  margin-top: 4px !important;
+  font-size: clamp(14px, 1.15vw, 18px) !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__sub {
+  padding-top: 5px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-detail-compact-v203 .partner-overview-v111__icon,
+.partner-detail-compact-v203 .partner-overview-v111__grid > .partner-overview-v111__card:nth-child(-n+3) .partner-overview-v111__icon {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  border-radius: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-header {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-title {
+  margin-top: 6px !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-description {
+  margin-top: 3px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-summary-card {
+  width: 270px !important;
+  flex-basis: 270px !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-summary-value {
+  margin-top: 6px !important;
+  font-size: 19px !important;
+  line-height: 1.55 !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-summary-icon {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 9px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-metrics {
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-metric-card {
+  padding: 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-table-shell {
+  margin-top: 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__header {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__header h3 {
+  margin-top: 7px !important;
+  font-size: 18px !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__header p {
+  margin-top: 4px !important;
+  font-size: 11px !important;
+  line-height: 1.8 !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__header > :last-child {
+  min-height: 34px !important;
+  padding-inline: 10px !important;
+  border-radius: 11px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__metrics {
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 .partner-settlement-workspace__metrics article {
+  padding: 10px !important;
+  border-radius: 14px !important;
+}
+
+.partner-detail-compact-v203 .partner-telegram-header-v124 {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-telegram-header-v124__title {
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 .partner-telegram-header-v124__icon {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-telegram-searchbox-v120 {
+  height: 36px !important;
+  border-radius: 11px !important;
+}
+
+.partner-detail-compact-v203 .partner-purchase-history-header {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px !important;
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-purchase-history-filters {
+  padding: 6px !important;
+  border-radius: 12px !important;
+  gap: 5px !important;
+}
+
+.partner-detail-compact-v203 :where(.partner-customer-sync-card-head, .partner-customer-sync-ledger-head) {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+@container partner-detail (max-width: 760px) {
+  .partner-detail-compact-v203 .partner-phone-capital-summary-card {
+    width: 100% !important;
+    flex-basis: auto !important;
+  }
+
+  .partner-detail-compact-v203 :where([data-ui-partner-header-shell], [data-ui-partner-detail-shell]) {
+    padding-inline: 4px !important;
+  }
+}
+
 @media (max-width: 420px) {
   .partner-detail-responsive-root,
   .detail-page-shell.people-detail-apple.partner-detail-apple {
@@ -869,6 +1276,22 @@ html.dark .partner-detail-apple .partner-ledger-quick-item {
   max-width: 100% !important;
 }
 
+.partner-detail-responsive-root .partner-purchase-history-event-grid,
+.partner-detail-responsive-root .partner-purchase-history-event-card,
+.partner-detail-responsive-root .partner-purchase-history-event-card > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.partner-detail-responsive-root .partner-purchase-history-event-card {
+  overflow: hidden !important;
+}
+
+.partner-detail-responsive-root .partner-purchase-history-event-card :where(div, span, p) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .partner-detail-responsive-root .partner-purchase-history-filters {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -1150,6 +1573,586 @@ html.dark .partner-detail-apple .partner-ledger-quick-item {
   }
 }
 
+/* v204 — screenshot-driven PartnerDetail precision polish.
+   Final cascade layer for risk copy, phone-capital dashboard/table and Telegram. */
+.partner-detail-polish-v204 .customer-overview-dashboard-grid {
+  align-items: stretch !important;
+}
+
+.partner-detail-polish-v204 .customer-overview-dashboard-grid > .customer-overview-card:last-child {
+  display: flex !important;
+  min-width: 0 !important;
+  flex-direction: column !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-label {
+  max-width: 100% !important;
+  margin-top: 4px !important;
+  font-size: 18px !important;
+  line-height: 1.45 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-ring,
+.partner-detail-polish-v204 .partner-detail-risk-ring-svg {
+  width: 112px !important;
+  height: 112px !important;
+  min-width: 112px !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-ring-copy {
+  gap: 2px !important;
+  line-height: 1 !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-score {
+  font-size: 22px !important;
+  line-height: 1 !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-scale {
+  margin-top: 0 !important;
+  font-size: 9px !important;
+  line-height: 1.2 !important;
+}
+
+.partner-detail-polish-v204 .partner-detail-risk-summary {
+  width: 100% !important;
+  margin-top: auto !important;
+}
+
+/* Phone-capital overview: remove the legacy 196px card and decorative ring. */
+.partner-detail-polish-v204 .partner-phone-capital-header,
+.partner-detail-polish-v204 .partner-phone-capital-section .partner-phone-capital-header {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: 260px minmax(0, 1fr) !important;
+  grid-template-areas: "summary copy" !important;
+  align-items: stretch !important;
+  gap: 12px !important;
+  margin: 0 0 10px !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-copy {
+  grid-area: copy !important;
+  direction: rtl !important;
+  display: flex !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-copy > * {
+  width: auto !important;
+  max-width: 100% !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  align-self: flex-end !important;
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-eyebrow {
+  min-height: 26px !important;
+  padding: 4px 9px !important;
+  gap: 5px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-title {
+  width: 100% !important;
+  margin-top: 5px !important;
+  font-size: 17px !important;
+  line-height: 1.55 !important;
+  letter-spacing: -.015em !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-description {
+  width: 100% !important;
+  margin-top: 3px !important;
+  font-size: 10.5px !important;
+  line-height: 1.75 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-section .partner-phone-capital-summary-card {
+  grid-area: summary !important;
+  width: 260px !important;
+  min-width: 0 !important;
+  max-width: 260px !important;
+  min-height: 106px !important;
+  height: auto !important;
+  padding: 10px 12px !important;
+  gap: 4px !important;
+  align-content: center !important;
+  justify-items: stretch !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-card::before {
+  content: none !important;
+  display: none !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-card > .flex {
+  width: 100% !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-label {
+  font-size: 10.5px !important;
+  line-height: 1.45 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-icon {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  border-radius: 9px !important;
+  font-size: 11px !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-value {
+  margin-top: 3px !important;
+  font-size: 17px !important;
+  line-height: 1.45 !important;
+  letter-spacing: 0 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-note {
+  font-size: 9.5px !important;
+  line-height: 1.55 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-top: 0 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card {
+  min-height: 84px !important;
+  padding: 9px 10px !important;
+  border-radius: 13px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card > .flex {
+  flex-direction: row !important;
+  gap: 7px !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card .partner-phone-capital-metric-label {
+  font-size: 10.5px !important;
+  line-height: 1.45 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card .mt-2.truncate {
+  margin-top: 4px !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card .mt-1 {
+  margin-top: 3px !important;
+  font-size: 9.5px !important;
+  line-height: 1.55 !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card .flex.h-9.w-9 {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  border-radius: 9px !important;
+  font-size: 11px !important;
+}
+
+/* Operational capital workspace: right-aligned title, compact controls and stable data representation. */
+.partner-detail-polish-v204 .partner-operational-table-v105 {
+  margin-top: 12px !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__header {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  grid-template-areas: "filters title" !important;
+  gap: 10px !important;
+  align-items: start !important;
+  padding: 10px 12px 8px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__title-block {
+  grid-area: title !important;
+  direction: rtl !important;
+  width: 100% !important;
+  justify-self: end !important;
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__eyebrow {
+  min-height: 26px !important;
+  padding: 4px 9px !important;
+  gap: 5px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__title-block h4 {
+  margin-top: 5px !important;
+  font-size: 18px !important;
+  line-height: 1.5 !important;
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__title-block p {
+  margin-top: 3px !important;
+  font-size: 10.5px !important;
+  line-height: 1.7 !important;
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__filters {
+  grid-area: filters !important;
+  direction: rtl !important;
+  justify-self: start !important;
+  flex-wrap: nowrap !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  border-radius: 12px !important;
+  overflow: visible !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__filter {
+  height: 30px !important;
+  min-width: 72px !important;
+  padding: 0 8px !important;
+  gap: 5px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__filter b {
+  width: 19px !important;
+  min-width: 19px !important;
+  height: 19px !important;
+  font-size: 8.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__summary {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  gap: 7px !important;
+  padding: 0 12px 9px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__summary-card {
+  min-height: 62px !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  gap: 2px 8px !important;
+  padding: 8px !important;
+  border-radius: 12px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__summary-card span {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 9px !important;
+  font-size: 11px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__summary-card small {
+  font-size: 9px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__summary-card strong {
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__toolbar {
+  grid-template-columns: minmax(0, 1fr) 220px 118px !important;
+  gap: 7px !important;
+  padding: 0 12px 10px !important;
+}
+
+.partner-detail-polish-v204 :where(
+  .partner-operational-table-v105__search,
+  .partner-operational-table-v105__select,
+  .partner-operational-table-v105__tool-btn
+) {
+  height: 34px !important;
+  min-height: 34px !important;
+  border-radius: 10px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__tool-btn {
+  min-width: 0 !important;
+  padding-inline: 10px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-table-scroll {
+  padding: 4px 6px 8px !important;
+  scrollbar-gutter: stable !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105 .partner-capital-compact-table {
+  width: 100% !important;
+  min-width: 1220px !important;
+  table-layout: fixed !important;
+  border-spacing: 0 6px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105 .partner-capital-compact-table th {
+  height: 38px !important;
+  padding-inline: 10px !important;
+  font-size: 10px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105 .partner-capital-compact-table td {
+  padding: 10px !important;
+  font-size: 10.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105 .partner-capital-status-chip {
+  min-height: 24px !important;
+  padding: 3px 8px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105 .finance-table-action {
+  height: 30px !important;
+  min-width: 94px !important;
+  padding-inline: 9px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+}
+
+/* Telegram: compact shell and a content-width split that never squeezes the conversation. */
+.partner-detail-polish-v204 .partner-telegram-compact-v204 {
+  padding: 10px !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-layout-v204 {
+  display: grid !important;
+  grid-template-columns: 248px minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-sidebar-v204 > * + * {
+  margin-top: 8px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-sidebar-v204 > div,
+.partner-detail-polish-v204 .partner-telegram-main-v204 {
+  padding: 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-sidebar-v204 > div :where(.rounded-\[28px\], .rounded-\[24px\], .rounded-2xl) {
+  border-radius: 11px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-sidebar-v204 > div .p-4 {
+  padding: 9px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-sidebar-v204 :where(.h-16.w-16) {
+  width: 42px !important;
+  height: 42px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-main-head-v204 {
+  margin-bottom: 9px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-main-head-v204 > * + * {
+  margin-top: 7px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124 {
+  gap: 8px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__title {
+  gap: 7px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__icon i {
+  font-size: 15px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__copy h2 {
+  font-size: 17px !important;
+  line-height: 1.45 !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__copy p {
+  margin-top: 2px !important;
+  font-size: 10px !important;
+  line-height: 1.55 !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__actions {
+  gap: 5px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-header-v124__actions > :where(button, span) {
+  height: 30px !important;
+  min-height: 30px !important;
+  min-width: 58px !important;
+  padding-inline: 8px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-searchbox-v120 {
+  width: min(100%, 420px) !important;
+  height: 34px !important;
+  border-radius: 10px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-timeline-panel-v204,
+.partner-detail-polish-v204 .partner-telegram-composer-v204 {
+  padding: 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-timeline-panel-v204 > .mb-4 {
+  margin-bottom: 8px !important;
+  padding: 8px 10px !important;
+  border-radius: 11px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-timeline-panel-v204 > .relative {
+  padding: 9px !important;
+  border-radius: 12px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-timeline-panel-v204 .min-h-\[250px\] {
+  min-height: 180px !important;
+  max-height: 320px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-composer-v204 {
+  margin-top: 9px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-composer-v204 > .mb-3 {
+  margin-bottom: 7px !important;
+  gap: 5px !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-composer-v204 button {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding-inline: 9px !important;
+  border-radius: 10px !important;
+  font-size: 9.5px !important;
+}
+
+@container partner-detail (max-width: 1050px) {
+  .partner-detail-polish-v204 .partner-phone-capital-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .partner-detail-polish-v204 .partner-phone-capital-mobile-list {
+    display: grid !important;
+    gap: 8px !important;
+    padding: 6px !important;
+  }
+
+  .partner-detail-polish-v204 .partner-phone-capital-table-view {
+    display: none !important;
+  }
+
+  .partner-detail-polish-v204 .partner-phone-capital-mobile-list > div {
+    padding: 10px !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+  }
+
+  .partner-detail-polish-v204 .partner-telegram-layout-v204 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@container partner-detail (max-width: 820px) {
+  .partner-detail-polish-v204 .partner-phone-capital-header,
+  .partner-detail-polish-v204 .partner-phone-capital-section .partner-phone-capital-header {
+    direction: rtl !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "copy" "summary" !important;
+  }
+
+  .partner-detail-polish-v204 .partner-phone-capital-section .partner-phone-capital-summary-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .partner-detail-polish-v204 .partner-operational-table-v105__header {
+    direction: rtl !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas: "title" "filters" !important;
+  }
+
+  .partner-detail-polish-v204 .partner-operational-table-v105__filters {
+    width: 100% !important;
+    justify-self: stretch !important;
+    overflow-x: auto !important;
+  }
+
+  .partner-detail-polish-v204 .partner-operational-table-v105__filter {
+    flex: 1 0 72px !important;
+  }
+
+  .partner-detail-polish-v204 .partner-operational-table-v105__toolbar {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@container partner-detail (max-width: 560px) {
+  .partner-detail-polish-v204 .partner-phone-capital-metrics,
+  .partner-detail-polish-v204 .partner-operational-table-v105__summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-detail-polish-v204 .partner-telegram-header-v124__actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+
+  .partner-detail-polish-v204 .partner-telegram-header-v124__actions > :where(button, span) {
+    width: 100% !important;
+  }
+
+  .partner-detail-polish-v204 .partner-telegram-timeline-panel-v204 [class*="max-w-"] {
+    max-width: 90% !important;
+  }
+}
+
 @container partner-detail (max-width: 440px) {
   .partner-detail-responsive-root {
     padding-inline: 6px !important;
@@ -1229,4 +2232,110 @@ html.dark .partner-detail-apple .partner-ledger-quick-item {
   .kourosh-modal__panel .partner-settlement-desk :where(button, .ux-btn, input, select, textarea) {
     max-width: 100% !important;
   }
+}
+
+/* v203 final cascade lock — keep the compact contract after all responsive foundations. */
+.partner-detail-responsive-root.partner-detail-compact-scope-fallback,
+.partner-detail-compact-v203 [data-ui-partner-detail-shell] {
+  padding: 8px !important;
+}
+
+.partner-detail-compact-v203 [data-ui-partner-detail-shell] > * + * {
+  margin-top: 12px !important;
+}
+
+.partner-detail-compact-v203 :where(
+  [data-partner-overview="true"],
+  .partner-phone-capital-section,
+  .partner-settlement-workspace,
+  .partner-telegram-customer-copy-v119,
+  .detail-card.partner-customer-sync-ledger,
+  .partner-purchase-history-section
+) {
+  margin: 0 !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-header {
+  gap: 10px !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-summary-card {
+  width: 270px !important;
+  max-width: 270px !important;
+  flex-basis: 270px !important;
+  padding: 10px 12px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-detail-compact-v203 .partner-phone-capital-metrics,
+.partner-detail-compact-v203 .partner-settlement-workspace__metrics {
+  margin-top: 10px !important;
+  gap: 8px !important;
+}
+
+.partner-detail-compact-v203 .partner-telegram-customer-copy-v119 {
+  padding: 12px !important;
+  border-radius: 18px !important;
+}
+
+.partner-detail-compact-v203 .partner-purchase-history-header {
+  margin-bottom: 10px !important;
+  padding-bottom: 10px !important;
+  gap: 10px !important;
+}
+
+@container partner-detail (max-width: 680px) {
+  .partner-detail-responsive-root.partner-detail-compact-v203,
+  .partner-detail-compact-v203 [data-ui-partner-detail-shell] {
+    padding-inline: 4px !important;
+  }
+
+  .partner-detail-compact-v203 :where(
+    [data-partner-overview="true"],
+    .partner-phone-capital-section,
+    .partner-settlement-workspace,
+    .partner-telegram-customer-copy-v119,
+    .detail-card.partner-customer-sync-ledger,
+    .partner-purchase-history-section
+  ) {
+    padding: 10px !important;
+    border-radius: 16px !important;
+  }
+
+  .partner-detail-compact-v203 .partner-phone-capital-summary-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-basis: auto !important;
+    padding: 10px 12px !important;
+  }
+}
+
+/* v204 final lock — this block intentionally remains last in the PartnerDetail cascade. */
+.partner-detail-polish-v204 .partner-phone-capital-section .partner-phone-capital-summary-card {
+  min-height: 106px !important;
+  padding: 10px 12px !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-summary-card::before {
+  content: none !important;
+  display: none !important;
+}
+
+.partner-detail-polish-v204 .partner-phone-capital-metrics > .partner-phone-capital-metric-card {
+  min-height: 84px !important;
+  padding: 9px 10px !important;
+}
+
+.partner-detail-polish-v204 .partner-operational-table-v105__title-block,
+.partner-detail-polish-v204 .partner-phone-capital-copy {
+  text-align: right !important;
+}
+
+.partner-detail-polish-v204 .partner-telegram-compact-v204 {
+  padding: 10px !important;
+  border-radius: 16px !important;
 }

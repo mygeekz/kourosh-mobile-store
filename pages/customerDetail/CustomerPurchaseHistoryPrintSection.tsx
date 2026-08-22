@@ -46,18 +46,21 @@ const CustomerPurchaseHistoryPrintSection: React.FC<Props> = ({ ctx }) => {
 {/* تاریخچه خرید */}
 
       <div id="customer-history-section" />
-      <div className="people-ledger-grid detail-card p-6 text-gray-900 dark:text-gray-100">
-        <div className="customer-history-header mb-4 flex items-center gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
-          <span className="people-chip people-chip-neutral customer-history-chip"><i className="fa-solid fa-clock-rotate-left" /> تراکنش‌ها</span>
-          <h2 className="text-xl font-black">تاریخچه خرید مشتری</h2>
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100" aria-labelledby="customer-purchase-history-title">
+        <div className="flex items-center gap-2 border-b border-slate-200 px-3 py-3 dark:border-slate-800">
+          <i className="fa-solid fa-clock-rotate-left text-sky-600" aria-hidden="true" />
+          <div>
+            <h2 id="customer-purchase-history-title" className="text-sm font-black">تاریخچه خرید مشتری</h2>
+            <p className="mt-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">فروش‌های ثبت‌شده در پرونده مشتری</p>
+          </div>
         </div>
         {purchaseHistory.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">این مشتری هنوز خریدی ثبت اطلاعات نکرده است.</p>
+          <p className="px-3 py-6 text-center text-sm text-slate-500 dark:text-slate-400">هنوز خریدی برای این مشتری ثبت نشده است.</p>
         ) : (
-          <DataTableShell className="people-table-shell" data-ui-customer-purchase-history="true">
-            <table className="min-w-[780px] divide-y divide-slate-200 text-sm dark:divide-slate-800">
-              <thead className="bg-slate-50/95 dark:bg-slate-900/80">
-                <tr className="text-right [&>th]:px-4 [&>th]:py-3 [&>th]:font-bold [&>th]:text-slate-600 dark:[&>th]:text-slate-200">
+          <DataTableShell className="w-full" data-ui-customer-purchase-history="true">
+            <table className="w-full min-w-[48rem] table-fixed divide-y divide-slate-200 text-xs dark:divide-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-900/70">
+                <tr className="text-right [&>th]:px-3 [&>th]:py-2 [&>th]:font-black [&>th]:text-slate-600 dark:[&>th]:text-slate-200">
                   <th><span className="inline-flex items-center gap-2"><i className="fa-solid fa-calendar-day text-sky-500" /> تاریخ فروش</span></th>
                   <th><span className="inline-flex items-center gap-2"><i className="fa-solid fa-box text-indigo-500" /> شرح کالا</span></th>
                   <th><span className="inline-flex items-center gap-2"><i className="fa-solid fa-credit-card text-violet-500" /> نوع خرید</span></th>
@@ -70,10 +73,10 @@ const CustomerPurchaseHistoryPrintSection: React.FC<Props> = ({ ctx }) => {
                 {purchaseHistory.map(sale => {
                   const meta = parseSaleItemMeta(sale);
                   const typeClass = meta.purchaseType === 'installment'
-                    ? 'people-chip people-chip-info'
+                      ? 'text-sky-700 dark:text-sky-300'
                     : meta.purchaseType === 'credit'
-                      ? 'people-chip people-chip-warning'
-                      : 'people-chip people-chip-success';
+                      ? 'text-amber-700 dark:text-amber-300'
+                      : 'text-emerald-700 dark:text-emerald-300';
                   const typeIcon = meta.purchaseType === 'installment'
                     ? 'fa-calendar-days'
                     : meta.purchaseType === 'credit'
@@ -81,12 +84,12 @@ const CustomerPurchaseHistoryPrintSection: React.FC<Props> = ({ ctx }) => {
                       : 'fa-wallet';
                   return (
                     <tr key={sale.id} className="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
-                      <td className="px-4 py-3 whitespace-nowrap align-middle text-slate-700 dark:text-slate-200">{formatIsoToShamsi(sale.transactionDate)}</td>
-                      <td className="px-4 py-3 align-middle text-slate-900 dark:text-slate-100">{meta.cleanName}</td>
-                      <td className="px-4 py-3 whitespace-nowrap align-middle"><span className={typeClass}><i className={`fa-solid ${typeIcon}`} /> {meta.purchaseTypeLabel}</span></td>
-                      <td className="px-4 py-3 whitespace-nowrap align-middle">{meta.imei ? <span className="people-chip people-chip-info"><i className="fa-solid fa-mobile-screen-button" /> {meta.imei}</span> : <span className="text-slate-400">-</span>}</td>
-                      <td className="px-4 py-3 whitespace-nowrap align-middle">{sale.quantity.toLocaleString('fa-IR')}</td>
-                      <td className="px-4 py-3 whitespace-nowrap align-middle font-semibold text-indigo-700 dark:text-indigo-300">{formatPrice(sale.totalPrice)}</td>
+                      <td className="whitespace-nowrap px-3 py-2.5 align-middle text-slate-700 dark:text-slate-200">{formatIsoToShamsi(sale.transactionDate)}</td>
+                      <td className="px-3 py-2.5 align-middle font-bold text-slate-900 dark:text-slate-100">{meta.cleanName}</td>
+                      <td className="whitespace-nowrap px-3 py-2.5 align-middle"><span className={`inline-flex items-center gap-1.5 font-black ${typeClass}`}><i className={`fa-solid ${typeIcon}`} /> {meta.purchaseTypeLabel}</span></td>
+                      <td className="whitespace-nowrap px-3 py-2.5 align-middle">{meta.imei ? <bdi dir="ltr" className="font-semibold text-slate-600 dark:text-slate-300">{meta.imei}</bdi> : <span className="text-slate-400">—</span>}</td>
+                      <td className="whitespace-nowrap px-3 py-2.5 align-middle">{sale.quantity.toLocaleString('fa-IR')}</td>
+                      <td className="whitespace-nowrap px-3 py-2.5 align-middle font-black text-indigo-700 dark:text-indigo-300">{formatPrice(sale.totalPrice)}</td>
                     </tr>
                   );
                 })}
@@ -94,7 +97,7 @@ const CustomerPurchaseHistoryPrintSection: React.FC<Props> = ({ ctx }) => {
             </table>
           </DataTableShell>
         )}
-      </div>
+      </section>
 
       <div id="customer-ledger-print-area" className="hidden" aria-hidden="true">
         <div className="customer-print-report">
@@ -119,6 +122,7 @@ const CustomerPurchaseHistoryPrintSection: React.FC<Props> = ({ ctx }) => {
               <div className="customer-print-profile-grid">
                 <div className="customer-print-profile-item"><span>نام مشتری</span><strong>{profile.fullName}</strong></div>
                 <div className="customer-print-profile-item"><span>شماره تماس</span><strong>{profile.phoneNumber || '—'}</strong></div>
+                <div className="customer-print-profile-item"><span>کد ملی</span><strong>{profile.nationalCode || '—'}</strong></div>
                 <div className="customer-print-profile-item"><span>تاریخ ثبت‌نام</span><strong>{registeredDateLabel}</strong></div>
                 <div className="customer-print-profile-item"><span>وضعیت تلگرام</span><strong>{customerTelegramLinked ? 'متصل' : 'متصل نیست'}</strong></div>
                 <div className="customer-print-profile-item"><span>آدرس</span><strong>{profile.address || '—'}</strong></div>

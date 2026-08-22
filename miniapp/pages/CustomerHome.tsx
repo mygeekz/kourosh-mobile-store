@@ -17,7 +17,7 @@ export const CustomerHome: React.FC = () => {
     <section aria-labelledby="customer-home-title">
       <p className="m-0 text-xs font-extrabold text-primary">حساب مشتری</p>
       <h1 id="customer-home-title" className="mb-1 mt-1 text-2xl font-black leading-10">سلام {customer.fullName}</h1>
-      <p className="m-0 text-sm leading-7 text-mutedText">خلاصه به‌روز حساب شما در کوروش</p>
+      <p className="m-0 text-sm leading-7 text-mutedText">خلاصه حساب شما در کوروش</p>
 
       <section className="mt-5 rounded-[var(--radius-lg)] border border-border bg-card p-4" aria-label="مانده حساب">
         <div className="flex items-center justify-between gap-4">

@@ -653,7 +653,13 @@ export const useSettingsControllerContext = () => {
   // ------- Business form handlers
   const handleBusinessInfoChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setBusinessInfo(prev => ({ ...prev, [name]: value }));
+    const normalizedValue = name === 'installment_contract_seller_national_code'
+      ? value
+        .replace(/[۰-۹]/g, (digit) => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)] || digit)
+        .replace(/[٠-٩]/g, (digit) => '0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(digit)] || digit)
+        .replace(/\D/g, '')
+      : value;
+    setBusinessInfo(prev => ({ ...prev, [name]: normalizedValue }));
   };
 
   const [tgCheckAudience, setTgCheckAudience] = useState<TelegramAudience>('customer');
@@ -908,7 +914,7 @@ export const useSettingsControllerContext = () => {
       const transportMode = transportRaw === 'cloud_relay' ? 'relay' : ['disabled', 'direct', 'proxy', 'relay'].includes(transportRaw) ? transportRaw : 'direct';
       const legacyMiniAppMode = String(telegramInfo.telegram_public_access_mode || '').trim();
       const canonicalMiniAppMode = String(telegramInfo.miniapp_public_access_mode || '').trim();
-      const miniAppMode = ['disabled', 'self_hosted', 'external_tunnel', 'relay'].includes(canonicalMiniAppMode)
+      const miniAppMode = ['disabled', 'self_hosted', 'external_tunnel', 'stable_tunnel', 'relay'].includes(canonicalMiniAppMode)
         ? canonicalMiniAppMode
         : legacyMiniAppMode === 'cloud_managed' ? 'relay' : legacyMiniAppMode === 'self_hosted' ? 'self_hosted' : legacyMiniAppMode === 'disabled' ? 'disabled' : String(telegramInfo.telegram_miniapp_public_url || '').trim() ? 'self_hosted' : 'disabled';
       const relayProvider = String(telegramInfo.relay_provider || 'managed_kourosh').trim() === 'custom' ? 'custom' : 'managed_kourosh';
@@ -942,8 +948,27 @@ export const useSettingsControllerContext = () => {
       if (proxy && !/^(socks5|socks|http|https):\/\//i.test(proxy)) {
         errs.push('فرمت پراکسی نامعتبر است. نمونه معتبر: socks5://127.0.0.1:10808');
       }
-      if ((miniAppMode === 'self_hosted' || miniAppMode === 'external_tunnel') && !String(telegramInfo.telegram_miniapp_public_url || '').trim()) {
-        errs.push(miniAppMode === 'external_tunnel' ? 'Public HTTPS URL تانل را وارد کنید.' : 'Public HTTPS URL میزبانی شخصی Mini App را وارد کنید.');
+      if ((miniAppMode === 'self_hosted' || miniAppMode === 'external_tunnel' || miniAppMode === 'stable_tunnel') && !String(telegramInfo.telegram_miniapp_public_url || '').trim()) {
+        errs.push(miniAppMode === 'stable_tunnel' ? 'Public HTTPS URL ثابت Mini App را وارد کنید.' : miniAppMode === 'external_tunnel' ? 'Public HTTPS URL تانل را وارد کنید.' : 'Public HTTPS URL میزبانی شخصی Mini App را وارد کنید.');
+      }
+      if (miniAppMode === 'stable_tunnel') {
+        const stablePublicUrl = String(telegramInfo.telegram_miniapp_public_url || '').trim();
+        if (stablePublicUrl) {
+          try {
+            const parsedStableUrl = new URL(stablePublicUrl);
+            const host = parsedStableUrl.hostname.toLowerCase();
+            if (parsedStableUrl.protocol !== 'https:' || parsedStableUrl.username || parsedStableUrl.password || parsedStableUrl.hash || parsedStableUrl.search || !['/', '/miniapp.html'].includes(parsedStableUrl.pathname)) {
+              errs.push('نشانی ثابت Mini App باید HTTPS و بدون Query/Hash و روی مسیر /miniapp.html باشد.');
+            } else if (host === 'trycloudflare.com' || host.endsWith('.trycloudflare.com')) {
+              errs.push('آدرس موقت trycloudflare برای حالت Production مجاز نیست.');
+            }
+          } catch {
+            errs.push('نشانی ثابت Mini App معتبر نیست.');
+          }
+        }
+        if (!String(telegramInfo.miniapp_live_origin_url || '').trim()) {
+          errs.push('نشانی HTTPS مبدأ زنده فروشگاه را وارد کنید.');
+        }
       }
       if ((transportMode === 'relay' || miniAppMode === 'relay') && relayProvider === 'custom') {
         if (!String(telegramInfo.custom_relay_control_url || '').trim()) errs.push('Control URL رله شخصی را وارد کنید.');
@@ -988,6 +1013,8 @@ export const useSettingsControllerContext = () => {
         telegram_proxy: proxy,
         telegram_transport_mode: transportMode,
         miniapp_public_access_mode: miniAppMode,
+        miniapp_live_origin_url: String(telegramInfo.miniapp_live_origin_url || '').trim(),
+        miniapp_stable_tunnel_provider: String(telegramInfo.miniapp_stable_tunnel_provider || 'cloudflare_named').trim(),
         relay_provider: relayProvider,
         custom_relay_control_url: String(telegramInfo.custom_relay_control_url || '').trim(),
         custom_relay_connector_url: String(telegramInfo.custom_relay_connector_url || '').trim(),

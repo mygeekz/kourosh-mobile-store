@@ -453,13 +453,15 @@ export type TelegramBusinessInfo = BusinessInformationSettings & Partial<Record<
   telegram_chat_id?: string | number | null;
   telegram_proxy?: string | null;
   telegram_transport_mode?: 'disabled' | 'direct' | 'proxy' | 'relay' | 'cloud_relay' | null;
-  miniapp_public_access_mode?: 'disabled' | 'self_hosted' | 'external_tunnel' | 'relay' | null;
+  miniapp_public_access_mode?: 'disabled' | 'self_hosted' | 'external_tunnel' | 'stable_tunnel' | 'relay' | null;
   telegram_public_access_mode?: 'disabled' | 'self_hosted' | 'cloud_managed' | null;
   relay_provider?: 'managed_kourosh' | 'custom' | null;
   relay_assignment_provider?: 'managed_kourosh' | 'custom' | null;
   custom_relay_control_url?: string | null;
   custom_relay_connector_url?: string | null;
   telegram_miniapp_public_url?: string | null;
+  miniapp_live_origin_url?: string | null;
+  miniapp_stable_tunnel_provider?: 'cloudflare_named' | 'external' | string | null;
   kourosh_cloud_provisioned?: TelegramToggleValue | null;
   kourosh_cloud_connection_state?: 'disabled' | 'not_provisioned' | 'provisioned' | 'connecting' | 'authenticating' | 'connected' | 'degraded' | 'backoff' | 'stopped' | null;
   kourosh_cloud_assigned_public_url?: string | null;
@@ -654,6 +656,18 @@ export type TelegramHealthState = {
 };
 
 export type TelegramDiagnosticsState = {
+  bot?: {
+    success?: boolean;
+    data?: {
+      result?: {
+        has_main_web_app?: boolean;
+        username?: string;
+        [key: string]: unknown;
+      };
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
   webhook?: {
     result?: {
       url?: string;
@@ -665,6 +679,13 @@ export type TelegramDiagnosticsState = {
   };
   local?: {
     pollingStarted?: boolean;
+    pollingInFlight?: boolean;
+    pollingGeneration?: number;
+    pollingConsecutiveFailures?: number;
+    pollingNextRetryDelayMs?: number;
+    pollingLastSuccessAt?: string | null;
+    pollingLastErrorAt?: string | null;
+    pollingLastErrorMessage?: string;
     updateMode?: string;
     lastWebhookAt?: string;
     [key: string]: unknown;

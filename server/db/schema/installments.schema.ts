@@ -19,6 +19,16 @@ export const createInstallmentsSchema = async (): Promise<void> => {
       saleType TEXT NOT NULL DEFAULT 'installment', -- installment | check
       itemsSummary TEXT,
       metaJson TEXT,
+      buyerFullName TEXT,
+      buyerNationalCode TEXT,
+      buyerPhoneNumber TEXT,
+      buyerAddress TEXT,
+      sellerFullName TEXT,
+      sellerNationalCode TEXT,
+      sellerStoreName TEXT,
+      sellerPhoneNumber TEXT,
+      sellerAddress TEXT,
+      contractVersion TEXT,
       notes TEXT,
       status TEXT NOT NULL DEFAULT 'active', -- draft | active | canceled
       canceledAt TEXT,
@@ -149,6 +159,25 @@ export const createInstallmentsSchema = async (): Promise<void> => {
       console.error("Error adding saleDateISO column:", e?.message || e);
   }
   for (const [columnSql, label] of [
+    ["ALTER TABLE installment_sales ADD COLUMN buyerFullName TEXT", "buyerFullName"],
+    ["ALTER TABLE installment_sales ADD COLUMN buyerNationalCode TEXT", "buyerNationalCode"],
+    ["ALTER TABLE installment_sales ADD COLUMN buyerPhoneNumber TEXT", "buyerPhoneNumber"],
+    ["ALTER TABLE installment_sales ADD COLUMN buyerAddress TEXT", "buyerAddress"],
+    ["ALTER TABLE installment_sales ADD COLUMN sellerFullName TEXT", "sellerFullName"],
+    ["ALTER TABLE installment_sales ADD COLUMN sellerNationalCode TEXT", "sellerNationalCode"],
+    ["ALTER TABLE installment_sales ADD COLUMN sellerStoreName TEXT", "sellerStoreName"],
+    ["ALTER TABLE installment_sales ADD COLUMN sellerPhoneNumber TEXT", "sellerPhoneNumber"],
+    ["ALTER TABLE installment_sales ADD COLUMN sellerAddress TEXT", "sellerAddress"],
+    ["ALTER TABLE installment_sales ADD COLUMN contractVersion TEXT", "contractVersion"],
+  ] as const) {
+    try {
+      await runAsync(columnSql);
+    } catch (e: any) {
+      if (!/duplicate column/i.test(e?.message || ""))
+        console.error(`Error adding installment_sales.${label}:`, e?.message || e);
+    }
+  }
+  for (const [columnSql, label] of [
     ["ALTER TABLE installment_sales ADD COLUMN status TEXT NOT NULL DEFAULT 'active'", "status"],
     ["ALTER TABLE installment_sales ADD COLUMN canceledAt TEXT", "canceledAt"],
     ["ALTER TABLE installment_sales ADD COLUMN cancelReason TEXT", "cancelReason"],
@@ -247,6 +276,10 @@ export const createInstallmentsSchema = async (): Promise<void> => {
       unitPrice REAL NOT NULL,
       buyPrice REAL DEFAULT 0,
       totalPrice REAL NOT NULL,
+      contractModel TEXT,
+      contractColor TEXT,
+      contractStorage TEXT,
+      contractImei TEXT,
       FOREIGN KEY (saleId) REFERENCES installment_sales(id) ON DELETE CASCADE
     );
   `);
@@ -285,6 +318,19 @@ export const createInstallmentsSchema = async (): Promise<void> => {
         e?.message || e,
       );
   }
+  for (const [columnSql, label] of [
+    ["ALTER TABLE installment_sale_items ADD COLUMN contractModel TEXT", "contractModel"],
+    ["ALTER TABLE installment_sale_items ADD COLUMN contractColor TEXT", "contractColor"],
+    ["ALTER TABLE installment_sale_items ADD COLUMN contractStorage TEXT", "contractStorage"],
+    ["ALTER TABLE installment_sale_items ADD COLUMN contractImei TEXT", "contractImei"],
+  ] as const) {
+    try {
+      await runAsync(columnSql);
+    } catch (e: any) {
+      if (!/duplicate column/i.test(e?.message || ""))
+        console.error(`Error adding installment_sale_items.${label}:`, e?.message || e);
+    }
+  }
 
   await runAsync(`
     CREATE TABLE IF NOT EXISTS installment_payments (
@@ -306,6 +352,10 @@ export const createInstallmentsSchema = async (): Promise<void> => {
       saleId INTEGER NOT NULL,
       checkNumber TEXT NOT NULL,
       bankName TEXT NOT NULL,
+      ownershipType TEXT,
+      issuerName TEXT,
+      issuerNationalCode TEXT,
+      sayadiId TEXT,
       dueDate TEXT NOT NULL, -- Shamsi Date: YYYY/MM/DD
       amount REAL NOT NULL,
       status TEXT NOT NULL DEFAULT 'نزد فروشنده', 
@@ -321,6 +371,19 @@ export const createInstallmentsSchema = async (): Promise<void> => {
         "Error adding installment_checks.bankName:",
         e?.message || e,
       );
+  }
+  for (const [columnSql, label] of [
+    ["ALTER TABLE installment_checks ADD COLUMN issuerName TEXT", "issuerName"],
+    ["ALTER TABLE installment_checks ADD COLUMN issuerNationalCode TEXT", "issuerNationalCode"],
+    ["ALTER TABLE installment_checks ADD COLUMN sayadiId TEXT", "sayadiId"],
+    ["ALTER TABLE installment_checks ADD COLUMN ownershipType TEXT", "ownershipType"],
+  ] as const) {
+    try {
+      await runAsync(columnSql);
+    } catch (e: any) {
+      if (!/duplicate column/i.test(e?.message || ""))
+        console.error(`Error adding installment_checks.${label}:`, e?.message || e);
+    }
   }
   try {
     await runAsync("ALTER TABLE installment_checks ADD COLUMN notes TEXT");
@@ -468,6 +531,10 @@ export const createInstallmentsSchema = async (): Promise<void> => {
           saleId INTEGER NOT NULL,
           checkNumber TEXT NOT NULL,
           bankName TEXT,
+          ownershipType TEXT,
+          issuerName TEXT,
+          issuerNationalCode TEXT,
+          sayadiId TEXT,
           dueDate TEXT NOT NULL,
           amount REAL NOT NULL,
           status TEXT NOT NULL DEFAULT 'نزد فروشنده',
@@ -476,10 +543,18 @@ export const createInstallmentsSchema = async (): Promise<void> => {
         );`);
         const hasBankName = await hasColumnIn(tempTable, "bankName");
         const hasNotes = await hasColumnIn(tempTable, "notes");
+        const hasIssuerName = await hasColumnIn(tempTable, "issuerName");
+        const hasIssuerNationalCode = await hasColumnIn(tempTable, "issuerNationalCode");
+        const hasSayadiId = await hasColumnIn(tempTable, "sayadiId");
+        const hasOwnershipType = await hasColumnIn(tempTable, "ownershipType");
         const bankExpr = hasBankName ? "bankName" : "NULL";
         const notesExpr = hasNotes ? "notes" : "NULL";
-        await runAsync(`INSERT INTO installment_checks (id, saleId, checkNumber, bankName, dueDate, amount, status, notes)
-          SELECT id, saleId, checkNumber, ${bankExpr}, dueDate, amount, COALESCE(status, 'نزد فروشنده'), ${notesExpr}
+        const issuerNameExpr = hasIssuerName ? "issuerName" : "NULL";
+        const issuerNationalCodeExpr = hasIssuerNationalCode ? "issuerNationalCode" : "NULL";
+        const sayadiIdExpr = hasSayadiId ? "sayadiId" : "NULL";
+        const ownershipTypeExpr = hasOwnershipType ? "ownershipType" : "NULL";
+        await runAsync(`INSERT INTO installment_checks (id, saleId, checkNumber, bankName, ownershipType, issuerName, issuerNationalCode, sayadiId, dueDate, amount, status, notes)
+          SELECT id, saleId, checkNumber, ${bankExpr}, ${ownershipTypeExpr}, ${issuerNameExpr}, ${issuerNationalCodeExpr}, ${sayadiIdExpr}, dueDate, amount, COALESCE(status, 'نزد فروشنده'), ${notesExpr}
           FROM ${tempTable};`);
         await runAsync(`DROP TABLE ${tempTable};`);
         await execAsync("COMMIT;");

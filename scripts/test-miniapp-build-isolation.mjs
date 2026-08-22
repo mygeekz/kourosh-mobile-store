@@ -13,13 +13,14 @@ assert.ok(files.includes("kourosh-logo.svg"));
 assert.ok(files.includes("fonts/Vazir-FD-WOL.woff2"));
 assert.ok(files.some((entry) => /^assets\/.+\.js$/.test(entry)));
 assert.ok(files.some((entry) => /^assets\/.+\.css$/.test(entry)));
+assert.equal(files.some((entry) => /^assets\/home-hero(?:-[A-Za-z0-9_-]+)?\.webp$/.test(entry)), false, "home hero must be inlined and must not require a separate WebP request");
 
 for (const forbidden of ["index.html", "sw.js", "manifest.webmanifest", "package.json", ".env", "server/index.ts"]) {
   assert.equal(files.includes(forbidden), false, `${forbidden} must not be in the Mini App build`);
 }
 assert.equal(files.some((entry) => entry.endsWith(".map")), false, "public source maps must be absent");
 assert.equal(files.some((entry) => /(?:settings|backup|admin|reports|users?management)/i.test(path.basename(entry))), false, "Dashboard/admin chunks must be absent");
-assert.equal(files.every((entry) => entry === "miniapp.html" || entry === "favicon.svg" || entry === "kourosh-logo.svg" || entry === "fonts/Vazir-FD-WOL.woff2" || /^assets\/[A-Za-z0-9_-]+\.(?:js|css)$/.test(entry)), true, `unexpected Mini App output: ${files.join(", ")}`);
+assert.equal(files.every((entry) => entry === "miniapp.html" || entry === "favicon.svg" || entry === "kourosh-logo.svg" || entry === "fonts/Vazir-FD-WOL.woff2" || /^assets\/[A-Za-z0-9_-]+\.(?:js|css|webp)$/.test(entry)), true, `unexpected Mini App output: ${files.join(", ")}`);
 
 const textFiles = files.filter((entry) => /\.(?:html|js|css|svg)$/.test(entry));
 const content = textFiles.map((entry) => fs.readFileSync(path.join(dist, entry), "utf8")).join("\n");

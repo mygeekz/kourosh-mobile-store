@@ -1,4 +1,4 @@
-import { DataTableShell, IconGlyph, SelectField } from '@/components/ui';
+import { AppSearchField, DataTableShell, IconGlyph, SelectField } from '@/components/ui';
 import React from 'react';
 
 type Props = {
@@ -7,6 +7,7 @@ type Props = {
 
 const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
   const {
+    Button,
     FinancialProgressBar,
     balance,
     expandedPhoneSettlementTimelineId,
@@ -51,6 +52,7 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
     setSoldPhoneSettlementFilter,
     settlementPurchasePrice,
     soldPhoneCapitalSearchRef,
+    soldPhoneCapitalSearch,
     soldPhoneCapitalSort,
     soldPhoneDailyPriceRows,
     soldPhoneSettlementFilter,
@@ -68,33 +70,33 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
 
   return (
     <>
-<div id="partner-phone-capital-section" data-partner-phone-capital-section="true" className="partner-phone-capital-section mx-6 mt-5">
-            <div className="partner-phone-capital-header">
-              <div className="partner-phone-capital-copy">
-                <div className="partner-phone-capital-eyebrow">
+<section id="partner-phone-capital-section" data-ui-section="partner-phone-capital" className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-5" aria-labelledby="partner-phone-capital-title">
+            <div className="grid items-stretch gap-3 lg:grid-cols-[minmax(0,1fr)_18rem]">
+              <div className="min-w-0 self-center text-right">
+                <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                   <i className="fa-solid fa-hand-holding-dollar text-slate-500" /> نمای سرمایه گوشی‌ها
                 </div>
-                <h3 className="partner-phone-capital-title">نمای سرمایه و وضعیت فروش گوشی‌ها</h3>
-                <p className="partner-phone-capital-description">
+                <h2 id="partner-phone-capital-title" className="mt-2 text-right text-xl font-black leading-8 text-slate-950 dark:text-slate-50">نمای سرمایه و وضعیت فروش گوشی‌ها</h2>
+                <p className="mt-1 max-w-3xl text-right text-sm leading-6 text-slate-600 dark:text-slate-400">
                   این بخش سرمایه مرتبط با گوشی‌های فروخته‌شده را از پرونده فروش جدا می‌کند؛ بنابراین هم مشخص است اصل سرمایه همکار برگشته یا نه، هم وضعیت باز یا بسته بودن فروش مشتری دیده می‌شود.
                 </p>
               </div>
 
-              <div className="partner-phone-capital-summary-card">
+              <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 text-right dark:border-emerald-900/50 dark:bg-emerald-950/20">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="partner-phone-capital-summary-label">سرمایه در انتظار بازگشت</div>
-                  <span className="partner-phone-capital-summary-icon"><i className="fa-solid fa-scale-balanced" /></span>
+                  <div className="text-xs font-black text-slate-600 dark:text-slate-300">سرمایه در انتظار بازگشت</div>
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><i className="fa-solid fa-scale-balanced" /></span>
                 </div>
-                <div className="partner-phone-capital-summary-value">
+                <div className="mt-1 break-words text-base font-black leading-6 text-emerald-700 dark:text-emerald-300">
                   {formatCurrencyText(Math.max(0, soldPhonesProductSettlementBalance), readStoredCurrencyUnit())}
                 </div>
-                <div className="partner-phone-capital-summary-note">
+                <div className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-400">
                   مبنا: قیمت خرید روز فروش · وضعیت سرمایه: {getBalanceLabel(getBalanceState(soldPhonesProductSettlementBalance), 'partner')}
                 </div>
               </div>
             </div>
 
-            <div className="partner-phone-capital-metrics">
+            <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
               {[
                 {
                   label: 'مبنای سرمایه همکار',
@@ -123,12 +125,12 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                   icon: 'fa-solid fa-hourglass-half',
                 },
               ].map((item) => (
-                <div key={item.label} className={`rounded-[22px] border p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(15,23,42,0.08)] dark:hover:shadow-none ${item.featured ? 'border-slate-300 bg-slate-50/80 dark:border-slate-700 dark:bg-slate-900/65' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950/65'}`}>
+                <div key={item.label} className={`rounded-xl border p-3 ${item.featured ? 'border-slate-300 bg-slate-50/80 dark:border-slate-700 dark:bg-slate-900/65' : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950/65'}`}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <div className="partner-phone-capital-metric-label">{item.label}</div>
-                      <div className="mt-2 truncate text-[15px] font-black tracking-tight text-slate-950 dark:text-slate-50">{item.value}</div>
-                      <div className="mt-1 text-[11px] font-semibold leading-5 text-slate-500 dark:text-slate-400">{item.hint}</div>
+                      <div className="text-xs font-black leading-5 text-slate-600 dark:text-slate-300">{item.label}</div>
+                      <div className="mt-1 break-words text-sm font-black leading-5 text-slate-950 dark:text-slate-50">{item.value}</div>
+                      <div className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{item.hint}</div>
                     </div>
                     <IconGlyph tone="neutral" className="h-9 w-9 shrink-0" aria-hidden="true"><i className={item.icon} /></IconGlyph>
                   </div>
@@ -136,20 +138,20 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
               ))}
             </div>
 
-            <div className="partner-operational-table-v105">
-              <div className="partner-operational-table-v105__header">
-                <div className="partner-operational-table-v105__title-block">
-                  <div className="partner-operational-table-v105__eyebrow">
+            <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+              <div className="flex flex-col gap-3 border-b border-slate-100 p-4 dark:border-slate-800 lg:flex-row lg:items-start lg:justify-between">
+                <div className="min-w-0 text-right">
+                  <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                     <i className="fa-solid fa-list-check" />
                     جدول عملیاتی
                   </div>
-                  <h4>جزئیات سرمایه و وضعیت فروش</h4>
-                  <p>
+                  <h3 className="mt-2 text-right text-lg font-black leading-7 text-slate-950 dark:text-slate-50">جزئیات سرمایه و وضعیت فروش</h3>
+                  <p className="mt-1 max-w-3xl text-right text-sm leading-6 text-slate-600 dark:text-slate-400">
                     این جدول وضعیت هر گوشی فروخته‌شده، بازگشت سرمایه همکار و وضعیت پرونده مشتری را در یک نمای عملیاتی و قابل پیگیری نمایش می‌دهد.
                   </p>
                 </div>
 
-                <div className="partner-operational-table-v105__filters" role="tablist" aria-label="فیلتر تسویه گوشی‌های فروخته‌شده">
+                <div className="flex shrink-0 flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 dark:border-slate-700 dark:bg-slate-900" role="group" aria-label="فیلتر تسویه گوشی‌های فروخته‌شده">
                   {[
                     { key: 'all', label: 'همه', count: soldPhoneSettlementFilterCounts.all, icon: 'fa-solid fa-border-all' },
                     { key: 'open', label: 'سرمایه باز', count: soldPhoneSettlementFilterCounts.open, icon: 'fa-solid fa-hourglass-half' },
@@ -157,23 +159,24 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                   ].map((option) => {
                     const isActive = soldPhoneSettlementFilter === option.key;
                     return (
-                      <button
+                      <Button
                         key={option.key}
                         type="button"
                         onClick={() => setSoldPhoneSettlementFilter(option.key as 'all' | 'open' | 'settled')}
-                        className={`partner-operational-table-v105__filter ${isActive ? 'is-active' : ''}`}
+                        variant={isActive ? 'primary' : 'secondary'}
+                        size="sm"
                         aria-pressed={isActive}
+                        leftIcon={<i className={option.icon} aria-hidden="true" />}
                       >
-                        <i className={option.icon} />
                         <span>{option.label}</span>
-                        <b>{option.count.toLocaleString('fa-IR')}</b>
-                      </button>
+                        <span className={isActive ? 'text-white/80' : 'text-slate-500 dark:text-slate-400'}>({option.count.toLocaleString('fa-IR')})</span>
+                      </Button>
                     );
                   })}
                 </div>
               </div>
 
-              <div className="partner-operational-table-v105__summary">
+              <div className="grid grid-cols-2 gap-2 p-3 pt-2 md:grid-cols-3 xl:grid-cols-5">
                 {[
                   { label: 'نتیجه فیلتر', value: `${Number(phoneSettlementTotal || 0).toLocaleString('fa-IR')} گوشی`, icon: 'fa-solid fa-mobile-screen-button', tone: 'blue' },
                   { label: 'سرمایه در انتظار', value: formatCurrencyText(filteredSoldPhoneProductSettlementBalanceTotal, readStoredCurrencyUnit()), icon: 'fa-solid fa-clock', tone: filteredSoldPhoneProductSettlementBalanceTotal > 0 ? 'rose' : 'green' },
@@ -181,61 +184,42 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                   { label: 'مبنای سرمایه', value: formatCurrencyText(filteredSoldPhoneDailyPriceTotal, readStoredCurrencyUnit()), icon: 'fa-solid fa-coins', tone: 'slate' },
                   { label: 'اختلاف با بهای اولیه', value: `${filteredSoldPhoneDailyPriceDeltaTotal >= 0 ? '+' : '-'}${formatCurrencyText(Math.abs(filteredSoldPhoneDailyPriceDeltaTotal), readStoredCurrencyUnit())}`, icon: 'fa-solid fa-chart-line', tone: filteredSoldPhoneDailyPriceDeltaTotal >= 0 ? 'amber' : 'green' },
                 ].map((metric) => (
-                  <div key={metric.label} className={`partner-operational-table-v105__summary-card is-${metric.tone}`}>
-                    <span><i className={metric.icon} /></span>
-                    <small>{metric.label}</small>
-                    <strong>{metric.value}</strong>
+                  <div key={metric.label} className="grid grid-cols-[2.25rem_minmax(0,1fr)] grid-rows-2 items-center gap-x-2 rounded-xl border border-slate-200 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-900/50">
+                    <span className="row-span-2 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-500 dark:bg-slate-950"><i className={metric.icon} /></span>
+                    <small className="text-xs font-black text-slate-500 dark:text-slate-400">{metric.label}</small>
+                    <strong className={`break-words text-sm font-black leading-5 ${metric.tone === 'rose' ? 'text-rose-600' : metric.tone === 'green' ? 'text-emerald-600' : metric.tone === 'amber' ? 'text-amber-600' : 'text-slate-800 dark:text-slate-100'}`}>{metric.value}</strong>
                   </div>
                 ))}
               </div>
 
-              <div className="partner-operational-table-v105__toolbar">
-                <div className="partner-operational-table-v105__search" role="search">
-                  <div
-                    ref={soldPhoneCapitalSearchRef}
-                    className="partner-operational-table-v105__search-input"
-                    contentEditable
-                    suppressContentEditableWarning
-                    role="textbox"
-                    aria-label="جستجو در مدل گوشی، مشتری یا منبع"
-                    data-placeholder="جستجو در مدل گوشی، مشتری یا منبع..."
-                    spellCheck={false}
-                    onInput={(event) => {
-                      const nextValue = (event.currentTarget.textContent || '').replace(/\u00a0/g, ' ');
-                      setSoldPhoneCapitalSearch(nextValue);
-                    }}
-                    onBlur={(event) => {
-                      const normalizedValue = (event.currentTarget.textContent || '').replace(/\u00a0/g, ' ').trim();
-                      if (!normalizedValue) {
-                        event.currentTarget.textContent = '';
-                      }
-                      setSoldPhoneCapitalSearch(normalizedValue);
-                    }}
-                  />
-                  <i className="fa-solid fa-magnifying-glass" />
-                </div>
+              <div className="grid gap-2 px-3 pb-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_18rem_auto]">
+                <AppSearchField
+                  value={soldPhoneCapitalSearch}
+                  onChange={setSoldPhoneCapitalSearch}
+                  placeholder="جستجو در مدل گوشی، مشتری یا منبع…"
+                  ariaLabel="جستجو در جزئیات سرمایه گوشی‌ها"
+                  size="md"
+                  clearable
+                />
 
-                <label className="partner-operational-table-v105__select">
-                  <i className="fa-solid fa-arrow-down-wide-short" />
-                  <SelectField controlOnly unstyled showChevron={false}
-                    value={soldPhoneCapitalSort}
-                    onChange={(event) => setSoldPhoneCapitalSort(event.target.value as 'newest' | 'highestBalance' | 'highestCapital')}
-                  >
-                    <option value="newest">مرتب‌سازی: جدیدترین</option>
-                    <option value="highestBalance">بیشترین مانده سرمایه</option>
-                    <option value="highestCapital">بیشترین مبنای سرمایه</option>
-                  </SelectField>
-                </label>
+                <SelectField
+                  value={soldPhoneCapitalSort}
+                  onValueChange={(nextSort) => setSoldPhoneCapitalSort(nextSort as 'newest' | 'highestBalance' | 'highestCapital')}
+                  ariaLabel="مرتب‌سازی جزئیات سرمایه"
+                  size="sm"
+                  options={[
+                    { value: 'newest', label: 'مرتب‌سازی: جدیدترین' },
+                    { value: 'highestBalance', label: 'بیشترین مانده سرمایه' },
+                    { value: 'highestCapital', label: 'بیشترین مبنای سرمایه' },
+                  ]}
+                />
 
-                <button type="button" onClick={exportPartnerCapitalRows} disabled={phoneSettlementExporting} className="partner-operational-table-v105__tool-btn disabled:opacity-60">
-                  <i className={`fa-solid ${phoneSettlementExporting ? 'fa-spinner fa-spin' : 'fa-download'}`} />
-                  {phoneSettlementExporting ? 'در حال آماده‌سازی…' : 'خروجی CSV'}
-                </button>
+                <Button type="button" onClick={exportPartnerCapitalRows} disabled={phoneSettlementExporting} loading={phoneSettlementExporting} loadingText="در حال آماده‌سازی…" variant="primary" size="md" leftIcon={<i className="fa-solid fa-download" />}>خروجی CSV</Button>
               </div>
 
               {phoneSettlementLoading && (
-                <div className="px-4 py-2 text-center text-[11px] font-bold text-slate-500 dark:text-slate-400" role="status">
-                  <i className="fa-solid fa-spinner fa-spin ml-2" /> در حال دریافت صفحه سرمایه گوشی‌ها…
+                <div className="px-4 py-2 text-center text-xs font-bold text-slate-500 dark:text-slate-400" role="status">
+                  <i className="fa-solid fa-spinner fa-spin me-2" /> در حال دریافت صفحه سرمایه گوشی‌ها…
                 </div>
               )}
 
@@ -249,109 +233,24 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                 <div className="px-4 py-10 text-center">
                   <IconGlyph tone="neutral" className="mx-auto h-12 w-12" aria-hidden="true"><i className="fa-solid fa-filter-circle-xmark" /></IconGlyph>
                   <div className="mt-3 text-sm font-black text-slate-700 dark:text-slate-200">در این فیلتر، گوشی‌ای برای نمایش وجود ندارد.</div>
-                  <button type="button" onClick={() => setSoldPhoneSettlementFilter('all')} className="mt-3 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-xs font-black text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900">
+                  <Button type="button" onClick={() => setSoldPhoneSettlementFilter('all')} className="mt-3" variant="secondary" size="md">
                     نمایش همه گوشی‌ها
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <>
-                  <div className="partner-phone-capital-mobile-list space-y-3 p-3 lg:hidden">
-                    {filteredSoldPhoneDailyPriceRows.map((item: any) => {
-                      const delta = Number(item.dailyPriceDelta || 0);
-                      const sourceLabel = String(item.settlementPriceSourceLabel || item.saleReferenceLabel || 'ثبت مستقیم گوشی');
-                      const settlementStatus = getPartnerCapitalMeta(item);
-                      const saleClosureStatus = getSaleClosureMeta(item);
-                      const balance = Number(item.phoneSettlementBalance || 0);
-                      const paymentCount = Number(item.phoneSettlementPaymentCount || 0);
-                      const isTimelineOpen = expandedPhoneSettlementTimelineId === Number(item.id);
-                      return (
-                        <div key={`sold-phone-card-${item.id}`} className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                              <div className="text-sm font-black text-slate-950 dark:text-slate-50">{item.name || 'گوشی فروخته‌شده'}</div>
-                              <div className="mt-1 flex flex-wrap items-center gap-2 justify-end text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                                <span dir="ltr" className="font-mono">{item.identifier || 'IMEI ثبت نشده'}</span>
-                                <span>•</span>
-                                <span>{item.soldAt ? formatIsoToShamsi(item.soldAt) : 'تاریخ نامشخص'}</span>
-                                <span>•</span>
-                                <span>مبنای حساب: قیمت زمان فروش</span>
-                              </div>
-                              <div className="mt-1 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-                                آخرین تغییر قیمت: {item.currentPurchasePriceUpdatedAt ? formatIsoToShamsi(item.currentPurchasePriceUpdatedAt) : 'ثبت نشده'}
-                              </div>
-                            </div>
-                            <div className="flex shrink-0 flex-col items-end gap-1">
-                              <span className={`rounded-full border px-2.5 py-1 text-[10px] font-black ${settlementStatus.badgeClass}`}>{settlementStatus.label}</span>
-                              <span className={`rounded-full border px-2.5 py-1 text-[10px] font-black ${saleClosureStatus.badgeClass}`}>{saleClosureStatus.label}</span>
-                            </div>
-                          </div>
 
-                          <div className="mt-3 grid grid-cols-2 gap-2">
-                            <div className="rounded-2xl bg-slate-50 px-3 py-2 dark:bg-slate-900">
-                              <div className="text-[10px] font-black text-slate-500">مبنای سرمایه</div>
-                              <div className="mt-1 text-xs font-black text-slate-950 dark:text-slate-50">{formatPrice(item.settlementPurchasePrice)}</div>
-                              <div className="mt-1 text-[10px] font-semibold text-slate-500 dark:text-slate-400">قیمت زمان فروش و ثبت تسویه</div>
-                            </div>
-                            <div className="rounded-2xl bg-slate-50 px-3 py-2 dark:bg-slate-900">
-                              <div className="text-[10px] font-black text-slate-500">مانده سرمایه همکار</div>
-                              <div className={`mt-1 text-xs font-black ${balance > 0 ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>{formatCurrencyText(balance, readStoredCurrencyUnit())}</div>
-                            </div>
-                            <div className="rounded-2xl bg-slate-50 px-3 py-2 dark:bg-slate-900">
-                              <div className="text-[10px] font-black text-slate-500">بازگشت سرمایه</div>
-                              <div className="mt-1 text-xs font-black text-emerald-700 dark:text-emerald-300">{formatCurrencyText(Number(item.phoneSettlementPaidAmount || 0), readStoredCurrencyUnit())}</div>
-                            </div>
-                            <div className="rounded-2xl bg-slate-50 px-3 py-2 dark:bg-slate-900">
-                              <div className="text-[10px] font-black text-slate-500">اختلاف روز/اولیه</div>
-                              <div className={`mt-1 text-xs font-black ${delta >= 0 ? 'text-amber-700 dark:text-amber-300' : 'text-emerald-700 dark:text-emerald-300'}`}>{delta >= 0 ? '+' : '-'}{formatCurrencyText(Math.abs(delta), readStoredCurrencyUnit())}</div>
-                            </div>
-                          </div>
-
-                          <div className="mt-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-slate-800 dark:bg-slate-900">
-                            <div className="flex items-center justify-between gap-3">
-                              <div>
-                                <div className="text-[10px] font-black text-slate-500">پرونده فروش مشتری</div>
-                                <div className="mt-1 text-xs font-black text-slate-900 dark:text-slate-50">{saleClosureStatus.label}</div>
-                              </div>
-                              <i className={`${saleClosureStatus.icon} text-slate-500`} />
-                            </div>
-                          </div>
-
-                          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
-                            <div className={`h-full rounded-full ${settlementStatus.progressClass}`} style={{ width: `${settlementStatus.progressPercent}%` }} />
-                          </div>
-
-                          <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                            <div className="flex min-w-0 flex-col gap-1 text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-                              {renderPhoneSaleSourceLink(item, sourceLabel, true)}
-                              {item.phoneSettlementLastPaymentDate && <span>آخرین پرداخت: {formatIsoToShamsi(item.phoneSettlementLastPaymentDate)}</span>}
-                            </div>
-                            <div className="flex flex-wrap items-center gap-2 justify-end">
-                              <button
-                                type="button"
-                                onClick={() => togglePhoneSettlementTimeline(item)}
-                                className="finance-table-action finance-table-action--history"
-                              >
-                                <i className="fa-solid fa-timeline text-slate-500" />
-                                {isTimelineOpen ? 'بستن تاریخچه' : paymentCount > 0 ? `تاریخچه (${paymentCount.toLocaleString('fa-IR')})` : 'جزئیات تسویه'}
-                              </button>
-                            </div>
-                          </div>
-                          {isTimelineOpen && renderPhoneSettlementTimeline(item, true)}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <DataTableShell className="partner-phone-capital-table-view partner-phone-capital-table-scroll hidden lg:block" data-ui-partner-phone-capital-table="true">
-                    <table className="partner-capital-compact-table min-w-[1120px] w-full text-right text-xs" dir="rtl">
-                      <thead className="sticky top-0 z-10 bg-white/95 text-[11px] font-black text-slate-500 backdrop-blur dark:bg-slate-950/95 dark:text-slate-400">
+                  <DataTableShell className="rounded-xl" data-ui-capital-table="true" aria-label="جزئیات سرمایه و وضعیت فروش گوشی‌های همکار">
+                    <table className="w-full min-w-[58rem] table-fixed text-right text-xs" dir="rtl">
+                      <caption className="sr-only">جزئیات سرمایه، بازگشت سرمایه و وضعیت فروش گوشی‌های همکار</caption>
+                      <thead className="sticky top-0 z-10 bg-slate-50 text-xs font-black text-slate-600 dark:bg-slate-900 dark:text-slate-300">
                         <tr>
-                          <th className="px-4 py-3">گوشی و وضعیت</th>
-                          <th className="px-4 py-3">قیمت خرید روز / اولیه</th>
-                          <th className="px-4 py-3">سرمایه همکار</th>
-                          <th className="px-4 py-3">پرونده فروش مشتری</th>
-                          <th className="px-4 py-3">تاریخ و منبع</th>
-                          <th className="px-4 py-3 text-left">اقدام</th>
+                          <th scope="col" className="w-44 px-2.5 py-2.5">گوشی و وضعیت</th>
+                          <th scope="col" className="w-36 px-2.5 py-2.5">قیمت خرید روز / اولیه</th>
+                          <th scope="col" className="w-40 px-2.5 py-2.5">سرمایه همکار</th>
+                          <th scope="col" className="w-40 px-2.5 py-2.5">پرونده فروش مشتری</th>
+                          <th scope="col" className="w-36 px-2.5 py-2.5">تاریخ و منبع</th>
+                          <th scope="col" className="w-36 px-2.5 py-2.5 text-end">اقدام</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -363,37 +262,44 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                           const balance = Number(item.phoneSettlementBalance || 0);
                           const paymentCount = Number(item.phoneSettlementPaymentCount || 0);
                           const isTimelineOpen = expandedPhoneSettlementTimelineId === Number(item.id);
+                          const capitalToneClass = settlementStatus.capitalSettled
+                            ? 'text-emerald-700 dark:text-emerald-300'
+                            : settlementStatus.progressPercent > 0
+                              ? 'text-amber-700 dark:text-amber-300'
+                              : 'text-slate-600 dark:text-slate-300';
+                          const saleToneClass = saleClosureStatus.isClosed
+                            ? 'text-emerald-700 dark:text-emerald-300'
+                            : saleClosureStatus.isInstallment
+                              ? 'text-amber-700 dark:text-amber-300'
+                              : 'text-slate-600 dark:text-slate-300';
                           return (
                             <React.Fragment key={`sold-phone-daily-fragment-${item.id}`}>
-                            <tr className="partner-operational-table-v105__data-row bg-white align-middle transition hover:bg-slate-50 dark:bg-slate-950/45 dark:hover:bg-slate-900/60">
-                              <td className="px-4 py-3">
-                                <div className="flex items-start gap-3">
-                                  <IconGlyph tone="neutral" className="mt-0.5 h-10 w-10 shrink-0" aria-hidden="true"><i className="fa-solid fa-mobile-screen-button" /></IconGlyph>
+                            <tr className="bg-white align-middle transition hover:bg-slate-50 dark:bg-slate-950/45 dark:hover:bg-slate-900/60">
+                              <td className="px-2.5 py-2.5 align-top">
+                                <div className="flex min-w-0 items-start gap-2">
+                                  <IconGlyph tone="neutral" size="sm" className="mt-0.5" aria-hidden="true"><i className="fa-solid fa-mobile-screen-button" /></IconGlyph>
                                   <div className="min-w-0">
-                                    <div className="font-black text-slate-900 dark:text-slate-50">{item.name || 'گوشی فروخته‌شده'}</div>
-                                    <div className="mt-1 flex flex-wrap items-center gap-2 justify-end text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                                      <span className="font-mono" dir="ltr">{item.identifier || 'IMEI ثبت نشده'}</span>
-                                      <span>•</span>
-                                      <span>{item.status || 'فروخته‌شده'}</span>
-                                    </div>
+                                    <div className="break-words font-black leading-5 text-slate-900 dark:text-slate-50">{item.name || 'گوشی فروخته‌شده'}</div>
+                                    <bdi className="mt-1 block break-all font-mono text-slate-500 dark:text-slate-400" dir="ltr">{item.identifier || 'IMEI ثبت نشده'}</bdi>
+                                    <div className="mt-1 font-semibold text-slate-500 dark:text-slate-400">{item.status || 'فروخته‌شده'}</div>
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-4 py-3">
+                              <td className="px-2.5 py-2.5 align-top">
                                 <div className="font-black text-slate-950 dark:text-slate-50">{formatPrice(item.settlementPurchasePrice)}</div>
-                                <div className="mt-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">اولیه: {formatPrice(item.initialPurchasePrice)}</div>
-                                <div className="mt-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">آخرین تغییر: {item.currentPurchasePriceUpdatedAt ? formatIsoToShamsi(item.currentPurchasePriceUpdatedAt) : 'ثبت نشده'}</div>
-                                <div className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-[10px] font-black ${delta >= 0 ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-200' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-200'}`}>
+                                <div className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">اولیه: {formatPrice(item.initialPurchasePrice)}</div>
+                                <div className="mt-1 break-words text-xs font-semibold leading-5 text-slate-500 dark:text-slate-400">آخرین تغییر: {item.currentPurchasePriceUpdatedAt ? formatIsoToShamsi(item.currentPurchasePriceUpdatedAt) : 'ثبت نشده'}</div>
+                                <div className={`mt-1 text-xs font-black ${delta >= 0 ? 'text-amber-700 dark:text-amber-300' : 'text-emerald-700 dark:text-emerald-300'}`}>
                                   {delta >= 0 ? '+' : '-'}{formatCurrencyText(Math.abs(delta), readStoredCurrencyUnit())}
                                 </div>
                               </td>
-                              <td className="partner-capital-cell partner-capital-cell--capital px-4 py-3">
-                                <div className="partner-capital-stack space-y-2">
-                                  <span className={`partner-capital-status-chip inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black shadow-sm ${settlementStatus.badgeClass}`}>
-                                    <i className={settlementStatus.icon} />
-                                    {settlementStatus.label}
-                                  </span>
-                                  <div className="partner-capital-progress-inline" data-progress-value={settlementStatus.progressPercent}>
+                              <td className="px-2.5 py-2.5 align-top">
+                                <div className="space-y-1.5">
+                                  <div className={`flex items-start gap-2 font-black leading-5 ${capitalToneClass}`}>
+                                    <i className={`${settlementStatus.icon} mt-1 shrink-0`} aria-hidden="true" />
+                                    <span className="break-words">{settlementStatus.label}</span>
+                                  </div>
+                                  <div className="max-w-40">
                                     <FinancialProgressBar
                                       value={settlementStatus.progressPercent}
                                       showPercent={false}
@@ -402,45 +308,40 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                                       ariaLabel={`درصد بازگشت سرمایه: ${settlementStatus.progressPercent} درصد`}
                                     />
                                   </div>
-                                  <div className="font-black text-emerald-700 dark:text-emerald-300">{formatCurrencyText(Number(item.phoneSettlementPaidAmount || 0), readStoredCurrencyUnit())} برگشته</div>
-                                  <div className={`text-[11px] font-black ${balance > 0 ? 'text-rose-700 dark:text-rose-300' : 'text-slate-500 dark:text-slate-400'}`}>{formatCurrencyText(balance, readStoredCurrencyUnit())} مانده سرمایه</div>
+                                  <div className="break-words font-black leading-5 text-emerald-700 dark:text-emerald-300">برگشتی: {formatCurrencyText(Number(item.phoneSettlementPaidAmount || 0), readStoredCurrencyUnit())}</div>
+                                  <div className={`break-words text-xs font-black leading-5 ${balance > 0 ? 'text-rose-700 dark:text-rose-300' : 'text-slate-500 dark:text-slate-400'}`}>مانده: {formatCurrencyText(balance, readStoredCurrencyUnit())}</div>
                                 </div>
                               </td>
-                              <td className="partner-capital-cell partner-capital-cell--customer px-4 py-3">
-                                <div className="partner-capital-stack space-y-2">
-                                  <span className={`partner-capital-status-chip inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black shadow-sm ${saleClosureStatus.badgeClass}`}>
-                                    <i className={saleClosureStatus.icon} />
-                                    {saleClosureStatus.label}
-                                  </span>
+                              <td className="px-2.5 py-2.5 align-top">
+                                <div className="space-y-1.5">
+                                  <div className={`flex items-start gap-2 font-black leading-5 ${saleToneClass}`}>
+                                    <i className={`${saleClosureStatus.icon} mt-1 shrink-0`} aria-hidden="true" />
+                                    <span className="break-words">{saleClosureStatus.label}</span>
+                                  </div>
                                   {saleClosureStatus.isInstallment && !saleClosureStatus.isClosed ? (
-                                    <div className="text-[11px] font-black text-amber-700 dark:text-amber-300">مانده اقساط مشتری: {formatCurrencyText(saleClosureStatus.remainingAmount, readStoredCurrencyUnit())}</div>
+                                    <div className="break-words text-xs font-black leading-5 text-amber-700 dark:text-amber-300">مانده اقساط مشتری: {formatCurrencyText(saleClosureStatus.remainingAmount, readStoredCurrencyUnit())}</div>
                                   ) : null}
                                 </div>
                               </td>
-                              <td className="partner-capital-cell partner-capital-cell--date-source px-4 py-3">
-                                <div className="partner-capital-date-value font-bold text-slate-700 dark:text-slate-200">{item.soldAt ? formatIsoToShamsi(item.soldAt) : '—'}</div>
-                                <div className="partner-capital-source-link mt-1">
+                              <td className="px-2.5 py-2.5 align-top">
+                                <div className="font-bold text-slate-700 dark:text-slate-200">{item.soldAt ? formatIsoToShamsi(item.soldAt) : '—'}</div>
+                                <div className="mt-1">
                                   {renderPhoneSaleSourceLink(item, sourceLabel, true)}
                                 </div>
                                 {item.phoneSettlementLastPaymentDate && (
-                                  <div className="mt-1 text-[10px] font-semibold text-slate-500 dark:text-slate-400">آخرین پرداخت: {formatIsoToShamsi(item.phoneSettlementLastPaymentDate)}</div>
+                                  <div className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">آخرین پرداخت: {formatIsoToShamsi(item.phoneSettlementLastPaymentDate)}</div>
                                 )}
                               </td>
-                              <td className="partner-capital-cell partner-capital-cell--action px-4 py-3 text-left">
-                                <div className="partner-capital-actions partner-operational-table-v105__action-bar flex items-center justify-end gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => togglePhoneSettlementTimeline(item)}
-                                    className="finance-table-action finance-table-action--history"
-                                  >
-                                    <i className="fa-solid fa-timeline text-slate-500" />
+                              <td className="px-2 py-2.5 align-top text-end">
+                                <div className="flex items-center justify-end">
+                                  <Button type="button" onClick={() => togglePhoneSettlementTimeline(item)} variant="secondary" size="xs" className="whitespace-nowrap" leftIcon={<i className="fa-solid fa-timeline" />}>
                                     {isTimelineOpen ? 'بستن' : paymentCount > 0 ? `تاریخچه (${paymentCount.toLocaleString('fa-IR')})` : 'جزئیات تسویه'}
-                                  </button>
+                                  </Button>
                                 </div>
                               </td>
                             </tr>
                             {isTimelineOpen && (
-                              <tr className="partner-operational-table-v105__timeline-row bg-slate-50 dark:bg-slate-950/30">
+                              <tr className="bg-slate-50 dark:bg-slate-950/30">
                                 <td colSpan={6} className="px-4 pb-4 pt-0">
                                   {renderPhoneSettlementTimeline(item)}
                                 </td>
@@ -452,31 +353,29 @@ const PartnerPhoneCapitalSection: React.FC<Props> = ({ ctx }) => {
                       </tbody>
                     </table>
                   </DataTableShell>
-                  <div className="flex flex-col gap-3 border-t border-slate-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
-                    <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                  <div className="flex flex-col gap-2 border-t border-slate-100 px-3 py-2 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
+                    <div className="text-xs font-bold text-slate-500 dark:text-slate-400">
                       صفحه {Number(phoneSettlementPage || 1).toLocaleString('fa-IR')} از {Number(phoneSettlementTotalPages || 1).toLocaleString('fa-IR')} · {Number(phoneSettlementTotal || 0).toLocaleString('fa-IR')} نتیجه
                     </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <label className="inline-flex items-center gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <label className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
                         تعداد در صفحه
-                        <SelectField controlOnly value={String(phoneSettlementPageSize)} onChange={(event) => setPhoneSettlementPageSize(event.target.value as '25' | '50' | '100')} className="min-w-[82px]">
-                          <option value="25">۲۵</option>
-                          <option value="50">۵۰</option>
-                          <option value="100">۱۰۰</option>
-                        </SelectField>
+                        <span className="w-20 shrink-0">
+                          <SelectField controlOnly size="sm" value={String(phoneSettlementPageSize)} onChange={(event) => setPhoneSettlementPageSize(event.target.value as '25' | '50' | '100')}>
+                            <option value="25">۲۵</option>
+                            <option value="50">۵۰</option>
+                            <option value="100">۱۰۰</option>
+                          </SelectField>
+                        </span>
                       </label>
-                      <button type="button" disabled={phoneSettlementLoading || Number(phoneSettlementPage || 1) <= 1} onClick={() => setPhoneSettlementPage((page: number) => Math.max(1, page - 1))} className="inline-flex h-9 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-[11px] font-black text-slate-600 disabled:opacity-40 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200">
-                        <i className="fa-solid fa-chevron-right" /> قبلی
-                      </button>
-                      <button type="button" disabled={phoneSettlementLoading || Number(phoneSettlementPage || 1) >= Number(phoneSettlementTotalPages || 1)} onClick={() => setPhoneSettlementPage((page: number) => Math.min(Number(phoneSettlementTotalPages || 1), page + 1))} className="inline-flex h-9 items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 text-[11px] font-black text-slate-600 disabled:opacity-40 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200">
-                        بعدی <i className="fa-solid fa-chevron-left" />
-                      </button>
+                      <Button type="button" disabled={phoneSettlementLoading || Number(phoneSettlementPage || 1) <= 1} onClick={() => setPhoneSettlementPage((page: number) => Math.max(1, page - 1))} variant="secondary" size="xs" leftIcon={<i className="fa-solid fa-chevron-right" />}>قبلی</Button>
+                      <Button type="button" disabled={phoneSettlementLoading || Number(phoneSettlementPage || 1) >= Number(phoneSettlementTotalPages || 1)} onClick={() => setPhoneSettlementPage((page: number) => Math.min(Number(phoneSettlementTotalPages || 1), page + 1))} variant="secondary" size="xs" rightIcon={<i className="fa-solid fa-chevron-left" />}>بعدی</Button>
                     </div>
                   </div>
                 </>
               )}
             </div>
-          </div>
+          </section>
     </>
   );
 };

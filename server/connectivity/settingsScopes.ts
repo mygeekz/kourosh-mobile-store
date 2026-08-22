@@ -11,6 +11,8 @@ export const RELAY_CONNECTIVITY_SETTING_KEYS = new Set([
   "custom_relay_control_url",
   "custom_relay_connector_url",
   "miniapp_public_access_mode",
+  "miniapp_live_origin_url",
+  "miniapp_stable_tunnel_provider",
 ]);
 
 export const SERVER_OWNED_SETTING_KEYS = new Set([

@@ -53,9 +53,17 @@ node scripts\audit-local-certificate-runtime.mjs
 if errorlevel 1 goto :err
 node scripts\audit-pwa-install-runtime.mjs
 if errorlevel 1 goto :err
+node scripts\test-pwa-build-ensure-v163.mjs
+if errorlevel 1 goto :err
 node scripts\test-local-pwa-server-runtime.mjs
 if errorlevel 1 goto :err
 node scripts\audit-database-restore-lifecycle.mjs
+if errorlevel 1 goto :err
+node scripts\audit-frontend-entry-imports-v175.mjs
+if errorlevel 1 goto :err
+node scripts\audit-miniapp-api-result-consumers-v176.mjs
+if errorlevel 1 goto :err
+node scripts\audit-miniapp-telegram-backbutton-v177.mjs
 if errorlevel 1 goto :err
 
 echo.

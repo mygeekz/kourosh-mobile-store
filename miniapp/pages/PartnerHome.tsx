@@ -1,45 +1,134 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import homeHero from "../assets/home-hero.webp?inline";
+import {
+  Boxes,
+  ListChecks,
+  Radio,
+  Smartphone,
+  Store,
+  WalletCards,
+} from "../../components/lucide-react";
 import { MiniAppDataState } from "../components/MiniAppDataState";
+import {
+  PremiumHeroBalance,
+  PremiumIconTile,
+  PremiumPill,
+  PremiumQuickAction,
+  PremiumSectionHeading,
+} from "../components/premium/MiniAppPremiumPrimitives";
 import { formatCustomerDate, formatToman } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
-import type { PartnerHomeData } from "../types";
+import { useMiniAppDataAvailability } from "../dataAvailability/MiniAppDataAvailabilityContext";
+import { isMiniAppAvailabilityOnlineTone, resolveMiniAppAvailabilityPresentation } from "../reference/miniAppDataAvailability";
+import { MINIAPP_PREMIUM } from "../reference/miniAppPremiumDesignSystem";
+import type { PartnerHomeData, PartnerPhoneData } from "../types";
 
 const accountTone = (code: PartnerHomeData["account"]["code"]) =>
-  code === "debtor" ? "text-danger" : code === "creditor" ? "text-success" : "text-secondaryText";
+  code === "debtor" ? "red" : code === "creditor" ? "mint" : "blue";
+
+const amountOnly = (value: number): string => formatToman(value).replace(" تومان", "");
 
 export const PartnerHome: React.FC = () => {
   const query = useMiniAppQuery<PartnerHomeData>("/api/miniapp/partner/home");
+  const recentPhones = useMiniAppQuery<PartnerPhoneData>(
+    "/api/miniapp/partner/phones?page=1&pageSize=3",
+    { availability: "secondary" },
+  );
+  const { meta, pending } = useMiniAppDataAvailability();
   if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
   const data = query.data;
+
   return (
-    <section aria-labelledby="partner-home-title">
-      <p className="m-0 text-xs font-extrabold text-primary">حساب همکار</p>
-      <h1 id="partner-home-title" className="mb-1 mt-1 text-2xl font-black leading-10">سلام {data.partner.name}</h1>
-      <p className="m-0 text-sm leading-7 text-mutedText">خلاصه‌ی واقعی همکاری شما با کوروش</p>
+    <section className={MINIAPP_PREMIUM.page} aria-labelledby="partner-home-title">
+      {(() => {
+        const availabilityView = !pending && meta ? resolveMiniAppAvailabilityPresentation(meta) : null;
+        const availabilityOnline = availabilityView ? isMiniAppAvailabilityOnlineTone(availabilityView.tone) : false;
+        const availabilityTone = availabilityOnline ? "mint" : availabilityView?.tone === "very_stale" ? "red" : availabilityView ? "orange" : "blue";
+        const storeTone = availabilityOnline ? "blue" : availabilityTone;
+        return (
+          <>
+            <header className={`${MINIAPP_PREMIUM.card} px-3.5 py-2`}>
+              <div dir="ltr" className="flex min-w-0 items-center justify-between gap-2.5">
+                <div className="flex shrink-0 items-center gap-1">
+                  {availabilityView ? (
+                    <PremiumPill
+                      tone={availabilityTone}
+                      icon={availabilityOnline ? Radio : Store}
+                      compact
+                      className="whitespace-nowrap shadow-none"
+                    >
+                      {availabilityView.badge}
+                    </PremiumPill>
+                  ) : null}
+                  <PremiumPill
+                    tone={storeTone}
+                    icon={Store}
+                    compact
+                    className="whitespace-nowrap shadow-none"
+                  >
+                    {availabilityView ? availabilityView.title : "فروشگاه آنلاین"}
+                  </PremiumPill>
+                </div>
+                <div dir="rtl" className="min-w-0 flex-1 text-right">
+                  <p className="m-0 text-[9px] font-black leading-4 text-premium-blue">حساب همکار</p>
+                  <h1 id="partner-home-title" className="m-0 truncate text-right text-[1.05rem] font-black leading-6 tracking-tight text-premium-navy">سلام {data.partner.name}</h1>
+                </div>
+              </div>
+              {availabilityView && meta?.source === "snapshot" ? (
+                <p dir="rtl" className={`mb-0 mt-1.5 text-right text-[9px] font-bold leading-4 ${availabilityOnline ? "text-premium-green" : "text-premium-orange-deep"}`}>{availabilityView.detail}</p>
+              ) : null}
+            </header>
 
-      <section className="mt-5 rounded-[var(--radius-lg)] border border-border bg-card p-4" aria-label="مانده حساب همکار">
-        <div className="flex items-center justify-between gap-4"><span className="text-xs text-mutedText">وضعیت حساب</span><strong className={`text-xs ${accountTone(data.account.code)}`}>{data.account.label}</strong></div>
-        <p className="mb-0 mt-2 break-words text-2xl font-black tabular-nums">{formatToman(data.account.amount)}</p>
+            <PremiumHeroBalance
+              title="موجودی فعلی"
+              amount={<>
+                <span className="block">{amountOnly(data.account.amount)}</span>
+                <span className="mt-1 block text-[1rem] font-bold text-white/95">تومان</span>
+              </>}
+              status={data.account.label}
+              statusTone={accountTone(data.account.code)}
+              updatedLabel={<>{formatCustomerDate(data.ledger.lastActivity)}</>}
+              backgroundImageSrc={homeHero}
+            />
+          </>
+        );
+      })()}
+
+      <section className="space-y-2.5" aria-labelledby="partner-home-actions">
+        <PremiumSectionHeading title="دسترسی سریع" subtitle="بخش‌های اصلی حساب همکار" />
+        <div id="partner-home-actions" className="grid grid-cols-2 gap-2.5">
+          <PremiumQuickAction to="/ledger" title="گردش حساب" subtitle="مشاهده تراکنش‌ها" icon={ListChecks} tone="blue" compact />
+          <PremiumQuickAction to="/purchases" title="کالاها" subtitle="اقلام تأمین‌شده" icon={Boxes} tone="violet" compact />
+          <PremiumQuickAction to="/phones" title="تسویه گوشی‌ها" subtitle="وضعیت تسویه" icon={Smartphone} tone="mint" compact />
+          <PremiumQuickAction to="/account" title="حساب" subtitle="خلاصه همکاری" icon={WalletCards} tone="orange" compact />
+        </div>
       </section>
 
-      <section className="mt-6" aria-labelledby="partner-ledger-summary">
-        <div className="flex items-center justify-between gap-3 border-b border-border pb-3"><h2 id="partner-ledger-summary" className="m-0 text-base font-black">گردش حساب</h2><Link to="/ledger" className="text-xs font-bold text-primary no-underline">مشاهده همه</Link></div>
-        <dl className="m-0 divide-y divide-border text-xs">
-          <div className="flex min-h-12 items-center justify-between gap-4"><dt className="text-mutedText">تعداد رکوردها</dt><dd className="m-0 font-extrabold">{data.ledger.total.toLocaleString("fa-IR")}</dd></div>
-          <div className="flex min-h-12 items-center justify-between gap-4"><dt className="text-mutedText">آخرین فعالیت</dt><dd className="m-0 font-extrabold">{formatCustomerDate(data.ledger.lastActivity)}</dd></div>
-        </dl>
+      <section className={`${MINIAPP_PREMIUM.card} overflow-hidden`} aria-labelledby="partner-recent-activity">
+        <div className="p-4 pb-2.5">
+          <PremiumSectionHeading title="آخرین فعالیت‌ها" subtitle="آخرین گوشی‌های ثبت‌شده" actionLabel="مشاهده همه" actionTo="/phones" />
+        </div>
+        {recentPhones.data?.items?.length ? (
+          <ul className="m-0 list-none divide-y divide-premium-line/70 p-0">
+            {recentPhones.data.items.slice(0, 3).map((item) => (
+              <li key={item.ref} className="flex items-center gap-3 px-4 py-3">
+                <PremiumIconTile icon={Smartphone} tone={item.settlement.code === "open" ? "orange" : "mint"} size="sm" solid={false} />
+                <div className="min-w-0 flex-1">
+                  <strong className="block truncate text-[13px] font-black text-premium-navy">{item.name}</strong>
+                  <span className="mt-0.5 block truncate text-[10px] text-premium-muted">
+                    {formatCustomerDate(item.purchaseDate)}{item.identifier ? ` · ${item.identifier}` : ""}
+                  </span>
+                </div>
+                <strong className="shrink-0 text-[11px] font-black tabular-nums text-premium-green">{formatToman(item.settlement.amount)}</strong>
+              </li>
+            ))}
+          </ul>
+        ) : recentPhones.loading ? (
+          <div className="px-4 pb-5 text-xs text-premium-muted">در حال دریافت آخرین گوشی‌ها…</div>
+        ) : (
+          <div className="px-4 pb-5 text-xs text-premium-muted">هنوز گوشی‌ای ثبت نشده است.</div>
+        )}
       </section>
-
-      <section className="mt-6" aria-labelledby="partner-supplies-summary">
-        <div className="flex items-center justify-between gap-3 border-b border-border pb-3"><h2 id="partner-supplies-summary" className="m-0 text-base font-black">کالاهای تأمین‌شده</h2><Link to="/purchases" className="text-xs font-bold text-primary no-underline">مشاهده کالاها</Link></div>
-        <dl className="m-0 grid grid-cols-2 gap-x-4 text-xs">
-          <div className="border-b border-border py-3"><dt className="text-mutedText">گوشی</dt><dd className="m-0 mt-1 font-extrabold">{data.supplied.phones.toLocaleString("fa-IR")}</dd></div>
-          <div className="border-b border-border py-3"><dt className="text-mutedText">کالا</dt><dd className="m-0 mt-1 font-extrabold">{data.supplied.products.toLocaleString("fa-IR")}</dd></div>
-        </dl>
-      </section>
-
-      {data.phoneSettlement.total > 0 ? <section className="mt-6" aria-labelledby="partner-settlement-summary"><div className="flex items-center justify-between gap-3 border-b border-border pb-3"><h2 id="partner-settlement-summary" className="m-0 text-base font-black">تسویه گوشی‌ها</h2><Link to="/phones" className="text-xs font-bold text-primary no-underline">جزئیات تسویه</Link></div><dl className="m-0 divide-y divide-border text-xs"><div className="flex min-h-12 items-center justify-between"><dt className="text-mutedText">باز</dt><dd className="m-0 font-extrabold">{data.phoneSettlement.open.toLocaleString("fa-IR")}</dd></div><div className="flex min-h-12 items-center justify-between"><dt className="text-mutedText">مانده تسویه</dt><dd className="m-0 font-extrabold tabular-nums">{formatToman(data.phoneSettlement.remainingAmount)}</dd></div></dl></section> : null}
     </section>
   );
 };

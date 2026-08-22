@@ -65,8 +65,11 @@ export const telegramMenuButtonPayload = (settings: Settings) => {
         payload: { menu_button: { type: "web_app", text: "پنل کوروش", web_app: { url: miniAppUrl } } },
       }
     : {
-        mode: "default" as const,
-        payload: { menu_button: { type: "default" } },
+        // Missing/temporarily invalid public configuration is not an explicit
+        // operator request to remove Telegram's existing Mini App button.
+        // Automatic reconciliation must stay non-destructive and retry later.
+        mode: "unavailable" as const,
+        payload: null,
       };
 };
 
@@ -77,6 +80,9 @@ export const createTelegramMenuButtonEnsurer = (
   let pending: Promise<any> | null = null;
   const ensure = async (botToken: string, settings: Settings) => {
     const desired = telegramMenuButtonPayload(settings);
+    if (desired.mode === "unavailable" || !desired.payload) {
+      return { success: false, skipped: true, pending: true, mode: desired.mode };
+    }
     const fingerprint = `${botToken.slice(-8)}:${JSON.stringify(desired.payload)}`;
     if (fingerprint === lastSuccessfulFingerprint) {
       return { success: true, skipped: true, mode: desired.mode };

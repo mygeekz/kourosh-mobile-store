@@ -1,12 +1,9 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const runtimeDir = path.join(root, '.kourosh-runtime');
-const stampPath = path.join(runtimeDir, 'pwa-build.json');
 const requiredOutputs = [
   path.join(root, 'dist', 'index.html'),
   path.join(root, 'dist', 'sw.js'),
@@ -16,87 +13,47 @@ const requiredOutputs = [
   path.join(root, 'dist', 'icons', 'maskable-512.png'),
 ];
 
-const sourceRoots = [
-  'app',
-  'assets',
-  'components',
-  'config',
-  'contexts',
-  'hooks',
-  'pages',
-  'public',
-  'services',
-  'shared',
-  'styles',
-  'types',
-  'utils',
-];
+const SOURCE_VERSION_FILE = 'KOUROSH_SOURCE_VERSION';
+const DIST_VERSION_FILE = '.kourosh-source-version';
 
-const sourceFiles = [
-  'App.tsx',
-  'constants.tsx',
-  'index.css',
-  'index.html',
-  'index.tsx',
-  'package.json',
-  'package-lock.json',
-  'postcss.config.cjs',
-  'tailwind.config.cjs',
-  'tsconfig.json',
-  'types.ts',
-  'vite-env.d.ts',
-  'vite.config.ts',
-];
-
-const ignoredNames = new Set([
-  '.DS_Store',
-  'Thumbs.db',
-]);
-
-const collectFiles = (absolutePath) => {
-  if (!fs.existsSync(absolutePath)) return [];
-  const stat = fs.statSync(absolutePath);
-  if (stat.isFile()) return [absolutePath];
-  if (!stat.isDirectory()) return [];
-
-  const files = [];
-  for (const entry of fs.readdirSync(absolutePath, { withFileTypes: true })) {
-    if (ignoredNames.has(entry.name)) continue;
-    const child = path.join(absolutePath, entry.name);
-    if (entry.isDirectory()) files.push(...collectFiles(child));
-    else if (entry.isFile()) files.push(child);
+const readTrimmedFile = (filePath) => {
+  try {
+    return fs.readFileSync(filePath, 'utf8').trim();
+  } catch {
+    return '';
   }
-  return files;
 };
 
-const hash = crypto.createHash('sha256');
-hash.update('kourosh-local-pwa-build-v3\0');
-const allFiles = [
-  ...sourceFiles.map((relativePath) => path.join(root, relativePath)),
-  ...sourceRoots.flatMap((relativePath) => collectFiles(path.join(root, relativePath))),
-]
-  .filter((filePath) => fs.existsSync(filePath) && fs.statSync(filePath).isFile())
-  .sort((left, right) => left.localeCompare(right));
+export const readSourceVersion = (rootDir = root) =>
+  readTrimmedFile(path.join(rootDir, SOURCE_VERSION_FILE));
 
-for (const filePath of allFiles) {
-  const relativePath = path.relative(root, filePath).replace(/\\/g, '/');
-  hash.update(relativePath);
-  hash.update('\0');
-  hash.update(fs.readFileSync(filePath));
-  hash.update('\0');
-}
+export const readDistSourceVersion = (rootDir = root) =>
+  readTrimmedFile(path.join(rootDir, 'dist', DIST_VERSION_FILE));
 
-const fingerprint = hash.digest('hex');
-let previousFingerprint = '';
-try {
-  const previous = JSON.parse(fs.readFileSync(stampPath, 'utf8'));
-  previousFingerprint = String(previous?.fingerprint || '');
-} catch {
-  previousFingerprint = '';
-}
+export const isDistCurrentForSource = (rootDir = root) => {
+  const sourceVersion = readSourceVersion(rootDir);
+  // Older installations did not publish a source marker. Preserve their
+  // established reuse behavior until a versioned release is extracted.
+  if (!sourceVersion) return true;
+  return readDistSourceVersion(rootDir) === sourceVersion;
+};
 
-const validateGeneratedOutputs = () => {
-  const filesReady = requiredOutputs.every((filePath) => {
+export const writeDistSourceVersion = (rootDir = root) => {
+  const sourceVersion = readSourceVersion(rootDir);
+  if (!sourceVersion) return;
+  fs.writeFileSync(path.join(rootDir, 'dist', DIST_VERSION_FILE), `${sourceVersion}\n`, 'utf8');
+};
+
+export const validateGeneratedOutputs = (rootDir = root) => {
+  const files = [
+    path.join(rootDir, 'dist', 'index.html'),
+    path.join(rootDir, 'dist', 'sw.js'),
+    path.join(rootDir, 'dist', 'manifest.webmanifest'),
+    path.join(rootDir, 'dist', 'icons', 'icon-192.png'),
+    path.join(rootDir, 'dist', 'icons', 'icon-512.png'),
+    path.join(rootDir, 'dist', 'icons', 'maskable-512.png'),
+  ];
+  const filesReady = files.every((filePath) => {
     try {
       const stat = fs.statSync(filePath);
       return stat.isFile() && stat.size > 0;
@@ -107,9 +64,9 @@ const validateGeneratedOutputs = () => {
   if (!filesReady) return false;
 
   try {
-    const index = fs.readFileSync(path.join(root, 'dist', 'index.html'), 'utf8');
-    const worker = fs.readFileSync(path.join(root, 'dist', 'sw.js'), 'utf8');
-    const manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist', 'manifest.webmanifest'), 'utf8'));
+    const index = fs.readFileSync(path.join(rootDir, 'dist', 'index.html'), 'utf8');
+    const worker = fs.readFileSync(path.join(rootDir, 'dist', 'sw.js'), 'utf8');
+    const manifest = JSON.parse(fs.readFileSync(path.join(rootDir, 'dist', 'manifest.webmanifest'), 'utf8'));
     const workerPrefix = worker.slice(0, 320).toLowerCase();
     const iconSizes = new Set(
       (manifest.icons || [])
@@ -132,48 +89,73 @@ const validateGeneratedOutputs = () => {
   }
 };
 
-const outputsReady = validateGeneratedOutputs();
+export const ensureLocalPwaBuild = (options = {}) => {
+  const rootDir = options.rootDir || root;
+  const out = options.stdout || process.stdout;
+  const err = options.stderr || process.stderr;
+  const forceValue = options.force ?? process.env.KOUROSH_FORCE_PWA_BUILD ?? '';
+  const force = forceValue === true || String(forceValue) === '1';
+  const validate = options.validate || validateGeneratedOutputs;
 
-if (outputsReady && previousFingerprint === fingerprint) {
-  console.log('[pwa] Production build is current; reusing dist/.');
-  process.exit(0);
+  const generatedOutputsReady = validate(rootDir);
+  const distMatchesSource = isDistCurrentForSource(rootDir);
+
+  // Normal restarts still reuse dist/ without hashing the source tree. A new
+  // release changes one tiny marker, so extracting it over an existing install
+  // invalidates the old production bundle exactly once.
+  if (!force && generatedOutputsReady && distMatchesSource) {
+    out.write('[pwa] Valid production output found; reusing dist/ without rebuild.\n');
+    return { action: 'reuse', built: false };
+  }
+
+  out.write(force
+    ? '[pwa] Forced rebuild requested. Building the installable production runtime...\n'
+    : generatedOutputsReady && !distMatchesSource
+      ? '[pwa] Source release changed; rebuilding the production runtime once...\n'
+      : '[pwa] Production output is missing or invalid. Building once...\n');
+
+  const npmExecPath = String(process.env.npm_execpath || '').trim();
+  const useNpmCli = npmExecPath && fs.existsSync(npmExecPath);
+  const buildCommand = useNpmCli ? process.execPath : (process.platform === 'win32' ? 'npm.cmd' : 'npm');
+  const buildArgs = useNpmCli ? [npmExecPath, 'run', 'build'] : ['run', 'build'];
+  const run = options.spawnSyncImpl || spawnSync;
+  const result = run(buildCommand, buildArgs, {
+    cwd: rootDir,
+    env: {
+      ...process.env,
+      VITE_ENABLE_PWA_DEV: '0',
+      VITE_DISABLE_PWA_BUILD: '0',
+    },
+    stdio: 'inherit',
+    shell: !useNpmCli && process.platform === 'win32',
+  });
+
+  if (result?.error) {
+    err.write(`[pwa] Failed to start the production build: ${String(result.error.message || result.error)}\n`);
+    return { action: 'error', built: false, exitCode: 1 };
+  }
+  const exitCode = Number.isInteger(result?.status) ? result.status : 1;
+  if (exitCode !== 0) {
+    err.write(`[pwa] Production build failed with code ${exitCode}.\n`);
+    return { action: 'error', built: false, exitCode };
+  }
+  if (!validate(rootDir)) {
+    err.write('[pwa] Production output failed the manifest, icon or service-worker validation gate.\n');
+    return { action: 'error', built: true, exitCode: 1 };
+  }
+
+  try {
+    writeDistSourceVersion(rootDir);
+  } catch (stampError) {
+    err.write(`[pwa] Production build succeeded but its source-version stamp could not be written: ${String(stampError?.message || stampError)}\n`);
+    return { action: 'error', built: true, exitCode: 1 };
+  }
+
+  out.write('[pwa] Installable production runtime is ready. Future normal starts will reuse dist/.\n');
+  return { action: 'built', built: true, exitCode: 0 };
+};
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const result = ensureLocalPwaBuild();
+  if (result.action === 'error') process.exitCode = result.exitCode || 1;
 }
-
-console.log('[pwa] Frontend source changed or production PWA output is missing.');
-console.log('[pwa] Building the installable production runtime...');
-const npmExecPath = String(process.env.npm_execpath || '').trim();
-const useNpmCli = npmExecPath && fs.existsSync(npmExecPath);
-const buildCommand = useNpmCli ? process.execPath : (process.platform === 'win32' ? 'npm.cmd' : 'npm');
-const buildArgs = useNpmCli ? [npmExecPath, 'run', 'build'] : ['run', 'build'];
-const result = spawnSync(buildCommand, buildArgs, {
-  cwd: root,
-  env: {
-    ...process.env,
-    VITE_ENABLE_PWA_DEV: '0',
-    VITE_DISABLE_PWA_BUILD: '0',
-  },
-  stdio: 'inherit',
-  shell: !useNpmCli && process.platform === 'win32',
-});
-
-if (result.error) {
-  console.error('[pwa] Failed to start the production build:', result.error.message);
-  process.exit(1);
-}
-if ((result.status ?? 1) !== 0) {
-  console.error(`[pwa] Production build failed with code ${result.status ?? 1}.`);
-  process.exit(result.status ?? 1);
-}
-
-if (!validateGeneratedOutputs()) {
-  console.error('[pwa] Production output failed the manifest, icon or service-worker validation gate.');
-  process.exit(1);
-}
-
-fs.mkdirSync(runtimeDir, { recursive: true });
-fs.writeFileSync(stampPath, JSON.stringify({
-  version: 3,
-  fingerprint,
-  builtAt: new Date().toISOString(),
-}, null, 2));
-console.log('[pwa] Installable production runtime is ready.');

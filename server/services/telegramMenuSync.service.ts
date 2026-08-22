@@ -9,6 +9,10 @@ export type TelegramMenuSyncResult = {
   message?: string;
 };
 
+export type TelegramMenuSyncScope = {
+  chatId?: string | number | null;
+};
+
 type TelegramApiResult = {
   success?: boolean;
   message?: string;
@@ -48,37 +52,39 @@ export const createTelegramMenuSyncService = (overrides: Partial<TelegramMenuSyn
     ...overrides,
   };
 
-  return async (settings: Record<string, unknown>): Promise<TelegramMenuSyncResult> => {
+  return async (settings: Record<string, unknown>, scope: TelegramMenuSyncScope = {}): Promise<TelegramMenuSyncResult> => {
     const transportMode = resolveTelegramTransportMode(settings);
     if (transportMode === "disabled") return { state: "pending", attempts: 0, message: "Telegram transport is disabled." };
     const botToken = String(settings.telegram_bot_token || "").trim();
     if (!botToken) return { state: "pending", attempts: 0, message: "Telegram Bot Token is not configured." };
 
-    deps.configureTransport(settings);
     const desired = telegramMenuButtonPayload(settings);
+    if (desired.mode === "unavailable" || !desired.payload) {
+      return {
+        state: "pending",
+        attempts: 0,
+        message: "Mini App public URL is not ready; the existing Telegram Menu Button was preserved.",
+      };
+    }
+    deps.configureTransport(settings);
+    const rawChatId = scope.chatId == null ? "" : String(scope.chatId).trim();
+    const scopedChatId = /^-?\d+$/.test(rawChatId) ? rawChatId : "";
+    const setPayload = scopedChatId ? { ...desired.payload, chat_id: scopedChatId } : desired.payload;
+    const getPayload = scopedChatId ? { chat_id: scopedChatId } : {};
     let lastMessage = "Telegram Menu sync failed.";
     let attempts = 0;
     for (let attempt = 0; attempt < delays.length; attempt += 1) {
       attempts = attempt + 1;
       if (delays[attempt] > 0) await deps.sleep(delays[attempt]);
       try {
-        const result = await deps.callApi(botToken, "setChatMenuButton", desired.payload);
+        const result = await deps.callApi(botToken, "setChatMenuButton", setPayload);
         if (result?.success) {
-          const verification = await deps.callApi(botToken, "getChatMenuButton", {});
-          const expectedUrl = desired.mode === "web_app"
-            ? String((desired.payload.menu_button as { web_app?: { url?: unknown } })?.web_app?.url || "").trim()
-            : "";
-          if (desired.mode === "default") {
-            const verifiedType = verification?.data && typeof verification.data === "object"
-              ? String(((verification.data as { result?: { type?: unknown } }).result?.type) || "")
-              : "";
-            if (verification?.success && verifiedType === "default") return { state: "synced", attempts: attempt + 1 };
-          } else {
-            const verifiedUrl = verification?.success ? verifiedMenuButtonUrl(verification) : null;
-            let canonicalExpected: string | null = null;
-            try { canonicalExpected = expectedUrl ? new URL(expectedUrl).toString() : null; } catch { canonicalExpected = null; }
-            if (canonicalExpected && verifiedUrl === canonicalExpected) return { state: "synced", attempts: attempt + 1 };
-          }
+          const verification = await deps.callApi(botToken, "getChatMenuButton", getPayload);
+          const expectedUrl = String((desired.payload.menu_button as { web_app?: { url?: unknown } })?.web_app?.url || "").trim();
+          const verifiedUrl = verification?.success ? verifiedMenuButtonUrl(verification) : null;
+          let canonicalExpected: string | null = null;
+          try { canonicalExpected = expectedUrl ? new URL(expectedUrl).toString() : null; } catch { canonicalExpected = null; }
+          if (canonicalExpected && verifiedUrl === canonicalExpected) return { state: "synced", attempts: attempt + 1 };
           lastMessage = String(verification?.message || verification?.rawText || verification?.errorCode || "Telegram Menu read-back did not match the requested Mini App URL.");
           if (!verification?.success) {
             if (!transientFailure.test(lastMessage)) break;

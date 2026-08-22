@@ -38,6 +38,8 @@ const PartnersPage: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
   const [notification, setNotification] = useState<NotificationMessage | null>(null);
+  const directoryRequestIdRef = React.useRef(0);
+  const hasLoadedDirectoryRef = React.useRef(false);
 
   // Telegram report messaging
   const [msgOpen, setMsgOpen] = useState(false);
@@ -91,13 +93,6 @@ const PartnersPage: React.FC = () => {
   const totalPages = Math.max(1, directoryTotalPages);
   const pageStart = directoryTotal === 0 ? 0 : ((page - 1) * numericPageSize) + 1;
   const pageEnd = Math.min(page * numericPageSize, directoryTotal);
-  const visiblePages = React.useMemo(() => {
-    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, index) => index + 1);
-    const startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
-    return Array.from({ length: 5 }, (_, index) => startPage + index);
-  }, [page, totalPages]);
-  const filteredPartners = partners;
-
   const buildPartnerDirectoryQuery = (targetPage = page, targetPageSize = numericPageSize, includeSummary = false) => new URLSearchParams({
     view: 'directory',
     page: String(targetPage),
@@ -111,6 +106,7 @@ const PartnersPage: React.FC = () => {
 
   const fetchPartners = async (background = false, includeSummary = false) => {
     if (!token) return;
+    const requestId = ++directoryRequestIdRef.current;
     if (background) setIsRefreshing(true);
     else setIsLoading(true);
     try {
@@ -118,16 +114,21 @@ const PartnersPage: React.FC = () => {
       const result = await response.json();
       const data = result?.data;
       if (!response.ok || !result.success || !data || !Array.isArray(data.items)) throw new Error(result.message || 'خطا در دریافت لیست همکاران');
+      if (requestId !== directoryRequestIdRef.current) return;
       setPartners(data.items);
       setDirectoryTotal(Math.max(0, Number(data.total || 0)));
       setDirectoryTotalPages(Math.max(1, Number(data.totalPages || 1)));
       if (data.summary) setDirectorySummary(data.summary);
       setLastSyncedAt(new Date().toISOString());
+      hasLoadedDirectoryRef.current = true;
     } catch (error) {
+      if (requestId !== directoryRequestIdRef.current) return;
       setNotification({ type: 'error', text: humanizeErrorMessage((error as Error).message, { endpoint: '/api/partners?view=directory', action: 'دریافت فهرست همکاران' }) });
     } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
+      if (requestId === directoryRequestIdRef.current) {
+        setIsLoading(false);
+        setIsRefreshing(false);
+      }
     }
   };
 
@@ -162,7 +163,7 @@ const PartnersPage: React.FC = () => {
 
   useEffect(() => {
     if (!token) return;
-    void fetchPartners(false, directorySummary == null);
+    void fetchPartners(hasLoadedDirectoryRef.current, directorySummary == null);
   }, [token, page, pageSize, debouncedSearchTerm, balanceFilter, sortMode]);
 
   useEffect(() => {
@@ -263,14 +264,14 @@ const PartnersPage: React.FC = () => {
 
   return (
     <PageKit
-      className="people-merged-page people-foundation"
+      className="people-foundation"
       title="همکاران"
       subtitle="تامین‌کنندگان، تکنسین‌ها، وضعیت مانده حساب و عملیات ارتباطی را یکپارچه مدیریت کنید."
       icon={<i className="fa-solid fa-building" />}
       isLoading={isLoading}
     >
 
-      <div className="people-page-shell mx-auto grid max-w-7xl min-w-0 gap-4 px-3 text-right sm:px-4" dir="rtl" data-ui-people-page="partners" data-ui-people-scope="list">
+      <div className="mx-auto grid max-w-7xl min-w-0 gap-4 px-3 text-right sm:px-4" dir="rtl" data-ui-people-page="partners" data-ui-people-scope="list">
           <PeopleDirectoryOverview
             activeTab="partners"
             eyebrow="مرکز کنترل همکاران"
@@ -365,6 +366,7 @@ const PartnersPage: React.FC = () => {
                 ],
               },
             ]}
+            columns={2}
             resetDisabled={!(searchTerm || balanceFilter !== 'all' || sortMode !== 'name')}
             onReset={() => { setSearchTerm(''); setBalanceFilter('all'); setSortMode('name'); }}
           />
@@ -393,14 +395,13 @@ const PartnersPage: React.FC = () => {
             />
           ) : (
             <PartnerDirectoryList
-              partners={filteredPartners}
+              partners={partners}
               page={page}
               pageSize={pageSize}
               total={directoryTotal}
               totalPages={totalPages}
               pageStart={pageStart}
               pageEnd={pageEnd}
-              visiblePages={visiblePages}
               onPageChange={setPage}
               onPageSizeChange={setPageSize}
               onSendReport={openTelegramReport}

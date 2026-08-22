@@ -274,42 +274,32 @@ const PartnerDetailRender: React.FC<Props> = ({ ctx }) => {
   } = ctx;
 
   return (
-    <div
-      className="partner-detail-page-root space-y-8"
+    <main
+      className="mx-auto w-full max-w-7xl space-y-4 px-4 pb-6 sm:px-6"
       dir="rtl"
       data-ui-partner-detail-page-root="true"
+      data-ui-people-page="partner-detail"
+      data-ui-people-scope="detail"
     >
       <Notification message={notification} onClose={() => setNotification(null)} />
 
-      <div
-        className="detail-page-shell people-detail-apple customer-detail-apple people-detail-redesign-v1 people-detail-redesign-v1--customer people-foundation people-detail-foundation space-y-8"
-        data-ui-people-page="partner-detail"
-        data-ui-people-scope="detail"
-        data-ui-partner-header-shell="customer-parity-v137"
-      >
-        <div className="customer-detail-hero detail-hero-card" data-ui-people-surface="detail-hero">
-          <PartnerDetailHeaderSection ctx={ctx} />
-        </div>
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950" data-ui-people-surface="detail-hero">
+        <PartnerDetailHeaderSection ctx={ctx} />
       </div>
 
-      <div
-        className="detail-page-shell people-detail-apple partner-detail-apple partner-detail-safe-gutter-v84 partner-detail-responsive-root people-detail-redesign-v1 people-detail-redesign-v1--partner people-foundation people-detail-foundation space-y-5"
-        data-ui-people-page="partner-detail"
-        data-ui-people-scope="detail"
-        data-ui-partner-detail-shell="operational-content"
-      >
+      <div className="space-y-4" data-ui-partner-detail-shell="operational-content">
         <PartnerOverviewKpiSection ctx={ctx} />
         <PartnerPhoneCapitalSection ctx={ctx} />
         <PartnerSettlementWorkspaceSection ctx={ctx} />
         <PartnerTelegramConversationSection ctx={ctx} />
         {/* Ledger */}
-        <div id="partner-ledger-section" className="detail-card partner-customer-sync-ledger partner-ledger-v128 partner-ledger-v130 partner-ledger-v132" data-ui-people-ledger="partner">
+        <div id="partner-ledger-section" data-ui-people-ledger="partner">
           <PartnerLedgerWorkspaceSection ctx={ctx} />
         </div>
         <PartnerPurchaseHistorySection ctx={ctx} />
         <PartnerDetailModalStack ctx={ctx} />
       </div>
-    </div>
+    </main>
   );
 };
 

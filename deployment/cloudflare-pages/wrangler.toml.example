@@ -1,0 +1,20 @@
+name = "kourosh-miniapp-edge"
+pages_build_output_dir = "../../dist-miniapp"
+compatibility_date = "2026-08-14"
+compatibility_flags = ["nodejs_compat"]
+send_metrics = false
+
+[[d1_databases]]
+binding = "KOUROSH_EDGE_DB"
+database_name = "kourosh-miniapp-edge"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+KOUROSH_EDGE_LIVE_TIMEOUT_MS = "1500"
+KOUROSH_EDGE_INIT_DATA_MAX_AGE_SECONDS = "300"
+KOUROSH_EDGE_SESSION_CUSTOMER_PARTNER_SECONDS = "14400"
+KOUROSH_EDGE_SESSION_STAFF_SECONDS = "1800"
+
+# Required Cloudflare secrets (do NOT put values in this file):
+# KOUROSH_EDGE_SESSION_KEY      = base64url-encoded 32 random bytes
+# KOUROSH_EDGE_SUBJECT_PEPPER  = base64url-encoded >=32 random bytes

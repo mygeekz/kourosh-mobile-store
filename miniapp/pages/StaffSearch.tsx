@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchMiniAppData, MiniAppApiError } from "../apiClient";
 import { MiniAppDataState } from "../components/MiniAppDataState";
+import { useMiniAppDataAvailability } from "../dataAvailability/MiniAppDataAvailabilityContext";
 import { formatCustomerDate, formatToman } from "../format";
 import type { StaffSearchData } from "../types";
 
@@ -9,20 +10,30 @@ export const StaffSearch: React.FC = () => {
   const [input, setInput] = useState("");
   const [state, setState] = useState<{ data: StaffSearchData | null; loading: boolean; error: string | null }>({ data: null, loading: false, error: null });
   const query = input.trim();
+  const { beginRequest, reportMeta, clearAvailability } = useMiniAppDataAvailability();
   useEffect(() => {
     if (!query) { setState({ data: null, loading: false, error: null }); return; }
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
       setState((old) => ({ ...old, loading: true, error: null }));
-      void fetchMiniAppData<StaffSearchData>(`/api/miniapp/staff/search?q=${encodeURIComponent(query)}&limit=20`, controller.signal)
-        .then((data) => setState({ data, loading: false, error: null }))
+      const requestPath = `/api/miniapp/staff/search?q=${encodeURIComponent(query)}&limit=20`;
+      beginRequest(requestPath);
+      void fetchMiniAppData<StaffSearchData>(requestPath, controller.signal)
+        .then((result) => {
+          if (controller.signal.aborted) return;
+          reportMeta(requestPath, result.meta);
+          setState({ data: result.data, loading: false, error: null });
+        })
         .catch((error: unknown) => {
           if (controller.signal.aborted) return;
-          setState({ data: null, loading: false, error: error instanceof MiniAppApiError ? error.message : "جستجو انجام نشد." });
+          const apiError = error instanceof MiniAppApiError ? error : null;
+          if (apiError?.responseMeta) reportMeta(requestPath, apiError.responseMeta);
+          else clearAvailability(requestPath);
+          setState({ data: null, loading: false, error: apiError?.message || "جستجو انجام نشد." });
         });
     }, 300);
     return () => { window.clearTimeout(timer); controller.abort(); };
-  }, [query]);
+  }, [beginRequest, clearAvailability, query, reportMeta]);
   const total = useMemo(() => state.data ? Object.values(state.data.groups).reduce((sum, rows) => sum + rows.length, 0) : 0, [state.data]);
   return (
     <div>

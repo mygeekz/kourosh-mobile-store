@@ -263,6 +263,22 @@ const SettingsBusinessPanel: React.FC<SettingsBusinessPanelProps> = ({
               <TextField controlOnly type="text" id="store_name" name="store_name" value={businessInfo.store_name || ''} onChange={handleBusinessInfoChange} className={compactInputClass} placeholder="مثلاً فروشگاه کوروش" autoComplete="organization" />
             </BusinessField>
 
+            <BusinessField
+              label="نام فروشنده/نماینده قانونی قرارداد"
+              icon="fa-user-tie"
+              hint="این نام به‌صورت snapshot در قراردادهای فروش اقساطی جدید ذخیره می‌شود."
+            >
+              <TextField controlOnly type="text" id="installment_contract_seller_name" name="installment_contract_seller_name" value={businessInfo.installment_contract_seller_name || ''} onChange={handleBusinessInfoChange} className={compactInputClass} placeholder="نام و نام خانوادگی" autoComplete="name" />
+            </BusinessField>
+
+            <BusinessField
+              label="کد ملی فروشنده/نماینده قانونی"
+              icon="fa-id-card"
+              hint="برای آماده‌بودن قرارداد چاپی، کد ملی ۱۰ رقمی را یک‌بار در تنظیمات ثبت کنید."
+            >
+              <TextField controlOnly type="text" id="installment_contract_seller_national_code" name="installment_contract_seller_national_code" value={businessInfo.installment_contract_seller_national_code || ''} onChange={handleBusinessInfoChange} className={`${compactInputClass} text-left`} dir="ltr" inputMode="numeric" maxLength={10} placeholder="0012345678" autoComplete="off" />
+            </BusinessField>
+
             <BusinessField label="تلفن فروشگاه" icon="fa-phone">
               <TextField controlOnly type="tel" id="store_phone" name="store_phone" value={businessInfo.store_phone || ''} onChange={handleBusinessInfoChange} className={`${compactInputClass} text-left`} dir="ltr" inputMode="tel" placeholder="021..." autoComplete="tel" />
             </BusinessField>

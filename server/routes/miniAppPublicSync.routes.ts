@@ -11,8 +11,9 @@ export const registerMiniAppPublicSyncRoutes = (app: Express): void => {
   app.get("/api/local-runtime/miniapp-public-url-sync/preflight", async (req, res, next) => {
     if (!isLoopbackRequest(req)) return res.status(403).json({ success: false, code: "LOCAL_RUNTIME_LOOPBACK_REQUIRED" });
     try {
-      const result = await miniAppPublicUrlSyncService.preflight();
-      if (result.allowed) markMiniAppTunnelStarting("temporary_external_tunnel");
+      const result = await miniAppPublicUrlSyncService.preflight({ intent: req.query?.intent });
+      if (result.startupAction === "quick_tunnel") markMiniAppTunnelStarting("cloudflare_quick_tunnel");
+      if (result.startupAction === "stable_tunnel") markMiniAppTunnelStarting(String(result.stableTunnel?.provider || "stable_tunnel"));
       res.setHeader("Cache-Control", "no-store");
       return res.json({ success: true, data: result });
     } catch (error) { return next(error); }

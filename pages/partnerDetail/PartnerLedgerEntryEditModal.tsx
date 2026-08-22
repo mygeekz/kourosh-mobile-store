@@ -37,60 +37,49 @@ const PartnerLedgerEntryEditModal: React.FC<Props> = ({ ctx }) => {
           title="ویرایش رکورد دفتر همکار"
           onClose={() => setEditingEntry(null)}
           widthClass="max-w-4xl"
-          wrapperClassName="partner-ledger-edit-modal-canonical"
-          panelClassName="partner-ledger-edit-modal-panel"
           iconClass="fa-solid fa-pen-to-square"
           tone="info"
           variant="operational"
-          layout="split"
-          bodyClassName="partner-ledger-edit-modal-body"
-          hideCloseButton
         >
           <form
             onSubmit={(event) => {
               event.preventDefault();
               handleLedgerEdit();
             }}
-            className="partner-ledger-edit-canonical modal-template-form modal-template-form--profile-edit"
+            className="space-y-4"
             dir="rtl"
           >
-            <aside className="partner-ledger-edit-canonical__summary modal-template-card">
-              <span className="partner-ledger-edit-canonical__summary-icon modal-template-card__icon">
-                <i className="fa-solid fa-clipboard-list" />
-              </span>
-              <div className="partner-ledger-edit-canonical__summary-kicker">رکورد دفتر همکار</div>
-              <h3 className="partner-ledger-edit-canonical__summary-title">رکورد #{Number(editingEntry.id || 0).toLocaleString('fa-IR')}</h3>
-              <p className="partner-ledger-edit-canonical__summary-text">
-                شرح رکورد و مبلغ دریافتی/پرداختی همین سند را با استاندارد جدید فیلدها اصلاح کنید.
-              </p>
-              <div className="partner-ledger-edit-canonical__notice">
-                <i className="fa-solid fa-circle-info" />
-                <span>فقط اطلاعات همین رکورد به‌روزرسانی می‌شود.</span>
-              </div>
-            </aside>
+            <div className="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
+              <aside className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                <span className="mb-3 inline-flex size-10 items-center justify-center rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300" aria-hidden="true">
+                  <i className="fa-solid fa-clipboard-list" />
+                </span>
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400">رکورد دفتر همکار</p>
+                <h3 className="mt-1 text-base font-bold text-slate-900 dark:text-white">
+                  رکورد <bdi dir="ltr">#{Number(editingEntry.id || 0).toLocaleString('fa-IR')}</bdi>
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                  شرح و مبالغ همین سند را ویرایش کنید؛ سایر رکوردها تغییر نمی‌کنند.
+                </p>
+                <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">
+                  <i className="fa-solid fa-circle-info mt-1" aria-hidden="true" />
+                  <span>تغییر مبلغ، مانده حساب همکار را به‌روزرسانی می‌کند.</span>
+                </div>
+              </aside>
 
-            <section className="partner-ledger-edit-canonical__form modal-template-main">
-              <ModalField
-                label="شرح رکورد"
-                iconClass="fa-solid fa-receipt"
-                className="partner-ledger-edit-canonical__field partner-ledger-edit-canonical__field--full"
-              >
-                <TextField
-                  id="editPartnerLedgerDescription"
-                  name="description"
-                  dir="rtl"
-                  value={editingEntry.description || ''}
-                  onChange={(e) => setEditingEntry({ ...editingEntry, description: e.target.value })}
-                  placeholder="مثلاً: دریافت گوشی Galaxy A17 / اصلاح مبلغ ثبت‌شده"
-                />
-              </ModalField>
+              <section className="grid min-w-0 gap-4 sm:grid-cols-2" aria-label="فیلدهای ویرایش رکورد">
+                <ModalField label="شرح رکورد" iconClass="fa-solid fa-receipt" className="sm:col-span-2">
+                  <TextField
+                    id="editPartnerLedgerDescription"
+                    name="description"
+                    dir="rtl"
+                    value={editingEntry.description || ''}
+                    onChange={(e) => setEditingEntry({ ...editingEntry, description: e.target.value })}
+                    placeholder="مثلاً: دریافت گوشی Galaxy A17"
+                  />
+                </ModalField>
 
-              <div className="partner-ledger-edit-canonical__money-grid">
-                <ModalField
-                  label="مبلغ دریافتی از همکار"
-                  iconClass="fa-solid fa-arrow-down"
-                  className="partner-ledger-edit-canonical__field"
-                >
+                <ModalField label="مبلغ دریافتی از همکار" iconClass="fa-solid fa-arrow-down">
                   <PriceInput
                     id="editPartnerLedgerCredit"
                     name="credit"
@@ -102,11 +91,7 @@ const PartnerLedgerEntryEditModal: React.FC<Props> = ({ ctx }) => {
                   />
                 </ModalField>
 
-                <ModalField
-                  label="مبلغ پرداختی به همکار"
-                  iconClass="fa-solid fa-arrow-up"
-                  className="partner-ledger-edit-canonical__field"
-                >
+                <ModalField label="مبلغ پرداختی به همکار" iconClass="fa-solid fa-arrow-up">
                   <PriceInput
                     id="editPartnerLedgerDebit"
                     name="debit"
@@ -117,13 +102,8 @@ const PartnerLedgerEntryEditModal: React.FC<Props> = ({ ctx }) => {
                     suffix="تومان"
                   />
                 </ModalField>
-              </div>
-
-              <div className="partner-ledger-edit-canonical__helper">
-                <i className="fa-solid fa-circle-info" />
-                <span>مبالغ را به تومان وارد کنید. تغییر این مقادیر روی مانده حساب همکار اثر می‌گذارد.</span>
-              </div>
-            </section>
+              </section>
+            </div>
 
             <ModalActions
               onCancel={() => setEditingEntry(null)}
@@ -132,7 +112,6 @@ const PartnerLedgerEntryEditModal: React.FC<Props> = ({ ctx }) => {
               submitIconClass="fa-solid fa-check"
               submitDisabled={!token}
               align="end"
-              className="partner-ledger-edit-canonical__actions"
             />
           </form>
         </Modal>

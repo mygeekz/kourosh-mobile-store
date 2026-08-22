@@ -4,8 +4,14 @@ import type {
   MiniAppAuthData,
   MiniAppIdentity,
 } from "./types";
+import type { MiniAppResponseMeta } from "./reference/miniAppDataAvailability";
 
 const SESSION_KEY = "kourosh-miniapp-session";
+
+export type MiniAppApiResult<T> = {
+  data: T;
+  meta: MiniAppResponseMeta;
+};
 
 export class MiniAppApiError extends Error {
   constructor(
@@ -13,11 +19,39 @@ export class MiniAppApiError extends Error {
     message: string,
     public readonly status: number,
     public readonly requestId?: string,
+    public readonly responseMeta?: MiniAppResponseMeta,
   ) {
     super(message);
     this.name = "MiniAppApiError";
   }
 }
+
+const parseOptionalPositiveInteger = (value: string | null): number | null => {
+  if (!value) return null;
+  const parsed = Number(value);
+  return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : null;
+};
+
+const readResponseMeta = (
+  response: Response,
+  assumeLiveWhenMissing: boolean,
+): MiniAppResponseMeta | null => {
+  const rawSource = String(response.headers.get("x-kourosh-data-source") || "").trim().toLowerCase();
+  if (rawSource !== "live" && rawSource !== "snapshot" && !assumeLiveWhenMissing) return null;
+  const source = rawSource === "snapshot" ? "snapshot" : "live";
+  return {
+    source,
+    snapshotVersion: source === "snapshot"
+      ? parseOptionalPositiveInteger(response.headers.get("x-kourosh-snapshot-version"))
+      : null,
+    snapshotGeneratedAt: source === "snapshot"
+      ? response.headers.get("x-kourosh-snapshot-generated-at")
+      : null,
+    snapshotReceivedAt: source === "snapshot"
+      ? response.headers.get("x-kourosh-snapshot-received-at")
+      : null,
+  };
+};
 
 const readFailure = async (response: Response): Promise<MiniAppApiFailure> => {
   try {
@@ -37,7 +71,7 @@ const readFailure = async (response: Response): Promise<MiniAppApiFailure> => {
   }
 };
 
-const requireSuccess = async <T>(response: Response): Promise<T> => {
+const requireSuccess = async <T>(response: Response): Promise<MiniAppApiResult<T>> => {
   if (!response.ok) {
     const failure = await readFailure(response);
     throw new MiniAppApiError(
@@ -45,13 +79,19 @@ const requireSuccess = async <T>(response: Response): Promise<T> => {
       failure.message,
       response.status,
       failure.requestId,
+      readResponseMeta(response, false) || undefined,
     );
   }
   const payload = (await response.json()) as MiniAppApiSuccess<T>;
-  return payload.data;
+  return {
+    data: payload.data,
+    // Direct/local v163-compatible responses do not carry the Edge provenance
+    // header. Such successful same-origin responses are necessarily live.
+    meta: readResponseMeta(response, true) as MiniAppResponseMeta,
+  };
 };
 
-export const fetchMiniAppData = async <T>(path: string, signal?: AbortSignal): Promise<T> => {
+export const fetchMiniAppData = async <T>(path: string, signal?: AbortSignal): Promise<MiniAppApiResult<T>> => {
   const token = getStoredMiniAppToken();
   if (!token) {
     throw new MiniAppApiError("MINIAPP_AUTH_REQUIRED", "نشست Mini App موجود نیست.", 401);
@@ -72,16 +112,16 @@ export const fetchMiniAppData = async <T>(path: string, signal?: AbortSignal): P
 
 export const authenticateMiniApp = async (
   initData: string,
-): Promise<MiniAppAuthData> => {
+): Promise<MiniAppApiResult<MiniAppAuthData>> => {
   const response = await fetch("/api/miniapp/auth", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ initData }),
     credentials: "same-origin",
   });
-  const data = await requireSuccess<MiniAppAuthData>(response);
-  sessionStorage.setItem(SESSION_KEY, data.sessionToken);
-  return data;
+  const result = await requireSuccess<MiniAppAuthData>(response);
+  sessionStorage.setItem(SESSION_KEY, result.data.sessionToken);
+  return result;
 };
 
 export const getStoredMiniAppToken = (): string | null =>
@@ -98,6 +138,6 @@ export const fetchMiniAppIdentity = async (
     headers: { Authorization: `Bearer ${token}` },
     credentials: "same-origin",
   });
-  const data = await requireSuccess<{ identity: MiniAppIdentity }>(response);
-  return data.identity;
+  const result = await requireSuccess<{ identity: MiniAppIdentity }>(response);
+  return result.data.identity;
 };

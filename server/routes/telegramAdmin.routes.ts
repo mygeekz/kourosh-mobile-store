@@ -16,7 +16,17 @@ type AuthorizeRole = (roles: string[]) => any;
 
 type RegisterTelegramAdminDeps = {
   authorizeRole: AuthorizeRole;
-  getPollingState: () => { started: boolean; offset: number | null };
+  getPollingState: () => {
+    started: boolean;
+    offset: number | null;
+    inFlight?: boolean;
+    generation?: number;
+    consecutiveFailures?: number;
+    nextRetryDelayMs?: number;
+    lastSuccessAt?: string | null;
+    lastErrorAt?: string | null;
+    lastErrorMessage?: string;
+  };
   resetPollingStarted: () => void;
   startTelegramPolling: () => Promise<void>;
   resetTelegramCommandMenu: (botToken: string) => Promise<any>;
@@ -91,6 +101,7 @@ export const registerTelegramAdminRoutes = (
                   (x as any).reason?.message || (x as any).reason || "failed",
                 ),
               };
+        const pollingState = getPollingState();
         res.json({
           success: true,
           data: {
@@ -105,8 +116,15 @@ export const registerTelegramAdminRoutes = (
               pollingEnabled: String(
                 (settings as any).telegram_polling_enabled || "",
               ),
-              pollingStarted: getPollingState().started,
-              pollingOffset: getPollingState().offset,
+              pollingStarted: pollingState.started,
+              pollingOffset: pollingState.offset,
+              pollingInFlight: Boolean(pollingState.inFlight),
+              pollingGeneration: Number(pollingState.generation || 0),
+              pollingConsecutiveFailures: Number(pollingState.consecutiveFailures || 0),
+              pollingNextRetryDelayMs: Number(pollingState.nextRetryDelayMs || 0),
+              pollingLastSuccessAt: pollingState.lastSuccessAt || null,
+              pollingLastErrorAt: pollingState.lastErrorAt || null,
+              pollingLastErrorMessage: String(pollingState.lastErrorMessage || ""),
               lastWebhookAt: String(
                 (settings as any).telegram_last_webhook_at || "",
               ),

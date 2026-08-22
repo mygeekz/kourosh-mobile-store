@@ -123,13 +123,13 @@ export const ManagementKpiGrid: React.FC<KpiGridProps> = ({ items, className }) 
     {items.map((item) => {
       const tone = item.tone ?? 'neutral';
       return (
-        <article key={item.key} className="flex min-h-24 items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
-          <div className="min-w-0">
+        <article key={item.key} className="grid min-h-24 min-w-0 grid-cols-[minmax(0,1fr)_2rem] items-start gap-2 rounded-2xl border border-slate-200/80 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-950">
+          <div className="min-w-0 overflow-hidden">
             <div className="text-[11px] font-bold text-slate-600 dark:text-slate-300">{item.label}</div>
-            <strong className="mt-1 block truncate text-2xl font-black text-slate-950 dark:text-white">{item.value}</strong>
-            {item.hint ? <small className="mt-1 block truncate text-[10px] text-slate-500 dark:text-slate-400">{item.hint}</small> : null}
+            <strong className="mt-1 block break-words text-xl font-black leading-7 text-slate-950 dark:text-white">{item.value}</strong>
+            {item.hint ? <small className="mt-1 block break-words text-[10px] leading-5 text-slate-500 dark:text-slate-400">{item.hint}</small> : null}
           </div>
-          <span data-ui-icon-surface="bare" className={cn('inline-flex h-8 w-8 shrink-0 items-center justify-center border-0 bg-transparent text-sm shadow-none', toneTextClass[tone])} aria-hidden="true">
+          <span data-ui-icon-surface="bare" className={cn('inline-flex h-8 w-8 items-center justify-center self-start border-0 bg-transparent text-sm shadow-none', toneTextClass[tone])} aria-hidden="true">
             <i className={item.icon} />
           </span>
         </article>
@@ -138,18 +138,25 @@ export const ManagementKpiGrid: React.FC<KpiGridProps> = ({ items, className }) 
   </section>
 );
 
-type FilterProps = {
+type FilterProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> & {
   children: React.ReactNode;
-  className?: string;
 };
 
-export const ManagementFilterSurface: React.FC<FilterProps> = ({ children, className }) => (
+export const ManagementFilterSurface: React.FC<FilterProps> = ({ children, className, ...surfaceProps }) => (
   <Surface
-    surface="glass"
-    variant="panel"
-    scheme="adaptive"
+    {...surfaceProps}
+    surface="default"
     wrapContent={false}
-    className={cn('rounded-2xl border border-slate-200/80 bg-white/95 p-2.5 shadow-sm dark:border-slate-800 dark:bg-slate-950/90 sm:p-3', className)}
+    className={cn(
+      'rounded-2xl border border-slate-200 bg-white p-2.5 shadow-none dark:border-slate-800 dark:bg-slate-950 sm:p-3',
+      '[--ds-control-border:rgb(203_213_225)] [--ds-control-bg:rgb(255_255_255)] [--ds-control-fg:rgb(30_41_59)] [--ds-control-muted:rgb(100_116_139)]',
+      '[--app-field-border:rgb(203_213_225)] [--app-field-bg:rgb(255_255_255)] [--app-field-text:rgb(30_41_59)] [--app-field-muted:rgb(100_116_139)]',
+      '[--ux-control-border:rgb(203_213_225)] [--ux-control-bg:rgb(255_255_255)] [--ux-control-fg:rgb(30_41_59)] [--ux-control-muted:rgb(100_116_139)]',
+      'dark:[--ds-control-border:rgb(71_85_105)] dark:[--ds-control-bg:rgb(15_23_42)] dark:[--ds-control-fg:rgb(241_245_249)] dark:[--ds-control-muted:rgb(148_163_184)]',
+      'dark:[--app-field-border:rgb(71_85_105)] dark:[--app-field-bg:rgb(15_23_42)] dark:[--app-field-text:rgb(241_245_249)] dark:[--app-field-muted:rgb(148_163_184)]',
+      'dark:[--ux-control-border:rgb(71_85_105)] dark:[--ux-control-bg:rgb(15_23_42)] dark:[--ux-control-fg:rgb(241_245_249)] dark:[--ux-control-muted:rgb(148_163_184)]',
+      className,
+    )}
     data-ui-management-filters="true"
   >
     {children}

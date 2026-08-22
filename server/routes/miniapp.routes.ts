@@ -34,6 +34,7 @@ import {
   miniAppSecurityLog,
 } from "../security/miniAppSecurityLogger";
 import { isTrustedLoopbackProxy } from "../middleware/trustedProxy";
+import { requestMiniAppSnapshotRefresh } from "../cloud/snapshots/miniAppSnapshotRuntime";
 
 const VALID_REQUEST_ID = /^[A-Za-z0-9._:-]{8,128}$/;
 
@@ -178,6 +179,9 @@ export const registerMiniAppRoutes = (
         identityKind: identity.kind,
         subjectId: identity.subjectId,
       });
+      // Successful live authorization is a safe signal to refresh the outbound read-only
+      // snapshot soon. The runtime debounces this and never blocks the auth response.
+      requestMiniAppSnapshotRefresh();
       return res.json({
         success: true,
         data: {

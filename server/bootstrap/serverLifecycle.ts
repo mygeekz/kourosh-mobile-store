@@ -35,6 +35,7 @@ export type KouroshServerLifecycleDeps = {
   getAllSettingsAsObject: () => Promise<BackupSettings>;
   updateSetting: (key: string, value: string) => Promise<unknown>;
   initializeCloudConnectorRuntime: (settings: Record<string, unknown>, options: { updateSetting: (key: string, value: string) => Promise<unknown> }) => unknown;
+  initializeMiniAppSnapshotRuntime: (settings: Record<string, unknown>) => unknown;
   configureTelegramTransportRuntime: (settings: Record<string, unknown>) => unknown;
   startDailyBackupJob: StartDailyBackupJob;
 };
@@ -55,6 +56,7 @@ export const createKouroshServerStarter = ({
   getAllSettingsAsObject,
   updateSetting,
   initializeCloudConnectorRuntime,
+  initializeMiniAppSnapshotRuntime,
   configureTelegramTransportRuntime,
   startDailyBackupJob,
 }: KouroshServerLifecycleDeps): SyncTask => {
@@ -71,40 +73,55 @@ export const createKouroshServerStarter = ({
         try {
           await ensureReminderRulesTables();
         } catch {}
-        const runtimeSettings = await getAllSettingsAsObject().catch(() => ({}));
-        try {
-          initializeCloudConnectorRuntime(runtimeSettings, { updateSetting });
-        } catch (error) {
-          console.error("Relay Connector initialization failed; Local Kourosh will continue without Relay.", error instanceof Error ? error.message : "unknown_error");
-        }
-        configureTelegramTransportRuntime(runtimeSettings);
+        // Mandatory local startup ends here. External connectivity and background services
+        // must never delay the loopback listener becoming available.
         app.listen(port, bindHost, () =>
           console.log(`Server running at http://${bindHost}:${port}`),
         );
-        startReportSchedulers().catch((e) =>
-          console.error("Failed to start report schedulers:", e),
-        );
-        startOutboxWorker();
-        startAutoSendScheduler();
-        startCustomerTelegramNotifyScheduler();
-        autoConfigureTelegramUpdateMode()
-          .catch((e) =>
-            console.error("Failed to auto-configure telegram update mode:", e),
-          )
-          .finally(() =>
-            startTelegramPolling().catch((e) =>
-              console.error("Failed to start telegram polling:", e),
-            ),
+
+        void Promise.resolve().then(async () => {
+          const runtimeSettings = await getAllSettingsAsObject().catch(() => ({}));
+          try {
+            initializeCloudConnectorRuntime(runtimeSettings, { updateSetting });
+          } catch (error) {
+            console.error("Relay Connector initialization failed; Local Kourosh will continue without Relay.", error instanceof Error ? error.message : "unknown_error");
+          }
+          try {
+            initializeMiniAppSnapshotRuntime(runtimeSettings);
+          } catch (error) {
+            console.error("Mini App Snapshot runtime initialization failed; Local Kourosh will continue without Cloud Snapshot sync.", error instanceof Error ? error.message : "unknown_error");
+          }
+          try {
+            configureTelegramTransportRuntime(runtimeSettings);
+          } catch (error) {
+            console.error("Telegram transport initialization failed; Local Kourosh will continue without Telegram.", error instanceof Error ? error.message : "unknown_error");
+          }
+
+          startReportSchedulers().catch((e) =>
+            console.error("Failed to start report schedulers:", e),
           );
-        getAllSettingsAsObject()
-          .then((s) => {
-            const enabled = String(s.backup_enabled ?? "1") !== "0";
-            const cronExpr = String(s.backup_cron ?? "0 2 * * *");
-            const tz = String(s.backup_timezone ?? "Asia/Tehran");
-            const retention = Number(s.backup_retention ?? 14);
-            startDailyBackupJob({ enabled, cronExpr, tz, retention });
-          })
-          .catch(() => startDailyBackupJob());
+          try { startOutboxWorker(); } catch (e) { console.error("Failed to start outbox worker:", e); }
+          try { startAutoSendScheduler(); } catch (e) { console.error("Failed to start auto-send scheduler:", e); }
+          try { startCustomerTelegramNotifyScheduler(); } catch (e) { console.error("Failed to start customer Telegram notify scheduler:", e); }
+          autoConfigureTelegramUpdateMode()
+            .catch((e) =>
+              console.error("Failed to auto-configure telegram update mode:", e),
+            )
+            .finally(() =>
+              startTelegramPolling().catch((e) =>
+                console.error("Failed to start telegram polling:", e),
+              ),
+            );
+
+          const enabled = String(runtimeSettings.backup_enabled ?? "1") !== "0";
+          const cronExpr = String(runtimeSettings.backup_cron ?? "0 2 * * *");
+          const tz = String(runtimeSettings.backup_timezone ?? "Asia/Tehran");
+          const retention = Number(runtimeSettings.backup_retention ?? 14);
+          try { startDailyBackupJob({ enabled, cronExpr, tz, retention }); }
+          catch (e) { console.error("Failed to start daily backup job:", e); }
+        }).catch((error) => {
+          console.error("Optional runtime initialization failed; Local Kourosh remains available.", error instanceof Error ? error.message : "unknown_error");
+        });
       })
       .catch((err) => {
         console.error("Failed to initialize database:", err);
@@ -113,8 +130,9 @@ export const createKouroshServerStarter = ({
   };
 };
 
-export const registerKouroshShutdownHandlers = (closeDbConnection: AsyncTask, stopCloudConnectorRuntime: SyncTask = () => undefined): void => {
+export const registerKouroshShutdownHandlers = (closeDbConnection: AsyncTask, stopCloudConnectorRuntime: SyncTask = () => undefined, stopMiniAppSnapshotRuntime: SyncTask = () => undefined): void => {
   const cleanup = async () => {
+    stopMiniAppSnapshotRuntime();
     stopCloudConnectorRuntime();
     console.log("Closing database connection...");
     await closeDbConnection();

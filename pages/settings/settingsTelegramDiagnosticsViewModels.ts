@@ -64,6 +64,14 @@ export const buildSettingsTelegramDiagnosticsViewModel = ({
   const webhookUrl = String(webhookResult?.url || 'ثبت نشده');
   const pendingUpdatesLabel = Number(webhookResult?.pending_update_count || 0).toLocaleString('fa-IR');
   const pollingLabel = `${localState?.pollingStarted ? 'فعال' : 'غیرفعال'} / ${String(localState?.updateMode || 'نامشخص')}`;
+  const reconnectFailures = Number(localState?.pollingConsecutiveFailures || 0);
+  const reconnectLabel = reconnectFailures > 0
+    ? `در حال اتصال مجدد · تلاش ${reconnectFailures.toLocaleString('fa-IR')}`
+    : localState?.pollingStarted
+      ? 'پایدار / خودترمیم فعال'
+      : 'غیرفعال';
+  const hasMainMiniApp = Boolean(tgDiagnostics?.bot?.data?.result?.has_main_web_app);
+  const mainMiniAppLabel = hasMainMiniApp ? 'فعال در BotFather' : 'غیرفعال در BotFather';
   const lastInputLabel = String(localState?.lastWebhookAt || 'دیده نشده');
   const webhookErrorMessage = String(webhookResult?.last_error_message || '');
   const rawJson = tgDiagnostics ? JSON.stringify(tgDiagnostics, null, 2) : '';
@@ -86,6 +94,8 @@ export const buildSettingsTelegramDiagnosticsViewModel = ({
       { key: 'webhook-url', label: 'Webhook URL', value: webhookUrl },
       { key: 'pending-updates', label: 'Pending Updates', value: pendingUpdatesLabel },
       { key: 'polling', label: 'Polling', value: pollingLabel },
+      { key: 'polling-reconnect', label: 'اتصال مجدد', value: reconnectLabel },
+      { key: 'main-mini-app', label: 'Main Mini App / Launch App', value: mainMiniAppLabel },
       { key: 'last-input', label: 'آخرین ورودی', value: lastInputLabel },
     ],
     controlCenterBotApiOk,

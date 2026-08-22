@@ -167,6 +167,15 @@ export const registerInstallmentsRoutes = (
           +req.params.id,
           req.body?.status,
           notifyCustomer,
+          {
+            checkNumber: req.body?.checkNumber,
+            bankName: req.body?.bankName,
+            ownershipType: req.body?.ownershipType,
+            issuerName: req.body?.issuerName,
+            issuerNationalCode: req.body?.issuerNationalCode,
+            sayadiId: req.body?.sayadiId,
+            dueDate: req.body?.dueDate,
+          },
         );
 
         if ('validationMessage' in result) {
@@ -354,6 +363,25 @@ export const registerInstallmentsRoutes = (
           success: true,
           data: await installmentsService.listInstallmentSalesForCustomer(customerId),
         });
+      } catch (e) {
+        next(e);
+      }
+    },
+  );
+
+  app.post(
+    '/api/installment-sales/:id/contract/prepare',
+    authorizeRole(INSTALLMENT_ROLES),
+    async (req, res, next) => {
+      try {
+        const result = await installmentsService.prepareInstallmentSaleContractForPrint(+req.params.id);
+        if ('validationMessage' in result) {
+          return res.status(400).json({ success: false, message: result.validationMessage });
+        }
+        if ('notFound' in result) {
+          return res.status(404).json({ success: false, message: 'فروش اقساطی یافت نشد.' });
+        }
+        return res.json({ success: true, data: result.data });
       } catch (e) {
         next(e);
       }

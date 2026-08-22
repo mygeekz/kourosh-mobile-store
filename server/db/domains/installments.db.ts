@@ -33,6 +33,7 @@ import {
   syncInstallmentTransactionCustomerLedger,
 } from "./installmentLedger.db";
 import { safeJsonStringify, safeJsonParse, normalizeMoney } from "../core/json";
+import { getAllSettingsAsObject } from "./settings.db";
 
 import type {
   ProductPayload,
@@ -74,6 +75,7 @@ export const addInstallmentSaleToDb = async (
   await getDbInstance();
   const {
     customerId,
+    buyerNationalCode,
     phoneId,
     actualSalePrice,
     downPayment,
@@ -187,7 +189,7 @@ export const addInstallmentSaleToDb = async (
     const saleDateISO = saleDateMoment.locale("en").format("YYYY-MM-DD");
     for (const pid of phoneIds) {
       const ph = await getAsync(
-        "SELECT id, model, imei, status, purchasePrice, currentPurchasePrice, salePrice FROM phones WHERE id = ?",
+        "SELECT id, model, color, storage, imei, status, purchasePrice, currentPurchasePrice, salePrice FROM phones WHERE id = ?",
         [pid],
       );
       if (!ph) throw new Error("گوشی مورد نظر یافت نشد.");
@@ -230,6 +232,23 @@ export const addInstallmentSaleToDb = async (
     }
 
     // 2) ایجاد رکورد فروش
+    const customerSnapshot = await getAsync(
+      "SELECT fullName, nationalCode, phoneNumber, address FROM customers WHERE id = ?",
+      [customerId],
+    );
+    if (!customerSnapshot) throw new Error("مشتری مورد نظر یافت نشد.");
+    const settingsSnapshot = await getAllSettingsAsObject();
+    const sellerAddress = [
+      settingsSnapshot.store_address_line1,
+      settingsSnapshot.store_address_line2,
+      settingsSnapshot.store_city_state_zip,
+    ]
+      .map((value) => String(value || "").trim())
+      .filter(Boolean)
+      .join("، ");
+    const normalizedBuyerNationalCode = String(
+      buyerNationalCode || customerSnapshot.nationalCode || "",
+    ).trim();
     const metaJson = (saleData as any).meta
       ? JSON.stringify((saleData as any).meta)
       : (saleData as any).metaJson
@@ -239,8 +258,9 @@ export const addInstallmentSaleToDb = async (
     const mainPhoneId: number | null = phoneIds.length > 0 ? phoneIds[0] : null;
     const saleResult = await runAsync(
       `INSERT INTO installment_sales
-        (customerId, phoneId, actualSalePrice, downPayment, numberOfInstallments, installmentAmount, installmentsStartDate, saleDate, saleDateISO, saleType, itemsSummary, metaJson, notes)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        (customerId, phoneId, actualSalePrice, downPayment, numberOfInstallments, installmentAmount, installmentsStartDate, saleDate, saleDateISO, saleType, itemsSummary, metaJson,
+         buyerFullName, buyerNationalCode, buyerPhoneNumber, buyerAddress, sellerFullName, sellerNationalCode, sellerStoreName, sellerPhoneNumber, sellerAddress, contractVersion, notes)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       [
         customerId,
         mainPhoneId,
@@ -254,6 +274,16 @@ export const addInstallmentSaleToDb = async (
         saleType,
         itemsSummary,
         metaJson,
+        String(customerSnapshot.fullName || "").trim() || null,
+        normalizedBuyerNationalCode || null,
+        String(customerSnapshot.phoneNumber || "").trim() || null,
+        String(customerSnapshot.address || "").trim() || null,
+        String(settingsSnapshot.installment_contract_seller_name || "").trim() || null,
+        String(settingsSnapshot.installment_contract_seller_national_code || "").trim() || null,
+        String(settingsSnapshot.store_name || "فروشگاه").trim() || "فروشگاه",
+        String(settingsSnapshot.store_phone || "").trim() || null,
+        sellerAddress || null,
+        "smart-sale-contract-v2-scenario-aware",
         notes || null,
       ],
     );
@@ -263,7 +293,7 @@ export const addInstallmentSaleToDb = async (
     // Phones
     for (const pid of phoneIds) {
       const ph = await getAsync(
-        "SELECT id, model, imei, purchasePrice, currentPurchasePrice, salePrice FROM phones WHERE id = ?",
+        "SELECT id, model, color, storage, imei, purchasePrice, currentPurchasePrice, salePrice FROM phones WHERE id = ?",
         [pid],
       );
       const unit = Number(
@@ -286,9 +316,23 @@ export const addInstallmentSaleToDb = async (
         );
       const desc = `${ph?.model || "موبایل"}${ph?.imei ? ` (IMEI: ${ph.imei})` : ""}`;
       await runAsync(
-        `INSERT INTO installment_sale_items (saleId, itemType, itemId, description, quantity, unitPrice, buyPrice, totalPrice)
-         VALUES (?,?,?,?,?,?,?,?)`,
-        [saleId, "phone", pid, desc, 1, unit, buy, unit],
+        `INSERT INTO installment_sale_items
+          (saleId, itemType, itemId, description, quantity, unitPrice, buyPrice, totalPrice, contractModel, contractColor, contractStorage, contractImei)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [
+          saleId,
+          "phone",
+          pid,
+          desc,
+          1,
+          unit,
+          buy,
+          unit,
+          String(ph?.model || "").trim() || null,
+          String(ph?.color || "").trim() || null,
+          String(ph?.storage || "").trim() || null,
+          String(ph?.imei || "").trim() || null,
+        ],
       );
       await runAsync(
         "UPDATE phones SET currentPurchasePrice = ?, currentPurchasePriceUpdatedAt = (strftime('%Y-%m-%dT%H:%M:%SZ', 'now', 'utc')) WHERE id = ?",
@@ -378,7 +422,18 @@ export const addInstallmentSaleToDb = async (
     let checksTotal = 0;
     for (const check of checks) {
       const normalizedCheckNumber = String(check.checkNumber || "").trim();
+      const ownershipType = String((check as any).ownershipType || "").trim();
       if (!normalizedCheckNumber) throw new Error("شماره چک الزامی است.");
+      if (!['buyer', 'third_party'].includes(ownershipType)) {
+        throw new Error(`مالک چک «${normalizedCheckNumber}» مشخص نشده است.`);
+      }
+      const issuerNationalCode = String((check as any).issuerNationalCode || "").trim();
+      if (ownershipType === 'buyer' && issuerNationalCode !== normalizedBuyerNationalCode) {
+        throw new Error(`کد ملی صادرکننده چک «${normalizedCheckNumber}» با خریدار یکسان نیست.`);
+      }
+      if (ownershipType === 'third_party' && issuerNationalCode === normalizedBuyerNationalCode) {
+        throw new Error(`مالک چک «${normalizedCheckNumber}» باید خریدار ثبت شود.`);
+      }
       const normalizedCheckAmount = Number(check.amount);
       if (!Number.isFinite(normalizedCheckAmount) || normalizedCheckAmount <= 0) {
         throw new Error(`مبلغ چک «${normalizedCheckNumber}» نامعتبر است.`);
@@ -393,11 +448,15 @@ export const addInstallmentSaleToDb = async (
         throw new Error("تاریخ سررسید چک نمی‌تواند قبل از تاریخ فروش باشد.");
       }
       await runAsync(
-        `INSERT INTO installment_checks (saleId, checkNumber, bankName, dueDate, amount, status) VALUES (?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO installment_checks (saleId, checkNumber, bankName, ownershipType, issuerName, issuerNationalCode, sayadiId, dueDate, amount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           saleId,
           normalizedCheckNumber,
           String(check.bankName || "").trim(),
+          ownershipType,
+          String((check as any).issuerName || "").trim() || null,
+          issuerNationalCode || null,
+          String((check as any).sayadiId || "").trim() || null,
           checkDueMoment.locale("fa").format("jYYYY/jMM/jDD"),
           normalizedCheckAmount,
           normalizeCheckStatus((check as any).status ?? "نزد فروشنده"),
@@ -1319,6 +1378,133 @@ export const getAllInstallmentSalesFromDb = async (): Promise<
   return (rows || []).map(mapInstallmentDirectoryRowToFrontend);
 };
 
+export type InstallmentContractPreparationResult = {
+  ready: boolean;
+  missingFields: string[];
+  sale: FrontendInstallmentSale;
+};
+
+export const prepareInstallmentSaleContractForPrintInDb = async (
+  saleId: number,
+): Promise<InstallmentContractPreparationResult | null> => {
+  await getDbInstance();
+
+  const current = await getAsync(
+    `SELECT isale.id, isale.customerId, c.fullName, c.nationalCode, c.phoneNumber, c.address,
+            COALESCE(NULLIF(isale.buyerNationalCode, ''), c.nationalCode) AS contractBuyerNationalCode
+       FROM installment_sales isale
+       JOIN customers c ON c.id = isale.customerId
+      WHERE isale.id = ?`,
+    [saleId],
+  );
+  if (!current) return null;
+
+  const settings = await getAllSettingsAsObject();
+  const sellerAddress = [
+    settings.store_address_line1,
+    settings.store_address_line2,
+    settings.store_city_state_zip,
+  ]
+    .map((value) => String(value || "").trim())
+    .filter(Boolean)
+    .join("، ");
+
+  // Snapshot fields are filled only when empty. Once a contract identity value exists,
+  // later edits to customer/store settings cannot silently rewrite the historical contract.
+  await runAsync(
+    `UPDATE installment_sales
+        SET buyerFullName = CASE WHEN buyerFullName IS NULL OR TRIM(buyerFullName) = '' THEN ? ELSE buyerFullName END,
+            buyerNationalCode = CASE WHEN buyerNationalCode IS NULL OR TRIM(buyerNationalCode) = '' THEN ? ELSE buyerNationalCode END,
+            buyerPhoneNumber = CASE WHEN buyerPhoneNumber IS NULL OR TRIM(buyerPhoneNumber) = '' THEN ? ELSE buyerPhoneNumber END,
+            buyerAddress = CASE WHEN buyerAddress IS NULL OR TRIM(buyerAddress) = '' THEN ? ELSE buyerAddress END,
+            sellerFullName = CASE WHEN sellerFullName IS NULL OR TRIM(sellerFullName) = '' THEN ? ELSE sellerFullName END,
+            sellerNationalCode = CASE WHEN sellerNationalCode IS NULL OR TRIM(sellerNationalCode) = '' THEN ? ELSE sellerNationalCode END,
+            sellerStoreName = CASE WHEN sellerStoreName IS NULL OR TRIM(sellerStoreName) = '' THEN ? ELSE sellerStoreName END,
+            sellerPhoneNumber = CASE WHEN sellerPhoneNumber IS NULL OR TRIM(sellerPhoneNumber) = '' THEN ? ELSE sellerPhoneNumber END,
+            sellerAddress = CASE WHEN sellerAddress IS NULL OR TRIM(sellerAddress) = '' THEN ? ELSE sellerAddress END,
+            contractVersion = ?
+      WHERE id = ?`,
+    [
+      String(current.fullName || "").trim() || null,
+      String(current.nationalCode || "").trim() || null,
+      String(current.phoneNumber || "").trim() || null,
+      String(current.address || "").trim() || null,
+      String(settings.installment_contract_seller_name || "").trim() || null,
+      String(settings.installment_contract_seller_national_code || "").trim() || null,
+      String(settings.store_name || "").trim() || null,
+      String(settings.store_phone || "").trim() || null,
+      sellerAddress || null,
+      "smart-sale-contract-v2-scenario-aware",
+      saleId,
+    ],
+  );
+
+  // رکوردهای قدیمی مالک چک نداشتند. تطبیق کد ملی، مهاجرت قطعی همان داده‌های
+  // تاریخی است؛ در ثبت و ویرایش جدید انتخاب مالکیت همیشه صریح و الزامی است.
+  await runAsync(
+    `UPDATE installment_checks
+        SET ownershipType = CASE
+          WHEN TRIM(COALESCE(issuerNationalCode, '')) = TRIM(COALESCE(?, '')) THEN 'buyer'
+          WHEN LENGTH(TRIM(COALESCE(issuerNationalCode, ''))) = 10 THEN 'third_party'
+          ELSE ownershipType
+        END
+      WHERE saleId = ?
+        AND TRIM(COALESCE(ownershipType, '')) NOT IN ('buyer', 'third_party')`,
+    [String(current.contractBuyerNationalCode || '').trim(), saleId],
+  );
+
+  const sale = await getInstallmentSaleByIdFromDb(saleId);
+  if (!sale) return null;
+
+  const missingFields: string[] = [];
+  const requireText = (value: unknown, label: string) => {
+    if (!String(value ?? "").trim()) missingFields.push(label);
+  };
+
+  requireText((sale as any).customerFullName || (sale as any).buyerFullName, "نام و نام خانوادگی خریدار");
+  if (!/^\d{10}$/.test(String((sale as any).buyerNationalCode || "").trim())) {
+    missingFields.push("کد ملی ۱۰ رقمی خریدار");
+  }
+  requireText((sale as any).buyerPhoneNumber, "شماره تماس خریدار");
+  requireText((sale as any).buyerAddress, "آدرس خریدار");
+  requireText((sale as any).sellerFullName, "نام و نام خانوادگی فروشنده/نماینده قانونی");
+  if (!/^\d{10}$/.test(String((sale as any).sellerNationalCode || "").trim())) {
+    missingFields.push("کد ملی ۱۰ رقمی فروشنده/نماینده قانونی");
+  }
+  requireText((sale as any).sellerStoreName, "نام فروشگاه");
+  requireText((sale as any).sellerPhoneNumber, "شماره تماس فروشگاه");
+  requireText((sale as any).sellerAddress, "آدرس فروشگاه");
+
+  for (const [index, item] of ((sale as any).items || []).entries()) {
+    if (item?.itemType !== "phone") continue;
+    const prefix = `گوشی ${index + 1}`;
+    requireText(item?.phoneModel, `برند و مدل ${prefix}`);
+    requireText(item?.phoneColor, `رنگ ${prefix}`);
+    requireText(item?.phoneStorage, `حافظه داخلی ${prefix}`);
+    requireText(item?.phoneImei, `شماره سریال / IMEI ${prefix}`);
+  }
+
+  for (const [index, check] of ((sale as any).checks || []).entries()) {
+    const prefix = `چک ${index + 1}`;
+    if (!['buyer', 'third_party'].includes(String(check?.ownershipType || '').trim())) {
+      missingFields.push(`مالک ${prefix} (خریدار یا شخص ثالث)`);
+    }
+    requireText(check?.issuerName, `نام صادرکننده ${prefix}`);
+    if (!/^\d{10}$/.test(String(check?.issuerNationalCode || "").trim())) {
+      missingFields.push(`کد ملی صادرکننده ${prefix}`);
+    }
+    if (!/^\d{16}$/.test(String(check?.sayadiId || "").trim())) {
+      missingFields.push(`شناسه صیادی ۱۶ رقمی ${prefix}`);
+    }
+  }
+
+  return {
+    ready: missingFields.length === 0,
+    missingFields,
+    sale,
+  };
+};
+
 export const getInstallmentSaleByIdFromDb = async (
   saleId: number,
 ): Promise<FrontendInstallmentSale | null> => {
@@ -1328,7 +1514,7 @@ export const getInstallmentSaleByIdFromDb = async (
     `
     SELECT 
         isale.*, 
-        c.fullName as customerFullName, 
+        COALESCE(NULLIF(isale.buyerFullName, ''), c.fullName) as customerFullName, 
         p.model as phoneModel, 
         p.imei as phoneImei,
         p.purchaseDate as phonePurchaseDate,
@@ -1372,6 +1558,10 @@ export const getInstallmentSaleByIdFromDb = async (
   // اقلام (گوشی/لوازم/خدمات) - برای نمایش در جزئیات
   const items: any[] = await allAsync(
     `SELECT isi.itemType, isi.itemId, isi.description, isi.quantity, isi.unitPrice, isi.buyPrice, isi.totalPrice,
+            COALESCE(NULLIF(isi.contractModel, ''), ph.model) AS phoneModel,
+            COALESCE(NULLIF(isi.contractColor, ''), ph.color) AS phoneColor,
+            COALESCE(NULLIF(isi.contractStorage, ''), ph.storage) AS phoneStorage,
+            COALESCE(NULLIF(isi.contractImei, ''), ph.imei) AS phoneImei,
             ph.currentPurchasePrice AS phoneCurrentPurchasePrice,
             ph.purchasePrice AS phonePurchasePrice,
             CASE
@@ -1627,6 +1817,81 @@ export const updateCheckStatusInDb = async (
   }
 };
 
+export const updateCheckContractIdentityInDb = async (
+  checkId: number,
+  input: {
+    checkNumber: string;
+    bankName: string;
+    ownershipType: "buyer" | "third_party";
+    issuerName: string;
+    issuerNationalCode: string;
+    sayadiId: string;
+    dueDate: string;
+  },
+): Promise<boolean> => {
+  await getDbInstance();
+  await assertInstallmentCheckIsMutable(checkId);
+  const check = await getAsync(
+    `SELECT ic.id, ic.saleId, isale.saleDateISO, isale.saleDate, isale.dateCreated, isale.buyerNationalCode
+       FROM installment_checks ic
+       JOIN installment_sales isale ON isale.id = ic.saleId
+      WHERE ic.id = ?`,
+    [checkId],
+  );
+  if (!check) throw new Error("چک مورد نظر یافت نشد.");
+
+  const normalizedCheckNumber = String(input.checkNumber || "").trim();
+  const normalizedBankName = String(input.bankName || "").trim();
+  const normalizedOwnershipType = String(input.ownershipType || "").trim();
+  const normalizedDueDateIso = fromShamsiStringToISO(input.dueDate);
+  if (!normalizedCheckNumber) throw new Error("شماره چک الزامی است.");
+  if (!normalizedBankName) throw new Error("نام بانک صادرکننده الزامی است.");
+  if (!['buyer', 'third_party'].includes(normalizedOwnershipType)) {
+    throw new Error("مالک چک باید خریدار یا شخص ثالث باشد.");
+  }
+  const buyerNationalCode = String(check.buyerNationalCode || '').trim();
+  const issuerNationalCode = String(input.issuerNationalCode || '').trim();
+  if (normalizedOwnershipType === 'buyer' && issuerNationalCode !== buyerNationalCode) {
+    throw new Error("کد ملی صادرکننده چک خریدار باید با کد ملی خریدار یکسان باشد.");
+  }
+  if (normalizedOwnershipType === 'third_party' && issuerNationalCode === buyerNationalCode) {
+    throw new Error("این چک متعلق به خریدار است و نباید شخص ثالث انتخاب شود.");
+  }
+  if (!normalizedDueDateIso) throw new Error("تاریخ سررسید چک نامعتبر است.");
+
+  const duplicate = await getAsync(
+    "SELECT id FROM installment_checks WHERE TRIM(checkNumber) = ? AND id <> ? LIMIT 1",
+    [normalizedCheckNumber, checkId],
+  );
+  if (duplicate) throw new Error("این شماره چک قبلاً در سیستم ثبت شده است.");
+
+  const saleDateIso = String(check.saleDateISO || "").trim()
+    || normalizeInstallmentAccountingDate(check.saleDate, check.dateCreated);
+  if (saleDateIso && moment(normalizedDueDateIso, "YYYY-MM-DD", true).startOf("day").isBefore(moment(saleDateIso, "YYYY-MM-DD", true).startOf("day"))) {
+    throw new Error("تاریخ سررسید چک نمی‌تواند قبل از تاریخ فروش باشد.");
+  }
+  const normalizedDueDate = moment(normalizedDueDateIso, "YYYY-MM-DD", true)
+    .locale("fa")
+    .format("jYYYY/jMM/jDD");
+
+  const result = await runAsync(
+    `UPDATE installment_checks
+        SET checkNumber = ?, bankName = ?, ownershipType = ?, issuerName = ?, issuerNationalCode = ?, sayadiId = ?, dueDate = ?
+      WHERE id = ?`,
+    [
+      normalizedCheckNumber,
+      normalizedBankName,
+      normalizedOwnershipType,
+      input.issuerName,
+      input.issuerNationalCode,
+      input.sayadiId,
+      normalizedDueDate,
+      checkId,
+    ],
+  );
+  return result.changes > 0;
+};
+
 export const addCheckRecoveryPaymentToDb = async (
   checkId: number,
   amount: number,
@@ -1771,7 +2036,7 @@ export const getInstallmentSaleDetailsForSms = async (
         SELECT
             isale.id as saleId,
             isale.actualSalePrice as totalPrice,
-            c.fullName as customerFullName,
+            COALESCE(NULLIF(isale.buyerFullName, ''), c.fullName) as customerFullName,
             c.phoneNumber as customerPhoneNumber
         FROM installment_sales isale
         JOIN customers c ON isale.customerId = c.id
@@ -1790,7 +2055,7 @@ export const getInstallmentCheckDetailsForSms = async (
             ic.checkNumber,
             ic.dueDate,
             ic.amount,
-            c.fullName as customerFullName,
+            COALESCE(NULLIF(isale.buyerFullName, ''), c.fullName) as customerFullName,
             c.phoneNumber as customerPhoneNumber
         FROM installment_checks ic
         JOIN installment_sales isale ON ic.saleId = isale.id
@@ -2159,4 +2424,3 @@ export const deleteInstallmentTransactionFromDb = async (
     throw error;
   }
 };
-

@@ -50,11 +50,56 @@ export const applyTelegramEnvironment = (): void => {
   }
 };
 
+
+export const configureTelegramBackButton = (
+  webApp: TelegramWebApp | null,
+  options: { isHome: boolean; onBack: () => void },
+): (() => void) => {
+  const backButton = webApp?.BackButton as Partial<TelegramWebApp["BackButton"]> | undefined;
+  if (!backButton) return () => undefined;
+
+  try {
+    if (options.isHome) {
+      backButton.hide?.();
+      return () => undefined;
+    }
+
+    backButton.show?.();
+    // Register a callback only when Telegram also exposes the matching cleanup
+    // API. Some WebView/client versions have shipped partial BackButton bridges;
+    // duplicate handlers are worse than gracefully falling back to bottom nav.
+    if (typeof backButton.onClick !== "function" || typeof backButton.offClick !== "function") {
+      return () => undefined;
+    }
+    backButton.onClick(options.onBack);
+  } catch {
+    // Telegram UI chrome is optional. A broken/partial bridge must never crash
+    // Kourosh route rendering or block access to read-only Mini App pages.
+    return () => undefined;
+  }
+
+  return () => {
+    try {
+      backButton.offClick?.(options.onBack);
+    } catch {
+      // Cleanup failures are isolated for the same compatibility reason.
+    }
+  };
+};
+
 export const initializeTelegramWebApp = (): TelegramWebApp | null => {
   const webApp = getTelegramWebApp();
   if (!webApp) return null;
   applyTelegramEnvironment();
   webApp.expand();
   webApp.ready();
+  try {
+    if (!webApp.isFullscreen && webApp.requestFullscreen && (!webApp.isVersionAtLeast || webApp.isVersionAtLeast("8.0"))) {
+      webApp.requestFullscreen();
+    }
+  } catch {
+    // Fullscreen is progressive enhancement. Older/partial Telegram bridges
+    // must continue with the expanded standard viewport without crashing.
+  }
   return webApp;
 };

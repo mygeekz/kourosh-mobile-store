@@ -37,7 +37,7 @@ export const normalizeMiniAppStaticPublicPath = (pathname) => {
     || publicPath === "/favicon.svg"
     || publicPath === "/kourosh-logo.svg"
     || publicPath === "/fonts/Vazir-FD-WOL.woff2"
-    || /^\/assets\/[A-Za-z0-9_-]+\.(?:js|css)$/.test(publicPath);
+    || /^\/assets\/[A-Za-z0-9_-]+\.(?:js|css|webp)$/.test(publicPath);
   return allowed ? publicPath : null;
 };
 

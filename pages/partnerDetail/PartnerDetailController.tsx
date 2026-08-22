@@ -1162,17 +1162,17 @@ const PartnerDetailController: React.FC = () => {
       ? `مشتری: ${customerName}${customerPhone ? ` · ${customerPhone}` : ''}`
       : 'مشتری ثبت نشده';
     const baseClass = compact
-      ? 'inline-flex max-w-full items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[10px] font-black text-blue-700 shadow-sm transition hover:bg-blue-100 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-200 dark:hover:bg-blue-900/40'
+      ? 'inline-flex max-w-full items-center gap-1.5 text-xs font-black leading-5 text-blue-700 underline-offset-4 transition hover:underline dark:text-blue-300'
       : 'inline-flex max-w-full items-center gap-2 rounded-2xl border border-blue-200 bg-blue-50 px-3 py-2 text-[11px] font-black text-blue-700 shadow-sm transition hover:bg-blue-100 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-200 dark:hover:bg-blue-900/40';
     if (!target) {
       return (
         <span className={compact
-          ? 'inline-flex max-w-full items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-extrabold text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'
+          ? 'inline-flex max-w-full items-center gap-1.5 text-xs font-extrabold leading-5 text-slate-600 dark:text-slate-300'
           : 'inline-flex max-w-full items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] font-extrabold text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300'}
           title={customerText}
         >
           <i className="fa-solid fa-file-invoice text-slate-400" />
-          <span className="truncate">{sourceLabel}</span>
+          <span className={compact ? 'break-words text-right' : 'truncate'}>{sourceLabel}</span>
           {customerName && <span className="hidden truncate text-slate-400 lg:inline">· {customerName}</span>}
         </span>
       );
@@ -1185,7 +1185,7 @@ const PartnerDetailController: React.FC = () => {
         title={`${target.label} — ${customerText}`}
       >
         <i className={target.icon} />
-        <span className="truncate">{sourceLabel}</span>
+        <span className={compact ? 'break-words text-right' : 'truncate'}>{sourceLabel}</span>
         {customerName && <span className="hidden truncate text-blue-500/80 lg:inline">· {customerName}</span>}
         <i className="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-70" />
       </button>
@@ -2153,6 +2153,7 @@ const PartnerDetailController: React.FC = () => {
     partnerTgNewSinceScroll,
     partnerTgPreset,
     partnerTgQuickReply,
+    partnerTgSearchQuery,
     partnerTgTimelineRef,
     partnerTypeLabel,
     partnerUnifiedStatusTotals,
@@ -2223,6 +2224,7 @@ const PartnerDetailController: React.FC = () => {
     setSoldPhoneCapitalSort,
     setSoldPhoneSettlementFilter,
     setTgQrOpen,
+    soldPhoneCapitalSearch,
     soldPhoneCapitalSearchRef,
     soldPhoneCapitalSort,
     soldPhoneDailyPriceRows,

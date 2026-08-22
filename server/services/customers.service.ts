@@ -20,6 +20,15 @@ const normalizeCustomerPhone = (value: unknown): string | null => {
   return phone;
 };
 
+const normalizeCustomerNationalCode = (value: unknown): string | null => {
+  const nationalCode = normalizeDigits(value).replace(/\D/g, "");
+  if (!nationalCode) return null;
+  if (!/^\d{10}$/.test(nationalCode)) {
+    throw new AppError("کد ملی مشتری باید دقیقاً ۱۰ رقم باشد.", 400);
+  }
+  return nationalCode;
+};
+
 const normalizeCustomerPayload = (payload: any) => {
   const fullName = String(payload?.fullName || "").trim().replace(/\s+/g, " ");
   const address = String(payload?.address || "").trim();
@@ -34,6 +43,7 @@ const normalizeCustomerPayload = (payload: any) => {
 
   return {
     fullName,
+    nationalCode: normalizeCustomerNationalCode(payload?.nationalCode),
     phoneNumber: normalizeCustomerPhone(payload?.phoneNumber),
     address: address || null,
     notes: notes || null,

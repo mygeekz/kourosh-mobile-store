@@ -427,6 +427,82 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* The list section is already the visual shell; flatten DataTableShell so the
+   table reaches both inline edges instead of rendering as a second inset card. */
+.customers-directory-v73__list > .customers-directory-v73__table-wrap {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.customers-directory-v73__list > .customers-directory-v73__table-wrap > .ux-table-shell__body {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-gutter: auto !important;
+  background: transparent !important;
+}
+
+.customers-directory-v73__list > .customers-directory-v73__table-wrap .customers-directory-v73__table {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  border-inline: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Directory rows are RTL: their status rail and wash belong to the physical
+   right edge. Global table states are LTR-oriented, so correct them locally. */
+.customers-directory-v73__table tr.table-row-state--overdue {
+  background-image: linear-gradient(270deg, rgba(244, 63, 94, 0.08), rgba(244, 63, 94, 0.02) 16%, transparent 42%) !important;
+  box-shadow: inset -4px 0 0 rgba(244, 63, 94, 0.72) !important;
+}
+
+.customers-directory-v73__table tr.table-row-state--due-today {
+  background-image: linear-gradient(270deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02) 16%, transparent 42%) !important;
+  box-shadow: inset -4px 0 0 rgba(245, 158, 11, 0.72) !important;
+}
+
+.customers-directory-v73__table tr.table-row-state--due-soon {
+  background-image: linear-gradient(270deg, rgba(14, 165, 233, 0.08), rgba(14, 165, 233, 0.02) 16%, transparent 42%) !important;
+  box-shadow: inset -4px 0 0 rgba(14, 165, 233, 0.68) !important;
+}
+
+.customers-directory-v73__table tr.table-row-state--settled {
+  background-image: linear-gradient(270deg, rgba(100, 116, 139, 0.08), rgba(100, 116, 139, 0.02) 16%, transparent 42%) !important;
+  box-shadow: inset -4px 0 0 rgba(100, 116, 139, 0.58) !important;
+}
+
+.dark .customers-directory-v73__table tr.table-row-state--overdue {
+  background-image: linear-gradient(270deg, rgba(244, 63, 94, 0.18), rgba(244, 63, 94, 0.04) 22%, transparent 48%) !important;
+  box-shadow: inset -4px 0 0 rgba(251, 113, 133, 0.85) !important;
+}
+
+.dark .customers-directory-v73__table tr.table-row-state--due-today {
+  background-image: linear-gradient(270deg, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.04) 22%, transparent 48%) !important;
+  box-shadow: inset -4px 0 0 rgba(251, 191, 36, 0.82) !important;
+}
+
+.dark .customers-directory-v73__table tr.table-row-state--due-soon {
+  background-image: linear-gradient(270deg, rgba(14, 165, 233, 0.16), rgba(14, 165, 233, 0.04) 22%, transparent 48%) !important;
+  box-shadow: inset -4px 0 0 rgba(56, 189, 248, 0.78) !important;
+}
+
+.dark .customers-directory-v73__table tr.table-row-state--settled {
+  background-image: linear-gradient(270deg, rgba(100, 116, 139, 0.16), rgba(100, 116, 139, 0.04) 22%, transparent 48%) !important;
+  box-shadow: inset -4px 0 0 rgba(148, 163, 184, 0.74) !important;
+}
+
 .customers-directory-v73__table {
   width: 100%;
   min-width: 780px;

@@ -304,6 +304,98 @@ export const Layers = (props: IconProps) => (
   </svg>
 );
 
+
+export const Home = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="m3 11 9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const WalletCards = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 17.5Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M4 8h13.5A2.5 2.5 0 0 1 20 10.5V14h-5a2.5 2.5 0 0 1 0-5h5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <circle cx="15" cy="11.5" r=".8" fill="currentColor" />
+  </svg>
+);
+
+export const Package = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="m4 7.5 8 4.5 8-4.5M12 12v9" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+  </svg>
+);
+
+export const Boxes = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="m8 3 5 3-5 3-5-3Zm0 6v6M3 6v6l5 3 5-3V6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <path d="m16 9 5 3-5 3-5-3Zm0 6v6M11 12v6l5 3 5-3v-6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+  </svg>
+);
+
+export const Smartphone = (props: IconProps) => (
+  <svg {...base(props)}>
+    <rect x="7" y="2.5" width="10" height="19" rx="2.2" stroke="currentColor" strokeWidth="2" />
+    <path d="M10.5 5h3M11 18.5h2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
+
+export const Store = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M4 9v11h16V9M3 9l2-5h14l2 5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M3 9c0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0 0 2 3 2 3 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path d="M9 20v-6h6v6" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
+export const CalendarDays = (props: IconProps) => (
+  <svg {...base(props)}>
+    <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+    <path d="M8 3v4M16 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+export const Clock3 = (props: IconProps) => (
+  <svg {...base(props)}>
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+    <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const ArrowUpRight = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M7 17 17 7M8 7h9v9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const ArrowDownLeft = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M17 7 7 17M16 17H7V8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const Menu = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+export const SlidersHorizontal = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M4 6h6M14 6h6M4 12h10M18 12h2M4 18h2M10 18h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="12" cy="6" r="2" stroke="currentColor" strokeWidth="2" />
+    <circle cx="16" cy="12" r="2" stroke="currentColor" strokeWidth="2" />
+    <circle cx="8" cy="18" r="2" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
+
+export const ReceiptText = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M6 3h12v18l-3-2-3 2-3-2-3 2Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+    <path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 // aliases used by some shadcn components
 export const ChevronDownIcon = ChevronDown;
 export const ChevronLeftIcon = ChevronLeft;
@@ -373,6 +465,19 @@ export default {
   ArrowDownToLine,
   Brain,
   Layers,
+  ReceiptText,
+  SlidersHorizontal,
+  Menu,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Clock3,
+  CalendarDays,
+  Store,
+  Smartphone,
+  Boxes,
+  Package,
+  WalletCards,
+  Home,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,

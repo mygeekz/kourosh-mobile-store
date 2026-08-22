@@ -12,9 +12,13 @@ for (const file of fs.readdirSync(root).filter((name) => name.toLowerCase().ends
 }
 
 const httpsBat = read("start_https.bat");
-assert.match(httpsBat, /windows-miniapp-gateway-launcher\.mjs/);
-assert.match(httpsBat, /if exist "start_tunnel\.bat"/i, "Tunnel helper must be optional");
-assert.match(httpsBat, /KOUROSH_SKIP_MINIAPP_TUNNEL/i, "Tunnel helper must be explicitly skippable");
+const startupCoordinator = fs.existsSync(path.join(root, "scripts", "windows-miniapp-startup-coordinator.mjs"))
+  ? read("scripts/windows-miniapp-startup-coordinator.mjs")
+  : "";
+assert.match(httpsBat, /windows-miniapp-startup-coordinator\.mjs/, "HTTPS launcher must defer Mini App startup until Backend readiness");
+assert.match(startupCoordinator, /windows-miniapp-gateway-launcher\.mjs/, "Startup coordinator must reuse the existing Gateway launcher");
+assert.match(startupCoordinator, /start_tunnel\.bat/, "Tunnel helper must remain optional");
+assert.match(startupCoordinator, /KOUROSH_SKIP_MINIAPP_TUNNEL/i, "Tunnel helper must remain explicitly skippable");
 assert.doesNotMatch(httpsBat, /cmd\s+\/k/i, "Nested cmd /k launcher is forbidden");
 
 const tunnelBat = read("start_tunnel.bat");

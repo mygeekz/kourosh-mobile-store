@@ -1,5 +1,5 @@
 # Non-secret ingress example. Replace the hostname outside source control.
 ingress:
-  - hostname: miniapp.example.com
+  - hostname: live-miniapp.example.com
     service: http://127.0.0.1:4180
   - service: http_status:404

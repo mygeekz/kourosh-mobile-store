@@ -4,6 +4,7 @@ import App from "./App";
 import { MiniAppAuthProvider } from "./auth/MiniAppAuthContext";
 import { MiniAppErrorBoundary } from "./components/MiniAppErrorBoundary";
 import { MiniAppPermissionProvider } from "./permission/MiniAppPermissionContext";
+import { MiniAppDataAvailabilityProvider } from "./dataAvailability/MiniAppDataAvailabilityContext";
 import { applyTelegramEnvironment, getTelegramWebApp, initializeTelegramWebApp } from "./telegram";
 import "../styles/themes.css";
 import "./tailwind.css";
@@ -16,15 +17,18 @@ const refreshTelegramEnvironment = () => applyTelegramEnvironment();
 webApp?.onEvent("themeChanged", refreshTelegramEnvironment);
 webApp?.onEvent("safeAreaChanged", refreshTelegramEnvironment);
 webApp?.onEvent("contentSafeAreaChanged", refreshTelegramEnvironment);
+webApp?.onEvent("fullscreenChanged", refreshTelegramEnvironment);
 
 ReactDOM.createRoot(rootElement).render(
   <MiniAppErrorBoundary>
     <HashRouter>
-      <MiniAppAuthProvider>
-        <MiniAppPermissionProvider>
-          <App />
-        </MiniAppPermissionProvider>
-      </MiniAppAuthProvider>
+      <MiniAppDataAvailabilityProvider>
+        <MiniAppAuthProvider>
+          <MiniAppPermissionProvider>
+            <App />
+          </MiniAppPermissionProvider>
+        </MiniAppAuthProvider>
+      </MiniAppDataAvailabilityProvider>
     </HashRouter>
   </MiniAppErrorBoundary>,
 );
@@ -34,4 +38,5 @@ window.addEventListener("pagehide", () => {
   current?.offEvent("themeChanged", refreshTelegramEnvironment);
   current?.offEvent("safeAreaChanged", refreshTelegramEnvironment);
   current?.offEvent("contentSafeAreaChanged", refreshTelegramEnvironment);
+  current?.offEvent("fullscreenChanged", refreshTelegramEnvironment);
 });

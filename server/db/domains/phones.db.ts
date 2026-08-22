@@ -1403,9 +1403,15 @@ export const getAllPhoneEntriesFromDb = async (
   }
 
   sql += " ORDER BY ph.registerDate DESC";
-  const safeLimit = Math.min(160, Math.max(1, Number(limit) || 0));
+
+  // `limit` is optional for the main phone inventory read. The UI requests
+  // `/api/phones` without pagination and expects the complete inventory.
+  // The previous `Math.max(1, Number(limit) || 0)` converted an omitted limit
+  // into `1`, silently truncating every unpaginated inventory request to one row.
+  const requestedLimit = Number(limit);
   const safeOffset = Math.max(0, Number(offset) || 0);
-  if (safeLimit > 0) {
+  if (Number.isFinite(requestedLimit) && requestedLimit > 0) {
+    const safeLimit = Math.min(160, Math.max(1, Math.floor(requestedLimit)));
     sql += " LIMIT ? OFFSET ?";
     params.push(safeLimit, safeOffset);
   }

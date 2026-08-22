@@ -18,6 +18,7 @@ export const SalesHub = React.lazy(() => import('../../pages/SalesHub'));
 export const InstallmentSalesPage = React.lazy(() => import('../../pages/InstallmentSalesPage'));
 export const AddInstallmentSalePage = React.lazy(() => import('../../pages/AddInstallmentSalePage'));
 export const InstallmentSaleDetailPage = React.lazy(() => import('../../pages/InstallmentSaleDetailPage'));
+export const InstallmentSaleContractPrintPage = React.lazy(() => import('../../pages/InstallmentSaleContractPrintPage'));
 
 export const Customers = React.lazy(() => import('../../pages/Customers'));
 export const CustomerDetailPage = React.lazy(() => import('../../pages/CustomerDetail'));

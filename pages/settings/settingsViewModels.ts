@@ -35,7 +35,7 @@ export const buildTelegramSetupViewModel = (
   const telegramTransportMode = transportRaw === 'cloud_relay' ? 'relay' : ['disabled', 'direct', 'proxy', 'relay'].includes(transportRaw) ? transportRaw : 'direct';
   const explicitMiniAppMode = String(telegramInfo.miniapp_public_access_mode || '').trim();
   const legacyMiniAppMode = String(telegramInfo.telegram_public_access_mode || '').trim();
-  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'relay'].includes(explicitMiniAppMode)
+  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'stable_tunnel', 'relay'].includes(explicitMiniAppMode)
     ? explicitMiniAppMode
     : legacyMiniAppMode === 'cloud_managed' ? 'relay' : legacyMiniAppMode === 'self_hosted' ? 'self_hosted' : legacyMiniAppMode === 'disabled' ? 'disabled' : telegramMiniAppPublicUrlValue ? 'self_hosted' : 'disabled';
   const relayMiniAppReady = String(telegramInfo.kourosh_cloud_connection_state || '') === 'connected' &&
@@ -43,6 +43,7 @@ export const buildTelegramSetupViewModel = (
     Boolean(String(telegramInfo.kourosh_cloud_assigned_public_url || '').trim());
   const telegramMiniAppReady = telegramPublicAccessMode === 'disabled' ||
     ((telegramPublicAccessMode === 'self_hosted' || telegramPublicAccessMode === 'external_tunnel') && Boolean(telegramMiniAppPublicUrlValue)) ||
+    (telegramPublicAccessMode === 'stable_tunnel' && Boolean(telegramMiniAppPublicUrlValue) && Boolean(String(telegramInfo.miniapp_live_origin_url || '').trim())) ||
     (telegramPublicAccessMode === 'relay' && relayMiniAppReady);
   const telegramProxyValue = String(telegramInfo.telegram_proxy || '').trim();
   const {

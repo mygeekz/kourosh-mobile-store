@@ -146,9 +146,9 @@ assert.equal(localPollingCalls, 1, "Lifecycle may invoke polling starter, but di
 
 // Independence matrix: only Relay strategies require the connector.
 const matrix = [
-  ["direct", "disabled", false], ["direct", "self_hosted", false], ["direct", "external_tunnel", false], ["direct", "relay", true],
-  ["proxy", "disabled", false], ["proxy", "self_hosted", false], ["proxy", "external_tunnel", false], ["proxy", "relay", true],
-  ["relay", "disabled", true], ["relay", "self_hosted", true], ["relay", "external_tunnel", true], ["relay", "relay", true],
+  ["direct", "disabled", false], ["direct", "self_hosted", false], ["direct", "external_tunnel", false], ["direct", "stable_tunnel", false], ["direct", "relay", true],
+  ["proxy", "disabled", false], ["proxy", "self_hosted", false], ["proxy", "external_tunnel", false], ["proxy", "stable_tunnel", false], ["proxy", "relay", true],
+  ["relay", "disabled", true], ["relay", "self_hosted", true], ["relay", "external_tunnel", true], ["relay", "stable_tunnel", true], ["relay", "relay", true],
 ];
 for (const [telegramMode, miniAppMode, needsRelay] of matrix) {
   const settings = { telegram_transport_mode: telegramMode, miniapp_public_access_mode: miniAppMode };
@@ -297,7 +297,7 @@ await close(gateway); await close(selfHostedGateway); await close(tunnelGateway)
 console.log(JSON.stringify({
   ok: true,
   telegramModes: ["disabled", "direct", "proxy", "relay"],
-  miniAppModes: ["disabled", "self_hosted", "external_tunnel", "relay"],
+  miniAppModes: ["disabled", "self_hosted", "external_tunnel", "stable_tunnel", "relay"],
   directTargetRequests,
   proxyProbeAttempts: proxyProbe.attempts.length,
   proxyFailureDirectFallbackAttempts: 0,

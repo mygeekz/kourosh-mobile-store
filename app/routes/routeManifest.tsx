@@ -46,6 +46,7 @@ export const publicRoutes: AppRouteDefinition[] = [
 
 export const printRoutes: AppRouteDefinition[] = [
   route('reports/*', <Page.PrintReportShell />),
+  route('installment-contract/:id', gated('installments', <Page.InstallmentSaleContractPrintPage />)),
 ];
 
 export const mainLayoutRoutes: AppRouteDefinition[] = [

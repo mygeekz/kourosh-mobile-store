@@ -20,6 +20,7 @@ fs.mkdirSync(path.join(distDir, "fonts"));
 fs.writeFileSync(path.join(distDir, "miniapp.html"), "<!doctype html><title>Mini App</title>");
 fs.writeFileSync(path.join(distDir, "assets/app-12345678.js"), "console.log('miniapp')");
 fs.writeFileSync(path.join(distDir, "assets/app-12345678.css"), "body{margin:0}");
+fs.writeFileSync(path.join(distDir, "assets/home-hero-12345678.webp"), Buffer.from([0x52, 0x49, 0x46, 0x46, 0x00, 0x00, 0x00, 0x00, 0x57, 0x45, 0x42, 0x50]));
 fs.writeFileSync(path.join(distDir, "favicon.svg"), "<svg xmlns='http://www.w3.org/2000/svg'/>");
 fs.writeFileSync(path.join(distDir, "kourosh-logo.svg"), "<svg xmlns='http://www.w3.org/2000/svg'/>");
 fs.writeFileSync(path.join(distDir, "fonts/Vazir-FD-WOL.woff2"), Buffer.from([0, 1, 2]));
@@ -88,9 +89,15 @@ try {
   assert.match(String(asset.headers["cache-control"]), /immutable/);
   assert.match(String(asset.headers["content-type"]), /javascript/);
 
+  const webpAsset = await request({ path: "/assets/home-hero-12345678.webp" });
+  assert.equal(webpAsset.status, 200);
+  assert.equal(String(webpAsset.headers["content-type"]), "image/webp");
+  assert.match(String(webpAsset.headers["cache-control"]), /immutable/);
+
   const health = await request({ path: "/healthz" });
   assert.equal(health.status, 200);
   assert.equal(health.body, "ok");
+  assert.equal(health.headers["x-kourosh-gateway-version"], "v197");
   assert.doesNotMatch(health.body, /database|token|host|version|session/i);
 
   for (const route of ["/api/miniapp/me", "/api/miniapp/customer/home", "/api/miniapp/partner/home", "/api/miniapp/staff/home"]) {

@@ -24,9 +24,11 @@ export const evaluateTelegramReadinessProfile = (
       botFather:{required:true,ok:operational,code:operational?"MANUAL_CHECK_REQUIRED":"RELAY_NOT_READY"},
     } satisfies Record<string, TelegramReadinessRequirement> };
   }
-  const profileStatus = audit.mode === "external_tunnel"
-    ? (audit.miniAppUrl ? "EXTERNAL_TUNNEL_CHECKS_REQUIRED" as const : "PUBLIC_MINIAPP_URL_REQUIRED" as const)
-    : (audit.miniAppUrl ? "SELF_HOSTED_CHECKS_REQUIRED" as const : "PUBLIC_MINIAPP_URL_REQUIRED" as const);
+  const profileStatus = audit.mode === "stable_tunnel"
+    ? (audit.miniAppUrl && audit.liveOriginUrl ? "STABLE_TUNNEL_CHECKS_REQUIRED" as const : !audit.miniAppUrl ? "PUBLIC_MINIAPP_URL_REQUIRED" as const : "LIVE_ORIGIN_REQUIRED" as const)
+    : audit.mode === "external_tunnel"
+      ? (audit.miniAppUrl ? "EXTERNAL_TUNNEL_CHECKS_REQUIRED" as const : "PUBLIC_MINIAPP_URL_REQUIRED" as const)
+      : (audit.miniAppUrl ? "SELF_HOSTED_CHECKS_REQUIRED" as const : "PUBLIC_MINIAPP_URL_REQUIRED" as const);
   return { ...audit, operational:Boolean(audit.miniAppUrl&&audit.hostMatches&&audit.endpointIsCanonical&&audit.botUsername), profileStatus, requirements:{
     publicUrl:{required:true,ok:Boolean(audit.miniAppUrl),code:audit.miniAppUrl?"READY":"PUBLIC_MINIAPP_URL_REQUIRED"}, gateway:{required:true,ok:Boolean(audit.expectedHost),code:audit.expectedHost?"READY":"PUBLIC_GATEWAY_HOST_REQUIRED"}, hostConsistency:{required:true,ok:Boolean(audit.hostMatches),code:audit.hostMatches?"READY":"PUBLIC_HOST_MISMATCH"}, botUsername:{required:true,ok:Boolean(audit.botUsername),code:audit.botUsername?"READY":"TELEGRAM_BOT_USERNAME_REQUIRED"}, botFather:{required:true,ok:false,code:"MANUAL_CHECK_REQUIRED"},
   } satisfies Record<string, TelegramReadinessRequirement> };

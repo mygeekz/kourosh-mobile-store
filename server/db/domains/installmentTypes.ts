@@ -7,6 +7,8 @@ export type CheckStatus =
   | "برگشت خورد"
   | "به مشتری برگشت داده شده";
 
+export type CheckOwnershipType = "buyer" | "third_party";
+
 export const normalizeCheckStatus = (raw: any): CheckStatus => {
   const s = String(raw || "").trim();
   if (!s || s === "نزد مشتری") return "نزد فروشنده";
@@ -27,6 +29,10 @@ export interface InstallmentCheckInfo {
   id?: number;
   checkNumber: string;
   bankName: string;
+  ownershipType?: CheckOwnershipType | null;
+  issuerName?: string | null;
+  issuerNationalCode?: string | null;
+  sayadiId?: string | null;
   dueDate: string;
   amount: number;
   status: CheckStatus;
@@ -45,6 +51,7 @@ export interface InstallmentCheckInfo {
 
 export interface InstallmentSalePayload {
   customerId: number;
+  buyerNationalCode?: string | null;
   phoneId?: number | null;
   actualSalePrice: number;
   downPayment: number;

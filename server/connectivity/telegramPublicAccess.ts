@@ -1,6 +1,6 @@
 import { resolveCloudConnectorReadiness } from "../cloud/cloudConnectorReadiness";
 export type ConnectivitySettings = Record<string, unknown>;
-export type MiniAppPublicAccessMode = "disabled" | "self_hosted" | "external_tunnel" | "relay";
+export type MiniAppPublicAccessMode = "disabled" | "self_hosted" | "external_tunnel" | "stable_tunnel" | "relay";
 /** v151-v158 compatibility type. */
 export type TelegramPublicAccessMode = "disabled" | "self_hosted" | "cloud_managed";
 
@@ -49,12 +49,32 @@ export const validateTelegramMiniAppPublicUrl = (
   } catch { return null; }
 };
 
+export const isTemporaryQuickTunnelMiniAppUrl = (value: unknown): boolean => {
+  const normalized = validateTelegramMiniAppPublicUrl(value);
+  if (!normalized) return false;
+  const hostname = new URL(normalized).hostname.toLowerCase();
+  return hostname === "trycloudflare.com" || hostname.endsWith(".trycloudflare.com");
+};
+
+export const validateTelegramStableMiniAppCanonicalUrl = (
+  value: unknown,
+  environment = process.env.NODE_ENV || "production",
+): string | null => {
+  const normalized = validateTelegramMiniAppPublicUrl(value, environment);
+  if (!normalized) return null;
+  const url = new URL(normalized);
+  const hostname = url.hostname.toLowerCase();
+  if (hostname === "trycloudflare.com" || hostname.endsWith(".trycloudflare.com")) return null;
+  if (url.search || (url.pathname !== "/" && url.pathname !== "/miniapp.html")) return null;
+  return `${url.origin}/miniapp.html`;
+};
+
 export const resolveMiniAppPublicAccessMode = (
   settings: ConnectivitySettings,
   environment = process.env.NODE_ENV || "production",
 ): MiniAppPublicAccessMode => {
   const canonical = String(settings.miniapp_public_access_mode || "").trim();
-  if (["disabled", "self_hosted", "external_tunnel", "relay"].includes(canonical)) return canonical as MiniAppPublicAccessMode;
+  if (["disabled", "self_hosted", "external_tunnel", "stable_tunnel", "relay"].includes(canonical)) return canonical as MiniAppPublicAccessMode;
 
   const legacy = String(settings.telegram_public_access_mode || "").trim();
   if (legacy === "disabled" || legacy === "self_hosted") return legacy;
@@ -72,7 +92,7 @@ export const resolveTelegramPublicAccessMode = (
   if (legacy === "disabled" || legacy === "self_hosted" || legacy === "cloud_managed") return legacy;
   const mode = resolveMiniAppPublicAccessMode(settings, environment);
   if (mode === "relay") return "cloud_managed";
-  return mode === "external_tunnel" ? "self_hosted" : mode;
+  return mode === "external_tunnel" || mode === "stable_tunnel" ? "self_hosted" : mode;
 };
 
 
@@ -91,6 +111,9 @@ export const resolveTelegramMiniAppUrl = (
 ): string | null => {
   const mode = resolveMiniAppPublicAccessMode(settings, environment);
   if (mode === "disabled") return null;
+  if (mode === "stable_tunnel") {
+    return validateTelegramStableMiniAppCanonicalUrl(settings.telegram_miniapp_public_url, environment);
+  }
   if (mode === "self_hosted" || mode === "external_tunnel") {
     return validateTelegramMiniAppPublicUrl(settings.telegram_miniapp_public_url, environment);
   }
@@ -98,6 +121,28 @@ export const resolveTelegramMiniAppUrl = (
   const relay = resolveCloudConnectorReadiness(settings, { ...process.env, NODE_ENV: environment });
   if (!relay.provisioned) return null;
   return validateTelegramMiniAppPublicUrl(relay.assignedPublicUrl, environment);
+};
+
+
+export const validateMiniAppLiveOriginUrl = (
+  value: unknown,
+  environment = process.env.NODE_ENV || "production",
+): string | null => {
+  const normalized = validateTelegramMiniAppPublicUrl(value, environment);
+  if (!normalized) return null;
+  const url = new URL(normalized);
+  if (url.search || (url.pathname !== "/" && url.pathname !== "/miniapp.html")) return null;
+  return `${url.origin}/`;
+};
+
+export const resolveMiniAppLiveOriginUrl = (
+  settings: ConnectivitySettings,
+  environment = process.env.NODE_ENV || "production",
+): string | null => {
+  const mode = resolveMiniAppPublicAccessMode(settings, environment);
+  if (mode === "stable_tunnel") return validateMiniAppLiveOriginUrl(settings.miniapp_live_origin_url, environment);
+  if (mode === "self_hosted" || mode === "external_tunnel") return validateMiniAppLiveOriginUrl(settings.telegram_miniapp_public_url, environment);
+  return null;
 };
 
 export const normalizeTelegramBotUsername = (value: unknown): string | null => {
@@ -115,16 +160,19 @@ export const auditTelegramMiniAppPublicConfiguration = (
   const botUsername = normalizeTelegramBotUsername(settings.telegram_bot_username);
   const expectedHost = String(gatewayPublicHost ?? "").trim().toLowerCase();
   const parsed = miniAppUrl ? new URL(miniAppUrl) : null;
-  const actualHost = parsed?.host.toLowerCase() || null;
+  const liveOriginUrl = resolveMiniAppLiveOriginUrl(settings, environment);
+  const liveOrigin = liveOriginUrl ? new URL(liveOriginUrl) : null;
+  const actualHost = (mode === "stable_tunnel" ? liveOrigin?.host : parsed?.host)?.toLowerCase() || null;
   const readinessSettings = relayAssignmentMatchesSelectedProvider(settings)
     ? settings
     : { ...settings, kourosh_cloud_provisioned: "0", kourosh_cloud_assigned_store_id: "", kourosh_cloud_assigned_public_url: "", kourosh_cloud_connection_state: "not_provisioned", kourosh_cloud_telegram_relay_healthy: "0", kourosh_cloud_miniapp_relay_healthy: "0" };
   const relayReadiness = resolveCloudConnectorReadiness(readinessSettings, { ...process.env, NODE_ENV: environment });
-  const hostMatches = (mode === "self_hosted" || mode === "external_tunnel") ? Boolean(actualHost && expectedHost && actualHost === expectedHost) : true;
+  const hostMatches = (mode === "self_hosted" || mode === "external_tunnel" || mode === "stable_tunnel") ? Boolean(actualHost && expectedHost && actualHost === expectedHost) : true;
   const endpointIsCanonical = parsed ? parsed.pathname === "/miniapp.html" || parsed.pathname === "/" : false;
   const status = mode === "disabled" ? "MINIAPP_DISABLED"
     : mode === "relay" && !relayReadiness.provisioned ? "CLOUD_RELAY_NOT_PROVISIONED"
     : mode === "relay" && !(relayReadiness.connected && relayReadiness.miniAppRelayHealthy) ? "CLOUD_RELAY_NOT_READY"
+    : mode === "stable_tunnel" && !liveOriginUrl ? "LIVE_ORIGIN_REQUIRED"
     : miniAppUrl ? "READY" : "PUBLIC_MINIAPP_URL_REQUIRED";
-  return { mode, miniAppUrl, botUsername, expectedHost: expectedHost || null, actualHost, hostMatches, endpointIsCanonical, cloudReadiness: relayReadiness, status };
+  return { mode, miniAppUrl, liveOriginUrl, botUsername, expectedHost: expectedHost || null, actualHost, hostMatches, endpointIsCanonical, cloudReadiness: relayReadiness, status };
 };

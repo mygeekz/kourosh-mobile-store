@@ -59,11 +59,11 @@ assert.match(httpsRuntimeTest, /servedLeafCertificate\.fingerprint256[\s\S]*expe
 assert.match(httpsRuntimeTest, /missing-sw\.js[\s\S]*status, 404/, 'HTTPS runtime test must prove that missing worker assets cannot become the SPA shell.');
 assert.match(buildEnsurer, /dist[\\',\s]+sw\.js/, 'Build ensurer must require the generated production service worker.');
 assert.match(buildEnsurer, /manifest\.webmanifest/, 'Build ensurer must require the generated production manifest.');
-assert.match(buildEnsurer, /Production build is current; reusing dist/, 'Daily startup must reuse a current production build instead of rebuilding every time.');
-assert.match(buildEnsurer, /postcss\.config\.cjs/, 'PWA build fingerprint must include the actual PostCSS configuration.');
-assert.match(buildEnsurer, /tailwind\.config\.cjs/, 'PWA build fingerprint must include the actual Tailwind configuration.');
-assert.match(buildEnsurer, /'config'/, 'PWA build fingerprint must include central frontend configuration such as style palettes.');
+assert.match(buildEnsurer, /Valid production output found; reusing dist\/ without rebuild/, 'Daily startup must reuse a validated production build instead of rebuilding every time.');
+assert.match(buildEnsurer, /KOUROSH_FORCE_PWA_BUILD/, 'An explicit force flag must remain available for release upgrades or deliberate rebuilds.');
+assert.match(buildEnsurer, /Production output is missing or invalid\. Building once/, 'Missing or invalid production output must trigger one bounded build instead of being reused.');
 assert.match(buildEnsurer, /validateGeneratedOutputs/, 'Cached dist output must pass structural manifest and service-worker validation before reuse.');
+assert.doesNotMatch(buildEnsurer, /postcss\.config\.cjs|tailwind\.config\.cjs|createHash|source fingerprint/i, 'Normal startup must remain output-first and must not hash frontend source/configuration to decide whether to rebuild.');
 
 assert.match(vite, /injectRegister:\s*false/, 'Service worker registration must be explicit so registration failures are observable.');
 assert.match(vite, /clientsClaim:\s*true/, 'Production Workbox worker must claim clients.');

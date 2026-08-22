@@ -14,6 +14,7 @@ declare global {
     };
     version: string;
     platform: string;
+    isFullscreen?: boolean;
     colorScheme: "light" | "dark";
     themeParams: TelegramThemeParams;
     safeAreaInset?: { top: number; bottom: number; left: number; right: number };
@@ -26,6 +27,9 @@ declare global {
     };
     ready: () => void;
     expand: () => void;
+    requestFullscreen?: () => void;
+    exitFullscreen?: () => void;
+    isVersionAtLeast?: (version: string) => boolean;
     setHeaderColor?: (color: string) => void;
     setBackgroundColor?: (color: string) => void;
     onEvent: (event: string, handler: () => void) => void;

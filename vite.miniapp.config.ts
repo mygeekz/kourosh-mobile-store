@@ -14,6 +14,8 @@ const emitMiniAppPublicFiles = (): Plugin => ({
       ["favicon.svg", path.resolve(rootDir, "public/favicon.svg")],
       ["kourosh-logo.svg", path.resolve(rootDir, "public/kourosh-logo.svg")],
       ["fonts/Vazir-FD-WOL.woff2", path.resolve(rootDir, "public/fonts/Vazir-FD-WOL.woff2")],
+      ["miniapp/premium/store-avatar.webp", path.resolve(rootDir, "public/miniapp/premium/store-avatar.webp")],
+      ["miniapp/premium/wallet-hero.webp", path.resolve(rootDir, "public/miniapp/premium/wallet-hero.webp")],
     ] as const) {
       if (!fs.existsSync(sourcePath)) throw new Error(`Mini App public dependency is missing: ${fileName}`);
       this.emitFile({ type: "asset", fileName, source: fs.readFileSync(sourcePath) });

@@ -79,6 +79,10 @@ export function validateSalesOrderPayload(payload: unknown): string[] {
  */
 export function validateInstallmentSalePayload(payload: any): string[] {
   const errors: string[] = [];
+  const normalizeIdentityDigits = (value: unknown) => String(value ?? '')
+    .replace(/[۰-۹]/g, (digit) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)))
+    .replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)))
+    .replace(/\D/g, '');
   if (!payload || typeof payload !== 'object') {
     errors.push('درخواست نامعتبر است.');
     return errors;
@@ -86,6 +90,10 @@ export function validateInstallmentSalePayload(payload: any): string[] {
   const p = payload as InstallmentSalePayload;
   if (typeof p.customerId !== 'number' || Number.isNaN(p.customerId)) {
     errors.push('مشتری نامعتبر است.');
+  }
+  const buyerNationalCode = normalizeIdentityDigits((payload as any).buyerNationalCode);
+  if ((payload as any).buyerNationalCode && buyerNationalCode.length !== 10) {
+    errors.push('کد ملی خریدار باید دقیقاً ۱۰ رقم باشد.');
   }
   // در نسخه جدید: فروش اقساطی می‌تواند شامل خدمات/لوازم بدون گوشی هم باشد.
   // phoneId می‌تواند NULL باشد؛ اما باید حداقل یک قلم (موبایل/لوازم/خدمات) وجود داشته باشد.
@@ -198,6 +206,22 @@ export function validateInstallmentSalePayload(payload: any): string[] {
       }
       if (typeof chk.bankName !== 'string' || !chk.bankName.trim()) {
         errors.push(`نام بانک در چک شماره ${idx + 1} الزامی است.`);
+      }
+      if (!['buyer', 'third_party'].includes(String(chk.ownershipType || '').trim())) {
+        errors.push(`مالک چک شماره ${idx + 1} باید خریدار یا شخص ثالث باشد.`);
+      }
+      if (chk.issuerNationalCode && normalizeIdentityDigits(chk.issuerNationalCode).length !== 10) {
+        errors.push(`کد ملی صادرکننده در چک شماره ${idx + 1} باید دقیقاً ۱۰ رقم باشد.`);
+      }
+      const issuerNationalCode = normalizeIdentityDigits(chk.issuerNationalCode);
+      if (chk.ownershipType === 'buyer' && issuerNationalCode && issuerNationalCode !== buyerNationalCode) {
+        errors.push(`کد ملی صادرکننده چک شماره ${idx + 1} با کد ملی خریدار یکسان نیست.`);
+      }
+      if (chk.ownershipType === 'third_party' && issuerNationalCode && issuerNationalCode === buyerNationalCode) {
+        errors.push(`چک شماره ${idx + 1} متعلق به خریدار است و نباید شخص ثالث انتخاب شود.`);
+      }
+      if (chk.sayadiId && normalizeIdentityDigits(chk.sayadiId).length !== 16) {
+        errors.push(`شناسه صیادی در چک شماره ${idx + 1} باید دقیقاً ۱۶ رقم باشد.`);
       }
       if (typeof chk.dueDate !== 'string' || !chk.dueDate.trim()) {
         errors.push(`تاریخ سررسید در چک شماره ${idx + 1} الزامی است.`);

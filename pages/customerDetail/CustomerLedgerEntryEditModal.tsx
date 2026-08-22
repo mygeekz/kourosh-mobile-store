@@ -44,7 +44,6 @@ const CustomerLedgerEntryEditModal: React.FC<Props> = ({ ctx }) => {
           title="ویرایش رکورد دفتر مشتری"
           onClose={() => setEditingEntry(null)}
           widthClass="max-w-4xl"
-          wrapperClassName="customer-ledger-edit-modal-center"
           iconClass="fa-solid fa-pen-to-square"
           variant="operational"
           layout="split"

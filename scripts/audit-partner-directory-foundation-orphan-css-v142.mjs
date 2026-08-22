@@ -81,12 +81,13 @@ check('No retired Partner Directory selectors remain in active non-quarantine CS
 const listPath = path.join(root, 'components/people/PartnerDirectoryList.tsx');
 const list = fs.readFileSync(listPath, 'utf8');
 check(
-  'PartnerDirectoryList remains primitive/utility-only',
+  'PartnerDirectoryList remains primitive-based and uses the canonical customer directory contract',
   !/import\s+['"][^'"]+\.css['"]/.test(list)
     && list.includes('<DataTableShell')
-    && list.includes('<Surface')
     && list.includes('<TableActionGroup')
-    && list.includes('@container min-w-0'),
+    && list.includes('customers-directory-v73__list')
+    && list.includes('customers-directory-v73__table')
+    && list.includes('data-ui-people-directory-layout="utility-only"'),
 );
 check('PartnerDirectoryList does not reintroduce retired CSS contracts', retired.every((token) => !list.includes(token)));
 

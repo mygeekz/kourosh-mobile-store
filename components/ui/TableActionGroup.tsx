@@ -33,12 +33,14 @@ export type TableActionButtonItem = TableActionBase & {
 
 export type TableActionItem = TableActionLinkItem | TableActionButtonItem;
 export type TableActionCollapseBelow = 'sm' | 'md' | 'lg' | 'xl';
+export type TableActionDensity = 'default' | 'compact';
 
 export type TableActionGroupProps = {
   actions: TableActionItem[];
   ariaLabel?: string;
   collapseBelow?: TableActionCollapseBelow;
   align?: 'start' | 'center' | 'end';
+  density?: TableActionDensity;
   className?: string;
 };
 
@@ -65,8 +67,18 @@ const inlineToneClassMap: Record<ActionControlVariant, string> = {
   neutral: 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100',
 };
 
+const inlineControlDensityClassMap: Record<TableActionDensity, string> = {
+  default: 'h-8 w-8 min-h-8 min-w-8',
+  compact: 'h-7 w-7 min-h-7 min-w-7',
+};
+
+const inlineGroupDensityClassMap: Record<TableActionDensity, string> = {
+  default: 'gap-1',
+  compact: 'gap-0.5 px-1',
+};
+
 const bareInlineControlClass = [
-  'h-8 w-8 min-h-8 min-w-8 shrink-0 p-0',
+  'shrink-0 p-0',
   'rounded-none border-0 bg-transparent bg-none shadow-none',
   'transition-[color,transform,opacity] duration-150 hover:-translate-y-px',
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400',
@@ -85,6 +97,7 @@ const TableActionGroup: React.FC<TableActionGroupProps> = ({
   ariaLabel = 'عملیات ردیف',
   collapseBelow = 'sm',
   align = 'center',
+  density = 'default',
   className,
 }) => {
   const visibleActions = React.useMemo(() => {
@@ -166,7 +179,7 @@ const TableActionGroup: React.FC<TableActionGroupProps> = ({
       'aria-label': action.label,
       'data-ui-table-action-control': 'true',
       disabled: action.disabled,
-      className: cn(bareInlineControlClass, inlineToneClassMap[action.variant ?? 'secondary']),
+      className: cn(bareInlineControlClass, inlineControlDensityClassMap[density], inlineToneClassMap[action.variant ?? 'secondary']),
     };
 
     if (action.kind === 'link') {
@@ -248,7 +261,7 @@ const TableActionGroup: React.FC<TableActionGroupProps> = ({
       aria-label={ariaLabel}
     >
       <div
-        className={cn('min-w-0 max-w-full flex-nowrap items-center gap-1', responsiveClasses.inline, alignClassMap[align])}
+        className={cn('min-w-0 max-w-full flex-nowrap items-center', inlineGroupDensityClassMap[density], responsiveClasses.inline, alignClassMap[align])}
         data-ui-table-actions-inline="true"
       >
         {visibleActions.map(renderInlineAction)}
@@ -268,7 +281,7 @@ const TableActionGroup: React.FC<TableActionGroupProps> = ({
           aria-label={ariaLabel}
           data-ui-table-action-control="true"
           title={ariaLabel}
-          className={cn(bareInlineControlClass, inlineToneClassMap.neutral)}
+          className={cn(bareInlineControlClass, inlineControlDensityClassMap.default, inlineToneClassMap.neutral)}
           leftIcon={<i className="fa-solid fa-ellipsis" aria-hidden="true" />}
           onClick={() => setOpen((value) => !value)}
         />

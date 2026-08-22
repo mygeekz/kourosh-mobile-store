@@ -9,7 +9,7 @@ const exists = (file) => fs.existsSync(path.join(root, file));
 
 const types = read("types.ts");
 assert.match(types, /telegram_transport_mode\?: 'disabled' \| 'direct' \| 'proxy' \| 'relay'/);
-assert.match(types, /miniapp_public_access_mode\?: 'disabled' \| 'self_hosted' \| 'external_tunnel' \| 'relay'/);
+assert.match(types, /miniapp_public_access_mode\?: 'disabled' \| 'self_hosted' \| 'external_tunnel' \| 'stable_tunnel' \| 'relay'/);
 
 const workspace = read("pages/settings/SettingsWorkspaceSection.tsx");
 assert.match(workspace, /if \(tab === 'telegram'\)[\s\S]{0,180}handleTelegramSettingsSubmit/,

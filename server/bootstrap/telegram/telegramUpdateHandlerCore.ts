@@ -36,6 +36,7 @@ import {
   auditLegacyTelegramAuthRejected,
   linkCustomerTelegramIdentityById,
   linkCustomerTelegramIdentityByPhone,
+  linkPartnerTelegramIdentityByPhone,
   unlinkCustomerTelegramIdentity,
   unlinkPartnerTelegramIdentity,
 } from "../../services/telegramIdentitySecurity.service";
@@ -179,6 +180,16 @@ export const createTelegramUpdateHandler = ({
         return (rows || []).filter(
             (r: any) =>
               normalizeIranPhone(String(r?.phoneNumber || "")) === normalized,
+        );
+      };
+      const findPartnersByNormalizedPhone = async (phone: string) => {
+        const normalized = normalizeIranPhone(String(phone || ""));
+        if (!normalized) return [];
+        const rows = await allAsync(
+          `SELECT id, partnerName, phoneNumber FROM partners WHERE COALESCE(phoneNumber,'') != ''`,
+        ).catch(() => [] as any[]);
+        return (rows || []).filter(
+          (r: any) => normalizeIranPhone(String(r?.phoneNumber || "")) === normalized,
         );
       };
       const setOptedOut = async (customerId: number, optedOut: 0 | 1) => {
@@ -415,7 +426,7 @@ export const createTelegramUpdateHandler = ({
           neonLine,
         ].join("\n");
       const showMainMenu = async (customer?: any) => {
-        await ensureTelegramPersistentMenu().catch(() => {});
+        await ensureTelegramPersistentMenu(chatId).catch(() => {});
         const name = String(customer?.fullName || "").trim();
         const greet = name ? `سلام ${name} عزیز 👋` : "سلام 👋";
         const text = [
@@ -436,7 +447,7 @@ export const createTelegramUpdateHandler = ({
         });
       };
       const showPartnerMenu = async (partner?: any, intro?: string) => {
-        await ensureTelegramPersistentMenu().catch(() => {});
+        await ensureTelegramPersistentMenu(chatId).catch(() => {});
         const name = String(partner?.partnerName || "").trim();
         const greet = name ? `سلام ${name} عزیز 👋` : "سلام عزیز 👋";
         const text = [
@@ -503,12 +514,12 @@ export const createTelegramUpdateHandler = ({
         const currentBalance = Number(partner.currentBalance || 0);
         const balanceState =
           currentBalance > 0
-            ? "بدهکار به فروشگاه"
+            ? "بستانکار از فروشگاه"
             : currentBalance < 0
-              ? "بستانکار از فروشگاه"
+              ? "بدهکار به فروشگاه"
               : "تسویه کامل";
         const balanceIcon =
-          currentBalance > 0 ? "🔴" : currentBalance < 0 ? "🟢" : "✅";
+          currentBalance > 0 ? "🟢" : currentBalance < 0 ? "🔴" : "✅";
         const ledgerStats: any = await getAsync(
           `SELECT COUNT(*) AS totalCount,
                   MAX(COALESCE(transactionDate, createdAt, updatedAt)) AS lastActivity
@@ -1676,7 +1687,7 @@ export const createTelegramUpdateHandler = ({
       // /start -> ask for contact
       const msgText = String(msg.text || "").trim();
       const restartBotForChat = async () => {
-        await ensureTelegramPersistentMenu().catch(() => {});
+        await ensureTelegramPersistentMenu(chatId).catch(() => {});
         const customer = await getLinkedCustomer();
         if (customer?.id) {
           await showMainMenu(customer);
@@ -1983,7 +1994,7 @@ export const createTelegramUpdateHandler = ({
         }
       }
       if (msgText.startsWith("/start")) {
-        await ensureTelegramPersistentMenu().catch(() => {});
+        await ensureTelegramPersistentMenu(chatId).catch(() => {});
         const parts = msgText.split(" ").filter(Boolean);
         const payload = String(parts[1] || "").trim();
         // One-tap QR linking: /start link_<token>
@@ -2274,29 +2285,84 @@ export const createTelegramUpdateHandler = ({
           );
           return;
         }
-        const customerCandidates: any[] = await findCustomersByNormalizedPhone(phone);
-        if (customerCandidates.length > 1) {
+        const [customerCandidates, partnerCandidates]: [any[], any[]] = await Promise.all([
+          findCustomersByNormalizedPhone(phone),
+          findPartnersByNormalizedPhone(phone),
+        ]);
+        const totalCandidateCount = customerCandidates.length + partnerCandidates.length;
+        if (customerCandidates.length > 1 || partnerCandidates.length > 1 || totalCandidateCount > 1) {
           await auditLegacyTelegramAuthRejected("customer", "DUPLICATE_PHONE");
-          await sendBotMessage(chatId, telegramCard("اتصال انجام نشد", "🔒", ["این شماره به بیش از یک پرونده مرتبط است و انتخاب خودکار مجاز نیست."], "لطفاً با فروشگاه تماس بگیرید."), { reply_markup: buildContactKeyboard(), parse_mode: "HTML" });
-          return;
-        }
-        const customerCandidate: any = customerCandidates[0] || null;
-        if (!customerCandidate?.id) {
-          await auditLegacyTelegramAuthRejected("partner", "CONTACT_LINK_FORBIDDEN");
+          await auditLegacyTelegramAuthRejected("partner", "DUPLICATE_PHONE");
           await sendBotMessage(
             chatId,
             telegramCard(
-              "دسترسی فعال نشد",
+              "اتصال انجام نشد",
               "🔒",
-              [
-                "پرونده مشتری قابل تأییدی برای این شماره پیدا نشد.",
-              ],
-              "برای اتصال حساب همکار، لینک امن اختصاصی را از فروشگاه دریافت کنید.",
+              ["این شماره به بیش از یک پرونده مشتری/همکار مرتبط است و انتخاب خودکار مجاز نیست."],
+              "شماره باید فقط به یک پرونده یکتا در فروشگاه تعلق داشته باشد.",
             ),
             { reply_markup: buildContactKeyboard(), parse_mode: "HTML" },
           );
           return;
         }
+        const customerCandidate: any = customerCandidates[0] || null;
+        const partnerCandidate: any = partnerCandidates[0] || null;
+        if (!customerCandidate?.id && !partnerCandidate?.id) {
+          await auditLegacyTelegramAuthRejected("customer", "PHONE_NOT_FOUND");
+          await auditLegacyTelegramAuthRejected("partner", "PHONE_NOT_FOUND");
+          await sendBotMessage(
+            chatId,
+            telegramCard(
+              "دسترسی فعال نشد",
+              "🔒",
+              ["این شماره موبایل در پرونده مشتریان یا همکاران فروشگاه ثبت نشده است."],
+              "شماره ارسال‌شده را با شماره ثبت‌شده در پرونده فروشگاه بررسی کنید.",
+            ),
+            { reply_markup: buildContactKeyboard(), parse_mode: "HTML" },
+          );
+          return;
+        }
+
+        // Telegram's request_contact button supplies the authenticated user's own
+        // contact (user_id was verified above). For a unique Partner phone this is
+        // sufficient to complete the same identity binding without pretending the
+        // record is a Customer. Customer OTP policy remains unchanged below.
+        if (partnerCandidate?.id) {
+          const linked = await linkPartnerTelegramIdentityByPhone(phone, fromId, chatId);
+          if (!linked.ok) {
+            await sendBotMessage(
+              chatId,
+              telegramCard(
+                "اتصال همکار انجام نشد",
+                "🔒",
+                ["شماره پیدا شد اما اتصال امن حساب همکار قابل تکمیل نبود."],
+                linked.reason === "rebind_rejected"
+                  ? "این پرونده قبلاً به حساب تلگرام دیگری متصل شده است."
+                  : "لطفاً وضعیت اتصال پرونده همکار را در فروشگاه بررسی کنید.",
+              ),
+              { reply_markup: buildContactKeyboard(), parse_mode: "HTML" },
+            );
+            return;
+          }
+          await sendBotMessage(chatId, "​", {
+            reply_markup: { remove_keyboard: true },
+            parse_mode: undefined,
+          });
+          await sendBotMessage(
+            chatId,
+            telegramCard(
+              "ورود امن همکار تکمیل شد",
+              "✅",
+              ["شماره موبایل با پرونده همکار تطبیق داده شد و پنل همکاری شما فعال شد."],
+              "از پنل پایین، موجودی گوشی‌ها و گردش حساب خود را مشاهده کنید.",
+            ),
+            { reply_markup: buildPartnerReplyKeyboard(), parse_mode: "HTML" },
+          );
+          const partner = await getLinkedPartner();
+          await showPartnerMenu(partner);
+          return;
+        }
+
         const otpEnabled = await isTelegramLinkOtpEnabled();
         if (!otpEnabled) {
           if (customerCandidate?.id) {

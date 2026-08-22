@@ -228,7 +228,7 @@ const CustomerDetailRender: React.FC<Props> = ({ ctx }) => {
 
   return (
     <div
-      className="customer-detail-page-root space-y-8"
+      className="mx-auto grid max-w-7xl min-w-0 gap-3 px-3 py-3 sm:px-4"
       dir="rtl"
       data-ui-customer-detail-layout="isolated-ledger-root"
       data-ui-customer-detail-page-root="true"
@@ -236,13 +236,11 @@ const CustomerDetailRender: React.FC<Props> = ({ ctx }) => {
       <Notification message={notification} onClose={() => setNotification(null)} />
 
       <div
-        className="detail-page-shell people-detail-apple customer-detail-apple people-detail-redesign-v1 people-detail-redesign-v1--customer people-foundation people-detail-foundation space-y-8"
-        data-ui-people-page="customer-detail"
+        className="grid min-w-0 gap-3"
         data-ui-people-scope="detail"
-        data-ui-customer-detail-legacy-shell="profile-messaging"
       >
         {/* پروفایل */}
-        <div className="customer-detail-hero detail-hero-card" data-ui-people-surface="detail-hero">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <CustomerDetailHeroOverviewSection ctx={ctx} />
         </div>
 
@@ -252,10 +250,8 @@ const CustomerDetailRender: React.FC<Props> = ({ ctx }) => {
       <CustomerLedgerRenderSection ctx={ctx} />
 
       <div
-        className="detail-page-shell people-detail-apple customer-detail-apple people-detail-redesign-v1 people-detail-redesign-v1--customer people-foundation people-detail-foundation"
-        data-ui-people-page="customer-detail"
+        className="min-w-0"
         data-ui-people-scope="detail"
-        data-ui-customer-detail-legacy-shell="history"
       >
         <CustomerPurchaseHistoryPrintSection ctx={ctx} />
       </div>

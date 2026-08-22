@@ -11,7 +11,11 @@
     "../../server/repositories/miniAppIdentity.repo.ts",
     "../../server/services/miniAppIdentity.service.ts",
     "../../server/services/miniAppCustomer.service.ts",
-    "../../server/services/miniAppPartner.service.ts"
+    "../../server/services/miniAppPartner.service.ts",
+    "../../server/cloud/snapshots/**/*.ts"
   ],
-  "exclude": ["../../node_modules", "../../dist"]
+  "exclude": [
+    "../../node_modules",
+    "../../dist"
+  ]
 }

@@ -1,6 +1,7 @@
 import { resolveCloudConnectorReadiness } from "../cloud/cloudConnectorReadiness";
 import { resolveTelegramTransportMode } from "../telegram/TelegramTransport";
-import { resolveMiniAppPublicAccessMode, resolveTelegramMiniAppUrl, validateTelegramMiniAppPublicUrl } from "./telegramPublicAccess";
+import { resolveMiniAppLiveOriginUrl, resolveMiniAppPublicAccessMode, resolveTelegramMiniAppUrl, validateTelegramMiniAppPublicUrl } from "./telegramPublicAccess";
+import { resolveMiniAppStableTunnelProvider } from "./stableTunnelProvider";
 import { projectSelectedRelayAssignment, relayRequiredByStrategies, resolveRelayProvider, resolveRelayProviderStatus } from "./relayProvider";
 
 export type ConnectivityStatus = "disabled" | "not_configured" | "checking" | "ready" | "degraded";
@@ -11,6 +12,8 @@ const hasBotCredential = (settings: Record<string, unknown>) => Boolean(String(s
 export const resolveConnectivityStrategies = (settings: Record<string, unknown>, env: NodeJS.ProcessEnv = process.env) => {
   const telegramMode = resolveTelegramTransportMode(settings);
   const miniAppMode = resolveMiniAppPublicAccessMode(settings, env.NODE_ENV || "production");
+  const stableTunnelProvider = resolveMiniAppStableTunnelProvider(settings);
+  const liveOriginUrl = resolveMiniAppLiveOriginUrl(settings, env.NODE_ENV || "production");
   const relayProvider = resolveRelayProvider(settings);
   const relayRequired = relayRequiredByStrategies(settings);
   const relayStatus = resolveRelayProviderStatus(settings, env);
@@ -32,6 +35,7 @@ export const resolveConnectivityStrategies = (settings: Record<string, unknown>,
   let miniAppStatus: ConnectivityStatus = "not_configured";
   if (miniAppMode === "disabled") miniAppStatus = "disabled";
   else if (miniAppMode === "self_hosted" || miniAppMode === "external_tunnel") miniAppStatus = miniAppUrl ? "ready" : "not_configured";
+  else if (miniAppMode === "stable_tunnel") miniAppStatus = miniAppUrl && liveOriginUrl ? "ready" : "not_configured";
   else miniAppStatus = relayReadiness.connected && relayReadiness.miniAppRelayHealthy && Boolean(miniAppUrl) ? "ready" : relayReadiness.provisioned ? "degraded" : "not_configured";
 
   const relayConnectivityStatus: RelayConnectivityStatus = !relayRequired ? "disabled"
@@ -42,7 +46,7 @@ export const resolveConnectivityStrategies = (settings: Record<string, unknown>,
 
   return {
     telegram: { mode: telegramMode, status: telegramStatus },
-    miniApp: { mode: miniAppMode, status: miniAppStatus, publicUrl: miniAppUrl },
+    miniApp: { mode: miniAppMode, status: miniAppStatus, publicUrl: miniAppUrl, liveOriginUrl, stableTunnelProvider: miniAppMode === "stable_tunnel" ? stableTunnelProvider : null },
     relay: { provider: relayProvider, required: relayRequired, status: relayConnectivityStatus, readiness: relayReadiness, controlUrlConfigured: Boolean(relayStatus.controlUrl), connectorUrlConfigured: Boolean(relayStatus.connectorUrl) },
   };
 };
@@ -52,6 +56,6 @@ export const validateExplicitMiniAppPublicUrlForMode = (
   environment = process.env.NODE_ENV || "production",
 ) => {
   const mode = resolveMiniAppPublicAccessMode(settings, environment);
-  if (mode !== "self_hosted" && mode !== "external_tunnel") return null;
+  if (mode !== "self_hosted" && mode !== "external_tunnel" && mode !== "stable_tunnel") return null;
   return validateTelegramMiniAppPublicUrl(settings.telegram_miniapp_public_url, environment);
 };

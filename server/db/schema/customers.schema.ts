@@ -7,6 +7,7 @@ export const createCustomersSchema = async (): Promise<void> => {
     CREATE TABLE IF NOT EXISTS customers (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       fullName TEXT NOT NULL,
+      nationalCode TEXT,
       phoneNumber TEXT UNIQUE,
       address TEXT,
       notes TEXT,
@@ -25,6 +26,20 @@ export const createCustomersSchema = async (): Promise<void> => {
     `CREATE INDEX IF NOT EXISTS idx_customers_full_name_normalized ON customers(
       REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(fullName, 'ي', 'ی'), 'ك', 'ک'), 'أ', 'ا'), 'إ', 'ا'), 'آ', 'ا') COLLATE NOCASE
     );`,
+  );
+
+  // Contract identity. Nullable by design so ordinary CRM registration remains possible;
+  // contract readiness requires a valid 10-digit value before printing.
+  try {
+    await runAsync("ALTER TABLE customers ADD COLUMN nationalCode TEXT");
+    console.log("Customers table: nationalCode column added.");
+  } catch (e: any) {
+    if (!/duplicate column/i.test(e?.message || "")) {
+      console.error("Error adding nationalCode column to customers table:", e?.message || e);
+    }
+  }
+  await runAsync(
+    `CREATE INDEX IF NOT EXISTS idx_customers_national_code ON customers(nationalCode);`,
   );
 
   // Customer tags (CRM)

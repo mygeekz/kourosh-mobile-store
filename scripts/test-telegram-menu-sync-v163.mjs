@@ -83,6 +83,25 @@ assert.equal(permanent.state, "error");
 assert.equal(permanent.attempts, 1);
 assert.equal(permanentCalls, 1, "Permanent Menu failure must not spam Telegram API");
 
+
+const scopedCalls = [];
+const scopedSync = createTelegramMenuSyncService({
+  configureTransport: () => undefined,
+  callApi: async (_token, method, payload) => {
+    scopedCalls.push({ method, payload });
+    return method === "getChatMenuButton" ? verifiedMenu() : { success: true };
+  },
+  sleep: async () => undefined,
+});
+const scoped = await scopedSync(baseSettings, { chatId: "123456789" });
+assert.equal(scoped.state, "synced");
+assert.equal(scopedCalls.length, 2);
+assert.equal(scopedCalls[0].method, "setChatMenuButton");
+assert.equal(scopedCalls[0].payload.chat_id, "123456789", "Private-chat reconciliation must write the current chat-scoped Menu Button");
+assert.equal(scopedCalls[0].payload.menu_button.web_app.url, publicUrl);
+assert.equal(scopedCalls[1].method, "getChatMenuButton");
+assert.deepEqual(scopedCalls[1].payload, { chat_id: "123456789" }, "Private-chat reconciliation must read back the same chat-scoped Menu Button");
+
 const staleReads = [];
 const staleSync = createTelegramMenuSyncService({
   configureTransport: () => undefined,
@@ -107,4 +126,5 @@ console.log(JSON.stringify({
   directReadBackMethod: directCalls[1].method,
   transientWriteAttempts: transientWrites,
   staleReadBackAttempts: staleReads.filter((call) => call.method === "getChatMenuButton").length,
+  scopedChatId: scopedCalls[0].payload.chat_id,
 }, null, 2));

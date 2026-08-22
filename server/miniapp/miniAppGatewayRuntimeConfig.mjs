@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 
 const CONFIG_VERSION = 1;
-const MODES = new Set(["disabled", "self_hosted", "external_tunnel", "relay"]);
+const MODES = new Set(["disabled", "self_hosted", "external_tunnel", "stable_tunnel", "relay"]);
 const HOST_PATTERN = /^(?:[a-z0-9.-]+|\[[0-9a-f:]+\])(?::\d{1,5})?$/;
 
 const chmodBestEffort = (target, mode) => { try { fs.chmodSync(target, mode); } catch {} };
@@ -43,9 +43,10 @@ export const deriveMiniAppGatewayExpectedHost = (publicUrl) => {
 export const buildMiniAppGatewayRuntimeConfig = (settings = {}) => {
   const mode = resolveSettingsMode(settings);
   let expectedPublicHost = null;
-  if (mode === "self_hosted" || mode === "external_tunnel") {
-    expectedPublicHost = deriveMiniAppGatewayExpectedHost(settings.telegram_miniapp_public_url);
-    if (!expectedPublicHost) throw Object.assign(new Error("Mini App public HTTPS URL is invalid for Gateway runtime configuration."), { code: "MINIAPP_GATEWAY_PUBLIC_URL_INVALID" });
+  if (mode === "self_hosted" || mode === "external_tunnel" || mode === "stable_tunnel") {
+    const gatewayUrl = mode === "stable_tunnel" ? settings.miniapp_live_origin_url : settings.telegram_miniapp_public_url;
+    expectedPublicHost = deriveMiniAppGatewayExpectedHost(gatewayUrl);
+    if (!expectedPublicHost) throw Object.assign(new Error(mode === "stable_tunnel" ? "Mini App stable Live Origin HTTPS URL is invalid for Gateway runtime configuration." : "Mini App public HTTPS URL is invalid for Gateway runtime configuration."), { code: mode === "stable_tunnel" ? "MINIAPP_GATEWAY_LIVE_ORIGIN_INVALID" : "MINIAPP_GATEWAY_PUBLIC_URL_INVALID" });
   }
   return Object.freeze({
     version: CONFIG_VERSION,
@@ -57,8 +58,8 @@ export const buildMiniAppGatewayRuntimeConfig = (settings = {}) => {
 
 export const writeMiniAppGatewayRuntimeConfig = (config, options = {}) => {
   const mode = normalizeMode(config?.mode);
-  const expectedPublicHost = mode === "self_hosted" || mode === "external_tunnel" ? normalizeHost(config?.expectedPublicHost) : null;
-  if ((mode === "self_hosted" || mode === "external_tunnel") && !expectedPublicHost) throw Object.assign(new Error("Mini App Gateway expected Host is invalid."), { code: "MINIAPP_GATEWAY_HOST_INVALID" });
+  const expectedPublicHost = mode === "self_hosted" || mode === "external_tunnel" || mode === "stable_tunnel" ? normalizeHost(config?.expectedPublicHost) : null;
+  if ((mode === "self_hosted" || mode === "external_tunnel" || mode === "stable_tunnel") && !expectedPublicHost) throw Object.assign(new Error("Mini App Gateway expected Host is invalid."), { code: "MINIAPP_GATEWAY_HOST_INVALID" });
   const file = path.resolve(options.configPath || resolveMiniAppGatewayRuntimeConfigPath(options.env));
   const dir = path.dirname(file);
   fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
@@ -128,7 +129,7 @@ export const readMiniAppGatewayRuntimeConfig = (options = {}) => {
   if (typeof value.updatedAt !== "string") return invalidResult("RUNTIME_CONFIG_SCHEMA_INVALID");
 
   let expectedPublicHost = null;
-  if (value.mode === "self_hosted" || value.mode === "external_tunnel") {
+  if (value.mode === "self_hosted" || value.mode === "external_tunnel" || value.mode === "stable_tunnel") {
     expectedPublicHost = normalizeHost(value.expectedPublicHost);
     if (!expectedPublicHost) return invalidResult("RUNTIME_CONFIG_HOST_INVALID");
   } else if (value.expectedPublicHost !== null && value.expectedPublicHost !== undefined) {

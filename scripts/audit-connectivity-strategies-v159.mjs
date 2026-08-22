@@ -48,7 +48,7 @@ assert(provider.includes("resolveRelayAssignmentProvider") && provider.includes(
 assert(!/https?:\/\/(?!127\.0\.0\.1|localhost|example\.invalid)[A-Za-z0-9.-]+/i.test(provider), "Relay provider module must not hard-code a production service URL");
 
 const publicAccess = read("server/connectivity/telegramPublicAccess.ts");
-for (const mode of ["disabled", "self_hosted", "external_tunnel", "relay"]) assert(publicAccess.includes(`\"${mode}\"`), `Mini App access mode ${mode} missing`);
+for (const mode of ["disabled", "self_hosted", "external_tunnel", "stable_tunnel", "relay"]) assert(publicAccess.includes(`\"${mode}\"`), `Mini App access mode ${mode} missing`);
 assert(!/app_base_url|local_base_url/.test(stripComments(publicAccess)), "Mini App resolver must not fallback to app/local base URLs");
 
 const connectorRuntime = read("server/cloud/cloudConnectorRuntime.ts");
@@ -63,7 +63,7 @@ assert(settingsRoutes.includes("hasTransportInput") && settingsRoutes.includes("
 assert(settingsRoutes.includes("/api/settings/relay-connector/enroll"), "generic Relay enrollment endpoint missing");
 
 const panel = read("pages/settings/SettingsTelegramPanel.tsx");
-for (const label of ["غیرفعال", "مستقیم", "پراکسی", "رله", "میزبانی شخصی", "تانل خارجی", "ابر کوروش", "رله شخصی"]) assert(panel.includes(label), `Settings UI label missing: ${label}`);
+for (const label of ["غیرفعال", "مستقیم", "پراکسی", "رله", "میزبانی شخصی", "تانل موقت / عیب‌یابی", "تانل پایدار", "ابر کوروش", "رله شخصی"]) assert(panel.includes(label), `Settings UI label missing: ${label}`);
 assert((panel.match(/<option value="relay">رله<\/option>/g) || []).length >= 2, "Relay must be selectable before provisioning so Admin can configure/enroll the selected provider");
 
 // Local Store source must not import Linux-only Cloud server runtime lock or use /proc/abstract-socket primitives.
@@ -110,7 +110,7 @@ assert(cloudProtocol.includes("bindTelegramCredential") && cloudProtocol.include
 console.log(JSON.stringify({
   ok: true,
   telegramTransportModes: 4,
-  miniAppAccessModes: 4,
+  miniAppAccessModes: 5,
   relayProviders: ["managed_kourosh", "custom"],
   localStoreLinuxCloudRuntimeImports: linuxLeaks.length,
   hardcodedKouroshServiceUrlsInRelayRuntime: hardcodedService.length,

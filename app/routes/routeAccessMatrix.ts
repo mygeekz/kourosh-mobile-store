@@ -18,6 +18,7 @@ export const routeAccessMatrix = [
   { routeKey: 'public:setup', manifestPath: '/setup', effectivePath: '/setup', section: 'public', access: 'public', allowedRoles: [], featureFlags: [], notes: 'One-time initial administrator provisioning; backend disables it after the first user is created.' },
   { routeKey: 'public:install', manifestPath: '/install', effectivePath: '/install', section: 'public', access: 'public', allowedRoles: [], featureFlags: [] },
   { routeKey: 'print:reports', manifestPath: 'reports/*', effectivePath: '/print/reports/*', section: 'print', access: 'authenticated', allowedRoles: [], featureFlags: [], notes: 'Nested below /print and ProtectedRoute.' },
+  { routeKey: 'print:installment-contract', manifestPath: 'installment-contract/:id', effectivePath: '/print/installment-contract/:id', section: 'print', access: 'authenticated', allowedRoles: [], featureFlags: ['installments'], notes: 'Nested below /print and ProtectedRoute; installment API enforces Admin/Manager/Salesperson.' },
   { routeKey: 'main:dashboard', manifestPath: '/', effectivePath: '/', section: 'main', access: 'authenticated', allowedRoles: [], featureFlags: [] },
   { routeKey: 'main:profile', manifestPath: '/profile', effectivePath: '/profile', section: 'main', access: 'authenticated', allowedRoles: [], featureFlags: [] },
   { routeKey: 'main:search-relative', manifestPath: 'search', effectivePath: '/search', section: 'main', access: 'authenticated', allowedRoles: [], featureFlags: [] },

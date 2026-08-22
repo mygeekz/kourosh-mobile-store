@@ -64,8 +64,8 @@ for (const host of ["localhost", "127.0.0.1", "10.0.0.5", "172.16.0.1", "192.168
 }
 assert.equal(validateTelegramMiniAppPublicUrl("https://localhost/miniapp.html", "test"), "https://localhost/miniapp.html");
 assert.equal(telegramMenuButtonPayload(configured).mode, "web_app");
-assert.equal(telegramMenuButtonPayload({}).mode, "default");
-assert.equal(telegramMenuButtonPayload({ telegram_miniapp_public_url: "javascript:alert(1)" }).mode, "default");
+assert.equal(telegramMenuButtonPayload({}).mode, "unavailable");
+assert.equal(telegramMenuButtonPayload({ telegram_miniapp_public_url: "javascript:alert(1)" }).mode, "unavailable");
 assert.equal(buildTelegramMiniAppLaunchLink(configured, "v1_c_account"), "https://t.me/KouroshStoreBot?startapp=v1_c_account");
 assert.equal(buildTelegramMiniAppWebAppUrl(configured, "v1_c_account"), "https://panel.example.com/miniapp.html?kourosh_start=v1_c_account");
 assert.deepEqual(buildTelegramMiniAppLaunchButton(configured, "v1_c_account"), {
@@ -85,7 +85,7 @@ await ensurer.ensure("123:token", configured);
 assert.equal(calls.length, 1, "idempotent ensure must skip an unchanged successful menu");
 assert.equal((calls[0].payload.menu_button as any).type, "web_app");
 await ensurer.ensure("123:token", {});
-assert.equal((calls[1].payload.menu_button as any).type, "default");
+assert.equal(calls.length, 1, "missing public URL must preserve the previously configured Telegram Menu Button");
 
 const authSource = fs.readFileSync(path.join(process.cwd(), "miniapp", "auth", "MiniAppAuthContext.tsx"), "utf8");
 assert.doesNotMatch(authSource, /getStoredMiniAppToken|fetchMiniAppIdentity/);

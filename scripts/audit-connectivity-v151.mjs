@@ -29,7 +29,7 @@ const miniAccess = read("server/connectivity/telegramPublicAccess.ts");
 for (const forbiddenFallback of ["app_base_url", "public_app_base_url", "local_base_url", "qr_public_base_url"]) {
   assert.equal(miniAccess.includes(forbiddenFallback), false, `Mini App resolver must not reference ${forbiddenFallback}.`);
 }
-assert.match(miniAccess, /"disabled" \| "self_hosted" \| "external_tunnel" \| "relay"/);
+assert.match(miniAccess, /"disabled" \| "self_hosted" \| "external_tunnel" \| "stable_tunnel" \| "relay"/);
 assert.match(miniAccess, /resolveCloudConnectorReadiness/);
 assert.match(miniAccess, /relay\.assignedPublicUrl/);
 

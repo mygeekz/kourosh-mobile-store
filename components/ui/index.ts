@@ -8,7 +8,7 @@ export type { ActionLinkProps } from './ActionLink';
 export { actionControlSizeClassMap, actionControlVariantClassMap, inferActionControlIcon, normalizeActionControlIcon } from './actionControlContract';
 export type { ActionControlSize, ActionControlVariant } from './actionControlContract';
 export { default as TableActionGroup } from './TableActionGroup';
-export type { TableActionGroupProps, TableActionItem, TableActionLinkItem, TableActionButtonItem } from './TableActionGroup';
+export type { TableActionGroupProps, TableActionItem, TableActionLinkItem, TableActionButtonItem, TableActionDensity } from './TableActionGroup';
 export { default as AppSearchField } from './AppSearchField';
 export { default as ControlShell } from './ControlShell';
 export type { ControlShellElement, ControlShellKind, ControlShellProps } from './ControlShell';
@@ -55,4 +55,11 @@ export type { IconGlyphProps, IconGlyphSize, IconGlyphTone } from './IconGlyph';
 
 export { default as FontAwesomeIcon } from './FontAwesomeIcon';
 export { ManagementDirectoryHero, ManagementKpiGrid, ManagementFilterSurface, ManagementListSurface } from './ManagementDirectory';
+
+export { default as ManagementDirectoryOverview } from './ManagementDirectoryOverview';
+export type { ManagementDirectoryOverviewProps, ManagementDirectoryOverviewStat, ManagementDirectoryOverviewTone } from './ManagementDirectoryOverview';
+export { default as ManagementDirectoryToolbar } from './ManagementDirectoryToolbar';
+export type { ManagementDirectoryToolbarProps, ManagementDirectoryToolbarFilter, ManagementDirectoryToolbarOption, ManagementDirectoryToolbarNotice } from './ManagementDirectoryToolbar';
+export { default as ManagementDirectoryPagination } from './ManagementDirectoryPagination';
+export type { ManagementDirectoryPaginationProps } from './ManagementDirectoryPagination';
 export type { ManagementQuickStat, ManagementKpiItem, ManagementTone } from './ManagementDirectory';

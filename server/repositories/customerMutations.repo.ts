@@ -2,6 +2,7 @@ import { getAsync, runAsync } from "../db/query";
 
 export interface CustomerMutationPayload {
   fullName: string;
+  nationalCode?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
   notes?: string | null;
@@ -13,13 +14,14 @@ type CustomerLookup = (customerId: number) => Promise<any>;
 export const addCustomerToDb = async (
   customerData: CustomerMutationPayload,
 ): Promise<any> => {
-  const { fullName, phoneNumber, address, notes, telegramChatId } =
+  const { fullName, nationalCode, phoneNumber, address, notes, telegramChatId } =
     customerData;
   try {
     const result = await runAsync(
-      `INSERT INTO customers (fullName, phoneNumber, address, notes, telegramChatId) VALUES (?, ?, ?, ?, ?)`,
+      `INSERT INTO customers (fullName, nationalCode, phoneNumber, address, notes, telegramChatId) VALUES (?, ?, ?, ?, ?, ?)`,
       [
         fullName,
+        nationalCode || null,
         phoneNumber || null,
         address || null,
         notes || null,
@@ -44,13 +46,14 @@ export const updateCustomerInDb = async (
   customerData: CustomerMutationPayload,
   deps: { getCustomerById: CustomerLookup },
 ): Promise<any> => {
-  const { fullName, phoneNumber, address, notes, telegramChatId } =
+  const { fullName, nationalCode, phoneNumber, address, notes, telegramChatId } =
     customerData;
   try {
     await runAsync(
-      `UPDATE customers SET fullName = ?, phoneNumber = ?, address = ?, notes = ?, telegramChatId = ? WHERE id = ?`,
+      `UPDATE customers SET fullName = ?, nationalCode = ?, phoneNumber = ?, address = ?, notes = ?, telegramChatId = ? WHERE id = ?`,
       [
         fullName,
+        nationalCode || null,
         phoneNumber || null,
         address || null,
         notes || null,

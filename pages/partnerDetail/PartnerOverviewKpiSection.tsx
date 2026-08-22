@@ -42,7 +42,7 @@ const PartnerOverviewKpiSection: React.FC<Props> = ({ ctx }) => {
 
   return (
     <section
-      className="partner-detail-section-shell mx-3 mt-5 rounded-[26px] border border-slate-200/80 bg-white p-4 shadow-[0_12px_36px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-950/75 sm:mx-6 sm:p-5"
+      className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950 sm:p-5"
       data-partner-overview="true"
     >
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -61,7 +61,7 @@ const PartnerOverviewKpiSection: React.FC<Props> = ({ ctx }) => {
               <div className="min-w-0">
                 <div className="text-xs font-black text-slate-600 dark:text-slate-300">{metric.label}</div>
                 <div className="mt-2 break-words text-base font-black text-slate-950 dark:text-slate-50 sm:text-lg">{metric.value}</div>
-                <div className="mt-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">{metric.detail}</div>
+                <div className="mt-1 text-xs font-semibold text-slate-500 dark:text-slate-400">{metric.detail}</div>
               </div>
               <IconGlyph tone="neutral" className="h-9 w-9 shrink-0" aria-hidden="true"><i className={metric.icon} /></IconGlyph>
             </div>

@@ -104,7 +104,7 @@ export const buildSettingsTelegramConnectionViewModel = ({
   const telegramTransportMode = transportRaw === 'cloud_relay' ? 'relay' : ['disabled', 'direct', 'proxy', 'relay'].includes(transportRaw) ? transportRaw : 'direct';
   const explicitMiniAppMode = String(telegramInfo.miniapp_public_access_mode || '').trim();
   const legacyMiniAppMode = String(telegramInfo.telegram_public_access_mode || '').trim();
-  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'relay'].includes(explicitMiniAppMode)
+  const telegramPublicAccessMode = ['disabled', 'self_hosted', 'external_tunnel', 'stable_tunnel', 'relay'].includes(explicitMiniAppMode)
     ? explicitMiniAppMode
     : legacyMiniAppMode === 'cloud_managed' ? 'relay' : legacyMiniAppMode === 'self_hosted' ? 'self_hosted' : legacyMiniAppMode === 'disabled' ? 'disabled' : telegramMiniAppPublicUrl ? 'self_hosted' : 'disabled';
   const relayConnected = String(telegramInfo.kourosh_cloud_connection_state || '') === 'connected';
@@ -114,6 +114,7 @@ export const buildSettingsTelegramConnectionViewModel = ({
     Boolean(String(telegramInfo.kourosh_cloud_assigned_public_url || '').trim());
   const telegramMiniAppReady = telegramPublicAccessMode === 'disabled' ||
     ((telegramPublicAccessMode === 'self_hosted' || telegramPublicAccessMode === 'external_tunnel') && Boolean(telegramMiniAppPublicUrl)) ||
+    (telegramPublicAccessMode === 'stable_tunnel' && Boolean(telegramMiniAppPublicUrl) && Boolean(String(telegramInfo.miniapp_live_origin_url || '').trim())) ||
     (telegramPublicAccessMode === 'relay' && relayMiniAppReady);
   const telegramRouteReady = telegramTransportMode === 'disabled' ||
     (telegramTransportMode === 'direct' && Boolean(String(telegramInfo.telegram_bot_token || '').trim())) ||
@@ -147,7 +148,7 @@ export const buildSettingsTelegramConnectionViewModel = ({
     {
       key: 'mini-app',
       label: 'دسترسی Mini App',
-      description: telegramPublicAccessMode === 'disabled' ? 'Mini App عمداً خاموش است؛ Public URL لازم نیست.' : telegramPublicAccessMode === 'self_hosted' ? 'میزبانی شخصی فقط URL عمومی صریح خودش را استفاده می‌کند.' : telegramPublicAccessMode === 'external_tunnel' ? 'تانل خارجی فقط URL عمومی HTTPS ثبت‌شده را استفاده می‌کند و lifecycle تانل خارج از کوروش است.' : 'Mini App Relay به Provider انتخاب‌شده، اتصال امن و Assigned URL وابسته است.',
+      description: telegramPublicAccessMode === 'disabled' ? 'Mini App عمداً خاموش است؛ Public URL لازم نیست.' : telegramPublicAccessMode === 'self_hosted' ? 'میزبانی شخصی فقط URL عمومی صریح خودش را استفاده می‌کند.' : telegramPublicAccessMode === 'external_tunnel' ? 'تانل موقت فقط URL عمومی HTTPS ثبت‌شده را استفاده می‌کند.' : telegramPublicAccessMode === 'stable_tunnel' ? 'حالت پایدار، URL عمومی ثابت را از مبدأ زنده فروشگاه جدا نگه می‌دارد و با راه‌اندازی دوباره تغییر نمی‌کند.' : 'Mini App Relay به Provider انتخاب‌شده، اتصال امن و Assigned URL وابسته است.',
       icon: 'fa-window-maximize',
       anchor: 'telegram-connectivity-v151-heading',
       done: telegramMiniAppReady,
@@ -322,7 +323,7 @@ export const buildSettingsTelegramConnectionViewModel = ({
       key: 'miniapp',
       title: 'Mini App',
       done: telegramMiniAppReady,
-      hint: telegramPublicAccessMode === 'disabled' ? 'خاموش است؛ دامنه عمومی لازم نیست.' : telegramPublicAccessMode === 'self_hosted' ? 'Public HTTPS URL صریح لازم است.' : telegramPublicAccessMode === 'external_tunnel' ? 'Public HTTPS URL تانل لازم است؛ خود تانل خارج از کوروش مدیریت می‌شود.' : 'Relay به Provider انتخاب‌شده، اتصال امن و سلامت Mini App Relay وابسته است.',
+      hint: telegramPublicAccessMode === 'disabled' ? 'خاموش است؛ دامنه عمومی لازم نیست.' : telegramPublicAccessMode === 'self_hosted' ? 'Public HTTPS URL صریح لازم است.' : telegramPublicAccessMode === 'external_tunnel' ? 'Public HTTPS URL تانل موقت لازم است.' : telegramPublicAccessMode === 'stable_tunnel' ? 'نشانی عمومی ثابت و مبدأ زنده امن هر دو لازم‌اند.' : 'Relay به Provider انتخاب‌شده، اتصال امن و سلامت Mini App Relay وابسته است.',
       icon: 'fa-window-maximize',
       target: 'telegram_miniapp_public_url',
     },

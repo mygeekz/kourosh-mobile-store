@@ -204,6 +204,38 @@ export const linkCustomerTelegramIdentityByPhone = async (phone: string, telegra
   return linkCustomerTelegramIdentityById(Number((matches[0] as any).id), telegramUserId, chatId);
 };
 
+export type PartnerPhoneLinkResult = { ok: true; partnerId: number } | { ok: false; reason: "not_found" | "ambiguous" | "identity_collision" | "rebind_rejected" };
+
+export const linkPartnerTelegramIdentityById = async (partnerId: number, telegramUserId: string, chatId: string): Promise<PartnerPhoneLinkResult> => withRedemptionLock(async () => {
+  if (!partnerId || !telegramUserId || !chatId) return { ok: false, reason: "not_found" };
+  await runAsync("BEGIN IMMEDIATE");
+  try {
+    const partner: any = await getAsync("SELECT id,telegram_user_id FROM partners WHERE id=? LIMIT 1", [partnerId]);
+    if (!partner?.id) { await runAsync("ROLLBACK"); return { ok: false, reason: "not_found" }; }
+    if (partner.telegram_user_id && String(partner.telegram_user_id) !== telegramUserId) { await runAsync("ROLLBACK"); return { ok: false, reason: "rebind_rejected" }; }
+    const collision: any = await getAsync("SELECT id FROM partners WHERE telegram_user_id=? AND id<>? LIMIT 1", [telegramUserId, partnerId]);
+    if (collision?.id) { await runAsync("ROLLBACK"); return { ok: false, reason: "identity_collision" }; }
+    await runAsync(`UPDATE partners SET telegram_user_id=?,telegram_chat_id=?,telegramChatId=?,telegram_linked_at=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`, [telegramUserId, chatId, chatId, partnerId]);
+    await runAsync("COMMIT");
+    revokeMiniAppIdentitySessions("partner", partnerId);
+    await audit(null, "TELEGRAM_PARTNER_LINKED", "partner", partnerId, "Partner Telegram identity linked through verified Telegram self-contact and unique stored phone.");
+    return { ok: true, partnerId };
+  } catch (error) {
+    await runAsync("ROLLBACK").catch(() => undefined);
+    throw error;
+  }
+});
+
+export const linkPartnerTelegramIdentityByPhone = async (phone: string, telegramUserId: string, chatId: string): Promise<PartnerPhoneLinkResult> => {
+  const normalized = normalizeIranPhone(phone);
+  if (!normalized) return { ok: false, reason: "not_found" };
+  const rows = await allAsync("SELECT id,phoneNumber FROM partners WHERE COALESCE(phoneNumber,'')<>''", []);
+  const matches = rows.filter((row: any) => normalizeIranPhone(String(row.phoneNumber || "")) === normalized);
+  if (!matches.length) return { ok: false, reason: "not_found" };
+  if (matches.length !== 1) return { ok: false, reason: "ambiguous" };
+  return linkPartnerTelegramIdentityById(Number((matches[0] as any).id), telegramUserId, chatId);
+};
+
 export const updateCustomerTelegramDelivery = async (customerId: number, chatId: string): Promise<void> => {
   await runAsync("UPDATE customers SET telegramChatId=?,telegram_chat_id=? WHERE id=?", [chatId || null, chatId || null, customerId]);
 };

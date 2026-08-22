@@ -9,8 +9,10 @@ import {
   listInstallmentSalesForCustomerFromDb,
   listInstallmentCustomerDueOverviewFromDb,
   getInstallmentSaleByIdFromDb,
+  prepareInstallmentSaleContractForPrintInDb,
   getInstallmentSaleProfitSnapshotFromDb,
   updateCheckStatusInDb,
+  updateCheckContractIdentityInDb,
   updateInstallmentPaymentStatusInDb,
   updateInstallmentTransactionInDb,
   getAsync,
@@ -31,6 +33,7 @@ export const installmentsRepo = {
   listInstallmentCustomerDueOverview: (customerIds?: number[]) =>
     listInstallmentCustomerDueOverviewFromDb(customerIds),
   getInstallmentSaleById: (id: number) => getInstallmentSaleByIdFromDb(id),
+  prepareInstallmentSaleContractForPrint: (id: number) => prepareInstallmentSaleContractForPrintInDb(id),
   getInstallmentSaleProfitSnapshot: (id: number) =>
     getInstallmentSaleProfitSnapshotFromDb(id),
   createInstallmentSale: (payload: InstallmentSalePayload) =>
@@ -44,6 +47,18 @@ export const installmentsRepo = {
     updateInstallmentPaymentStatusInDb(id, paid, paymentDate),
   updateInstallmentCheckStatus: (id: number, status: any) =>
     updateCheckStatusInDb(id, status),
+  updateInstallmentCheckContractIdentity: (
+    id: number,
+    input: {
+      checkNumber: string;
+      bankName: string;
+      ownershipType: 'buyer' | 'third_party';
+      issuerName: string;
+      issuerNationalCode: string;
+      sayadiId: string;
+      dueDate: string;
+    },
+  ) => updateCheckContractIdentityInDb(id, input),
   addCheckRecoveryPayment: (checkId: number, amount: number, date: string, notes?: any) =>
     addCheckRecoveryPaymentToDb(checkId, amount, date, notes),
   getInstallmentPaymentSaleId: async (paymentId: number): Promise<number | null> => {

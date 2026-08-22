@@ -4,7 +4,7 @@ import moment from 'jalali-moment';
 import { Link, useLocation } from 'react-router-dom';
 import { Customer, NewCustomerData, NotificationMessage } from '../types';
 import Notification from '../components/Notification';
-import { DataTableShell, Dialog as Modal } from '@/components/ui';
+import { Dialog as Modal } from '@/components/ui';
 import { ModalField } from '@/components/ui';
 import { DialogActions as ModalActions } from '@/components/ui';
 import FormErrorSummary from '../components/FormErrorSummary';
@@ -20,12 +20,12 @@ import MessageComposerModal from '../components/MessageComposerModal';
 import Button from '../components/Button';
 import { parseApiResult, runWithFeedback, humanizeErrorMessage } from '../utils/feedback';
 import { focusErrorsSoon, isDuplicateMessage } from '../utils/formBehavior';
-import { getBalanceBadgeClass, getBalanceLabel, getBalanceRowClass, getBalanceState } from '../utils/adaptiveUi';
+import { getBalanceLabel, getBalanceState } from '../utils/adaptiveUi';
 import { PeopleDeleteConfirmContent, PeopleModalSummaryCard, PeopleZeroStateLanding } from '../components/people/PeopleUiKit';
 import PeopleDirectoryOverview from '../components/people/PeopleDirectoryOverview';
 import PeopleDirectoryToolbar from '../components/people/PeopleDirectoryToolbar';
 import { formatCurrencyText, readStoredCurrencyUnit } from '../utils/currency';
-import { SelectField, TextareaField, TextField } from '@/components/ui';
+import { ManagementDirectoryPagination, TextareaField, TextField } from '@/components/ui';
 import { formatIsoToShamsiDateTime } from '../utils/dateUtils';
 import CustomerRowActions from '../components/customers/CustomerRowActions';
 type CustomerTrustListItem = {
@@ -50,12 +50,12 @@ const getCustomerTrustTone = (score?: number | null) => {
   return 'rose';
 };
 
-const getCustomerTrustBadgeClass = (score?: number | null) => {
+const getCustomerTrustTextClass = (score?: number | null) => {
   const tone = getCustomerTrustTone(score);
-  if (tone === 'emerald') return 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-200';
-  if (tone === 'blue') return 'border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-200';
-  if (tone === 'amber') return 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200';
-  return 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/30 dark:text-rose-200';
+  if (tone === 'emerald') return 'text-emerald-700 dark:text-emerald-300';
+  if (tone === 'blue') return 'text-blue-700 dark:text-blue-300';
+  if (tone === 'amber') return 'text-amber-700 dark:text-amber-300';
+  return 'text-rose-700 dark:text-rose-300';
 };
 
 
@@ -63,11 +63,19 @@ const getCustomerTrustBadgeClass = (score?: number | null) => {
 const formatCurrency = (amount?: number, overdue = false) => {
   const state = getBalanceState(amount, { overdue });
   const n = Math.abs(Number(amount || 0)).toLocaleString('fa-IR');
+  const tone = state === 'overdue' || state === 'positive'
+    ? 'text-rose-700 dark:text-rose-300'
+    : state === 'negative'
+      ? 'text-emerald-700 dark:text-emerald-300'
+      : 'text-slate-700 dark:text-slate-300';
   return (
-    <span className={getBalanceBadgeClass(state)}>
-      <i className={`fa-solid ${state === 'overdue' ? 'fa-triangle-exclamation' : state === 'negative' ? 'fa-arrow-trend-down' : state === 'positive' ? 'fa-arrow-trend-up' : 'fa-circle-check'}`} />
-      {n} تومان · {getBalanceLabel(state, 'customer')}
-    </span>
+    <div className={`min-w-0 ${tone}`}>
+      <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5 font-black leading-5">
+        <i className={`fa-solid shrink-0 ${state === 'overdue' ? 'fa-triangle-exclamation' : state === 'negative' ? 'fa-arrow-trend-down' : state === 'positive' ? 'fa-arrow-trend-up' : 'fa-circle-check'}`} aria-hidden="true" />
+        <span className="tabular-nums">{n} تومان</span>
+      </div>
+      <div className="mt-0.5 text-[10px] font-bold leading-5">{getBalanceLabel(state, 'customer')}</div>
+    </div>
   );
 };
 
@@ -81,25 +89,16 @@ type CustomerDueBadge = {
   dueDate?: string | null;
   saleId?: number;
   openCount?: number;
-  countClassName?: string;
 };
 
-const getDueCountBadgeClassName = (openCount: number) => {
-  if (openCount >= 5) {
-    return 'bg-rose-600/90 text-white shadow-[0_6px_16px_-8px_rgba(225,29,72,0.95)] ring-1 ring-rose-500/30 dark:bg-rose-500/95 dark:text-rose-50 dark:ring-rose-400/30';
-  }
-  if (openCount >= 3) {
-    return 'bg-amber-500/90 text-amber-950 shadow-[0_6px_16px_-8px_rgba(245,158,11,0.9)] ring-1 ring-amber-400/30 dark:bg-amber-400/95 dark:text-amber-950 dark:ring-amber-300/30';
-  }
-  return 'bg-black/10 text-current ring-1 ring-black/5 dark:bg-white/10 dark:text-current dark:ring-white/10';
-};
+const CUSTOMER_DIRECTORY_ROW_CLASS = 'bg-white hover:bg-slate-50 dark:bg-slate-950 dark:hover:bg-slate-900';
 
-const getCustomerDueRowStateClass = (badge?: CustomerDueBadge | null): string => {
-  if (!badge) return '';
-  if (badge.label.includes('عقب')) return 'table-row-state--overdue';
-  if (badge.label.includes('امروز')) return 'table-row-state--due-today';
-  if (badge.label.includes('فردا') || badge.label.includes('روز')) return 'table-row-state--due-soon';
-  return '';
+const getCustomerDueRowRailClass = (badge?: CustomerDueBadge | null): string => {
+  if (!badge) return 'border-s-4 border-s-slate-300 dark:border-s-slate-700';
+  if (badge.label.includes('عقب')) return 'border-s-4 border-s-rose-500';
+  if (badge.label.includes('امروز')) return 'border-s-4 border-s-amber-400';
+  if (badge.label.includes('فردا') || badge.label.includes('روز')) return 'border-s-4 border-s-sky-500';
+  return 'border-s-4 border-s-slate-400';
 };
 
 type CustomerDueOverviewRow = {
@@ -119,12 +118,11 @@ const buildCustomerDueBadge = (overview?: CustomerDueOverviewRow | null): Custom
     return {
       label: 'تاریخ نامعتبر',
       icon: 'fa-calendar-xmark',
-      className: 'border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-700/60 dark:bg-slate-900/60 dark:text-slate-200',
+      className: 'text-slate-600 dark:text-slate-300',
       hint: 'سررسید ثبت‌شده معتبر نیست',
       dueDate: overview.nextDueDate,
       saleId: overview.saleId,
       openCount,
-      countClassName: getDueCountBadgeClassName(openCount),
     };
   }
 
@@ -135,48 +133,44 @@ const buildCustomerDueBadge = (overview?: CustomerDueOverviewRow | null): Custom
     return {
       label: 'عقب افتاده',
       icon: 'fa-triangle-exclamation',
-      className: 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/40 dark:bg-rose-950/25 dark:text-rose-200',
+      className: 'text-rose-700 dark:text-rose-300',
       hint: `${Math.abs(daysDiff).toLocaleString('fa-IR')} روز تأخیر`,
       dueDate: overview.nextDueDate,
       saleId: overview.saleId,
       openCount,
-      countClassName: getDueCountBadgeClassName(openCount),
     };
   }
   if (daysDiff === 0) {
     return {
       label: 'امروز',
       icon: 'fa-clock',
-      className: 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/40 dark:bg-amber-950/25 dark:text-amber-200',
+      className: 'text-amber-700 dark:text-amber-300',
       hint: 'سررسید برای امروز',
       dueDate: overview.nextDueDate,
       saleId: overview.saleId,
       openCount,
-      countClassName: getDueCountBadgeClassName(openCount),
     };
   }
   if (daysDiff === 1) {
     return {
       label: 'فردا',
       icon: 'fa-calendar-day',
-      className: 'border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900/40 dark:bg-sky-950/25 dark:text-sky-200',
+      className: 'text-sky-700 dark:text-sky-300',
       hint: 'یک روز تا سررسید',
       dueDate: overview.nextDueDate,
       saleId: overview.saleId,
       openCount,
-      countClassName: getDueCountBadgeClassName(openCount),
     };
   }
 
   return {
     label: `${daysDiff.toLocaleString('fa-IR')} روز دیگر`,
     icon: 'fa-calendar-week',
-    className: 'border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-900/40 dark:bg-violet-950/25 dark:text-violet-200',
+    className: 'text-violet-700 dark:text-violet-300',
     hint: 'سررسید باز آینده',
     dueDate: overview.nextDueDate,
     saleId: overview.saleId,
     openCount,
-    countClassName: getDueCountBadgeClassName(openCount),
   };
 };
 const normalizeTags = (raw: any): string[] => {
@@ -206,6 +200,11 @@ const normalizePhoneForValidation = (value: unknown) => {
   else if (phone.startsWith('98') && phone.length === 12) phone = `0${phone.slice(2)}`;
   return phone;
 };
+
+const normalizeNationalCodeForValidation = (value: unknown) => String(value ?? '')
+  .replace(/[۰-۹]/g, (digit) => '0123456789'['۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)] || digit)
+  .replace(/[٠-٩]/g, (digit) => '0123456789'['٠١٢٣٤٥٦٧٨٩'.indexOf(digit)] || digit)
+  .replace(/\D/g, '');
 
 const CustomersPage: React.FC = () => {
   const { token } = useAuth();
@@ -259,6 +258,7 @@ const CustomersPage: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newCustomer, setNewCustomer] = useState<NewCustomerData>({
     fullName: '',
+    nationalCode: '',
     phoneNumber: '',
     address: '',
     notes: '',
@@ -267,6 +267,8 @@ const CustomersPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [customerDueBadges, setCustomerDueBadges] = useState<Record<number, CustomerDueBadge | null>>({});
   const [customerTrustProfiles, setCustomerTrustProfiles] = useState<Record<number, CustomerTrustListItem>>({});
+  const directoryRequestIdRef = React.useRef(0);
+  const hasLoadedDirectoryRef = React.useRef(false);
 
   const availableTags = directorySummary?.availableTags || [];
   const stats = directorySummary || {
@@ -288,12 +290,6 @@ const CustomersPage: React.FC = () => {
   const totalPages = Math.max(1, directoryTotalPages);
   const pageStart = directoryTotal === 0 ? 0 : ((page - 1) * numericPageSize) + 1;
   const pageEnd = Math.min(page * numericPageSize, directoryTotal);
-  const visiblePages = React.useMemo(() => {
-    if (totalPages <= 5) return Array.from({ length: totalPages }, (_, index) => index + 1);
-    const startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
-    return Array.from({ length: 5 }, (_, index) => startPage + index);
-  }, [page, totalPages]);
-
   const fetchCustomerDueBadges = async (customerIds: number[]) => {
     if (!token || customerIds.length === 0) {
       setCustomerDueBadges({});
@@ -360,6 +356,7 @@ const CustomersPage: React.FC = () => {
 
   const fetchCustomers = async (background = false, includeSummary = false) => {
     if (!token) return;
+    const requestId = ++directoryRequestIdRef.current;
     if (background) setIsRefreshing(true);
     else setIsLoading(true);
     try {
@@ -367,22 +364,27 @@ const CustomersPage: React.FC = () => {
       const json = await res.json();
       const data = json?.data;
       if (!res.ok || !json?.success || !data || !Array.isArray(data.items)) throw new Error(json?.message || 'خطا در دریافت لیست مشتریان');
+      if (requestId !== directoryRequestIdRef.current) return;
       const items = data.items as Customer[];
       setCustomers(items);
       setDirectoryTotal(Math.max(0, Number(data.total || 0)));
       setDirectoryTotalPages(Math.max(1, Number(data.totalPages || 1)));
       if (data.summary) setDirectorySummary(data.summary);
       setLastSyncedAt(new Date().toISOString());
+      hasLoadedDirectoryRef.current = true;
       const ids = items.map((item) => Number(item.id)).filter((id) => id > 0);
       await Promise.allSettled([
         fetchCustomerDueBadges(ids),
         fetchCustomerTrustProfiles(ids),
       ]);
     } catch (e:any) {
+      if (requestId !== directoryRequestIdRef.current) return;
       setNotification({ type: 'error', text: humanizeErrorMessage(e.message, { endpoint: '/api/customers?view=directory', action: 'دریافت فهرست مشتریان' }) });
     } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
+      if (requestId === directoryRequestIdRef.current) {
+        setIsLoading(false);
+        setIsRefreshing(false);
+      }
     }
   };
 
@@ -428,7 +430,7 @@ const CustomersPage: React.FC = () => {
 
   useEffect(() => {
     if (!token) return;
-    void fetchCustomers(false, directorySummary == null);
+    void fetchCustomers(hasLoadedDirectoryRef.current, directorySummary == null);
   }, [token, page, pageSize, debouncedSearchTerm, tagFilter, balanceFilter, riskFilter, sortMode]);
 
   useEffect(() => {
@@ -448,6 +450,9 @@ const CustomersPage: React.FC = () => {
     if (!newCustomer.fullName.trim()) errors.fullName = 'نام کامل الزامی است.';
     if (newCustomer.phoneNumber && !/^\d{10,15}$/.test(normalizePhoneForValidation(newCustomer.phoneNumber))) {
       errors.phoneNumber = 'شماره تماس نامعتبر است (۱۰ تا ۱۵ رقم).';
+    }
+    if (newCustomer.nationalCode && normalizeNationalCodeForValidation(newCustomer.nationalCode).length !== 10) {
+      errors.nationalCode = 'کد ملی باید دقیقاً ۱۰ رقم باشد.';
     }
     setFormErrors(errors);
     focusErrorsSoon(errors as any);
@@ -481,7 +486,7 @@ const CustomersPage: React.FC = () => {
 
       setNotification({ type: 'success', text: 'مشتری با موفقیت اضافه شد و حالا در لیست مشتریان قابل مشاهده است.' });
       setIsAddModalOpen(false);
-      setNewCustomer({ fullName: '', phoneNumber: '', address: '', notes: '' });
+      setNewCustomer({ fullName: '', nationalCode: '', phoneNumber: '', address: '', notes: '' });
       void refreshCustomerDirectory(true);
     } catch (e:any) {
       setNotification({ type: 'error', text: humanizeErrorMessage(e.message, { endpoint: '/api/customers', action: 'افزودن مورد جدید مشتری' }) });
@@ -622,13 +627,13 @@ const CustomersPage: React.FC = () => {
 
   return (
     <PageKit
-      className="people-merged-page people-foundation customers-directory-page"
+      className="people-foundation"
       title="مشتریان"
       subtitle="مدیریت اطلاعات مشتریان، مانده حساب، اعتبار و تاریخچه تعاملات"
       icon={<i className="fa-solid fa-user-group" />}
       isLoading={isLoading}
     >
-      <div className="people-page-shell people-customers-shell customers-directory-page max-w-7xl mx-auto px-3 sm:px-4 text-right" dir="rtl" data-ui-people-page="customers" data-ui-people-scope="list">
+      <div className="mx-auto grid max-w-7xl min-w-0 gap-4 px-3 text-right sm:px-4" dir="rtl" data-ui-people-page="customers" data-ui-people-scope="list">
         <PeopleDirectoryOverview
           activeTab="customers"
           eyebrow="مرکز کنترل مشتریان"
@@ -778,9 +783,9 @@ const CustomersPage: React.FC = () => {
           } : null}
         />
 
-        <div className="customers-directory-v73" dir="rtl" data-ui-customers-directory="true">
+        <div className="min-w-0" dir="rtl" data-ui-customers-directory="true">
         {isLoading ? (
-          <div className="customers-directory-v73__loading">
+          <div className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
             {Array.from({ length: 8 }).map((_, index) => <Skeleton key={index} tone="info" className="h-12" rounded="lg" />)}
           </div>
         ) : stats.total === 0 ? (
@@ -802,80 +807,87 @@ const CustomersPage: React.FC = () => {
             onSecondaryAction={() => setIsAddModalOpen(true)}
           />
         ) : (
-          <section className="customers-directory-v73__list" id="customers-print-area">
-            <header>
-              <div>
-                <h3>فهرست مشتریان</h3>
-                <p>نمایش {pageStart.toLocaleString('fa-IR')} تا {pageEnd.toLocaleString('fa-IR')} از {directoryTotal.toLocaleString('fa-IR')} مشتری</p>
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950" id="customers-print-area">
+            <header className="flex flex-col gap-2 border-b border-slate-200 px-3 py-2.5 lg:flex-row lg:items-center lg:justify-between dark:border-slate-800">
+              <div className="min-w-0">
+                <h3 className="text-sm font-black text-slate-950 dark:text-slate-50">فهرست مشتریان</h3>
+                <p className="mt-0.5 text-xs font-semibold text-slate-500 dark:text-slate-400">نمایش {pageStart.toLocaleString('fa-IR')} تا {pageEnd.toLocaleString('fa-IR')} از {directoryTotal.toLocaleString('fa-IR')} مشتری</p>
               </div>
-              <span><i className="fa-solid fa-circle-info" /> مانده حساب و تعهدات از پرونده‌های ثبت‌شده محاسبه می‌شوند.</span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400"><i className="fa-solid fa-circle-info text-sky-600" aria-hidden="true" /> مانده حساب و تعهدات از پرونده‌های ثبت‌شده محاسبه می‌شوند.</span>
             </header>
 
-            <DataTableShell className="customers-directory-v73__table-wrap" data-ui-customer-table-shell="true" data-ui-customer-table="true">
-              <table className="customers-directory-v73__table" data-ui-customer-table="semantic">
-                <thead>
-                  <tr>
-                    <th scope="col">مشتری و ارتباط</th>
-                    <th scope="col">حساب و تعهدات</th>
-                    <th scope="col">اعتبار و فعالیت</th>
-                    <th scope="col" className="customers-directory-v73__operations-heading">عملیات</th>
+            <div className="w-full overflow-x-auto overscroll-x-contain" role="region" aria-label="جدول فهرست مشتریان" tabIndex={0}>
+              <table className="w-full min-w-[62rem] table-fixed border-collapse text-xs" dir="rtl" data-ui-table="true" data-ui-bidi-scope="rtl-table" data-ui-table-layout="managed" data-ui-table-density="compact">
+                <caption className="sr-only">فهرست مشتریان، وضعیت حساب، تعهدات، اعتبار و عملیات پرونده</caption>
+                <colgroup>
+                  <col className="w-[33%]" />
+                  <col className="w-[28%]" />
+                  <col className="w-[25%]" />
+                  <col className="w-[14%]" />
+                </colgroup>
+                <thead className="bg-slate-50 text-slate-600 dark:bg-slate-900/70 dark:text-slate-300">
+                  <tr className="border-b border-slate-200 text-right dark:border-slate-800">
+                    <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">مشتری و ارتباط</th>
+                    <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">حساب و تعهدات</th>
+                    <th scope="col" className="bg-slate-50 px-3 py-2 text-right font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">اعتبار و فعالیت</th>
+                    <th scope="col" className="sticky end-0 z-20 bg-slate-50 px-2 py-2 text-center font-black tracking-normal before:hidden after:hidden dark:bg-slate-900">عملیات</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                   {pagedCustomers.map((customer) => {
                     const due = customerDueBadges[customer.id];
                     const trust = customerTrustProfiles[customer.id];
                     const balance = Number(customer.currentBalance || 0);
                     return (
-                      <tr key={customer.id} className={`${getCustomerDueRowStateClass(due)} ${getBalanceRowClass(getBalanceState(balance, { overdue: Boolean(due?.label?.includes('عقب')) }))}`.trim()}>
-                        <td className="customers-directory-v73__customer-cell">
-                          <div className="customers-directory-v73__customer-profile">
-                            <div className="customers-directory-v73__identity">
-                              <span className="customers-directory-v73__avatar" data-tone={['blue', 'violet', 'emerald', 'amber'][Number(customer.id || 0) % 4]}>{(customer.fullName || '?').trim().charAt(0)}</span>
-                              <div>
-                                <strong>{customer.fullName}</strong>
-                                <small>پرونده #{customer.id.toLocaleString('fa-IR')} • {normalizeTags(customer.tags).slice(0, 2).join('، ') || 'بدون تگ'}</small>
+                      <tr key={customer.id} className={CUSTOMER_DIRECTORY_ROW_CLASS}>
+                        <td className={`px-3 py-2.5 align-top ${getCustomerDueRowRailClass(due)}`}>
+                          <div className="min-w-0 space-y-2">
+                            <div className="flex min-w-0 items-start gap-2.5">
+                              <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-sm font-black text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">{(customer.fullName || '?').trim().charAt(0)}</span>
+                              <div className="min-w-0">
+                                <strong className="allow-truncate block truncate text-sm font-black text-slate-950 dark:text-slate-50">{customer.fullName}</strong>
+                                <small className="allow-truncate mt-0.5 block truncate text-xs font-semibold text-slate-500 dark:text-slate-400">پرونده #{customer.id.toLocaleString('fa-IR')} · {normalizeTags(customer.tags).slice(0, 2).join('، ') || 'بدون برچسب'}</small>
                               </div>
                             </div>
-                            <div className="customers-directory-v73__contact">
-                              <strong dir="ltr"><i className="fa-solid fa-phone customers-directory-v73__inline-icon is-blue" /> {customer.phoneNumber || 'ثبت نشده'}</strong>
-                              <small><i className="fa-solid fa-location-dot customers-directory-v73__inline-icon is-cyan" /> {customer.address || 'بدون آدرس'}</small>
+                            <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 ps-11 text-[10px] font-semibold leading-5 text-slate-500 dark:text-slate-400">
+                              <span className="inline-flex items-center gap-1.5"><i className="fa-solid fa-phone shrink-0 text-sky-600" aria-hidden="true" /><bdi dir="ltr">{customer.phoneNumber || 'ثبت نشده'}</bdi></span>
+                              <span className="inline-flex min-w-0 items-start gap-1.5"><i className="fa-solid fa-location-dot mt-0.5 shrink-0 text-cyan-600" aria-hidden="true" /><span className="allow-line-clamp line-clamp-1">{customer.address || 'بدون آدرس'}</span></span>
                             </div>
                           </div>
                         </td>
-                        <td className="customers-directory-v73__account-cell">
-                          <div className="customers-directory-v73__account-stack">
+                        <td className="px-3 py-2.5 align-top">
+                          <div className="space-y-2">
                             {formatCurrency(balance, Boolean(due?.label?.includes('عقب')))}
                             {due ? (
                               due.saleId ? (
-                                <Link to={`/installment-sales/${due.saleId}?pay=next`} className={`customers-directory-v73__due ${due.className}`} title={due.hint}>
-                                  <i className={`fa-solid ${due.icon}`} /> {due.label}
-                                  {Number(due.openCount || 0) > 1 ? <b>{Number(due.openCount || 0).toLocaleString('fa-IR')}</b> : null}
+                                <Link to={`/installment-sales/${due.saleId}?pay=next`} className={`inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[10px] font-black leading-5 underline-offset-4 hover:underline ${due.className}`} title={due.hint}>
+                                  <i className={`fa-solid shrink-0 ${due.icon}`} aria-hidden="true" /> <span>{due.label}</span>
+                                  {Number(due.openCount || 0) > 1 ? <span>· {Number(due.openCount || 0).toLocaleString('fa-IR')} تعهد باز</span> : null}
                                 </Link>
-                              ) : <span className={`customers-directory-v73__due ${due.className}`}><i className={`fa-solid ${due.icon}`} /> {due.label}</span>
-                            ) : <span className="customers-directory-v73__muted-chip"><i className="fa-solid fa-circle-check" /> بدون سررسید باز</span>}
+                              ) : <span className={`inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[10px] font-black leading-5 ${due.className}`}><i className={`fa-solid shrink-0 ${due.icon}`} aria-hidden="true" /> {due.label}</span>
+                            ) : <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400"><i className="fa-solid fa-circle-check text-emerald-600" aria-hidden="true" /> بدون سررسید باز</span>}
                           </div>
                         </td>
-                        <td className="customers-directory-v73__insight-cell">
-                          <div className="customers-directory-v73__insight-stack">
-                            <div className="customers-directory-v73__status-stack">
+                        <td className="px-3 py-2.5 align-top">
+                          <div className="min-w-0 space-y-1.5">
+                            <div>
                               {trust ? (
-                                <span className={`customers-directory-v73__trust ${getCustomerTrustBadgeClass(trust.score)}`}>
+                                <span className={`inline-flex items-center gap-1.5 font-black ${getCustomerTrustTextClass(trust.score)}`}>
                                   <i className={Number(trust.score || 0) >= 68 ? 'fa-solid fa-user-check' : Number(trust.score || 0) >= 50 ? 'fa-solid fa-user-clock' : 'fa-solid fa-triangle-exclamation'} />
-                                  {Number(trust.score || 0).toLocaleString('fa-IR')} / ۱۰۰
+                                  اعتبار {Number(trust.score || 0).toLocaleString('fa-IR')} از ۱۰۰
                                 </span>
-                              ) : <span className="customers-directory-v73__muted-chip"><i className="fa-solid fa-circle-question" /> نامشخص</span>}
+                              ) : <span className="inline-flex items-center gap-1.5 font-bold text-slate-500"><i className="fa-solid fa-circle-question" /> اعتبار نامشخص</span>}
                             </div>
-                            <div className="customers-directory-v73__activity">
-                              <strong><i className="fa-regular fa-clock customers-directory-v73__inline-icon is-slate" /> {customer.lastActivityAt ? formatIsoToShamsiDateTime(customer.lastActivityAt) : '—'}</strong>
-                              <small>
-                                <span className="customers-directory-v73__activity-token is-violet"><i className="fa-solid fa-bag-shopping" /> {Number(customer.salesOrderCount || 0).toLocaleString('fa-IR')} فروش</span>
-                                <span className="customers-directory-v73__activity-token is-rose"><i className="fa-solid fa-bell" /> {Number(customer.openFollowupCount || 0).toLocaleString('fa-IR')} پیگیری</span>
+                            <div className="min-w-0 space-y-1 text-[10px] text-slate-600 dark:text-slate-300">
+                              <strong className="flex flex-wrap items-center gap-1.5 font-bold leading-5"><i className="fa-regular fa-clock shrink-0 text-slate-400" /> {customer.lastActivityAt ? formatIsoToShamsiDateTime(customer.lastActivityAt) : 'بدون فعالیت'}</strong>
+                              <small className="flex flex-wrap gap-x-3 gap-y-1 font-semibold text-slate-500 dark:text-slate-400">
+                                <span><i className="fa-solid fa-bag-shopping me-1 text-violet-600" />{Number(customer.salesOrderCount || 0).toLocaleString('fa-IR')} فروش</span>
+                                <span><i className="fa-solid fa-bell me-1 text-rose-600" />{Number(customer.openFollowupCount || 0).toLocaleString('fa-IR')} پیگیری</span>
                               </small>
                             </div>
                           </div>
                         </td>
-                        <td className="customers-directory-v73__operations-cell">
+                        <td className="sticky end-0 z-10 bg-inherit px-2 py-2.5 text-center align-middle">
                           <CustomerRowActions
                             customerId={customer.id}
                             customerName={customer.fullName}
@@ -888,30 +900,21 @@ const CustomersPage: React.FC = () => {
                   })}
                 </tbody>
               </table>
-            </DataTableShell>
+            </div>
 
-            <footer className="customers-directory-v73__pagination">
-              <div className="customers-directory-v73__pagination-size">
-                <span>تعداد در هر صفحه</span>
-                <SelectField
-                  value={pageSize}
-                  onValueChange={setPageSize}
-                  ariaLabel="تعداد مشتری در هر صفحه"
-                  size="sm"
-                  options={[
-                    { value: '10', label: '۱۰' },
-                    { value: '25', label: '۲۵' },
-                    { value: '50', label: '۵۰' },
-                  ]}
-                />
-              </div>
-              <nav aria-label="صفحه‌بندی مشتریان">
-                <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={page <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))} aria-label="صفحه قبل" leftIcon={<i className="fa-solid fa-chevron-right" />} />
-                {visiblePages.map((item) => <Button key={item} type="button" variant={item === page ? 'primary' : 'secondary'} size="icon" autoIcon={false} data-active={item === page} onClick={() => setPage(item)}>{item.toLocaleString('fa-IR')}</Button>)}
-                <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={page >= totalPages} onClick={() => setPage((current) => Math.min(totalPages, current + 1))} aria-label="صفحه بعد" leftIcon={<i className="fa-solid fa-chevron-left" />} />
-              </nav>
-              <span>نمایش {pageStart.toLocaleString('fa-IR')} تا {pageEnd.toLocaleString('fa-IR')} از {directoryTotal.toLocaleString('fa-IR')}</span>
-            </footer>
+            <ManagementDirectoryPagination
+              page={page}
+              totalPages={totalPages}
+              pageSize={numericPageSize}
+              pageSizeOptions={[10, 25, 50]}
+              total={directoryTotal}
+              pageStart={pageStart}
+              pageEnd={pageEnd}
+              ariaLabel="صفحه‌بندی مشتریان"
+              pageSizeAriaLabel="تعداد مشتری در هر صفحه"
+              onPageChange={setPage}
+              onPageSizeChange={(value) => { setPage(1); setPageSize(String(value) as typeof pageSize); }}
+            />
           </section>
         )}
         </div>
@@ -937,7 +940,7 @@ const CustomersPage: React.FC = () => {
           ariaDescription="ثبت پرونده پایه مشتری برای استفاده در فروش، اقساط، تعمیرات و پیام‌رسانی"
         >
           <form onSubmit={handleAddCustomerSubmit} className="modal-template-form modal-template-form--split modal-template-form--customer" data-ui-customer-modal="canonical-split">
-            <FormErrorSummary errors={formErrors as any} labels={{ fullName: 'نام کامل', phoneNumber: 'شماره تماس' }} fieldIdMap={{ fullName: 'fullName', phoneNumber: 'phoneNumber' }} />
+            <FormErrorSummary errors={formErrors as any} labels={{ fullName: 'نام کامل', nationalCode: 'کد ملی', phoneNumber: 'شماره تماس' }} fieldIdMap={{ fullName: 'fullName', nationalCode: 'nationalCode', phoneNumber: 'phoneNumber' }} />
             <aside className="modal-template-side">
               <PeopleModalSummaryCard
                 eyebrow="پرونده مشتری جدید"
@@ -946,7 +949,7 @@ const CustomersPage: React.FC = () => {
                 icon="fa-address-card"
                 metrics={[
                   { icon: 'fa-phone', label: 'شماره تماس', value: <span dir="ltr">{newCustomer.phoneNumber || 'ثبت نشده'}</span>, hint: newCustomer.phoneNumber ? 'برای تماس و پیام‌رسانی' : 'اختیاری؛ بعداً قابل تکمیل' },
-                  { icon: 'fa-location-dot', label: 'وضعیت آدرس', value: newCustomer.address?.trim() ? 'ثبت شده' : 'ثبت نشده', hint: newCustomer.address?.trim() ? 'برای فاکتور و تحویل آماده است' : 'در صورت نیاز بعداً تکمیل شود' },
+                  { icon: 'fa-id-card', label: 'آمادگی قرارداد', value: newCustomer.nationalCode?.trim() && newCustomer.address?.trim() ? 'آماده' : 'نیاز به تکمیل', hint: 'کد ملی ۱۰ رقمی و آدرس برای چاپ قرارداد لازم است' },
                 ]}
               />
             </aside>
@@ -960,9 +963,17 @@ const CustomersPage: React.FC = () => {
                   <TextField type="tel" id="phoneNumber" name="phoneNumber" value={newCustomer.phoneNumber}
                          onChange={handleInputChange} className={inputClass('phoneNumber')} inputMode="tel" maxLength={18} placeholder="مثال: 09123456789" />
                 </ModalField>
+                <ModalField label="کد ملی" iconClass="fa-solid fa-id-card" error={formErrors.nationalCode}>
+                  <TextField type="text" id="nationalCode" name="nationalCode" value={newCustomer.nationalCode}
+                         onChange={(event) => {
+                           const nationalCode = normalizeNationalCodeForValidation(event.currentTarget.value);
+                           setNewCustomer((prev) => ({ ...prev, nationalCode }));
+                           if (formErrors.nationalCode) setFormErrors((prev) => ({ ...prev, nationalCode: undefined }));
+                         }} className={inputClass('nationalCode')} inputMode="numeric" dir="ltr" maxLength={10} placeholder="0012345678" autoComplete="off" />
+                </ModalField>
               </div>
               <div className="modal-template-section modal-template-section--stack">
-                <ModalField label="آدرس" iconClass="fa-solid fa-location-dot">
+                <ModalField label="آدرس محل سکونت / قرارداد" iconClass="fa-solid fa-location-dot">
                   <TextareaField controlOnly id="address" name="address" rows={2} value={newCustomer.address}
                               onChange={handleInputChange} className={inputClass('address', true)} maxLength={700} placeholder="آدرس ثبت‌شده مشتری" />
                 </ModalField>

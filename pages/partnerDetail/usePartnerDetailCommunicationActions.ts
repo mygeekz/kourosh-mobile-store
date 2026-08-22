@@ -78,7 +78,7 @@ export function usePartnerDetailCommunicationActions({
 
   const openPartnerPayment = () => openLedgerModal();
   const scrollToLedger = () => document.getElementById('partner-ledger-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  const scrollToHistory = () => document.getElementById('partner-history-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToHistory = () => document.getElementById('partner-purchase-history-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const printProfile = () => window.print();
 
   const buildPartnerTelegramVars = () => {

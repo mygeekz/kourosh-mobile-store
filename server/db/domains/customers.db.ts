@@ -28,6 +28,7 @@ import {
 
 interface CustomerPayload {
   fullName: string;
+  nationalCode?: string | null;
   phoneNumber?: string | null;
   address?: string | null;
   notes?: string | null;
@@ -233,4 +234,3 @@ export const listDebtSnapshotsFromDb = async (
     [fromDate, toDate],
   );
 };
-

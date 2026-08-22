@@ -9,7 +9,7 @@ import {
   setTelegramProxy,
   callTelegramBotApi,
 } from "../telegramService";
-import { createTelegramMenuButtonEnsurer } from "./telegramMiniApp";
+import { syncTelegramMenuButton } from "../services/telegramMenuSync.service";
 
 export const buildContactKeyboard = () => ({
   keyboard: [
@@ -137,17 +137,20 @@ export const telegramLog = (...args: any[]) => {
   } catch {}
 };
 
-const menuButtonEnsurer = createTelegramMenuButtonEnsurer(callTelegramBotApi);
-
 export const resetTelegramMenuEnsureCacheForTests = () => {
-  menuButtonEnsurer.reset();
+  // v163 menu reconciliation no longer keeps an in-memory success fingerprint.
+  // Telegram state is read back on each reconciliation instead.
 };
 
 export const ensureTelegramMenuButton = async (
   botToken: string,
   settings: Record<string, any>,
+  chatId?: string | number | null,
 ) => {
-  return menuButtonEnsurer.ensure(botToken, settings);
+  const effectiveSettings = String((settings as any).telegram_bot_token || "").trim()
+    ? settings
+    : { ...settings, telegram_bot_token: botToken };
+  return syncTelegramMenuButton(effectiveSettings, { chatId });
 };
 
 export const resetTelegramCommandMenu = async (botToken: string) => {
@@ -184,13 +187,13 @@ export const resetTelegramCommandMenu = async (botToken: string) => {
   );
 };
 
-export const ensureTelegramPersistentMenu = async () => {
+export const ensureTelegramPersistentMenu = async (chatId?: string | number | null) => {
   const settings = await getAllSettingsAsObject().catch(() => ({}) as any);
   setTelegramProxy((settings as any).telegram_proxy);
   const botToken = String((settings as any).telegram_bot_token || "").trim();
   if (!botToken) return;
   try {
-    await ensureTelegramMenuButton(botToken, settings);
+    await ensureTelegramMenuButton(botToken, settings, chatId);
   } catch (e: any) {
     try {
       console.error("Telegram persistent menu setup failed:", e?.message || e);

@@ -13,16 +13,15 @@ const includesAll = (source, needles, label) => {
 };
 
 includesAll(listSource, [
-  'data-ui-installment-directory="true"',
   'مرکز کنترل اقساط',
   'نمای کلی فروش اقساطی',
   'فهرست فروش اقساطی',
-  'PanelCard',
-  'installment-sales-responsive',
-  'data-ui-installment-view="table"',
-  'data-ui-installment-view="cards"',
+  'ManagementKpiGrid',
+  'ManagementFilterSurface',
   'ariaLabel="فیلتر وضعیت قرارداد"',
   'ariaLabel="جستجوی فروش اقساطی"',
+  'unstyled-table',
+  'role="region"',
   'aria-label="نمای فروش اقساطی"',
 ], 'InstallmentSalesPage');
 
@@ -31,6 +30,10 @@ assert.ok(!listSource.includes('FilterChipsBar'), 'InstallmentSalesPage list fil
 assert.ok(!listSource.includes('headerLayout="inline"'), 'InstallmentSalesPage must use the standard PageKit header and keep search inside the directory filter surface.');
 assert.ok(!listSource.includes('toolbarRight={'), 'InstallmentSalesPage toolbar actions must stay out of the PageKit header to keep the header compact.');
 assert.ok(!listSource.includes('secondaryRow={'), 'InstallmentSalesPage status filters must stay out of the PageKit header to prevent tall/empty header layouts.');
+assert.ok(!listSource.includes('installment-sales-responsive'), 'InstallmentSalesPage must not restore feature-owned responsive CSS or container queries.');
+assert.ok(!listSource.includes('data-ui-installment-view="cards"'), 'InstallmentSalesPage comparative data must stay a semantic table with local overflow instead of auto-cardifying.');
+assert.ok(!listSource.includes('DataTableShell'), 'InstallmentSalesPage table must stay outside the legacy ux-table-shell cascade.');
+assert.ok(!listSource.includes('data-ui-installment'), 'InstallmentSalesPage must not expose feature-owned CSS hooks.');
 
 includesAll(detailSource, [
   'title="تسویه کامل"',
@@ -81,4 +84,4 @@ for (const legacyCopy of ['NEXT INSTALLMENT', 'INSTALLMENT PAYMENT', 'Payments l
   assert.ok(!detailSource.includes(legacyCopy), `Installment detail must keep visible operational copy Persian-only; found ${legacyCopy}`);
 }
 
-console.log('Installment sales UI contract audit passed: customer-grade directory hierarchy, unified search/status surface, responsive list/cards, canonical detail surfaces/tabs, horizontal modal primitives, and sidebar-safe settlement feedback.');
+console.log('Installment sales UI contract audit passed: customer-grade directory hierarchy, shared directory toolbar, semantic locally scrollable table, canonical detail surfaces/tabs, horizontal modal primitives, and sidebar-safe settlement feedback.');

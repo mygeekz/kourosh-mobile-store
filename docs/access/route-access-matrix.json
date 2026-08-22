@@ -38,6 +38,18 @@
     "notes": "Nested below /print and ProtectedRoute."
   },
   {
+    "routeKey": "print:installment-contract",
+    "manifestPath": "installment-contract/:id",
+    "effectivePath": "/print/installment-contract/:id",
+    "section": "print",
+    "access": "authenticated",
+    "allowedRoles": [],
+    "featureFlags": [
+      "installments"
+    ],
+    "notes": "Nested below /print and ProtectedRoute; installment API enforces Admin/Manager/Salesperson."
+  },
+  {
     "routeKey": "main:dashboard",
     "manifestPath": "/",
     "effectivePath": "/",

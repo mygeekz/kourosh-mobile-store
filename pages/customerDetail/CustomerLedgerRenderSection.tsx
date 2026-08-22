@@ -119,40 +119,36 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
 
   return (
     <section
-      className="customer-ledger-section-shell"
+      className="min-w-0"
       data-ui-customer-ledger-root="standalone"
       aria-label="دفتر حساب مشتری"
     >
 {/* دفتر حساب */}
       <div id="customer-ledger-section" data-ui-people-anchor="ledger" />
       <div
-        className="customer-ledger-surface overflow-hidden border border-slate-200 bg-white text-gray-900 dark:border-slate-800 dark:bg-slate-950 dark:text-gray-100"
-        data-ui-customer-ledger-surface="solid"
+        className="overflow-hidden rounded-2xl border border-slate-200 bg-white text-gray-900 dark:border-slate-800 dark:bg-slate-950 dark:text-gray-100"
       >
-        <div
-          className="customer-ledger-panel"
-          data-ui-customer-ledger-panel="scoped"
-        >
-          <div className="customer-ledger-stack">
-          <div className="customer-ledger-header-card flex flex-col gap-4 border-b border-slate-200 pb-6 dark:border-slate-800 xl:flex-row xl:items-start xl:justify-between">
-            <div className="flex items-start gap-4">
-              <IconGlyph tone="neutral" className="h-14 w-14" aria-hidden="true"><i className="fa-solid fa-book-open text-lg" /></IconGlyph>
+        <div className="p-3 sm:p-4">
+          <div className="grid gap-3">
+          <div className="flex flex-col gap-3 border-b border-slate-200 pb-3 dark:border-slate-800 xl:flex-row xl:items-start xl:justify-between">
+            <div className="flex items-start gap-3">
+              <IconGlyph tone="neutral" className="h-8 w-8" aria-hidden="true"><i className="fa-solid fa-book-open text-sm" /></IconGlyph>
               <div>
-                <h2 className="text-2xl font-black text-slate-900 dark:text-slate-50">دفتر حساب مشتری</h2>
-                <p className="mt-1 text-sm leading-7 text-slate-500 dark:text-slate-400">
+                <h2 className="text-base font-black text-slate-900 dark:text-slate-50 sm:text-lg">دفتر حساب مشتری</h2>
+                <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
                   وضعیت مالی، گردش‌ها و عملیات این مشتری را اینجا مدیریت کنید.
                 </p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 xl:justify-end">
+            <div className="flex flex-wrap items-center gap-2 xl:justify-end">
               <details className="group relative">
-                <summary className="flex cursor-pointer list-none items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600 [&::-webkit-details-marker]:hidden">
+                <summary className="flex h-10 cursor-pointer list-none items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 [&::-webkit-details-marker]:hidden">
                   <i className="fa-solid fa-arrow-up-from-bracket text-slate-500" />
                   خروجی
-                  <i className="fa-solid fa-chevron-down text-[11px] text-slate-400 transition group-open:rotate-180" />
+                  <i className="fa-solid fa-chevron-down text-xs text-slate-400 transition group-open:rotate-180" />
                 </summary>
-                <div className="absolute left-0 top-full z-20 mt-2 w-56 rounded-2xl border border-slate-200 bg-white p-2 shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+                <div className="absolute end-0 top-full z-20 mt-2 w-56 rounded-xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
                   <button
                     type="button"
                     onClick={printProfile}
@@ -175,7 +171,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
               <Button
                 onClick={openLedgerModal}
                 variant="success"
-                className="!h-14 !rounded-2xl !px-5 !text-sm people-action-btn people-action-btn-primary"
+                size="sm"
                 leftIcon={<i className="fas fa-plus" />}
               >
                 ثبت تراکنش جدید
@@ -183,68 +179,68 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
             </div>
           </div>
 
-          <div className="customer-ledger-summary-grid grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <div className={`customer-ledger-summary-card rounded-2xl border p-3.5 shadow-sm ${balanceToneClass}`}>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+            <div className={`rounded-xl border p-3 shadow-sm ${balanceToneClass}`}>
               <div className="flex items-start justify-between gap-2.5">
                 <div>
-                  <div className="text-[12px] font-bold">مانده حساب</div>
-                  <div className="mt-2 text-[18px] font-black text-slate-900 dark:text-white">{balanceValueText}</div>
-                  <div className="mt-0.5 text-[12px] font-extrabold">{balanceDirectionLabel}</div>
+                  <div className="text-xs font-bold">مانده حساب</div>
+                  <div className="mt-1.5 text-base font-black text-slate-900 dark:text-white">{balanceValueText}</div>
+                  <div className="mt-0.5 text-xs font-extrabold">{balanceDirectionLabel}</div>
                 </div>
-                <IconGlyph tone="neutral" className="h-9 w-9 text-[14px]" aria-hidden="true"><i className="fa-solid fa-wallet" /></IconGlyph>
+                <IconGlyph tone="neutral" className="h-8 w-8 text-sm" aria-hidden="true"><i className="fa-solid fa-wallet" /></IconGlyph>
               </div>
             </div>
 
-            <div className="customer-ledger-summary-card rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-start justify-between gap-2.5">
                 <div>
-                  <div className="text-[12px] font-bold text-slate-600 dark:text-slate-300">تعداد تراکنش‌ها</div>
-                  <div className="mt-2 text-[18px] font-black text-slate-900 dark:text-white">{Number(ledgerDirectorySummary?.total ?? safeLedgerTotal).toLocaleString('fa-IR')}</div>
+                  <div className="text-xs font-bold text-slate-600 dark:text-slate-300">تعداد تراکنش‌ها</div>
+                  <div className="mt-1.5 text-base font-black text-slate-900 dark:text-white">{Number(ledgerDirectorySummary?.total ?? safeLedgerTotal).toLocaleString('fa-IR')}</div>
                 </div>
-                <IconGlyph tone="info" className="h-9 w-9 text-[14px]" aria-hidden="true"><i className="fa-solid fa-list-ul" /></IconGlyph>
+                <IconGlyph tone="info" className="h-8 w-8 text-sm" aria-hidden="true"><i className="fa-solid fa-list-ul" /></IconGlyph>
               </div>
             </div>
 
-            <div className="customer-ledger-summary-card rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-start justify-between gap-2.5">
                 <div>
-                  <div className="text-[12px] font-bold text-slate-600 dark:text-slate-300">آخرین تراکنش</div>
-                  <div className="mt-2 text-[18px] font-black text-slate-900 dark:text-white">
+                  <div className="text-xs font-bold text-slate-600 dark:text-slate-300">آخرین تراکنش</div>
+                  <div className="mt-1.5 text-base font-black text-slate-900 dark:text-white">
                     {latestLedgerEntry ? formatKnownShamsiDate(latestLedgerEntry.transactionDate, 'ثبت نشده') : 'ثبت نشده'}
                   </div>
                 </div>
-                <IconGlyph tone="success" className="h-9 w-9 text-[14px]" aria-hidden="true"><i className="fa-solid fa-calendar-check" /></IconGlyph>
+                <IconGlyph tone="success" className="h-8 w-8 text-sm" aria-hidden="true"><i className="fa-solid fa-calendar-check" /></IconGlyph>
               </div>
             </div>
 
-            <div className="customer-ledger-summary-card rounded-2xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-start justify-between gap-2.5">
                 <div>
-                  <div className="text-[12px] font-bold text-slate-600 dark:text-slate-300">آخرین پرداخت</div>
-                  <div className="mt-2 text-[18px] font-black text-slate-900 dark:text-white">
+                  <div className="text-xs font-bold text-slate-600 dark:text-slate-300">آخرین پرداخت</div>
+                  <div className="mt-1.5 text-base font-black text-slate-900 dark:text-white">
                     {ledgerInsights?.lastPaymentDate ? formatKnownShamsiDate(ledgerInsights.lastPaymentDate, 'ثبت نشده') : 'ثبت نشده'}
                   </div>
                 </div>
-                <IconGlyph tone="accent" className="h-9 w-9 text-[14px]" aria-hidden="true"><i className="fa-solid fa-credit-card" /></IconGlyph>
+                <IconGlyph tone="accent" className="h-8 w-8 text-sm" aria-hidden="true"><i className="fa-solid fa-credit-card" /></IconGlyph>
               </div>
             </div>
           </div>
 
-          <div className="rounded-[26px] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+          <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
               <div className="flex min-w-0 items-start gap-3">
                 <IconGlyph
                   tone={!reconciliationAvailable ? 'danger' : reconciliationHealthy ? 'success' : 'warning'}
-                  className="h-11 w-11 shrink-0 text-[15px]"
+                  className="h-8 w-8 shrink-0 text-sm"
                   aria-hidden="true"
                 >
                   <i className={reconciliationHealthy ? 'fa-solid fa-link' : 'fa-solid fa-link-slash'} />
                 </IconGlyph>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-[15px] font-black text-slate-900 dark:text-slate-50">تطبیق دفتر حساب اقساط</h3>
+                    <h3 className="text-sm font-black text-slate-900 dark:text-slate-50">تطبیق دفتر حساب اقساط</h3>
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-black ${
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-black ${
                         !reconciliationAvailable
                           ? 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/40 dark:bg-rose-950 dark:text-rose-200'
                           : reconciliationHealthy
@@ -256,13 +252,13 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                       {!reconciliationAvailable ? 'بررسی انجام نشد' : reconciliationHealthy ? 'تطبیق کامل' : 'نیازمند بررسی'}
                     </span>
                   </div>
-                  <p className="mt-1 text-[12px] leading-6 text-slate-500 dark:text-slate-400">
+                  <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
                     {reconciliationAvailable
                       ? 'هر بدهی فروش اقساطی و هر پرداخت ثبت‌شده با شناسه دقیق سند و رکورد متناظر دفتر مشتری کنترل می‌شود.'
                       : 'وضعیت تطبیق دریافت نشد؛ با بررسی دوباره می‌توانید اتصال اسناد و دفتر مشتری را مجدداً کنترل کنید.'}
                   </p>
                   {reconciliationRepairCount > 0 ? (
-                    <p className="mt-1 text-[11px] font-bold text-sky-700 dark:text-sky-300">
+                    <p className="mt-1 text-xs font-bold text-sky-700 dark:text-sky-300">
                       در آخرین بررسی، {reconciliationRepairCount.toLocaleString('fa-IR')} مورد قدیمی به‌صورت خودکار همگام شد.
                     </p>
                   ) : null}
@@ -280,7 +276,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
               </Button>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-5">
+            <div className="mt-3 grid grid-cols-2 gap-2 lg:grid-cols-5">
               {[
                 { label: 'فروش اقساطی', value: reconciliationSummary?.installmentSales ?? 0 },
                 { label: 'بدهی متصل', value: reconciliationSummary?.linkedCharges ?? 0 },
@@ -288,27 +284,27 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                 { label: 'پرداخت متصل', value: reconciliationSummary?.linkedReceipts ?? 0 },
                 { label: 'مورد نیازمند بررسی', value: reconciliationSummary?.issues ?? 0 },
               ].map((item) => (
-                <div key={item.label} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-950">
-                  <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400">{item.label}</div>
-                  <div className="mt-1 text-[15px] font-black text-slate-900 dark:text-slate-50">{Number(item.value).toLocaleString('fa-IR')}</div>
+                <div key={item.label} className="rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2 dark:border-slate-800 dark:bg-slate-950">
+                  <div className="text-xs font-bold text-slate-500 dark:text-slate-400">{item.label}</div>
+                  <div className="mt-1 text-sm font-black text-slate-900 dark:text-slate-50">{Number(item.value).toLocaleString('fa-IR')}</div>
                 </div>
               ))}
             </div>
 
             {(ledgerReconciliation?.sales?.length || ledgerReconciliation?.payments?.length) ? (
               <details className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-950">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[12px] font-black text-slate-700 dark:text-slate-200 [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-xs font-black text-slate-700 dark:text-slate-200 [&::-webkit-details-marker]:hidden">
                   <span className="inline-flex items-center gap-2">
                     <i className="fa-solid fa-diagram-project text-slate-500" />
                     مشاهده اتصال اسناد و رکوردهای دفتر
                   </span>
-                  <i className="fa-solid fa-chevron-down text-[10px] text-slate-400" />
+                  <i className="fa-solid fa-chevron-down text-xs text-slate-400" />
                 </summary>
 
                 <div className="border-t border-slate-200 p-3 dark:border-slate-800">
                   <div className="grid gap-3 xl:grid-cols-2">
                     <div className="min-w-0">
-                      <div className="mb-2 text-[11px] font-black text-slate-600 dark:text-slate-300">بدهی فروش‌های اقساطی</div>
+                      <div className="mb-2 text-xs font-black text-slate-600 dark:text-slate-300">بدهی فروش‌های اقساطی</div>
                       <div className="space-y-2">
                         {(ledgerReconciliation?.sales || []).map((sale: any) => {
                           const meta = linkStateMeta(sale.state);
@@ -318,20 +314,20 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                                 <div className="min-w-0">
                                   <Link
                                     to={`/installment-sales/${sale.saleId}`}
-                                    className="text-right text-[12px] font-black text-slate-900 hover:underline dark:text-slate-50"
+                                    className="text-right text-xs font-black text-slate-900 hover:underline dark:text-slate-50"
                                   >
                                     فروش اقساطی #{Number(sale.saleId).toLocaleString('fa-IR')}
                                   </Link>
-                                  <div className="mt-1 truncate text-[10px] text-slate-500 dark:text-slate-400" title={sale.itemsSummary || ''}>
+                                  <div className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400" title={sale.itemsSummary || ''}>
                                     {sale.itemsSummary || 'بدون شرح کالا'}
                                   </div>
                                 </div>
-                                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black ${meta.tone}`}>
+                                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-black ${meta.tone}`}>
                                   <i className={meta.icon} />
                                   {meta.label}
                                 </span>
                               </div>
-                              <div className="mt-2 grid grid-cols-1 gap-1.5 text-[10px] text-slate-600 dark:text-slate-300 sm:grid-cols-2">
+                              <div className="mt-2 grid grid-cols-1 gap-1.5 text-xs text-slate-600 dark:text-slate-300 sm:grid-cols-2">
                                 <span>بدهی سند: <strong>{formatCurrencyText(sale.expectedDebt, readStoredCurrencyUnit())}</strong></span>
                                 <span>رکورد دفتر: <strong>{sale.ledgerEntryId ? `#${Number(sale.ledgerEntryId).toLocaleString('fa-IR')}` : 'ندارد'}</strong></span>
                               </div>
@@ -339,13 +335,13 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                           );
                         })}
                         {!ledgerReconciliation?.sales?.length ? (
-                          <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-[11px] text-slate-500 dark:border-slate-800 dark:text-slate-400">فروش اقساطی ثبت نشده است.</div>
+                          <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">فروش اقساطی ثبت نشده است.</div>
                         ) : null}
                       </div>
                     </div>
 
                     <div className="min-w-0">
-                      <div className="mb-2 text-[11px] font-black text-slate-600 dark:text-slate-300">پرداخت‌های اقساط</div>
+                      <div className="mb-2 text-xs font-black text-slate-600 dark:text-slate-300">پرداخت‌های اقساط</div>
                       <div className="space-y-2">
                         {(ledgerReconciliation?.payments || []).map((payment: any) => {
                           const meta = linkStateMeta(payment.state);
@@ -355,20 +351,20 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                                 <div>
                                   <Link
                                     to={`/installment-sales/${payment.saleId}#payments`}
-                                    className="text-right text-[12px] font-black text-slate-900 hover:underline dark:text-slate-50"
+                                    className="text-right text-xs font-black text-slate-900 hover:underline dark:text-slate-50"
                                   >
                                     قسط {Number(payment.installmentNumber || 0).toLocaleString('fa-IR')} · پرداخت #{Number(payment.transactionId).toLocaleString('fa-IR')}
                                   </Link>
-                                  <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">
+                                  <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                     {formatKnownShamsiDate(payment.paymentDate, 'بدون تاریخ')}
                                   </div>
                                 </div>
-                                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-black ${meta.tone}`}>
+                                <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-black ${meta.tone}`}>
                                   <i className={meta.icon} />
                                   {meta.label}
                                 </span>
                               </div>
-                              <div className="mt-2 grid grid-cols-1 gap-1.5 text-[10px] text-slate-600 dark:text-slate-300 sm:grid-cols-2">
+                              <div className="mt-2 grid grid-cols-1 gap-1.5 text-xs text-slate-600 dark:text-slate-300 sm:grid-cols-2">
                                 <span>مبلغ پرداخت: <strong>{formatCurrencyText(payment.amountPaid, readStoredCurrencyUnit())}</strong></span>
                                 <span>رکورد دفتر: <strong>{payment.ledgerEntryId ? `#${Number(payment.ledgerEntryId).toLocaleString('fa-IR')}` : 'ندارد'}</strong></span>
                               </div>
@@ -376,7 +372,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                           );
                         })}
                         {!ledgerReconciliation?.payments?.length ? (
-                          <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-[11px] text-slate-500 dark:border-slate-800 dark:text-slate-400">پرداخت اقساطی ثبت نشده است.</div>
+                          <div className="rounded-xl border border-dashed border-slate-200 px-3 py-4 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">پرداخت اقساطی ثبت نشده است.</div>
                         ) : null}
                       </div>
                     </div>
@@ -386,20 +382,20 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
             ) : null}
           </div>
 
-          <div className="customer-ledger-toolbar flex flex-col gap-3 rounded-[26px] border border-slate-200 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-950 xl:flex-row xl:items-center xl:justify-between">
-            <div className="customer-ledger-toolbar-search order-1 xl:order-4 w-full xl:max-w-[25rem]">
+          <div className="flex flex-col gap-2.5 rounded-2xl border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-950 xl:flex-row xl:items-center xl:justify-between">
+            <div className="order-1 xl:order-4 w-full xl:max-w-[25rem]">
               <div className="relative">
-                <i className="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <i className="fa-solid fa-magnifying-glass pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   value={ledgerSearch}
                   onChange={(e) => setLedgerSearch(e.target.value)}
                   placeholder="جستجو در شرح، مبلغ یا تاریخ"
-                  className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pr-4 pl-11 text-[13px] text-slate-700 outline-none transition    dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100  "
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-white pe-3 ps-9 text-sm text-slate-700 outline-none transition dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                 />
               </div>
             </div>
 
-            <div className="customer-ledger-toolbar-filter order-2 xl:order-3 flex w-full items-center xl:w-auto">
+            <div className="order-2 xl:order-3 flex w-full items-center xl:w-auto">
               <div className="inline-flex w-full flex-wrap items-center gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-700 dark:bg-slate-900 xl:w-auto">
                 {[
                   { key: 'all', label: 'همه' },
@@ -410,7 +406,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                     key={item.key}
                     type="button"
                     onClick={() => setLedgerViewFilter(item.key as 'all' | 'debit' | 'credit')}
-                    className={`rounded-lg px-3 py-1.5 text-[12px] font-bold transition ${ledgerViewFilter === item.key ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'}`}
+                    className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${ledgerViewFilter === item.key ? 'bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900' : 'text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'}`}
                   >
                     {item.label}
                   </button>
@@ -418,13 +414,13 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
               </div>
             </div>
 
-            <div className="customer-ledger-toolbar-meta order-3 xl:order-2 flex flex-wrap items-center gap-2.5">
-              <label className="flex items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                <span className="text-[12px] font-bold text-slate-600 dark:text-slate-300">بازه زمانی</span>
+            <div className="order-3 xl:order-2 flex flex-wrap items-center gap-2.5">
+              <label className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-300">بازه زمانی</span>
                 <SelectField controlOnly unstyled showChevron={false}
                   value={ledgerRange}
                   onChange={(e) => setLedgerRange(e.target.value as 'all' | 'today' | 'week' | 'month')}
-                  className="min-w-[8rem] bg-transparent text-[12px] font-bold text-slate-900 outline-none dark:text-slate-100"
+                  className="min-w-[8rem] bg-transparent text-xs font-bold text-slate-900 outline-none dark:text-slate-100"
                 >
                   <option value="all">همه بازه‌ها</option>
                   <option value="today">امروز</option>
@@ -433,7 +429,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                 </SelectField>
               </label>
 
-              <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[12px] font-bold text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
+              <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
                 <i className="fa-solid fa-filter-circle-dollar text-slate-400" />
                 {safeLedgerTotal.toLocaleString('fa-IR')} رکورد
               </span>
@@ -443,7 +439,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
               type="button"
               onClick={printProfile}
               disabled={ledgerDirectoryLoading}
-              className="customer-ledger-toolbar-print order-4 xl:order-1 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
+              className="order-4 xl:order-1 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:border-slate-300 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-slate-100"
               title="چاپ / PDF"
             >
               <i className="fa-solid fa-arrow-up-from-bracket" />
@@ -451,77 +447,77 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
           </div>
 
           {ledgerDirectoryLoading && filteredLedgerEntries.length === 0 ? (
-            <div className="rounded-3xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900" role="status" aria-live="polite">
-              <IconGlyph tone="info" className="mx-auto h-14 w-14 text-xl" aria-hidden="true"><i className="fa-solid fa-circle-notch fa-spin" /></IconGlyph>
-              <h3 className="mt-4 text-base font-black text-slate-900 dark:text-slate-100">در حال دریافت گردش‌های دفتر حساب</h3>
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900" role="status" aria-live="polite">
+              <IconGlyph tone="info" className="mx-auto h-10 w-10 text-base" aria-hidden="true"><i className="fa-solid fa-circle-notch fa-spin" /></IconGlyph>
+              <h3 className="mt-3 text-sm font-black text-slate-900 dark:text-slate-100">در حال دریافت گردش‌های دفتر حساب</h3>
               <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">فقط رکوردهای همین صفحه از سرور خوانده می‌شوند.</p>
             </div>
           ) : filteredLedgerEntries.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/70 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900">
-              <IconGlyph tone="neutral" className="mx-auto h-16 w-16 text-2xl" aria-hidden="true"><i className="fa-solid fa-receipt" /></IconGlyph>
-              <h3 className="mt-4 text-lg font-black text-slate-900 dark:text-slate-100">برای این فیلترها رکوردی پیدا نشد</h3>
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/70 px-4 py-8 text-center dark:border-slate-700 dark:bg-slate-900">
+              <IconGlyph tone="neutral" className="mx-auto h-10 w-10 text-base" aria-hidden="true"><i className="fa-solid fa-receipt" /></IconGlyph>
+              <h3 className="mt-3 text-sm font-black text-slate-900 dark:text-slate-100">برای این فیلترها رکوردی پیدا نشد</h3>
               <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">جستجو یا بازه زمانی را تغییر دهید، یا اولین تراکنش را برای این مشتری ثبت کنید.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-5 xl:grid-cols-[320px_minmax(0,1fr)]">
-              <aside className="customer-ledger-smart-summary rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[280px_minmax(0,1fr)]">
+              <aside className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <h3 className="text-xl font-black text-slate-900 dark:text-slate-50">خلاصه هوشمند</h3>
-                    <p className="mt-1 text-[11px] leading-5 text-slate-500 dark:text-slate-400">خلاصه تصمیم‌گیری سریع قبل از ثبت یا پیگیری تراکنش بعدی.</p>
+                    <h3 className="text-base font-black text-slate-900 dark:text-slate-50">خلاصه هوشمند</h3>
+                    <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">خلاصه تصمیم‌گیری سریع قبل از ثبت یا پیگیری تراکنش بعدی.</p>
                   </div>
                   <IconGlyph tone="neutral" className="h-7 w-7" aria-hidden="true"><i className="fa-solid fa-lightbulb" /></IconGlyph>
                 </div>
 
-                <div className="customer-ledger-smart-summary-list mt-4 space-y-2.5">
-                  <div className="customer-ledger-smart-summary-item rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
+                <div className="mt-3 space-y-2">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">وضعیت وصول</div>
+                        <div className="text-xs font-bold text-slate-700 dark:text-slate-200">وضعیت وصول</div>
                         <div className={`mt-1.5 text-base font-extrabold ${ledgerStatusSummary.tone}`}>{ledgerStatusSummary.label}</div>
                       </div>
                       <IconGlyph tone="warning" className="h-7 w-7" aria-hidden="true"><i className="fa-solid fa-circle-exclamation" /></IconGlyph>
                     </div>
                   </div>
 
-                  <div className="customer-ledger-smart-summary-item rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">آخرین تراکنش</div>
-                        <div className="mt-1.5 text-[14px] font-extrabold text-slate-900 dark:text-slate-50">{latestLedgerEntry ? formatKnownShamsiDate(latestLedgerEntry.transactionDate, 'ثبت نشده') : 'ثبت نشده'}</div>
+                        <div className="text-xs font-bold text-slate-700 dark:text-slate-200">آخرین تراکنش</div>
+                        <div className="mt-1.5 text-sm font-extrabold text-slate-900 dark:text-slate-50">{latestLedgerEntry ? formatKnownShamsiDate(latestLedgerEntry.transactionDate, 'ثبت نشده') : 'ثبت نشده'}</div>
                       </div>
                       <IconGlyph tone="success" className="h-7 w-7" aria-hidden="true"><i className="fa-solid fa-calendar-days" /></IconGlyph>
                     </div>
                   </div>
 
-                  <div className="customer-ledger-smart-summary-item rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">آخرین پرداخت</div>
-                        <div className="mt-1.5 text-[14px] font-extrabold text-slate-900 dark:text-slate-50">{ledgerInsights?.lastPaymentDate ? formatKnownShamsiDate(ledgerInsights.lastPaymentDate, 'ثبت نشده') : 'ثبت نشده'}</div>
+                        <div className="text-xs font-bold text-slate-700 dark:text-slate-200">آخرین پرداخت</div>
+                        <div className="mt-1.5 text-sm font-extrabold text-slate-900 dark:text-slate-50">{ledgerInsights?.lastPaymentDate ? formatKnownShamsiDate(ledgerInsights.lastPaymentDate, 'ثبت نشده') : 'ثبت نشده'}</div>
                       </div>
                       <IconGlyph tone="accent" className="h-7 w-7" aria-hidden="true"><i className="fa-solid fa-credit-card" /></IconGlyph>
                     </div>
                   </div>
 
-                  <div className="customer-ledger-smart-summary-item rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">میانگین ارزش تراکنش</div>
-                        <div className="mt-1.5 text-[14px] font-extrabold text-slate-900 dark:text-slate-50">{formatCurrencyText(averageLedgerValue, readStoredCurrencyUnit())}</div>
+                        <div className="text-xs font-bold text-slate-700 dark:text-slate-200">میانگین ارزش تراکنش</div>
+                        <div className="mt-1.5 text-sm font-extrabold text-slate-900 dark:text-slate-50">{formatCurrencyText(averageLedgerValue, readStoredCurrencyUnit())}</div>
                       </div>
                       <IconGlyph tone="info" className="h-7 w-7" aria-hidden="true"><i className="fa-solid fa-chart-column" /></IconGlyph>
                     </div>
                   </div>
 
-                  <div className="customer-ledger-smart-summary-item rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                  <div className="rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
                     <div className="flex items-start justify-between gap-2.5">
                       <div>
-                        <div className="text-[12px] font-bold text-slate-700 dark:text-slate-200">سررسید باز اقساطی</div>
-                        <div className="mt-1.5 text-[14px] font-extrabold text-slate-900 dark:text-slate-50">
+                        <div className="text-xs font-bold text-slate-700 dark:text-slate-200">سررسید باز اقساطی</div>
+                        <div className="mt-1.5 text-sm font-extrabold text-slate-900 dark:text-slate-50">
                           {installmentSalesLoading ? 'در حال بررسی...' : lacheckOpenInstallmentDue ? 'دارد' : 'ندارد'}
                         </div>
-                        <div className="mt-1 text-[11px] leading-5 text-slate-500 dark:text-slate-400">
+                        <div className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
                           {installmentSalesLoading
                             ? 'در حال خواندن سررسیدهای باز مشتری...'
                             : lacheckOpenInstallmentDue
@@ -538,7 +534,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                   type="button"
                   onClick={() => firstInstallmentSaleId && navigate(`/installment-sales/${firstInstallmentSaleId}`)}
                   disabled={!firstInstallmentSaleId}
-                  className="mt-4 inline-flex w-full items-center justify-between rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-[13px] font-black text-slate-800 shadow-sm transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600"
+                  className="mt-4 inline-flex w-full items-center justify-between rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-black text-slate-800 shadow-sm transition hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600"
                 >
                   <span>{firstInstallmentSaleId ? 'مشاهده پرونده اقساط' : 'پرونده اقساطی فعالی وجود ندارد'}</span>
                   <i className="fa-regular fa-folder-open" />
@@ -554,8 +550,8 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                 onRefresh={() => fetchCustomerLedgerDirectory(true, true, ledgerPage)}
                 refreshing={ledgerDirectoryRefreshing}
                 tone={balance > 0 ? 'warning' : balance < 0 ? 'success' : 'neutral'}
-                className="customer-ledger-stream"
-                bodyClassName="!p-0"
+                className=""
+                bodyClassName="p-0"
                 ariaLabel="گردش حساب مشتری"
               >
                 <div className="space-y-3 p-4">
@@ -578,6 +574,7 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                     return (
                       <FinancialTimelineEvent
                         key={`ledger-${entry.id}-${entry.date || entry.createdAt || entry.description || entry.type || 'row'}`}
+                        compact
                         title={meta.summary}
                         description={contextMeta.hint}
                         source={sourceLabel}
@@ -662,28 +659,28 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                             actions={[
                               {
                                 key: `customer-ledger-details-${entry.id}`,
-                                kind: "button",
-                                label: expanded ? "بستن جزئیات" : "مشاهده جزئیات",
-                                tooltip: expanded ? "بستن جزئیات رکورد" : "مشاهده جزئیات رکورد",
-                                variant: "secondary",
+                                kind:"button",
+                                label: expanded ?"بستن جزئیات" :"مشاهده جزئیات",
+                                tooltip: expanded ?"بستن جزئیات رکورد" :"مشاهده جزئیات رکورد",
+                                variant:"secondary",
                                 icon: <i className={`fa-solid ${expanded ? 'fa-chevron-up' : 'fa-chevron-left'}`} />,
                                 onClick: () => setExpandedLedgerEntryId((prev) => (prev === entry.id ? null : entry.id)),
                               },
                               {
                                 key: `customer-ledger-edit-${entry.id}`,
-                                kind: "button",
-                                label: "ویرایش رکورد",
-                                tooltip: "ویرایش رکورد دفتر مشتری",
-                                variant: "warning",
+                                kind:"button",
+                                label:"ویرایش رکورد",
+                                tooltip:"ویرایش رکورد دفتر مشتری",
+                                variant:"warning",
                                 icon: <i className="fa-solid fa-pen-to-square" />,
                                 onClick: () => setEditingEntry(entry),
                               },
                               {
                                 key: `customer-ledger-delete-${entry.id}`,
-                                kind: "button",
-                                label: "حذف رکورد",
-                                tooltip: "حذف رکورد دفتر مشتری",
-                                variant: "danger",
+                                kind:"button",
+                                label:"حذف رکورد",
+                                tooltip:"حذف رکورد دفتر مشتری",
+                                variant:"danger",
                                 icon: <i className="fa-solid fa-trash" />,
                                 disabled: isDeletingEntry,
                                 loading: isDeletingEntry,
@@ -694,14 +691,14 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                         )}
                         badges={(
                           <>
-                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-black ${contextMeta.tone}`}>
+                            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-black ${contextMeta.tone}`}>
                               <i className={`fa-solid ${contextMeta.icon}`} />
                               {contextMeta.label}
                             </span>
-                            {(meta as any).invoiceId ? <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">فاکتور #{(meta as any).invoiceId}</span> : null}
-                            {meta.saleId ? <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">فروش #{meta.saleId}</span> : null}
-                            {meta.imei ? <span className="max-w-full truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300" dir="ltr">IMEI: {meta.imei}</span> : null}
-                            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[10px] font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+                            {(meta as any).invoiceId ? <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">فاکتور #{(meta as any).invoiceId}</span> : null}
+                            {meta.saleId ? <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">فروش #{meta.saleId}</span> : null}
+                            {meta.imei ? <span className="max-w-full truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300" dir="ltr">IMEI: {meta.imei}</span> : null}
+                            <span className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-black text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                               مانده بعد از رویداد: {formatCurrencyText(Math.abs(balanceValue), readStoredCurrencyUnit())}
                             </span>
                           </>
@@ -711,19 +708,19 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                           <div className="space-y-3">
                             <div className="grid gap-2.5 md:grid-cols-3">
                               <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-                                <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">شماره معامله / سند</div>
-                                <div className="mt-1 truncate text-[12px] font-black text-slate-900 dark:text-slate-100">{meta.saleId || (meta as any).invoiceId || (entry as any).referenceId || '—'}</div>
+                                <div className="text-xs font-black text-slate-400 dark:text-slate-500">شماره معامله / سند</div>
+                                <div className="mt-1 truncate text-xs font-black text-slate-900 dark:text-slate-100">{meta.saleId || (meta as any).invoiceId || (entry as any).referenceId || '—'}</div>
                               </div>
                               <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-                                <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">IMEI</div>
-                                <div className="mt-1 truncate text-[12px] font-black text-slate-900 dark:text-slate-100" dir="ltr">{meta.imei || '—'}</div>
+                                <div className="text-xs font-black text-slate-400 dark:text-slate-500">IMEI</div>
+                                <div className="mt-1 truncate text-xs font-black text-slate-900 dark:text-slate-100" dir="ltr">{meta.imei || '—'}</div>
                               </div>
                               <div className="min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/60">
-                                <div className="text-[10px] font-black text-slate-400 dark:text-slate-500">زمان ثبت سیستمی</div>
-                                <div className="mt-1 whitespace-nowrap text-[12px] font-black text-slate-900 dark:text-slate-100">{recordedAt}</div>
+                                <div className="text-xs font-black text-slate-400 dark:text-slate-500">زمان ثبت سیستمی</div>
+                                <div className="mt-1 whitespace-nowrap text-xs font-black text-slate-900 dark:text-slate-100">{recordedAt}</div>
                               </div>
                             </div>
-                            <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-slate-200 px-3 py-2.5 text-[11px] font-semibold leading-6 text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:text-slate-400">
+                            <div className="flex flex-col gap-2 rounded-2xl border border-dashed border-slate-200 px-3 py-2.5 text-xs font-semibold leading-6 text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:text-slate-400">
                               <span>{contextMeta.hint}</span>
                               <span className="shrink-0 font-black text-slate-700 dark:text-slate-200">وضعیت مانده: {balanceDirection}</span>
                             </div>
@@ -736,10 +733,11 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                 </div>
 
                 {safeLedgerTotal > 0 ? (
-                  <footer className="customers-directory-v73__pagination people-directory-pagination border-t border-slate-200 px-4 py-3 dark:border-slate-800" aria-label="صفحه‌بندی دفتر حساب مشتری">
-                    <div className="customers-directory-v73__pagination-size">
-                      <span>تعداد در صفحه</span>
-                      <SelectField
+                  <footer className="flex flex-col items-stretch gap-2 border-t border-slate-200 px-3 py-2 lg:flex-row lg:items-center lg:justify-between dark:border-slate-800" aria-label="صفحه‌بندی دفتر حساب مشتری">
+                    <div className="flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 lg:justify-start dark:text-slate-400">
+                      <span>در هر صفحه</span>
+                      <div className="w-20 shrink-0"><SelectField
+                        controlOnly
                         value={String(ledgerPageSize)}
                         onValueChange={(value) => setLedgerPageSize(value as '25' | '50' | '100')}
                         ariaLabel="تعداد گردش حساب در هر صفحه"
@@ -749,18 +747,18 @@ const CustomerLedgerRenderSection: React.FC<Props> = ({ ctx }) => {
                           { value: '50', label: '۵۰' },
                           { value: '100', label: '۱۰۰' },
                         ]}
-                      />
+                      /></div>
                     </div>
-                    <nav aria-label="صفحه‌بندی گردش حساب">
-                      <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={Number(ledgerPage) <= 1 || ledgerDirectoryLoading} onClick={() => setLedgerPage((current: number) => Math.max(1, current - 1))} aria-label="صفحه قبل" leftIcon={<i className="fa-solid fa-chevron-right" />} />
+                    <nav className="flex max-w-full items-center justify-center gap-1 overflow-x-auto" aria-label="صفحه‌بندی گردش حساب">
+                      <Button type="button" variant="secondary" size="xs" autoIcon={false} disabled={Number(ledgerPage) <= 1 || ledgerDirectoryLoading} onClick={() => setLedgerPage((current: number) => Math.max(1, current - 1))} aria-label="صفحه قبل" leftIcon={<i className="fa-solid fa-chevron-right" />}>قبلی</Button>
                       {visibleLedgerPages.map((item) => (
                         <Button key={item} type="button" variant={item === Number(ledgerPage) ? 'primary' : 'secondary'} size="icon" autoIcon={false} disabled={ledgerDirectoryLoading} data-active={item === Number(ledgerPage)} onClick={() => setLedgerPage(item)}>
                           {item.toLocaleString('fa-IR')}
                         </Button>
                       ))}
-                      <Button type="button" variant="secondary" size="icon" autoIcon={false} disabled={Number(ledgerPage) >= safeLedgerTotalPages || ledgerDirectoryLoading} onClick={() => setLedgerPage((current: number) => Math.min(safeLedgerTotalPages, current + 1))} aria-label="صفحه بعد" leftIcon={<i className="fa-solid fa-chevron-left" />} />
+                      <Button type="button" variant="secondary" size="xs" autoIcon={false} disabled={Number(ledgerPage) >= safeLedgerTotalPages || ledgerDirectoryLoading} onClick={() => setLedgerPage((current: number) => Math.min(safeLedgerTotalPages, current + 1))} aria-label="صفحه بعد" leftIcon={<i className="fa-solid fa-chevron-left" />}>بعدی</Button>
                     </nav>
-                    <span>نمایش {ledgerPageStart.toLocaleString('fa-IR')} تا {ledgerPageEnd.toLocaleString('fa-IR')} از {safeLedgerTotal.toLocaleString('fa-IR')}</span>
+                    <span className="text-center text-xs font-semibold text-slate-500 lg:text-start dark:text-slate-400">نمایش {ledgerPageStart.toLocaleString('fa-IR')} تا {ledgerPageEnd.toLocaleString('fa-IR')} از {safeLedgerTotal.toLocaleString('fa-IR')}</span>
                   </footer>
                 ) : null}
               </FinancialTimeline>

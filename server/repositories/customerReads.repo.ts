@@ -73,14 +73,14 @@ export const searchCustomersWithBalanceFromDb = async (
     const prefixLike = `${q}%`;
     const containsLike = `%${q}%`;
     const normalizedName = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(c.fullName, 'ي', 'ی'), 'ك', 'ک'), 'أ', 'ا'), 'إ', 'ا'), 'آ', 'ا')";
-    conditions.push(`(${normalizedName} LIKE ? COLLATE NOCASE OR COALESCE(c.phoneNumber, '') LIKE ? OR CAST(c.id AS TEXT) LIKE ?)`);
-    params.push(prefixLike, containsLike, containsLike);
+    conditions.push(`(${normalizedName} LIKE ? COLLATE NOCASE OR COALESCE(c.phoneNumber, '') LIKE ? OR COALESCE(c.nationalCode, '') LIKE ? OR CAST(c.id AS TEXT) LIKE ?)`);
+    params.push(prefixLike, containsLike, containsLike, containsLike);
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
   return await allAsync(`
     SELECT
-      c.id, c.fullName, c.phoneNumber, c.address, c.notes,
+      c.id, c.fullName, c.nationalCode, c.phoneNumber, c.address, c.notes,
       COALESCE(c.telegram_chat_id, c.telegramChatId) AS telegramChatId,
       c.telegram_user_id, c.telegram_linked_at, c.dateAdded,
       COALESCE((
@@ -210,8 +210,8 @@ const buildCustomerDirectoryBaseFilter = (search: string, tag: string) => {
   if (search) {
     const normalizedName = "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(c.fullName, 'ي', 'ی'), 'ك', 'ک'), 'أ', 'ا'), 'إ', 'ا'), 'آ', 'ا')";
     const contains = `%${search}%`;
-    conditions.push(`(${normalizedName} LIKE ? COLLATE NOCASE OR COALESCE(c.phoneNumber,'') LIKE ? OR CAST(c.id AS TEXT) LIKE ?)`);
-    params.push(contains, contains, contains);
+    conditions.push(`(${normalizedName} LIKE ? COLLATE NOCASE OR COALESCE(c.phoneNumber,'') LIKE ? OR COALESCE(c.nationalCode,'') LIKE ? OR CAST(c.id AS TEXT) LIKE ?)`);
+    params.push(contains, contains, contains, contains);
   }
   if (tag) {
     conditions.push("COALESCE(c.tags,'') LIKE ?");

@@ -341,7 +341,9 @@ export const waitForKouroshTunnelSyncPreflight = async (options = {}) => {
   let lastError = null;
   do {
     try {
-      const result = await (options.requestJson || requestLoopbackJson)("GET", "/api/local-runtime/miniapp-public-url-sync/preflight", null, options);
+      const intent = String(options.intent || "").trim();
+      const route = intent ? `/api/local-runtime/miniapp-public-url-sync/preflight?intent=${encodeURIComponent(intent)}` : "/api/local-runtime/miniapp-public-url-sync/preflight";
+      const result = await (options.requestJson || requestLoopbackJson)("GET", route, null, options);
       if (result.status === 200 && result.body?.success) return result.body.data;
       lastError = new Error(`KOUROSH_TUNNEL_PREFLIGHT_HTTP_${result.status}`);
     } catch (error) { lastError = error; }
@@ -438,7 +440,7 @@ const main = async () => {
   process.stdout.write("[INFO] Cloudflare Quick Tunnel is a Windows development/test helper only.\n");
   process.stdout.write("[INFO] Kourosh Core remains provider-independent and works without this helper.\n\n");
   process.stdout.write("[KOUROSH] Waiting for Local Backend public-URL sync service...\n");
-  const preflight = await waitForKouroshTunnelSyncPreflight();
+  const preflight = await waitForKouroshTunnelSyncPreflight({ intent: "quick_tunnel" });
   if (preflight?.allowed === false) {
     process.stdout.write(`[TUNNEL] Skipped: Mini App mode ${String(preflight.protectedMode || "protected")} is protected from temporary-tunnel overwrite.\n`);
     return;

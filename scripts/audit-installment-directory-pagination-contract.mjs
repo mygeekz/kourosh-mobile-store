@@ -17,7 +17,7 @@ const schema = read('server/db/schema/installments.schema.ts');
 expect(page.includes("view: 'directory'"), 'directory UI opts into the paged API without changing legacy callers');
 expect(page.includes('pageSize: String(targetPageSize)'), 'page size is sent to the server');
 expect(page.includes('window.setTimeout') && page.includes('320'), 'search is debounced before server querying');
-expect(page.includes('data-ui-installment-pagination="true"'), 'responsive pagination controls exist');
+expect(page.includes('aria-label="صفحه‌بندی فروش اقساطی"') && page.includes('در هر صفحه'), 'responsive pagination controls exist without a feature-owned CSS hook');
 expect(page.includes("sortOrder") && page.includes("remaining_desc") && page.includes("risk_desc"), 'server-backed sort controls are exposed');
 expect(page.includes('exportPageSize = 100') && page.includes('pagination?.hasMore'), 'full exports fetch bounded server pages instead of one unbounded list');
 

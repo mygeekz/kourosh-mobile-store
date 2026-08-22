@@ -26,6 +26,7 @@ import { registerProductPriceAdvisorRoute } from "./productPriceAdvisor";
 import { registerAdvisoryOperationsRoutes } from "./advisory/advisoryOperations";
 import { registerAdvisoryPolicyRoutes } from "./advisory/advisoryPolicyRoutes";
 import { initializeCloudConnectorRuntime, stopCloudConnectorRuntime } from "./cloud/cloudConnectorRuntime";
+import { initializeMiniAppSnapshotRuntime, stopMiniAppSnapshotRuntime } from "./cloud/snapshots/miniAppSnapshotRuntime";
 import { configureTelegramTransportRuntime } from "./telegram/telegramTransportRuntime";
 
 const app = createKouroshExpressApp();
@@ -66,9 +67,10 @@ export const startKouroshServer = createKouroshServerStarter({
   getAllSettingsAsObject,
   updateSetting,
   initializeCloudConnectorRuntime,
+  initializeMiniAppSnapshotRuntime,
   configureTelegramTransportRuntime,
   startDailyBackupJob,
 });
 
 export const registerShutdownHandlers = (): void =>
-  registerKouroshShutdownHandlers(closeDbConnection, stopCloudConnectorRuntime);
+  registerKouroshShutdownHandlers(closeDbConnection, stopCloudConnectorRuntime, stopMiniAppSnapshotRuntime);
