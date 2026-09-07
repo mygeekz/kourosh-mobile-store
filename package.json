@@ -118,7 +118,7 @@
     "audit:types:triage": "node scripts/audit-typescript-triage.mjs",
     "audit:unused-imports": "node scripts/audit-unused-imports.mjs",
     "build": "vite build",
-    "build:miniapp": "npm run sync:miniapp-release && vite build --config vite.miniapp.config.ts",
+    "build:miniapp": "npm run sync:miniapp-release && vite build --config vite.miniapp.config.ts && npm run miniapp:cloudflare:prepare",
     "build:strict-css": "node scripts/run-production-build-strict.mjs",
     "test:kourosh-pulse-dashboard-intelligence": "node server/tests/kouroshPulseDashboardIntelligence.test.mjs",
     "test:kourosh-pulse-dashboard-intelligence-route": "node server/tests/kouroshPulseDashboardIntelligenceRoute.test.mjs",
@@ -1371,7 +1371,7 @@
     "miniapp:cloudflare:migrate-v362": "npm run miniapp:cloudflare:migrate-v363 --",
     "miniapp:cloudflare:migrate-v363": "node scripts/apply-miniapp-manager-snapshot-d1-v363.mjs",
     "audit:edge-schema-hotfix-v363": "node scripts/audit-edge-schema-hotfix-v363.mjs",
-    "build:miniapp:cloudflare": "npm run build:miniapp && npm run miniapp:cloudflare:prepare"
+    "build:miniapp:cloudflare": "npm run build:miniapp"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
