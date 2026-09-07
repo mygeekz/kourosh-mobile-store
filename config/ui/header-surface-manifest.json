@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "version": "3.1.0",
+  "phase": "Header-1D",
+  "status": "canonical",
+  "owner": "ui-foundation",
+  "activeContract": {
+    "shell": "components/header/HeaderShell.tsx",
+    "layout": "components/header/HeaderLayout.tsx",
+    "title": "components/header/HeaderTitleArea.tsx",
+    "search": "components/header/HeaderSearch.tsx",
+    "liveActions": "components/header/HeaderQuickActions.tsx",
+    "risk": "components/header/HeaderRiskBadge.tsx",
+    "iconButton": "components/header/HeaderIconButton.tsx",
+    "profile": "components/header/HeaderProfileMenu.tsx",
+    "styles": "styles/system/ui-contracts/navigation-shell-contract-phase5.css",
+    "rootSelector": "[data-header-contract=\"v3\"]",
+    "quickPopover": "components/header/HeaderQuickPopover.tsx"
+  },
+  "regions": [
+    "title",
+    "search",
+    "live-actions",
+    "utilities"
+  ],
+  "legacyNamespacesForbiddenInActiveHeader": [
+    "header-premium-shell",
+    "header-search-v436",
+    "header-action-icon",
+    "header-flat-icon-btn",
+    "header-smart-popover",
+    "header-quick-role-pill"
+  ],
+  "legacyStyleSources": [
+    {
+      "path": "styles/legacy/03f-legacy-header-search-password-fixes.css",
+      "runtimeOrder": 49,
+      "status": "quarantined",
+      "cleanupCondition": "Remove when no non-header consumer uses header-flat-icon-btn or old header search selectors."
+    },
+    {
+      "path": "styles/legacy/09c-legacy-global-nav-sidebar-topbar.css",
+      "runtimeOrder": 69,
+      "status": "quarantined",
+      "cleanupCondition": "Split remaining sidebar rules before file retirement."
+    },
+    {
+      "path": "styles/system/header-sidebar-navigation-foundation.css",
+      "runtimeOrder": 116,
+      "status": "compatibility",
+      "cleanupCondition": "Extract and migrate sidebar-only rules; active Header must not match its header namespaces."
+    },
+    {
+      "path": "styles/system/ui-contracts/navigation-shell-contract-phase5.css",
+      "runtimeOrder": 410,
+      "status": "canonical",
+      "cleanupCondition": null
+    }
+  ],
+  "invariants": {
+    "layoutModel": "calm-four-slot-grid",
+    "singleSearchFrame": true,
+    "quickMenusOpenBy": "click",
+    "closedQuickPanelsMounted": false,
+    "routeChangeRefetch": false,
+    "hoverTranslationAllowed": false,
+    "arbitraryMinWidthActionsAllowed": false,
+    "responsiveModel": "container-query",
+    "legacyQuickActionInstrumentationAllowed": false,
+    "duplicateBreadcrumbAllowed": false,
+    "liveActionsCompactAt": "1180px",
+    "liveActionsHiddenAt": "860px",
+    "desktopAndMobileSearchVisibleTogether": false,
+    "liveActionPresentation": "icon-count-with-separators",
+    "headerFocusRingAllowed": false,
+    "iconButtonImplementation": "native-canonical",
+    "popoverLayout": "single-frame-fixed-header-footer-scroll-body",
+    "popoverDecorativePreviewBadgeAllowed": false,
+    "profileMenuViewportSafe": true,
+    "popoverAccentGradientsAllowed": false
+  }
+}

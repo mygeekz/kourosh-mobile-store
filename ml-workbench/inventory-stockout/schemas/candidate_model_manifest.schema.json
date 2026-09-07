@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase9a/candidate_model_manifest.schema.json",
+  "title": "Kourosh Offline Inventory Stockout Candidate Model Manifest",
+  "type": "object",
+  "required": [
+    "candidatePackageId",
+    "modelKey",
+    "modelVersion",
+    "modelFamily",
+    "predictionType",
+    "target",
+    "horizonDays",
+    "trainingPackageReference",
+    "trainingManifestHash",
+    "featureContract",
+    "outputContract",
+    "metricsSummary",
+    "safetyPolicy",
+    "createdAt",
+    "createdBy",
+    "workbenchVersion",
+    "checksums"
+  ],
+  "properties": {
+    "candidatePackageId": { "type": "string" },
+    "modelKey": { "type": "string" },
+    "modelVersion": { "type": "string" },
+    "modelFamily": { "type": "string" },
+    "predictionType": { "type": "string" },
+    "target": { "type": "object" },
+    "horizonDays": { "type": ["number", "integer", "null"] },
+    "trainingPackageReference": { "type": "object" },
+    "trainingManifestHash": { "type": "string" },
+    "featureContract": { "type": "object" },
+    "outputContract": { "type": "object" },
+    "metricsSummary": { "type": "object" },
+    "safetyPolicy": {
+      "type": "object",
+      "required": [
+        "backendModelExecutionAllowed",
+        "backendInferenceEndpointExposed",
+        "productionIntegrationAllowed",
+        "decisionAutomationAllowed",
+        "canChangeInventoryOrAccounting",
+        "artifactActivationAllowed"
+      ],
+      "properties": {
+        "backendModelExecutionAllowed": { "const": false },
+        "backendInferenceEndpointExposed": { "const": false },
+        "productionIntegrationAllowed": { "const": false },
+        "decisionAutomationAllowed": { "const": false },
+        "canChangeInventoryOrAccounting": { "const": false },
+        "artifactActivationAllowed": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "createdAt": { "type": "string" },
+    "createdBy": { "type": "string" },
+    "workbenchVersion": { "type": "string" },
+    "checksums": { "type": "object" }
+  },
+  "additionalProperties": true
+}

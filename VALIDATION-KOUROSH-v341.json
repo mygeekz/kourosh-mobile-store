@@ -1,0 +1,37 @@
+{
+  "release": "v341",
+  "phase": "sensitive-accounting-operations",
+  "checklistItemsClosed": [3, 4, 11],
+  "auditRelease": "PASS",
+  "miniappSourceGate": { "status": "PASS", "checks": 65 },
+  "v341Audit": { "status": "PASS", "checks": 73 },
+  "migrationRunnerV341": { "status": "PASS", "statements": 9, "triggers": 8 },
+  "backendSyntaxChecks": "PASS",
+  "realDatabaseValidation": {
+    "status": "PASS",
+    "databaseIncludedInRelease": false,
+    "partner": "بهزاد هلیلی",
+    "partnerId": 2,
+    "balanceBeforeToman": 284100000,
+    "balanceAfterToman": 284100000,
+    "directFinancialUpdateBlocked": true,
+    "ledgerPhysicalDeleteBlocked": true,
+    "salesOrderPhysicalDeleteBlocked": true,
+    "salesOrderItemPhysicalDeleteBlocked": true,
+    "reversalLinkUpdateDeleteBlocked": true,
+    "balanceCacheUpdateAllowed": true,
+    "appendOnlyReversalAllowed": true
+  },
+  "v341Guarantees": [
+    "prepare/execute two-request confirmation with payload SHA256 binding",
+    "financial impact summary before sensitive execution",
+    "one-time expiring confirmation token",
+    "immutable accounting audit evidence with actor/reason/before/after/source",
+    "ledger correction by reversal/replacement instead of financial UPDATE/DELETE",
+    "sales invoice cancel/reversal instead of physical delete",
+    "installment sale hard delete fail-closed and guarded cancellation",
+    "installment/check source synchronization uses reversal/replacement",
+    "SQLite immutability triggers for ledgers, invoice history and reversal links",
+    "partner settlement retains dry-run, manager signoff, amount/line binding and audit event"
+  ]
+}

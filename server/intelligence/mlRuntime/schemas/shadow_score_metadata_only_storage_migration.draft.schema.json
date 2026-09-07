@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 13H metadata-only shadow score storage migration draft report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "phase",
+    "migrationDraftKind",
+    "status",
+    "tableDraftName",
+    "migrationDraftName",
+    "migrationDraftSqlFile",
+    "migrationMode",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreationApplied",
+    "repositoryWriteAllowed",
+    "routeExposed",
+    "columns",
+    "indexes",
+    "uniqueness",
+    "checkConstraintCount",
+    "warningCount",
+    "errorCount",
+    "migrationBoundary",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "phase": { "const": "Phase 13H" },
+    "migrationDraftKind": { "const": "metadata_only_shadow_score_storage_migration_draft" },
+    "status": { "enum": ["pass", "warning", "fail"] },
+    "tableDraftName": { "const": "shadow_score_metadata_only_store" },
+    "migrationDraftName": { "const": "phase13h_shadow_score_metadata_only_store_draft" },
+    "migrationDraftSqlFile": { "const": "server/intelligence/mlRuntime/migrationDrafts/phase13h_shadow_score_metadata_only_store.draft.sql" },
+    "migrationMode": { "const": "draft_sql_no_execution" },
+    "migrationApplicationAllowed": { "const": false },
+    "sqlExecutionAllowed": { "const": false },
+    "databaseConnectionAllowed": { "const": false },
+    "databaseWriteAllowed": { "const": false },
+    "tableCreationApplied": { "const": false },
+    "repositoryWriteAllowed": { "const": false },
+    "routeExposed": { "const": false },
+    "columns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "sqlColumnName", "sqlType", "required", "nullable", "pii", "businessMutable"],
+        "properties": {
+          "name": { "type": "string" },
+          "sqlColumnName": { "type": "string" },
+          "sqlType": { "enum": ["TEXT", "INTEGER", "REAL"] },
+          "required": { "type": "boolean" },
+          "nullable": { "type": "boolean" },
+          "pii": { "const": false },
+          "businessMutable": { "const": false }
+        },
+        "additionalProperties": true
+      }
+    },
+    "indexes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "columns", "unique", "draftOnly"],
+        "properties": {
+          "name": { "type": "string" },
+          "columns": { "type": "array", "items": { "type": "string" } },
+          "unique": { "type": "boolean" },
+          "draftOnly": { "const": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "uniqueness": { "type": "array", "items": { "type": "string" } },
+    "checkConstraintCount": { "type": "integer", "minimum": 0 },
+    "warningCount": { "type": "integer", "minimum": 0 },
+    "errorCount": { "type": "integer", "minimum": 0 },
+    "warnings": { "type": "array" },
+    "errors": { "type": "array" },
+    "migrationBoundary": {
+      "type": "object",
+      "required": [
+        "migrationDraftOnly",
+        "sqlFileIsDraftOnly",
+        "sqlFileIsNotRuntimeLoaded",
+        "sqlFileIsNotExecuted",
+        "migrationApplicationAllowed",
+        "sqlExecutionAllowed",
+        "databaseConnectionAllowed",
+        "databaseWriteAllowed",
+        "tableCreationApplied",
+        "tableCreated",
+        "repositoryWriteAllowed",
+        "readsWorkbenchOutputFiles",
+        "exposesRoute",
+        "executesModel",
+        "activatesArtifact",
+        "mutatesBusinessRecords"
+      ],
+      "properties": {
+        "migrationDraftOnly": { "const": true },
+        "sqlFileIsDraftOnly": { "const": true },
+        "sqlFileIsNotRuntimeLoaded": { "const": true },
+        "sqlFileIsNotExecuted": { "const": true },
+        "migrationApplicationAllowed": { "const": false },
+        "sqlExecutionAllowed": { "const": false },
+        "databaseConnectionAllowed": { "const": false },
+        "databaseWriteAllowed": { "const": false },
+        "tableCreationApplied": { "const": false },
+        "tableCreated": { "const": false },
+        "repositoryWriteAllowed": { "const": false },
+        "readsWorkbenchOutputFiles": { "const": false },
+        "exposesRoute": { "const": false },
+        "executesModel": { "const": false },
+        "activatesArtifact": { "const": false },
+        "mutatesBusinessRecords": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "required": [
+        "metadataOnly",
+        "migrationDraftOnly",
+        "schemaSqlDraftOnly",
+        "noRuntimeSqlExecution",
+        "noDatabaseConnection",
+        "noDatabaseWrite",
+        "noTableCreated",
+        "noRouteExposure",
+        "modelExecutionAllowed",
+        "inferenceEndpointExposed",
+        "artifactActivationAllowed",
+        "canMutateBusinessRecords"
+      ],
+      "properties": {
+        "metadataOnly": { "const": true },
+        "migrationDraftOnly": { "const": true },
+        "schemaSqlDraftOnly": { "const": true },
+        "noRuntimeSqlExecution": { "const": true },
+        "noDatabaseConnection": { "const": true },
+        "noDatabaseWrite": { "const": true },
+        "noTableCreated": { "const": true },
+        "noRouteExposure": { "const": true },
+        "modelExecutionAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "generatedAt": { "type": "string", "minLength": 1 }
+  }
+}

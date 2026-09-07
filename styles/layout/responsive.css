@@ -1,0 +1,26 @@
+/* Canonical responsive interaction contract.
+   Generic links keep their natural inline flow. Only explicit controls receive
+   touch-target sizing, preventing table/header/link layout regressions. */
+@media (max-width: 768px) {
+  :where(
+    .ux-btn,
+    [data-ui-button='true'],
+    [data-ui-table-action='true'],
+    [data-ui-table-page-button='true'],
+    .calendar-nav-btn,
+    .calendar-action-btn
+  ) {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  :where(input, select, textarea) {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :where([data-ui-page-body='true'], [data-ui-page-header-wrap='true']) {
+    min-width: 0;
+  }
+}

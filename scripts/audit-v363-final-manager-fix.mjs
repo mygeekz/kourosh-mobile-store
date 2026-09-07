@@ -1,0 +1,17 @@
+import fs from "node:fs";
+import path from "node:path";
+const root = process.cwd();
+const read = (p) => fs.readFileSync(path.join(root,p), "utf8");
+const security = read("server/services/telegramIdentitySecurity.service.ts");
+const builder = read("server/cloud/snapshots/miniAppSnapshotBuilder.ts");
+const pkg = JSON.parse(read("package.json"));
+const wrangler = read("deployment/cloudflare-pages/wrangler.toml");
+const fail = (m) => { throw new Error(m); };
+if (!security.includes('kind: "customer" | "partner" | "manager"')) fail("targeted identity sync does not support manager");
+if (!security.includes('requestMiniAppManagerAssociationRefresh(Number(row.user_id), telegramUserId)')) fail("manager link does not request targeted sync");
+if (!security.includes('requestMiniAppManagerAssociationRefresh(userId, null)')) fail("manager unlink does not request targeted revocation sync");
+if (!builder.includes("managerCandidateWithSafeFallback")) fail("manager snapshot size-safe fallback missing");
+if (!builder.includes('"telegramUserId", "telegram_user_id", "localSubjectId", "local_subject_id"')) fail("manager sanitizer missing identity fields");
+if (pkg.scripts?.["build:miniapp:cloudflare"] !== "npm run build:miniapp && npm run miniapp:cloudflare:prepare") fail("canonical cloudflare build script missing");
+if (!wrangler.includes('database_id = "cf2beae0-5b77-47ac-a604-e10691ed7ef7"')) fail("production D1 id not pinned");
+console.log(JSON.stringify({status:"PASS", managerTargetedSync:true, managerSnapshotFallback:true, cloudflareBuild:true, d1Binding:true}, null, 2));

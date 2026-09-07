@@ -1,0 +1,97 @@
+/* Stage 101 — Cohort search single-frame fix
+   Keep only one visible search frame: the input frame. The wrapper is layout-only. */
+
+.cohort-section .cohort-search {
+  box-sizing: border-box !important;
+  position: relative !important;
+  display: block !important;
+  width: 330px !important;
+  max-width: min(330px, 54vw) !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+  isolation: isolate !important;
+}
+
+.cohort-section .cohort-search::before,
+.cohort-section .cohort-search::after,
+.cohort-section .cohort-search input::before,
+.cohort-section .cohort-search input::after {
+  content: none !important;
+  display: none !important;
+}
+
+.cohort-section .cohort-search > i {
+  position: absolute !important;
+  left: 13px !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
+  width: 16px !important;
+  height: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+
+.cohort-section .cohort-search input,
+.cohort-section .cohort-search input[type='text'],
+.cohort-section .cohort-search input[type='search'] {
+  all: unset !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 14px 0 40px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(148, 163, 184, .42) !important;
+  border-radius: 14px !important;
+  outline: 0 !important;
+  background: #fff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #0f172a !important;
+  font-size: .78rem !important;
+  font-weight: 800 !important;
+  line-height: 38px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  caret-color: #0f172a !important;
+}
+
+.cohort-section .cohort-search input::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+.cohort-section .cohort-search input:focus,
+.cohort-section .cohort-search input:focus-visible,
+.cohort-section .cohort-search input:active {
+  border-color: rgba(59, 130, 246, .55) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+@media (max-width: 760px) {
+  .cohort-section .cohort-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

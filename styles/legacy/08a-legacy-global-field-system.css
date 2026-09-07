@@ -1,0 +1,120 @@
+/* Phase 44: global input/select system unification */
+:root {
+  --ux-field-h-sm: 40px;
+  --ux-field-h-md: 44px;
+  --ux-field-h-lg: 48px;
+  --ux-field-radius-unified: 18px;
+  --ux-field-border-light: rgba(226, 232, 240, 0.95);
+  --ux-field-border-dark: rgba(71, 85, 105, 0.72);
+  --ux-field-bg-light: rgba(248, 250, 252, 0.92);
+  --ux-field-bg-dark: rgba(15, 23, 42, 0.82);
+  --ux-field-ring-light: rgba(148, 163, 184, 0.18);
+  --ux-field-ring-dark: rgba(51, 65, 85, 0.42);
+  --ux-field-shadow-light: 0 10px 24px -22px rgba(15, 23, 42, 0.18);
+  --ux-field-shadow-dark: 0 14px 30px -24px rgba(2, 6, 23, 0.58);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+select,
+textarea {
+  border-radius: var(--ux-field-radius-unified);
+  border: 1px solid var(--ux-field-border-light);
+  background: var(--ux-field-bg-light);
+  box-shadow: var(--ux-field-shadow-light);
+  min-height: var(--ux-field-h-md);
+  font-size: 13px;
+  line-height: 1.6;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease, transform 180ms ease;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.dark select,
+.dark textarea {
+  border-color: var(--ux-field-border-dark);
+  background: var(--ux-field-bg-dark);
+  box-shadow: var(--ux-field-shadow-dark);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(100, 116, 139, 0.78) !important;
+  box-shadow: 0 0 0 4px var(--ux-field-ring-light), var(--ux-field-shadow-light) !important;
+  outline: none;
+}
+
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: rgba(100, 116, 139, 0.78) !important;
+  box-shadow: 0 0 0 4px var(--ux-field-ring-dark), var(--ux-field-shadow-dark) !important;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(100 116 139 / 0.9);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgb(148 163 184 / 0.85);
+}
+
+textarea {
+  min-height: 96px;
+  resize: vertical;
+}
+
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+.sales-page-shell input:not([type="checkbox"]):not([type="radio"]),
+.sales-page-shell select,
+.sales-page-shell textarea,
+#sale-step-items input:not([type="checkbox"]):not([type="radio"]),
+#sale-step-items select,
+#sale-step-items textarea,
+#sale-step-cart input:not([type="checkbox"]):not([type="radio"]),
+#sale-step-cart select,
+#sale-step-cart textarea,
+#sale-step-checkout input:not([type="checkbox"]):not([type="radio"]),
+#sale-step-checkout select,
+#sale-step-checkout textarea {
+  border-radius: 16px;
+}
+
+.css-13cymwt-control,
+.css-t3ipsp-control {
+  border-radius: var(--ux-field-radius-unified) !important;
+  min-height: var(--ux-field-h-lg) !important;
+  box-shadow: var(--ux-field-shadow-light) !important;
+}
+
+.dark .css-13cymwt-control,
+.dark .css-t3ipsp-control {
+  box-shadow: var(--ux-field-shadow-dark) !important;
+}
+
+.css-1jqq78o-placeholder,
+.css-1dimb5e-singleValue,
+.css-qbdosj-Input {
+  font-size: 13px !important;
+}
+
+@media (max-width: 767px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+  select,
+  textarea {
+    min-height: var(--ux-field-h-sm);
+    font-size: 12px;
+  }
+
+  .css-13cymwt-control,
+  .css-t3ipsp-control {
+    min-height: var(--ux-field-h-md) !important;
+  }
+}
+
+

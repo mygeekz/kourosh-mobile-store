@@ -1,0 +1,61 @@
+/* v139 — Safe global focus visual reset base
+   Purpose: remove browser/Tailwind visual focus boxes without changing layout,
+   hover, active, background, border, spacing, overflow, or component structure. */
+
+html body :where(
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  summary,
+  [role="button"],
+  [role="link"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  [tabindex],
+  [contenteditable="true"]
+):focus,
+html body :where(
+  input,
+  select,
+  textarea,
+  button,
+  a,
+  summary,
+  [role="button"],
+  [role="link"],
+  [role="tab"],
+  [role="menuitem"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  [tabindex],
+  [contenteditable="true"]
+):focus-visible {
+  outline: 0 !important;
+  outline-color: transparent !important;
+  outline-width: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/) !important;
+  --tw-ring-offset-width: 0px !important;
+  --tw-ring-offset-color: transparent !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+  --tw-shadow-colored: 0 0 #0000 !important;
+}
+
+html body button::-moz-focus-inner,
+html body input::-moz-focus-inner {
+  border: 0 !important;
+}
+
+html body :where(button, a, input, select, textarea, [role="button"], [tabindex]) {
+  -webkit-tap-highlight-color: transparent !important;
+}

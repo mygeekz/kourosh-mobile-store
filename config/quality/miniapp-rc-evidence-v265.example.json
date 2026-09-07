@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "release": "v265",
+  "testedAt": "",
+  "publicUrl": "",
+  "cloudflareProject": "kourosh",
+  "accountAliases": {
+    "A": {
+      "role": "staff-admin",
+      "status": "PENDING"
+    },
+    "B": {
+      "role": "partner-existing",
+      "status": "PENDING"
+    },
+    "C": {
+      "role": "partner-newly-linked",
+      "status": "PENDING"
+    },
+    "D": {
+      "role": "customer",
+      "status": "PENDING"
+    }
+  },
+  "checks": [
+    {
+      "id": "telegram.android.customer_live",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.customer_offline_snapshot",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.partner_live",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.partner_offline_snapshot",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.new_partner_identity_sync",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.staff_live",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.android.staff_offline_denied",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.ios.customer_reconnect",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.ios.partner_reconnect",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.ios.staff_reconnect",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "telegram.desktop.smoke",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "identity.unlink_revokes_access",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "identity.relink_new_user_recovers",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "infrastructure.local_origin_stop_start",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "infrastructure.snapshot_missing_message",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "infrastructure.diagnostic_center_probe",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "windows.tunnel_process_checks",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "windows.startup_order",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "build.verify_miniapp_pass",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "deploy.cloudflare_pages_success",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "deploy.edge_release_v265",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_installment_due_notice",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_repair_cost_notice",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_check_failed",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_invoice_created",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_test_allowlist_allowed",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.sms_test_allowlist_blocked",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.telegram_payment_received",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "messaging.telegram_check_failed",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "ui.form_fields.desktop_no_clipping",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "ui.form_fields.mobile_no_clipping",
+      "status": "PENDING",
+      "evidence": ""
+    },
+    {
+      "id": "ui.form_fields.zoom_200_no_clipping",
+      "status": "PENDING",
+      "evidence": ""
+    }
+  ]
+}

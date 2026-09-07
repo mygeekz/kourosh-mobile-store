@@ -1,0 +1,12 @@
+Mini App Phase 3 / v251 verification environment
+Date: 2026-08-29
+OS: Linux delivery environment
+Node: v22.16.0
+Project engines: ^22.17.0 || >=24
+node_modules: absent in supplied archive
+
+Interpretation:
+- Pure Node/source-level Mini App tests were executed.
+- npm run test:v251 passed.
+- npm run build:miniapp was attempted and stopped at `vite: not found` because dependencies are not installed.
+- No Vite production-build success is claimed from this environment.

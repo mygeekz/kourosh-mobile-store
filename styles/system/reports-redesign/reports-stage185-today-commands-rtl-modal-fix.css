@@ -1,0 +1,106 @@
+
+/* Stage 185 — today commands RTL/header polish + modal sizing fix */
+.smart-today-v183__header {
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+}
+
+.smart-today-v183__heading {
+  text-align: right !important;
+  align-items: flex-end !important;
+  margin-inline-start: 0 !important;
+  flex: 1 1 auto !important;
+  max-width: none !important;
+}
+
+.smart-today-v183__eyebrow {
+  width: 100% !important;
+  justify-content: flex-end !important;
+  text-align: right !important;
+}
+
+.smart-today-v185__eyebrow-icon {
+  font-size: 0.95rem !important;
+  line-height: 1 !important;
+}
+
+.smart-today-v183__heading h2,
+.smart-today-v183__heading p {
+  width: 100% !important;
+  text-align: right !important;
+}
+
+.smart-today-v183__count {
+  align-self: flex-start !important;
+}
+
+/* Keep count on the opposite side while title block stays right-aligned */
+@media (min-width: 1024px) {
+  .smart-today-v183__header {
+    direction: ltr !important;
+  }
+  .smart-today-v183__heading {
+    direction: rtl !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .smart-today-v183__header {
+    direction: rtl !important;
+  }
+  .smart-today-v183__count {
+    order: 2 !important;
+  }
+}
+
+/* Modal — center it, keep it above sidebar, and constrain size */
+.smart-insight-modal-v185 {
+  z-index: 950 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+}
+
+.smart-insight-modal-v185__surface {
+  width: min(980px, calc(100vw - 36px)) !important;
+  max-width: 980px !important;
+  max-height: min(88vh, 960px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 auto !important;
+  box-shadow: 0 30px 80px rgba(15,23,42,.22) !important;
+}
+
+.smart-insight-modal-v185__header {
+  flex: 0 0 auto !important;
+}
+
+.smart-insight-modal-v185__body {
+  flex: 1 1 auto !important;
+  max-height: calc(min(88vh, 960px) - 116px) !important;
+  overscroll-behavior: contain !important;
+}
+
+.smart-insight-modal-v185__close {
+  position: sticky;
+  top: 0;
+}
+
+@media (max-width: 820px) {
+  .smart-insight-modal-v185 {
+    padding: 10px !important;
+    align-items: flex-start !important;
+  }
+  .smart-insight-modal-v185__surface {
+    width: calc(100vw - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 22px !important;
+  }
+  .smart-insight-modal-v185__body {
+    max-height: calc(100vh - 150px) !important;
+    padding: 14px !important;
+  }
+  .smart-insight-modal-v185__header {
+    padding: 14px !important;
+  }
+}

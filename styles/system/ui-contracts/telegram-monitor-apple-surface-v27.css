@@ -1,0 +1,137 @@
+/* v27: Telegram monitor center returns to Apple-minimal neutral surface.
+   Scope: only the Telegram monitor center; no changes to control cards above. */
+#telegram-settings-form .telegram-monitor-apple-surface-v27 {
+  border: 1px solid rgb(218 226 236) !important;
+  border-radius: 30px !important;
+  background: rgb(248 250 252) !important;
+  box-shadow: 0 18px 48px -44px rgba(15, 23, 42, 0.28) !important;
+  padding: 18px !important;
+  overflow: hidden !important;
+  direction: rtl !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  box-shadow: 0 22px 52px -44px rgba(0, 0, 0, 0.72) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27::before,
+#telegram-settings-form .telegram-monitor-apple-surface-v27::after {
+  display: none !important;
+  content: none !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-head {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 0 14px !important;
+  gap: 14px !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-kicker,
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-score,
+#telegram-settings-form .telegram-monitor-apple-statusbar,
+#telegram-settings-form .telegram-monitor-apple-diagnostics {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(255 255 255) !important;
+  box-shadow: none !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-kicker,
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-score,
+html.dark #telegram-settings-form .telegram-monitor-apple-statusbar,
+html.dark #telegram-settings-form .telegram-monitor-apple-diagnostics {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(15 23 42) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-kicker {
+  color: rgb(71 85 105) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-kicker i,
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-titlebox i {
+  color: rgb(100 116 139) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-titlebox h2 {
+  color: rgb(15 23 42) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-titlebox p {
+  color: rgb(71 85 105) !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-titlebox h2 {
+  color: rgb(248 250 252) !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-titlebox p,
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-kicker {
+  color: rgb(203 213 225) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-diagnostics {
+  /* overrides the former sky/blue diagnostic panel */
+  border-radius: 24px !important;
+  padding: 16px !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-diagnostics > div:first-child {
+  align-items: stretch !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="border-sky"],
+#telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="text-sky"],
+#telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="bg-sky"] {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="border-sky"],
+html.dark #telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="text-sky"],
+html.dark #telegram-settings-form .telegram-monitor-apple-diagnostics .inline-flex[class*="bg-sky"] {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-statusbar .inline-flex {
+  box-shadow: none !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .ux-btn,
+#telegram-settings-form .telegram-monitor-apple-surface-v27 button[data-ui-button="true"] {
+  border-color: rgb(218 226 236) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(15 23 42) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form .telegram-monitor-apple-surface-v27 .ux-btn:hover,
+#telegram-settings-form .telegram-monitor-apple-surface-v27 button[data-ui-button="true"]:hover {
+  background: rgb(248 250 252) !important;
+  border-color: rgb(203 213 225) !important;
+}
+
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 .ux-btn,
+html.dark #telegram-settings-form .telegram-monitor-apple-surface-v27 button[data-ui-button="true"] {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(248 250 252) !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form .telegram-monitor-apple-surface-v27 {
+    padding: 14px !important;
+    border-radius: 26px !important;
+  }
+
+  #telegram-settings-form .telegram-monitor-apple-surface-v27 .telegram-monitor-v2-head {
+    grid-template-columns: 1fr !important;
+  }
+}

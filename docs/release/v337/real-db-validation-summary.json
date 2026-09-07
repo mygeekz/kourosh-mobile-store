@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "validationPeriod": {
+    "periodStart": "2026-03-27",
+    "periodEnd": "2026-06-05"
+  },
+  "migrations": {
+    "count": 3,
+    "missingChecksum": 0,
+    "entries": [
+      {
+        "id": "2024-cart-sales.sql",
+        "sha256": "b559914d9ec062cedae217a2958f9a5d2774ceac6b182cb016669bf1a97902ec"
+      },
+      {
+        "id": "2026-02-09-backup-indexes.sql",
+        "sha256": "2521e969ff256b72eaff2dadaf447770bbfb610802340de2b3d1a4734cd898a2"
+      },
+      {
+        "id": "2026-06-12-customer-manager-notes.sql",
+        "sha256": "72282903ff7db516f26dbba04b0ae3d3fdf594327b9c10911004806cb53c6a13"
+      }
+    ]
+  },
+  "periodLockTriggerCount": 48,
+  "snapshot": {
+    "id": 1,
+    "version": 1,
+    "sha256": "4f5912ff9d20ed9250a10d51465ba10c5a8eb5b382bfc6ca843fd654a67eac37"
+  },
+  "backup": {
+    "sha256": "c39caa720e4cd9f4b67fa14dc1310140eb8ee95b82a3493337499c3c7115db91",
+    "checksumVerified": true
+  },
+  "behzad": {
+    "partnerId": 2,
+    "supplierReceivableBefore": 284100000,
+    "supplierReceivableAfter": 284100000,
+    "canonicalBalanceBefore": 284100000,
+    "canonicalBalanceAfter": 284100000,
+    "totalIncreases": 690600000,
+    "totalPayments": 406500000,
+    "ledgerEntryCount": 32,
+    "profitAllocationTotal": 196417423,
+    "profitAllocationCount": 188,
+    "referenceBreakdown": {
+      "phone_purchase": {
+        "count": 18,
+        "net": 690600000
+      },
+      "phone_settlement_payment": {
+        "count": 3,
+        "net": -36600000
+      },
+      "(null)": {
+        "count": 2,
+        "net": -90100000
+      },
+      "phone_delete": {
+        "count": 1,
+        "net": -155000000
+      },
+      "partner_settlement_atomic_submit": {
+        "count": 8,
+        "net": -124800000
+      }
+    }
+  },
+  "blockedMutationScenarios": [
+    "sales_orders.grandTotal/transactionDate period guard",
+    "sales_order_items parent-date guard",
+    "installment_sale_items parent-date guard",
+    "installment_transactions.payment_date guard",
+    "sale_profit_allocations snapshot-date guard",
+    "accounting_period_snapshots update/delete append-only guard"
+  ]
+}

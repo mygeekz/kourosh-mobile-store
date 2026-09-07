@@ -1,0 +1,215 @@
+/* Stage 232 — Today Commands compact-only pass.
+   Scope only: .smart-today-v183 section ("امروز چه کار کنم؟"). */
+
+.smart-brain-page .smart-today-v183 {
+  border-radius: 22px !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .038) !important;
+}
+
+.smart-brain-page .smart-today-v183__header {
+  padding: 12px 16px 13px !important;
+  gap: 10px !important;
+  align-items: flex-start !important;
+}
+
+.smart-brain-page .smart-today-v183__heading {
+  max-width: 560px !important;
+}
+
+.smart-brain-page .smart-today-v183__eyebrow {
+  font-size: .62rem !important;
+  letter-spacing: .075em !important;
+  gap: 5px !important;
+}
+
+.smart-brain-page .smart-today-v185__eyebrow-icon,
+.smart-brain-page .smart-today-v183__eyebrow i {
+  font-size: .72rem !important;
+}
+
+.smart-brain-page .smart-today-v183__heading h2 {
+  margin-top: 5px !important;
+  font-size: clamp(1.35rem, 1.75vw, 1.86rem) !important;
+  line-height: 1.28 !important;
+  letter-spacing: -.02em !important;
+}
+
+.smart-brain-page .smart-today-v183__heading p {
+  margin-top: 5px !important;
+  font-size: .72rem !important;
+  line-height: 1.75 !important;
+}
+
+.smart-brain-page .smart-today-v183__count {
+  min-height: 32px !important;
+  padding: 0 11px !important;
+  border-radius: 14px !important;
+  font-size: .68rem !important;
+  gap: 6px !important;
+}
+
+.smart-brain-page .smart-today-v183__count i {
+  font-size: .72rem !important;
+}
+
+.smart-brain-page .smart-today-v183__grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) !important;
+  gap: 10px !important;
+  padding: 12px 14px 14px !important;
+}
+
+.smart-brain-page .smart-today-v183__card {
+  min-height: 212px !important;
+  padding: 11px 12px !important;
+  border-radius: 17px !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .032) !important;
+}
+
+.smart-brain-page .smart-today-v183__card::before {
+  width: 2px !important;
+}
+
+.smart-brain-page .smart-today-v183__card-top {
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.smart-brain-page .smart-today-v183__meta-row {
+  gap: 6px !important;
+}
+
+.smart-brain-page .smart-today-v183__score-pill,
+.smart-brain-page .smart-today-v183__priority-pill {
+  min-height: 26px !important;
+  padding: 0 8px !important;
+  font-size: .62rem !important;
+  line-height: 1.45 !important;
+}
+
+.smart-brain-page .smart-today-v183__priority-dot {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+.smart-brain-page .smart-today-v183__icon-bubble {
+  width: 38px !important;
+  height: 38px !important;
+  flex: 0 0 38px !important;
+  border-radius: 13px !important;
+  font-size: .88rem !important;
+}
+
+.smart-brain-page .smart-today-v183__card h3 {
+  margin-top: 12px !important;
+  font-size: .95rem !important;
+  line-height: 1.7 !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-today-v183__card p {
+  margin-top: 7px !important;
+  font-size: .68rem !important;
+  line-height: 1.8 !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-today-v183__divider {
+  margin: 10px 0 10px !important;
+}
+
+.smart-brain-page .smart-today-v183__cta {
+  min-height: 34px !important;
+  border-radius: 11px !important;
+  font-size: .70rem !important;
+  gap: 6px !important;
+  box-shadow: none !important;
+}
+
+.smart-brain-page .smart-today-v183__footer-actions {
+  grid-template-columns: 1fr 72px !important;
+  gap: 6px !important;
+  margin-top: 7px !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn {
+  min-height: 30px !important;
+  border-radius: 10px !important;
+  font-size: .62rem !important;
+  gap: 5px !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn i {
+  font-size: .66rem !important;
+}
+
+@media (max-width: 1360px) {
+  .smart-brain-page .smart-today-v183__header {
+    padding: 10px 13px 11px !important;
+  }
+
+  .smart-brain-page .smart-today-v183__heading h2 {
+    font-size: clamp(1.22rem, 1.55vw, 1.58rem) !important;
+  }
+
+  .smart-brain-page .smart-today-v183__heading p {
+    font-size: .66rem !important;
+  }
+
+  .smart-brain-page .smart-today-v183__grid {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+    gap: 9px !important;
+    padding: 10px 12px 12px !important;
+  }
+
+  .smart-brain-page .smart-today-v183__card {
+    min-height: 196px !important;
+    padding: 10px !important;
+  }
+
+  .smart-brain-page .smart-today-v183__card h3 {
+    margin-top: 9px !important;
+    font-size: .86rem !important;
+  }
+
+  .smart-brain-page .smart-today-v183__card p {
+    font-size: .62rem !important;
+    line-height: 1.75 !important;
+  }
+
+  .smart-brain-page .smart-today-v183__icon-bubble {
+    width: 34px !important;
+    height: 34px !important;
+    flex-basis: 34px !important;
+    font-size: .78rem !important;
+  }
+
+  .smart-brain-page .smart-today-v183__cta {
+    min-height: 31px !important;
+  }
+
+  .smart-brain-page .smart-today-v183__sub-btn {
+    min-height: 28px !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .smart-brain-page .smart-today-v183__header {
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+  }
+
+  .smart-brain-page .smart-today-v183__heading {
+    max-width: 100% !important;
+  }
+
+  .smart-brain-page .smart-today-v183__count {
+    width: fit-content !important;
+    margin-inline-start: auto !important;
+  }
+}

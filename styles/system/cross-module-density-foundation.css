@@ -1,0 +1,54 @@
+/* Auto-generated UI Foundation: cross-module density pass.
+   Logic/API untouched. Preserve source order for cascade safety. */
+
+
+/* ===== Foundation source: styles/runtime-overrides/07f-cross-module-density-pass.css ===== */
+
+/* Customer list density is now owned by semantic utility classes in Customers.tsx.
+   The retired override assumed five columns and corrupted the current four-column table. */
+
+.report-page :where(.overflow-auto, .overflow-x-auto, .overflow-hidden) > table,
+.report-page :where(.overflow-auto, .overflow-x-auto, .overflow-hidden) table.min-w-full {
+  table-layout: fixed;
+}
+
+.report-page table thead th,
+.report-page table tbody td {
+  padding: .68rem .75rem !important;
+}
+
+.report-page table thead th {
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: -.01em;
+}
+
+.report-page table tbody td {
+  font-size: 12px !important;
+  line-height: 1.7;
+}
+
+.report-page table tbody td :where(.font-black, .font-bold) {
+  letter-spacing: -.01em;
+}
+
+.report-page table tbody td :where(.text-xs) {
+  font-size: 10px !important;
+}
+
+.report-page table tbody td :where(.rounded-full) {
+  white-space: nowrap;
+}
+
+.report-page table {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ===== Phase 15 scoped contract additions ===== */
+
+.compact-density-scope,
+.page-density-scope,
+.data-density-scope {
+  min-width: 0;
+}

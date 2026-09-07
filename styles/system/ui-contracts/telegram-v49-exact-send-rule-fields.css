@@ -1,0 +1,126 @@
+
+/* v49 — based on v48.
+   Exact JSX-targeted fix for the four actual send-rule fields.
+   Uses explicit className added to ModalField, so it does not rely on broad selectors. */
+
+#telegram-settings-form .telegram-send-rules-grid-v49 {
+  gap: 0.95rem !important;
+}
+
+/* The actual field card. */
+#telegram-settings-form .telegram-send-rule-field-v49.modal-field,
+#telegram-settings-form .telegram-send-rule-field-v49.app-field,
+#telegram-settings-form .telegram-send-rule-field-v49 {
+  padding: 0.82rem 0.86rem 0.72rem !important;
+  min-height: 0 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+/* Label rhythm. */
+#telegram-settings-form .telegram-send-rule-field-v49 .modal-field-label {
+  margin: 0 0 0.48rem !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.45 !important;
+  font-size: 0.78rem !important;
+}
+
+/* Flatten wrapper around the input. */
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__control-wrap,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-form-field__control-wrap,
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-input-wrap {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+}
+
+/* Keep input as one compact capsule. */
+#telegram-settings-form .telegram-send-rule-field-v49 input,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-input,
+#telegram-settings-form .telegram-send-rule-field-v49 .modal-control-premium {
+  height: 2.42rem !important;
+  min-height: 2.42rem !important;
+  padding-block: 0.42rem !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+}
+
+/* Icon chip. */
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-form-field__leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-input-leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-input-leading-chip {
+  width: 1.72rem !important;
+  height: 1.72rem !important;
+  inset-inline-start: 0.48rem !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+
+/* Text clears the icon. */
+#telegram-settings-form .telegram-send-rule-field-v49 .premium-has-leading-icon,
+#telegram-settings-form .telegram-send-rule-field-v49 input.premium-has-leading-icon {
+  padding-inline-start: 2.55rem !important;
+}
+
+/* Helper is text, not a second box. */
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__feedback,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field-feedback {
+  margin: 0.42rem 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+}
+
+#telegram-settings-form .telegram-send-rule-field-v49 .app-help,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-error,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field-feedback p,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__feedback p {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.32rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.65 !important;
+  font-size: 0.7rem !important;
+  color: rgb(100, 116, 139) !important;
+}
+
+#telegram-settings-form .telegram-send-rule-field-v49 .app-help i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-error i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field-feedback i,
+#telegram-settings-form .telegram-send-rule-field-v49 .app-field__feedback i {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  margin-top: 0.16rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgb(148, 163, 184) !important;
+}
+
+/* Wide field follows same standard but can be a little more spacious. */
+#telegram-settings-form .telegram-send-rule-field-v49--wide {
+  margin-top: 0.95rem !important;
+  padding: 0.86rem 0.9rem 0.76rem !important;
+}
+
+@media (max-width: 760px) {
+  #telegram-settings-form .telegram-send-rule-field-v49 {
+    padding: 0.78rem 0.78rem 0.7rem !important;
+  }
+}

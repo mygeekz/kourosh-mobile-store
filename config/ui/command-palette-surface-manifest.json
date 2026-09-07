@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "owner": "components/CommandPalette.tsx",
+  "styleOwner": "styles/system/overlay-layer-contract.css",
+  "structure": [
+    "command-palette-shell",
+    "command-palette-header",
+    "command-palette-viewport",
+    "command-palette-footer"
+  ],
+  "forbiddenRuntimeClasses": [
+    "ux-stable-panel",
+    "ux-stable-floating-panel",
+    "bg-slate-900",
+    "dark:bg-white",
+    "motion.div"
+  ],
+  "legacyStyleSourcesRetired": [
+    "styles/pages/reports.css command-palette selectors",
+    "styles/system/modal-partner-foundation.css generic command-palette selectors"
+  ],
+  "selectedState": "soft semantic surface; never inverse/dark in light mode",
+  "scrollOwner": "command-palette-viewport",
+  "density": "compact",
+  "buttonIsolation": "all command-palette buttons opt out of the global button enhancer",
+  "favoriteAction": "frameless icon action; no card surface",
+  "queryChipScale": "compact 23px control"
+}

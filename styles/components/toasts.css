@@ -1,0 +1,110 @@
+/* Phase 10: extracted toast + inline alert polish */
+/* === Final visual language sweep: empty states, inline alerts, toasts === */
+.app-toast {
+  isolation: isolate;
+  min-height: 3.5rem;
+  max-width: min(92vw, 31rem);
+  padding-inline-start: 1.1rem;
+  padding-inline-end: 1rem;
+  border-radius: 1.35rem;
+  backdrop-filter: blur(18px);
+}
+
+.app-toast::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(1.35rem - 1px);
+  background: linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,0));
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app-toast-success,
+.app-toast-error,
+.app-toast-info,
+.app-toast-loading {
+  box-shadow: 0 22px 54px -28px rgba(15,23,42,.22), 0 10px 24px -22px rgba(15,23,42,.16);
+}
+
+.app-toast-loading {
+  position: relative;
+}
+
+.app-toast-loading::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 1rem;
+  top: 50%;
+  width: .95rem;
+  height: .95rem;
+  margin-top: -.475rem;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  opacity: .75;
+  animation: ux-spin .8s linear infinite;
+}
+
+.dark .app-toast::after {
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+}
+
+.app-inline-alert {
+  border-radius: 1.2rem;
+  padding: 1rem 1rem 1rem 1.1rem;
+  box-shadow: 0 18px 36px -28px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+.app-inline-alert__row {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.app-inline-alert__icon {
+  height: 2.55rem;
+  width: 2.55rem;
+  border-radius: 1rem;
+}
+
+.app-inline-alert__content {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.app-inline-alert__title {
+  font-size: .84rem;
+  letter-spacing: -.01em;
+}
+
+.app-inline-alert__text {
+  margin-top: .32rem;
+  font-size: .81rem;
+  line-height: 1.85;
+}
+
+@media (max-width: 768px) {
+  .app-toast {
+    max-width: calc(100vw - 1rem);
+    border-radius: 1.2rem;
+    padding-inline-start: 1rem;
+    padding-inline-end: .95rem;
+  }
+
+  .app-toast-loading::after {
+    inset-inline-end: .85rem;
+  }
+
+  .app-inline-alert {
+    padding: .9rem .9rem .9rem .95rem;
+  }
+
+  .app-inline-alert__row {
+    gap: .65rem;
+  }
+
+  .app-inline-alert__icon {
+    height: 2.35rem;
+    width: 2.35rem;
+  }
+}

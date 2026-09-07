@@ -1,0 +1,177 @@
+/* Stage 104 — Followups behavior + filter/action cleanup */
+
+.followups-executive-page .followups-filter-row:first-of-type {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+.followups-executive-page .followups-filter-group {
+  height: auto !important;
+  padding: 0 !important;
+  gap: 8px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-filter-group button {
+  height: 36px !important;
+  min-height: 36px !important;
+  border: 1px solid rgba(148, 163, 184, .34) !important;
+  border-radius: 14px !important;
+  padding: 0 14px !important;
+  background: #fff !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-filter-group button.is-active {
+  background: #111827 !important;
+  border-color: #111827 !important;
+  color: #fff !important;
+}
+
+.followups-executive-page .followups-date-actions {
+  margin-inline-start: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+
+.followups-executive-page .followups-date-box {
+  width: 178px !important;
+  min-width: 178px !important;
+  height: 56px !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-date-box > span {
+  line-height: 1.2 !important;
+  padding: 0 8px !important;
+  margin: 0 !important;
+}
+
+.followups-executive-page .followups-date-box .app-date-field,
+.followups-executive-page .followups-date-box .app-date-field__control,
+.followups-executive-page .followups-date-box .app-date-field__control.followups-date-input {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.followups-executive-page .followups-date-box input[data-app-date-input='true'] {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 0 13px 0 38px !important;
+  border-radius: 14px !important;
+  line-height: 38px !important;
+}
+
+.followups-executive-page .followups-date-box .app-date-field__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #64748b !important;
+}
+
+.followups-executive-page .followups-refresh-button {
+  align-self: flex-end !important;
+  margin: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  border-radius: 14px !important;
+}
+
+.followups-executive-page .followups-col-note { width: 20% !important; }
+.followups-executive-page .followups-col-action { width: 23% !important; }
+
+.followups-executive-page .followups-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  min-width: 260px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-row-actions::before,
+.followups-executive-page .followups-row-actions::after {
+  content: none !important;
+  display: none !important;
+}
+
+.followups-executive-page .followups-row-action {
+  min-width: 86px !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 13px !important;
+  border-radius: 13px !important;
+  white-space: nowrap !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+
+.followups-executive-page .followups-row-action span {
+  display: inline !important;
+  white-space: nowrap !important;
+}
+
+.followups-executive-page .followups-row-action--success {
+  min-width: 78px !important;
+  background: #ecfdf5 !important;
+}
+
+.followups-executive-page .followups-note {
+  max-width: 420px !important;
+  margin: 0 !important;
+  color: #334155 !important;
+  line-height: 1.75 !important;
+  font-size: .78rem !important;
+  font-weight: 760 !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 980px) {
+  .followups-executive-page .followups-filter-row:first-of-type,
+  .followups-executive-page .followups-date-actions {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+  }
+
+  .followups-executive-page .followups-date-actions {
+    margin-inline-start: 0 !important;
+  }
+
+  .followups-executive-page .followups-date-box {
+    flex: 1 1 170px !important;
+    width: auto !important;
+    min-width: 170px !important;
+  }
+}

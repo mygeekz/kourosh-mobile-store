@@ -1,0 +1,7 @@
+/* v281 — compatibility layer narrowed to canonical semantic success buttons.
+   Raw button class-name inspection is intentionally retired. */
+.ux-btn-success { text-shadow: none !important; }
+.ux-btn-success .ux-btn__content,
+.ux-btn-success .ux-btn__label,
+.ux-btn-success .ux-btn__label-main,
+.ux-btn-success .ux-btn__icon { color: currentColor; }

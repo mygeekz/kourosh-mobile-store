@@ -1,0 +1,40 @@
+
+/* v74 — Fix monitor readiness progress bar.
+   The old <i> element was both the track and fill, so 100% could look like 10%.
+   New structure:
+   i.telegram-executive-pulse__track { --telegram-readiness-width: "100%" }
+     span { width: var(--telegram-readiness-width) }
+*/
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score > i.telegram-executive-pulse__track {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 7px !important;
+  overflow: hidden !important;
+  border-radius: 999px !important;
+  background: rgba(226, 232, 240, 0.96) !important;
+  box-shadow: inset 0 1px 1px rgba(15, 23, 42, 0.06) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score > i.telegram-executive-pulse__track > span {
+  display: block !important;
+  width: var(--telegram-readiness-width, 0%) !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  background: linear-gradient(90deg, rgb(14, 165, 233), rgb(16, 185, 129)) !important;
+  box-shadow: 0 8px 24px rgba(14, 165, 233, 0.18) !important;
+  transition: width 220ms ease !important;
+}
+
+/* Remove older rules that painted the track itself as the fill. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score > i.telegram-executive-pulse__track[style] {
+  background-image: none !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score > i.telegram-executive-pulse__track {
+  background: rgba(51, 65, 85, 0.86) !important;
+}

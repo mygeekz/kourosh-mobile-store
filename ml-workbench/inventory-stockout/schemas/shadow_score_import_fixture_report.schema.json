@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/ml-workbench/inventory-stockout/schemas/shadow_score_import_fixture_report.schema.json",
+  "title": "Phase 13C Metadata-only Shadow Score Import Fixture Report",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "contractVersion",
+    "reportKind",
+    "candidatePackageId",
+    "modelKey",
+    "modelVersion",
+    "predictionType",
+    "fixtureStatus",
+    "validationStatus",
+    "recordCount",
+    "scoreSummary",
+    "confidenceSummary",
+    "labelDistribution",
+    "scoreQualityDistribution",
+    "entityTypeDistribution",
+    "importEligibilityDistribution",
+    "source",
+    "outputHashes",
+    "warningCount",
+    "errorCount",
+    "warnings",
+    "errors",
+    "safetyPolicy",
+    "backendImportPolicy",
+    "productionReadinessClaim",
+    "backendInferenceClaim",
+    "artifactActivationClaim",
+    "businessMutationClaim",
+    "generatedAt"
+  ],
+  "properties": {
+    "contractVersion": { "const": "phase13c-v1" },
+    "reportKind": { "const": "metadata_only_shadow_score_import_fixture_report" },
+    "fixtureStatus": {
+      "enum": [
+        "shadow_score_import_fixture_validated",
+        "shadow_score_import_fixture_warning",
+        "shadow_score_import_fixture_failed"
+      ]
+    },
+    "validationStatus": { "enum": ["pass", "warning", "fail", "unknown"] },
+    "recordCount": { "type": "integer", "minimum": 0 },
+    "productionReadinessClaim": { "const": "not_approved_for_production" },
+    "backendInferenceClaim": { "const": "not_exposed" },
+    "artifactActivationClaim": { "const": "not_activated" },
+    "businessMutationClaim": { "const": "not_allowed" },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "modelExecutionAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canChangeInventoryOrAccounting": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      }
+    },
+    "backendImportPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "backendMustNotExecuteModel": { "const": true },
+        "backendMustNotExposeInference": { "const": true },
+        "backendMustNotActivateArtifact": { "const": true },
+        "backendMustNotMutateBusinessRecords": { "const": true },
+        "backendMustTreatAsEvidenceOnly": { "const": true }
+      }
+    }
+  },
+  "forbiddenFields": [
+    "set_stock",
+    "change_price",
+    "mutate_ledger",
+    "auto_decision",
+    "activate_artifact",
+    "deploy_model",
+    "write_inventory",
+    "write_accounting",
+    "write_ledger",
+    "write_report",
+    "activationDirective",
+    "productionDecisionDirective",
+    "backendExecutionDirective"
+  ]
+}

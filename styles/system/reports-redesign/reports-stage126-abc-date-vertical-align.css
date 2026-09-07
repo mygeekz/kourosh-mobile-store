@@ -1,0 +1,48 @@
+/* Stage 126 — ABC date filter vertical alignment
+   Fine-tunes the date controls so they sit visually in line with the rest of the filter row
+   and gain a little breathing room from the lower divider without changing report logic. */
+
+.abc-executive-page .abc-filter-bar {
+  align-items: center !important;
+  padding-bottom: 4px !important;
+}
+
+.abc-executive-page .abc-filter-presets,
+.abc-executive-page .abc-apply-button {
+  align-self: center !important;
+}
+
+.abc-executive-page .abc-filter-field--date.report-filter-field,
+.abc-executive-page .abc-filter-field--date[data-ui-report-filter-field="true"] {
+  align-self: center !important;
+}
+
+.abc-executive-page .abc-filter-field--date .report-filter-field__head {
+  height: 16px !important;
+  min-height: 16px !important;
+  margin-bottom: 2px !important;
+}
+
+.abc-executive-page .abc-filter-field--date .report-filter-field__body {
+  padding-bottom: 2px !important;
+}
+
+.abc-executive-page .abc-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"]) {
+  height: 37px !important;
+  min-height: 37px !important;
+  max-height: 37px !important;
+  line-height: 37px !important;
+}
+
+@media (max-width: 900px) {
+  .abc-executive-page .abc-filter-bar {
+    padding-bottom: 0 !important;
+  }
+
+  .abc-executive-page .abc-filter-field--date.report-filter-field,
+  .abc-executive-page .abc-filter-field--date[data-ui-report-filter-field="true"],
+  .abc-executive-page .abc-filter-presets,
+  .abc-executive-page .abc-apply-button {
+    align-self: stretch !important;
+  }
+}

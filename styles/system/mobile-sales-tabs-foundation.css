@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Kourosh UI Foundation — Mobile Sales tabs phase 9
+   --------------------------------------------------------------------------
+   Purpose:
+   - Keeps the mobile sales analytics tab grid in a dedicated foundation file.
+   - Preserves previous Stage 144 behavior and import order near the reports
+     tail of the cascade.
+   ========================================================================== */
+
+/* ===== Source: styles/runtime-overrides/11d-mobile-sales-tabs-grid.css ===== */
+/* Stage 144 — Mobile Sales Analytics tabs in two rows
+   The six report-tab boxes were squeezed into one horizontal row.
+   Keep all six visible by using a responsive grid:
+   - xl: 3 columns x 2 rows
+   - sm/md: 2 columns x 3 rows
+   - mobile: 1 column
+*/
+
+.mobile-sales-tab-grid {
+  overflow: visible !important;
+  max-width: 100% !important;
+}
+
+.mobile-sales-tab-button {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  min-height: 64px !important;
+  overflow: hidden !important;
+}
+
+.mobile-sales-tab-button div {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.mobile-sales-tab-button .text-sm {
+  line-height: 1.55 !important;
+}
+
+.mobile-sales-tab-button .text-\[11px\] {
+  line-height: 1.55 !important;
+}
+
+@media (min-width: 1280px) {
+  .mobile-sales-tab-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-sales-tab-button {
+    min-height: 58px !important;
+    padding: .75rem !important;
+  }
+}

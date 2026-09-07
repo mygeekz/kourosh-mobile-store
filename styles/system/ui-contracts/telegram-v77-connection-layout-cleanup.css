@@ -1,0 +1,104 @@
+
+/* v77 — Clean Telegram connection layout:
+   - chat_id and public app URL side-by-side.
+   - Remove redundant "وضعیت مسیر اتصال" visual card by removing it from JSX.
+   - Put proxy guidance text beside proxy field.
+   Scoped to .telegram-connection-bundle-v77. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 {
+  gap: 0.9rem !important;
+}
+
+/* Core grid: keep two columns and prevent "wide" fields from spanning full width. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__core,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-connection-bundle-v73__core {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.78rem !important;
+  align-items: stretch !important;
+}
+
+/* Override previous wide-field behavior so chat_id and base URL sit next to each other. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-chat-id-field-v77,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-base-url-field-v77 {
+  grid-column: auto !important;
+}
+
+/* If older CSS targeted .telegram-field--wide globally, break that only inside this bundle. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-field--wide {
+  grid-column: auto !important;
+}
+
+/* Proxy area: field and explanation side-by-side. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__proxy,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-connection-bundle-v73__proxy {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.82fr) !important;
+  gap: 0.78rem !important;
+  align-items: stretch !important;
+}
+
+/* Proxy ModalField occupies right/first column in RTL layout. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-field-v77 {
+  min-width: 0 !important;
+}
+
+/* Explanation card moved beside proxy field. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-info-v77 {
+  min-width: 0 !important;
+  display: flex !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-info-v77 > div {
+  width: 100% !important;
+  min-height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: rgba(248, 250, 252, 0.78) !important;
+  padding: 0.82rem 0.9rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.85 !important;
+  box-shadow: none !important;
+}
+
+/* Make proxy field and the explanation visually equal-height and calm. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-field-v77,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-field-v77 .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-field-v77 .app-field {
+  height: 100% !important;
+}
+
+/* Remove any accidental old route-status descendants if stale DOM remains during HMR. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-route-status-card {
+  display: none !important;
+}
+
+/* Compact field internals in this bundle */
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 [data-ui-field="true"] {
+  padding: 0.78rem 0.82rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 input {
+  min-height: 2.42rem !important;
+  height: 2.42rem !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-proxy-info-v77 > div {
+  background: rgba(2, 6, 23, 0.24) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+/* Responsive fallback */
+@media (max-width: 1100px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__core,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-connection-bundle-v73__core,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77__proxy,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-connection-bundle-v77 .telegram-connection-bundle-v73__proxy {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,70 @@
+/* Split from 02-legacy-reports-premium-components.css: ux button core + loading states */
+@layer components {
+  .ux-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-btn__content {
+    display: inline-flex;
+  }
+
+  .ux-btn__icon {
+    display: inline-flex;
+    font-size: 0.95em;
+  }
+
+  .ux-btn__label {
+    display: inline-flex;
+  }
+
+  .ux-btn__label-main {
+    display: inline-flex;
+  }
+
+  .ux-btn__label--stacked {
+    flex-direction: column;
+  }
+
+  .ux-btn__hint {
+  }
+
+  .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-start;
+  }
+
+  html[data-button-icon-side='end'] .ux-btn[data-loading='true'] .ux-btn__label--stacked {
+    align-items: flex-end;
+  }
+
+  .ux-btn__spinner {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  /* Loading motion is owned by styles/system/shared-action-buttons-foundation.css. */
+  .ux-btn[data-loading='true'] {
+    transform: none !important;
+    cursor: progress;
+  }
+
+  .ux-icon-btn .ux-btn__content {
+    gap: 0;
+  }
+
+
+
+
+
+
+  .ux-btn.ux-icon-btn .ux-btn__icon {
+    width: 1.72rem;
+    height: 1.72rem;
+    font-size: 0.72rem;
+  }
+
+  .ux-icon-btn {
+    min-width: 2.55rem;
+    padding-inline: 0.55rem;
+  }
+}

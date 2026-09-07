@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "phase": "UI-0H-Sidebar-Canonical-Compact-Width-Search-Grid",
+  "status": "canonical",
+  "owner": "navigation-foundation",
+  "component": "components/Sidebar.tsx",
+  "styleOwner": "styles/components/sidebar.css",
+  "contracts": {
+    "surfaceOwner": "app-sidebar-shell",
+    "scrollOwner": "app-sidebar-scroll",
+    "searchOwner": "app-sidebar-search",
+    "favoritesOwner": "app-sidebar-favorites",
+    "navigationOwner": "app-sidebar-navigation",
+    "supportOwner": "app-sidebar-support",
+    "desktopAnchor": "physical-right",
+    "mobileCloseControl": "mobile-render-only",
+    "widthRangePx": [
+      196,
+      280
+    ],
+    "defaultWidthPx": 272,
+    "searchLayout": "three-column-grid-left-icon"
+  },
+  "removedRuntimeStyles": [
+    "styles/system/sidebar-hover-transparent-phase85.css",
+    "styles/system/sidebar-submenu-transparent-phase84.css",
+    "styles/system/sidebar-stage4-accordion-label-fix.css",
+    "styles/system/sidebar-stage7-spacing-scroll-polish.css",
+    "styles/layout/sidebar-chrome.css",
+    "styles/legacy/03e-legacy-sidebar-transparent-cleanup.css"
+  ],
+  "retiredFeatures": [
+    "desktop-collapse",
+    "collapsed-hover-flyout",
+    "framer-motion-sidebar-transitions",
+    "nested-favorite-card",
+    "inline-sidebar-search-styles",
+    "sidebar-search-dom-important-reset",
+    "sidebar-search-absolute-icon-positioning"
+  ],
+  "rules": [
+    "Only styles/components/sidebar.css may style app-sidebar-* selectors.",
+    "Sidebar rows use one canonical row primitive with depth data attributes.",
+    "Only the scroll viewport may scroll; brand and support remain fixed.",
+    "No hover translation, gradient, nested card or focus ring is allowed.",
+    "Collapsed sidebar and flyout code must not return while collapse remains disabled.",
+    "The RTL application sidebar is physically anchored with right: 0 and left: auto; logical inline-end anchoring is forbidden.",
+    "The mobile close control is not rendered in desktop DOM; visibility must not depend on CSS alone.",
+    "Sidebar width is canonical across StyleContext, layout reservation and settings: 196px to 280px, default 272px.",
+    "Sidebar search uses an explicit three-column grid; the search icon is the physical left column and never overlays input text.",
+    "Sidebar search must not use data-sidebar-search-input or runtime element.style important resets."
+  ]
+}

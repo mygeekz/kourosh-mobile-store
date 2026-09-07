@@ -1,0 +1,182 @@
+/* Stage 224 — Sales performance modal lane fix
+   Directly targets the sales_drop / sales_growth modal (sale202). This modal is not the
+   GenericSmartInsightModal path, so previous generic modal fixes did not affect it.
+   Keep this scoped: do not touch the Smart Insights page or other report cards. */
+
+@media (min-width: 1024px) {
+  .sale202-overlay {
+    --sale202-sidebar-safe-offset: clamp(340px, 26vw, 390px);
+    inset: 0 var(--sale202-sidebar-safe-offset) 0 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    display: grid !important;
+    place-items: center !important;
+    padding: clamp(8px, 1vw, 14px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .sale202-dialog {
+    width: min(860px, calc(100vw - var(--sale202-sidebar-safe-offset) - 28px)) !important;
+    max-width: min(860px, calc(100vw - var(--sale202-sidebar-safe-offset) - 28px)) !important;
+    max-height: calc(100dvh - 24px) !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    transform: none !important;
+  }
+
+  .sale202-header {
+    min-height: auto !important;
+    padding: 12px 18px 10px !important;
+  }
+
+  .sale202-header h2 {
+    margin-top: 0 !important;
+    font-size: clamp(18px, 1.55vw, 24px) !important;
+    line-height: 1.34 !important;
+  }
+
+  .sale202-header p {
+    margin-top: 5px !important;
+    font-size: 12px !important;
+    line-height: 1.65 !important;
+  }
+
+  .sale202-badge {
+    right: 18px !important;
+    top: 12px !important;
+    min-height: 24px !important;
+    padding: 0 9px !important;
+    font-size: 10px !important;
+  }
+
+  .sale202-body {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding: 12px 16px !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .sale202-top-grid {
+    gap: 9px !important;
+  }
+
+  .sale202-kpi {
+    min-height: 64px !important;
+    padding: 10px 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .sale202-kpi__icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 13px !important;
+  }
+
+  .sale202-kpi small {
+    font-size: 10.5px !important;
+  }
+
+  .sale202-kpi strong {
+    margin-top: 4px !important;
+    font-size: clamp(15px, 1.2vw, 19px) !important;
+  }
+
+  .sale202-content-grid {
+    gap: 10px !important;
+    margin-top: 10px !important;
+  }
+
+  .sale202-panel {
+    border-radius: 17px !important;
+    padding: 12px !important;
+  }
+
+  .sale202-panel h3 {
+    font-size: 13px !important;
+  }
+
+  .sale202-table {
+    margin-top: 9px !important;
+  }
+
+  .sale202-table-head {
+    min-height: 32px !important;
+    font-size: 10px !important;
+  }
+
+  .sale202-row {
+    min-height: 39px !important;
+    font-size: 11px !important;
+  }
+
+  .sale202-reason-list {
+    gap: 7px !important;
+    margin-top: 9px !important;
+  }
+
+  .sale202-reason {
+    min-height: 34px !important;
+    padding: 7px 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .sale202-reason span {
+    font-size: 11px !important;
+    line-height: 1.6 !important;
+  }
+
+  .sale202-memory {
+    margin-top: 10px !important;
+  }
+
+  .sale202-memory-grid {
+    gap: 8px !important;
+    margin-top: 9px !important;
+  }
+
+  .sale202-memory-card {
+    min-height: 42px !important;
+    padding: 6px 38px 6px 10px !important;
+  }
+
+  .sale202-memory-icon {
+    width: 24px !important;
+    height: 24px !important;
+    right: 8px !important;
+  }
+
+  .sale202-footer {
+    padding: 10px 16px !important;
+    gap: 10px !important;
+  }
+
+  .sale202-action {
+    min-height: 36px !important;
+    min-width: 150px !important;
+    border-radius: 12px !important;
+    font-size: 11px !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .sale202-overlay {
+    --sale202-sidebar-safe-offset: 336px;
+  }
+
+  .sale202-dialog {
+    width: min(700px, calc(100vw - var(--sale202-sidebar-safe-offset) - 24px)) !important;
+    max-width: min(700px, calc(100vw - var(--sale202-sidebar-safe-offset) - 24px)) !important;
+  }
+
+  .sale202-top-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .sale202-content-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

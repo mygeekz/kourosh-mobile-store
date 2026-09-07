@@ -1,0 +1,27 @@
+build:miniapp exit=127
+
+> kourosh-dashboard-rtl@0.0.0 build:miniapp
+> npm run sync:miniapp-release && vite build --config vite.miniapp.config.ts
+
+
+> kourosh-dashboard-rtl@0.0.0 sync:miniapp-release
+> node scripts/sync-miniapp-release-identity.mjs
+
+{
+  "status": "PASS",
+  "mode": "sync",
+  "release": "v257",
+  "results": [
+    {
+      "target": "miniapp.html",
+      "changed": false,
+      "release": "v257"
+    },
+    {
+      "target": "Cloudflare Edge worker",
+      "changed": false,
+      "release": "v257"
+    }
+  ]
+}
+sh: 1: vite: not found

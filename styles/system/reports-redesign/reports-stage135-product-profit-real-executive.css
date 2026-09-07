@@ -1,0 +1,566 @@
+/* Stage 135 — Product Profit Real executive redesign
+   Scope-limited to /reports/product-profit-real.
+   Apple-minimal premium control dock, single search field, flat Shamsi dates,
+   Bento KPI cards, chart shells and single-layer table. */
+
+.product-profit-real-hero {
+  --ppr-ink: #0f172a;
+  --ppr-muted: #64748b;
+  --ppr-border: rgba(148, 163, 184, .28);
+  --ppr-panel: rgba(255, 255, 255, .96);
+  --ppr-green: #059669;
+  --ppr-blue: #2563eb;
+  --ppr-amber: #d97706;
+  --ppr-rose: #e11d48;
+}
+
+.product-profit-real-hero {
+  padding: 18px 20px !important;
+  border: 1px solid var(--ppr-border) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)) !important;
+  box-shadow: 0 18px 48px -38px rgba(15,23,42,.30) !important;
+  overflow: visible !important;
+}
+
+.product-profit-real-hero__head {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+  text-align: right !important;
+}
+
+.product-profit-real-hero__icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border: 1px solid rgba(203,213,225,.86) !important;
+  border-radius: 18px !important;
+  background: rgba(248,250,252,.92) !important;
+  color: #334155 !important;
+  box-shadow: 0 12px 26px -22px rgba(15,23,42,.34) !important;
+}
+
+.product-profit-real-hero__kicker {
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .12em !important;
+}
+
+.product-profit-real-hero__title {
+  margin: 2px 0 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.18rem, 2vw, 1.48rem) !important;
+  font-weight: 950 !important;
+  letter-spacing: -.02em !important;
+}
+
+.product-profit-real-hero__text {
+  margin: 2px 0 0 !important;
+  color: #64748b !important;
+  font-size: .76rem !important;
+  font-weight: 780 !important;
+  line-height: 1.85 !important;
+}
+
+.product-profit-real-control-dock {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  width: 100% !important;
+  padding: 12px !important;
+  border: 1px solid rgba(226,232,240,.72) !important;
+  border-radius: 24px !important;
+  background: rgba(248,250,252,.58) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72) !important;
+  direction: rtl !important;
+}
+
+.product-profit-real-date-presets {
+  flex: 1 1 350px !important;
+  width: auto !important;
+  min-width: min(100%, 320px) !important;
+  max-width: 460px !important;
+}
+
+.product-profit-real-date-presets.report-date-presets,
+.product-profit-real-date-presets.report-date-presets.report-date-presets--modern,
+[data-ui-report-date-presets="true"].product-profit-real-date-presets {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-profit-real-date-presets .report-date-presets__chips,
+.product-profit-real-date-presets [data-ui-report-date-preset-group="true"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-profit-real-date-presets .report-date-preset-chip,
+.product-profit-real-date-presets [data-ui-report-date-preset="true"] {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(226,232,240,.95) !important;
+  border-radius: 999px !important;
+  background: rgba(255,255,255,.94) !important;
+  color: #334155 !important;
+  box-shadow: 0 8px 22px rgba(15,23,42,.04) !important;
+  font-size: .74rem !important;
+  font-weight: 950 !important;
+}
+
+.product-profit-real-date-presets .report-date-preset-chip.is-active,
+.product-profit-real-date-presets [data-ui-report-date-preset="true"].is-active {
+  border-color: rgba(15,23,42,.88) !important;
+  background: #111827 !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.13) !important;
+}
+
+.product-profit-real-filter-field.report-filter-field,
+.product-profit-real-filter-field[data-ui-report-filter-field="true"] {
+  flex: 0 0 154px !important;
+  width: 154px !important;
+  min-width: 154px !important;
+  max-width: 164px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-profit-real-filter-field .report-filter-field__head {
+  height: 15px !important;
+  min-height: 15px !important;
+  margin-bottom: 4px !important;
+  padding-inline: 4px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  line-height: 1 !important;
+  justify-content: flex-start !important;
+}
+
+.product-profit-real-filter-field .report-filter-field__label {
+  color: #64748b !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+}
+
+.product-profit-real-filter-field .report-filter-field__icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  border-radius: 999px !important;
+  font-size: 8.5px !important;
+}
+
+.product-profit-real-filter-field .report-filter-field__body,
+.product-profit-real-filter-field .report-filter-field__body > *,
+.product-profit-real-filter-field :where(.app-date-field, .app-date-field__control) {
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.product-profit-real-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]) {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  border: 1px solid rgba(203,213,225,.90) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.96) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.26) !important;
+  font-size: .80rem !important;
+  font-weight: 950 !important;
+  text-align: center !important;
+}
+
+.product-profit-real-search {
+  position: relative !important;
+  flex: 1 1 210px !important;
+  min-width: 210px !important;
+  max-width: 300px !important;
+  height: 38px !important;
+}
+
+.product-profit-real-search i {
+  position: absolute !important;
+  left: 13px !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  transform: translateY(-50%) !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  pointer-events: none !important;
+}
+
+.product-profit-real-search input {
+  width: 100% !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  border: 1px solid rgba(203,213,225,.90) !important;
+  border-radius: 14px !important;
+  background: rgba(255,255,255,.96) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 22px -20px rgba(15,23,42,.26) !important;
+  outline: 0 !important;
+  padding: 0 38px 0 34px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: .80rem !important;
+  font-weight: 850 !important;
+}
+
+.product-profit-real-search input:focus {
+  border-color: rgba(59,130,246,.58) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.10), 0 10px 22px -20px rgba(15,23,42,.26) !important;
+}
+
+.product-profit-real-refresh-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  min-width: 106px !important;
+  padding: 0 15px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #111827 !important;
+  color: #fff !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 12px 26px rgba(15,23,42,.16) !important;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease !important;
+}
+
+.product-profit-real-refresh-button:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px rgba(15,23,42,.22) !important;
+}
+
+.product-profit-real-refresh-button:disabled {
+  cursor: wait !important;
+  opacity: .72 !important;
+}
+
+.product-profit-real-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.product-profit-real-kpi {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  min-height: 126px !important;
+  padding: 17px !important;
+  border: 1px solid rgba(148,163,184,.28) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.94)),
+    radial-gradient(circle at 16% 0%, rgba(37,99,235,.07), transparent 36%) !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.055) !important;
+  overflow: hidden !important;
+}
+
+.product-profit-real-kpi::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 16px !important;
+  inset-inline-start: 0 !important;
+  width: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(37,99,235,.50) !important;
+}
+
+.product-profit-real-kpi--revenue::before { background: rgba(5,150,105,.56) !important; }
+.product-profit-real-kpi--cogs::before { background: rgba(217,119,6,.54) !important; }
+.product-profit-real-kpi--profit::before { background: rgba(37,99,235,.52) !important; }
+.product-profit-real-kpi--margin::before { background: rgba(99,102,241,.48) !important; }
+
+.product-profit-real-kpi__icon {
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 auto !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(147,197,253,.70) !important;
+  background: linear-gradient(180deg, rgba(239,246,255,.98), rgba(219,234,254,.76)) !important;
+  color: #2563eb !important;
+}
+
+.product-profit-real-kpi--revenue .product-profit-real-kpi__icon {
+  border-color: rgba(16,185,129,.24) !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.product-profit-real-kpi--cogs .product-profit-real-kpi__icon {
+  border-color: rgba(245,158,11,.26) !important;
+  background: #fffbeb !important;
+  color: #d97706 !important;
+}
+
+.product-profit-real-kpi__label {
+  color: #64748b !important;
+  font-size: .71rem !important;
+  font-weight: 900 !important;
+}
+
+.product-profit-real-kpi__value {
+  margin-top: 5px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.18rem, 2.1vw, 1.72rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.18 !important;
+  letter-spacing: -.02em !important;
+}
+
+.product-profit-real-kpi p {
+  margin: 4px 0 0 !important;
+  color: #64748b !important;
+  font-size: .74rem !important;
+  font-weight: 760 !important;
+  line-height: 1.8 !important;
+}
+
+.product-profit-real-chart-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.product-profit-real-chart-card,
+.product-profit-real-table-shell {
+  border: 1px solid rgba(148,163,184,.28) !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.96) !important;
+  padding: 16px !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.05) !important;
+  overflow: hidden !important;
+}
+
+.product-profit-real-chart-card .recharts-wrapper,
+.product-profit-real-chart-card svg {
+  direction: ltr !important;
+}
+
+.product-profit-real-chart-card .recharts-cartesian-grid line {
+  stroke: rgba(148,163,184,.26) !important;
+}
+
+.product-profit-real-chart-card .recharts-text {
+  fill: #64748b !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+}
+
+.product-profit-real-table-shell {
+  padding: 0 !important;
+}
+
+.product-profit-real-table-scroll {
+  width: 100% !important;
+  overflow-x: auto !important;
+}
+
+.product-profit-real-table {
+  width: 100% !important;
+  min-width: 980px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  font-size: .80rem !important;
+}
+
+.product-profit-real-table thead th {
+  padding: 13px 14px !important;
+  border-bottom: 1px solid rgba(148,163,184,.20) !important;
+  background: rgba(248,250,252,.82) !important;
+  color: #475569 !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.product-profit-real-table tbody td {
+  padding: 14px !important;
+  border-bottom: 1px solid rgba(148,163,184,.16) !important;
+  color: #334155 !important;
+  font-size: .78rem !important;
+  font-weight: 820 !important;
+  vertical-align: middle !important;
+}
+
+.product-profit-real-table tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.product-profit-real-table tbody tr:hover td {
+  background: rgba(37,99,235,.025) !important;
+}
+
+.product-profit-real-table tbody tr.is-negative td {
+  background: rgba(244,63,94,.055) !important;
+}
+
+.dark .product-profit-real-hero {
+  --ppr-ink: #f8fafc;
+  --ppr-muted: #94a3b8;
+  --ppr-border: rgba(148,163,184,.18);
+  --ppr-panel: rgba(15,23,42,.90);
+}
+
+.dark .product-profit-real-hero,
+.dark .product-profit-real-kpi,
+.dark .product-profit-real-chart-card,
+.dark .product-profit-real-table-shell {
+  background:
+    linear-gradient(180deg, rgba(15,23,42,.94), rgba(2,6,23,.88)) !important;
+  box-shadow: none !important;
+  border-color: rgba(148,163,184,.18) !important;
+}
+
+.dark .product-profit-real-hero__icon {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgba(15,23,42,.72) !important;
+  color: #cbd5e1 !important;
+}
+
+.dark .product-profit-real-hero__title,
+.dark .product-profit-real-kpi__value {
+  color: #f8fafc !important;
+}
+
+.dark .product-profit-real-hero__text,
+.dark .product-profit-real-kpi__label,
+.dark .product-profit-real-kpi p {
+  color: #94a3b8 !important;
+}
+
+.dark .product-profit-real-control-dock {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.38) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+
+.dark .product-profit-real-date-presets .report-date-preset-chip,
+.dark .product-profit-real-date-presets [data-ui-report-date-preset="true"],
+.dark .product-profit-real-filter-field--date :where(.app-date-field__input, input[data-app-date-input="true"], input[data-shamsi-date-input="true"]),
+.dark .product-profit-real-search input {
+  border-color: rgba(51,65,85,.9) !important;
+  background: rgba(15,23,42,.82) !important;
+  color: #f8fafc !important;
+}
+
+.dark .product-profit-real-date-presets .report-date-preset-chip.is-active,
+.dark .product-profit-real-date-presets [data-ui-report-date-preset="true"].is-active,
+.dark .product-profit-real-refresh-button {
+  border-color: rgba(248,250,252,.78) !important;
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+.dark .product-profit-real-table thead th {
+  background: rgba(15,23,42,.72) !important;
+  border-color: rgba(51,65,85,.72) !important;
+  color: #cbd5e1 !important;
+}
+
+.dark .product-profit-real-table tbody td {
+  border-color: rgba(51,65,85,.55) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .product-profit-real-chart-card .recharts-text {
+  fill: #94a3b8 !important;
+}
+
+@media (max-width: 1180px) {
+  .product-profit-real-date-presets {
+    flex: 1 1 100% !important;
+    max-width: none !important;
+  }
+
+  .product-profit-real-filter-field.report-filter-field,
+  .product-profit-real-filter-field[data-ui-report-filter-field="true"],
+  .product-profit-real-search {
+    flex: 1 1 180px !important;
+    width: auto !important;
+    min-width: 180px !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .product-profit-real-hero {
+    padding: 14px !important;
+    border-radius: 22px !important;
+  }
+
+  .product-profit-real-hero__head {
+    grid-template-columns: 1fr !important;
+  }
+
+  .product-profit-real-hero__icon {
+    display: none !important;
+  }
+
+  .product-profit-real-control-dock {
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .product-profit-real-date-presets .report-date-presets__chips,
+  .product-profit-real-date-presets [data-ui-report-date-preset-group="true"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .product-profit-real-filter-field.report-filter-field,
+  .product-profit-real-filter-field[data-ui-report-filter-field="true"],
+  .product-profit-real-search,
+  .product-profit-real-refresh-button {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: none !important;
+  }
+
+  .product-profit-real-chart-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

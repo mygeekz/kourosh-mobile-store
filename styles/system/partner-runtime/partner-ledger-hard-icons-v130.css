@@ -1,0 +1,169 @@
+
+/* v130 — hard JSX-backed icon placement: physical right side */
+.partner-ledger-v130 {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130__stat-head {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130__box-icon {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 15px !important;
+  border: 1px solid rgba(226, 232, 240, .94) !important;
+  background: #fff !important;
+  color: #64748b !important;
+  font-size: 16px !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, .35) !important;
+}
+
+.partner-ledger-v130__box-icon.is-emerald {
+  border-color: rgba(167, 243, 208, .96) !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.partner-ledger-v130__box-icon.is-sky {
+  border-color: rgba(186, 230, 253, .96) !important;
+  background: #f0f9ff !important;
+  color: #0284c7 !important;
+}
+
+.partner-ledger-v130__box-icon.is-violet {
+  border-color: rgba(221, 214, 254, .96) !important;
+  background: #f5f3ff !important;
+  color: #7c3aed !important;
+}
+
+.partner-ledger-v130__box-icon.is-rose {
+  border-color: rgba(254, 205, 211, .96) !important;
+  background: #fff1f2 !important;
+  color: #e11d48 !important;
+}
+
+.partner-ledger-v130__metric-box {
+  position: relative !important;
+  min-height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130__metric-icon {
+  position: absolute !important;
+  right: 10px !important;
+  left: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 999px !important;
+  border: 1px solid currentColor !important;
+  font-size: 13px !important;
+  z-index: 1 !important;
+}
+
+.partner-ledger-v130__metric-copy {
+  width: 100% !important;
+  display: block !important;
+  text-align: right !important;
+  direction: rtl !important;
+  font-weight: 850 !important;
+  overflow-wrap: anywhere !important;
+}
+
+.partner-ledger-v130__metric-icon.is-emerald {
+  color: #059669 !important;
+  background: rgba(16, 185, 129, .08) !important;
+}
+
+.partner-ledger-v130__metric-icon.is-rose {
+  color: #e11d48 !important;
+  background: rgba(225, 29, 72, .07) !important;
+}
+
+.partner-ledger-v130__metric-icon.is-slate {
+  color: #64748b !important;
+  background: rgba(100, 116, 139, .08) !important;
+}
+
+.partner-ledger-v130__quick-item {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v130__quick-item > .partner-ledger-v130__box-icon {
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+}
+
+.partner-ledger-v130__quick-item > .min-w-0 {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+/* Kill old v128 order rules when both files are loaded */
+.partner-ledger-v130 .partner-ledger-v128__mini-icon,
+.partner-ledger-v130 .partner-ledger-v128__mini-copy {
+  order: initial !important;
+  margin: 0 !important;
+}
+
+.dark .partner-ledger-v130__box-icon {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .95) !important;
+}
+
+.dark .partner-ledger-v130__box-icon.is-emerald {
+  border-color: rgba(6, 95, 70, .75) !important;
+  background: rgba(6, 78, 59, .30) !important;
+  color: #6ee7b7 !important;
+}
+
+.dark .partner-ledger-v130__box-icon.is-sky {
+  border-color: rgba(14, 116, 144, .65) !important;
+  background: rgba(12, 74, 110, .28) !important;
+  color: #7dd3fc !important;
+}
+
+.dark .partner-ledger-v130__box-icon.is-violet {
+  border-color: rgba(109, 40, 217, .60) !important;
+  background: rgba(76, 29, 149, .28) !important;
+  color: #c4b5fd !important;
+}
+
+.dark .partner-ledger-v130__metric-icon.is-emerald {
+  color: #6ee7b7 !important;
+}
+
+.dark .partner-ledger-v130__metric-icon.is-rose {
+  color: #fda4af !important;
+}
+
+.dark .partner-ledger-v130__metric-icon.is-slate {
+  color: #cbd5e1 !important;
+}

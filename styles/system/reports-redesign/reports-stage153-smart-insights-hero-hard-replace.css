@@ -1,0 +1,353 @@
+/* Stage 153 — Smart Insights hero hard replace
+   This version targets a brand-new hero class rendered directly in TSX.
+   It does not rely on the previous smart-brain-hero structure. */
+
+.smart-insights-hero-v153 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.35fr) minmax(390px, .65fr) !important;
+  gap: 16px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(148, 163, 184, .28) !important;
+  border-radius: 34px !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.99), rgba(248,250,252,.95)),
+    radial-gradient(circle at 8% 0%, rgba(79,70,229,.12), transparent 36%),
+    radial-gradient(circle at 100% 12%, rgba(20,184,166,.10), transparent 34%) !important;
+  box-shadow: 0 26px 72px -54px rgba(15,23,42,.42), inset 0 1px 0 rgba(255,255,255,.84) !important;
+  overflow: visible !important;
+  direction: rtl !important;
+}
+
+.smart-insights-hero-v153__left {
+  min-height: 405px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.82), rgba(248,250,252,.66)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.70) !important;
+}
+
+.smart-insights-hero-v153__right {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+.smart-insights-hero-v153__kicker {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  height: 34px !important;
+  padding-inline: 12px !important;
+  border: 1px solid rgba(79,70,229,.18) !important;
+  border-radius: 999px !important;
+  background: rgba(238,242,255,.76) !important;
+  color: #4338ca !important;
+  font-size: .68rem !important;
+  font-weight: 950 !important;
+  letter-spacing: .13em !important;
+}
+
+.smart-insights-hero-v153__kicker span {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: #4f46e5 !important;
+  box-shadow: 0 0 0 4px rgba(79,70,229,.12) !important;
+}
+
+.smart-insights-hero-v153__title-row {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 14px !important;
+  align-items: start !important;
+}
+
+.smart-insights-hero-v153 h1 {
+  margin: 0 !important;
+  color: #0f172a !important;
+  font-size: clamp(1.65rem, 3vw, 2.65rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.035em !important;
+}
+
+.smart-insights-hero-v153__title-row p {
+  margin: 10px 0 0 !important;
+  max-width: 820px !important;
+  color: #475569 !important;
+  font-size: .88rem !important;
+  font-weight: 780 !important;
+  line-height: 2.15 !important;
+}
+
+.smart-insights-hero-v153__status {
+  display: grid !important;
+  gap: 4px !important;
+  min-width: 112px !important;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.74) !important;
+  text-align: center !important;
+}
+
+.smart-insights-hero-v153__status span,
+.smart-insights-hero-v153__metric span,
+.smart-insights-hero-v153__metric small,
+.smart-insights-hero-v153__side-head span,
+.smart-insights-hero-v153__side-stats span,
+.smart-insights-hero-v153__memory-grid span {
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 900 !important;
+}
+
+.smart-insights-hero-v153__status strong,
+.smart-insights-hero-v153__metric strong,
+.smart-insights-hero-v153__side-stats strong,
+.smart-insights-hero-v153__memory-grid strong {
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-hero-v153__focus {
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) !important;
+  gap: 14px !important;
+  align-items: start !important;
+  padding: 16px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.88), rgba(248,250,252,.70)),
+    radial-gradient(circle at 10% 0%, rgba(20,184,166,.10), transparent 36%) !important;
+}
+
+.smart-insights-hero-v153__focus-icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 18px !important;
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+}
+
+.smart-insights-hero-v153__focus span {
+  color: #059669 !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-hero-v153__focus h2 {
+  margin: 6px 0 0 !important;
+  color: #0f172a !important;
+  font-size: 1.08rem !important;
+  font-weight: 950 !important;
+  line-height: 1.8 !important;
+}
+
+.smart-insights-hero-v153__focus p {
+  margin: 5px 0 0 !important;
+  color: #64748b !important;
+  font-size: .78rem !important;
+  font-weight: 780 !important;
+  line-height: 2 !important;
+}
+
+.smart-insights-hero-v153__metric-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: auto !important;
+}
+
+.smart-insights-hero-v153__metric {
+  position: relative !important;
+  min-height: 92px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(226,232,240,.78) !important;
+  border-radius: 20px !important;
+  background: rgba(255,255,255,.70) !important;
+  overflow: hidden !important;
+}
+
+.smart-insights-hero-v153__metric::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 13px !important;
+  inset-inline-start: 0 !important;
+  width: 3px !important;
+  border-radius: 999px !important;
+  background: #4f46e5 !important;
+}
+
+.smart-insights-hero-v153__metric.is-hot::before { background: #e11d48 !important; }
+.smart-insights-hero-v153__metric.is-good::before { background: #059669 !important; }
+.smart-insights-hero-v153__metric.is-memory::before { background: #d97706 !important; }
+
+.smart-insights-hero-v153__metric strong {
+  display: block !important;
+  margin-top: 6px !important;
+  font-size: 1.22rem !important;
+}
+
+.smart-insights-hero-v153__metric small {
+  display: block !important;
+  margin-top: 3px !important;
+  color: #94a3b8 !important;
+}
+
+.smart-insights-hero-v153__side-card {
+  min-height: 124px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.80) !important;
+  box-shadow: 0 14px 34px rgba(15,23,42,.045) !important;
+}
+
+.smart-insights-hero-v153__side-card--memory {
+  min-height: 142px !important;
+}
+
+.smart-insights-hero-v153__side-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+}
+
+.smart-insights-hero-v153__side-head i {
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 14px !important;
+  background: #f8fafc !important;
+  color: #334155 !important;
+}
+
+.smart-insights-hero-v153__side-card h3 {
+  margin: 10px 0 0 !important;
+  color: #0f172a !important;
+  font-size: 1rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-insights-hero-v153__side-card p {
+  margin: 9px 0 0 !important;
+  color: #475569 !important;
+  font-size: .76rem !important;
+  font-weight: 780 !important;
+  line-height: 2 !important;
+}
+
+.smart-insights-hero-v153__side-stats,
+.smart-insights-hero-v153__memory-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-top: 12px !important;
+}
+
+.smart-insights-hero-v153__memory-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.smart-insights-hero-v153__side-stats div,
+.smart-insights-hero-v153__memory-grid div {
+  display: grid !important;
+  gap: 4px !important;
+  min-height: 64px !important;
+  align-content: center !important;
+  padding: 10px !important;
+  border-radius: 18px !important;
+  background: rgba(248,250,252,.78) !important;
+  text-align: center !important;
+}
+
+.smart-insights-hero-v153 > .smart-insights-control-dock {
+  grid-column: 1 / -1 !important;
+  margin-top: 0 !important;
+}
+
+.dark .smart-insights-hero-v153 {
+  border-color: rgba(51,65,85,.80) !important;
+  background:
+    linear-gradient(145deg, rgba(15,23,42,.96), rgba(2,6,23,.94)),
+    radial-gradient(circle at 8% 0%, rgba(99,102,241,.18), transparent 36%),
+    radial-gradient(circle at 100% 12%, rgba(20,184,166,.14), transparent 34%) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-insights-hero-v153__left,
+.dark .smart-insights-hero-v153__focus,
+.dark .smart-insights-hero-v153__metric,
+.dark .smart-insights-hero-v153__side-card,
+.dark .smart-insights-hero-v153__status {
+  border-color: rgba(51,65,85,.72) !important;
+  background: rgba(15,23,42,.58) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-insights-hero-v153 h1,
+.dark .smart-insights-hero-v153__status strong,
+.dark .smart-insights-hero-v153__metric strong,
+.dark .smart-insights-hero-v153__focus h2,
+.dark .smart-insights-hero-v153__side-card h3,
+.dark .smart-insights-hero-v153__side-stats strong,
+.dark .smart-insights-hero-v153__memory-grid strong {
+  color: #f8fafc !important;
+}
+
+.dark .smart-insights-hero-v153__title-row p,
+.dark .smart-insights-hero-v153__focus p,
+.dark .smart-insights-hero-v153__side-card p {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 1280px) {
+  .smart-insights-hero-v153 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-insights-hero-v153__right {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-insights-hero-v153 {
+    padding: 12px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-insights-hero-v153__left,
+  .smart-insights-hero-v153__side-card {
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-insights-hero-v153__title-row,
+  .smart-insights-hero-v153__focus {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-insights-hero-v153__focus-icon {
+    display: none !important;
+  }
+
+  .smart-insights-hero-v153__metric-grid,
+  .smart-insights-hero-v153__side-stats,
+  .smart-insights-hero-v153__memory-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

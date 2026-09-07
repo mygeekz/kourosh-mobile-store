@@ -1,0 +1,51 @@
+  /* ===== Telegram modal stability + lux light fix ===== */
+  .telegram-link-modal__primary-btn.ux-btn {
+    background: #0f172a !important;
+    border-color: #0f172a !important;
+    color: #ffffff !important;
+    box-shadow: 0 18px 34px -26px rgba(15, 23, 42, 0.42) !important;
+  }
+  .telegram-link-modal__primary-btn.ux-btn:hover {
+    background: #020617 !important;
+    border-color: #020617 !important;
+  }
+  .dark .telegram-link-modal__primary-btn.ux-btn {
+    background: #f8fafc !important;
+    border-color: #f8fafc !important;
+    color: #0f172a !important;
+  }
+  .dark .telegram-link-modal__primary-btn.ux-btn:hover {
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+  .telegram-link-modal__link-value {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .telegram-link-modal__action-grid {
+    align-items: stretch;
+  }
+  .telegram-link-modal__panel-head {
+    align-items: flex-start;
+  }
+  .telegram-link-modal__hero-icon {
+    min-width: 112px;
+  }
+  @media (max-width: 767px) {
+    .telegram-link-modal__hero-icon {
+      justify-content: center;
+      min-height: 72px;
+    }
+    .telegram-link-modal__hero-icon-box {
+      width: 86px;
+      height: 86px;
+      border-radius: 24px;
+    }
+    .telegram-link-modal__hero-icon-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      font-size: 26px;
+    }
+  }
+

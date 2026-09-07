@@ -1,0 +1,91 @@
+/* Stage 96 — Creditors action inner-box removal
+   Removes any remaining wrapper/background/pseudo frame under the 'حساب همکار' action. */
+
+.creditors-executive-page .creditors-table-final td:last-child {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.creditors-executive-page .creditors-row-actions,
+.creditors-executive-page .creditors-row-actions:hover,
+.creditors-executive-page .creditors-row-actions:focus,
+.creditors-executive-page .creditors-row-actions:focus-within {
+  position: static !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.creditors-executive-page .creditors-row-actions::before,
+.creditors-executive-page .creditors-row-actions::after,
+.creditors-executive-page .creditors-row-action::before,
+.creditors-executive-page .creditors-row-action::after,
+.creditors-executive-page .creditors-row-action span::before,
+.creditors-executive-page .creditors-row-action span::after {
+  content: none !important;
+  display: none !important;
+}
+
+.creditors-executive-page .creditors-row-action,
+.creditors-executive-page a.creditors-row-action,
+.creditors-executive-page .creditors-row-action:visited {
+  position: relative !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: max-content !important;
+  min-width: 142px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 16px !important;
+  margin: 0 !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(37, 99, 235, .24) !important;
+  outline: 0 !important;
+  background: #eff6ff !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  color: #1d4ed8 !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  overflow: visible !important;
+}
+
+.creditors-executive-page .creditors-row-action i,
+.creditors-executive-page .creditors-row-action span {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.creditors-executive-page .creditors-row-action:hover,
+.creditors-executive-page .creditors-row-action:focus-visible {
+  background: #dbeafe !important;
+  border-color: rgba(37, 99, 235, .34) !important;
+  box-shadow: none !important;
+}

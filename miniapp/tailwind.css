@@ -1,0 +1,70 @@
+@config "../tailwind.miniapp.config.cjs";
+
+@font-face {
+  font-family: "Vazir";
+  src: url("/fonts/Vazir-FD-WOL.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: "Vazir", Tahoma, system-ui, sans-serif;
+  --miniapp-safe-area-top: max(var(--tg-content-safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), env(safe-area-inset-top, 0px));
+  --miniapp-safe-area-bottom: max(var(--tg-content-safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px), env(safe-area-inset-bottom, 0px));
+  --miniapp-safe-area-left: max(var(--tg-content-safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px), env(safe-area-inset-left, 0px));
+  --miniapp-safe-area-right: max(var(--tg-content-safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px), env(safe-area-inset-right, 0px));
+  --miniapp-safe-inline-start: var(--miniapp-safe-area-left);
+  --miniapp-safe-inline-end: var(--miniapp-safe-area-right);
+}
+
+:root[dir="rtl"] {
+  --miniapp-safe-inline-start: var(--miniapp-safe-area-right);
+  --miniapp-safe-inline-end: var(--miniapp-safe-area-left);
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* v254 platform primitives: one source for Telegram viewport/safe-area behavior. */
+.miniapp-screen {
+  min-block-size: 100svh;
+  min-block-size: var(--tg-viewport-stable-height, 100dvh);
+}
+
+.miniapp-safe-inline {
+  padding-inline-start: max(1rem, var(--miniapp-safe-inline-start));
+  padding-inline-end: max(1rem, var(--miniapp-safe-inline-end));
+}
+
+.miniapp-safe-page {
+  padding-block-start: max(2.5rem, var(--miniapp-safe-area-top));
+  padding-block-end: max(2.5rem, var(--miniapp-safe-area-bottom));
+  padding-inline-start: max(1.5rem, var(--miniapp-safe-inline-start));
+  padding-inline-end: max(1.5rem, var(--miniapp-safe-inline-end));
+}
+
+#miniapp-root :focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #miniapp-root *,
+  #miniapp-root *::before,
+  #miniapp-root *::after {
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  #miniapp-root :focus-visible {
+    outline: 2px solid CanvasText;
+  }
+}

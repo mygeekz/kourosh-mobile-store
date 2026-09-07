@@ -1,0 +1,41 @@
+/* Stage 138 — Product Profit Real summary box fix
+   Makes the top summary boxes readable and informative instead of cramped. */
+
+.product-profit-real-chart-card__summary {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  min-width: 156px !important;
+  max-width: 210px !important;
+  padding: 11px 12px !important;
+}
+
+.product-profit-real-chart-card__summary strong {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  line-height: 1.55 !important;
+}
+
+.product-profit-real-chart-card__summary small {
+  color: #64748b !important;
+  font-size: .68rem !important;
+  font-weight: 860 !important;
+  line-height: 1.6 !important;
+}
+
+.dark .product-profit-real-chart-card__summary small {
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 760px) {
+  .product-profit-real-chart-card__summary {
+    max-width: none !important;
+    width: 100% !important;
+  }
+}

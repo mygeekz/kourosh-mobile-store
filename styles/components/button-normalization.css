@@ -1,0 +1,95 @@
+/* Phase 12.1: syntax-safe late-order legacy button normalization */
+/* Text action buttons that were plain links */
+button[class*='text-red-600'][class*='hover:underline'],
+button[class*='text-indigo-600'],
+button[class*='text-blue-600'],
+button[class*='text-emerald-600'][class*='text-xs'],
+button[class*='text-rose-600'][class*='text-xs'] {
+  display: inline-flex;
+  @apply items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold no-underline shadow-[0_10px_24px_-22px_rgba(15,23,42,0.22)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50;
+}
+
+button[class*='text-red-600'][class*='hover:underline'],
+button[class*='text-rose-600'][class*='text-xs'] {
+  @apply border-rose-200 text-rose-700 hover:bg-rose-50;
+}
+
+button[class*='text-indigo-600'],
+button[class*='text-blue-600'] {
+  @apply border-sky-200 text-sky-700 hover:bg-sky-50;
+}
+
+/* Normalize legacy solid buttons */
+button[class*='bg-indigo-600'],
+button[class*='bg-indigo-500'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-sky-300 bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_-24px_rgba(14,165,233,0.45)] transition-all duration-200 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200/80 disabled:cursor-not-allowed disabled:opacity-60;
+  isolation: isolate;
+}
+
+button[class*='bg-sky-600'],
+button[class*='bg-sky-500'],
+button[class*='bg-blue-600'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-sky-300 bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_-24px_rgba(14,165,233,0.45)] transition-all duration-200 hover:bg-sky-700 focus:outline-none focus:ring-4 focus:ring-sky-200/80 disabled:cursor-not-allowed disabled:opacity-60;
+  isolation: isolate;
+}
+
+button[class*='bg-emerald-600'],
+button[class*='bg-green-600'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-emerald-300 bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_-24px_rgba(16,185,129,0.45)] transition-all duration-200 hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200/80 disabled:cursor-not-allowed disabled:opacity-60;
+  isolation: isolate;
+}
+
+button[class*='bg-red-600'],
+button[class*='bg-rose-600'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-rose-300 bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_16px_32px_-24px_rgba(225,29,72,0.42)] transition-all duration-200 hover:bg-rose-700 focus:outline-none focus:ring-4 focus:ring-rose-200/80 disabled:cursor-not-allowed disabled:opacity-60;
+  isolation: isolate;
+}
+
+button[class*='bg-amber-500'],
+button[class*='bg-orange-500'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-amber-300 bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-[0_16px_32px_-24px_rgba(245,158,11,0.42)] transition-all duration-200 hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-200/80 disabled:cursor-not-allowed disabled:opacity-60;
+  isolation: isolate;
+}
+
+button[class*='bg-gray-200'],
+button[class*='bg-gray-100'],
+button[class*='bg-white'] {
+  display: inline-flex;
+  @apply relative min-h-[42px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-[0_14px_28px_-24px_rgba(15,23,42,0.20)] transition-all duration-200 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+  isolation: isolate;
+}
+
+.page-shell-actions > button,
+.page-shell-actions > a,
+.modal-actions > button,
+.modal-actions > a {
+  @apply min-h-[40px] rounded-2xl px-3 py-2 text-xs;
+}
+
+.settings-action-row > button,
+.settings-action-row > a,
+.repair-actions-row > button,
+.repair-actions-row > a,
+.detail-action-row > button,
+.detail-action-row > a {
+  display: inline-flex;
+  @apply relative min-h-[40px] items-center justify-center gap-2 overflow-hidden rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-[0_14px_28px_-24px_rgba(15,23,42,0.20)] transition-all duration-200 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200/80 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+  isolation: isolate;
+}
+
+.settings-action-row > .primary,
+.repair-actions-row > .primary,
+.detail-action-row > .primary {
+  @apply border-emerald-300 bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-200/80;
+}
+
+.settings-action-row > .danger,
+.repair-actions-row > .danger,
+.detail-action-row > .danger {
+  @apply border-rose-300 bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-200/80;
+}

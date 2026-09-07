@@ -1,0 +1,29 @@
+{
+  "release": "v337",
+  "sourceVersion": "v337",
+  "pinnedRuntime": {
+    "node": "24.11.1",
+    "npm": "11.6.2"
+  },
+  "packageLockSha256": "bec1f1f18e487cb7b56ad5f9c496200be13ee7d29d2098f89ced6c4124c5892e",
+  "localValidation": {
+    "auditRelease": "PASS",
+    "verifyMiniappSource": "PASS 65/65",
+    "accountingGovernanceScenario": "PASS",
+    "realDatabaseValidation": "PASS",
+    "fullGate": "BLOCKED_BY_LOCAL_RUNTIME_ONLY",
+    "localNode": "22.16.0",
+    "localNpm": "10.9.2",
+    "dependenciesInstalled": false
+  },
+  "ciDesign": {
+    "workflow": ".github/workflows/release-gate-v337.yml",
+    "nodePinned": true,
+    "npmPinned": true,
+    "packageLockKeyedCache": true,
+    "portableCacheArtifact": true,
+    "freshRunnerOfflineReplay": true,
+    "offlineRegistryOverride": "http://127.0.0.1:9",
+    "remoteCiExecution": "NOT_RUN_FROM_THIS_CONTAINER"
+  }
+}

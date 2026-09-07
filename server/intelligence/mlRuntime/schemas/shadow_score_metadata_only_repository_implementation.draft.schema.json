@@ -1,0 +1,219 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 13G guarded metadata-only shadow score repository implementation draft report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "phase",
+    "repositoryKind",
+    "status",
+    "inputRecordCount",
+    "validatedRecordCount",
+    "dryRunRecordCount",
+    "stagedRecordCount",
+    "skippedRecordCount",
+    "duplicateIdempotencyKeyCount",
+    "warningCount",
+    "errorCount",
+    "forbiddenFieldCount",
+    "dryRunStatus",
+    "storageDraftStatus",
+    "stageMode",
+    "stageApplied",
+    "stagedRows",
+    "repositoryBoundary",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13G"
+    },
+    "repositoryKind": {
+      "const": "guarded_metadata_only_shadow_score_repository_implementation_draft"
+    },
+    "status": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ]
+    },
+    "inputRecordCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "validatedRecordCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "dryRunRecordCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stagedRecordCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "skippedRecordCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duplicateIdempotencyKeyCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warningCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "errorCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "forbiddenFieldCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "warnings": {
+      "type": "array"
+    },
+    "errors": {
+      "type": "array"
+    },
+    "dryRunStatus": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ]
+    },
+    "storageDraftStatus": {
+      "enum": [
+        "pass",
+        "warning",
+        "fail"
+      ]
+    },
+    "stageMode": {
+      "const": "guarded_in_memory_draft_no_database_write"
+    },
+    "stageApplied": {
+      "type": "boolean"
+    },
+    "stagedRows": {
+      "type": "array"
+    },
+    "storageDraftReport": {
+      "type": "object"
+    },
+    "repositoryBoundary": {
+      "type": "object",
+      "required": [
+        "repositoryImplementationDraft",
+        "guardedInMemoryDraftOnly",
+        "connectsToDatabase",
+        "databaseWriteAllowed",
+        "writesToDatabase",
+        "readsWorkbenchOutputFiles",
+        "exposesRoute",
+        "executesModel",
+        "activatesArtifact",
+        "mutatesBusinessRecords"
+      ],
+      "properties": {
+        "repositoryImplementationDraft": {
+          "const": true
+        },
+        "guardedInMemoryDraftOnly": {
+          "const": true
+        },
+        "connectsToDatabase": {
+          "const": false
+        },
+        "databaseWriteAllowed": {
+          "const": false
+        },
+        "writesToDatabase": {
+          "const": false
+        },
+        "readsWorkbenchOutputFiles": {
+          "const": false
+        },
+        "exposesRoute": {
+          "const": false
+        },
+        "executesModel": {
+          "const": false
+        },
+        "activatesArtifact": {
+          "const": false
+        },
+        "mutatesBusinessRecords": {
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "required": [
+        "metadataOnly",
+        "repositoryImplementationDraft",
+        "guardedInMemoryDraftOnly",
+        "storesValidatedMetadataInMemoryOnly",
+        "storesValidatedMetadataInDatabase",
+        "persistsToDatabase",
+        "connectsToDatabase",
+        "exposesRoute",
+        "modelExecutionAllowed",
+        "inferenceEndpointExposed",
+        "artifactActivationAllowed",
+        "canMutateBusinessRecords"
+      ],
+      "properties": {
+        "metadataOnly": {
+          "const": true
+        },
+        "repositoryImplementationDraft": {
+          "const": true
+        },
+        "guardedInMemoryDraftOnly": {
+          "const": true
+        },
+        "storesValidatedMetadataInMemoryOnly": {
+          "const": true
+        },
+        "storesValidatedMetadataInDatabase": {
+          "const": false
+        },
+        "persistsToDatabase": {
+          "const": false
+        },
+        "connectsToDatabase": {
+          "const": false
+        },
+        "exposesRoute": {
+          "const": false
+        },
+        "modelExecutionAllowed": {
+          "const": false
+        },
+        "inferenceEndpointExposed": {
+          "const": false
+        },
+        "artifactActivationAllowed": {
+          "const": false
+        },
+        "canMutateBusinessRecords": {
+          "const": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "generatedAt": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

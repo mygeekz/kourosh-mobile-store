@@ -1,0 +1,196 @@
+
+/* v41 — based on v39, JSX-safe. Merges only:
+   راهنمای دریافت Chat ID مدیر + روش اتصال مشتری به ربات. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 {
+  margin-top: 1.15rem;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 14px 36px -30px rgba(15, 23, 42, 0.22);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(51, 65, 85, 0.95);
+  box-shadow: 0 16px 36px -28px rgba(2, 6, 23, 0.72);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header {
+  border-bottom-color: rgba(51, 65, 85, 0.95);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 2.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(191, 219, 254, 0.95);
+  background: rgba(239, 246, 255, 0.95);
+  color: rgb(37, 99, 235);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__icon {
+  border-color: rgba(59, 130, 246, 0.28);
+  background: rgba(30, 41, 59, 0.95);
+  color: rgb(125, 211, 252);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.8;
+  font-weight: 900;
+  color: rgb(15, 23, 42);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header strong {
+  color: rgb(248, 250, 252);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header p {
+  margin: 0.05rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.9;
+  color: rgb(71, 85, 105);
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__header p {
+  color: rgb(148, 163, 184);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41__body {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1.15rem !important;
+  align-items: stretch !important;
+}
+
+/* Remove duplicated inner card skins only inside merged group. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide,
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-width: 0 !important;
+}
+
+/* Divider between the two merged sections. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect {
+  padding-top: 1.15rem !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect {
+  border-top-color: rgba(51, 65, 85, 0.95) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__head {
+  display: grid !important;
+  grid-template-columns: minmax(220px, 1fr) auto !important;
+  gap: 1rem !important;
+  align-items: start !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__head > div:first-child {
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__head strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect strong {
+  font-size: 0.96rem;
+  line-height: 1.8;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__head p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect p {
+  margin-top: 0.25rem;
+  font-size: 0.79rem;
+  line-height: 1.9;
+  max-width: 46rem;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__steps {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.7rem !important;
+  margin-top: 0.95rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__steps li {
+  min-width: 0 !important;
+}
+
+/* Connection options follow v39 pattern: one content row, no nested card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect {
+  display: grid !important;
+  grid-template-columns: minmax(220px, 1fr) minmax(260px, 0.9fr) !important;
+  gap: 1.15rem !important;
+  align-items: center !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.7rem !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button {
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 4.25rem !important;
+  padding: 0.65rem 0.75rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button strong {
+  -webkit-line-clamp: 1;
+  line-height: 1.55;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle button small {
+  -webkit-line-clamp: 2;
+  line-height: 1.45;
+  margin-top: 0.18rem;
+}
+
+@media (max-width: 1120px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__head,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-executive-connect {
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem !important;
+  }
+}
+
+@media (max-width: 820px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-chatid-guide__steps,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-access-group-v41 .telegram-connect-toggle {
+    grid-template-columns: 1fr !important;
+  }
+}

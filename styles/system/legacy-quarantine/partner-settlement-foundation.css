@@ -1,0 +1,210 @@
+/* ===== Partner settlement timeline / ledger quarantine ===== */
+/* This file preserves the original cascade order of legacy runtime overrides. */
+
+/* ===== Source: styles/runtime-overrides/04f-partner-phone-product-settlement.css ===== */
+/* ===== Partner phone product-settlement modal — Apple Minimal ===== */
+.phone-settlement-finance-modal__summary {
+  align-items: stretch;
+}
+
+.phone-settlement-finance-modal__balance small {
+  margin-top: .2rem;
+  color: rgb(100 116 139);
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.phone-settlement-chip {
+  min-height: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid rgb(226 232 240 / .92);
+  border-radius: 999px;
+  background: #fff;
+  color: rgb(71 85 105);
+  font-size: .68rem;
+  font-weight: 900;
+  padding: .32rem .65rem;
+}
+
+.phone-settlement-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .65rem;
+}
+
+.phone-settlement-metric-card {
+  display: grid;
+  gap: .18rem;
+  border: 1px solid rgb(226 232 240 / .95);
+  border-radius: 18px;
+  background: #fff;
+  padding: .75rem .85rem;
+  box-shadow: 0 10px 24px -24px rgba(15,23,42,.16), inset 0 1px 0 rgba(255,255,255,.92);
+}
+
+.phone-settlement-metric-card span {
+  color: rgb(100 116 139);
+  font-size: .7rem;
+  font-weight: 850;
+}
+
+.phone-settlement-metric-card strong {
+  color: rgb(15 23 42);
+  font-size: .86rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.phone-settlement-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgb(226 232 240 / .92);
+  background: rgb(241 245 249);
+}
+
+.phone-settlement-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgb(15 23 42), rgb(71 85 105));
+  transition: width .22s ease;
+}
+
+.phone-settlement-finance-modal .people-amount-chip,
+.phone-settlement-finance-modal .people-note-template {
+  gap: .38rem;
+}
+
+html.dark .phone-settlement-chip,
+html.dark .phone-settlement-metric-card {
+  background: rgb(2 6 23);
+  border-color: rgb(51 65 85 / .9);
+  box-shadow: 0 12px 26px -24px rgba(2,6,23,.5), inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+html.dark .phone-settlement-chip,
+html.dark .phone-settlement-metric-card strong {
+  color: rgb(241 245 249);
+}
+
+html.dark .phone-settlement-metric-card span,
+html.dark .phone-settlement-finance-modal__balance small {
+  color: rgb(148 163 184);
+}
+
+html.dark .phone-settlement-progress {
+  background: rgb(30 41 59);
+  border-color: rgb(51 65 85 / .9);
+}
+
+html.dark .phone-settlement-progress > span {
+  background: linear-gradient(90deg, rgb(241 245 249), rgb(148 163 184));
+}
+
+@media (max-width: 720px) {
+  .phone-settlement-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .phone-settlement-finance-modal__summary {
+    gap: .8rem;
+  }
+  .phone-settlement-chip {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ===== Partner ledger sticky batch summary ===== */
+.partner-ledger-batch-sticky-summary__surface {
+  display: grid;
+  gap: .9rem;
+  border: 1px solid rgba(226,232,240,.96);
+  border-radius: 24px;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 18px 40px -34px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.92);
+  padding: .95rem 1rem;
+}
+.partner-ledger-batch-sticky-summary__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.partner-ledger-batch-sticky-summary__eyebrow {
+  color: rgb(100 116 139);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+.partner-ledger-batch-sticky-summary__title {
+  margin-top: .35rem;
+  color: rgb(15 23 42);
+  font-size: .98rem;
+  font-weight: 900;
+  direction: ltr;
+}
+.partner-ledger-batch-sticky-summary__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+.partner-ledger-batch-sticky-summary__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 999px;
+  background: rgba(248,250,252,.92);
+  color: rgb(71 85 105);
+  padding: .4rem .65rem;
+  font-size: .72rem;
+  font-weight: 800;
+}
+.partner-ledger-batch-sticky-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: .75rem;
+}
+.partner-ledger-batch-sticky-summary__card {
+  border: 1px solid rgba(226,232,240,.92);
+  border-radius: 18px;
+  background: rgba(248,250,252,.86);
+  padding: .8rem .9rem;
+}
+.partner-ledger-batch-sticky-summary__label {
+  display: block;
+  color: rgb(100 116 139);
+  font-size: .73rem;
+  font-weight: 700;
+}
+.partner-ledger-batch-sticky-summary__value {
+  display: block;
+  margin-top: .45rem;
+  color: rgb(15 23 42);
+  font-size: .92rem;
+  font-weight: 900;
+}
+html.dark .partner-ledger-batch-sticky-summary__surface {
+  background: rgb(2 6 23);
+  border-color: rgba(30,41,59,.96);
+  box-shadow: 0 18px 40px -34px rgba(2,6,23,.48), inset 0 1px 0 rgba(255,255,255,.03);
+}
+html.dark .partner-ledger-batch-sticky-summary__title,
+html.dark .partner-ledger-batch-sticky-summary__value {
+  color: rgb(241 245 249);
+}
+html.dark .partner-ledger-batch-sticky-summary__eyebrow,
+html.dark .partner-ledger-batch-sticky-summary__label {
+  color: rgb(148 163 184);
+}
+html.dark .partner-ledger-batch-sticky-summary__pill,
+html.dark .partner-ledger-batch-sticky-summary__card {
+  background: rgb(15 23 42);
+  border-color: rgba(51,65,85,.96);
+  color: rgb(226 232 240);
+}

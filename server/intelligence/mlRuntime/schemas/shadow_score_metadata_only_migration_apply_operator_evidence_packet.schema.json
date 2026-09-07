@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kourosh.shadow_score_metadata_only_migration_apply_operator_evidence_packet.schema.json",
+  "title": "Kourosh Phase 13P Metadata-only Migration Apply Operator Evidence Packet",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "packetKind",
+    "packetMode",
+    "operatorEvidencePacketOnly",
+    "evidenceOnly",
+    "operatorApproved",
+    "allowed",
+    "ready",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "routeExposed",
+    "evidenceItems",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": { "const": "Phase 13P" },
+    "packetKind": { "const": "metadata_only_migration_apply_operator_evidence_packet" },
+    "packetMode": { "const": "operator_evidence_packet_only_no_migration_application" },
+    "operatorEvidencePacketOnly": { "const": true },
+    "evidenceOnly": { "const": true },
+    "operatorApprovalRequired": { "const": true },
+    "operatorApproved": { "const": false },
+    "allowed": { "const": false },
+    "ready": { "const": false },
+    "migrationApplyAccepted": { "const": false },
+    "migrationApplicationAllowed": { "const": false },
+    "migrationApplicationPerformed": { "const": false },
+    "migrationRunnerRegistered": { "const": false },
+    "migrationRunnerOperational": { "const": false },
+    "migrationRegistryMutated": { "const": false },
+    "sqlTextLoadedFromDisk": { "const": false },
+    "sqlExecutionAllowed": { "const": false },
+    "databaseConnectionAllowed": { "const": false },
+    "databaseWriteAllowed": { "const": false },
+    "tableCreationApplied": { "const": false },
+    "tableCreated": { "const": false },
+    "repositoryWriteAllowed": { "const": false },
+    "routeExposed": { "const": false },
+    "sourcePhases": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "Phase 13O" },
+        { "const": "Phase 13N" },
+        { "const": "Phase 13M" }
+      ]
+    },
+    "evidenceItems": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["evidenceId", "sourcePhase", "included", "evidenceOnly", "actionable", "operatorApproved", "allowed", "migrationApplicationAllowed"],
+        "properties": {
+          "included": { "const": true },
+          "evidenceOnly": { "const": true },
+          "actionable": { "const": false },
+          "operatorApproved": { "const": false },
+          "allowed": { "const": false },
+          "migrationApplicationAllowed": { "const": false },
+          "sqlExecutionAllowed": { "const": false },
+          "databaseConnectionAllowed": { "const": false },
+          "databaseWriteAllowed": { "const": false },
+          "routeExposed": { "const": false },
+          "businessMutationAllowed": { "const": false }
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "operatorEvidencePacketOnly": { "const": true },
+        "operatorApproved": { "const": false },
+        "noRuntimeSqlExecution": { "const": true },
+        "noDatabaseConnection": { "const": true },
+        "noDatabaseWrite": { "const": true },
+        "noMigrationApplication": { "const": true },
+        "modelExecutionAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      }
+    }
+  }
+}

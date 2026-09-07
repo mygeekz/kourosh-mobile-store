@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "saleId": 1,
+  "saleDate": "2026-03-27",
+  "closedUpdate": {
+    "blocked": true,
+    "error": "accounting period is closed"
+  },
+  "reopenedUpdate": {
+    "blocked": false
+  },
+  "stateEventUpdate": {
+    "blocked": true,
+    "error": "accounting_period_state_events is append-only"
+  },
+  "stateEventDelete": {
+    "blocked": true,
+    "error": "accounting_period_state_events is append-only"
+  },
+  "reclosedUpdate": {
+    "blocked": true,
+    "error": "accounting period is closed"
+  },
+  "history": [
+    "closed",
+    "reopened",
+    "closed"
+  ],
+  "behzadBalance": 284100000.0
+}

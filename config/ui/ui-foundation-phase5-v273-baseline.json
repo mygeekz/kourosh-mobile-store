@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 5 / v273 Dialog + Modal + Drawer Hardening",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v273",
+  "capturedOn": "2026-08-30",
+  "canonicalOwners": {
+    "dialogShell": "components/ui/DialogShell.tsx",
+    "dialog": "components/ui/Dialog.tsx",
+    "drawer": "components/ui/Drawer.tsx",
+    "dialogActions": "components/ui/DialogActions.tsx",
+    "overlayContract": "components/ui/overlayContract.ts",
+    "overlayCss": "styles/system/overlay-layer-contract.css",
+    "modalCss": "styles/components/modal-system.css"
+  },
+  "drawerConsumers": [
+    "components/SmartSalesAdvisor.tsx",
+    "components/reports/mlOperator/MlOperatorDetailDrawer.tsx",
+    "components/reports/mlWorkbenchImportDashboard/MetadataImportDetailDrawer.tsx",
+    "pages/ReportsLayout.tsx",
+    "pages/SearchResults.tsx",
+    "pages/reports/CollectionFollowupCenter.tsx",
+    "pages/reports/MobileSalesAnalytics.tsx",
+    "pages/reports/ProductSalesReport.tsx",
+    "pages/reports/PurchaseSuggestionReport.tsx"
+  ],
+  "approvedRawRoleDialogOwners": [
+    "components/ShamsiDatePicker.tsx",
+    "components/ColumnPicker.tsx",
+    "components/header/HeaderQuickPopover.tsx",
+    "components/main-layout/NavigationBreadcrumbQuickPreview.tsx",
+    "components/ui/DialogShell.tsx",
+    "components/PwaInstallOverlay.tsx"
+  ],
+  "expectations": {
+    "directDrawerDialogShellConsumersOutsideDrawer": 0,
+    "drawerConsumerFixedViewportOverlays": 0,
+    "drawerConsumerArbitraryZIndexes": 0,
+    "dialogShellDirectDocumentBodyPortal": 0,
+    "dialogShellRuntimeImportantStyleWrites": 0,
+    "rawRoleDialogOwnersOutsideApproved": 0,
+    "legacyWidthClassUsagesMaximum": 59
+  },
+  "deferred": [
+    "widthClass remains a compatibility input for existing Dialog consumers; explicit size migration can only reduce this debt in later cleanup.",
+    "Page palette and hard-coded semantic color retirement remain Phase 7 scope.",
+    "PWA install overlay is an application-install/auth surface and is not migrated into the authenticated app Dialog foundation in Phase 5.",
+    "Command palette and specialized report modal content continue to use DialogShell where they need nonstandard inner composition; viewport/focus/portal behavior is still canonical through DialogShell."
+  ],
+  "regressions": {
+    "settingsEditUserFormContext": {
+      "controller": "pages/settings/SettingsController.tsx",
+      "modalStack": "pages/settings/SettingsModalStack.tsx",
+      "requiredContextKey": "editUserFormErrors",
+      "status": "historical-covered-by-settingsUserModalContext"
+    },
+    "settingsUserModalContext": {
+      "controller": "pages/settings/SettingsController.tsx",
+      "modalStack": "pages/settings/SettingsModalStack.tsx",
+      "requiredContextKeys": [
+        "editUserFormErrors",
+        "resetPasswordErrors",
+        "setResetPasswordErrors"
+      ]
+    }
+  },
+  "semanticSurfaces": {
+    "smsAutoSendSheet": "sheet",
+    "reportsCommandPalette": "command",
+    "reportsWorkspace": "drawer"
+  }
+}

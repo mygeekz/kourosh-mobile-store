@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/phase13a/offline_execution_report.schema.json",
+  "title": "Kourosh Phase 13A Offline Execution Report",
+  "type": "object",
+  "required": [
+    "candidatePackageId",
+    "modelKey",
+    "modelVersion",
+    "predictionType",
+    "executionStatus",
+    "rowCount",
+    "scoreCount",
+    "scoreDistribution",
+    "labelDistribution",
+    "confidenceSummary",
+    "metricsReference",
+    "validationStatus",
+    "warnings",
+    "errors",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "candidatePackageId": { "type": "string" },
+    "modelKey": { "type": "string" },
+    "modelVersion": { "type": "string" },
+    "predictionType": { "type": "string" },
+    "executionStatus": { "enum": ["offline_execution_validated", "offline_execution_with_warnings", "offline_execution_invalid"] },
+    "rowCount": { "type": "integer", "minimum": 0 },
+    "scoreCount": { "type": "integer", "minimum": 0 },
+    "scoreDistribution": { "type": "object" },
+    "labelDistribution": { "type": "object" },
+    "confidenceSummary": { "type": "object" },
+    "metricsReference": { "type": "object" },
+    "validationStatus": { "enum": ["pass", "warning", "fail", "unknown"] },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "safetyPolicy": {
+      "type": "object",
+      "properties": {
+        "modelExecutionAllowed": { "const": false },
+        "runtimeInvocationAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactExecutionAllowed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "generatedAt": { "type": "string" },
+    "evidenceOnly": { "const": true },
+    "productionReadinessClaim": { "const": "not_approved_for_production" },
+    "backendInferenceClaim": { "const": "not_exposed" },
+    "artifactActivationClaim": { "const": "not_activated" },
+    "businessMutationClaim": { "const": "not_allowed" }
+  },
+  "additionalProperties": true
+}

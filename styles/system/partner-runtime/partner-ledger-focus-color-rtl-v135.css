@@ -1,0 +1,249 @@
+
+/* v135 — remove blue focus, neutralize green filters, right-align transaction controls */
+.partner-ledger-v132__transactions-panel,
+.partner-ledger-v132__transactions-panel * {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.partner-ledger-v132__transactions-panel input:focus,
+.partner-ledger-v132__transactions-panel input:focus-visible,
+.partner-ledger-v132__transactions-panel select:focus,
+.partner-ledger-v132__transactions-panel select:focus-visible,
+.partner-ledger-v132__transactions-panel button:focus,
+.partner-ledger-v132__transactions-panel button:focus-visible,
+.partner-ledger-v132__transactions-panel [role="button"]:focus,
+.partner-ledger-v132__transactions-panel [role="button"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132__transactions-panel input,
+.partner-ledger-v132__transactions-panel select,
+.partner-ledger-v132__transactions-panel button {
+  outline: none !important;
+}
+
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"],
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"]:hover,
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"]:focus,
+.partner-ledger-v132__transactions-panel input[placeholder*="جستجو"]:focus-visible {
+  border-color: rgba(203, 213, 225, .90) !important;
+  box-shadow: none !important;
+  background: #fff !important;
+}
+
+.partner-ledger-v132__transactions-panel select,
+.partner-ledger-v132__transactions-panel select:hover,
+.partner-ledger-v132__transactions-panel select:focus,
+.partner-ledger-v132__transactions-panel select:focus-visible {
+  border-color: rgba(203, 213, 225, .90) !important;
+  box-shadow: none !important;
+  background-color: #fff !important;
+}
+
+/* Row layout: start from the right, do not leave the right side empty */
+.partner-ledger-v132 .partner-ledger-v133__search-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 12px !important;
+  direction: rtl !important;
+  width: 100% !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-wrap {
+  flex: 0 1 430px !important;
+  max-width: 430px !important;
+  min-width: 260px !important;
+  width: 430px !important;
+  justify-self: auto !important;
+  order: 1 !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-grid > div:last-child {
+  flex: 1 1 auto !important;
+  order: 2 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  direction: rtl !important;
+  min-width: 320px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-input {
+  height: 40px !important;
+  min-height: 40px !important;
+  border-radius: 14px !important;
+  padding-left: 36px !important;
+  padding-right: 12px !important;
+  font-size: 12px !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__search-wrap > i {
+  left: 11px !important;
+  right: auto !important;
+  font-size: 12px !important;
+}
+
+/* The filter rows themselves should align to the right side in RTL */
+.partner-ledger-v132__transactions-panel .flex.flex-wrap.items-center.gap-2.justify-end,
+.partner-ledger-v132__transactions-panel .xl\:justify-end {
+  justify-content: flex-start !important;
+  direction: rtl !important;
+}
+
+/* Remove the hard green filter style from v132 and use a neutral/brand-safe style */
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn:hover,
+.partner-ledger-v132__transactions-panel .people-action-btn-primary,
+.partner-ledger-v132__transactions-panel .people-action-btn-secondary {
+  border: 1px solid rgba(226, 232, 240, .95) !important;
+  background: #fff !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active:hover {
+  border-color: rgba(191, 219, 254, .95) !important;
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  box-shadow: none !important;
+}
+
+/* Table/card toggle active state should also avoid the green override */
+.partner-ledger-v132__transactions-panel button[class*="bg-slate-950"],
+.partner-ledger-v132__transactions-panel button[class*="dark:bg-white"] {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(203, 213, 225, .95) !important;
+}
+
+/* Compact summary cards remain right-aligned */
+.partner-ledger-v132 .partner-ledger-v133__summary-grid {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-card {
+  text-align: right !important;
+}
+
+.partner-ledger-v132 .partner-ledger-v133__summary-head {
+  justify-content: flex-start !important;
+  direction: rtl !important;
+}
+
+.dark .partner-ledger-v132__transactions-panel input[placeholder*="جستجو"],
+.dark .partner-ledger-v132__transactions-panel input[placeholder*="جستجو"]:focus,
+.dark .partner-ledger-v132__transactions-panel select,
+.dark .partner-ledger-v132__transactions-panel select:focus,
+.dark .partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn {
+  border-color: rgba(51, 65, 85, .92) !important;
+  background: rgba(15, 23, 42, .95) !important;
+  color: #e2e8f0 !important;
+}
+
+.dark .partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active {
+  border-color: rgba(96, 165, 250, .55) !important;
+  background: rgba(30, 64, 175, .30) !important;
+  color: #bfdbfe !important;
+}
+
+@media (max-width: 980px) {
+  .partner-ledger-v132 .partner-ledger-v133__search-grid {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-v133__search-wrap {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .partner-ledger-v132 .partner-ledger-v133__search-grid > div:last-child {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}
+
+
+/* v136 hard fix — stronger overrides for focus + green filter buttons + RTL alignment */
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-wrap,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-wrap:focus-within {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-input,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-input:hover,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-input:focus,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-input:focus-visible,
+.partner-ledger-v132__transactions-panel input.partner-ledger-v133__search-input,
+.partner-ledger-v132__transactions-panel input.partner-ledger-v133__search-input:focus,
+.partner-ledger-v132__transactions-panel input.partner-ledger-v133__search-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  ring: 0 !important;
+  border-color: rgba(203, 213, 225, .96) !important;
+  background: #fff !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-input::-moz-focus-inner {
+  border: 0 !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-grid,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-grid > div,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-grid .flex.flex-wrap.items-center.gap-2.justify-end.xl\:justify-end,
+.partner-ledger-v132__transactions-panel > .flex-1 > .flex.flex-wrap.items-center.gap-2.justify-end,
+.partner-ledger-v132__transactions-panel > .flex-1 > .flex.flex-wrap.items-center.gap-2.justify-end.xl\:justify-end {
+  direction: rtl !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-grid {
+  justify-content: flex-start !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__search-grid > div:last-child,
+.partner-ledger-v132__transactions-panel > .flex-1 > .flex.flex-wrap.items-center.gap-2.justify-end {
+  justify-content: flex-start !important;
+}
+
+.partner-ledger-v132__transactions-panel .people-action-btn-primary,
+.partner-ledger-v132__transactions-panel .people-action-btn-secondary,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn:hover,
+.partner-ledger-v132__transactions-panel .people-action-btn-primary[class*="primary"],
+.partner-ledger-v132__transactions-panel .people-action-btn-secondary[class*="primary"],
+.partner-ledger-v132__transactions-panel .ux-btn.people-action-btn-primary,
+.partner-ledger-v132__transactions-panel .ux-btn.people-action-btn-secondary {
+  background: #ffffff !important;
+  border: 1px solid rgba(226, 232, 240, .96) !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn .ux-btn__icon,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn i {
+  color: currentColor !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active:hover,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active.people-action-btn-primary,
+.partner-ledger-v132__transactions-panel .partner-ledger-v135-filter-btn.is-active.people-action-btn-secondary {
+  background: #eff6ff !important;
+  border-color: rgba(191, 219, 254, .98) !important;
+  color: #2563eb !important;
+}
+
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__summary-grid,
+.partner-ledger-v132__transactions-panel .partner-ledger-v133__summary-grid > * {
+  direction: rtl !important;
+  text-align: right !important;
+}

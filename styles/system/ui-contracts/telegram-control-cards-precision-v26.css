@@ -1,0 +1,182 @@
+/* v26: precision fix for the six Telegram control cards only. */
+#telegram-settings-form .telegram-control-merged-grid {
+  align-items: stretch !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card {
+  min-height: 188px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__inner {
+  position: relative !important;
+  display: flex !important;
+  min-height: 188px !important;
+  height: 100% !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  padding: 16px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__head {
+  position: relative !important;
+  display: flex !important;
+  width: 100% !important;
+  min-height: 38px !important;
+  flex: 0 0 38px !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  direction: rtl !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__icon {
+  order: 1 !important;
+  position: static !important;
+  align-self: flex-start !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  flex: 0 0 36px !important;
+  margin: 0 !important;
+  transform: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__status {
+  order: 2 !important;
+  align-self: flex-start !important;
+  margin: 0 !important;
+  margin-inline-start: auto !important;
+  max-width: calc(100% - 54px) !important;
+  min-height: 28px !important;
+  flex: 0 1 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  line-height: 1.4 !important;
+  text-align: center !important;
+  transform: none !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__body {
+  display: flex !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 5px !important;
+  padding: 9px 0 0 !important;
+  margin: 0 !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__title {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: rgb(15, 23, 42) !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html.dark #telegram-settings-form .telegram-control-merged-card__title {
+  color: rgb(248, 250, 252) !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__hint {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: rgb(71, 85, 105) !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1.85 !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+html.dark #telegram-settings-form .telegram-control-merged-card__hint {
+  color: rgb(203, 213, 225) !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__value {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: auto !important;
+  padding: 9px 10px !important;
+  border-radius: 16px !important;
+  direction: rtl !important;
+  text-align: right !important;
+  overflow: visible !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__value-label,
+#telegram-settings-form .telegram-control-merged-card__value-text {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  text-align: right !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__value-label {
+  margin-bottom: 2px !important;
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__value-text {
+  font-size: 12px !important;
+  line-height: 1.7 !important;
+  font-weight: 900 !important;
+}
+
+#telegram-settings-form .telegram-control-merged-card__value-text[dir="ltr"] {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  text-align: left !important;
+}
+
+@media (max-width: 640px) {
+  #telegram-settings-form .telegram-control-merged-card,
+  #telegram-settings-form .telegram-control-merged-card__inner {
+    min-height: 176px !important;
+  }
+
+  #telegram-settings-form .telegram-control-merged-card__inner {
+    padding: 14px !important;
+  }
+
+  #telegram-settings-form .telegram-control-merged-card__status {
+    max-width: calc(100% - 50px) !important;
+    white-space: normal !important;
+  }
+}

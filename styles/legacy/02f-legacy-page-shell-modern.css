@@ -1,0 +1,62 @@
+/* Split from 02-legacy-reports-premium-components.css: page shell modern */
+@layer components {
+  .page-shell-modern {
+    background:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.16), transparent 42%),
+      linear-gradient(180deg, rgba(255,255,255,0.99), rgba(248,250,252,0.96));
+    box-shadow: 0 24px 54px -42px rgba(15,23,42,0.34);
+  }
+
+  .dark .page-shell-modern {
+    background:
+      radial-gradient(circle at top right, hsl(var(--primary) / 0.24), transparent 48%),
+      linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,0.94));
+    box-shadow: 0 28px 60px -42px rgba(2,6,23,0.78);
+  }
+
+  .page-content-stack {
+  }
+
+  .page-shell-kicker {
+    display: inline-flex;
+  }
+
+  .page-shell-kicker-dot {
+  }
+
+  .page-shell-status-chip {
+    display: inline-flex;
+    white-space: normal;
+  }
+
+  .page-shell-icon {
+    display: flex;
+  }
+
+  .page-shell-icon i,
+  .page-shell-icon svg {
+  }
+
+  .page-shell-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .page-shell-actions > * {
+    max-width: 100%;
+  }
+
+  .page-shell-actions .ux-toolbar-search,
+  .page-shell-actions .ux-toolbar-surface,
+  .page-shell-actions .ux-report-tools,
+  .page-shell-actions .ux-reports-categories {
+    width: 100%;
+  }
+
+  .page-shell-actions input,
+  .page-shell-actions select,
+  .page-shell-actions textarea,
+  .page-shell-actions button {
+    max-width: 100%;
+  }
+}

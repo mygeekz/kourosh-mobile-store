@@ -1,0 +1,251 @@
+
+/* Phase 87 — Settings General / Modules Final Polish
+   Scoped to Settings root only. No business logic or layout state is changed. */
+
+.settings-shell.settings-redesign-v1 {
+  --settings-surface: var(--ds-surface-card);
+  --settings-surface-muted: var(--ds-surface-card-muted);
+  --settings-border: var(--ds-border-subtle);
+  --settings-border-strong: var(--ds-border-strong);
+  --settings-text: var(--ds-text-primary);
+  --settings-muted: var(--ds-text-secondary);
+  --settings-radius-xl: 28px;
+  --settings-radius-lg: 22px;
+  --settings-shadow: var(--ds-shadow-card);
+  --settings-shadow-soft: var(--ds-shadow-card);
+  color: var(--settings-text);
+}
+
+.dark .settings-shell.settings-redesign-v1 {
+  --settings-surface: var(--ds-surface-card);
+  --settings-surface-muted: var(--ds-surface-card-muted);
+  --settings-border: var(--ds-border-subtle);
+  --settings-border-strong: var(--ds-border-strong);
+  --settings-text: var(--ds-text-primary);
+  --settings-muted: var(--ds-text-secondary);
+  --settings-shadow: var(--ds-shadow-card);
+  --settings-shadow-soft: var(--ds-shadow-card);
+}
+
+.settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+  top: 0;
+  border-radius: 0 0 26px 26px;
+  border-color: var(--settings-border) !important;
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / .96), rgb(var(--palette-surface-muted-rgb) / .88)) !important;
+  box-shadow: var(--ds-shadow-card);
+}
+
+.dark .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+  background:
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / .96), rgb(var(--palette-page-rgb) / .88)) !important;
+  box-shadow: 0 22px 58px -46px rgba(0,0,0,.72);
+}
+
+.settings-shell.settings-redesign-v1 > .sticky:first-of-type .h-10.w-10 {
+  border: 1px solid transparent;
+  background: transparent !important;
+  box-shadow: none;
+}
+
+.dark .settings-shell.settings-redesign-v1 > .sticky:first-of-type .h-10.w-10 {
+  box-shadow: none;
+}
+
+.settings-shell.settings-redesign-v1 .settings-mobile-tab {
+  min-height: 42px;
+  border-color: var(--settings-border) !important;
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+.settings-shell.settings-redesign-v1 .settings-mobile-tab:focus-visible,
+.settings-shell.settings-redesign-v1 .settings-tab-item:focus-visible,
+.settings-shell.settings-redesign-v1 :is(button, a, summary):focus-visible {
+  outline: 3px solid var(--ds-focus-ring) !important;
+  outline-offset: 3px !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-sidebar {
+  border-radius: var(--settings-radius-xl);
+  border: 1px solid var(--settings-border);
+  background:
+    linear-gradient(180deg, var(--settings-surface), var(--settings-surface-muted));
+  box-shadow: var(--settings-shadow-soft);
+  padding: 10px;
+  overflow: hidden;
+}
+
+.settings-shell.settings-redesign-v1 .settings-sidebar::before {
+  content: '';
+  display: block;
+  height: 3px;
+  margin: -10px -10px 10px;
+  background: var(--ds-border-subtle);
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-item {
+  min-height: 54px;
+  border-radius: 18px !important;
+  border-color: transparent !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-item[data-active="true"] {
+  background: var(--ds-primary-soft) !important;
+  border-color: var(--ds-primary-soft-border) !important;
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.70);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-tab-item[data-active="true"] {
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.08);
+}
+
+.settings-shell.settings-redesign-v1 .settings-tab-icon {
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.72);
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-tab-icon {
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.08);
+}
+
+.settings-shell.settings-redesign-v1 .settings-workspace {
+  border-radius: var(--settings-radius-xl);
+  border: 1px solid var(--settings-border);
+  background:
+    linear-gradient(180deg, var(--settings-surface), var(--settings-surface-muted));
+  box-shadow: var(--settings-shadow);
+  padding: clamp(14px, 1.5vw, 22px);
+}
+
+.settings-shell.settings-redesign-v1 .settings-workspace > *:first-child {
+  margin-top: 0 !important;
+}
+
+.settings-shell.settings-redesign-v1 :is(.settings-modules-panel, .settings-smart-brain-panel) {
+  position: relative;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel .module-hero-card,
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-header {
+  border-radius: 30px !important;
+  border: 1px solid var(--settings-border) !important;
+  background:
+    radial-gradient(circle at 12% 0%, hsl(var(--primary) / .12), transparent 34%),
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / .96), rgb(var(--palette-surface-muted-rgb) / .88)) !important;
+  box-shadow: var(--settings-shadow-soft) !important;
+}
+
+.dark .settings-shell.settings-redesign-v1 .settings-modules-panel .module-hero-card,
+.dark .settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-header {
+  background:
+    radial-gradient(circle at 12% 0%, hsl(var(--primary-highlight) / .18), transparent 35%),
+    linear-gradient(135deg, rgb(var(--palette-surface-rgb) / .96), rgb(var(--palette-page-rgb) / .82)) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel :is(.module-runtime-card, .module-plan-card, .module-feature-card, .module-child-feature-card),
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-signal-card, .smart-ai-guide) {
+  border-radius: 22px !important;
+  border-color: var(--settings-border) !important;
+  background: var(--settings-surface) !important;
+  box-shadow: var(--ds-shadow-card) !important;
+}
+
+.settings-shell.settings-redesign-v1 .settings-modules-panel :is(.module-plan-card, .module-feature-card, .module-child-feature-card):hover,
+.settings-shell.settings-redesign-v1 .settings-smart-brain-panel :is(.smart-ai-card, .smart-ai-signal-card):hover {
+  transform: translateY(-1px);
+  border-color: var(--settings-border-strong) !important;
+  box-shadow: var(--ds-shadow-card) !important;
+}
+
+.settings-shell.settings-redesign-v1 .module-status-chip,
+.settings-shell.settings-redesign-v1 .smart-ai-status-chip,
+.settings-shell.settings-redesign-v1 .smart-ai-progress-track {
+  box-shadow: inset 0 1px 0 rgb(var(--palette-surface-rgb) / 0.64);
+}
+
+.settings-shell.settings-redesign-v1 :is(input, select, textarea):not(.telegram-template-textarea):not(.header-search-input):not(.ux-sidebar-search__input) {
+  min-height: 42px;
+  border-radius: 16px;
+}
+
+.settings-shell.settings-redesign-v1 textarea:not(.telegram-template-textarea) {
+  line-height: 1.9;
+}
+
+.settings-shell.settings-redesign-v1 :is(code, pre, [dir="ltr"], .mono, .font-mono) {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 1366px) {
+  .settings-shell.settings-redesign-v1 {
+    padding-inline: 12px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+    border-radius: 0 0 22px 22px;
+  }
+  .settings-shell.settings-redesign-v1 > .grid {
+    gap: 14px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-shell.settings-redesign-v1 {
+    padding-inline: 10px !important;
+  }
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type .max-w-7xl {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type .max-w-7xl > .flex:last-child {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    padding: 12px;
+    border-radius: 22px;
+  }
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-runtime-grid,
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-plan-grid,
+  .settings-shell.settings-redesign-v1 .settings-modules-panel .module-feature-grid,
+  .settings-shell.settings-redesign-v1 .settings-smart-brain-panel .smart-ai-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .settings-shell.settings-redesign-v1 > .sticky:first-of-type {
+    margin-inline: -10px !important;
+    padding-inline: 10px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-mobile-tab {
+    min-height: 38px;
+    padding-inline: 10px !important;
+    font-size: 12px !important;
+  }
+  .settings-shell.settings-redesign-v1 .settings-workspace {
+    border-radius: 18px;
+    padding: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-shell.settings-redesign-v1 * {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .settings-shell.settings-redesign-v1 :is(.module-plan-card, .module-feature-card, .module-child-feature-card, .smart-ai-card, .smart-ai-signal-card):hover {
+    transform: none !important;
+  }
+}

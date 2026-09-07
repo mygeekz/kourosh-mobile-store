@@ -1,0 +1,169 @@
+
+/* v70 — remove remaining focus boxes by removing input/select visual dependency from key fields */
+
+/* Clean controls use contentEditable/divs, not native input box visuals */
+.message-composer-modal-overlay .mc68 .mc68-clean-control {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 36px !important;
+  height: 36px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 1px 28px !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 0 7px !important;
+  border: 1px solid var(--mc68-border) !important;
+  border-radius: 11px !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  overflow: hidden !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-control:hover,
+.message-composer-modal-overlay .mc68 .mc68-clean-control:focus,
+.message-composer-modal-overlay .mc68 .mc68-clean-control:focus-visible,
+.message-composer-modal-overlay .mc68 .mc68-clean-control:focus-within {
+  border-color: var(--mc68-border) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: #fff !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-control.is-error,
+.message-composer-modal-overlay .mc68 .mc68-clean-control.is-error:hover,
+.message-composer-modal-overlay .mc68 .mc68-clean-control.is-error:focus-within {
+  border-color: rgb(244, 63, 94) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor {
+  box-sizing: border-box !important;
+  grid-column: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 6px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--mc68-text) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  line-height: 32px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor:hover,
+.message-composer-modal-overlay .mc68 .mc68-clean-editor:focus,
+.message-composer-modal-overlay .mc68 .mc68-clean-editor:focus-visible,
+.message-composer-modal-overlay .mc68 .mc68-clean-editor:active {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor--rtl {
+  direction: rtl !important;
+  text-align: right !important;
+  justify-content: flex-start !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor--ltr {
+  direction: ltr !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor--readonly {
+  user-select: text;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-editor:empty::before {
+  content: attr(data-placeholder);
+  color: rgb(148, 163, 184) !important;
+  font-weight: 700 !important;
+  pointer-events: none !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-divider {
+  grid-column: 2 !important;
+  width: 1px !important;
+  height: 16px !important;
+  display: block !important;
+  border-radius: 999px !important;
+  background: var(--mc68-border) !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-clean-icon {
+  grid-column: 3 !important;
+  width: 26px !important;
+  min-width: 26px !important;
+  height: 26px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid var(--mc68-border-soft) !important;
+  border-radius: 9px !important;
+  background: var(--mc68-soft) !important;
+  color: var(--mc68-muted) !important;
+  font-size: 9.5px !important;
+}
+
+/* Select branch fallback: remove blue focus if the customer is selectable */
+.message-composer-modal-overlay .mc68 .mc68-select-clean,
+.message-composer-modal-overlay .mc68 .mc68-select-clean:hover,
+.message-composer-modal-overlay .mc68 .mc68-select-clean:focus,
+.message-composer-modal-overlay .mc68 .mc68-select-clean:focus-visible {
+  all: unset !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  height: 32px !important;
+  color: var(--mc68-text) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  line-height: 32px !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.message-composer-modal-overlay .mc68 .mc68-control--no-focus,
+.message-composer-modal-overlay .mc68 .mc68-control--no-focus:hover,
+.message-composer-modal-overlay .mc68 .mc68-control--no-focus:focus-within {
+  border-color: var(--mc68-border) !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+
+/* Remove tooltip/help line visual residue around Chat ID */
+.message-composer-modal-overlay .mc68 .mc68-help--warning {
+  display: none !important;
+}
+
+/* Strong global reset inside composer for remaining native focus boxes */
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, [contenteditable="true"]),
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, [contenteditable="true"]):hover,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, [contenteditable="true"]):focus,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, [contenteditable="true"]):focus-visible,
+.message-composer-modal-overlay .mc68 :where(input, select, textarea, button, [contenteditable="true"]):focus-within {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-offset-width: 0px !important;
+}

@@ -1,0 +1,68 @@
+/* Stage 45 — Product sales date final offset
+   Scope: /reports/product-sales only.
+   Moves the date controls a little further left and prevents their date box from being clipped. */
+
+.product-sales-executive-page .product-sales-control-panel,
+.product-sales-executive-page .product-sales-control-panel__row,
+.product-sales-executive-page .product-sales-control-panel__row--dates {
+  overflow: visible !important;
+}
+
+/* In RTL, physical margin-left on the preset group creates more breathing room
+   before the date fields and visually shifts the date group to the left. */
+.product-sales-executive-page .product-sales-date-presets,
+.product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+.product-sales-executive-page .report-date-presets,
+.product-sales-executive-page .report-date-presets__chips {
+  margin-left: 1.55rem !important;
+}
+
+.product-sales-executive-page .product-sales-date-field {
+  flex: 0 0 11.25rem !important;
+  width: 11.25rem !important;
+  min-width: 11.25rem !important;
+  max-width: 11.25rem !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__body,
+.product-sales-executive-page .product-sales-date-field [data-ui-report-filter-body],
+.product-sales-executive-page .product-sales-date-field .app-date-field,
+.product-sales-executive-page .product-sales-date-field .app-date-field__control,
+.product-sales-executive-page .product-sales-date-field .app-date-field__control.report-simple-date-input,
+.product-sales-executive-page .product-sales-date-field .report-simple-date-input {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .app-date-field__control.report-simple-date-input,
+.product-sales-executive-page .product-sales-date-field .report-simple-date-input {
+  padding-inline: .78rem !important;
+  border-radius: 13px !important;
+}
+
+.product-sales-executive-page .product-sales-date-field .report-filter-field__head {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+@media (max-width: 760px) {
+  .product-sales-executive-page .product-sales-date-presets,
+  .product-sales-executive-page .product-sales-date-presets .report-date-presets__chips,
+  .product-sales-executive-page .report-date-presets,
+  .product-sales-executive-page .report-date-presets__chips {
+    margin-left: 0 !important;
+  }
+
+  .product-sales-executive-page .product-sales-date-field {
+    flex: 1 1 10.5rem !important;
+    width: auto !important;
+    min-width: 10.5rem !important;
+    max-width: none !important;
+  }
+}

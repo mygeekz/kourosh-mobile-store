@@ -1,0 +1,115 @@
+
+/* v102 — phone capital section header placement fix.
+   هدف:
+   - عنوان و توضیح «نمای سرمایه و وضعیت فروش گوشی‌ها» سمت راست باشد.
+   - کارت «سرمایه در انتظار بازگشت» سمت چپ باشد.
+   - عدد کارت با دایره تزئینی تداخل نداشته باشد. */
+
+.partner-phone-capital-section .partner-phone-capital-header {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: minmax(360px, 520px) minmax(0, 1fr) !important;
+  grid-template-areas: "summary copy" !important;
+  align-items: start !important;
+  gap: 26px !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-copy {
+  grid-area: copy !important;
+  direction: rtl !important;
+  justify-self: stretch !important;
+  justify-items: end !important;
+  text-align: right !important;
+  padding-top: 8px !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card {
+  grid-area: summary !important;
+  direction: rtl !important;
+  justify-self: stretch !important;
+  width: 100% !important;
+  min-height: 190px !important;
+  padding: 24px 138px 24px 26px !important;
+  align-content: center !important;
+}
+
+/* Put the decorative ring on the physical right and reserve space for it. */
+.partner-phone-capital-section .partner-phone-capital-summary-card::before {
+  inset-inline-start: auto !important;
+  left: auto !important;
+  right: 26px !important;
+  top: 50% !important;
+  width: 88px !important;
+  height: 88px !important;
+  border-width: 10px !important;
+  transform: translateY(-50%) rotate(20deg) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card > .flex {
+  justify-content: flex-start !important;
+  flex-direction: row-reverse !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-label {
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-value {
+  display: block !important;
+  max-width: 100% !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-note {
+  max-width: 100% !important;
+  text-align: right !important;
+}
+
+/* Keep the main metric cards clean below the fixed header. */
+.partner-phone-capital-section .partner-phone-capital-metrics {
+  margin-top: 22px !important;
+}
+
+/* Tablet: stack with copy first, summary below, no overlap. */
+@media (max-width: 1180px) {
+  .partner-phone-capital-section .partner-phone-capital-header {
+    direction: rtl !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "copy"
+      "summary" !important;
+  }
+
+  .partner-phone-capital-section .partner-phone-capital-summary-card {
+    padding: 22px 122px 22px 24px !important;
+  }
+
+  .partner-phone-capital-section .partner-phone-capital-summary-card::before {
+    right: 22px !important;
+    width: 76px !important;
+    height: 76px !important;
+    border-width: 8px !important;
+  }
+}
+
+/* Mobile: hide the big ring intensity so text has full room. */
+@media (max-width: 640px) {
+  .partner-phone-capital-section .partner-phone-capital-summary-card {
+    padding: 20px !important;
+  }
+
+  .partner-phone-capital-section .partner-phone-capital-summary-card::before {
+    right: 18px !important;
+    opacity: .16 !important;
+  }
+}

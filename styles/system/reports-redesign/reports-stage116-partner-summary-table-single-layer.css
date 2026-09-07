@@ -1,0 +1,740 @@
+/* Final partner performance contract — compact, single-layer, database-first. */
+.partner-performance-executive-page {
+  --partner-border: rgba(148, 163, 184, .30);
+  --partner-border-soft: rgba(226, 232, 240, .92);
+  --partner-surface: #fff;
+  --partner-soft: #f8fafc;
+  --partner-text: #0f172a;
+  --partner-muted: #64748b;
+}
+
+.partner-performance-executive-page :where(.page-kit-content, [data-page-kit-content='true']) {
+  gap: 12px !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar,
+.partner-performance-executive-page [data-ui-responsive-filter-bar='true'] {
+  padding: 10px !important;
+  gap: 8px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-soft) !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .report-filter-field,
+.partner-performance-executive-page [data-ui-report-filter-field='true'] {
+  min-width: 148px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .report-filter-field__head {
+  min-height: 14px !important;
+  margin-bottom: 4px !important;
+  padding-inline: 3px !important;
+}
+
+.partner-performance-executive-page .report-filter-field__label {
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  color: var(--partner-muted) !important;
+}
+
+.partner-performance-executive-page .report-filter-field__icon {
+  width: auto !important;
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+}
+
+.partner-performance-executive-page .report-filter-field__body,
+.partner-performance-executive-page .report-filter-field__body > *,
+.partner-performance-executive-page .app-date-field,
+.partner-performance-executive-page .app-date-field__control {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.partner-performance-executive-page .ux-input,
+.partner-performance-executive-page select.ux-input {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  border-radius: 13px !important;
+  border: 1px solid var(--partner-border) !important;
+  background: var(--partner-surface) !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+}
+
+.partner-performance-executive-page .report-filter-button--primary {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 13px !important;
+  padding-inline: 14px !important;
+  font-size: 11px !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-wrap {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  width: 100% !important;
+  min-height: 46px !important;
+  padding: 5px !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-surface) !important;
+  box-shadow: none !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin !important;
+}
+
+.partner-performance-executive-page .partner-tab-button {
+  flex: 0 0 auto !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 11px !important;
+  border-radius: 11px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+  font-size: 10.5px !important;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page .partner-tab-button.is-active {
+  border-color: #0f172a !important;
+  background: #0f172a !important;
+  color: #fff !important;
+}
+
+.partner-performance-executive-page .partner-tab-button i {
+  font-size: 10px !important;
+}
+
+.partner-performance-executive-page .space-y-5,
+.partner-performance-executive-page .space-y-4 {
+  gap: 12px !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin: 0 !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card,
+.partner-performance-executive-page .partner-section-lead {
+  min-height: 0 !important;
+  padding: 13px 14px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--partner-border) !important;
+  background: var(--partner-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card::before,
+.partner-performance-executive-page .partner-profit-hero-card::after,
+.partner-performance-executive-page .partner-premium-card::before,
+.partner-performance-executive-page .partner-premium-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-heading {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 9px !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-icon,
+.partner-performance-executive-page .partner-summary-table-title-icon,
+.partner-performance-executive-page .partner-premium-card__icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #475569 !important;
+  font-size: 12px !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-kicker {
+  font-size: 9px !important;
+  line-height: 1.5 !important;
+  letter-spacing: .06em !important;
+  color: var(--partner-muted) !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-titleblock h3,
+.partner-performance-executive-page .partner-section-lead h3 {
+  margin-top: 2px !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: var(--partner-text) !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-copy,
+.partner-performance-executive-page .partner-section-lead p {
+  margin-top: 5px !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.85 !important;
+  color: var(--partner-muted) !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card {
+  margin-top: 8px !important;
+  padding: 8px 10px !important;
+  border-radius: 13px !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-soft) !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .grid.grid-cols-1.md\:grid-cols-2.xl\:grid-cols-5,
+.partner-performance-executive-page .grid.grid-cols-1.md\:grid-cols-2.xl\:grid-cols-4 {
+  gap: 9px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card {
+  display: grid !important;
+  grid-template-columns: 18px minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 9px !important;
+  min-height: 84px !important;
+  padding: 11px 12px !important;
+  border-radius: 17px !important;
+  border: 1px solid var(--partner-border) !important;
+  background: var(--partner-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__content {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 2px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__label,
+.partner-performance-executive-page .partner-premium-card__hint {
+  color: var(--partner-muted) !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1.65 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card__value {
+  display: block !important;
+  min-width: 0 !important;
+  margin-top: 1px !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  color: var(--partner-text) !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.65 !important;
+  white-space: nowrap !important;
+  unicode-bidi: isolate !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-card,
+.partner-performance-executive-page :where(.space-y-5 > div[class*='rounded-[26px]'], .space-y-5 > div[class*='rounded-[22px]']) {
+  padding: 12px !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--partner-border) !important;
+  background: var(--partner-surface) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head,
+.partner-performance-executive-page .partner-summary-table-head--v2 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  min-height: 44px !important;
+  margin: 0 0 8px !important;
+  padding: 0 0 8px !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--partner-border-soft) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock {
+  display: grid !important;
+  grid-template-columns: 16px minmax(0, 1fr) !important;
+  gap: 8px !important;
+  min-width: 0 !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock h3 {
+  margin: 0 !important;
+  font-size: 12px !important;
+  color: var(--partner-text) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-titleblock p {
+  margin-top: 2px !important;
+  font-size: 10px !important;
+  line-height: 1.65 !important;
+  color: var(--partner-muted) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-chips {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-end !important;
+  gap: 5px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-chips span {
+  min-height: 26px !important;
+  padding: 0 8px !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-soft) !important;
+  font-size: 9.5px !important;
+  font-weight: 850 !important;
+  color: #475569 !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-shell,
+.partner-performance-executive-page .overflow-x-auto {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  border-radius: 15px !important;
+  background: var(--partner-surface) !important;
+  box-shadow: none !important;
+  overflow-x: auto !important;
+}
+
+.partner-performance-executive-page .partner-summary-table,
+.partner-performance-executive-page table {
+  width: 100% !important;
+  min-width: 920px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: auto !important;
+  background: var(--partner-surface) !important;
+  font-size: 10.5px !important;
+}
+
+.partner-performance-executive-page thead th,
+.partner-performance-executive-page .partner-summary-table thead th {
+  height: 38px !important;
+  padding: 0 10px !important;
+  border-bottom: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-soft) !important;
+  color: #64748b !important;
+  font-size: 9.5px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page tbody td,
+.partner-performance-executive-page .partner-summary-table tbody td {
+  height: 44px !important;
+  padding: 0 10px !important;
+  border-bottom: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-surface) !important;
+  color: #334155 !important;
+  font-size: 10.5px !important;
+  font-weight: 750 !important;
+  text-align: right !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.partner-performance-executive-page tbody tr:hover td,
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td {
+  background: #f8fafc !important;
+}
+
+.partner-performance-executive-page .partner-table-name-button,
+.partner-performance-executive-page table a,
+.partner-performance-executive-page table button:not([role='switch']),
+.partner-performance-executive-page .partner-action-button {
+  min-height: 30px !important;
+  height: auto !important;
+  padding: 0 9px !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--partner-border-soft) !important;
+  background: var(--partner-surface) !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+  font-size: 9.5px !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+}
+
+.partner-performance-executive-page input,
+.partner-performance-executive-page textarea,
+.partner-performance-executive-page select {
+  font-size: 11px !important;
+}
+
+.partner-performance-executive-page textarea {
+  min-height: 76px !important;
+}
+
+.dark .partner-performance-executive-page {
+  --partner-border: rgba(71, 85, 105, .66);
+  --partner-border-soft: rgba(51, 65, 85, .72);
+  --partner-surface: #0f172a;
+  --partner-soft: #111c30;
+  --partner-text: #f8fafc;
+  --partner-muted: #94a3b8;
+}
+
+.dark .partner-performance-executive-page .partner-tab-button.is-active {
+  border-color: #f8fafc !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.dark .partner-performance-executive-page tbody td,
+.dark .partner-performance-executive-page .partner-summary-table tbody td {
+  color: #e2e8f0 !important;
+}
+
+.dark .partner-performance-executive-page tbody tr:hover td,
+.dark .partner-performance-executive-page .partner-summary-table tbody tr.is-selected td {
+  background: #111c30 !important;
+}
+
+@media (max-width: 920px) {
+  .partner-performance-executive-page .partner-profit-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .partner-performance-executive-page .partner-summary-table-head,
+  .partner-performance-executive-page .partner-summary-table-head--v2 {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+  }
+  .partner-performance-executive-page .partner-summary-table-chips {
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .partner-performance-executive-page .responsive-filter-bar,
+  .partner-performance-executive-page [data-ui-responsive-filter-bar='true'] {
+    padding: 8px !important;
+  }
+  .partner-performance-executive-page .report-filter-field,
+  .partner-performance-executive-page [data-ui-report-filter-field='true'],
+  .partner-performance-executive-page .report-filter-button--primary {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+  .partner-performance-executive-page .partner-premium-card {
+    min-height: 78px !important;
+  }
+}
+
+/* Final density pass for all partner tabs. */
+.partner-performance-executive-page .space-y-5 > :not([hidden]) ~ :not([hidden]),
+.partner-performance-executive-page .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 12px !important;
+}
+
+.partner-performance-executive-page .gap-4 {
+  gap: 9px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card > .mt-4,
+.partner-performance-executive-page .partner-premium-card > .mt-3 {
+  margin-top: 9px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card div.rounded-2xl,
+.partner-performance-executive-page .partner-premium-card div.rounded-\[22px\] {
+  padding: 10px !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-premium-card :where(.text-xl, .text-2xl) {
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card :where(.text-sm) {
+  font-size: 11px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card :where(.text-xs, .text-\[11px\]) {
+  font-size: 10px !important;
+  line-height: 1.75 !important;
+}
+
+.partner-performance-executive-page .partner-premium-card button,
+.partner-performance-executive-page .partner-premium-card a {
+  min-height: 32px !important;
+  border-radius: 10px !important;
+  padding-inline: 10px !important;
+  box-shadow: none !important;
+  font-size: 10px !important;
+}
+
+.partner-performance-executive-page .partner-premium-card .ux-input,
+.partner-performance-executive-page .partner-premium-card input,
+.partner-performance-executive-page .partner-premium-card select {
+  min-height: 38px !important;
+  height: 38px !important;
+  border-radius: 13px !important;
+}
+
+/* Final partner density correction. */
+.partner-performance-executive-page :where([data-ui-page-body='true'], .page-kit-content) {
+  gap: 9px !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-wrap {
+  padding: 0 !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  min-height: 40px !important;
+  padding: 3px !important;
+  border-radius: 13px !important;
+}
+
+.partner-performance-executive-page .partner-tab-button {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding-inline: 9px !important;
+  border-radius: 9px !important;
+  font-size: 9.5px !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-grid {
+  gap: 8px !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card,
+.partner-performance-executive-page .partner-section-lead,
+.partner-performance-executive-page .partner-premium-card,
+.partner-performance-executive-page .partner-summary-table-card {
+  min-height: 0 !important;
+  padding: 10px 12px !important;
+  border-radius: 15px !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-heading {
+  gap: 8px !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-icon,
+.partner-performance-executive-page .partner-premium-card__icon,
+.partner-performance-executive-page .partner-summary-table-title-icon {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 12px !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-titleblock h3,
+.partner-performance-executive-page .partner-section-lead h3 {
+  font-size: 12px !important;
+}
+
+.partner-performance-executive-page .partner-hero-card-copy,
+.partner-performance-executive-page .partner-section-lead p,
+.partner-performance-executive-page .partner-premium-card__hint {
+  font-size: 9.5px !important;
+  line-height: 1.65 !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card {
+  margin-top: 7px !important;
+  padding: 8px 10px !important;
+  border-radius: 12px !important;
+}
+
+.partner-performance-executive-page .partner-focus-value-card strong,
+.partner-performance-executive-page .partner-premium-card__value {
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.partner-performance-executive-page .grid.gap-4 {
+  gap: 8px !important;
+}
+
+.partner-performance-executive-page table th,
+.partner-performance-executive-page table td {
+  padding: 8px 10px !important;
+  font-size: 10px !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell,
+.partner-performance-executive-page .partner-profit-hero-card,
+.partner-performance-executive-page .partner-section-lead,
+.partner-performance-executive-page .partner-premium-card,
+.partner-performance-executive-page .partner-summary-table-card {
+  box-sizing: border-box !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  box-sizing: border-box !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+}
+
+/* Final PageKit toolbar flattening: keep one compact frame around partner tabs. */
+.partner-performance-executive-page .report-merged-toolbar {
+  padding: 7px 9px !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar,
+.partner-performance-executive-page [data-ui-toolbar='true'] {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar__main:empty {
+  display: none !important;
+}
+
+.partner-performance-executive-page .responsive-filter-bar__secondary,
+.partner-performance-executive-page .ux-filter-bar__secondary {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: 0 !important;
+}
+
+.partner-performance-executive-page .partner-report-tabs-shell {
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 3px !important;
+  border-radius: 12px !important;
+}
+
+.partner-performance-executive-page .partner-tab-button {
+  height: 30px !important;
+  min-height: 30px !important;
+  padding-inline: 8px !important;
+  font-size: 9px !important;
+}
+
+/* Highest-precedence partner density lock after legacy tab/card rules. */
+html body #root .partner-performance-executive-page .partner-tabs-shell.partner-report-tabs-shell {
+  box-sizing: border-box !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  padding: 3px !important;
+  gap: 4px !important;
+}
+
+html body #root .partner-performance-executive-page .partner-tabs-shell.partner-report-tabs-shell .partner-tab-button {
+  box-sizing: border-box !important;
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  padding: 0 8px !important;
+  font-size: 9px !important;
+}
+
+html body #root .partner-performance-executive-page .partner-profit-hero-card,
+html body #root .partner-performance-executive-page .partner-section-lead,
+html body #root .partner-performance-executive-page .partner-premium-card {
+  min-height: 0 !important;
+  padding: 8px 10px !important;
+  border-radius: 14px !important;
+}
+
+html body #root .partner-performance-executive-page .partner-hero-card-copy {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  margin-top: 5px !important;
+  font-size: 9px !important;
+  line-height: 1.55 !important;
+}
+
+html body #root .partner-performance-executive-page .partner-focus-value-card {
+  margin-top: 5px !important;
+  padding: 6px 8px !important;
+}
+
+html body #root .partner-performance-executive-page .partner-hero-card-kicker {
+  font-size: 8px !important;
+  line-height: 1.35 !important;
+}
+
+html body #root .partner-performance-executive-page .partner-hero-card-titleblock h3 {
+  margin-top: 1px !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root .partner-performance-executive-page .partner-hero-card-titleblock p {
+  margin-top: 1px !important;
+  font-size: 8.5px !important;
+  line-height: 1.45 !important;
+}
+
+html body #root .partner-performance-executive-page .partner-focus-value-card div {
+  font-size: 8.5px !important;
+  line-height: 1.4 !important;
+}
+
+html body #root .partner-performance-executive-page .partner-focus-value-card strong {
+  margin-top: 1px !important;
+  font-size: 12.5px !important;
+  line-height: 1.45 !important;
+}

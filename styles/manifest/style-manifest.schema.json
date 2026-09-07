@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kourosh.local/schemas/style-manifest.schema.json",
+  "title": "Kourosh style manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "manifestVersion",
+    "runtimeEntry",
+    "generator",
+    "manualBootstrapEditsAllowed",
+    "externalStyles",
+    "localStyles"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "manifestVersion": { "type": "string", "minLength": 1 },
+    "runtimeEntry": { "const": "app/bootstrap/styles.ts" },
+    "generator": { "const": "scripts/generate-style-bootstrap.mjs" },
+    "manualBootstrapEditsAllowed": { "const": false },
+    "externalStyles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "specifier", "order", "status", "owner"]
+      }
+    },
+    "localStyles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "module",
+          "owner",
+          "status",
+          "delivery",
+          "runtimeActive",
+          "patchStyleName"
+        ]
+      }
+    }
+  },
+  "additionalProperties": true
+}

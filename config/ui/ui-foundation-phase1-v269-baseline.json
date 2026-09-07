@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 1 / v269 Form Control Foundation",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v269",
+  "capturedOn": "2026-08-30",
+  "scopeRoots": ["app", "components", "pages"],
+  "canonicalNativeOwners": {
+    "textLikeInput": "components/ui/TextField.tsx",
+    "searchInput": "components/ui/AppSearchField.tsx",
+    "checkboxInput": "components/ui/CheckboxField.tsx",
+    "rangeInput": "components/ui/RangeField.tsx",
+    "select": "components/ui/SelectField.tsx",
+    "textarea": "components/ui/TextareaField.tsx"
+  },
+  "approvedNativeFileInputs": {
+    "pages/ProfilePage.tsx": 1,
+    "pages/Products.tsx": 1,
+    "pages/customerDetail/CustomerTelegramConversationSection.tsx": 1,
+    "pages/mobilePhones/MobilePhonesModalStack.tsx": 1
+  },
+  "expectedDensityTokens": {
+    "desktop": { "sm": "36px", "md": "40px", "lg": "44px" },
+    "compactViewport": { "sm": "40px", "md": "44px", "lg": "48px" }
+  },
+  "notes": [
+    "Phase 1 owns field rendering and density only; overlay migration, validation orchestration and whole-app palette retirement remain later phases.",
+    "Hidden file inputs remain explicit native exceptions because file pickers are specialized browser controls and are not visually rendered form fields.",
+    "The Mini App/source release identity remains pinned to v267 during this staged UI-hardening workstream; v269 is the workstream package version, not a Mini App release marker."
+  ]
+}

@@ -1,0 +1,118 @@
+/* Stage 209: Compact top KPI cards across Smart Insight Center modals */
+
+:root {
+  --si209-kpi-min-height: 84px;
+  --si209-kpi-padding-y: 12px;
+  --si209-kpi-padding-x: 14px;
+  --si209-kpi-radius: 18px;
+  --si209-kpi-icon-size: 34px;
+  --si209-kpi-icon-radius: 14px;
+  --si209-kpi-label-size: 10.5px;
+  --si209-kpi-value-size: 1.12rem;
+  --si209-kpi-value-line: 1.28;
+}
+
+:is(.acm193-top-grid, .crm197-top-grid, .stk200-top-grid, .cust201-top-grid, .sale202-top-grid, .agt203-top-grid, .smart-insight-modal-v186__hero-grid, .insight-modal-kpi-grid, .alerts209-kpi-grid) {
+  gap: 10px !important;
+}
+
+:is(.acm193-kpi, .crm197-kpi, .stk200-kpi, .cust201-kpi, .sale202-kpi, .agt203-kpi) {
+  min-height: var(--si209-kpi-min-height) !important;
+  padding: var(--si209-kpi-padding-y) var(--si209-kpi-padding-x) !important;
+  border-radius: var(--si209-kpi-radius) !important;
+  gap: 12px !important;
+  align-items: flex-start !important;
+}
+
+:is(.acm193-kpi__icon, .crm197-kpi__icon, .stk200-kpi__icon, .cust201-kpi__icon, .sale202-kpi__icon, .agt203-kpi__icon) {
+  width: var(--si209-kpi-icon-size) !important;
+  height: var(--si209-kpi-icon-size) !important;
+  min-width: var(--si209-kpi-icon-size) !important;
+  border-radius: var(--si209-kpi-icon-radius) !important;
+  font-size: 0.82rem !important;
+}
+
+:is(.acm193-kpi small, .crm197-kpi small, .stk200-kpi small, .cust201-kpi small, .sale202-kpi small, .agt203-kpi small) {
+  font-size: var(--si209-kpi-label-size) !important;
+  line-height: 1.35 !important;
+}
+
+:is(.acm193-kpi strong, .crm197-kpi strong, .stk200-kpi strong, .cust201-kpi strong, .sale202-kpi strong, .agt203-kpi strong) {
+  margin-top: 6px !important;
+  font-size: var(--si209-kpi-value-size) !important;
+  line-height: var(--si209-kpi-value-line) !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+:is(.stk200-kpi em, .cust201-kpi em, .sale202-kpi em, .agt203-kpi em) {
+  margin-top: 4px !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div,
+.insight-modal-kpi-card,
+.alerts209-kpi-grid > div {
+  min-height: 84px !important;
+  padding: 12px 14px !important;
+  border-radius: 18px !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div > div:first-child,
+.insight-modal-kpi-label,
+.alerts209-kpi-grid > div > div > div:first-child > div:first-child {
+  font-size: var(--si209-kpi-label-size) !important;
+  line-height: 1.35 !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div > div:last-child,
+.insight-modal-kpi-copy > div:last-child,
+.alerts209-kpi-grid > div > div > div:first-child > div:nth-child(2) {
+  margin-top: 6px !important;
+  font-size: var(--si209-kpi-value-size) !important;
+  line-height: var(--si209-kpi-value-line) !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.alerts209-kpi-grid > div > div > div:first-child > div:nth-child(3) {
+  margin-top: 4px !important;
+  font-size: 10px !important;
+  line-height: 1.35 !important;
+}
+
+.insight-modal-kpi-card > div > span,
+.alerts209-kpi-grid > div > div > span {
+  width: var(--si209-kpi-icon-size) !important;
+  height: var(--si209-kpi-icon-size) !important;
+  min-width: var(--si209-kpi-icon-size) !important;
+  border-radius: var(--si209-kpi-icon-radius) !important;
+  flex-shrink: 0;
+}
+
+.insight-modal-kpi-card > div > span i,
+.alerts209-kpi-grid > div > div > span i {
+  font-size: 0.82rem !important;
+}
+
+.insight-modal-kpi-card > div,
+.alerts209-kpi-grid > div > div {
+  align-items: flex-start !important;
+}
+
+@media (max-width: 1024px) {
+  :is(.acm193-kpi, .crm197-kpi, .stk200-kpi, .cust201-kpi, .sale202-kpi, .agt203-kpi, .smart-insight-modal-v186__hero-grid > div, .insight-modal-kpi-card, .alerts209-kpi-grid > div) {
+    min-height: 78px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  :is(.acm193-kpi, .crm197-kpi, .stk200-kpi, .cust201-kpi, .sale202-kpi, .agt203-kpi, .smart-insight-modal-v186__hero-grid > div, .insight-modal-kpi-card, .alerts209-kpi-grid > div) {
+    padding: 11px 12px !important;
+  }
+
+  :is(.acm193-kpi strong, .crm197-kpi strong, .stk200-kpi strong, .cust201-kpi strong, .sale202-kpi strong, .agt203-kpi strong, .smart-insight-modal-v186__hero-grid > div > div:last-child, .insight-modal-kpi-copy > div:last-child, .alerts209-kpi-grid > div > div > div:first-child > div:nth-child(2)) {
+    font-size: 1.02rem !important;
+  }
+}

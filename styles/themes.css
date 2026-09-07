@@ -1,0 +1,416 @@
+/*
+ * Kourosh semantic palette registry
+ * ---------------------------------
+ * This file owns palette values only. Components consume semantic tokens and
+ * must not redefine palette colors locally.
+ */
+:root {
+  /* Geometry */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  /* Default/custom palette: neutral Graphite shell with a user-controlled brand. */
+  --palette-primary: 210 100% 40%;
+  --palette-primary-hover: 210 100% 32%;
+  --palette-primary-highlight: 211 100% 63%;
+  --palette-primary-soft-rgb: 232 242 255;
+  --palette-secondary: 215 25% 27%;
+  --palette-accent: 142 72% 29%;
+
+  --settings-page-rgb: 248 250 252;
+  --palette-page-rgb: 248 250 252;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 241 245 249;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 15 23 42;
+  --palette-text-secondary-rgb: 71 85 105;
+  --palette-text-muted-rgb: 100 116 139;
+  --palette-border-subtle-rgb: 226 232 240;
+  --palette-border-strong-rgb: 203 213 225;
+
+  --palette-grad-from-rgb: 0 102 204;
+  --palette-grad-to-rgb: 0 82 163;
+  --palette-chart-line-rgb: 0 102 204;
+  --palette-chart-fill-rgb: 64 156 255;
+  --palette-chart-grid-rgb: 203 213 225;
+
+  /* Semantic states remain stable across visual styles. */
+  --success: 142 72% 29%;
+  --success-foreground: 0 0% 100%;
+  --success-soft-rgb: 220 252 231;
+  --warning: 26 90% 37%;
+  --warning-foreground: 0 0% 100%;
+  --warning-soft-rgb: 255 247 237;
+  --danger: 0 74% 42%;
+  --danger-foreground: 0 0% 100%;
+  --danger-soft-rgb: 254 226 226;
+  --info: 201 96% 32%;
+  --info-foreground: 0 0% 100%;
+  --info-soft-rgb: 224 242 254;
+
+  /* Public brand/legacy aliases. Inline custom brand values may override --primary. */
+  --primary: var(--palette-primary);
+  --primary-hover: var(--palette-primary-hover);
+  --primary-highlight: var(--palette-primary-highlight);
+  --primary-soft: rgb(var(--palette-primary-soft-rgb));
+  --primary-foreground: 0 0% 100%;
+  --secondary: var(--palette-secondary);
+  --secondary-foreground: 0 0% 100%;
+  --accent: var(--palette-accent);
+  --accent-foreground: 0 0% 100%;
+
+  --color-bg: var(--palette-page-rgb);
+  --color-surface: var(--palette-surface-rgb);
+  --color-surface-muted-rgb: var(--palette-surface-muted-rgb);
+  --color-surface-elevated-rgb: var(--palette-surface-elevated-rgb);
+  --color-text: var(--palette-text-rgb);
+  --color-text-secondary-rgb: var(--palette-text-secondary-rgb);
+  --color-muted: var(--palette-text-muted-rgb);
+  --color-border-rgb: var(--palette-border-subtle-rgb);
+  --color-border-strong-rgb: var(--palette-border-strong-rgb);
+
+  --color-surface-muted: rgb(var(--palette-surface-muted-rgb));
+  --color-surface-elevated: rgb(var(--palette-surface-elevated-rgb));
+  --color-text-muted: rgb(var(--palette-text-muted-rgb));
+  --color-text-secondary: rgb(var(--palette-text-secondary-rgb));
+  --color-border: rgb(var(--palette-border-subtle-rgb));
+
+  --grad-from: var(--palette-grad-from-rgb);
+  --grad-to: var(--palette-grad-to-rgb);
+  --chart-line: var(--palette-chart-line-rgb);
+  --chart-fill: var(--palette-chart-fill-rgb);
+  --chart-grid: var(--palette-chart-grid-rgb);
+  --chart-1: var(--primary);
+  --chart-2: var(--secondary);
+  --chart-3: var(--accent);
+  --chart-4: var(--info);
+  --chart-5: var(--warning);
+
+  /* Sidebar and buttons */
+  --sb-pill-width: 236px;
+  --sb-icon-size: 40px;
+  --sb-ink-width: 4px;
+  --btn-radius: 18px;
+  --btn-grad-from: var(--palette-grad-from-rgb);
+  --btn-grad-to: var(--palette-grad-to-rgb);
+}
+
+/* Neutral custom palette dark fallback. */
+:root[data-theme='dark'] {
+  --settings-page-rgb: 2 6 23;
+  --palette-page-rgb: 2 6 23;
+  --palette-surface-rgb: 15 23 42;
+  --palette-surface-muted-rgb: 17 28 50;
+  --palette-surface-elevated-rgb: 23 32 51;
+  --palette-text-rgb: 248 250 252;
+  --palette-text-secondary-rgb: 203 213 225;
+  --palette-text-muted-rgb: 148 163 184;
+  --palette-border-subtle-rgb: 51 65 85;
+  --palette-border-strong-rgb: 71 85 105;
+  --palette-chart-grid-rgb: 51 65 85;
+
+  --success: 142 69% 58%;
+  --success-foreground: 150 45% 8%;
+  --success-soft-rgb: 20 83 45;
+  --warning: 43 96% 56%;
+  --warning-foreground: 32 80% 8%;
+  --warning-soft-rgb: 69 39 8;
+  --danger: 0 91% 71%;
+  --danger-foreground: 0 55% 9%;
+  --danger-soft-rgb: 69 10 10;
+  --info: 198 93% 60%;
+  --info-foreground: 205 80% 8%;
+  --info-soft-rgb: 12 58 80;
+}
+
+/* 1) Executive Emerald — key kept as aurora for saved-profile compatibility. */
+:root[data-palette='aurora'] {
+  --palette-primary: 175 77% 26%;
+  --palette-primary-hover: 176 69% 22%;
+  --palette-primary-highlight: 172 66% 50%;
+  --palette-primary-soft-rgb: 204 251 241;
+  --palette-secondary: 215 25% 27%;
+  --palette-accent: 35 92% 33%;
+  --palette-page-rgb: 248 250 252;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 241 245 249;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 16 32 26;
+  --palette-text-secondary-rgb: 63 82 74;
+  --palette-text-muted-rgb: 95 111 104;
+  --palette-border-subtle-rgb: 214 225 219;
+  --palette-border-strong-rgb: 184 203 193;
+  --palette-grad-from-rgb: 15 118 110;
+  --palette-grad-to-rgb: 17 94 89;
+  --palette-chart-line-rgb: 15 118 110;
+  --palette-chart-fill-rgb: 45 212 191;
+  --palette-chart-grid-rgb: 214 225 219;
+}
+
+:root[data-theme='dark'][data-palette='aurora'] {
+  --palette-primary: 175 77% 26%;
+  --palette-primary-hover: 176 69% 22%;
+  --palette-primary-highlight: 172 66% 50%;
+  --palette-primary-soft-rgb: 18 63 56;
+  --palette-secondary: 215 20% 55%;
+  --palette-accent: 41 57% 63%;
+  --palette-page-rgb: 7 17 15;
+  --palette-surface-rgb: 13 27 24;
+  --palette-surface-muted-rgb: 19 38 34;
+  --palette-surface-elevated-rgb: 23 46 41;
+  --palette-text-rgb: 241 247 244;
+  --palette-text-secondary-rgb: 203 216 210;
+  --palette-text-muted-rgb: 159 177 170;
+  --palette-border-subtle-rgb: 36 65 58;
+  --palette-border-strong-rgb: 53 94 84;
+  --palette-grad-from-rgb: 15 118 110;
+  --palette-grad-to-rgb: 17 94 89;
+  --palette-chart-line-rgb: 45 212 191;
+  --palette-chart-fill-rgb: 15 118 110;
+  --palette-chart-grid-rgb: 36 65 58;
+}
+
+/* 2) Classic iOS — Graphite Blue. */
+:root[data-palette='classic'] {
+  --palette-primary: 210 100% 40%;
+  --palette-primary-hover: 210 100% 32%;
+  --palette-primary-highlight: 211 100% 63%;
+  --palette-primary-soft-rgb: 232 242 255;
+  --palette-secondary: 240 2% 23%;
+  --palette-accent: 142 72% 29%;
+  --palette-page-rgb: 245 245 247;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 242 242 247;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 29 29 31;
+  --palette-text-secondary-rgb: 58 58 60;
+  --palette-text-muted-rgb: 110 110 115;
+  --palette-border-subtle-rgb: 210 210 215;
+  --palette-border-strong-rgb: 174 174 178;
+  --palette-grad-from-rgb: 0 102 204;
+  --palette-grad-to-rgb: 0 82 163;
+  --palette-chart-line-rgb: 0 102 204;
+  --palette-chart-fill-rgb: 64 156 255;
+  --palette-chart-grid-rgb: 210 210 215;
+}
+
+:root[data-theme='dark'][data-palette='classic'] {
+  --palette-primary: 210 100% 40%;
+  --palette-primary-hover: 210 100% 32%;
+  --palette-primary-highlight: 211 100% 63%;
+  --palette-primary-soft-rgb: 16 43 70;
+  --palette-secondary: 240 2% 57%;
+  --palette-accent: 135 64% 50%;
+  --palette-page-rgb: 9 9 11;
+  --palette-surface-rgb: 28 28 30;
+  --palette-surface-muted-rgb: 44 44 46;
+  --palette-surface-elevated-rgb: 52 52 54;
+  --palette-text-rgb: 245 245 247;
+  --palette-text-secondary-rgb: 209 209 214;
+  --palette-text-muted-rgb: 174 174 178;
+  --palette-border-subtle-rgb: 58 58 60;
+  --palette-border-strong-rgb: 72 72 74;
+  --palette-grad-from-rgb: 0 102 204;
+  --palette-grad-to-rgb: 0 82 163;
+  --palette-chart-line-rgb: 64 156 255;
+  --palette-chart-fill-rgb: 0 102 204;
+  --palette-chart-grid-rgb: 58 58 60;
+}
+
+/* 3) Ocean Technology. */
+:root[data-palette='ocean'] {
+  --palette-primary: 201 96% 32%;
+  --palette-primary-hover: 201 90% 27%;
+  --palette-primary-highlight: 198 93% 60%;
+  --palette-primary-soft-rgb: 224 242 254;
+  --palette-secondary: 192 91% 36%;
+  --palette-accent: 175 77% 26%;
+  --palette-page-rgb: 248 250 252;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 241 245 249;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 12 39 54;
+  --palette-text-secondary-rgb: 52 82 97;
+  --palette-text-muted-rgb: 91 116 130;
+  --palette-border-subtle-rgb: 205 227 236;
+  --palette-border-strong-rgb: 169 205 220;
+  --palette-grad-from-rgb: 3 105 161;
+  --palette-grad-to-rgb: 8 145 178;
+  --palette-chart-line-rgb: 3 105 161;
+  --palette-chart-fill-rgb: 56 189 248;
+  --palette-chart-grid-rgb: 205 227 236;
+}
+
+:root[data-theme='dark'][data-palette='ocean'] {
+  --palette-primary: 201 90% 27%;
+  --palette-primary-hover: 201 96% 32%;
+  --palette-primary-highlight: 198 93% 60%;
+  --palette-primary-soft-rgb: 12 58 80;
+  --palette-secondary: 193 82% 31%;
+  --palette-accent: 172 66% 50%;
+  --palette-page-rgb: 6 19 27;
+  --palette-surface-rgb: 11 34 48;
+  --palette-surface-muted-rgb: 16 49 65;
+  --palette-surface-elevated-rgb: 20 60 78;
+  --palette-text-rgb: 234 248 252;
+  --palette-text-secondary-rgb: 195 222 232;
+  --palette-text-muted-rgb: 154 184 198;
+  --palette-border-subtle-rgb: 29 69 88;
+  --palette-border-strong-rgb: 42 91 112;
+  --palette-grad-from-rgb: 7 89 133;
+  --palette-grad-to-rgb: 14 116 144;
+  --palette-chart-line-rgb: 56 189 248;
+  --palette-chart-fill-rgb: 7 89 133;
+  --palette-chart-grid-rgb: 29 69 88;
+}
+
+/* 4) Energetic Sales. */
+:root[data-palette='sunset'] {
+  --palette-primary: 17 88% 40%;
+  --palette-primary-hover: 15 79% 34%;
+  --palette-primary-highlight: 27 96% 61%;
+  --palette-primary-soft-rgb: 255 237 213;
+  --palette-secondary: 26 90% 37%;
+  --palette-accent: 224 76% 48%;
+  --palette-page-rgb: 248 250 252;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 241 245 249;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 43 22 11;
+  --palette-text-secondary-rgb: 91 55 35;
+  --palette-text-muted-rgb: 124 90 70;
+  --palette-border-subtle-rgb: 254 215 170;
+  --palette-border-strong-rgb: 251 183 117;
+  --palette-grad-from-rgb: 194 65 12;
+  --palette-grad-to-rgb: 154 52 18;
+  --palette-chart-line-rgb: 194 65 12;
+  --palette-chart-fill-rgb: 251 146 60;
+  --palette-chart-grid-rgb: 254 215 170;
+}
+
+:root[data-theme='dark'][data-palette='sunset'] {
+  --palette-primary: 17 88% 40%;
+  --palette-primary-hover: 15 79% 34%;
+  --palette-primary-highlight: 27 96% 61%;
+  --palette-primary-soft-rgb: 74 32 13;
+  --palette-secondary: 32 95% 44%;
+  --palette-accent: 213 94% 68%;
+  --palette-page-rgb: 24 11 5;
+  --palette-surface-rgb: 38 18 10;
+  --palette-surface-muted-rgb: 53 26 14;
+  --palette-surface-elevated-rgb: 66 33 18;
+  --palette-text-rgb: 255 247 237;
+  --palette-text-secondary-rgb: 238 211 194;
+  --palette-text-muted-rgb: 214 178 157;
+  --palette-border-subtle-rgb: 90 42 22;
+  --palette-border-strong-rgb: 122 56 29;
+  --palette-grad-from-rgb: 194 65 12;
+  --palette-grad-to-rgb: 154 52 18;
+  --palette-chart-line-rgb: 251 146 60;
+  --palette-chart-fill-rgb: 194 65 12;
+  --palette-chart-grid-rgb: 90 42 22;
+}
+
+/* 5) Midnight Pro. */
+:root[data-palette='midnight'] {
+  --palette-primary: 243 75% 59%;
+  --palette-primary-hover: 245 58% 51%;
+  --palette-primary-highlight: 234 89% 74%;
+  --palette-primary-soft-rgb: 224 231 255;
+  --palette-secondary: 215 25% 27%;
+  --palette-accent: 193 82% 31%;
+  --palette-page-rgb: 248 250 252;
+  --palette-surface-rgb: 255 255 255;
+  --palette-surface-muted-rgb: 241 245 249;
+  --palette-surface-elevated-rgb: 255 255 255;
+  --palette-text-rgb: 15 23 42;
+  --palette-text-secondary-rgb: 51 65 85;
+  --palette-text-muted-rgb: 71 85 105;
+  --palette-border-subtle-rgb: 203 213 225;
+  --palette-border-strong-rgb: 148 163 184;
+  --palette-grad-from-rgb: 79 70 229;
+  --palette-grad-to-rgb: 67 56 202;
+  --palette-chart-line-rgb: 79 70 229;
+  --palette-chart-fill-rgb: 129 140 248;
+  --palette-chart-grid-rgb: 203 213 225;
+}
+
+:root[data-theme='dark'][data-palette='midnight'] {
+  --palette-primary: 243 75% 59%;
+  --palette-primary-hover: 245 58% 51%;
+  --palette-primary-highlight: 234 89% 74%;
+  --palette-primary-soft-rgb: 30 27 75;
+  --palette-secondary: 215 19% 35%;
+  --palette-accent: 188 86% 53%;
+  --palette-page-rgb: 2 6 23;
+  --palette-surface-rgb: 15 23 42;
+  --palette-surface-muted-rgb: 17 28 50;
+  --palette-surface-elevated-rgb: 23 32 51;
+  --palette-text-rgb: 248 250 252;
+  --palette-text-secondary-rgb: 203 213 225;
+  --palette-text-muted-rgb: 148 163 184;
+  --palette-border-subtle-rgb: 51 65 85;
+  --palette-border-strong-rgb: 71 85 105;
+  --palette-grad-from-rgb: 79 70 229;
+  --palette-grad-to-rgb: 67 56 202;
+  --palette-chart-line-rgb: 129 140 248;
+  --palette-chart-fill-rgb: 79 70 229;
+  --palette-chart-grid-rgb: 51 65 85;
+}
+
+/* 6) Matte Gold — warm charcoal surfaces aligned with the authentication identity. */
+:root[data-palette='gold'] {
+  --palette-primary: 38 48% 38%;
+  --palette-primary-hover: 37 47% 32%;
+  --palette-primary-highlight: 40 52% 58%;
+  --palette-primary-soft-rgb: 244 234 211;
+  --palette-secondary: 30 8% 28%;
+  --palette-accent: 27 50% 36%;
+  --primary-foreground: 0 0% 100%;
+  --palette-page-rgb: 247 245 240;
+  --palette-surface-rgb: 255 253 249;
+  --palette-surface-muted-rgb: 242 238 229;
+  --palette-surface-elevated-rgb: 255 254 251;
+  --palette-text-rgb: 35 31 26;
+  --palette-text-secondary-rgb: 78 69 57;
+  --palette-text-muted-rgb: 108 96 79;
+  --palette-border-subtle-rgb: 222 213 198;
+  --palette-border-strong-rgb: 189 174 151;
+  --palette-grad-from-rgb: 143 109 50;
+  --palette-grad-to-rgb: 125 91 39;
+  --palette-chart-line-rgb: 143 109 50;
+  --palette-chart-fill-rgb: 201 170 112;
+  --palette-chart-grid-rgb: 222 213 198;
+}
+
+:root[data-theme='dark'][data-palette='gold'] {
+  --palette-primary: 38 43% 55%;
+  --palette-primary-hover: 37 40% 48%;
+  --palette-primary-highlight: 40 58% 68%;
+  --palette-primary-soft-rgb: 66 53 36;
+  --palette-secondary: 30 10% 46%;
+  --palette-accent: 36 48% 62%;
+  --primary-foreground: 34 49% 9%;
+  --palette-page-rgb: 7 7 11;
+  --palette-surface-rgb: 19 17 23;
+  --palette-surface-muted-rgb: 28 25 29;
+  --palette-surface-elevated-rgb: 35 31 35;
+  --palette-text-rgb: 241 232 216;
+  --palette-text-secondary-rgb: 216 193 151;
+  --palette-text-muted-rgb: 183 158 116;
+  --palette-border-subtle-rgb: 63 54 44;
+  --palette-border-strong-rgb: 104 85 60;
+  --palette-grad-from-rgb: 190 153 91;
+  --palette-grad-to-rgb: 159 122 68;
+  --palette-chart-line-rgb: 226 197 143;
+  --palette-chart-fill-rgb: 190 153 91;
+  --palette-chart-grid-rgb: 63 54 44;
+}
+
+/* User-defined brand hue with neutral surfaces. */
+:root[data-palette='custom'] {
+  --palette-primary: var(--primary-h, 210) var(--primary-s, 100%) var(--primary-l, 40%);
+  --palette-primary-hover: var(--custom-primary-hover, var(--palette-primary));
+  --palette-primary-highlight: var(--custom-primary-highlight, var(--palette-primary));
+}

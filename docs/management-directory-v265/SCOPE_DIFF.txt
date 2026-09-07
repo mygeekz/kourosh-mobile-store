@@ -1,0 +1,44 @@
+ADDED: 28
+README-KOUROSH-v265.md
+components/ui/ManagementDirectoryTable.tsx
+config/quality/miniapp-rc-evidence-v265.example.json
+config/quality/miniapp-release-gate-v265.json
+docs/management-directory-v265/PHASE_REPORT.md
+docs/management-directory-v265/SCOPE_DIFF.txt
+docs/management-directory-v265/TEST_REPORT.md
+docs/management-directory-v265/logs/audit-reference.log
+docs/management-directory-v265/logs/audit-release-gate.log
+docs/management-directory-v265/logs/audit-table-standard.log
+docs/management-directory-v265/logs/build-miniapp.log
+docs/management-directory-v265/logs/environment.log
+docs/management-directory-v265/logs/release-sync-check.log
+docs/management-directory-v265/logs/typescript-parser.log
+scripts/audit-management-directory-table-standard-v265.mjs
+scripts/audit-miniapp-rc-v265.mjs
+scripts/audit-miniapp-release-gate-v265.mjs
+scripts/audit-miniapp-release-v265.mjs
+scripts/audit-repair-detail-no-custom-css-v265.mjs
+scripts/lib/miniapp-rc-v265-harness.mjs
+scripts/test-miniapp-cloudflare-prepare-v265.mjs
+scripts/test-miniapp-rc-evidence-verifier-v265.mjs
+scripts/test-miniapp-rc-infrastructure-matrix-v265.mjs
+scripts/test-miniapp-rc-role-matrix-v265.mjs
+scripts/verify-miniapp-built-v265.mjs
+scripts/verify-miniapp-environment-v265.mjs
+scripts/verify-miniapp-rc-evidence-v265.mjs
+scripts/verify-miniapp-release-v265.mjs
+
+REMOVED: 0
+
+
+CHANGED: 10
+.gitignore
+KOUROSH_SOURCE_VERSION
+components/people/PartnerDirectoryList.tsx
+components/ui/index.ts
+deployment/cloudflare-pages/_worker.js
+miniapp.html
+package.json
+pages/Customers.tsx
+pages/Repairs.tsx
+scripts/audit-management-directory-reference.mjs

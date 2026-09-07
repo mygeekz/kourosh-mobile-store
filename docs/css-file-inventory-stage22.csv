@@ -1,0 +1,160 @@
+file,category,domain,bytes,kb,lines,selectors,important_count,css_import_count,import_order,risk_score,risk_level,risk_reasons
+index.css,entry-orchestrator,General/System,5956,5.82,133,3,2,92,3,1,low,active imported CSS
+styles/themes.css,other,General/System,2383,2.33,75,6,0,0,4,1,low,active imported CSS
+styles/core/tokens.css,core-foundation,General/System,92,0.09,1,0,0,0,6,1,low,active imported CSS
+styles/core/base.css,core-foundation,General/System,86,0.08,1,0,0,0,7,1,low,active imported CSS
+styles/core/typography.css,core-foundation,General/System,98,0.1,1,0,0,0,8,1,low,active imported CSS
+styles/core/animations.css,core-foundation,General/System,4717,4.61,177,45,1,0,9,1,low,active imported CSS
+styles/core/utilities.css,core-foundation,General/System,1735,1.69,70,11,0,0,10,1,low,active imported CSS
+styles/layout/app-shell.css,layout-system,General/System,84,0.08,1,0,0,0,11,1,low,active imported CSS
+styles/layout/sidebar.css,layout-system,Sidebar,555,0.54,28,4,0,0,12,3,low,sensitive UI/business domain; active imported CSS
+styles/layout/page-shell.css,layout-system,General/System,84,0.08,1,0,0,0,13,1,low,active imported CSS
+styles/layout/responsive.css,layout-system,General/System,304,0.3,17,2,1,0,14,1,low,active imported CSS
+styles/layout/print.css,layout-system,General/System,3023,2.95,144,21,3,0,15,1,low,active imported CSS
+styles/components/buttons.css,component-shared,Buttons,84,0.08,1,0,0,0,16,1,low,active imported CSS
+styles/components/tables.css,component-shared,Tables,7916,7.73,190,28,0,0,17,1,low,active imported CSS
+styles/components/cards.css,component-shared,General/System,13892,13.57,402,84,2,0,18,3,low,medium selector surface; active imported CSS
+styles/components/toolbars.css,component-shared,General/System,6608,6.45,233,39,0,0,19,1,low,active imported CSS
+styles/components/filters.css,component-shared,Filters,7420,7.25,366,62,1,0,20,3,low,medium selector surface; active imported CSS
+styles/pages/reports.css,page-domain,Reports,60394,58.98,2376,366,355,0,21,11,critical,very high !important count; large selector surface; sensitive UI/business domain; large file >50KB; active imported CSS
+styles/pages/dashboard.css,page-domain,Dashboard,1793,1.75,83,17,0,0,22,1,low,active imported CSS
+styles/pages/telegram.css,page-domain,Telegram,62348,60.89,1628,320,263,0,23,11,critical,very high !important count; large selector surface; sensitive UI/business domain; large file >50KB; active imported CSS
+styles/pages/settings.css,page-domain,Settings,6335,6.19,189,33,0,0,24,1,low,active imported CSS
+styles/pages/inventory.css,page-domain,Inventory,410,0.4,9,2,0,0,25,1,low,active imported CSS
+styles/pages/customers.css,page-domain,Customers,796,0.78,42,7,0,0,26,1,low,active imported CSS
+styles/pages/partners.css,page-domain,Partners,12754,12.46,556,107,32,0,27,5,medium,high !important count; medium selector surface; active imported CSS
+styles/pages/mobile-phones.css,page-domain,Mobile Phones,208,0.2,2,0,0,0,28,3,low,sensitive UI/business domain; active imported CSS
+styles/pages/repairs.css,page-domain,Repairs,1867,1.82,37,9,0,0,29,1,low,active imported CSS
+styles/pages/purchases.css,page-domain,General/System,207,0.2,2,0,0,0,30,1,low,active imported CSS
+styles/vendors/overrides.css,vendor-override,General/System,84,0.08,1,0,0,0,31,1,low,active imported CSS
+styles/legacy/01-legacy-app-base-and-loaders.css,legacy-split,General/System,10564,10.32,446,75,1,0,32,6,medium,legacy CSS split from historical monolith; medium selector surface; active imported CSS
+styles/legacy/02a-legacy-reports-kpi-table-foundation.css,legacy-split,"Reports, Tables",962,0.94,61,22,0,0,33,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/02b-legacy-premium-modal-base.css,legacy-split,Modals,2231,2.18,85,24,2,0,34,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/02c-legacy-detail-drawer-primitives.css,legacy-split,General/System,2122,2.07,120,32,0,0,35,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02d-legacy-detail-compact-density.css,legacy-split,General/System,935,0.91,40,7,0,0,36,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02e-legacy-smart-tooltip-transitions.css,legacy-split,General/System,1098,1.07,42,4,0,0,37,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02f-legacy-page-shell-modern.css,legacy-split,General/System,1389,1.36,63,12,0,0,38,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02g-legacy-ux-button-core-loading.css,legacy-split,Buttons,3886,3.79,161,32,1,0,39,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02h-legacy-ux-button-motion-presets.css,legacy-split,Buttons,7406,7.23,200,28,0,0,40,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02i-legacy-people-list-controls-fields.css,legacy-split,"People, Forms/Inputs",4173,4.08,173,38,0,0,41,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02j-legacy-report-toolbar-filters.css,legacy-split,"Reports, Filters",3854,3.76,176,38,0,0,42,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/02k-legacy-cards-toasts-feedback-loading.css,legacy-split,Toasts,7713,7.53,222,58,2,0,43,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02l-legacy-wizard-table-quicklinks-installments.css,legacy-split,Tables,6013,5.87,190,87,0,0,44,6,medium,legacy CSS split from historical monolith; medium selector surface; active imported CSS
+styles/legacy/02m-legacy-accessibility-focus-transition-base.css,legacy-split,General/System,302,0.29,11,2,0,0,45,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02n-legacy-customers-hero-toolbar.css,legacy-split,Customers,1724,1.68,39,26,0,0,46,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/02o-legacy-telegram-link-modal.css,legacy-split,"Telegram, Modals",13916,13.59,370,87,1,0,47,8,high,legacy CSS split from historical monolith; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/legacy/02p-legacy-people-action-buttons-chips.css,legacy-split,"People, Buttons",1124,1.1,31,21,0,0,48,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/03a-legacy-action-primitives-buttons.css,legacy-split,Buttons,2327,2.27,110,18,0,0,49,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/03b-legacy-report-tools-pagination.css,legacy-split,Reports,615,0.6,46,12,0,0,50,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/03c-legacy-form-empty-density.css,legacy-split,General/System,2322,2.27,120,25,0,0,51,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/03d-legacy-premium-tabs-inventory-detail.css,legacy-split,Inventory,6862,6.7,336,68,0,0,52,6,medium,legacy CSS split from historical monolith; medium selector surface; active imported CSS
+styles/legacy/03e-legacy-sidebar-transparent-cleanup.css,legacy-split,Sidebar,1889,1.84,67,10,20,0,53,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/03f-legacy-header-search-password-fixes.css,legacy-split,Header,4077,3.98,173,24,39,0,54,8,high,legacy CSS split from historical monolith; high !important count; sensitive UI/business domain; active imported CSS
+styles/legacy/03g-legacy-dark-tables-loading-progress.css,legacy-split,Tables,6764,6.61,254,50,0,0,55,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/04a-legacy-repairs-saved-views-inputs.css,legacy-split,"Forms/Inputs, Repairs",1711,1.67,60,9,5,0,56,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/04b-legacy-premium-data-chart-shell.css,legacy-split,Charts,2788,2.72,119,37,0,0,57,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/04c-legacy-motion-focus-accessibility.css,legacy-split,General/System,4364,4.26,159,18,5,0,58,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/04d-legacy-field-attention-page-actions.css,legacy-split,Forms/Inputs,1710,1.67,78,14,2,0,59,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/05a-legacy-button-icon-baseline.css,legacy-split,Buttons,1837,1.79,88,11,0,0,60,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/05b-legacy-quick-link-cards.css,legacy-split,General/System,1495,1.46,66,10,0,0,61,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/05c-legacy-unified-button-hardening.css,legacy-split,Buttons,2437,2.38,119,18,0,0,62,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/05d-legacy-report-filter-sales-mobile-buttons.css,legacy-split,"Reports, Sales/Cart, Buttons, Filters",1378,1.35,63,7,0,0,63,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/06a-legacy-sales-flow-visual-pass.css,legacy-split,Sales/Cart,2091,2.04,110,18,0,0,64,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/06b-legacy-sales-cart-button-borders.css,legacy-split,"Sales/Cart, Buttons",854,0.83,45,8,1,0,65,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/06c-legacy-sales-cart-premium-cleanup.css,legacy-split,Sales/Cart,580,0.57,24,4,2,0,66,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/06d-legacy-sales-cart-full-page-redesign.css,legacy-split,Sales/Cart,517,0.5,14,3,3,0,67,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/07a-legacy-button-stroke-normalization.css,legacy-split,Buttons,1831,1.79,65,6,6,0,68,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/07b-legacy-premium-button-unification.css,legacy-split,Buttons,3181,3.11,121,14,24,0,69,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/08a-legacy-global-field-system.css,legacy-split,Forms/Inputs,3498,3.42,121,15,10,0,70,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/08b-legacy-global-card-section-system.css,legacy-split,General/System,2827,2.76,88,10,0,0,71,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/08c-legacy-global-table-row-actions.css,legacy-split,Tables,3741,3.65,151,18,0,0,72,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/09a-legacy-global-modal-drawer-unification.css,legacy-split,Modals,3384,3.3,151,15,0,0,73,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/09b-legacy-global-toast-alert-status.css,legacy-split,Toasts,3453,3.37,152,16,7,0,74,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/09c-legacy-global-nav-sidebar-topbar.css,legacy-split,"Sidebar, Navigation",3759,3.67,151,12,0,0,75,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/09d-legacy-global-charts-kpi-dashboard.css,legacy-split,"Dashboard, Charts",3219,3.14,125,13,7,0,76,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/10a-legacy-final-shell-cohesion.css,legacy-split,General/System,905,0.88,54,7,0,0,77,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/10b-legacy-targeted-ui-qa-cleanup.css,legacy-split,General/System,722,0.71,40,5,0,0,78,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/10c-legacy-smart-toast-progress.css,legacy-split,Toasts,271,0.26,6,3,0,0,79,4,low,legacy CSS split from historical monolith; active imported CSS
+styles/legacy/10d-legacy-telegram-modal-stability-lux.css,legacy-split,"Telegram, Modals",1390,1.36,52,11,11,0,80,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/10e-legacy-installment-combobox-phone-edit-vertical.css,legacy-split,Mobile Phones,1311,1.28,40,5,13,0,81,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/legacy/10f-legacy-phone-edit-horizontal-modal.css,legacy-split,"Mobile Phones, Modals",1805,1.76,40,7,8,0,82,6,medium,legacy CSS split from historical monolith; sensitive UI/business domain; active imported CSS
+styles/components/forms.css,component-shared,General/System,11787,11.51,413,74,4,0,83,3,low,medium selector surface; active imported CSS
+styles/components/modals.css,component-shared,Modals,7406,7.23,294,43,43,0,84,5,medium,high !important count; sensitive UI/business domain; active imported CSS
+styles/components/badges.css,component-shared,General/System,7543,7.37,213,47,0,0,85,1,low,active imported CSS
+styles/components/detail.css,component-shared,General/System,2659,2.6,68,14,0,0,86,1,low,active imported CSS
+styles/components/button-normalization.css,component-shared,Buttons,4251,4.15,96,13,0,0,87,1,low,active imported CSS
+styles/components/toasts.css,component-shared,Toasts,2228,2.18,110,17,0,0,88,1,low,active imported CSS
+styles/components/empty-states.css,component-shared,General/System,1646,1.61,86,13,0,0,89,1,low,active imported CSS
+styles/layout/sidebar-chrome.css,layout-system,Sidebar,2133,2.08,39,11,0,0,90,3,low,sensitive UI/business domain; active imported CSS
+styles/pages/customers-shell.css,page-domain,Customers,982,0.96,22,8,0,0,91,1,low,active imported CSS
+styles/pages/settings-overrides.css,page-domain,Settings,454,0.44,6,1,0,0,92,1,low,active imported CSS
+styles/components/detail-hero.css,component-shared,General/System,839,0.82,15,4,0,0,93,1,low,active imported CSS
+styles/layout/print-shells.css,layout-system,General/System,1354,1.32,55,7,7,0,94,1,low,active imported CSS
+styles/components/unified-buttons.css,component-shared,Buttons,8596,8.39,299,26,94,0,95,3,low,high !important count; active imported CSS
+styles/runtime-overrides/01a1-people-table-action-baseline.css,runtime-override,"People, Tables",1642,1.6,68,9,12,0,96,5,medium,runtime override imported after index.css; active imported CSS
+styles/runtime-overrides/01a2-people-page-hero-lists.css,runtime-override,People,8717,8.51,339,42,123,0,97,8,high,runtime override imported after index.css; very high !important count; active imported CSS
+styles/runtime-overrides/01a3-settings-adaptive-sidebar-cleanup.css,runtime-override,"Sidebar, Settings",6596,6.44,259,47,34,0,98,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/01a4-people-detail-repair-header-filters.css,runtime-override,"People, Header, Repairs, Filters",9653,9.43,373,52,181,0,99,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/01a5-partner-command-detail-refinement.css,runtime-override,Partners,14404,14.07,321,87,265,0,100,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/01a6-detail-kpi-filter-icon-system.css,runtime-override,Filters,4131,4.03,145,19,83,0,101,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/01a7-shared-primitives-button-system.css,runtime-override,Buttons,10410,10.17,315,29,144,0,102,8,high,runtime override imported after index.css; very high !important count; active imported CSS
+styles/components/unified-fields.css,component-shared,Forms/Inputs,16024,15.65,523,51,127,0,103,4,low,very high !important count; active imported CSS
+styles/runtime-overrides/01b-people-foundation-after-fields.css,runtime-override,"People, Forms/Inputs",16643,16.25,508,100,123,0,104,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/02a-reports-apple-minimal.css,runtime-override,Reports,8647,8.44,267,44,32,0,105,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/02b-settings-telegram-compact.css,runtime-override,"Telegram, Settings",8758,8.55,237,32,90,0,106,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/02c-repairs-apple-commercial.css,runtime-override,Repairs,14967,14.62,547,78,151,0,107,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/02d-services-inventory-polish.css,runtime-override,Inventory,9839,9.61,406,57,96,0,108,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/02e-people-commercial-redesign.css,runtime-override,People,15123,14.77,535,59,187,0,109,8,high,runtime override imported after index.css; very high !important count; active imported CSS
+styles/runtime-overrides/02f-notifications-commercial-redesign.css,runtime-override,General/System,8196,8.0,329,52,57,0,110,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/02g-telegram-real-compact-patch.css,runtime-override,Telegram,6563,6.41,270,39,78,0,111,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/03a-global-commercial-qa.css,runtime-override,General/System,8692,8.49,275,28,50,0,112,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/03b-reports-mobile-settings-smoke.css,runtime-override,"Reports, Settings",4082,3.99,126,19,40,0,113,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/03c-notifications-sidebar-smartbrain.css,runtime-override,Sidebar,7279,7.11,234,36,76,0,114,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/03d-legacy-telegram-monitor-patches.css,runtime-override,Telegram,25449,24.85,991,147,439,0,115,13,critical,runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS
+styles/runtime-overrides/03e-sidebar-settings-dashboard-root-fixes.css,runtime-override,"Sidebar, Dashboard, Settings",16883,16.49,428,64,170,0,116,12,critical,runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/03f-stable-panels-dashboard-clock.css,runtime-override,"Dashboard, Tables",12747,12.45,350,50,99,0,117,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/04a-people-empty-states.css,runtime-override,People,8152,7.96,372,52,2,0,118,5,medium,runtime override imported after index.css; active imported CSS
+styles/runtime-overrides/04b-people-list-unification.css,runtime-override,People,13375,13.06,468,55,151,0,119,8,high,runtime override imported after index.css; very high !important count; active imported CSS
+styles/runtime-overrides/04c-people-detail-pages.css,runtime-override,People,14653,14.31,422,67,175,0,120,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/04d-people-add-edit-modals.css,runtime-override,"People, Modals",8173,7.98,289,45,105,0,121,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/04e-people-finance-transaction-modals.css,runtime-override,"People, Modals",9477,9.25,388,51,24,0,122,7,medium,runtime override imported after index.css; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/04f-partner-phone-product-settlement.css,runtime-override,"Mobile Phones, Partners, Products",2670,2.61,117,18,0,0,123,7,medium,runtime override imported after index.css; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/04g-partner-settlement-timeline-ledger.css,runtime-override,Partners,12702,12.4,521,74,4,0,124,7,medium,runtime override imported after index.css; medium selector surface; active imported CSS
+styles/runtime-overrides/05-mobile-phones.css,runtime-override,Mobile Phones,20040,19.57,782,135,112,0,125,12,critical,runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/06a-enterprise-actions-fields-validation.css,runtime-override,Forms/Inputs,17159,16.76,408,83,86,0,126,9,high,runtime override imported after index.css; high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/06b-horizontal-forms-modals-header.css,runtime-override,"Modals, Header",4578,4.47,202,32,6,0,127,7,medium,runtime override imported after index.css; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/06c-reports-consolidation-filters.css,runtime-override,"Reports, Filters",13317,13.0,561,83,18,0,128,9,high,runtime override imported after index.css; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/06d-kpi-navigation-density-mobile.css,runtime-override,Navigation,12813,12.51,543,76,94,0,129,9,high,runtime override imported after index.css; high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/06e-accessibility-rtl-targeted-fixes.css,runtime-override,General/System,12587,12.29,388,74,56,0,130,9,high,runtime override imported after index.css; high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/07a-products-modal-precision-cleanup.css,runtime-override,"Modals, Products",11244,10.98,367,55,105,0,131,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/07b-products-modal-responsive-polish.css,runtime-override,"Modals, Products",13221,12.91,555,113,114,0,132,12,critical,runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/07c-product-modal-apple-redesign.css,runtime-override,"Modals, Products",12928,12.62,558,89,20,0,133,9,high,runtime override imported after index.css; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/07d-product-category-supplier-management.css,runtime-override,Products,9683,9.46,434,72,21,0,134,7,medium,runtime override imported after index.css; medium selector surface; active imported CSS
+styles/runtime-overrides/07e-product-list-table-density.css,runtime-override,"Products, Tables",4943,4.83,188,31,26,0,135,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/07f-cross-module-density-pass.css,runtime-override,General/System,3014,2.94,131,24,23,0,136,5,medium,runtime override imported after index.css; active imported CSS
+styles/runtime-overrides/08a-unified-table-actions.css,runtime-override,Tables,7880,7.7,242,21,52,0,137,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/08b-message-composer-controls.css,runtime-override,General/System,22087,21.57,768,112,79,0,138,9,high,runtime override imported after index.css; high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/08c-customers-partners-headers.css,runtime-override,"Partners, Customers, Header",22560,22.03,706,103,343,0,139,12,critical,runtime override imported after index.css; very high !important count; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/08d-people-table-detail-contracts.css,runtime-override,"People, Tables",16881,16.49,558,92,240,0,140,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/08e-finance-modal-polish.css,runtime-override,Modals,2507,2.45,130,19,14,0,141,7,medium,runtime override imported after index.css; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09a-telegram-settings-foundation.css,runtime-override,"Telegram, Settings",22848,22.31,751,131,82,0,142,11,critical,runtime override imported after index.css; high !important count; medium selector surface; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09b-telegram-control-center-monitoring.css,runtime-override,Telegram,38268,37.37,1229,176,536,0,143,14,critical,runtime override imported after index.css; very high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS
+styles/runtime-overrides/09c-telegram-template-center-cards.css,runtime-override,Telegram,36190,35.34,1108,163,540,0,144,14,critical,runtime override imported after index.css; very high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS
+styles/runtime-overrides/09d1-telegram-studio-filter-controls.css,runtime-override,"Telegram, Filters",8830,8.62,286,45,139,0,145,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d2-telegram-studio-search-empty-states.css,runtime-override,Telegram,7161,6.99,191,31,108,0,146,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d3-telegram-monitor-title-value-layout.css,runtime-override,Telegram,2432,2.38,82,10,45,0,147,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d4-telegram-studio-cleanup-mini-cards.css,runtime-override,Telegram,2944,2.88,90,14,55,0,148,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d5-telegram-lower-stat-cards.css,runtime-override,Telegram,3133,3.06,107,12,69,0,149,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d6-telegram-lower-mini-cards-search.css,runtime-override,Telegram,3214,3.14,109,11,76,0,150,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d7-telegram-monitor-card-standard.css,runtime-override,Telegram,3600,3.52,116,14,73,0,151,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d8-telegram-monitor-size-placement-contract.css,runtime-override,Telegram,7591,7.41,250,24,165,0,152,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09d9-telegram-monitor-anchoring-hotfixes.css,runtime-override,Telegram,11206,10.94,336,35,169,0,153,10,high,runtime override imported after index.css; very high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/09e-telegram-accordion-logs-modals.css,runtime-override,"Telegram, Modals",31871,31.12,1167,240,50,0,154,13,critical,runtime override imported after index.css; high !important count; large selector surface; sensitive UI/business domain; medium file >25KB; active imported CSS
+styles/runtime-overrides/10a-installments-phone-edit-overrides.css,runtime-override,Mobile Phones,2995,2.92,74,11,18,0,155,7,medium,runtime override imported after index.css; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/10b-finance-tables-density-system.css,runtime-override,Tables,17177,16.77,426,62,179,0,156,10,high,runtime override imported after index.css; very high !important count; medium selector surface; active imported CSS
+styles/runtime-overrides/10c-people-filters-mobile-cards.css,runtime-override,"People, Filters",7100,6.93,279,35,38,0,157,7,medium,runtime override imported after index.css; high !important count; active imported CSS
+styles/runtime-overrides/10d-financial-status-badges.css,runtime-override,General/System,430,0.42,23,4,0,0,158,5,medium,runtime override imported after index.css; active imported CSS
+styles/runtime-overrides/10e-header-final-polish.css,runtime-override,Header,2013,1.97,78,12,34,0,159,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/10f-sidebar-final-polish.css,runtime-override,Sidebar,4361,4.26,151,24,49,0,160,9,high,runtime override imported after index.css; high !important count; sensitive UI/business domain; active imported CSS
+styles/runtime-overrides/10g-layout-shell-final-qa.css,runtime-override,General/System,2294,2.24,103,16,20,0,161,5,medium,runtime override imported after index.css; active imported CSS
+styles/global.css,other,General/System,2927,2.86,90,13,11,0,,0,low,

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 0 / v268 planning baseline",
+  "sourceRelease": "v267",
+  "capturedOn": "2026-08-30",
+  "scopeRoots": ["app", "components", "pages"],
+  "debtCeilings": {
+    "rawInputOutsideCanonical": 56,
+    "rawSelectOutsideCanonical": 0,
+    "rawTextareaOutsideCanonical": 0,
+    "inlineStyleObjects": 137,
+    "arbitraryZUtilities": 6,
+    "manualPaletteUtilities": 22582,
+    "createPortalUsages": 6,
+    "rawTableElements": 112
+  },
+  "canonicalNativeOwners": {
+    "input": "components/ui/TextField.tsx",
+    "select": "components/ui/SelectField.tsx",
+    "textarea": "components/ui/TextareaField.tsx"
+  },
+  "notes": [
+    "These are ceilings, not acceptance targets. Later phases must reduce them and must not increase them.",
+    "Raw file/range/checkbox/specialized inputs are included in the Phase 0 input debt count and are classified during migration rather than blindly replaced.",
+    "The source release remains v267 because Phase 0 changes audit/documentation only and the Mini App release gate is still contractually pinned to v267."
+  ]
+}

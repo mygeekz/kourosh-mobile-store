@@ -1,0 +1,76 @@
+{
+  "fixtureSuiteVersion": "phase10e-v1",
+  "baseContractExpectation": "The unmodified candidate package must pass the Phase 10D contract validator before negative fixtures are applied.",
+  "cases": [
+    {
+      "id": "valid_candidate_package",
+      "description": "Unmodified package should pass the candidate package contract validator.",
+      "expectedStatus": ["pass", "warning"],
+      "expectedErrorContains": [],
+      "mutations": []
+    },
+    {
+      "id": "missing_candidate_manifest",
+      "description": "Package missing candidate_manifest.json must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["candidate_manifest.json"],
+      "mutations": [
+        {"operation": "delete_file", "path": "candidate_manifest.json"}
+      ]
+    },
+    {
+      "id": "checksum_mismatch",
+      "description": "Package with a modified metrics.json and stale checksums must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["SHA-256 mismatch"],
+      "mutations": [
+        {"operation": "set_json_value", "file": "metrics.json", "path": ["phase10e_checksum_mismatch_probe"], "value": true}
+      ]
+    },
+    {
+      "id": "unsafe_candidate_output_field",
+      "description": "Candidate output containing a forbidden business-mutation field must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["set_stock"],
+      "mutations": [
+        {"operation": "add_candidate_output_field", "field": "set_stock", "value": 99}
+      ]
+    },
+    {
+      "id": "missing_enrichment_section",
+      "description": "Package missing a required offline metadata enrichment section must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["calibrationMetadata"],
+      "mutations": [
+        {"operation": "delete_json_key", "file": "offline_metadata_enrichment.json", "path": ["calibrationMetadata"]}
+      ]
+    },
+    {
+      "id": "unsafe_safety_flag_true",
+      "description": "Package with a backend execution safety flag set to true must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["backendModelExecutionAllowed"],
+      "mutations": [
+        {"operation": "set_json_value", "file": "candidate_manifest.json", "path": ["safetyPolicy", "backendModelExecutionAllowed"], "value": true}
+      ]
+    },
+    {
+      "id": "invalid_model_card_production_claim",
+      "description": "Model card claiming production readiness must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["productionReadinessClaim"],
+      "mutations": [
+        {"operation": "set_json_value", "file": "model_card.json", "path": ["productionReadinessClaim"], "value": "approved_for_production"}
+      ]
+    },
+    {
+      "id": "invalid_checksums_structure",
+      "description": "checksums.json without a files object must fail.",
+      "expectedStatus": ["fail"],
+      "expectedErrorContains": ["files object"],
+      "mutations": [
+        {"operation": "set_json_value", "file": "checksums.json", "path": ["files"], "value": []}
+      ]
+    }
+  ]
+}

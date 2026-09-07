@@ -1,0 +1,1103 @@
+/* Phase 11 — Sales / Cart / Invoice Foundation
+   Scope: sales hub, cart checkout, line items, summary, invoice list and invoice surfaces.
+   Plain CSS only: no Tailwind utility composition. */
+
+.sales-cart-foundation,
+.sales-hub-foundation,
+.sales-invoices-foundation {
+  --sales-surface: rgba(255, 255, 255, 0.96);
+  --sales-surface-soft: rgba(248, 250, 252, 0.84);
+  --sales-border: rgba(148, 163, 184, 0.26);
+  --sales-border-strong: rgba(100, 116, 139, 0.32);
+  --sales-text: rgb(15, 23, 42);
+  --sales-muted: rgb(100, 116, 139);
+  --sales-radius-lg: 24px;
+  --sales-radius-md: 18px;
+  --sales-shadow: 0 24px 58px -46px rgba(15, 23, 42, 0.34);
+  text-rendering: optimizeLegibility;
+}
+
+.dark .sales-cart-foundation,
+.dark .sales-hub-foundation,
+.dark .sales-invoices-foundation {
+  --sales-surface: rgba(2, 6, 23, 0.88);
+  --sales-surface-soft: rgba(15, 23, 42, 0.64);
+  --sales-border: rgba(51, 65, 85, 0.82);
+  --sales-border-strong: rgba(71, 85, 105, 0.82);
+  --sales-text: rgb(241, 245, 249);
+  --sales-muted: rgb(148, 163, 184);
+  --sales-shadow: 0 24px 58px -46px rgba(0, 0, 0, 0.72);
+}
+
+.sales-cart-foundation [data-ui-sales-surface],
+.sales-section-card,
+.sales-checkout-panel,
+.sales-summary-card,
+.sales-line-card,
+.sales-invoices-card {
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  box-shadow: var(--sales-shadow) !important;
+  backdrop-filter: none !important;
+}
+
+.sales-hero-panel {
+  border-radius: 30px !important;
+}
+
+.sales-hero-panel::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: 29px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+.dark .sales-hero-panel::before {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.sales-toolbar-btn,
+.sales-page-btn,
+.sales-payment-chip,
+.sales-submit-btn,
+.sales-invoices-foundation .finance-table-action,
+.sales-cart-foundation [data-ui-button="true"] {
+  min-height: 36px;
+  border-radius: 14px !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+
+.sales-page-btn.ux-btn-danger .ux-btn__icon,
+.sales-page-btn.ux-btn-danger .ux-btn__spinner,
+.sales-page-btn.ux-btn-danger[data-ux-icon-glyph]::before {
+  background: rgb(220 38 38) !important;
+  color: rgb(255 255 255) !important;
+  box-shadow: none !important;
+}
+
+.sales-page-btn.ux-btn-danger .ux-btn__icon i,
+.sales-page-btn.ux-btn-danger .ux-btn__icon svg,
+.sales-page-btn.ux-btn-danger .ux-btn__spinner i,
+.sales-page-btn.ux-btn-danger .ux-btn__spinner svg {
+  color: rgb(255 255 255) !important;
+}
+
+.dark .sales-page-btn.ux-btn-danger .ux-btn__icon,
+.dark .sales-page-btn.ux-btn-danger .ux-btn__spinner,
+.dark .sales-page-btn.ux-btn-danger[data-ux-icon-glyph]::before {
+  background: rgb(225 29 72) !important;
+  color: rgb(255 255 255) !important;
+}
+
+.sales-hero-metrics > div,
+.sales-control-tips > div,
+.sales-invoice-stats > div {
+  border-radius: var(--sales-radius-md) !important;
+  border: 1px solid var(--sales-border) !important;
+  background: var(--sales-surface-soft) !important;
+  box-shadow: 0 14px 34px -30px rgba(15, 23, 42, 0.25);
+}
+
+.sales-workspace {
+  align-items: start;
+}
+
+.sales-section-card > div:first-child h2,
+.sales-section-card > div:first-child h3,
+.sales-checkout-panel h4,
+.sales-summary-card [class*="tracking"],
+.sales-invoices-foundation h1,
+.sales-invoices-foundation h2,
+.sales-invoices-foundation h3 {
+  letter-spacing: -0.01em;
+}
+
+.sales-section-card p,
+.sales-checkout-panel p,
+.sales-summary-card p,
+.sales-line-card p,
+.sales-invoices-card p,
+.sales-invoices-card td,
+.sales-invoices-card th {
+  line-height: 1.75;
+}
+
+.sales-cart-foundation .line-clamp-1,
+.sales-cart-foundation .truncate {
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+}
+
+.sales-cart-lines {
+  isolation: isolate;
+}
+
+.sales-line-card {
+  position: relative;
+  border-radius: 22px !important;
+}
+
+.sales-line-card:hover {
+  border-color: var(--sales-border-strong) !important;
+  transform: translateY(-1px);
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.sales-line-card h3,
+.sales-line-card p,
+.sales-invoice-mobile-card,
+.sales-invoices-card td {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.sales-line-actions button,
+.sales-line-actions [data-ui-button="true"] {
+  display: inline-grid !important;
+  place-items: center !important;
+  flex: 0 0 40px !important;
+  inline-size: 40px !important;
+  block-size: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-inline-size: 40px !important;
+  min-block-size: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+  aspect-ratio: 1 / 1;
+  padding: 0 !important;
+  line-height: 1 !important;
+  border-radius: 999px !important;
+}
+
+
+.sales-line-actions .sales-line-action--toggle,
+.sales-line-actions [data-ui-sales-line-action="toggle"] {
+  border-color: rgb(226 232 240) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(71 85 105) !important;
+}
+
+.sales-line-actions .sales-line-action--delete,
+.sales-line-actions [data-ui-sales-line-action="delete"] {
+  border-color: rgb(254 205 211) !important;
+  background: rgb(239 68 68) !important;
+  color: rgb(255 255 255) !important;
+}
+
+.sales-line-actions .sales-line-action--delete i,
+.sales-line-actions [data-ui-sales-line-action="delete"] i {
+  color: rgb(255 255 255) !important;
+}
+
+.sales-line-actions .sales-line-action--delete:hover,
+.sales-line-actions [data-ui-sales-line-action="delete"]:hover {
+  border-color: rgb(251 113 133) !important;
+  background: rgb(220 38 38) !important;
+  color: rgb(255 255 255) !important;
+}
+
+.dark .sales-line-actions .sales-line-action--toggle,
+.dark .sales-line-actions [data-ui-sales-line-action="toggle"] {
+  border-color: rgb(30 41 59) !important;
+  background: rgb(2 6 23) !important;
+  color: rgb(203 213 225) !important;
+}
+
+.dark .sales-line-actions .sales-line-action--delete,
+.dark .sales-line-actions [data-ui-sales-line-action="delete"] {
+  border-color: rgba(127, 29, 29, 0.85) !important;
+  background: rgb(220 38 38) !important;
+  color: rgb(255 255 255) !important;
+}
+
+.sales-line-controls input,
+.sales-line-controls textarea,
+.sales-line-controls select,
+.sales-summary-foundation input,
+.sales-summary-foundation textarea,
+.sales-summary-foundation select,
+.sales-invoices-foundation input[type="search"] {
+  border-radius: 14px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  min-height: 38px;
+  line-height: 1.5;
+}
+
+.sales-line-controls input:focus,
+.sales-line-controls textarea:focus,
+.sales-line-controls select:focus,
+.sales-summary-foundation input:focus,
+.sales-summary-foundation textarea:focus,
+.sales-summary-foundation select:focus,
+.sales-invoices-foundation input[type="search"]:focus {
+  outline: none !important;
+  border-color: rgba(16, 185, 129, 0.56) !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12) !important;
+}
+
+.sales-line-controls input[type="number"],
+.sales-line-controls input[name*="Price" i],
+.sales-line-controls input[name*="discount" i],
+.sales-summary-foundation input[name="globalDiscount"],
+.sales-invoices-foundation td:nth-child(1),
+.sales-invoices-foundation td:nth-child(5),
+.sales-invoices-foundation .text-primary,
+.sales-invoices-foundation .font-mono,
+.sales-invoices-foundation [dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: plaintext;
+  font-variant-numeric: tabular-nums;
+}
+
+.sales-line-details {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.66), rgba(255, 255, 255, 0.88));
+}
+
+.dark .sales-line-details {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.54), rgba(2, 6, 23, 0.6));
+}
+
+.sales-summary-card {
+  border-radius: 22px !important;
+}
+
+.sales-summary-foundation [data-ui-sales-summary-card="financial"] > div:last-child > div,
+.sales-summary-foundation [data-ui-sales-summary-card="settings"] > div:last-child > div {
+  border-radius: 16px;
+}
+
+.sales-payment-method-grid [data-ui-button="true"] {
+  min-height: 40px;
+}
+
+.sales-submit-btn {
+  min-height: 46px !important;
+  border-radius: 16px !important;
+  font-weight: 900 !important;
+}
+
+.sales-empty-cart {
+  border-radius: 22px !important;
+  color: var(--sales-muted) !important;
+}
+
+.sales-hub-grid > * {
+  border-radius: var(--sales-radius-lg) !important;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.sales-hub-grid > *:hover {
+  transform: translateY(-2px);
+  border-color: var(--sales-border-strong) !important;
+}
+
+.sales-invoices-card {
+  border-radius: 24px !important;
+}
+
+.sales-invoice-table {
+  border-radius: 18px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+}
+
+.sales-invoice-table table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.sales-invoice-table thead th {
+  background: var(--sales-surface-soft) !important;
+  color: var(--sales-text) !important;
+  font-weight: 900 !important;
+  white-space: nowrap;
+}
+
+.sales-invoice-table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+.sales-invoice-table tbody tr:hover {
+  background: rgba(16, 185, 129, 0.055) !important;
+}
+
+.sales-invoice-table td,
+.sales-invoice-table th {
+  vertical-align: middle;
+}
+
+.sales-invoice-table td:nth-child(3) {
+  min-width: 240px;
+  max-width: 420px;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.sales-invoice-mobile-card {
+  border-radius: 18px !important;
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+}
+
+.sales-invoices-foundation .kp-search-field-host,
+.sales-invoices-foundation .ux-toolbar-search {
+  border-radius: 16px !important;
+}
+
+.sales-invoices-foundation .kp-search-field__input,
+.sales-invoices-foundation .ux-toolbar-search__input {
+  min-height: 40px !important;
+  padding-inline-start: 44px !important;
+  padding-inline-end: 14px !important;
+}
+
+@media (max-width: 768px) {
+  .sales-cart-foundation,
+  .sales-hub-foundation,
+  .sales-invoices-foundation {
+    --sales-radius-lg: 20px;
+    --sales-radius-md: 16px;
+  }
+
+  .sales-cart-foundation .max-w-7xl {
+    padding-inline: 10px !important;
+  }
+
+  .sales-hero-panel {
+    border-radius: 24px !important;
+  }
+
+  .sales-hero-metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sales-line-card,
+  .sales-section-card,
+  .sales-checkout-panel,
+  .sales-summary-card,
+  .sales-invoices-card {
+    border-radius: 18px !important;
+  }
+
+  .sales-line-actions {
+    align-self: flex-start;
+  }
+
+  .sales-line-controls {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sales-toolbar-btn,
+  .sales-page-btn {
+    flex: 1 1 auto;
+  }
+
+  .sales-invoice-mobile-list {
+    display: grid;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .sales-checkout-panel {
+    max-height: calc(100vh - 24px);
+    overflow: auto;
+    scrollbar-width: thin;
+  }
+}
+
+.sales-invoice-detail-foundation {
+  --sales-surface: rgba(255, 255, 255, 0.96);
+  --sales-border: rgba(148, 163, 184, 0.26);
+  --sales-shadow: 0 24px 58px -46px rgba(15, 23, 42, 0.34);
+}
+
+.dark .sales-invoice-detail-foundation {
+  --sales-surface: rgba(2, 6, 23, 0.88);
+  --sales-border: rgba(51, 65, 85, 0.82);
+  --sales-shadow: 0 24px 58px -46px rgba(0, 0, 0, 0.72);
+}
+
+.sales-invoice-actions {
+  border-color: var(--sales-border) !important;
+  background: var(--sales-surface) !important;
+  box-shadow: var(--sales-shadow) !important;
+  backdrop-filter: none !important;
+  border-radius: 18px !important;
+}
+
+.sales-invoice-actions [data-ui-button="true"],
+.sales-invoice-actions button {
+  min-height: 36px;
+  border-radius: 14px !important;
+  white-space: nowrap;
+}
+
+.sales-invoice-document .inv__sheet {
+  border-color: var(--sales-border, rgba(148, 163, 184, 0.26)) !important;
+  box-shadow: var(--sales-shadow, 0 24px 58px -46px rgba(15, 23, 42, 0.34)) !important;
+}
+
+.sales-invoice-document .inv__table td,
+.sales-invoice-document .inv__table th,
+.sales-invoice-document .inv__meta-v,
+.sales-invoice-document .inv__qr-text {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* Phase 51.73 — cash sales microfixes: visible combobox input, payment state, risk CTA, no date icon */
+.sales-select-shell .sellable-select__input-container {
+  flex: 1 1 auto !important;
+  min-width: 8rem !important;
+  width: auto !important;
+  max-width: 100% !important;
+  color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  overflow: visible !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container {
+  color: rgb(226 232 240) !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  caret-color: rgb(15 23 42) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  min-width: 8rem !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  line-height: 1.6 !important;
+  overflow: visible !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container input,
+html.dark .sales-select-shell input[id^="react-select"],
+html.dark .sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(226 232 240) !important;
+  -webkit-text-fill-color: rgb(226 232 240) !important;
+  caret-color: rgb(226 232 240) !important;
+}
+
+.sales-payment-chip[data-selected="true"] {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 16px 34px -24px rgba(15, 23, 42, 0.45) !important;
+}
+
+.sales-payment-chip[data-selected="true"] .ux-btn__label-main {
+  font-weight: 950 !important;
+}
+
+.sales-payment-chip[data-selected="true"][data-payment-method="cash"] {
+  border: 1px solid rgb(16 185 129) !important;
+  background: linear-gradient(180deg, rgb(236 253 245), rgb(209 250 229)) !important;
+  color: rgb(4 120 87) !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,.16), 0 16px 34px -24px rgba(5,150,105,.55) !important;
+}
+
+.sales-payment-chip[data-selected="true"][data-payment-method="credit"] {
+  border: 1px solid rgb(59 130 246) !important;
+  background: linear-gradient(180deg, rgb(239 246 255), rgb(219 234 254)) !important;
+  color: rgb(29 78 216) !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.16), 0 16px 34px -24px rgba(37,99,235,.55) !important;
+}
+
+.sales-payment-chip[data-selected="false"] {
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(71 85 105) !important;
+  box-shadow: none !important;
+}
+
+.sales-payment-chip[data-selected="false"] .ux-btn__icon {
+  opacity: .62 !important;
+}
+
+html.dark .sales-payment-chip[data-selected="false"] {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(203 213 225) !important;
+}
+
+html.dark .sales-payment-chip[data-selected="true"][data-payment-method="cash"] {
+  border-color: rgb(52 211 153) !important;
+  background: rgba(6, 78, 59, .62) !important;
+  color: rgb(167 243 208) !important;
+}
+
+html.dark .sales-payment-chip[data-selected="true"][data-payment-method="credit"] {
+  border-color: rgb(96 165 250) !important;
+  background: rgba(30, 64, 175, .62) !important;
+  color: rgb(191 219 254) !important;
+}
+
+.app-date-field--no-icon .app-date-field__control,
+.app-date-field--no-icon .app-date-field__input,
+.sales-date-input--no-icon {
+  padding-inline-end: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.app-date-field--no-icon .app-date-field__icon {
+  display: none !important;
+}
+
+.sales-risk-cash-suggestion {
+  border-width: 2px !important;
+  border-color: rgb(251 113 133) !important;
+  background: linear-gradient(180deg, rgb(255 241 242), rgb(255 228 230)) !important;
+  box-shadow: 0 18px 42px -34px rgba(225, 29, 72, .55) !important;
+}
+
+.sales-risk-switch-cash-btn {
+  min-height: 42px !important;
+  padding-inline: 1rem !important;
+  border: 1px solid rgb(225 29 72) !important;
+  background: rgb(225 29 72) !important;
+  color: #fff !important;
+  box-shadow: 0 16px 34px -24px rgba(225, 29, 72, .78) !important;
+}
+
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(190 18 60) !important;
+  border-color: rgb(190 18 60) !important;
+  color: #fff !important;
+}
+
+.sales-risk-switch-cash-btn .ux-btn__icon,
+.sales-risk-switch-cash-btn .ux-btn__label-main {
+  color: #fff !important;
+}
+
+html.dark .sales-risk-cash-suggestion {
+  border-color: rgb(244 63 94) !important;
+  background: rgba(76, 5, 25, .72) !important;
+}
+
+/* Phase 51.75 — force cash-sale react-select typed query to remain visible */
+.sales-select-shell .sellable-select__value-container {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+
+.sales-select-shell .sellable-select__input-container,
+.sales-select-shell .sellable-select__input,
+.sales-select-shell .sellable-select__input-container > div {
+  display: inline-flex !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 8rem !important;
+  max-width: 100% !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  direction: rtl !important;
+  text-align: right !important;
+  overflow: visible !important;
+}
+
+.sales-select-shell .sellable-select__input-container input,
+.sales-select-shell .sellable-select__input input,
+.sales-select-shell input[id^="react-select"],
+.sales-select-shell input[aria-autocomplete="list"] {
+  display: inline-block !important;
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgb(15 23 42) !important;
+  -webkit-text-fill-color: rgb(15 23 42) !important;
+  caret-color: rgb(15 23 42) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1.6 !important;
+  text-align: right !important;
+  direction: rtl !important;
+  min-width: 8rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+}
+
+html.dark .sales-select-shell .sellable-select__input-container,
+html.dark .sales-select-shell .sellable-select__input,
+html.dark .sales-select-shell .sellable-select__input-container > div,
+html.dark .sales-select-shell .sellable-select__input-container input,
+html.dark .sales-select-shell .sellable-select__input input,
+html.dark .sales-select-shell input[id^="react-select"],
+html.dark .sales-select-shell input[aria-autocomplete="list"] {
+  color: rgb(226 232 240) !important;
+  -webkit-text-fill-color: rgb(226 232 240) !important;
+  caret-color: rgb(226 232 240) !important;
+}
+
+
+/* Phase 51.77 — explicit payment chips and risk CTA visibility */
+.sales-payment-choice {
+  min-height: 44px !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .45rem !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(255 255 255) !important;
+  color: rgb(51 65 85) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+  transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease !important;
+}
+.sales-payment-choice small {
+  display: inline-flex !important;
+  align-items: center !important;
+  border-radius: 999px !important;
+  padding: .12rem .42rem !important;
+  font-size: 9px !important;
+  font-weight: 950 !important;
+  background: rgba(255,255,255,.24) !important;
+  color: inherit !important;
+}
+.sales-payment-choice.is-active {
+  transform: translateY(-1px) !important;
+  border-width: 2px !important;
+}
+.sales-payment-choice.is-active-cash {
+  border-color: rgb(5 150 105) !important;
+  background: linear-gradient(180deg, rgb(16 185 129), rgb(5 150 105)) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18), 0 18px 38px -28px rgba(5,150,105,.9) !important;
+}
+.sales-payment-choice.is-active-credit {
+  border-color: rgb(37 99 235) !important;
+  background: linear-gradient(180deg, rgb(59 130 246), rgb(37 99 235)) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.18), 0 18px 38px -28px rgba(37,99,235,.9) !important;
+}
+.sales-payment-choice:not(.is-active):hover {
+  border-color: rgb(148 163 184) !important;
+  background: rgb(248 250 252) !important;
+}
+html.dark .sales-payment-choice {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+html.dark .sales-payment-choice.is-active-cash {
+  border-color: rgb(52 211 153) !important;
+  background: linear-gradient(180deg, rgba(16,185,129,.95), rgba(4,120,87,.95)) !important;
+  color: #fff !important;
+}
+html.dark .sales-payment-choice.is-active-credit {
+  border-color: rgb(96 165 250) !important;
+  background: linear-gradient(180deg, rgba(59,130,246,.95), rgba(30,64,175,.95)) !important;
+  color: #fff !important;
+}
+.sales-risk-switch-cash-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .5rem !important;
+  border-radius: 16px !important;
+  background: rgb(225 29 72) !important;
+  border: 1px solid rgb(190 18 60) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  min-height: 42px !important;
+  padding: .55rem 1rem !important;
+  box-shadow: 0 16px 34px -24px rgba(225, 29, 72, .78) !important;
+}
+.sales-risk-switch-cash-btn,
+.sales-risk-switch-cash-btn * {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(190 18 60) !important;
+  border-color: rgb(159 18 57) !important;
+}
+
+
+/* Phase 51.78 — sales payment/invoice clarity fixes */
+.sales-payment-choice.is-active,
+.sales-payment-choice[data-selected="true"] {
+  transform: translateY(-1px) !important;
+  font-weight: 950 !important;
+}
+.sales-payment-choice.is-active-cash,
+.sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border: 1px solid rgb(16 185 129) !important;
+  background: linear-gradient(180deg, rgb(16 185 129), rgb(4 120 87)) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,.18), 0 18px 38px -26px rgba(5,150,105,.72) !important;
+}
+.sales-payment-choice.is-active-credit,
+.sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border: 1px solid rgb(59 130 246) !important;
+  background: linear-gradient(180deg, rgb(59 130 246), rgb(29 78 216)) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.18), 0 18px 38px -26px rgba(37,99,235,.72) !important;
+}
+.sales-payment-choice.is-active *,
+.sales-payment-choice[data-selected="true"] * {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+.sales-risk-switch-cash-btn,
+.sales-risk-switch-cash-btn span,
+.sales-risk-switch-cash-btn i {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+
+/* Phase 51.79 — final readable payment chips + cash-switch CTA text fix
+   Keep active state clearly visible without forcing the Persian labels to white. */
+.sales-payment-choice.is-active-cash,
+.sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border: 2px solid rgb(5 150 105) !important;
+  background: linear-gradient(180deg, rgb(236 253 245), rgb(209 250 229)) !important;
+  color: rgb(4 120 87) !important;
+  -webkit-text-fill-color: rgb(4 120 87) !important;
+  box-shadow: 0 0 0 4px rgba(16,185,129,.18), 0 18px 38px -28px rgba(5,150,105,.55) !important;
+}
+.sales-payment-choice.is-active-credit,
+.sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border: 2px solid rgb(37 99 235) !important;
+  background: linear-gradient(180deg, rgb(239 246 255), rgb(219 234 254)) !important;
+  color: rgb(29 78 216) !important;
+  -webkit-text-fill-color: rgb(29 78 216) !important;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.18), 0 18px 38px -28px rgba(37,99,235,.55) !important;
+}
+.sales-payment-choice.is-active *,
+.sales-payment-choice[data-selected="true"] * {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.sales-payment-choice[data-selected="true"] small {
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid currentColor !important;
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.sales-payment-choice[data-selected="true"]::after {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: currentColor;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  font-size: .75rem;
+  font-weight: 950;
+}
+html.dark .sales-payment-choice.is-active-cash,
+html.dark .sales-payment-choice[data-selected="true"][data-payment-method="cash"] {
+  border-color: rgb(52 211 153) !important;
+  background: rgba(6, 78, 59, .42) !important;
+  color: rgb(167 243 208) !important;
+  -webkit-text-fill-color: rgb(167 243 208) !important;
+}
+html.dark .sales-payment-choice.is-active-credit,
+html.dark .sales-payment-choice[data-selected="true"][data-payment-method="credit"] {
+  border-color: rgb(96 165 250) !important;
+  background: rgba(30, 64, 175, .42) !important;
+  color: rgb(191 219 254) !important;
+  -webkit-text-fill-color: rgb(191 219 254) !important;
+}
+.sales-risk-switch-cash-btn {
+  background: rgb(255 241 242) !important;
+  border-color: rgb(251 113 133) !important;
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+}
+.sales-risk-switch-cash-btn span,
+.sales-risk-switch-cash-btn i {
+  color: rgb(159 18 57) !important;
+  -webkit-text-fill-color: rgb(159 18 57) !important;
+}
+.sales-risk-switch-cash-btn:hover,
+.sales-risk-switch-cash-btn:focus-visible {
+  background: rgb(255 228 230) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(136 19 55) !important;
+  -webkit-text-fill-color: rgb(136 19 55) !important;
+}
+.sales-risk-switch-cash-btn:hover span,
+.sales-risk-switch-cash-btn:hover i,
+.sales-risk-switch-cash-btn:focus-visible span,
+.sales-risk-switch-cash-btn:focus-visible i {
+  color: rgb(136 19 55) !important;
+  -webkit-text-fill-color: rgb(136 19 55) !important;
+}
+html.dark .sales-risk-switch-cash-btn {
+  background: rgba(76, 5, 25, .62) !important;
+  border-color: rgb(244 63 94) !important;
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}
+html.dark .sales-risk-switch-cash-btn span,
+html.dark .sales-risk-switch-cash-btn i {
+  color: rgb(254 205 211) !important;
+  -webkit-text-fill-color: rgb(254 205 211) !important;
+}
+
+/* Invoice list: compact header, in-body latest invoice summary, and responsive pagination. */
+.sales-invoices-foundation .page-shell-modern {
+  padding-block: 12px;
+}
+
+.sales-invoices-foundation .page-shell-header-content {
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.sales-invoices-foundation [data-ui-filter-bar="true"],
+.sales-invoices-foundation .responsive-filter-bar__main,
+.sales-invoices-foundation .ux-filter-bar__main {
+  min-block-size: 0;
+  block-size: auto;
+}
+
+.sales-invoices-foundation .responsive-filter-bar__search,
+.sales-invoices-foundation .ux-filter-bar__search {
+  inline-size: min(100%, 36rem);
+  max-inline-size: 36rem;
+  flex: 0 1 auto;
+  margin-inline-end: auto;
+}
+
+.sales-invoices-card[data-ui-sales-page="invoices"] {
+  container: invoices-workspace / inline-size;
+}
+
+.sales-invoice-command-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sales-invoice-latest-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-inline-size: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--sales-border);
+  border-radius: 16px;
+  background: var(--sales-surface-soft);
+}
+
+.sales-invoice-latest-summary__main {
+  display: flex;
+  min-inline-size: 0;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.sales-invoice-latest-summary__icon {
+  display: inline-grid;
+  inline-size: 28px;
+  block-size: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--sales-muted);
+}
+
+.sales-invoice-latest-summary__badge {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 22px;
+  padding-inline: 8px;
+  border: 1px solid var(--sales-border);
+  border-radius: 999px;
+  color: var(--sales-muted);
+  font-size: 9.5px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.sales-invoice-latest-summary__lines {
+  display: -webkit-box;
+  margin: 4px 0 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  color: var(--sales-muted);
+  font-size: 11px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.sales-invoice-latest-summary__total {
+  display: grid;
+  gap: 3px;
+  min-inline-size: 132px;
+  text-align: right;
+}
+
+.sales-invoice-latest-summary__total span {
+  color: var(--sales-muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.sales-invoice-latest-summary__total strong {
+  color: var(--sales-text);
+  font-size: 12.5px;
+  font-weight: 950;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.sales-invoice-stats {
+  margin-bottom: 14px;
+}
+
+.sales-invoice-pagination {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--sales-border);
+  color: var(--sales-muted);
+  font-size: 11px;
+}
+
+.sales-invoice-pagination__meta {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.sales-invoice-pagination__meta strong {
+  color: var(--sales-text);
+  font-weight: 950;
+}
+
+.sales-invoice-pagination__size {
+  display: grid;
+  grid-template-columns: auto 76px;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.sales-invoice-pagination__size .app-select-field {
+  inline-size: 76px;
+  min-inline-size: 76px;
+}
+
+.sales-invoice-pagination__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+@container invoices-workspace (max-width: 780px) {
+  .sales-invoice-command-row {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .sales-invoice-export-menu,
+  .sales-invoice-export-menu .export-menu-button {
+    inline-size: 100%;
+  }
+
+  .sales-invoice-pagination {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .sales-invoice-pagination__meta {
+    grid-column: 1 / -1;
+  }
+}
+
+@container invoices-workspace (max-width: 560px) {
+  .sales-invoice-latest-summary {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .sales-invoice-latest-summary__total {
+    min-inline-size: 0;
+  }
+
+  .sales-invoice-pagination {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .sales-invoice-pagination__meta,
+  .sales-invoice-pagination__size,
+  .sales-invoice-pagination__actions {
+    grid-column: auto;
+    inline-size: 100%;
+  }
+
+  .sales-invoice-pagination__size {
+    grid-template-columns: minmax(0, 1fr) 82px;
+  }
+
+  .sales-invoice-pagination__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sales-invoice-pagination__actions [data-ui-button="true"] {
+    inline-size: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .sales-invoices-foundation .responsive-filter-bar__search,
+  .sales-invoices-foundation .ux-filter-bar__search {
+    inline-size: 100%;
+    max-inline-size: 100%;
+  }
+}

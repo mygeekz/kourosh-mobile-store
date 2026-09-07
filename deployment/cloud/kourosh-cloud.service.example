@@ -1,0 +1,24 @@
+[Unit]
+Description=KOUROSH Cloud Relay (example only)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kourosh-cloud
+Group=kourosh-cloud
+WorkingDirectory=/opt/kourosh-cloud/current
+EnvironmentFile=/etc/kourosh-cloud/cloud.env
+ExecStart=/usr/bin/node cloud/relay-server/index.mjs
+Restart=on-failure
+RestartSec=3
+KillSignal=SIGTERM
+TimeoutStopSec=20
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/kourosh-cloud
+
+[Install]
+WantedBy=multi-user.target

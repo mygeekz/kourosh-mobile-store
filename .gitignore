@@ -1,0 +1,55 @@
+node_modules/
+dist/
+.vite/
+.env
+.env.*
+*.log
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+data/advisory-models/
+private_uploads/
+.venv/
+__pycache__/
+*.pyc
+*.joblib
+ml-workbench/inventory-stockout/output/**
+!ml-workbench/inventory-stockout/output/.gitkeep
+
+# Generated local HTTPS trust material (never commit/share private keys)
+certs/current-*
+certs/*.pfx
+certs/*.pem
+certs/*.cer
+certs/*.csr
+certs/*.srl
+certs/generate-local-cert.ps1
+certs/openssl-local*.cnf
+certs/local-domain-runtime.json
+
+# Local production-PWA build fingerprint
+.kourosh-runtime/
+miniapp_public_url.txt
+tools/cloudflared/cloudflared.exe
+
+# Local MiniApp RC sign-off evidence (do not commit)
+config/quality/miniapp-rc-evidence-v256.json
+config/quality/miniapp-rc-evidence-v257.json
+config/quality/miniapp-rc-evidence-v258.json
+
+config/quality/miniapp-rc-evidence-v259.json
+
+config/quality/miniapp-rc-evidence-v260.json
+config/quality/miniapp-rc-evidence-v262.json
+
+config/quality/miniapp-rc-evidence-v263.json
+config/quality/miniapp-rc-evidence-v264.json
+
+config/quality/miniapp-rc-evidence-v265.json
+
+config/quality/miniapp-rc-evidence-v266.json
+config/quality/miniapp-rc-evidence-v267.json
+
+# v337 deterministic release dependency cache
+.cache/npm/

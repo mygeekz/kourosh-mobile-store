@@ -1,0 +1,88 @@
+/* Stage 95 — Creditors action column final polish
+   Makes the row action a real readable button, matching debtors report behavior. */
+
+.creditors-executive-page .creditors-table-final {
+  min-width: 960px !important;
+}
+
+.creditors-executive-page .creditors-col-partner { width: 30% !important; }
+.creditors-executive-page .creditors-col-type { width: 14% !important; }
+.creditors-executive-page .creditors-col-credit { width: 26% !important; }
+.creditors-executive-page .creditors-col-action { width: 30% !important; }
+
+.creditors-executive-page .creditors-table-final th:last-child,
+.creditors-executive-page .creditors-table-final td:last-child {
+  min-width: 180px !important;
+  text-align: center !important;
+  overflow: visible !important;
+}
+
+.creditors-executive-page .creditors-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  flex-wrap: nowrap !important;
+  overflow: visible !important;
+}
+
+.creditors-executive-page .creditors-row-action,
+.creditors-executive-page a.creditors-row-action {
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 142px !important;
+  max-width: none !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 16px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(37, 99, 235, .24) !important;
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  text-decoration: none !important;
+  font-size: .8rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.creditors-executive-page .creditors-row-action i {
+  flex: 0 0 auto !important;
+  width: 15px !important;
+  height: 15px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: .78rem !important;
+  line-height: 1 !important;
+}
+
+.creditors-executive-page .creditors-row-action span {
+  display: inline-block !important;
+  min-width: max-content !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.creditors-executive-page .creditors-row-action:hover {
+  background: #dbeafe !important;
+  border-color: rgba(37, 99, 235, .34) !important;
+}
+
+@media (max-width: 860px) {
+  .creditors-executive-page .creditors-row-actions {
+    justify-content: flex-start !important;
+  }
+
+  .creditors-executive-page .creditors-row-action {
+    min-width: 142px !important;
+  }
+}

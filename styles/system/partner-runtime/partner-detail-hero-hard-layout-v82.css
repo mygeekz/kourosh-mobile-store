@@ -1,0 +1,158 @@
+
+/* v82 — PartnerDetail hero hard layout fix.
+   Fixes persistent left drift by replacing fragile RTL flex behavior with an explicit grid.
+   This is scoped to the partner detail hero only. */
+
+/* Page/card must not create horizontal overflow */
+.partner-detail-responsive-root,
+.partner-detail-apple,
+.partner-detail-hero-clean,
+.detail-hero-card.partner-detail-hero-clean {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow-x: clip !important;
+}
+
+/* The hero top becomes an explicit 2-column grid on desktop:
+   right/main content gets the fluid area; left/actions gets a capped safe column. */
+.partner-detail-hero-clean .partner-detail-hero__top--v82,
+.partner-detail-apple .partner-detail-hero__top--v82,
+.partner-detail-responsive-root .partner-detail-hero__top--v82 {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px) !important;
+  grid-template-areas: "main actions" !important;
+  gap: 18px !important;
+  align-items: start !important;
+  justify-content: stretch !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* In RTL the first child is the right/main content in the grid main area. */
+.partner-detail-hero-main-v82,
+.partner-detail-hero-clean .partner-detail-hero__top--v82 > :first-child {
+  grid-area: main !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Actions column must be inside the hero, never pushed out to the left. */
+.partner-detail-actions-v82,
+.partner-detail-hero-clean .partner-detail-actions--customer-parity,
+.partner-detail-apple .partner-detail-actions--customer-parity,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity {
+  grid-area: actions !important;
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  justify-self: stretch !important;
+  align-self: start !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  min-width: 0 !important;
+  flex: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  z-index: 2 !important;
+}
+
+/* Buttons stay compact inside the action grid. */
+.partner-detail-actions-v82 :where(button, .ux-btn, .people-action-btn),
+.partner-detail-hero-clean .partner-detail-actions--customer-parity :where(button, .ux-btn, .people-action-btn) {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding-inline: 10px !important;
+  border-radius: 13px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  justify-content: center !important;
+  font-size: 10.5px !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+}
+
+/* Text/chips inside main hero cannot force width overflow. */
+.partner-detail-hero-main-v82 *,
+.partner-detail-hero-clean .partner-detail-hero__top--v82 > :first-child * {
+  min-width: 0 !important;
+}
+
+.partner-detail-hero-main-v82 .mt-3,
+.partner-detail-hero-clean .partner-detail-hero__top--v82 > :first-child .mt-3 {
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+.partner-detail-hero-main-v82 :where(.people-chip, .partner-telegram-status-chip, [class*="rounded-full"]) {
+  max-width: 100% !important;
+}
+
+/* The account focus block under the hero should align with the same safe width. */
+.partner-detail-account-focus,
+.detail-account-focus.partner-detail-account-focus {
+  margin-inline: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Reset the previous v81/right-left override if it is still loaded earlier. */
+.partner-detail-apple .partner-detail-actions,
+.partner-detail-responsive-root .partner-detail-actions,
+.partner-detail-apple .partner-detail-actions--customer-parity,
+.partner-detail-responsive-root .partner-detail-actions--customer-parity {
+  margin-inline-start: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+/* Tablet: actions move below main content, full width, still inside card. */
+@media (max-width: 1180px) {
+  .partner-detail-hero-clean .partner-detail-hero__top--v82,
+  .partner-detail-apple .partner-detail-hero__top--v82,
+  .partner-detail-responsive-root .partner-detail-hero__top--v82 {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "main"
+      "actions" !important;
+    gap: 14px !important;
+  }
+
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    max-width: 100% !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .partner-detail-actions-v82,
+  .partner-detail-hero-clean .partner-detail-actions--customer-parity,
+  .partner-detail-apple .partner-detail-actions--customer-parity,
+  .partner-detail-responsive-root .partner-detail-actions--customer-parity {
+    grid-template-columns: 1fr !important;
+  }
+}

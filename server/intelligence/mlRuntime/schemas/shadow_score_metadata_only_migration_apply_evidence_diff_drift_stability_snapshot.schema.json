@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kourosh.shadow_score_metadata_only_migration_apply_evidence_diff_drift_stability_snapshot.schema.json",
+  "title": "Kourosh Phase 13S Metadata-only Migration Apply Evidence Diff Drift Stability Snapshot",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "snapshotKind",
+    "snapshotMode",
+    "stabilitySnapshotOnly",
+    "evidenceOnly",
+    "deterministicRuleBasedOnly",
+    "noMlClassifier",
+    "runCount",
+    "stableRunCount",
+    "distinctClassifierSignatureCount",
+    "allRunsStable",
+    "classifierStabilityPreserved",
+    "allowed",
+    "ready",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "routeExposed",
+    "stabilityRuns",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": {
+      "const": "Phase 13S"
+    },
+    "snapshotKind": {
+      "const": "metadata_only_migration_apply_evidence_diff_drift_stability_snapshot"
+    },
+    "sourcePhase": {
+      "const": "Phase 13R"
+    },
+    "sourceClassifierKind": {
+      "const": "metadata_only_migration_apply_evidence_diff_drift_classifier"
+    },
+    "snapshotMode": {
+      "const": "stability_snapshot_only_no_migration_application"
+    },
+    "stabilitySnapshotOnly": {
+      "const": true
+    },
+    "evidenceOnly": {
+      "const": true
+    },
+    "deterministicRuleBasedOnly": {
+      "const": true
+    },
+    "noMlClassifier": {
+      "const": true
+    },
+    "runCount": {
+      "const": 3
+    },
+    "stableRunCount": {
+      "const": 3
+    },
+    "unstableRunCount": {
+      "const": 0
+    },
+    "unsafeRunCount": {
+      "const": 0
+    },
+    "distinctClassifierSignatureCount": {
+      "const": 1
+    },
+    "allRunsStable": {
+      "const": true
+    },
+    "allRunsBlocked": {
+      "const": true
+    },
+    "allRunsSafeNoopDrift": {
+      "const": true
+    },
+    "classifierStabilityPreserved": {
+      "const": true
+    },
+    "sourceClassifiedRowCount": {
+      "const": 17
+    },
+    "safeNoopDriftCount": {
+      "const": 17
+    },
+    "blockedPolicyDriftCount": {
+      "const": 0
+    },
+    "unsafeBoundaryDriftCount": {
+      "const": 0
+    },
+    "unsafeDriftDetected": {
+      "const": false
+    },
+    "operatorApproved": {
+      "const": false
+    },
+    "allowed": {
+      "const": false
+    },
+    "ready": {
+      "const": false
+    },
+    "migrationApplyAccepted": {
+      "const": false
+    },
+    "migrationApplicationAllowed": {
+      "const": false
+    },
+    "migrationApplicationPerformed": {
+      "const": false
+    },
+    "migrationRunnerRegistered": {
+      "const": false
+    },
+    "migrationRunnerOperational": {
+      "const": false
+    },
+    "migrationRegistryMutated": {
+      "const": false
+    },
+    "sqlTextLoadedFromDisk": {
+      "const": false
+    },
+    "sqlExecutionAllowed": {
+      "const": false
+    },
+    "databaseConnectionAllowed": {
+      "const": false
+    },
+    "databaseWriteAllowed": {
+      "const": false
+    },
+    "tableCreationApplied": {
+      "const": false
+    },
+    "tableCreated": {
+      "const": false
+    },
+    "repositoryWriteAllowed": {
+      "const": false
+    },
+    "routeExposed": {
+      "const": false
+    },
+    "stabilityRuns": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "runIndex",
+          "sourcePhase",
+          "sourceClassifierKind",
+          "sourceClassifierStatus",
+          "classifiedRowCount",
+          "safeNoopDriftCount",
+          "stabilityClass",
+          "matchesBaselineSignature",
+          "migrationApplicationAllowed"
+        ],
+        "properties": {
+          "sourcePhase": {
+            "const": "Phase 13R"
+          },
+          "sourceClassifierKind": {
+            "const": "metadata_only_migration_apply_evidence_diff_drift_classifier"
+          },
+          "sourceClassifierStatus": {
+            "const": "pass"
+          },
+          "classifiedRowCount": {
+            "const": 17
+          },
+          "safeNoopDriftCount": {
+            "const": 17
+          },
+          "blockedPolicyDriftCount": {
+            "const": 0
+          },
+          "unsafeBoundaryDriftCount": {
+            "const": 0
+          },
+          "unsafeDriftDetected": {
+            "const": false
+          },
+          "matchesBaselineSignature": {
+            "const": true
+          },
+          "stabilityClass": {
+            "const": "stable_safe_noop_drift"
+          },
+          "actionable": {
+            "const": false
+          },
+          "operatorApproved": {
+            "const": false
+          },
+          "allowed": {
+            "const": false
+          },
+          "ready": {
+            "const": false
+          },
+          "migrationApplicationAllowed": {
+            "const": false
+          },
+          "sqlExecutionAllowed": {
+            "const": false
+          },
+          "databaseConnectionAllowed": {
+            "const": false
+          },
+          "databaseWriteAllowed": {
+            "const": false
+          },
+          "routeExposed": {
+            "const": false
+          },
+          "businessMutationAllowed": {
+            "const": false
+          }
+        }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

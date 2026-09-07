@@ -1,0 +1,119 @@
+
+@layer components {
+  .ux-table-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ux-table-row-actions > button,
+  .ux-table-row-actions > a,
+  td .ux-table-row-actions > button,
+  td .ux-table-row-actions > a {
+  }
+
+  .detail-page-shell {
+  }
+
+  .dark .customers-hero-mini {
+    border-color: rgb(51 65 85 / 0.85);
+  }
+  .detail-hero-card {
+  }
+
+  .detail-hero-card__head {
+    background: radial-gradient(circle at top right, rgba(59,130,246,0.08), transparent 34%), radial-gradient(circle at bottom left, rgba(99,102,241,0.05), transparent 28%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+  }
+
+  .dark .detail-hero-card__head {
+    background: radial-gradient(circle at top right, rgba(14,165,233,0.14), transparent 36%), radial-gradient(circle at bottom left, rgba(99,102,241,0.10), transparent 28%), linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,0.96));
+  }
+
+  .detail-hero-card__icon {
+    display: flex;
+  }
+
+  .detail-kpi-grid {
+  }
+
+  .detail-stat-card {
+  }
+
+  .detail-stat-card__icon {
+    display: inline-flex;
+    background-color: rgb(255 255 255 / 0.85);
+  }
+
+  .detail-inline-stats {
+  }
+
+  .detail-inline-stat {
+  }
+
+  .detail-card {
+  }
+
+  .detail-card--soft {
+    background-color: rgb(255 255 255 / 0.95);
+  }
+
+  .detail-card__header {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .detail-card__title {
+  }
+
+  .detail-card__desc {
+  }
+
+  .detail-action-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .premium-modal-grid {
+  }
+
+  .premium-modal-grid-2 {
+  }
+
+  .premium-modal-grid-3 {
+  }
+
+  .premium-modal-stack {
+  }
+
+  .premium-sticky-footer {
+  }
+
+  .premium-drawer-panel {
+    background-color: rgb(255 255 255 / 0.98);
+  }
+
+  .dark .premium-drawer-panel {
+    background-color: rgb(2 6 23 / 0.96);
+  }
+
+  .premium-drawer-panel__header {
+  }
+
+  .premium-drawer-panel__body {
+  }
+
+  .premium-drawer-note {
+  }
+
+  .section-header-premium {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .section-header-premium__title {
+  }
+
+  .section-header-premium__meta {
+    display: inline-flex;
+    background-color: rgb(255 255 255 / 0.90);
+  }
+}

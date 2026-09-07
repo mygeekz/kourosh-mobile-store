@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+const worker=fs.readFileSync("deployment/cloudflare-pages/_worker.js","utf8");
+const migrate=fs.readFileSync("scripts/apply-miniapp-manager-snapshot-d1-v363.mjs","utf8");
+const app=fs.readFileSync("miniapp/App.tsx","utf8");
+assert.match(worker,/MINIAPP_EDGE_SCHEMA_MIGRATION_REQUIRED/);
+assert.match(worker,/managerSnapshotSchemaMissing/);
+assert.match(worker,/auth_snapshot_lookup/);
+assert.match(migrate,/tenant_installations/);
+assert.match(migrate,/manager_snapshots/);
+assert.match(migrate,/--remote/);
+assert.match(app,/MINIAPP_EDGE_SCHEMA_MIGRATION_REQUIRED/);
+console.log(JSON.stringify({status:"PASS",release:"v363",remoteD1Preflight:true,remoteD1PostVerify:true,schemaSpecificError:true},null,2));

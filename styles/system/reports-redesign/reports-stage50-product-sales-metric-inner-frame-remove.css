@@ -1,0 +1,50 @@
+/* Stage 50 — Product sales metric cards: remove inner content frame
+   Scope: /reports/product-sales only.
+   Keeps one outer card border, removes the extra rounded surface around the text block. */
+
+.product-sales-executive-page .product-sales-metric-card__body,
+.product-sales-executive-page .product-sales-metric-card__body::before,
+.product-sales-executive-page .product-sales-metric-card__body::after,
+.product-sales-executive-page .product-sales-metric-card__body > *:not(.product-sales-metric-card__icon),
+.product-sales-executive-page .product-sales-metric-card__label,
+.product-sales-executive-page .product-sales-metric-card strong,
+.product-sales-executive-page .product-sales-metric-card small,
+.product-sales-executive-page .product-sales-metric-card em {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__body::before,
+.product-sales-executive-page .product-sales-metric-card__body::after,
+.product-sales-executive-page .product-sales-metric-card__label::before,
+.product-sales-executive-page .product-sales-metric-card__label::after,
+.product-sales-executive-page .product-sales-metric-card strong::before,
+.product-sales-executive-page .product-sales-metric-card strong::after,
+.product-sales-executive-page .product-sales-metric-card small::before,
+.product-sales-executive-page .product-sales-metric-card small::after,
+.product-sales-executive-page .product-sales-metric-card em::before,
+.product-sales-executive-page .product-sales-metric-card em::after {
+  content: none !important;
+  display: none !important;
+}
+
+.product-sales-executive-page .product-sales-metric-card__body {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Preserve FontAwesome pseudo-elements inside the icon cell. */
+.product-sales-executive-page .product-sales-metric-card__icon i::before,
+.product-sales-executive-page .product-sales-metric-card__icon svg {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}

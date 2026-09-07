@@ -1,0 +1,100 @@
+
+/* v39 — tighten nothing; make the merged auto-message card breathe.
+   Based on v38. Only affects پیام‌های خودکار تلگرام. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 {
+  padding: 1.25rem 1.35rem !important;
+}
+
+/* The previous two-column layout was too tight. Stack the two related sections. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38__body {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 1.15rem !important;
+  align-items: stretch !important;
+}
+
+/* Give each internal section its own breathing room without restoring a boxed card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel {
+  display: grid !important;
+  grid-template-columns: minmax(190px, 0.85fr) minmax(260px, 1.15fr) !important;
+  align-items: center !important;
+  gap: 1.15rem !important;
+  min-width: 0 !important;
+}
+
+/* Add only a divider between the two merged sections, not a nested card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel + .telegram-auto-copy-panel {
+  padding-top: 1.15rem !important;
+  border-top: 1px solid rgba(226, 232, 240, 0.95) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel + .telegram-auto-copy-panel {
+  border-top-color: rgba(51, 65, 85, 0.95) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.7rem !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle button {
+  min-width: 0 !important;
+  width: 100% !important;
+  min-height: 4.4rem !important;
+  padding: 0.65rem 0.75rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel .flex.flex-wrap.gap-2 {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel .ux-btn,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel button {
+  flex: 0 1 auto !important;
+}
+
+/* Text area: no cramped columns or overflow. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel > div:first-child {
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel > div:first-child p {
+  max-width: 42rem !important;
+}
+
+/* Medium screens: stack inside each section too. */
+@media (max-width: 1120px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-auto-copy-panel {
+    grid-template-columns: 1fr !important;
+    gap: 0.8rem !important;
+  }
+}
+
+/* Small screens: one tone button per row. */
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 {
+    padding: 1rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-template-policy-toggle {
+    grid-template-columns: 1fr !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel .flex.flex-wrap.gap-2 {
+    align-items: stretch !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel .ux-btn,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-auto-message-group-v38 .telegram-system-template-panel button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}

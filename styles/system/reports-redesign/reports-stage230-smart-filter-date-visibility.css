@@ -1,0 +1,105 @@
+/* Stage 230 — Smart Insights date filter visibility repair.
+   Scope is intentionally limited to the two Shamsi date fields inside the Smart Insights control dock. */
+
+.smart-brain-page .smart-insights-control-dock > :nth-child(2),
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) {
+  min-width: 236px !important;
+  flex-basis: 236px !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2),
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) {
+  overflow: visible !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date .report-filter-field__head,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .report-filter-field__head,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .report-filter-field__head {
+  justify-content: center !important;
+  padding-inline: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date .report-filter-field__body,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .report-filter-field__body,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .report-filter-field__body {
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+.smart-brain-page .smart-insights-date-control-v230,
+.smart-brain-page .smart-insights-filter-field--date .app-date-field__control,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .app-date-field__control,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .app-date-field__control {
+  width: 100% !important;
+  min-width: 204px !important;
+  max-width: none !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  border-radius: 18px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date .app-date-field,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .app-date-field,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .app-date-field {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: block !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date .app-date-field__input,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .app-date-field__input,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .app-date-field__input,
+.smart-brain-page .smart-insights-date-control-v230 .app-date-field__input {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  padding: 0 14px !important;
+  text-align: center !important;
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  font-size: .96rem !important;
+  line-height: 46px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap !important;
+  text-overflow: clip !important;
+  overflow: visible !important;
+}
+
+.smart-brain-page .smart-insights-filter-field--date .app-date-field__icon,
+.smart-brain-page .smart-insights-control-dock > :nth-child(2) .app-date-field__icon,
+.smart-brain-page .smart-insights-control-dock > :nth-child(3) .app-date-field__icon {
+  display: none !important;
+}
+
+@media (max-width: 1280px) {
+  .smart-brain-page .smart-insights-control-dock > :nth-child(2),
+  .smart-brain-page .smart-insights-control-dock > :nth-child(3) {
+    min-width: 220px !important;
+    flex-basis: 220px !important;
+  }
+
+  .smart-brain-page .smart-insights-date-control-v230,
+  .smart-brain-page .smart-insights-filter-field--date .app-date-field__control,
+  .smart-brain-page .smart-insights-control-dock > :nth-child(2) .app-date-field__control,
+  .smart-brain-page .smart-insights-control-dock > :nth-child(3) .app-date-field__control {
+    min-width: 196px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .smart-brain-page .smart-insights-control-dock > :nth-child(2),
+  .smart-brain-page .smart-insights-control-dock > :nth-child(3),
+  .smart-brain-page .smart-insights-date-control-v230,
+  .smart-brain-page .smart-insights-filter-field--date .app-date-field__control {
+    min-width: 0 !important;
+    flex-basis: 100% !important;
+  }
+}

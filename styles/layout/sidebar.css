@@ -1,0 +1,28 @@
+/* استایل عمومی برای سایدبار */
+.sidebar {
+  width: 250px;
+  background-color: #2c3e50;
+  padding: 20px;
+  color: white;
+}
+
+/* استایل برای هر آیتم سایدبار */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* استایل آیکون‌های سایدبار */
+.sidebar-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+/* استایل برای متن هر آیتم */
+.sidebar-item span {
+  font-size: 18px;
+}

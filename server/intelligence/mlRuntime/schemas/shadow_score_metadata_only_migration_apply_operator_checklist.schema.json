@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shadow_score_metadata_only_migration_apply_operator_checklist.schema.json",
+  "title": "Phase 13O Metadata-only Migration Apply Operator Checklist",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "checklistKind",
+    "checklistMode",
+    "operatorChecklistOnly",
+    "operatorApprovalRequired",
+    "operatorApproved",
+    "allowed",
+    "ready",
+    "checklistItems",
+    "operatorChecklistBoundary",
+    "safetyPolicy"
+  ],
+  "properties": {
+    "phase": { "const": "Phase 13O" },
+    "checklistKind": { "const": "metadata_only_migration_apply_operator_checklist" },
+    "sourcePhases": {
+      "type": "array",
+      "prefixItems": [{ "const": "Phase 13N" }],
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "sourceSnapshotKind": { "const": "metadata_only_migration_apply_readiness_snapshot" },
+    "checklistMode": { "const": "operator_checklist_only_no_migration_application" },
+    "operatorChecklistOnly": { "const": true },
+    "operatorApprovalRequired": { "const": true },
+    "operatorApproved": { "const": false },
+    "allowed": { "const": false },
+    "ready": { "const": false },
+    "migrationApplicationAllowed": { "const": false },
+    "migrationApplicationPerformed": { "const": false },
+    "sqlExecutionAllowed": { "const": false },
+    "databaseConnectionAllowed": { "const": false },
+    "databaseWriteAllowed": { "const": false },
+    "tableCreated": { "const": false },
+    "routeExposed": { "const": false },
+    "checklistItems": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "itemId",
+          "title",
+          "operatorAction",
+          "status",
+          "required",
+          "completed",
+          "blocksApply",
+          "allowed",
+          "migrationApplicationAllowed"
+        ],
+        "properties": {
+          "status": {
+            "enum": ["required_not_completed", "blocked_by_current_phase"]
+          },
+          "required": { "const": true },
+          "completed": { "const": false },
+          "blocksApply": { "const": true },
+          "allowed": { "const": false },
+          "migrationApplicationAllowed": { "const": false },
+          "sqlExecutionAllowed": { "const": false },
+          "databaseConnectionAllowed": { "const": false },
+          "databaseWriteAllowed": { "const": false },
+          "routeExposed": { "const": false },
+          "businessMutationAllowed": { "const": false }
+        }
+      }
+    },
+    "operatorChecklistBoundary": {
+      "type": "object",
+      "required": [
+        "operatorChecklistOnly",
+        "doesNotExecuteSql",
+        "databaseWriteAllowed",
+        "migrationApplicationAllowed",
+        "tableCreated",
+        "allChecklistItemsRequireFutureManualCompletion"
+      ],
+      "properties": {
+        "operatorChecklistOnly": { "const": true },
+        "doesNotExecuteSql": { "const": true },
+        "databaseWriteAllowed": { "const": false },
+        "migrationApplicationAllowed": { "const": false },
+        "tableCreated": { "const": false },
+        "allChecklistItemsRequireFutureManualCompletion": { "const": true }
+      }
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "required": [
+        "operatorChecklistOnly",
+        "operatorApproved",
+        "noRuntimeSqlExecution",
+        "noDatabaseConnection",
+        "noDatabaseWrite",
+        "noMigrationApplication",
+        "modelExecutionAllowed",
+        "inferenceEndpointExposed",
+        "artifactActivationAllowed",
+        "canMutateBusinessRecords"
+      ],
+      "properties": {
+        "operatorChecklistOnly": { "const": true },
+        "operatorApproved": { "const": false },
+        "noRuntimeSqlExecution": { "const": true },
+        "noDatabaseConnection": { "const": true },
+        "noDatabaseWrite": { "const": true },
+        "noMigrationApplication": { "const": true },
+        "modelExecutionAllowed": { "const": false },
+        "inferenceEndpointExposed": { "const": false },
+        "artifactActivationAllowed": { "const": false },
+        "canMutateBusinessRecords": { "const": false }
+      }
+    }
+  }
+}

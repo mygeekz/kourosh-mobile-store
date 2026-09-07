@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 3 / v271 Validation + FormGrid + RTL/BiDi",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v271",
+  "capturedOn": "2026-08-30",
+  "canonicalOwners": {
+    "validation": "components/ui/formValidation.ts",
+    "formGrid": "components/ui/FormGrid.tsx",
+    "bidiText": "components/ui/BidiText.tsx",
+    "fieldShell": "components/ui/ControlShell.tsx",
+    "textField": "components/ui/TextField.tsx",
+    "errorSummary": "components/FormErrorSummary.tsx"
+  },
+  "pilotForms": [
+    "pages/AddRepair.tsx"
+  ],
+  "expectations": {
+    "formGridCanonicalBreakpointVariants": 4,
+    "addRepairFormGridUsagesAtLeast": 3,
+    "addRepairBidiTextUsagesAtLeast": 3,
+    "addRepairLocalRequiredValidationLiterals": 0,
+    "formErrorSummaryHardcodedRedPaletteUtilities": 0,
+    "formErrorSummaryHardcodedSlatePaletteUtilities": 0
+  },
+  "deferred": [
+    "Whole-application migration of every form to FormGrid and centralized validators is Phase 4; Phase 3 establishes the canonical contract and migrates the repair-intake pilot.",
+    "Dialog/Drawer form layout hardening remains Phase 5.",
+    "Whole-application semantic palette retirement remains Phase 7.",
+    "Business logic/API/DB behavior is intentionally unchanged in Phase 3."
+  ]
+}

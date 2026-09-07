@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 13M Metadata-only Migration Apply Risk Classification",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "phase",
+    "classificationKind",
+    "status",
+    "sourcePhase",
+    "sourceMatrixKind",
+    "classificationMode",
+    "riskClassificationOnly",
+    "allowed",
+    "riskRowCount",
+    "classifiedScenarioCount",
+    "blockedScenarioCount",
+    "highestRiskSeverity",
+    "categoryCounts",
+    "migrationApplicationAllowed",
+    "sqlExecutionAllowed",
+    "databaseConnectionAllowed",
+    "databaseWriteAllowed",
+    "tableCreated",
+    "riskRows",
+    "riskBoundary",
+    "safetyPolicy",
+    "generatedAt"
+  ],
+  "properties": {
+    "phase": { "const": "Phase 13M" },
+    "classificationKind": { "const": "metadata_only_migration_apply_risk_classification" },
+    "status": { "enum": ["pass", "warning", "fail"] },
+    "sourcePhase": { "const": "Phase 13L" },
+    "sourceMatrixKind": { "const": "metadata_only_migration_apply_eligibility_matrix" },
+    "classificationMode": { "const": "risk_classification_only_no_migration_application" },
+    "riskClassificationOnly": { "const": true },
+    "allowed": { "const": false },
+    "riskRowCount": { "type": "integer", "minimum": 5 },
+    "classifiedScenarioCount": { "type": "integer", "minimum": 5 },
+    "blockedScenarioCount": { "type": "integer", "minimum": 5 },
+    "highestRiskSeverity": { "enum": ["medium", "high", "critical"] },
+    "categoryCounts": {
+      "type": "object",
+      "required": [
+        "blocked_by_phase_boundary",
+        "blocked_by_evidence_boundary",
+        "blocked_by_apply_boundary",
+        "blocked_by_execution_boundary",
+        "blocked_by_database_boundary",
+        "blocked_by_registry_boundary"
+      ]
+    },
+    "migrationApplyAccepted": { "const": false },
+    "migrationApplicationAllowed": { "const": false },
+    "migrationApplicationPerformed": { "const": false },
+    "migrationRunnerRegistered": { "const": false },
+    "migrationRunnerOperational": { "const": false },
+    "migrationRegistryMutated": { "const": false },
+    "sqlTextLoadedFromDisk": { "const": false },
+    "sqlExecutionAllowed": { "const": false },
+    "databaseConnectionAllowed": { "const": false },
+    "databaseWriteAllowed": { "const": false },
+    "tableCreationApplied": { "const": false },
+    "tableCreated": { "const": false },
+    "repositoryWriteAllowed": { "const": false },
+    "routeExposed": { "const": false },
+    "riskRows": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "sourceRowName",
+          "eligibilityDecision",
+          "riskCategory",
+          "riskSeverity",
+          "riskDisposition",
+          "migrationApplicationAllowed",
+          "sqlExecutionAllowed",
+          "databaseConnectionAllowed",
+          "databaseWriteAllowed",
+          "migrationRegistryMutationAllowed",
+          "businessMutationAllowed"
+        ],
+        "properties": {
+          "riskCategory": {
+            "enum": [
+              "blocked_by_phase_boundary",
+              "blocked_by_evidence_boundary",
+              "blocked_by_apply_boundary",
+              "blocked_by_execution_boundary",
+              "blocked_by_database_boundary",
+              "blocked_by_registry_boundary"
+            ]
+          },
+          "riskSeverity": { "enum": ["medium", "high", "critical"] },
+          "allowed": { "const": false },
+          "migrationApplicationAllowed": { "const": false },
+          "sqlExecutionAllowed": { "const": false },
+          "databaseConnectionAllowed": { "const": false },
+          "databaseWriteAllowed": { "const": false },
+          "migrationRegistryMutationAllowed": { "const": false },
+          "tableCreationApplied": { "const": false },
+          "routeExposed": { "const": false },
+          "businessMutationAllowed": { "const": false }
+        }
+      }
+    },
+    "riskBoundary": {
+      "type": "object",
+      "required": [
+        "riskClassificationOnly",
+        "classificationMode",
+        "doesNotReadSqlDraftFileFromDisk",
+        "doesNotExecuteSql",
+        "databaseConnectionAllowed",
+        "databaseWriteAllowed",
+        "migrationApplicationAllowed",
+        "allClassificationsRemainBlocked"
+      ]
+    },
+    "safetyPolicy": {
+      "type": "object",
+      "required": [
+        "metadataOnly",
+        "riskClassificationOnly",
+        "noRuntimeSqlExecution",
+        "noDatabaseConnection",
+        "noDatabaseWrite",
+        "modelExecutionAllowed",
+        "inferenceEndpointExposed",
+        "artifactActivationAllowed",
+        "canMutateBusinessRecords"
+      ]
+    }
+  }
+}

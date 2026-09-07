@@ -1,0 +1,35 @@
+
+> kourosh-dashboard-rtl@0.0.0 audit:ui-foundation-phase2-v270
+> node scripts/audit-ui-foundation-phase2-v270.mjs
+
+{
+  "status": "PASS",
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 2 / v270 Overlay + Portal Foundation",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v270",
+  "scannedRuntimeTsFiles": 595,
+  "directCreatePortalUsages": [
+    {
+      "file": "components/ui/DialogShell.tsx",
+      "line": 247
+    },
+    {
+      "file": "components/ui/PortalLayer.tsx",
+      "line": 33
+    }
+  ],
+  "directCreatePortalOutsideApprovedOwners": 0,
+  "directDocumentBodyMenuPortalTargets": 0,
+  "semanticHostContract": true,
+  "sharedCollisionResolver": true,
+  "anchoredOverlayConsumers": 5,
+  "portalLayerConsumers": 7,
+  "deferred": [
+    "DialogShell remains the canonical direct modal portal owner until Phase 5 Dialog/Modal/Drawer hardening.",
+    "Toast provider behavior is not redesigned in Phase 2; existing semantic toast z-token remains in force.",
+    "Page palette/token retirement is Phase 7 and is intentionally not mixed into overlay architecture work.",
+    "Runtime top/left/width/maxHeight geometry is allowed inline because it is measured positioning state, not visual theming.",
+    "PhoneModelAutocomplete.tsx is not imported by runtime code and remains legacy/dead-code debt; it is not expanded during Phase 2 and can be retired/migrated during Phase 4 cleanup."
+  ]
+}

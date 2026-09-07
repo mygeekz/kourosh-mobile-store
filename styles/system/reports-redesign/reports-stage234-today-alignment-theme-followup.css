@@ -1,0 +1,189 @@
+/* Stage 234 — scoped follow-up for Today Commands and overview-card alignment.
+   Uses existing theme variables (`--primary`, `--accent`) instead of hard-coded action colors.
+   Scope only: Today Commands header/buttons + three overview cards below it. */
+
+/* Header: count button on the left, title block fully on the right. */
+.smart-brain-page .smart-today-v183__header {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 12px !important;
+}
+
+.smart-brain-page .smart-today-v183__heading {
+  grid-column: 2 !important;
+  justify-self: end !important;
+  width: min(100%, 640px) !important;
+  direction: rtl !important;
+  text-align: right !important;
+  margin: 0 !important;
+}
+
+.smart-brain-page .smart-today-v183__eyebrow {
+  direction: rtl !important;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  text-align: right !important;
+  width: auto !important;
+}
+
+.smart-brain-page .smart-today-v183__eyebrow i,
+.smart-brain-page .smart-today-v185__eyebrow-icon {
+  order: 0 !important;
+  color: hsl(var(--primary) / .88) !important;
+}
+
+.smart-brain-page .smart-today-v183__count {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  direction: rtl !important;
+  color: hsl(var(--primary) / .94) !important;
+  border-color: hsl(var(--primary) / .28) !important;
+  background: linear-gradient(180deg, hsl(var(--primary) / .08), rgba(255,255,255,.96)) !important;
+  box-shadow: 0 8px 16px hsl(var(--primary) / .08), inset 0 0 0 1px rgba(255,255,255,.78) !important;
+}
+
+.smart-brain-page .smart-today-v183__count i {
+  color: hsl(var(--primary) / .92) !important;
+}
+
+.smart-brain-page .smart-today-v183__count::after {
+  display: none !important;
+}
+
+/* Buttons: follow the theme instead of manual black/white styling. */
+.smart-brain-page .smart-today-v183__cta,
+.smart-brain-page .smart-today-v183__sub-btn {
+  font-family: inherit !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+}
+
+.smart-brain-page .smart-today-v183__cta {
+  color: #fff !important;
+  border-color: hsl(var(--primary) / .72) !important;
+  background: linear-gradient(135deg, hsl(var(--primary) / .98), hsl(var(--primary) / .82)) !important;
+  box-shadow: 0 12px 22px -14px hsl(var(--primary) / .72) !important;
+}
+
+.smart-brain-page .smart-today-v183__cta i,
+.smart-brain-page .smart-today-v183__cta svg {
+  color: currentColor !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn--pending {
+  color: hsl(var(--primary) / .94) !important;
+  border-color: hsl(var(--primary) / .30) !important;
+  background: linear-gradient(180deg, hsl(var(--primary) / .10), rgba(255,255,255,.96)) !important;
+  box-shadow: 0 8px 16px -12px hsl(var(--primary) / .45) !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn--pending i {
+  color: hsl(var(--primary) / .92) !important;
+  background: hsl(var(--primary) / .11) !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn--done,
+.smart-brain-page .smart-today-v183__sub-btn--success {
+  color: hsl(var(--accent) / .92) !important;
+  border-color: hsl(var(--accent) / .32) !important;
+  background: linear-gradient(180deg, hsl(var(--accent) / .11), rgba(255,255,255,.96)) !important;
+  box-shadow: 0 8px 16px -12px hsl(var(--accent) / .45) !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn--done i,
+.smart-brain-page .smart-today-v183__sub-btn--success i {
+  color: hsl(var(--accent) / .90) !important;
+  background: hsl(var(--accent) / .12) !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn--ghost {
+  color: rgb(51 65 85) !important;
+  border-color: rgba(203, 213, 225, .92) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96)) !important;
+  box-shadow: none !important;
+}
+
+.smart-brain-page .smart-today-v183__sub-btn i {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+}
+
+/* Three overview cards: metric on the left; icon/title/copy aligned right. */
+.smart-brain-page .smart-overview-card-v223,
+.smart-overview-card-v223 {
+  direction: ltr !important;
+  grid-template-columns: minmax(78px, auto) minmax(0, 1fr) auto !important;
+}
+
+.smart-brain-page .smart-overview-card-v223__meta,
+.smart-overview-card-v223__meta {
+  grid-column: 1 !important;
+  justify-self: start !important;
+  direction: rtl !important;
+  text-align: center !important;
+}
+
+.smart-brain-page .smart-overview-card-v223__icon,
+.smart-overview-card-v223__icon {
+  grid-column: 3 !important;
+  justify-self: end !important;
+}
+
+.smart-brain-page .smart-overview-card-v223__body,
+.smart-overview-card-v223__body {
+  grid-column: 2 !important;
+  justify-self: stretch !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.smart-brain-page .smart-overview-card-v223__body h3,
+.smart-overview-card-v223__body h3,
+.smart-brain-page .smart-overview-card-v223__body p,
+.smart-overview-card-v223__body p {
+  text-align: right !important;
+}
+
+.dark .smart-brain-page .smart-today-v183__count {
+  background: linear-gradient(180deg, hsl(var(--primary) / .18), rgba(15,23,42,.92)) !important;
+  border-color: hsl(var(--primary) / .30) !important;
+  color: hsl(var(--primary) / .92) !important;
+}
+
+.dark .smart-brain-page .smart-today-v183__sub-btn--pending {
+  background: linear-gradient(180deg, hsl(var(--primary) / .18), rgba(15,23,42,.92)) !important;
+  color: hsl(var(--primary) / .88) !important;
+}
+
+.dark .smart-brain-page .smart-today-v183__sub-btn--ghost {
+  color: rgb(226 232 240) !important;
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgba(15,23,42,.82) !important;
+}
+
+@media (max-width: 820px) {
+  .smart-brain-page .smart-today-v183__header {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-brain-page .smart-today-v183__heading,
+  .smart-brain-page .smart-today-v183__count {
+    grid-column: 1 !important;
+  }
+
+  .smart-brain-page .smart-today-v183__count {
+    justify-self: start !important;
+  }
+}

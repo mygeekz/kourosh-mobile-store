@@ -1,0 +1,27 @@
+{
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 1 / v269 Form Control Foundation",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v269",
+  "migratedFiles": 33,
+  "rawInputReduction": 49,
+  "phase0RawInputOutsideTextField": 56,
+  "phase1RawInputOutsideTextField": 7,
+  "rawNonFileInputsOutsideCanonicalOwners": 0,
+  "approvedNativeFileInputs": 4,
+  "canonicalNativeOwnerInputs": 3,
+  "rawSelectOutsideCanonicalOwner": 0,
+  "rawTextareaOutsideCanonicalOwner": 0,
+  "newCssFiles": 0,
+  "businessLogicChanged": false,
+  "apiOrDbChanged": false,
+  "verification": {
+    "prepareProductionStyles": "PASS",
+    "phase1Audit": "PASS",
+    "phase0RegressionCeiling": "PASS",
+    "uiSystemAudit": "PASS",
+    "miniAppSourceGate": "65/65 PASS",
+    "typescriptSyntaxParser": "601 files / 0 syntax errors",
+    "viteProductionBuild": "NOT VERIFIED — vite executable unavailable because node_modules is not present in supplied source"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "fixtureKey": "phase13a_sample_feature_snapshots_v1",
+  "generatedAt": "2026-07-05T00:00:00.000Z",
+  "purpose": "Tiny local feature snapshot fixture for Phase 13A offline candidate model execution harness smoke tests.",
+  "sourcePolicy": "Offline fixture only. Does not connect to Kourosh backend, SQLite, APIs, or production runtime.",
+  "snapshots": [
+    {
+      "entityId": "snapshot-301",
+      "rowKey": "snapshot-001",
+      "productId": 301,
+      "observedAt": "2026-06-10T00:00:00.000Z",
+      "horizonDays": 14,
+      "stockQuantity": 30,
+      "soldQty14": 4,
+      "avgDailySold": 0.29,
+      "daysToStockoutPredicted": 103.4,
+      "thresholdQty": 8,
+      "suggestedBuyQty": 0,
+      "severityScore": 1,
+      "baselinePredictedRisk": 0,
+      "productCategory": "accessory"
+    },
+    {
+      "entityId": "snapshot-302",
+      "rowKey": "snapshot-002",
+      "productId": 302,
+      "observedAt": "2026-06-10T00:00:00.000Z",
+      "horizonDays": 14,
+      "stockQuantity": 3,
+      "soldQty14": 17,
+      "avgDailySold": 1.21,
+      "daysToStockoutPredicted": 2.5,
+      "thresholdQty": 10,
+      "suggestedBuyQty": 24,
+      "severityScore": 4,
+      "baselinePredictedRisk": 1,
+      "productCategory": "phone"
+    }
+  ]
+}

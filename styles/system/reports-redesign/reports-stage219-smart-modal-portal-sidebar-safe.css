@@ -1,0 +1,167 @@
+/* Stage 219 — Smart Insight modal portal/sidebar-safe contract.
+   Scoped only to modal roots that opt into the portal-safe class.
+   Does not touch the Smart Insights page, dashboard cards, hero, filters, or non-report layouts. */
+
+:root {
+  --smart-insight-modal-gutter: clamp(8px, 1.15vw, 16px);
+}
+
+@media (min-width: 1024px) {
+  .apr220-overlay.apr220-overlay--sidebar-safe,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe {
+    inset: 0 var(--smart-insight-sidebar-offset, 0px) 0 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: var(--smart-insight-modal-gutter) !important;
+    box-sizing: border-box !important;
+    z-index: 9800 !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe {
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding-right: var(--smart-insight-modal-gutter) !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-dialog {
+    width: min(1100px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - (var(--smart-insight-modal-gutter) * 2))) !important;
+    max-width: min(1100px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - (var(--smart-insight-modal-gutter) * 2))) !important;
+    max-height: calc(100dvh - (var(--smart-insight-modal-gutter) * 2)) !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-body {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: auto !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe {
+    display: grid !important;
+    place-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__surface {
+    width: min(1080px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - (var(--smart-insight-modal-gutter) * 2))) !important;
+    max-width: min(1080px, calc(100vw - var(--smart-insight-sidebar-offset, 0px) - (var(--smart-insight-modal-gutter) * 2))) !important;
+    max-height: calc(100dvh - (var(--smart-insight-modal-gutter) * 2)) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__body,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__body,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__body {
+    max-height: calc(100dvh - 180px) !important;
+    overflow: auto !important;
+    overscroll-behavior: contain !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1390px) {
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-dialog {
+    border-radius: 24px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-header {
+    grid-template-columns: minmax(0, 1fr) minmax(170px, 230px) !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-header h2 {
+    font-size: clamp(1rem, 1.6vw, 1.22rem) !important;
+    line-height: 1.55 !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-header p {
+    font-size: .72rem !important;
+    line-height: 1.75 !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-header__summary {
+    max-width: 230px !important;
+    padding: 10px 12px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-body {
+    padding: 10px 12px 12px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-kpi {
+    min-height: 62px !important;
+    padding: 9px 11px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-layout {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-side {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-panel--actions {
+    grid-column: 1 / -1;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-table__head,
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-table__row {
+    min-width: 720px !important;
+    grid-template-columns:
+      minmax(180px, 1.28fr)
+      minmax(84px, .68fr)
+      minmax(92px, .72fr)
+      minmax(92px, .72fr)
+      minmax(92px, .72fr)
+      minmax(70px, .46fr) !important;
+  }
+
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__surface {
+    border-radius: 24px !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .apr220-overlay.apr220-overlay--sidebar-safe,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe {
+    inset: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    padding: 10px !important;
+    z-index: 9800 !important;
+    box-sizing: border-box !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-dialog,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__surface {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    max-height: calc(100dvh - 20px) !important;
+  }
+}

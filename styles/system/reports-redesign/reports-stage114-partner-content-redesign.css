@@ -1,0 +1,231 @@
+/* Stage 114 — Partner performance content redesign
+   Redesigns the two summary panels and the main partner table with premium responsive UI. */
+
+.partner-performance-executive-page .partner-profit-hero-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  align-items: stretch !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card {
+  position: relative !important;
+  min-height: 148px !important;
+  padding: 22px !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.92)) !important;
+  border: 1px solid rgba(203,213,225,.78) !important;
+  box-shadow: 0 26px 70px -48px rgba(15,23,42,.42), inset 0 1px 0 rgba(255,255,255,.9) !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-inline-start: 18px !important;
+  top: 18px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  opacity: .95 !important;
+  background: rgba(37,99,235,.10) !important;
+  border: 1px solid rgba(37,99,235,.14) !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card::after {
+  content: '' !important;
+  position: absolute !important;
+  inset-inline-start: 31px !important;
+  top: 31px !important;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 7px !important;
+  background: linear-gradient(135deg, #2563eb, #4f46e5) !important;
+  box-shadow: 0 10px 28px -12px rgba(37,99,235,.75) !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card--focus::before {
+  background: rgba(16,185,129,.11) !important;
+  border-color: rgba(16,185,129,.18) !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card--focus::after {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  box-shadow: 0 10px 28px -12px rgba(16,185,129,.75) !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card > :not(:first-child),
+.partner-performance-executive-page .partner-profit-hero-card > div,
+.partner-performance-executive-page .partner-profit-hero-card > h3,
+.partner-performance-executive-page .partner-profit-hero-card > p {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card .tracking-\[0\.16em\] {
+  letter-spacing: .14em !important;
+  font-size: 10px !important;
+  color: #64748b !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card h3 {
+  font-size: 18px !important;
+  line-height: 1.8 !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card p {
+  max-width: 68ch !important;
+  color: #64748b !important;
+}
+
+.partner-performance-executive-page .partner-profit-hero-card--focus .rounded-2xl {
+  min-width: 164px !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,.76) !important;
+  border-color: rgba(16,185,129,.20) !important;
+  box-shadow: 0 18px 44px -34px rgba(16,185,129,.35) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-card {
+  border-radius: 28px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  border: 1px solid rgba(203,213,225,.76) !important;
+  box-shadow: 0 28px 80px -56px rgba(15,23,42,.42) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head {
+  padding: 18px 20px 14px !important;
+  margin: 0 !important;
+  border-bottom: 1px solid rgba(226,232,240,.95) !important;
+  background: linear-gradient(180deg, rgba(248,250,252,.98), rgba(255,255,255,.96)) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head h3 {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  font-size: 15px !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head h3 i {
+  width: 30px !important;
+  height: 30px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  color: #2563eb !important;
+  background: rgba(37,99,235,.10) !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-head .flex.flex-wrap.gap-2 span {
+  display: inline-flex !important;
+  align-items: center !important;
+  min-height: 30px !important;
+  padding: 0 10px !important;
+  border-radius: 999px !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(226,232,240,.9) !important;
+  color: #475569 !important;
+  font-weight: 800 !important;
+}
+
+.partner-performance-executive-page .partner-summary-table-shell {
+  width: 100% !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin !important;
+}
+
+.partner-performance-executive-page .partner-summary-table {
+  min-width: 980px !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+}
+
+.partner-performance-executive-page .partner-summary-table thead th {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  padding: 13px 14px !important;
+  background: #f8fafc !important;
+  border-bottom: 1px solid rgba(203,213,225,.86) !important;
+  color: #64748b !important;
+  font-size: 11px !important;
+  letter-spacing: .02em !important;
+  white-space: nowrap !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody td {
+  padding: 14px !important;
+  border-bottom: 1px solid rgba(226,232,240,.78) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  font-weight: 750 !important;
+  vertical-align: middle !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr:hover td {
+  background: #f8fbff !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td {
+  background: linear-gradient(180deg, #eff6ff, #f8fbff) !important;
+  box-shadow: none !important;
+}
+
+.partner-performance-executive-page .partner-summary-table tbody tr.is-selected td:first-child {
+  box-shadow: inset -3px 0 0 #2563eb !important;
+}
+
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(1) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(2) { width: 180px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(3) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(4) { width: 150px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(5) { width: 170px !important; }
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(6),
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(7),
+.partner-performance-executive-page .partner-summary-table :where(th,td):nth-child(8) {
+  width: 90px !important;
+  text-align: center !important;
+}
+
+.partner-performance-executive-page .partner-table-name-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 36px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(148,163,184,.38) !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  box-shadow: 0 14px 30px -26px rgba(15,23,42,.35) !important;
+  text-decoration: none !important;
+}
+
+.partner-performance-executive-page .partner-table-name-button:hover {
+  border-color: rgba(37,99,235,.35) !important;
+  color: #1d4ed8 !important;
+  background: #f8fbff !important;
+}
+
+@media (max-width: 760px) {
+  .partner-performance-executive-page .partner-profit-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .partner-performance-executive-page .partner-profit-hero-card {
+    min-height: auto !important;
+    padding: 18px !important;
+  }
+
+  .partner-performance-executive-page .partner-profit-hero-card--focus .mt-2.flex {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .partner-performance-executive-page .partner-summary-table-head {
+    padding: 16px !important;
+  }
+}

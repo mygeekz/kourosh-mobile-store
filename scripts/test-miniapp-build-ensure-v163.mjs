@@ -1,0 +1,27 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { ensureMiniAppBuild, validateMiniAppBuild } from "./ensure-miniapp-build.mjs";
+
+const temp = fs.mkdtempSync(path.join(os.tmpdir(), "kourosh-miniapp-ensure-"));
+const dist = path.join(temp, "dist-miniapp");
+fs.mkdirSync(path.join(dist, "assets"), { recursive: true });
+fs.mkdirSync(path.join(dist, "fonts"), { recursive: true });
+fs.writeFileSync(path.join(dist, "miniapp.html"), '<!doctype html><script type="module" src="/assets/app.js"></script>');
+fs.writeFileSync(path.join(dist, "assets", "app.js"), "console.log('ok')");
+fs.writeFileSync(path.join(dist, "favicon.svg"), "<svg></svg>");
+fs.writeFileSync(path.join(dist, "kourosh-logo.svg"), "<svg></svg>");
+fs.writeFileSync(path.join(dist, "fonts", "Vazir-FD-WOL.woff2"), "font");
+assert.equal(validateMiniAppBuild(temp), true);
+let builds = 0;
+const reused = ensureMiniAppBuild({ rootDir: temp, stdout: { write() {} }, stderr: { write() {} }, spawnSyncImpl: () => { builds += 1; return { status: 0 }; } });
+assert.equal(reused.action, "reuse");
+assert.equal(builds, 0, "Valid dist-miniapp must not rebuild");
+fs.rmSync(path.join(dist, "assets", "app.js"));
+assert.equal(validateMiniAppBuild(temp), false);
+const failedBuild = ensureMiniAppBuild({ rootDir: temp, stdout: { write() {} }, stderr: { write() {} }, spawnSyncImpl: () => { builds += 1; return { status: 1 }; } });
+assert.equal(failedBuild.action, "error");
+assert.equal(builds, 1);
+fs.rmSync(temp, { recursive: true, force: true });
+console.log(JSON.stringify({ validDistMiniappReused: true, unnecessaryBuilds: 0, invalidDistTriggersBuild: true }, null, 2));

@@ -1,0 +1,50 @@
+/* dark bg moved below if needed */
+.people-table-shell { }
+/* dark bg moved below if needed */
+
+.people-table-shell table { }
+
+@keyframes ux-ripple {
+  to { transform: scale(1); opacity: 0; }
+}
+
+@keyframes ux-spin {
+  to { transform: rotate(360deg); }
+}
+
+@layer components {
+  .ux-action-link {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-action-link-secondary {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-action-link-danger {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .ux-legacy-panel {
+  }
+
+  .ux-form-grid {
+  }
+}
+
+/* v281: raw button visual ownership retired; report links keep their scoped compatibility class. */
+@layer components {
+  .report-action-btn {
+    display: inline-flex;
+    isolation: isolate;
+  }
+
+  .report-action-btn-primary {
+    display: inline-flex;
+    isolation: isolate;
+  }
+}
+

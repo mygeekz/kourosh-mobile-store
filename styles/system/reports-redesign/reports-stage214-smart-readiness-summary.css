@@ -1,0 +1,209 @@
+/* Stage 214 — Neutral business-facing readiness summary for Smart Insights.
+   Replaces technical MLOps grids with a few category scores.
+*/
+
+.smart-readiness-v214 {
+  direction: rtl;
+  border-radius: 26px;
+  border: 1px solid rgba(226, 232, 240, 0.98);
+  background: rgba(255,255,255,0.97);
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+.smart-readiness-v214__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 130px;
+  align-items: center;
+  gap: 18px;
+}
+
+.smart-readiness-v214__eyebrow {
+  display: inline-flex;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0;
+}
+
+.smart-readiness-v214__header h3 {
+  margin-top: 6px;
+  color: #0f172a;
+  font-size: clamp(1.08rem, 1.6vw, 1.45rem);
+  line-height: 1.55;
+  font-weight: 950;
+}
+
+.smart-readiness-v214__header p {
+  margin-top: 5px;
+  max-width: 920px;
+  color: #64748b;
+  font-size: 0.82rem;
+  line-height: 1.9;
+  font-weight: 800;
+}
+
+.smart-readiness-v214__score {
+  min-height: 106px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.98);
+  background: rgba(248,250,252,0.95);
+}
+
+.smart-readiness-v214__score strong {
+  color: #0f172a;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+.smart-readiness-v214__score span {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 0.76rem;
+  font-weight: 950;
+}
+
+.smart-readiness-v214__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(226, 232, 240, 0.92);
+}
+
+.smart-readiness-v214__summary span {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: rgba(248,250,252,0.78);
+  padding: 0 12px;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.smart-readiness-v214__list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.smart-readiness-v214__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 260px) 54px;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  background: rgba(248,250,252,0.64);
+}
+
+.smart-readiness-v214__row-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.smart-readiness-v214__row-title strong {
+  color: #0f172a;
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.smart-readiness-v214__row-title span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.smart-readiness-v214__row-main p {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 0.74rem;
+  line-height: 1.75;
+  font-weight: 800;
+}
+
+.smart-readiness-v214__meter {
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(226,232,240,0.95);
+  overflow: hidden;
+}
+
+.smart-readiness-v214__meter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #0f172a;
+}
+
+.smart-readiness-v214__row > b {
+  color: #0f172a;
+  font-size: 0.92rem;
+  font-weight: 950;
+  text-align: left;
+}
+
+.dark .smart-readiness-v214 {
+  border-color: rgba(51, 65, 85, 0.92);
+  background: rgba(15,23,42,0.92);
+}
+
+.dark .smart-readiness-v214__header h3,
+.dark .smart-readiness-v214__score strong,
+.dark .smart-readiness-v214__row-title strong,
+.dark .smart-readiness-v214__row > b {
+  color: #f8fafc;
+}
+
+.dark .smart-readiness-v214__header p,
+.dark .smart-readiness-v214__eyebrow,
+.dark .smart-readiness-v214__score span,
+.dark .smart-readiness-v214__summary span,
+.dark .smart-readiness-v214__row-title span,
+.dark .smart-readiness-v214__row-main p {
+  color: #cbd5e1;
+}
+
+.dark .smart-readiness-v214__score,
+.dark .smart-readiness-v214__row,
+.dark .smart-readiness-v214__summary span {
+  border-color: rgba(51, 65, 85, 0.96);
+  background: rgba(2,6,23,0.46);
+}
+
+.dark .smart-readiness-v214__meter {
+  background: rgba(51, 65, 85, 0.9);
+}
+
+.dark .smart-readiness-v214__meter span {
+  background: #f8fafc;
+}
+
+@media (max-width: 980px) {
+  .smart-readiness-v214__header,
+  .smart-readiness-v214__row {
+    grid-template-columns: 1fr;
+  }
+
+  .smart-readiness-v214__score {
+    min-height: 88px;
+  }
+
+  .smart-readiness-v214__row > b {
+    text-align: right;
+  }
+}

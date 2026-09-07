@@ -1,0 +1,84 @@
+
+@layer components {
+  .modal-shell-premium {
+    box-shadow: 0 40px 90px -42px rgba(15, 23, 42, 0.42), 0 18px 36px -24px rgba(15, 23, 42, 0.18);
+  }
+
+  .modal-premium-header {
+    display: flex;
+    background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.92) 100%);
+  }
+
+  .modal-premium-badge {
+    display: inline-flex;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.72), 0 12px 24px -18px rgba(15,23,42,0.32);
+  }
+
+  .modal-premium-kicker {
+  }
+
+  .modal-premium-title {
+    line-height: 1.9;
+    white-space: normal;
+  }
+
+.modal-severity-dialog{position:relative;overflow:hidden}
+.modal-severity-dialog .modal-premium-header{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(248,250,252,.78));border-bottom:1px solid rgba(226,232,240,.9)}
+.dark .modal-severity-dialog .modal-premium-header{background:linear-gradient(180deg,rgba(15,23,42,.86),rgba(2,6,23,.72));border-bottom-color:rgba(51,65,85,.92)}
+.modal-severity-dialog .modal-premium-badge{box-shadow:none}
+.modal-severity-dialog .modal-body-premium{background:transparent;border:none;box-shadow:none;padding-top:1rem}
+
+  .modal-close-btn {
+    display: inline-flex;
+    box-shadow: 0 6px 18px -14px rgba(15,23,42,0.22);
+  }
+
+  .modal-body-premium {
+  }
+
+  .modal-field-premium {
+  }
+
+  .modal-field-label {
+    display: inline-flex;
+  }
+
+  .premium-input-leading-chip {
+    display: inline-flex;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.75);
+  }
+
+  .modal-control-premium {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.84), 0 1px 2px rgba(15,23,42,0.03);
+  }
+
+  .modal-control-premium.premium-has-leading-icon {
+    padding-right: 4.25rem !important;
+  }
+
+  .modal-field-premium input.modal-control-premium.premium-has-leading-icon,
+  .modal-field-premium select.modal-control-premium.premium-has-leading-icon,
+  .modal-field-premium textarea.modal-control-premium.premium-has-leading-icon {
+    padding-right: 4.25rem !important;
+  }
+
+  .modal-control-textarea {
+    padding-top: 0.9rem;
+  }
+
+  .premium-select-control {
+    background-position: left 0.9rem center;
+  }
+
+  .modal-control-error {
+  }
+
+  .modal-inline-table {
+  }
+
+  .modal-inline-table table thead th {
+  }
+
+  .modal-inline-table table tbody td {
+  }
+}

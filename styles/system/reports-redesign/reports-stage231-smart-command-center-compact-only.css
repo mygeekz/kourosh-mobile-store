@@ -1,0 +1,181 @@
+/* Stage 231 — Smart Insights command-center compact pass.
+   Scope only: the executive command center section and its four summary cards.
+   Does not touch side cards, filter dock, modals, readiness summary, or page header. */
+
+.smart-brain-page .smart-insights-command-center {
+  grid-template-columns: minmax(0, 1.55fr) minmax(260px, .62fr) !important;
+  gap: 10px !important;
+  padding: 10px !important;
+  border-radius: 22px !important;
+  align-items: stretch !important;
+}
+
+.smart-brain-page .smart-insights-command-center::before {
+  inset-block: 12px !important;
+  width: 3px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__main,
+.smart-brain-page .smart-insights-command-center__action {
+  border-radius: 18px !important;
+  min-height: 0 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__main {
+  padding: 13px 15px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action {
+  padding: 13px 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.smart-brain-page .smart-insights-command-center__eyebrow {
+  height: 26px !important;
+  padding-inline: 9px !important;
+  gap: 6px !important;
+  font-size: .64rem !important;
+}
+
+.smart-brain-page .smart-insights-command-center h2 {
+  margin-top: 8px !important;
+  font-size: clamp(1.05rem, 1.65vw, 1.46rem) !important;
+  line-height: 1.55 !important;
+}
+
+.smart-brain-page .smart-insights-command-center p {
+  margin-top: 5px !important;
+  font-size: .74rem !important;
+  line-height: 1.75 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__main > p {
+  max-width: 92% !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics div {
+  min-height: 58px !important;
+  padding: 9px 10px !important;
+  border-radius: 15px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics span,
+.smart-brain-page .smart-insights-command-center__action-footer small {
+  font-size: .64rem !important;
+  line-height: 1.5 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics strong {
+  margin-top: 3px !important;
+  font-size: 1.02rem !important;
+  line-height: 1.2 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-head {
+  gap: 6px !important;
+  font-size: .66rem !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-head span {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 12px !important;
+  font-size: .84rem !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action h3 {
+  margin-top: 10px !important;
+  font-size: .96rem !important;
+  line-height: 1.72 !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action p {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-footer {
+  margin-top: auto !important;
+  padding-top: 10px !important;
+  gap: 8px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__button {
+  min-height: 34px !important;
+  padding: 0 12px !important;
+  border-radius: 12px !important;
+  font-size: .72rem !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div {
+  min-height: 78px !important;
+  padding: 10px 12px !important;
+  border-radius: 18px !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div::before {
+  inset-block: 12px !important;
+  width: 2px !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 .text-\[11px\],
+.smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-[11px]"] {
+  font-size: .66rem !important;
+  line-height: 1.55 !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 .text-xl,
+.smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-xl"] {
+  margin-top: 4px !important;
+  font-size: 1.16rem !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 1280px) {
+  .smart-brain-page .smart-insights-command-center {
+    grid-template-columns: minmax(0, 1.25fr) minmax(230px, .55fr) !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .smart-brain-page .smart-insights-signal-grid-v154 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .smart-brain-page .smart-insights-command-center {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__main > p {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .smart-brain-page .smart-insights-command-center__metrics,
+  .smart-brain-page .smart-insights-signal-grid-v154 {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,472 @@
+/* Stage 210 — Smart Insight modal enterprise horizontal rebuild
+   Keeps the generic Smart Insight modal wide, structured, and aligned with the app modal standard.
+*/
+
+:root {
+  --smart-insight-sidebar-offset: 300px;
+}
+
+.smart-insight-modal-v185 {
+  position: fixed !important;
+  inset: 0 var(--smart-insight-sidebar-offset) 0 0 !important;
+  z-index: 2400 !important;
+  display: grid !important;
+  place-items: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 100vh !important;
+  padding: 18px 22px !important;
+  background: rgba(15, 23, 42, .38) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(116%) !important;
+  backdrop-filter: blur(12px) saturate(116%) !important;
+}
+
+.smart-insight-modal-v185__surface {
+  width: min(1180px, calc(100vw - var(--smart-insight-sidebar-offset) - 56px)) !important;
+  max-width: min(1180px, calc(100vw - var(--smart-insight-sidebar-offset) - 56px)) !important;
+  height: min(76vh, 680px) !important;
+  max-height: min(76vh, 680px) !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(203, 213, 225, .98) !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at 94% 4%, rgba(99, 102, 241, .10), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.96)) !important;
+  box-shadow: 0 34px 96px rgba(15, 23, 42, .28), 0 0 0 1px rgba(255,255,255,.66) inset !important;
+  transform: none !important;
+}
+
+.smart-insight-modal-v185__header {
+  position: relative !important;
+  direction: rtl !important;
+  min-height: 126px !important;
+  display: grid !important;
+  grid-template-columns: 54px minmax(0, 1fr) 46px !important;
+  align-items: start !important;
+  gap: 16px !important;
+  padding: 20px 24px 18px !important;
+  border-bottom: 1px solid rgba(226, 232, 240, .95) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(248,250,252,.58)) !important;
+}
+
+.smart-insight-modal-v185__header-icon {
+  width: 54px !important;
+  height: 54px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(99, 102, 241, .22) !important;
+  background: linear-gradient(135deg, rgba(99,102,241,.12), rgba(14,165,233,.08)) !important;
+  color: #4f46e5 !important;
+  box-shadow: 0 14px 28px rgba(79, 70, 229, .10) !important;
+}
+
+.smart-insight-modal-v185__close {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  position: static !important;
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(203, 213, 225, .95) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, .90) !important;
+  color: #334155 !important;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, .06) !important;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease !important;
+}
+
+.smart-insight-modal-v185__close:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(148, 163, 184, .98) !important;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, .11) !important;
+}
+
+.smart-insight-modal-v186__title {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+  text-align: right !important;
+}
+
+.smart-insight-modal-v185__eyebrow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v185__severity,
+.smart-insight-modal-v185__type-chip {
+  min-height: 30px !important;
+  border-radius: 999px !important;
+  padding: 0 12px !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  letter-spacing: -.01em !important;
+}
+
+.smart-insight-modal-v185__type-chip {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  background: rgba(255,255,255,.78) !important;
+  color: #475569 !important;
+}
+
+.smart-insight-modal-v186__title h2 {
+  margin: 10px 0 0 !important;
+  font-size: clamp(1.38rem, 1.95vw, 2rem) !important;
+  line-height: 1.28 !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+
+.smart-insight-modal-v186__title p {
+  margin-top: 7px !important;
+  max-width: 94% !important;
+  font-size: .86rem !important;
+  line-height: 1.9 !important;
+  font-weight: 800 !important;
+  color: #475569 !important;
+}
+
+.smart-insight-modal-v185__body {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 232px !important;
+  grid-template-areas: "content kpis" !important;
+  gap: 14px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 16px 20px 20px !important;
+}
+
+.smart-insight-modal-v186__hero-grid {
+  grid-area: kpis !important;
+  direction: rtl !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,255,.84) !important;
+  box-shadow: 0 12px 28px rgba(15,23,42,.045) !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div > div:first-child {
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+  color: #64748b !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div > div:last-child {
+  margin-top: 8px !important;
+  font-size: clamp(1.04rem, 1.5vw, 1.55rem) !important;
+  line-height: 1.25 !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+
+.smart-insight-modal-v186__content-grid {
+  grid-area: content !important;
+  direction: rtl !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr) !important;
+  grid-template-rows: minmax(0, 1fr) auto auto !important;
+  grid-template-areas:
+    "metrics reasons"
+    "memory memory"
+    "actions actions" !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+}
+
+.smart-insight-modal-v186__panel {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  border-radius: 24px !important;
+  background: rgba(255,255,255,.80) !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .04) !important;
+}
+
+.smart-insight-modal-v186__panel h3 {
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: .9rem !important;
+  font-weight: 950 !important;
+  color: #0f172a !important;
+}
+
+.smart-insight-modal-v186__panel h3::before {
+  content: '' !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: #6366f1 !important;
+  box-shadow: 0 0 0 4px rgba(99,102,241,.12) !important;
+}
+
+.smart-insight-modal-v186__panel--reasons {
+  grid-area: reasons !important;
+  overflow-y: auto !important;
+}
+
+.smart-insight-modal-v186__panel--metrics {
+  grid-area: metrics !important;
+  overflow-y: auto !important;
+}
+
+.smart-insight-modal-v186__panel--reasons ul {
+  margin-top: 12px !important;
+  display: grid !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--reasons li {
+  padding: 9px 10px !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+  border-radius: 15px !important;
+  background: rgba(248,250,252,.78) !important;
+  line-height: 1.78 !important;
+}
+
+.smart-insight-modal-v186__panel--metrics .mt-3.grid {
+  margin-top: 12px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--metrics .rounded-2xl {
+  min-height: 68px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+  border-radius: 16px !important;
+  background: rgba(248,250,252,.78) !important;
+}
+
+.smart-insight-modal-v186__panel--memory {
+  grid-area: memory !important;
+  max-height: 146px !important;
+  overflow: hidden !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, .92fr) !important;
+  grid-template-areas:
+    "head stats"
+    "buttons stats" !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  border-color: rgba(129, 140, 248, .30) !important;
+  background: linear-gradient(135deg, rgba(238,242,255,.72), rgba(255,255,255,.82)) !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .flex:first-child {
+  grid-area: head !important;
+  margin: 0 !important;
+  align-items: flex-start !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.flex {
+  grid-area: buttons !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.flex button {
+  min-height: 34px !important;
+  padding-inline: 8px !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  font-size: .66rem !important;
+  white-space: nowrap !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.grid {
+  grid-area: stats !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.grid > div {
+  min-height: 0 !important;
+  padding: 10px !important;
+  border: 1px solid rgba(226,232,240,.92) !important;
+  border-radius: 15px !important;
+  background: rgba(255,255,255,.82) !important;
+}
+
+.smart-insight-modal-v186__panel--actions {
+  grid-area: actions !important;
+  min-height: 64px !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding-block: 12px !important;
+}
+
+.smart-insight-modal-v186__panel--actions h3 {
+  white-space: nowrap !important;
+}
+
+.smart-insight-modal-v186__panel--actions .mt-3.flex {
+  margin: 0 !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--actions a,
+.smart-insight-modal-v186__panel--actions span {
+  min-height: 40px !important;
+  padding-inline: 14px !important;
+  border-radius: 14px !important;
+  font-size: .78rem !important;
+}
+
+.dark .smart-insight-modal-v185__surface {
+  border-color: rgba(51,65,85,.95) !important;
+  background:
+    radial-gradient(circle at 94% 4%, rgba(99,102,241,.16), transparent 30%),
+    linear-gradient(180deg, rgba(15,23,42,.98), rgba(2,6,23,.96)) !important;
+  box-shadow: 0 34px 96px rgba(0,0,0,.44), 0 0 0 1px rgba(148,163,184,.10) inset !important;
+}
+
+.dark .smart-insight-modal-v185__header {
+  border-color: rgba(51,65,85,.92) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.86), rgba(2,6,23,.58)) !important;
+}
+
+.dark .smart-insight-modal-v185__header-icon,
+.dark .smart-insight-modal-v185__close,
+.dark .smart-insight-modal-v185__type-chip,
+.dark .smart-insight-modal-v186__hero-grid > div,
+.dark .smart-insight-modal-v186__panel,
+.dark .smart-insight-modal-v186__panel--reasons li,
+.dark .smart-insight-modal-v186__panel--metrics .rounded-2xl,
+.dark .smart-insight-modal-v186__panel--memory > .mt-4.grid > div {
+  border-color: rgba(51,65,85,.92) !important;
+  background: rgba(15,23,42,.76) !important;
+}
+
+.dark .smart-insight-modal-v186__title h2,
+.dark .smart-insight-modal-v186__panel h3,
+.dark .smart-insight-modal-v186__hero-grid > div > div:last-child {
+  color: #f8fafc !important;
+}
+
+.dark .smart-insight-modal-v186__title p,
+.dark .smart-insight-modal-v185__type-chip,
+.dark .smart-insight-modal-v186__hero-grid > div > div:first-child {
+  color: #cbd5e1 !important;
+}
+
+@media (max-width: 1279px) {
+  :root { --smart-insight-sidebar-offset: 0px; }
+
+  .smart-insight-modal-v185 {
+    inset: 0 !important;
+    padding: 16px !important;
+  }
+
+  .smart-insight-modal-v185__surface {
+    width: min(1120px, calc(100vw - 32px)) !important;
+    max-width: min(1120px, calc(100vw - 32px)) !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .smart-insight-modal-v185__surface {
+    height: min(90vh, 820px) !important;
+    max-height: min(90vh, 820px) !important;
+  }
+
+  .smart-insight-modal-v185__body {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "kpis"
+      "content" !important;
+    overflow-y: auto !important;
+  }
+
+  .smart-insight-modal-v186__hero-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: auto !important;
+  }
+
+  .smart-insight-modal-v186__content-grid {
+    height: auto !important;
+    overflow: visible !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "metrics"
+      "reasons"
+      "memory"
+      "actions" !important;
+  }
+
+  .smart-insight-modal-v186__panel--memory {
+    max-height: none !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "head"
+      "stats"
+      "buttons" !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .smart-insight-modal-v185__header {
+    grid-template-columns: 46px minmax(0, 1fr) 42px !important;
+    padding: 16px !important;
+  }
+
+  .smart-insight-modal-v185__header-icon,
+  .smart-insight-modal-v185__close {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  .smart-insight-modal-v185__body {
+    padding: 12px !important;
+  }
+
+  .smart-insight-modal-v186__hero-grid,
+  .smart-insight-modal-v186__panel--metrics .mt-3.grid,
+  .smart-insight-modal-v186__panel--memory > .mt-4.grid,
+  .smart-insight-modal-v186__panel--memory > .mt-4.flex {
+    grid-template-columns: 1fr !important;
+  }
+}

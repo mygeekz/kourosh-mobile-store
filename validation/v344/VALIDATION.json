@@ -1,0 +1,40 @@
+{
+  "release": "v344",
+  "status": "PASS_WITH_EXTERNAL_BUILD_GATE_PENDING",
+  "accountingChecklist": "15/15 implemented",
+  "sourceValidation": {
+    "auditRelease": "PASS",
+    "miniappSourceGate": "PASS 65/65",
+    "scenarioTests": "PASS 10/10",
+    "periodLifecycle": "PASS closed->reopened->closed",
+    "migrationSafety": "PASS",
+    "drilldownAudit": "PASS 5 domains / 17 checks"
+  },
+  "realDatabaseValidation": {
+    "databaseUsed": "copy of corrected production-like v335 database",
+    "safetyBackupSha256": "4587c77fc5643819c1c08ffe3356032e20e4961b8369fcbced0ce0654ff25bbe",
+    "behzadSupplierReceivableBefore": 284100000,
+    "behzadSupplierReceivableAfter": 284100000,
+    "profitSnapshots": 205,
+    "capitalAllocations": 440,
+    "migrationRegistryRows": 7,
+    "migrationsMissingChecksum": 0,
+    "newMigrationsWithSafetyBackup": 4,
+    "periodLifecycle": ["closed", "reopened", "closed"],
+    "periodClosedUpdateBlocked": true,
+    "periodReopenedUpdateAllowed": true,
+    "periodReclosedUpdateBlocked": true,
+    "periodHistoryUpdateBlocked": true,
+    "periodHistoryDeleteBlocked": true,
+    "legacyMissingReferences": {
+      "customerLedger": 1,
+      "partnerLedger": 6,
+      "policy": "human review only; no guessed auto-repair"
+    }
+  },
+  "environmentNote": {
+    "fullTypecheck": "not executable cleanly in this runtime because project node_modules/react type dependencies are absent",
+    "cloudFullBuild": "not executed because no connected GitHub runner/remote exists in this session",
+    "deterministicReleaseToolchain": "present; Node 24.11.1 + npm 11.6.2 + offline cache replay"
+  }
+}

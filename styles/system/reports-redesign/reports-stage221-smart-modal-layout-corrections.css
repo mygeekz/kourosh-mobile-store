@@ -1,0 +1,148 @@
+/* Stage 221 — Targeted Smart Insight modal layout corrections.
+   Scope: portal-safe report modals only. Does not affect the Smart Insights page layout. */
+
+@media (min-width: 768px) {
+  .apr220-overlay.apr220-overlay--sidebar-safe,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe {
+    --smart-insight-sidebar-safe-lane: max(var(--smart-insight-sidebar-offset, 0px), min(var(--sidebar-pill-w, 372px), 390px));
+    right: var(--smart-insight-sidebar-safe-lane) !important;
+    left: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    padding-right: var(--smart-insight-modal-gutter, 12px) !important;
+  }
+
+  .apr220-overlay.apr220-overlay--sidebar-safe .apr220-dialog,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v185__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__surface,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__surface {
+    width: min(1040px, calc(100vw - var(--smart-insight-sidebar-safe-lane) - (var(--smart-insight-modal-gutter, 12px) * 2))) !important;
+    max-width: min(1040px, calc(100vw - var(--smart-insight-sidebar-safe-lane) - (var(--smart-insight-modal-gutter, 12px) * 2))) !important;
+  }
+}
+
+/* Decision/Repetition overview modals: remove the left KPI sidebar and turn it into a top horizontal strip. */
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__body {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  align-items: start !important;
+  gap: 10px !important;
+  overflow: auto !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__aside {
+  order: -1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__aside-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 9px !important;
+  overflow: visible !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__main {
+  width: 100% !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* Prevent nested panel scrollbars. The modal body may scroll; cards inside should not. */
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__panel {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  align-self: start !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__panel-body,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__trend-grid,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__alert-list {
+  max-height: none !important;
+  overflow: visible !important;
+  min-height: 0 !important;
+}
+
+.insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__content-grid,
+.insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__content {
+  align-items: start !important;
+  grid-auto-rows: auto !important;
+}
+
+/* Side KPI modal: no stretched empty panel under the alert rows. */
+.side-kpi-modal-v217 .side-kpi-modal-v217__panel--alerts,
+.side-kpi-modal-v217 .side-kpi-modal-v217__panel--trend {
+  align-self: start !important;
+  min-height: 0 !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__alert-list {
+  padding-bottom: 9px !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__alert-row:last-child,
+.side-kpi-modal-v217 .side-kpi-modal-v217__trend-card:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Generic modal top KPI cards: make icons explicit, including confidence. */
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__hero-card {
+  position: relative !important;
+  min-height: 62px !important;
+  padding-inline-start: 46px !important;
+}
+
+.smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__hero-icon {
+  position: absolute !important;
+  inset-inline-start: 11px !important;
+  top: 50% !important;
+  width: 30px !important;
+  height: 30px !important;
+  transform: translateY(-50%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: #475569 !important;
+  font-size: 0.78rem !important;
+}
+
+.dark .smart-insight-modal-v185--sidebar-safe .smart-insight-modal-v186__hero-icon {
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  background: rgba(15, 23, 42, 0.88) !important;
+  color: #cbd5e1 !important;
+}
+
+@media (min-width: 768px) and (max-width: 1180px) {
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__aside-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__hero-strip,
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__content-grid,
+  .insight-overview-modal-v211--sidebar-safe .side-kpi-modal-v217__content {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .apr220-overlay.apr220-overlay--sidebar-safe,
+  .smart-insight-modal-v185.smart-insight-modal-v185--sidebar-safe,
+  .insight-overview-modal-v211.insight-overview-modal-v211--sidebar-safe {
+    right: 0 !important;
+    left: 0 !important;
+    padding: 10px !important;
+  }
+
+  .insight-overview-modal-v211--sidebar-safe .insight-overview-modal-v211__aside-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

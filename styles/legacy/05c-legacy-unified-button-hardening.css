@@ -1,0 +1,53 @@
+/* v281 — canonical Button hardening only; raw/native buttons are not styled here. */
+.ux-btn {
+  position: relative;
+  min-height: 44px;
+  padding-inline: 1rem;
+  padding-block: 0.625rem;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.ux-btn-sm { min-height: 40px; padding-inline: .9rem; padding-block: .5rem; }
+.ux-btn-xs { min-height: 36px; padding-inline: .75rem; padding-block: .4rem; }
+.ux-btn-lg { min-height: 46px; padding-inline: 1.1rem; padding-block: .72rem; }
+
+.ux-btn__content,
+.ux-btn__label,
+.ux-btn__label-main { line-height: 1.25; }
+
+.ux-btn__label-main { overflow: hidden; text-overflow: ellipsis; }
+
+.ux-btn__icon,
+.ux-btn__spinner {
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.ux-btn:hover .ux-btn__icon,
+.ux-btn:hover .ux-btn__spinner { transform: scale(1.03); }
+
+.ux-btn:active { transform: translateY(0) scale(0.995); }
+
+.ux-btn[disabled],
+.ux-btn[aria-disabled='true'] { box-shadow: none; filter: saturate(.9); }
+
+.ux-btn-secondary,
+.ux-btn-ghost {
+  background-image: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+}
+
+.dark .ux-btn-secondary,
+.dark .ux-btn-ghost {
+  background-image: linear-gradient(180deg, rgba(30,41,59,.98), rgba(15,23,42,.96));
+}
+
+.ux-btn-secondary .ux-btn__label-main,
+.ux-btn-ghost .ux-btn__label-main { color: inherit; }
+
+.ux-btn-warning,
+.dark .ux-btn-warning { color: hsl(var(--warning-foreground)); }
+
+.ux-btn-warning .ux-btn__icon { background: rgba(255,255,255,.22); }
+.dark .ux-btn-warning .ux-btn__icon { background: rgba(255,255,255,.14); }

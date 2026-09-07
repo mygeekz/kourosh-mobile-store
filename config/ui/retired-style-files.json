@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "release": "v267",
+  "policy": "Only explicitly retired source CSS may be removed automatically. Unknown unregistered CSS still fails the manifest audit.",
+  "files": [
+    {
+      "path": "styles/components/select-field.css",
+      "retiredIn": "v261",
+      "reason": "Select geometry moved to canonical primitive utilities/tokens."
+    },
+    {
+      "path": "styles/system/form-field-vertical-metrics-foundation.css",
+      "retiredIn": "v261",
+      "reason": "Form vertical metrics moved to canonical primitives; custom CSS forbidden."
+    },
+    {
+      "path": "styles/system/expenses-modal-horizontal-phase87.css",
+      "retiredIn": "v262",
+      "reason": "Expenses UI migrated to shared primitives/utilities."
+    },
+    {
+      "path": "styles/system/expenses-modal-horizontal-phase88.css",
+      "retiredIn": "v262",
+      "reason": "Expenses UI migrated to shared primitives/utilities."
+    },
+    {
+      "path": "styles/system/expenses-modal-horizontal-phase89.css",
+      "retiredIn": "v262",
+      "reason": "Expenses UI migrated to shared primitives/utilities."
+    },
+    {
+      "path": "styles/system/expenses-recurring-payment-history-phase93.css",
+      "retiredIn": "v262",
+      "reason": "Expenses history UI migrated to shared primitives/utilities."
+    },
+    {
+      "path": "styles/pages/repairs.css",
+      "retiredIn": "v266",
+      "reason": "Repairs workspace migrated to PageShell/PanelCard/standard table utilities."
+    },
+    {
+      "path": "styles/system/products-services-redesign/products-services-repairs-redesign-pass-1.css",
+      "retiredIn": "v266",
+      "reason": "Dormant repairs redesign stylesheet removed from production."
+    },
+    {
+      "path": "styles/system/products-services-redesign/products-services-repairs-redesign-pass-2.css",
+      "retiredIn": "v266",
+      "reason": "Dormant repairs redesign stylesheet removed from production."
+    },
+    {
+      "path": "styles/system/products-services-redesign/products-services-repairs-redesign-pass-3.css",
+      "retiredIn": "v266",
+      "reason": "Dormant repairs redesign stylesheet removed from production."
+    },
+    {
+      "path": "styles/system/products-services-repairs/repairs-ui-foundation.css",
+      "retiredIn": "v266",
+      "reason": "Repairs hero/status/kanban migrated to standard primitives/utilities."
+    }
+  ]
+}

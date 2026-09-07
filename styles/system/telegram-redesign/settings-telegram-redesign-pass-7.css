@@ -1,0 +1,569 @@
+/* Phase 68 — Settings > Telegram Redesign Final Polish / QA Pass
+   Scope: final visual consistency, RTL/LTR hardening, compact contrast and micro-interactions.
+   No behavior changes; scoped to #telegram-settings-form.telegram-redesign-v1 only. */
+
+#telegram-settings-form.telegram-redesign-v1 {
+  --tg-polish-line: var(--ds-border-subtle);
+  --tg-polish-line-strong: var(--ds-primary-soft-border);
+  --tg-polish-surface: var(--ds-surface-card);
+  --tg-polish-soft: var(--ds-surface-card-muted);
+  --tg-polish-text: var(--ds-text-primary);
+  --tg-polish-muted: var(--ds-text-secondary);
+  --tg-polish-accent: var(--ds-primary);
+  --tg-polish-accent-soft: var(--ds-primary-soft);
+  --tg-polish-shadow: var(--ds-shadow-card);
+  --tg-polish-focus: 0 0 0 3px var(--ds-focus-ring);
+}
+
+.dark #telegram-settings-form.telegram-redesign-v1,
+#telegram-settings-form.telegram-redesign-v1.dark {
+  --tg-polish-line: var(--ds-border-subtle);
+  --tg-polish-line-strong: var(--ds-primary-soft-border);
+  --tg-polish-surface: var(--ds-surface-card);
+  --tg-polish-soft: var(--ds-surface-card-muted);
+  --tg-polish-text: var(--ds-text-primary);
+  --tg-polish-muted: var(--ds-text-secondary);
+  --tg-polish-accent: var(--ds-primary);
+  --tg-polish-accent-soft: var(--ds-primary-soft);
+  --tg-polish-shadow: var(--ds-shadow-card);
+  --tg-polish-focus: 0 0 0 3px var(--ds-focus-ring);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-shell,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-logs-panel,
+#telegram-settings-form.telegram-redesign-v1 .telegram-chatid-guide,
+#telegram-settings-form.telegram-redesign-v1 .telegram-auto-copy-panel {
+  border-color: var(--tg-polish-line) !important;
+  box-shadow: var(--tg-polish-shadow) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-copy h2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-copy h3,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-hero h3,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox h2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__head h3 {
+  letter-spacing: -0.025em !important;
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-copy p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-hero p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__head p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__desc,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mode-tile__hint,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mini-card__desc {
+  color: var(--tg-polish-muted) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-kicker,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-kicker,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__badge,
+#telegram-settings-form.telegram-redesign-v1 .telegram-state,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__state,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-status-badge {
+  letter-spacing: -0.01em !important;
+  line-height: 1.4 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card:not([data-ui-material="glass"]),
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-stat-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mini-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mode-tile {
+  border-color: var(--tg-polish-line) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-card:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card:not([data-ui-material="glass"]):hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mode-tile:hover {
+  border-color: var(--tg-polish-line-strong) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 button:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 a:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 input:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 select:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 textarea:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 summary:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger:focus-visible,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger:focus-visible {
+  outline: none !important;
+  box-shadow: var(--tg-polish-focus) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-form input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-form select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-form textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-filter-row input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-filter-row select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__filters input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__filters select {
+  min-height: 42px !important;
+  border-color: var(--tg-polish-line) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell {
+  background: linear-gradient(180deg, var(--tg-polish-surface), var(--tg-polish-soft)) !important;
+  border-color: var(--tg-polish-line) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell::before {
+  color: var(--tg-polish-muted) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea,
+#telegram-settings-form.telegram-redesign-v1 textarea.telegram-template-textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell textarea {
+  color: var(--tg-polish-text) !important;
+  caret-color: rgb(14, 165, 233) !important;
+  tab-size: 2 !important;
+}
+
+/* Canonical neutral-surface ownership.
+   Earlier redesign passes accidentally reused danger tokens for ordinary Telegram
+   settings surfaces. The final owner normalizes those ordinary states while
+   retaining explicit success/danger status modifiers below. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger:hover,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-item-card__trigger:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger:hover,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger:hover,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__body,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__body,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-actions {
+  background: var(--tg-polish-soft) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-audience-brief,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-audience-brief,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-surface) !important;
+  box-shadow: var(--tg-polish-shadow) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell::before,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell::before {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-surface) !important;
+  color: var(--tg-polish-muted) !important;
+  box-shadow: var(--ds-shadow-control) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea,
+#telegram-settings-form.telegram-redesign-v1 textarea.telegram-template-textarea,
+html.dark #telegram-settings-form.telegram-redesign-v1 textarea.telegram-template-textarea,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell textarea,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell textarea {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-soft) !important;
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea::placeholder,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea::placeholder {
+  color: var(--tg-polish-muted) !important;
+  opacity: 1 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea:focus,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea:focus,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell:focus-within::before,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-textarea-shell:focus-within::before {
+  border-color: var(--tg-polish-line-strong) !important;
+  box-shadow: var(--tg-polish-focus) !important;
+  color: var(--tg-polish-text) !important;
+}
+
+/* Logs: neutral cards, controls and table surfaces. */
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple {
+  border-color: var(--tg-polish-line) !important;
+  box-shadow: var(--tg-polish-shadow) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple::before,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple::before,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2::before,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2::before {
+  background: linear-gradient(90deg, transparent, var(--tg-polish-accent-soft), transparent) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__icon,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__icon,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__icon {
+  border-color: transparent !important;
+  background: transparent !important;
+  color: var(--tg-polish-accent) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity h3,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity h3,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event strong,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody strong,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat strong {
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__identity p,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field > span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field > span,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat span,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__date,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__date,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__event span,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__muted,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__muted,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody span,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody p,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody small,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixBody small {
+  color: var(--tg-polish-muted) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__refresh,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__refresh,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__filters,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field select,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__field select,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__tableWrap,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__tableWrap,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pagination,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pagination,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__detailCard,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__detailCard,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-surface) !important;
+  color: var(--tg-polish-text) !important;
+  box-shadow: var(--ds-shadow-control) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat:not(.tg-logs-apple__stat--success):not(.tg-logs-apple__stat--danger),
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat:not(.tg-logs-apple__stat--success):not(.tg-logs-apple__stat--danger),
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__code,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__code,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pageBadge,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__pageBadge,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__empty,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__empty,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFix,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFix {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-soft) !important;
+  color: var(--tg-polish-muted) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox input,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__searchbox input {
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead th,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table thead th {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-soft) !important;
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table td {
+  border-color: var(--tg-polish-line) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow):hover,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__table tbody tr:not(.tg-logs-apple__fixRow):hover,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__fixRow td,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__fixRow td {
+  background: var(--tg-polish-soft) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixIcon,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__inlineFixIcon {
+  background: transparent !important;
+  color: var(--tg-polish-accent) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox pre,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__debugBox pre {
+  background: var(--tg-polish-soft) !important;
+  color: var(--tg-polish-text) !important;
+}
+
+/* Monitoring: neutral information surfaces, semantic status remains semantic. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 {
+  border-color: var(--tg-polish-line) !important;
+  background: linear-gradient(180deg, var(--tg-polish-surface), var(--tg-polish-soft)) !important;
+  box-shadow: var(--tg-polish-shadow) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-kicker,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-kicker {
+  border-color: var(--tg-polish-line-strong) !important;
+  background: var(--tg-polish-accent-soft) !important;
+  color: var(--tg-polish-accent) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox h2,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox h2,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score strong,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__label,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__label {
+  color: var(--tg-polish-text) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox p,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox p,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score span,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score span,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score small,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score small {
+  color: var(--tg-polish-muted) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 > .mt-4.rounded-\[24px\],
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 > .mt-4.rounded-\[24px\],
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-unified-hero,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-unified-hero,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-stat-card,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-stat-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-unified-panel,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-section-v2 .telegram-studio-unified-panel {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-surface) !important;
+  box-shadow: var(--ds-shadow-control) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action:hover,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action:hover {
+  border-color: var(--tg-polish-line-strong) !important;
+  background: var(--tg-polish-soft) !important;
+  box-shadow: var(--ds-shadow-card) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action::before,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action::before {
+  background: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score div,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score div {
+  background: var(--tg-polish-soft) !important;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--tg-polish-text) 12%, transparent) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score div > i,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score div > i {
+  background: linear-gradient(90deg, var(--tg-polish-accent), color-mix(in srgb, var(--tg-polish-accent) 72%, white)) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__state:not(.is-ok),
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__state:not(.is-ok) {
+  border-color: color-mix(in srgb, var(--ds-warning) 34%, transparent) !important;
+  background: var(--ds-warning-soft) !important;
+  color: var(--ds-warning) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__value,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__value {
+  border-color: var(--tg-polish-line) !important;
+  background: var(--tg-polish-soft) !important;
+  color: var(--tg-polish-muted) !important;
+}
+
+/* Explicit semantic exceptions retain their status colors. */
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--danger,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--danger,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--danger,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--danger,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__modalError,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__modalError,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__technicalError pre,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__technicalError pre {
+  border-color: color-mix(in srgb, var(--ds-danger) 44%, transparent) !important;
+  background: var(--ds-danger-soft) !important;
+  color: var(--ds-danger) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--success,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__stat--success,
+#telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--success,
+html.dark #telegram-settings-form.telegram-redesign-v1 .tg-logs-apple__badge--success,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action.is-ok,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action.is-ok {
+  border-color: color-mix(in srgb, var(--ds-success) 38%, transparent) !important;
+  background: var(--ds-success-soft) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-variable-chip,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__value,
+#telegram-settings-form.telegram-redesign-v1 .telegram-chatid-results__meta,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-recipient-code,
+#telegram-settings-form.telegram-redesign-v1 [dir="ltr"].ux-ltr-token,
+#telegram-settings-form.telegram-redesign-v1 input[dir="ltr"],
+#telegram-settings-form.telegram-redesign-v1 span[dir="ltr"] {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__value,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-recipient-code,
+#telegram-settings-form.telegram-redesign-v1 .telegram-chatid-results__meta {
+  text-align: left !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-card-head > span,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-hero__icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-stat-card__icon {
+  flex: 0 0 auto !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__top,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__top,
+#telegram-settings-form.telegram-redesign-v1 .telegram-card-head,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__head,
+#telegram-settings-form.telegram-redesign-v1 .telegram-chatid-guide__head {
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__title,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mini-card__value,
+#telegram-settings-form.telegram-redesign-v1 .telegram-audience-template-panel__trigger strong {
+  overflow-wrap: anywhere !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__metrics span,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-progress-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-studio-mini-card,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-stat-card {
+  min-width: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-detail-modal pre,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-debug-block pre,
+#telegram-settings-form.telegram-redesign-v1 pre {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: plaintext !important;
+  font-variant-numeric: tabular-nums !important;
+  border-radius: 18px !important;
+  scrollbar-width: thin;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-detail-modal pre::-webkit-scrollbar,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-debug-block pre::-webkit-scrollbar,
+#telegram-settings-form.telegram-redesign-v1 pre::-webkit-scrollbar,
+#telegram-settings-form.telegram-redesign-v1 textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-detail-modal pre::-webkit-scrollbar-thumb,
+#telegram-settings-form.telegram-redesign-v1 .telegram-log-debug-block pre::-webkit-scrollbar-thumb,
+#telegram-settings-form.telegram-redesign-v1 pre::-webkit-scrollbar-thumb,
+#telegram-settings-form.telegram-redesign-v1 textarea::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.35);
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score i,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__progress span {
+  max-width: 100% !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__metrics b,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-stats b,
+#telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__score strong,
+#telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-score strong {
+  font-variant-numeric: tabular-nums !important;
+}
+
+@media (max-width: 768px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-executive-copy h2,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-executive-copy h3,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-titlebox h2,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-hero h3 {
+    font-size: clamp(18px, 5.2vw, 22px) !important;
+    line-height: 1.45 !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__meta,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-chips,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-command-card__metrics,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-progress-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-studio-mini-card {
+    text-align: right !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-filter-row,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-studio-toolbar,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__filters {
+    align-items: stretch !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-filter-row button,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-studio-toolbar button,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-log-panel__filters button {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-executive-pulse__meta,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-compact-chips,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-chatid-guide__steps {
+    grid-template-columns: 1fr !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-monitor-v2-action__value,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-chatid-results__meta,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-log-recipient-code {
+    max-width: 100% !important;
+    white-space: nowrap !important;
+  }
+}

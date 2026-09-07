@@ -1,0 +1,52 @@
+[
+  {
+    "operationId": "restore-1788770340369-6c0e9269587a",
+    "status": "completed",
+    "sourceType": "external-file",
+    "sourceFileName": "kourosh_inventory_2026-09-03T16-13-22-240Z.db",
+    "startedAt": "2026-09-07T08:39:00.647Z",
+    "finishedAt": "2026-09-07T08:39:24.982Z",
+    "durationMs": 24335,
+    "safetyBackupFileName": "pre-restore-safety_2026-09-07T08-39-00-862Z.db",
+    "rollbackStatus": "not-required",
+    "failureMessage": null,
+    "stages": [
+      {
+        "stage": "validating",
+        "label": "اعتبارسنجی فایل پشتیبان",
+        "status": "completed",
+        "detail": "سلامت SQLite، ساختار جداول و سازگاری فایل در حال بررسی است.",
+        "startedAt": "2026-09-07T08:39:00.651Z",
+        "finishedAt": "2026-09-07T08:39:00.862Z",
+        "durationMs": 211
+      },
+      {
+        "stage": "safety-backup",
+        "label": "ساخت نسخه ایمنی",
+        "status": "completed",
+        "detail": "پیش از هر جایگزینی، از دیتابیس فعال یک نسخه ایمنی ساخته می‌شود.",
+        "startedAt": "2026-09-07T08:39:00.862Z",
+        "finishedAt": "2026-09-07T08:39:01.558Z",
+        "durationMs": 696
+      },
+      {
+        "stage": "replacing",
+        "label": "جایگزینی امن دیتابیس",
+        "status": "completed",
+        "detail": "در حال جابه‌جایی اتمیک دیتابیس فعلی و فعال‌سازی نسخه بازیابی‌شده…",
+        "startedAt": "2026-09-07T08:39:01.558Z",
+        "finishedAt": "2026-09-07T08:39:01.578Z",
+        "durationMs": 20
+      },
+      {
+        "stage": "reopening",
+        "label": "بازگشایی و بررسی نهایی",
+        "status": "completed",
+        "detail": "در حال همگام‌سازی زمان‌بندی بکاپ با تنظیمات بازیابی‌شده…",
+        "startedAt": "2026-09-07T08:39:01.578Z",
+        "finishedAt": "2026-09-07T08:39:24.982Z",
+        "durationMs": 23404
+      }
+    ]
+  }
+]

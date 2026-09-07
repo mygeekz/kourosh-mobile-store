@@ -1,0 +1,122 @@
+
+/* v57 — Telegram logs stat icons + centered horizontal detail modal.
+   Based on v56. */
+
+/* Stat icon boxes: icon must sit exactly inside the icon capsule. */
+.tg-logs-apple__statHead {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+}
+
+.tg-logs-apple__statIcon {
+  position: static !important;
+  display: inline-flex !important;
+  width: 1.85rem !important;
+  height: 1.85rem !important;
+  min-width: 1.85rem !important;
+  flex: 0 0 1.85rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+.tg-logs-apple__statIcon svg,
+.tg-logs-apple__statIcon i {
+  display: block !important;
+  width: 0.92rem !important;
+  height: 0.92rem !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  position: static !important;
+}
+
+.tg-logs-apple__statIcon i {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Modal overlay must center content truly in the viewport. */
+.tg-logs-detail-modal-overlay {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.35rem !important;
+}
+
+/* Horizontal, centered modal. */
+.tg-logs-detail-modal-overlay .modal-surface {
+  position: relative !important;
+  inset: auto !important;
+  transform-origin: center center !important;
+  width: min(1120px, calc(100vw - 2.7rem)) !important;
+  max-width: min(1120px, calc(100vw - 2.7rem)) !important;
+  min-width: min(860px, calc(100vw - 2.7rem)) !important;
+  height: auto !important;
+  max-height: min(82vh, 820px) !important;
+  margin: auto !important;
+}
+
+/* Modal body should feel landscape, not tall/narrow. */
+.tg-logs-detail-modal-overlay .modal-body-premium {
+  max-height: calc(min(82vh, 820px) - 5.25rem) !important;
+  overflow-y: auto !important;
+  padding: 1rem 1.05rem 1.1rem !important;
+}
+
+/* Detail cards can return to 4 columns in the horizontal modal. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 0.8rem !important;
+}
+
+.tg-logs-detail-modal-overlay .tg-logs-apple__detailCard {
+  min-height: 5rem !important;
+}
+
+/* Debug boxes can stay in two columns for wide view. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* Keep action/error sections readable in wider modal. */
+.tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+/* Responsive fallback. */
+@media (max-width: 980px) {
+  .tg-logs-detail-modal-overlay {
+    padding: 0.9rem !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-surface {
+    width: calc(100vw - 1.8rem) !important;
+    max-width: calc(100vw - 1.8rem) !important;
+    min-width: 0 !important;
+    max-height: calc(100vh - 1.8rem) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .modal-body-premium {
+    max-height: calc(100vh - 7rem) !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__modalGrid,
+  .tg-logs-detail-modal-overlay .tg-logs-apple__debugGrid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tg-logs-detail-modal-overlay .tg-logs-apple__fixCoach {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}

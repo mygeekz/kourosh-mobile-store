@@ -1,0 +1,187 @@
+/* Stage 127 — ABC table badge/action polish
+   Scope: /reports/abc only. Extends the existing table instead of creating a second shell. */
+
+.abc-executive-page .abc-table-shell {
+  border-radius: 24px !important;
+  border-color: rgba(148, 163, 184, .24) !important;
+  background: rgba(255, 255, 255, .98) !important;
+  overflow-x: auto !important;
+}
+
+.abc-executive-page .abc-table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.abc-executive-page .abc-table thead th {
+  padding-block: 14px !important;
+  background: rgba(248, 250, 252, .88) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, .20) !important;
+}
+
+.abc-executive-page .abc-table tbody td {
+  padding-block: 15px !important;
+  border-bottom: 1px solid rgba(148, 163, 184, .14) !important;
+  vertical-align: middle !important;
+}
+
+.abc-executive-page .abc-table tbody tr {
+  transition: background-color .16s ease, transform .16s ease;
+}
+
+.abc-executive-page .abc-table tbody tr:hover td {
+  background: rgba(37, 99, 235, .028) !important;
+}
+
+.abc-executive-page .abc-table-bilabel {
+  gap: 3px !important;
+}
+
+.abc-executive-page .abc-table-bilabel div {
+  color: #1e293b !important;
+  font-size: .77rem !important;
+}
+
+.abc-executive-page .abc-table-bilabel span {
+  color: #94a3b8 !important;
+  font-size: .65rem !important;
+}
+
+.abc-executive-page .abc-bucket-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 72px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, .22);
+  background: rgba(248, 250, 252, .92);
+  color: #334155;
+  font-size: .74rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.abc-executive-page .abc-bucket-badge__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.abc-executive-page .abc-bucket-badge--a {
+  border-color: rgba(16, 185, 129, .26);
+  background: rgba(236, 253, 245, .96);
+  color: #047857;
+}
+
+.abc-executive-page .abc-bucket-badge--b {
+  border-color: rgba(245, 158, 11, .30);
+  background: rgba(255, 251, 235, .96);
+  color: #b45309;
+}
+
+.abc-executive-page .abc-bucket-badge--c {
+  border-color: rgba(100, 116, 139, .24);
+  background: rgba(248, 250, 252, .96);
+  color: #475569;
+}
+
+.abc-executive-page .abc-table-action-head {
+  min-width: 154px !important;
+  width: 154px !important;
+}
+
+.abc-executive-page .abc-table-action.report-direct-action {
+  min-width: 132px !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(203, 213, 225, .82) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 250, 252, .96)) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .055) !important;
+  font-size: .76rem !important;
+  font-weight: 920 !important;
+}
+
+.abc-executive-page .abc-table-action.report-direct-action i {
+  font-size: .76rem !important;
+  color: #2563eb !important;
+}
+
+.abc-executive-page .abc-table-action.report-direct-action:hover {
+  transform: translateY(-1px) !important;
+  border-color: rgba(37, 99, 235, .28) !important;
+  background: #ffffff !important;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, .085) !important;
+}
+
+.dark .abc-executive-page .abc-table-shell {
+  border-color: rgba(51, 65, 85, .86) !important;
+  background: rgba(15, 23, 42, .86) !important;
+}
+
+.dark .abc-executive-page .abc-table thead th {
+  background: rgba(15, 23, 42, .90) !important;
+  border-bottom-color: rgba(51, 65, 85, .82) !important;
+}
+
+.dark .abc-executive-page .abc-table tbody td {
+  border-bottom-color: rgba(51, 65, 85, .66) !important;
+}
+
+.dark .abc-executive-page .abc-table-bilabel div {
+  color: #e2e8f0 !important;
+}
+
+.dark .abc-executive-page .abc-table-bilabel span {
+  color: #94a3b8 !important;
+}
+
+.dark .abc-executive-page .abc-bucket-badge--a {
+  border-color: rgba(52, 211, 153, .32);
+  background: rgba(6, 78, 59, .36);
+  color: #a7f3d0;
+}
+
+.dark .abc-executive-page .abc-bucket-badge--b {
+  border-color: rgba(251, 191, 36, .34);
+  background: rgba(120, 53, 15, .34);
+  color: #fde68a;
+}
+
+.dark .abc-executive-page .abc-bucket-badge--c {
+  border-color: rgba(148, 163, 184, .26);
+  background: rgba(30, 41, 59, .62);
+  color: #cbd5e1;
+}
+
+.dark .abc-executive-page .abc-table-action.report-direct-action {
+  border-color: rgba(51, 65, 85, .90) !important;
+  background: linear-gradient(180deg, rgba(30, 41, 59, .88), rgba(15, 23, 42, .86)) !important;
+  color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.dark .abc-executive-page .abc-table-action.report-direct-action i {
+  color: #93c5fd !important;
+}
+
+@media (max-width: 760px) {
+  .abc-executive-page .abc-table {
+    min-width: 900px !important;
+  }
+
+  .abc-executive-page .abc-table-action-head {
+    min-width: 142px !important;
+    width: 142px !important;
+  }
+
+  .abc-executive-page .abc-table-action.report-direct-action {
+    min-width: 122px !important;
+  }
+}

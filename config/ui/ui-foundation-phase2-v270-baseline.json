@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 2 / v270 Overlay + Portal Foundation",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v270",
+  "capturedOn": "2026-08-30",
+  "scopeRoots": [
+    "app",
+    "components",
+    "pages"
+  ],
+  "canonicalOverlayOwners": {
+    "contract": "components/ui/overlayContract.ts",
+    "portal": "components/ui/PortalLayer.tsx",
+    "anchoredPosition": "components/ui/useAnchoredOverlayPosition.ts",
+    "positionResolver": "utils/floatingOverlayPosition.ts"
+  },
+  "approvedDirectCreatePortalOwners": [
+    "components/ui/PortalLayer.tsx",
+    "components/ui/DialogShell.tsx"
+  ],
+  "thirdPartyPortalConsumers": [
+    "components/ui/SearchableSelectField.tsx"
+  ],
+  "anchoredOverlayConsumers": [
+    "components/ShamsiDatePicker.tsx",
+    "components/ExportMenu.tsx",
+    "components/ui/TableActionGroup.tsx",
+    "components/header/HeaderProfileMenu.tsx",
+    "components/main-layout/NavigationBreadcrumbQuickPreview.tsx"
+  ],
+  "portalLayerConsumers": [
+    "components/ExportMenu.tsx",
+    "components/ShamsiDatePicker.tsx",
+    "components/SmartTooltipLayer.tsx",
+    "components/ui/TableActionGroup.tsx",
+    "components/header/HeaderProfileMenu.tsx",
+    "components/header/HeaderQuickPopover.tsx",
+    "components/main-layout/NavigationBreadcrumbQuickPreview.tsx"
+  ],
+  "expectations": {
+    "directCreatePortalOutsideApprovedOwners": 0,
+    "directDocumentBodyMenuPortalTargets": 0,
+    "genericRoleDialogModalZOverride": false,
+    "breadcrumbArbitraryPopoverZ": 0
+  },
+  "deferred": [
+    "DialogShell remains the canonical direct modal portal owner until Phase 5 Dialog/Modal/Drawer hardening.",
+    "Toast provider behavior is not redesigned in Phase 2; existing semantic toast z-token remains in force.",
+    "Page palette/token retirement is Phase 7 and is intentionally not mixed into overlay architecture work.",
+    "Runtime top/left/width/maxHeight geometry is allowed inline because it is measured positioning state, not visual theming.",
+    "PhoneModelAutocomplete.tsx is not imported by runtime code and remains legacy/dead-code debt; it is not expanded during Phase 2 and can be retired/migrated during Phase 4 cleanup.",
+    "Phase 4 may replace page-owned third-party select portals with canonical SearchableSelectField delegation; regression must verify delegation instead of requiring obsolete portal-hook ownership."
+  ],
+  "delegatedPortalConsumers": {
+    "pages/mobilePhones/mobilePhonesControllerSupport.tsx": "SearchableSelectField"
+  }
+}

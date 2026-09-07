@@ -1,0 +1,74 @@
+/* Stage 93 — Debtors report action buttons and toolbar cleanup
+   Removes refresh clutter from layout and makes row actions readable. */
+
+.debtors-executive-page .debtors-executive-toolbar {
+  justify-content: flex-start !important;
+  align-items: center !important;
+}
+
+.debtors-executive-page .debtors-search-final {
+  flex: 1 1 380px !important;
+  max-width: 560px !important;
+}
+
+.debtors-executive-page .debtors-toolbar-link {
+  height: 40px !important;
+  padding: 0 15px !important;
+  border-radius: 15px !important;
+}
+
+/* Table balance: actions need real width, debt bar was over-emphasized. */
+.debtors-executive-page .debtors-table-final {
+  min-width: 940px !important;
+}
+
+.debtors-executive-page .debtors-col-customer { width: 30% !important; }
+.debtors-executive-page .debtors-col-phone { width: 16% !important; }
+.debtors-executive-page .debtors-col-debt { width: 22% !important; }
+.debtors-executive-page .debtors-col-action { width: 32% !important; }
+
+.debtors-executive-page .debtors-row-actions {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  flex-wrap: nowrap !important;
+  min-width: 0 !important;
+}
+
+.debtors-executive-page .debtors-row-action {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 116px !important;
+  height: 36px !important;
+  padding: 0 14px !important;
+  border-radius: 14px !important;
+  font-size: .78rem !important;
+  line-height: 36px !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+
+.debtors-executive-page .debtors-row-action i {
+  flex: 0 0 auto !important;
+  font-size: .82rem !important;
+}
+
+.debtors-executive-page .debtors-row-action--primary {
+  min-width: 126px !important;
+}
+
+.debtors-executive-page .debtors-debt-cell div {
+  max-width: 240px !important;
+}
+
+@media (max-width: 760px) {
+  .debtors-executive-page .debtors-row-actions {
+    flex-wrap: wrap !important;
+  }
+
+  .debtors-executive-page .debtors-row-action {
+    min-width: max-content !important;
+  }
+}

@@ -1,0 +1,89 @@
+/* Stage 143 — Analytics empty-state polish
+   Prevents raw empty Recharts axes and communicates why data is missing. */
+
+.analytics-executive-empty-state {
+  display: grid !important;
+  grid-template-columns: 44px minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-height: 100% !important;
+  padding: 18px !important;
+  border: 1px dashed rgba(148, 163, 184, .42) !important;
+  border-radius: 20px !important;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, .84), rgba(255, 255, 255, .62)) !important;
+  color: #334155 !important;
+}
+
+.analytics-executive-empty-state__icon {
+  display: grid !important;
+  place-items: center !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .72) !important;
+  background: rgba(255, 255, 255, .86) !important;
+  color: #64748b !important;
+}
+
+.analytics-executive-empty-state strong {
+  display: block !important;
+  color: #0f172a !important;
+  font-size: .92rem !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+}
+
+.analytics-executive-empty-state p {
+  margin: 3px 0 0 !important;
+  color: #64748b !important;
+  font-size: .76rem !important;
+  font-weight: 760 !important;
+  line-height: 1.9 !important;
+}
+
+.analytics-executive-mini-empty {
+  display: grid !important;
+  place-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 14px !important;
+  background: rgba(248, 250, 252, .72) !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+}
+
+.analytics-executive-insight-card .font-bold {
+  line-height: 1.8 !important;
+}
+
+.analytics-executive-insight-card {
+  min-height: 86px !important;
+}
+
+.dark .analytics-executive-empty-state {
+  border-color: rgba(71, 85, 105, .62) !important;
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, .72), rgba(2, 6, 23, .42)) !important;
+  color: #cbd5e1 !important;
+}
+
+.dark .analytics-executive-empty-state__icon {
+  border-color: rgba(71, 85, 105, .72) !important;
+  background: rgba(15, 23, 42, .78) !important;
+  color: #94a3b8 !important;
+}
+
+.dark .analytics-executive-empty-state strong {
+  color: #f8fafc !important;
+}
+
+.dark .analytics-executive-empty-state p,
+.dark .analytics-executive-mini-empty {
+  color: #94a3b8 !important;
+}
+
+.dark .analytics-executive-mini-empty {
+  background: rgba(15, 23, 42, .72) !important;
+}

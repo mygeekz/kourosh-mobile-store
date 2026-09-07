@@ -1,0 +1,96 @@
+/* v104 — phone capital header final polish
+   - eyebrow/title block fully pinned to the right edge
+   - summary card header icon + title aligned to the right inside the card
+   - summary card widened slightly and text kept clear from the decorative ring */
+
+.partner-phone-capital-section .partner-phone-capital-header {
+  grid-template-columns: minmax(440px, 580px) minmax(0, 1fr) !important;
+  gap: 32px !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-copy {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-self: stretch !important;
+  align-content: start !important;
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-copy > * {
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-eyebrow {
+  width: max-content !important;
+  max-width: 100% !important;
+  margin: 0 0 0 auto !important;
+  align-self: flex-end !important;
+  justify-self: end !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-title {
+  width: 100% !important;
+  margin-top: 14px !important;
+  text-align: right !important;
+  align-self: stretch !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-description {
+  width: 100% !important;
+  max-width: 760px !important;
+  text-align: right !important;
+  align-self: stretch !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card {
+  min-width: 440px !important;
+  min-height: 196px !important;
+  padding: 26px 132px 26px 28px !important;
+  justify-items: end !important;
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card::before {
+  right: 30px !important;
+  width: 92px !important;
+  height: 92px !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-card > .flex {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-label {
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-value {
+  width: 100% !important;
+  font-size: clamp(26px, 2.55vw, 36px) !important;
+  line-height: 1.42 !important;
+  text-align: right !important;
+}
+
+.partner-phone-capital-section .partner-phone-capital-summary-note {
+  width: 100% !important;
+  text-align: right !important;
+}
+
+@media (max-width: 1180px) {
+  .partner-phone-capital-section .partner-phone-capital-header {
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+  }
+
+  .partner-phone-capital-section .partner-phone-capital-summary-card {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+}

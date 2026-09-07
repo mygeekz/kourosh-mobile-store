@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 2,
+  "release": "v266",
+  "releaseCandidate": true,
+  "sourceGate": [
+    {
+      "area": "release",
+      "script": "sync:miniapp-release:check"
+    },
+    {
+      "area": "release",
+      "script": "audit:miniapp-release-v266"
+    },
+    {
+      "area": "release",
+      "script": "audit:miniapp-release-gate-v266"
+    },
+    {
+      "area": "ui-foundation",
+      "script": "audit:form-controls-no-custom-css-v263"
+    },
+    {
+      "area": "expenses-ui",
+      "script": "audit:expenses-no-custom-css-v263"
+    },
+    {
+      "area": "repairs-ui",
+      "script": "audit:addrepair-no-custom-css-v263"
+    },
+    {
+      "area": "repairs-ui",
+      "script": "audit:repair-detail-no-custom-css-v266"
+    },
+    {
+      "area": "ui-standard",
+      "script": "audit:management-directory-table-standard-v265"
+    },
+    {
+      "area": "repairs-ui",
+      "script": "audit:repairs-workspace-no-custom-css-v266"
+    },
+    {
+      "area": "build-css",
+      "script": "audit:tailwind-entry-integrity-v266"
+    },
+    {
+      "area": "build-css",
+      "script": "audit:production-style-prebuild-v266"
+    },
+    {
+      "area": "ui-standard",
+      "script": "audit:management-directory-reference"
+    },
+    {
+      "area": "ui-foundation",
+      "script": "audit:settings-inventory-form-primitives"
+    },
+    {
+      "area": "ui-foundation",
+      "script": "audit:select-foundation"
+    },
+    {
+      "area": "ui-foundation",
+      "script": "audit:dialog-form-primitives"
+    },
+    {
+      "area": "ui-foundation",
+      "script": "audit:style-manifest"
+    },
+    {
+      "area": "messaging",
+      "script": "test:messaging-v259"
+    },
+    {
+      "area": "messaging-ui",
+      "script": "test:message-preview-studio-v259"
+    },
+    {
+      "area": "messaging-safety",
+      "script": "test:sms-test-recipient-allowlist-v259"
+    },
+    {
+      "area": "release-candidate",
+      "script": "audit:miniapp-rc-v266"
+    },
+    {
+      "area": "release-candidate",
+      "script": "test:miniapp-rc-evidence-verifier-v266"
+    },
+    {
+      "area": "cloudflare",
+      "script": "test:miniapp-cloudflare-prepare-v266"
+    },
+    {
+      "area": "release-candidate",
+      "script": "test:miniapp-rc-role-matrix-v266"
+    },
+    {
+      "area": "release-candidate",
+      "script": "test:miniapp-rc-infrastructure-matrix-v266"
+    },
+    {
+      "area": "platform",
+      "script": "audit:miniapp-platform-v254"
+    },
+    {
+      "area": "platform",
+      "script": "test:miniapp-platform-v254"
+    },
+    {
+      "area": "availability",
+      "script": "audit:miniapp-availability-v253"
+    },
+    {
+      "area": "availability",
+      "script": "test:miniapp-availability-state-v253"
+    },
+    {
+      "area": "diagnostics",
+      "script": "audit:miniapp-diagnostics-v252"
+    },
+    {
+      "area": "diagnostics",
+      "script": "test:miniapp-diagnostics-protocol-v252"
+    },
+    {
+      "area": "diagnostics",
+      "script": "test:miniapp-edge-diagnostics-v252"
+    },
+    {
+      "area": "identity",
+      "script": "audit:miniapp-identity-sync-v251"
+    },
+    {
+      "area": "identity",
+      "script": "test:miniapp-identity-sync-coordinator-v251"
+    },
+    {
+      "area": "identity",
+      "script": "test:miniapp-identity-sync-recovery-v251"
+    },
+    {
+      "area": "identity",
+      "script": "audit:miniapp-new-identity-sync-v248"
+    },
+    {
+      "area": "snapshot",
+      "script": "audit:miniapp-snapshot-contract-v165"
+    },
+    {
+      "area": "snapshot",
+      "script": "test:miniapp-snapshot-contract-v165"
+    },
+    {
+      "area": "snapshot",
+      "script": "audit:miniapp-snapshot-sync-v166"
+    },
+    {
+      "area": "snapshot",
+      "script": "test:miniapp-snapshot-sync-v166"
+    },
+    {
+      "area": "snapshot",
+      "script": "test:miniapp-snapshot-runtime-v192"
+    },
+    {
+      "area": "snapshot",
+      "script": "test:miniapp-snapshot-runtime-v193"
+    },
+    {
+      "area": "snapshot",
+      "script": "test:miniapp-snapshot-observability-v194"
+    },
+    {
+      "area": "offline-edge",
+      "script": "audit:miniapp-offline-runtime-v192"
+    },
+    {
+      "area": "offline-edge",
+      "script": "test:miniapp-offline-edge-v192"
+    },
+    {
+      "area": "offline-edge",
+      "script": "audit:miniapp-edge-v167"
+    },
+    {
+      "area": "offline-edge",
+      "script": "test:miniapp-edge-v167"
+    },
+    {
+      "area": "live-recovery",
+      "script": "test:miniapp-store-connectivity-v250"
+    },
+    {
+      "area": "live-recovery",
+      "script": "test:miniapp-live-state-v250"
+    },
+    {
+      "area": "live-recovery",
+      "script": "test:miniapp-live-refresh-v235"
+    },
+    {
+      "area": "live-recovery",
+      "script": "test:miniapp-live-recovery-v236"
+    },
+    {
+      "area": "api",
+      "script": "audit:miniapp-api-envelope-v176"
+    },
+    {
+      "area": "telegram",
+      "script": "audit:miniapp-telegram-backbutton-v177"
+    },
+    {
+      "area": "telegram",
+      "script": "audit:miniapp-auto-tunnel-v163"
+    },
+    {
+      "area": "telegram",
+      "script": "test:miniapp-auto-tunnel-v163"
+    },
+    {
+      "area": "telegram",
+      "script": "audit:miniapp-stable-tunnel-v164"
+    },
+    {
+      "area": "telegram",
+      "script": "test:miniapp-stable-tunnel-v164"
+    },
+    {
+      "area": "telegram",
+      "script": "audit:telegram-stable-url-v169"
+    },
+    {
+      "area": "telegram",
+      "script": "test:telegram-stable-url-v169"
+    },
+    {
+      "area": "telegram",
+      "script": "test:miniapp-public-sync-service-v163"
+    },
+    {
+      "area": "telegram",
+      "script": "test:telegram-dynamic-miniapp-launch-v163"
+    },
+    {
+      "area": "telegram",
+      "script": "test:telegram-menu-preservation-v197"
+    },
+    {
+      "area": "gateway",
+      "script": "audit:miniapp-webp-gateway-v186"
+    },
+    {
+      "area": "gateway",
+      "script": "test:miniapp-webp-gateway-v186"
+    },
+    {
+      "area": "build-contract",
+      "script": "test:miniapp-build-ensure-v163"
+    }
+  ],
+  "fullGate": [
+    {
+      "area": "environment",
+      "script": "verify:miniapp:environment-v266"
+    },
+    {
+      "area": "typecheck",
+      "script": "typecheck:miniapp"
+    },
+    {
+      "area": "typecheck",
+      "script": "typecheck:miniapp-server"
+    },
+    {
+      "area": "security",
+      "script": "test:miniapp-foundation"
+    },
+    {
+      "area": "security",
+      "script": "test:miniapp-hardening"
+    },
+    {
+      "area": "security",
+      "script": "test:miniapp-security-v150"
+    },
+    {
+      "area": "staff",
+      "script": "test:miniapp-staff-v149"
+    },
+    {
+      "area": "authorization",
+      "script": "test:telegram-authorization-v148"
+    },
+    {
+      "area": "authorization",
+      "script": "test:telegram-security-v147"
+    },
+    {
+      "area": "production-readiness",
+      "script": "audit:miniapp-production-readiness"
+    },
+    {
+      "area": "build",
+      "script": "build:miniapp"
+    },
+    {
+      "area": "built-output",
+      "script": "test:miniapp-build-isolation-v150"
+    },
+    {
+      "area": "built-output",
+      "script": "test:miniapp-runtime"
+    },
+    {
+      "area": "gateway-runtime",
+      "script": "test:miniapp-gateway-browser-v150"
+    },
+    {
+      "area": "deployment",
+      "script": "miniapp:cloudflare:prepare"
+    },
+    {
+      "area": "deployment",
+      "script": "verify:miniapp:built-v266"
+    }
+  ],
+  "externalEvidenceGate": [
+    {
+      "area": "release-candidate-evidence",
+      "script": "verify:miniapp:rc:evidence-v266"
+    }
+  ],
+  "platformOnly": [
+    {
+      "script": "test:windows-miniapp-tunnel-v162",
+      "reason": "Windows process-management runtime"
+    },
+    {
+      "script": "test:windows-miniapp-startup-order-v163",
+      "reason": "Windows startup orchestration should also be run on the target host before release"
+    },
+    {
+      "script": "audit:windows-miniapp-tunnel-v162",
+      "reason": "Static Windows tunnel audit remains supplemental"
+    }
+  ],
+  "historicalExcluded": [
+    {
+      "script": "audit:miniapp-visual-v178",
+      "reason": "Superseded visual primitive markers"
+    },
+    {
+      "script": "audit:miniapp-premium-v179",
+      "reason": "Superseded exact UI copy contract"
+    },
+    {
+      "script": "audit:miniapp-home-polish-v180",
+      "reason": "Superseded historical class contract"
+    },
+    {
+      "script": "audit:miniapp-home-v184",
+      "reason": "Superseded removed asset contract"
+    },
+    {
+      "script": "test:miniapp-store-connectivity-v196",
+      "reason": "Superseded by v250 snapshot-is-not-live semantics"
+    },
+    {
+      "script": "test:miniapp-live-state-v195",
+      "reason": "Superseded by v250 live/offline presentation semantics"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+
+/* v47 — based on v46.
+   Compact Apple-minimal correction for Telegram "قوانین ارسال".
+   Keeps card breathing room, but removes the nested-box / over-padding feeling. */
+
+/* Field card: keep safe padding, but reduce inflated height. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > [data-ui-field="true"] {
+  min-height: 0 !important;
+  padding: 0.82rem 0.88rem 0.78rem !important;
+  border-radius: 18px !important;
+}
+
+/* Label: closer to input, not glued to top. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .modal-field-label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid label.modal-field-label {
+  min-height: auto !important;
+  margin: 0 0 0.48rem !important;
+  padding-inline: 0.08rem !important;
+  line-height: 1.45 !important;
+  font-size: 0.78rem !important;
+}
+
+/* Input wrapper: stop behaving like a separate big nested card. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-form-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .premium-input-wrap {
+  margin-top: 0 !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+}
+
+/* Inputs: compact capsule, still readable. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid textarea {
+  min-height: 2.45rem !important;
+  height: 2.45rem !important;
+  padding-block: 0.48rem !important;
+  border-radius: 15px !important;
+}
+
+/* Leading icon: back to a consistent field position. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-form-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .premium-input-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .premium-input-leading-chip {
+  inset-inline-start: 0.5rem !important;
+  width: 1.85rem !important;
+  height: 1.85rem !important;
+  border-radius: 999px !important;
+}
+
+/* Protect input text after icon shift. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .premium-has-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-form-field--with-leading-icon input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-form-field--with-leading-icon select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-form-field--with-leading-icon textarea {
+  padding-inline-start: 2.65rem !important;
+}
+
+/* Helper text: make it guidance text, not a heavy nested box. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-field-feedback {
+  margin-top: 0.42rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-error {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.32rem !important;
+  margin: 0 !important;
+  padding: 0.18rem 0.08rem 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  line-height: 1.65 !important;
+  font-size: 0.7rem !important;
+}
+
+/* If old CSS gives helper paragraphs a capsule, flatten it inside rules grid. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-help *,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid .app-error * {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* Full-width single fields such as "ساعات سکوت تلگرام" should be compact too. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field.telegram-field--wide,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field.telegram-field--wide {
+  padding: 0.86rem 0.92rem 0.82rem !important;
+}
+
+/* Note/info cards below rules: no extra inflated padding from v46. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border {
+  padding: 0.86rem 0.95rem !important;
+}
+
+/* Keep grid gap clean and Apple-like. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid {
+  gap: 0.9rem !important;
+}
+
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > [data-ui-field="true"] {
+    padding: 0.78rem 0.8rem 0.75rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid input,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid select,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid textarea {
+    min-height: 2.38rem !important;
+    height: 2.38rem !important;
+  }
+}

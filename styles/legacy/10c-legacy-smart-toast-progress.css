@@ -1,0 +1,5 @@
+/* Phase 69: unified bottom-right smart toasts */
+@keyframes toast-progress{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.toast-progress-bar{transform-origin:right center;animation-name:toast-progress;animation-timing-function:linear;animation-fill-mode:forwards}
+
+

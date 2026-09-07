@@ -1,0 +1,193 @@
+/* Stage 16 — Notifications card action polish.
+   Scope: Notifications page only. Keeps all actions, but moves secondary actions into a compact native menu. */
+
+.notifications-compact-page .notifications-apple-list,
+.notifications-compact-page .notifications-apple-section,
+.notifications-compact-page .notifications-apple-item {
+  overflow: visible !important;
+}
+
+.notifications-compact-page .notifications-apple-actions-clean {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 0.45rem !important;
+  min-width: fit-content !important;
+}
+
+.notifications-compact-page .notification-primary-action,
+.notifications-compact-page .notification-action-menu > summary {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding-inline: 0.78rem !important;
+  border-radius: 12px !important;
+  font-size: 11.5px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(51 65 85) !important;
+  box-shadow: 0 10px 22px -20px rgba(15, 23, 42, 0.34) !important;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease !important;
+}
+
+.dark .notifications-compact-page .notification-primary-action,
+.dark .notifications-compact-page .notification-action-menu > summary {
+  border-color: rgb(51 65 85) !important;
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+}
+
+.notifications-compact-page .notification-primary-action {
+  background: rgb(255 255 255) !important;
+}
+
+.dark .notifications-compact-page .notification-primary-action {
+  background: rgb(15 23 42) !important;
+}
+
+.notifications-compact-page .notification-primary-action:hover,
+.notifications-compact-page .notification-action-menu > summary:hover {
+  background: rgb(241 245 249) !important;
+  border-color: rgb(203 213 225) !important;
+  transform: translateY(-1px) !important;
+}
+
+.dark .notifications-compact-page .notification-primary-action:hover,
+.dark .notifications-compact-page .notification-action-menu > summary:hover {
+  background: rgb(30 41 59) !important;
+  border-color: rgb(71 85 105) !important;
+}
+
+.notifications-compact-page .notification-action-menu {
+  position: relative !important;
+  z-index: 12 !important;
+}
+
+.notifications-compact-page .notification-action-menu > summary {
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  list-style: none !important;
+  user-select: none !important;
+}
+
+.notifications-compact-page .notification-action-menu > summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.notifications-compact-page .notification-action-menu[open] > summary {
+  background: rgb(239 246 255) !important;
+  border-color: rgb(191 219 254) !important;
+  color: rgb(37 99 235) !important;
+}
+
+.dark .notifications-compact-page .notification-action-menu[open] > summary {
+  background: rgba(37, 99, 235, 0.15) !important;
+  border-color: rgba(96, 165, 250, 0.35) !important;
+  color: rgb(147 197 253) !important;
+}
+
+.notifications-compact-page .notification-action-menu__panel {
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 0 !important;
+  width: max-content !important;
+  min-width: 245px !important;
+  max-width: min(420px, calc(100vw - 48px)) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.45rem !important;
+  padding: 0.55rem !important;
+  border-radius: 16px !important;
+  border: 1px solid rgb(226 232 240) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 24px 50px -28px rgba(15, 23, 42, 0.42) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+.dark .notifications-compact-page .notification-action-menu__panel {
+  border-color: rgb(51 65 85) !important;
+  background: rgba(15, 23, 42, 0.98) !important;
+  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.72) !important;
+}
+
+.notifications-compact-page .notification-action-menu__panel button,
+.notifications-compact-page .notification-followup-actions button {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding-inline: 0.68rem !important;
+  border-radius: 11px !important;
+  font-size: 11px !important;
+  white-space: nowrap !important;
+}
+
+.notifications-compact-page .notification-followup-actions {
+  grid-column: 1 / -1 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 0.4rem !important;
+  padding-top: 0.45rem !important;
+  margin-top: 0.1rem !important;
+  border-top: 1px solid rgb(226 232 240) !important;
+}
+
+.dark .notifications-compact-page .notification-followup-actions {
+  border-top-color: rgb(51 65 85) !important;
+}
+
+.notifications-compact-page .notification-followup-actions__label {
+  min-height: 26px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding-inline: 0.55rem !important;
+  border-radius: 999px !important;
+  background: rgb(248 250 252) !important;
+  color: rgb(100 116 139) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+}
+
+.dark .notifications-compact-page .notification-followup-actions__label {
+  background: rgb(30 41 59) !important;
+  color: rgb(148 163 184) !important;
+}
+
+.notifications-compact-page .notifications-apple-section__head .app-btn,
+.notifications-compact-page .notifications-apple-section__head button {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding-inline: 0.72rem !important;
+  border-radius: 11px !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 768px) {
+  .notifications-compact-page .notifications-apple-actions-clean {
+    width: 100% !important;
+    justify-content: stretch !important;
+    flex-wrap: wrap !important;
+  }
+
+  .notifications-compact-page .notification-primary-action,
+  .notifications-compact-page .notification-action-menu {
+    flex: 1 1 150px !important;
+  }
+
+  .notifications-compact-page .notification-action-menu > summary {
+    width: 100% !important;
+  }
+
+  .notifications-compact-page .notification-action-menu__panel {
+    position: static !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 0.5rem !important;
+    grid-template-columns: 1fr !important;
+  }
+}

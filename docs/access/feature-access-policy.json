@@ -1,0 +1,455 @@
+[
+  {
+    "featureKey": "advanced_reports",
+    "title": "گزارش‌های پیشرفته",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/reports",
+      "/reports/abc",
+      "/reports/aging-receivables",
+      "/reports/analysis",
+      "/reports/analysis/inventory",
+      "/reports/analysis/profitability",
+      "/reports/analysis/suggestions",
+      "/reports/analytics",
+      "/reports/cashflow",
+      "/reports/cohort",
+      "/reports/collection-center",
+      "/reports/collection-followup",
+      "/reports/creditors",
+      "/reports/dead-stock",
+      "/reports/debtors",
+      "/reports/financial-audit",
+      "/reports/financial-overview",
+      "/reports/followups",
+      "/reports/installments-calendar",
+      "/reports/inventory-turnover",
+      "/reports/manager-credit-approvals",
+      "/reports/mobile-sales-analytics",
+      "/reports/partners-performance",
+      "/reports/periodic-comparison",
+      "/reports/phone-installment-sales",
+      "/reports/phone-sales",
+      "/reports/product-profit-real",
+      "/reports/product-sales",
+      "/reports/realized-profit",
+      "/reports/rfm",
+      "/reports/sales",
+      "/reports/sales-risk-decisions",
+      "/reports/sales-summary",
+      "/reports/smart-insights",
+      "/reports/top-customers",
+      "/reports/top-suppliers"
+    ],
+    "definitionFallbackRoutes": [
+      "/reports"
+    ],
+    "navIds": [
+      "reports"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "ai_pricing",
+    "title": "هوش قیمت‌گذاری",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [
+      "pricing"
+    ],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "audit_log",
+    "title": "گزارش فعالیت‌ها",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/audit-log"
+    ],
+    "definitionFallbackRoutes": [
+      "/audit-log"
+    ],
+    "navIds": [
+      "audit-log"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "cash_sales",
+    "title": "فروش نقدی",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/cart-sale",
+      "/invoices",
+      "/invoices/:orderId",
+      "/sales",
+      "/sales/cash"
+    ],
+    "definitionFallbackRoutes": [
+      "/cart-sale",
+      "/invoices",
+      "/sales",
+      "/sales/cash"
+    ],
+    "navIds": [
+      "invoices",
+      "sales",
+      "sales-cash"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "dashboard_clock_widget",
+    "title": "ساعت داشبورد",
+    "scope": "feature",
+    "parentKey": "dashboard_experience",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "dashboard_experience",
+    "title": "داشبورد و تجربه روزانه",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "installments",
+    "title": "فروش اقساطی و چک",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/installment-sales",
+      "/installment-sales/:id",
+      "/installment-sales/new",
+      "/reports/collection-center",
+      "/reports/collection-followup",
+      "/reports/installments-calendar"
+    ],
+    "definitionFallbackRoutes": [
+      "/installment-sales",
+      "/reports/collection-center",
+      "/reports/installments-calendar"
+    ],
+    "navIds": [
+      "collection-center",
+      "installment-sales",
+      "installments-calendar"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "local_domain_pwa",
+    "title": "دامنه محلی و PWA",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "mobile_phones",
+    "title": "انبار تخصصی گوشی",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/mobile-phones",
+      "/reports/mobile-sales-analytics",
+      "/reports/phone-installment-sales",
+      "/reports/phone-sales"
+    ],
+    "definitionFallbackRoutes": [
+      "/mobile-phones",
+      "/reports/mobile-sales-analytics",
+      "/reports/phone-installment-sales",
+      "/reports/phone-sales"
+    ],
+    "navIds": [
+      "mobile-phones",
+      "mobile-sales-analytics",
+      "report-phone-installment-sales",
+      "report-phone-sales"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "notifications_outbox",
+    "title": "اعلان‌ها و صف ارسال",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/notifications",
+      "/outbox"
+    ],
+    "definitionFallbackRoutes": [
+      "/notifications",
+      "/outbox"
+    ],
+    "navIds": [
+      "messaging",
+      "notifications",
+      "outbox"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "people_crm",
+    "title": "مشتریان و همکاران",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [
+      "/customers",
+      "/partners"
+    ],
+    "navIds": [
+      "customers",
+      "partners",
+      "people"
+    ],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_ai_price_signal",
+    "title": "AI Price Signal در ثبت گوشی",
+    "scope": "feature",
+    "parentKey": "ai_pricing",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_ai_pricing_settings",
+    "title": "تنظیمات هوش قیمت‌گذاری داخل ثبت گوشی",
+    "scope": "feature",
+    "parentKey": "ai_pricing",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_ai_strategy_advisor",
+    "title": "AI Strategy Advisor ثبت گوشی",
+    "scope": "feature",
+    "parentKey": "ai_pricing",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_inventory_drilldown",
+    "title": "درایلدان عملیاتی انبار گوشی",
+    "scope": "feature",
+    "parentKey": "mobile_phones",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_pricing_behavior_learning",
+    "title": "یادگیری رفتار قیمت‌گذاری گوشی",
+    "scope": "feature",
+    "parentKey": "ai_pricing",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "phone_smart_warnings",
+    "title": "هشدارهای هوشمند ثبت گوشی",
+    "scope": "feature",
+    "parentKey": "mobile_phones",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "products_inventory",
+    "title": "کالا و موجودی",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [
+      "/products"
+    ],
+    "navIds": [
+      "products",
+      "products-group"
+    ],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "purchases_stock_counts",
+    "title": "خرید و انبارگردانی",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/purchases",
+      "/stock-counts",
+      "/tools/labelprint"
+    ],
+    "definitionFallbackRoutes": [
+      "/purchases",
+      "/stock-counts",
+      "/tools/labelprint"
+    ],
+    "navIds": [
+      "label-print",
+      "purchases",
+      "stock-counts"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "repairs_services",
+    "title": "تعمیرات و خدمات",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/repairs",
+      "/repairs/:id",
+      "/repairs/:id/receipt",
+      "/repairs/new",
+      "/services"
+    ],
+    "definitionFallbackRoutes": [
+      "/repairs",
+      "/services"
+    ],
+    "navIds": [
+      "repairs",
+      "repairs-services",
+      "services"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "settings_ai_control_panel",
+    "title": "کنترل‌پنل هوشمندسازی در تنظیمات",
+    "scope": "feature",
+    "parentKey": "smart_insights",
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "smart_insights",
+    "title": "مغز هوشمند فروشگاه",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [
+      "/reports/analysis",
+      "/reports/analysis/inventory",
+      "/reports/analysis/profitability",
+      "/reports/analysis/suggestions",
+      "/reports/smart-insights"
+    ],
+    "definitionFallbackRoutes": [
+      "/reports/analysis",
+      "/reports/smart-insights"
+    ],
+    "navIds": [
+      "analysis-inventory",
+      "analysis-profitability",
+      "analysis-suggestions",
+      "smart-analysis",
+      "smart-insights"
+    ],
+    "sources": [
+      "route-access-matrix",
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "sms",
+    "title": "پیامک",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  },
+  {
+    "featureKey": "telegram",
+    "title": "تلگرام",
+    "scope": "module",
+    "parentKey": null,
+    "matrixRoutes": [],
+    "definitionFallbackRoutes": [],
+    "navIds": [],
+    "sources": [
+      "feature-definition"
+    ]
+  }
+]

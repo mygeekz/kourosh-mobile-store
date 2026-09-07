@@ -1,0 +1,379 @@
+/* --- Premium table headers & row actions polish --- */
+@layer components {
+  [data-ui-table="true"] thead th {
+    @apply relative whitespace-nowrap border-b border-slate-200/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.92))] px-4 py-3 text-right text-[11px] font-black tracking-[0.08em] text-slate-500 shadow-[inset_0_-1px_0_rgba(255,255,255,0.65)];
+  }
+
+  [data-ui-table="true"] thead th::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 1rem;
+    inset-inline-end: 1rem;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(148,163,184,0), rgba(148,163,184,0.28), rgba(148,163,184,0));
+    pointer-events: none;
+  }
+
+  [data-ui-table="true"] thead th + th::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 25%;
+    bottom: 25%;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(203,213,225,0), rgba(203,213,225,0.7), rgba(203,213,225,0));
+    pointer-events: none;
+  }
+
+  [data-ui-table="true"] tbody td {
+    @apply align-middle;
+  }
+
+
+  /* Canonical row accent rail — identical to the healthy installment directory:
+     a real collapsed border on the first RTL cell, never a shadow/pseudo overlay. */
+  [data-ui-table="true"] tbody tr[data-ui-row-accent] > td:first-child {
+    border-inline-start-width: 4px;
+    border-inline-start-style: solid;
+    border-inline-start-color: var(--ui-table-row-accent, var(--ds-border-strong));
+  }
+
+  [data-ui-table="true"] tbody tr[data-ui-row-accent="danger"] { --ui-table-row-accent: var(--ds-danger); }
+  [data-ui-table="true"] tbody tr[data-ui-row-accent="warning"] { --ui-table-row-accent: var(--ds-warning); }
+  [data-ui-table="true"] tbody tr[data-ui-row-accent="success"] { --ui-table-row-accent: var(--ds-success); }
+  [data-ui-table="true"] tbody tr[data-ui-row-accent="info"] { --ui-table-row-accent: var(--ds-info, var(--ds-primary)); }
+  [data-ui-table="true"] tbody tr[data-ui-row-accent="neutral"] { --ui-table-row-accent: var(--ds-border-strong); }
+
+  .ux-table-row-actions,
+  .inventory-table-row-actions,
+  .installment-table-actions,
+  .installment-card-actions {
+    display: flex;
+    @apply flex-wrap items-center justify-end gap-2;
+  }
+
+  .ux-table-row-actions > button,
+  .ux-table-row-actions > a,
+  td .ux-table-row-actions > button,
+  td .ux-table-row-actions > a,
+  .inventory-table-row-actions > button,
+  .inventory-table-row-actions > a,
+  .installment-table-actions > button,
+  .installment-table-actions > a,
+  .installment-card-actions > button,
+  .installment-card-actions > a {
+    display: inline-flex;
+    min-width: 30px;
+    min-height: 30px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    outline: 0;
+    transition: color 160ms ease, transform 160ms ease !important;
+  }
+
+  .ux-table-row-actions > button:hover,
+  .ux-table-row-actions > a:hover,
+  td .ux-table-row-actions > button:hover,
+  td .ux-table-row-actions > a:hover,
+  .inventory-table-row-actions > button:hover,
+  .inventory-table-row-actions > a:hover,
+  .installment-table-actions > button:hover,
+  .installment-table-actions > a:hover,
+  .installment-card-actions > button:hover,
+  .installment-card-actions > a:hover {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: translateY(-1px);
+  }
+
+  .ux-table-row-actions > button:focus-visible,
+  .ux-table-row-actions > a:focus-visible,
+  td .ux-table-row-actions > button:focus-visible,
+  td .ux-table-row-actions > a:focus-visible,
+  .inventory-table-row-actions > button:focus-visible,
+  .inventory-table-row-actions > a:focus-visible,
+  .installment-table-actions > button:focus-visible,
+  .installment-table-actions > a:focus-visible,
+  .installment-card-actions > button:focus-visible,
+  .installment-card-actions > a:focus-visible {
+    outline: 1px dashed currentColor;
+    outline-offset: 2px;
+    box-shadow: none !important;
+  }
+
+  .dark [data-ui-table="true"] thead th {
+    @apply border-slate-800/80 bg-[linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.96))] text-slate-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)];
+  }
+
+  .dark [data-ui-table="true"] thead th + th::before {
+    background: linear-gradient(180deg, rgba(51,65,85,0), rgba(71,85,105,0.68), rgba(51,65,85,0));
+  }
+
+  .dark [data-ui-table="true"] thead th::after {
+    background: linear-gradient(90deg, rgba(51,65,85,0), rgba(71,85,105,0.32), rgba(51,65,85,0));
+  }
+
+  .dark .ux-table-row-actions > button,
+  .dark .ux-table-row-actions > a,
+  .dark td .ux-table-row-actions > button,
+  .dark td .ux-table-row-actions > a,
+  .dark .inventory-table-row-actions > button,
+  .dark .inventory-table-row-actions > a,
+  .dark .installment-table-actions > button,
+  .dark .installment-table-actions > a,
+  .dark .installment-card-actions > button,
+  .dark .installment-card-actions > a,
+  .dark .ux-table-row-actions > button:hover,
+  .dark .ux-table-row-actions > a:hover,
+  .dark td .ux-table-row-actions > button:hover,
+  .dark td .ux-table-row-actions > a:hover,
+  .dark .inventory-table-row-actions > button:hover,
+  .dark .inventory-table-row-actions > a:hover,
+  .dark .installment-table-actions > button:hover,
+  .dark .installment-table-actions > a:hover,
+  .dark .installment-card-actions > button:hover,
+  .dark .installment-card-actions > a:hover {
+    border: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+}
+
+
+/* Premium table row state accents */
+.table-row-state--overdue {
+  background-image: linear-gradient(90deg, rgba(244, 63, 94, 0.08), rgba(244, 63, 94, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(244, 63, 94, 0.72);
+}
+.table-row-state--due-today {
+  background-image: linear-gradient(90deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(245, 158, 11, 0.72);
+}
+.table-row-state--due-soon {
+  background-image: linear-gradient(90deg, rgba(14, 165, 233, 0.08), rgba(14, 165, 233, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(14, 165, 233, 0.68);
+}
+.table-row-state--ready {
+  background-image: linear-gradient(90deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(16, 185, 129, 0.68);
+}
+.table-row-state--settled {
+  background-image: linear-gradient(90deg, rgba(100, 116, 139, 0.08), rgba(100, 116, 139, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(100, 116, 139, 0.58);
+}
+.table-row-state--critical {
+  background-image: linear-gradient(90deg, rgba(168, 85, 247, 0.08), rgba(168, 85, 247, 0.02) 16%, transparent 42%);
+  box-shadow: inset 4px 0 0 rgba(168, 85, 247, 0.64);
+}
+.table-row-state--overdue:hover,
+.table-row-state--due-today:hover,
+.table-row-state--due-soon:hover,
+.table-row-state--ready:hover,
+.table-row-state--settled:hover,
+.table-row-state--critical:hover {
+  filter: saturate(1.04);
+}
+.dark .table-row-state--overdue {
+  background-image: linear-gradient(90deg, rgba(244, 63, 94, 0.18), rgba(244, 63, 94, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(251, 113, 133, 0.85);
+}
+.dark .table-row-state--due-today {
+  background-image: linear-gradient(90deg, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(251, 191, 36, 0.82);
+}
+.dark .table-row-state--due-soon {
+  background-image: linear-gradient(90deg, rgba(14, 165, 233, 0.16), rgba(14, 165, 233, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(56, 189, 248, 0.78);
+}
+.dark .table-row-state--ready {
+  background-image: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(52, 211, 153, 0.82);
+}
+.dark .table-row-state--settled {
+  background-image: linear-gradient(90deg, rgba(100, 116, 139, 0.16), rgba(100, 116, 139, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(148, 163, 184, 0.74);
+}
+.dark .table-row-state--critical {
+  background-image: linear-gradient(90deg, rgba(168, 85, 247, 0.18), rgba(168, 85, 247, 0.04) 22%, transparent 48%);
+  box-shadow: inset 4px 0 0 rgba(196, 181, 253, 0.78);
+}
+.people-table-row.table-row-state--overdue,
+.people-table-row.table-row-state--due-today,
+.people-table-row.table-row-state--due-soon,
+.people-table-row.table-row-state--settled {
+  position: relative;
+}
+.repair-mobile-card.table-row-state--ready,
+.repair-mobile-card.table-row-state--settled,
+.repair-mobile-card.table-row-state--critical {
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* v320 — Customer/Partner directory parity with the healthy Installments table.
+   TableViewport globally reserves a stable scrollbar gutter. In RTL that reserved
+   gutter appears on the physical left edge, creating the visible empty strip seen
+   in Customer and Partner directories. Installments uses an ordinary overflow
+   viewport and therefore has no reserved gutter. Keep the canonical TableViewport
+   component, but remove the reservation only for the shared management directory. */
+[data-ui-directory-table-parity="installments-v320"] [data-ui-table-viewport="true"] {
+  scrollbar-gutter: auto !important;
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+}
+
+[data-ui-directory-table-parity="installments-v320"] [data-ui-table="true"][data-ui-table-layout="managed"] {
+  width: 100% !important;
+  margin-inline: 0 !important;
+}
+
+[data-ui-directory-table-parity="installments-v320"] [data-ui-table="true"] :where(thead th:last-child, tbody td:last-child) {
+  border-inline-start: 0 !important;
+}
+
+/* v321 — Customer/Partner purchase-history table parity with Installments.
+   These detail tables use the canonical TableViewport, whose global runtime contract
+   reserves a stable scrollbar gutter. In RTL Chromium that reservation becomes a
+   visible empty strip on the physical left edge. The Installments directory uses an
+   ordinary overflow viewport and reaches both edges, so these two history tables
+   explicitly mirror that edge geometry without changing the global table contract. */
+[data-ui-purchase-history-parity="installments-v321"][data-ui-table-viewport="true"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  scrollbar-gutter: auto !important;
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+  overflow-x: auto !important;
+  overscroll-behavior-inline: contain !important;
+}
+
+[data-ui-purchase-history-parity="installments-v321"] > [data-ui-table="true"] {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0 !important;
+  border-spacing: 0 !important;
+}
+
+[data-ui-purchase-history-parity="installments-v321"] [data-ui-table="true"] :where(thead th:last-child, tbody td:last-child) {
+  border-inline-start: 0 !important;
+}
+
+/* v322 — Canonical inventory table parity + project-wide RTL edge geometry.
+   The healthy Installments table does not reserve a stable scrollbar gutter. In RTL,
+   stable gutter reservation creates a physical-left empty strip. v322 promotes the
+   no-reservation geometry to the canonical runtime TableViewport and explicitly pins
+   Products + Mobile Phone inventory tables to the same edge contract. */
+[data-ui-inventory-table-parity="installments-v322"] [data-ui-table-viewport="true"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  scrollbar-gutter: auto !important;
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+  overflow-x: auto !important;
+  overscroll-behavior-inline: contain !important;
+}
+
+[data-ui-inventory-table-parity="installments-v322"] [data-ui-table="true"] {
+  width: 100% !important;
+  margin-inline: 0 !important;
+  border-spacing: 0 !important;
+}
+
+[data-ui-inventory-table-parity="installments-v322"] [data-ui-table="true"] :where(thead th:last-child, tbody td:last-child) {
+  border-inline-start: 0 !important;
+}
+
+[data-ui-inventory-table-kind="products"] .ux-table-shell__body,
+[data-ui-inventory-table-kind="mobile-phones"] .ux-table-shell__body {
+  padding-inline: 0 !important;
+  margin-inline: 0 !important;
+}
+
+/* v323 — Inventory edge-to-edge correction based on the real runtime DOM.
+   v322 removed scrollbar gutter reservation, but the screenshots showed the remaining
+   gaps were not scrollbar gutters: Products was still inside ManagementListSurface's
+   responsive sm:p-3 body padding, and Mobile Phones was still nested inside the
+   phone-list-shell__content p-4/sm:p-6 workspace. Keep those parent layouts for their
+   other content, but make the two actual inventory table surfaces match the healthy
+   Installments directory: one outer card, then a flush overflow viewport + table. */
+
+/* Products: ManagementListSurface now opts into a genuinely flush body. Flatten the
+   nested DataTableShell so the table starts exactly at the list-surface edges. */
+.products-page #products-list-surface [data-ui-management-list-body='flush'] {
+  padding: 0 !important;
+}
+
+.products-page #products-list-surface [data-ui-inventory-edge-fix='v323'][data-ui-table-shell='true'] {
+  inline-size: 100% !important;
+  max-inline-size: 100% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.products-page #products-list-surface [data-ui-inventory-edge-fix='v323'] > .ux-table-shell__body {
+  inline-size: 100% !important;
+  max-inline-size: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  scrollbar-gutter: auto !important;
+}
+
+.products-page #products-list-surface [data-ui-inventory-edge-fix='v323'] .product-list-table {
+  inline-size: 100% !important;
+  min-inline-size: 100% !important;
+  margin: 0 !important;
+  border-spacing: 0 !important;
+}
+
+/* Mobile phones: the table is intentionally rendered inside a padded workspace that
+   also owns bulk controls and insight cards. Break only the table shell out through
+   that known padding, leaving every non-table control aligned as before. */
+[data-ui-inventory-page='mobile-phones'] .phone-list-shell__content > .phone-list-shell__table[data-ui-inventory-edge-fix='v323'] {
+  inline-size: calc(100% + 2rem) !important;
+  max-inline-size: none !important;
+  margin-inline: -1rem !important;
+  margin-block-end: -1rem !important;
+  border-inline: 0 !important;
+  border-block-end: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+[data-ui-inventory-page='mobile-phones'] .phone-list-shell__content > .phone-list-shell__table[data-ui-inventory-edge-fix='v323'] > .ux-table-shell__body {
+  inline-size: 100% !important;
+  max-inline-size: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  scrollbar-gutter: auto !important;
+}
+
+[data-ui-inventory-page='mobile-phones'] .phone-list-shell__content > .phone-list-shell__table[data-ui-inventory-edge-fix='v323'] .phone-inventory-table {
+  margin: 0 !important;
+  border-spacing: 0 !important;
+}
+
+@media (min-width: 640px) {
+  [data-ui-inventory-page='mobile-phones'] .phone-list-shell__content > .phone-list-shell__table[data-ui-inventory-edge-fix='v323'] {
+    inline-size: calc(100% + 3rem) !important;
+    margin-inline: -1.5rem !important;
+    margin-block-end: -1.5rem !important;
+  }
+}

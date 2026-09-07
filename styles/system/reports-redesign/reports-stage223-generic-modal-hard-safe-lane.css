@@ -1,0 +1,68 @@
+/* Stage 223 — deterministic laptop-safe lane for the Generic Smart Insight modal.
+   The previous dynamic measurement can miss the RTL sidebar when the sidebar is rendered
+   without a stable selector. This file deliberately targets only the Generic insight
+   modal root and does not affect the Smart Insights page layout. */
+
+@media (min-width: 1024px) {
+  .smart-insight-modal-v185--generic-root {
+    --smart-insight-hard-sidebar-offset: clamp(336px, 26.5vw, 380px);
+    right: max(var(--smart-insight-sidebar-offset, 0px), var(--smart-insight-hard-sidebar-offset)) !important;
+    left: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 10px 14px 10px 12px !important;
+    align-items: center !important;
+    justify-items: center !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+    width: min(900px, calc(100vw - max(var(--smart-insight-sidebar-offset, 0px), var(--smart-insight-hard-sidebar-offset)) - 32px)) !important;
+    max-width: min(900px, calc(100vw - max(var(--smart-insight-sidebar-offset, 0px), var(--smart-insight-hard-sidebar-offset)) - 32px)) !important;
+    max-height: calc(100dvh - 28px) !important;
+    margin-inline: auto !important;
+    transform: none !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__header {
+    min-height: auto !important;
+    padding: 14px 18px 12px !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__body {
+    padding: 14px 18px !important;
+    max-height: calc(100dvh - 150px) !important;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+  .smart-insight-modal-v185--generic-root {
+    --smart-insight-hard-sidebar-offset: 336px;
+    padding-inline: 10px !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+    width: min(820px, calc(100vw - 356px)) !important;
+    max-width: min(820px, calc(100vw - 356px)) !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v186__hero-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v186__content-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .smart-insight-modal-v185--generic-root {
+    right: 0 !important;
+    left: 0 !important;
+    padding: 10px !important;
+  }
+
+  .smart-insight-modal-v185--generic-root .smart-insight-modal-v185__surface {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+}

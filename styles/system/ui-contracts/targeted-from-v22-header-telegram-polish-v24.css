@@ -1,0 +1,183 @@
+/* Targeted polish from uploaded v22 baseline: settings toggle + Telegram control cards. */
+.settings-view-toggle-control[data-settings-view-toggle="true"] .app-toggle-switch,
+[data-ui-settings-shell] .app-toggle-switch.unstyled {
+  min-height: 0 !important;
+  height: auto !important;
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+.settings-view-toggle-control[data-settings-view-toggle="true"] .app-toggle-switch::before,
+.settings-view-toggle-control[data-settings-view-toggle="true"] .app-toggle-switch::after,
+[data-ui-settings-shell] .app-toggle-switch.unstyled::before,
+[data-ui-settings-shell] .app-toggle-switch.unstyled::after {
+  content: none !important;
+  display: none !important;
+}
+.settings-view-toggle-control[data-settings-view-toggle="true"] .app-toggle-switch__track {
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+}
+
+/* Telegram control cards: top-right icon, top-left status, title below icon, description below title. */
+#telegram-settings-form .telegram-control-merged-card__inner {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  padding: 16px !important;
+  text-align: right !important;
+}
+#telegram-settings-form .telegram-control-merged-card__head {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 12px !important;
+  direction: rtl !important;
+}
+#telegram-settings-form .telegram-control-merged-card__icon {
+  order: 0 !important;
+  margin: 0 !important;
+  flex: 0 0 auto !important;
+}
+#telegram-settings-form .telegram-control-merged-card__status {
+  order: 1 !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: 0 !important;
+  max-width: calc(100% - 58px) !important;
+  flex: 0 1 auto !important;
+  white-space: normal !important;
+  text-align: center !important;
+}
+#telegram-settings-form .telegram-control-merged-card__body {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  text-align: right !important;
+  gap: 5px !important;
+}
+#telegram-settings-form .telegram-control-merged-card__title,
+#telegram-settings-form .telegram-control-merged-card__hint,
+#telegram-settings-form .telegram-control-merged-card__value,
+#telegram-settings-form .telegram-control-merged-card__value-text {
+  text-align: right !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+#telegram-settings-form .telegram-control-merged-card__title {
+  margin-top: 0 !important;
+  padding: 0 !important;
+  line-height: 1.75 !important;
+}
+#telegram-settings-form .telegram-control-merged-card__hint {
+  margin-top: 0 !important;
+  line-height: 1.85 !important;
+}
+#telegram-settings-form .telegram-control-merged-card__value {
+  margin-top: 8px !important;
+}
+@media (max-width: 640px) {
+  #telegram-settings-form .telegram-control-merged-card__inner {
+    padding: 14px !important;
+  }
+  #telegram-settings-form .telegram-control-merged-card__status {
+    max-width: calc(100% - 52px) !important;
+  }
+}
+
+
+/* v25: normalize executive Telegram status cards shown above the control center. */
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card {
+  position: relative !important;
+  display: flex !important;
+  min-height: 112px !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding: 16px !important;
+  text-align: right !important;
+  overflow: hidden !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head {
+  display: flex !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  flex: 0 0 auto !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  padding-top: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0 !important;
+  text-align: right !important;
+  direction: rtl !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head > span {
+  align-self: flex-start !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head > div {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 0 !important;
+  text-align: right !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head strong,
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head small {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: right !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head strong {
+  margin-top: 0 !important;
+  line-height: 1.75 !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card .telegram-card-head small {
+  margin-top: 2px !important;
+  line-height: 1.8 !important;
+}
+#telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card > .telegram-state {
+  position: absolute !important;
+  top: 16px !important;
+  left: 16px !important;
+  right: auto !important;
+  max-width: calc(100% - 82px) !important;
+  white-space: normal !important;
+  text-align: center !important;
+  z-index: 2 !important;
+}
+@media (max-width: 640px) {
+  #telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card {
+    min-height: 108px !important;
+    padding: 14px !important;
+  }
+  #telegram-settings-form .telegram-executive-grid .telegram-executive-card.ops-status-card > .telegram-state {
+    top: 14px !important;
+    left: 14px !important;
+    max-width: calc(100% - 76px) !important;
+  }
+}

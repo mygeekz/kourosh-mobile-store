@@ -1,0 +1,14 @@
+import fs from "node:fs";
+const fail=[];const pass=(ok,msg)=>{if(ok)console.log(`[v156-audit] PASS: ${msg}`);else fail.push(msg);};
+const startup=fs.readFileSync("cloud/relay-server/index.mjs","utf8");const schema=fs.readFileSync("cloud/control-plane/cloudControlSchema.mjs","utf8");const cli=fs.readFileSync("cloud/control-plane/cli.mjs","utf8");const api=fs.readFileSync("cloud/control-plane/controlPlaneApi.mjs","utf8");const readiness=fs.readFileSync("cloud/runtime/cloudReadiness.mjs","utf8");const lifecycle=fs.readFileSync("cloud/operations/cloudControlLifecycle.mjs","utf8");
+pass(/immutable=1/.test(schema)&&/CONTROL_DB_WAL_ACTIVE_READONLY_INSPECTION_BLOCKED/.test(schema),"Audit inspector remains immutable and refuses active WAL recovery");
+pass(/openOperationalCloudControlDatabase/.test(startup)&&!/inspectCloudControlDatabase/.test(startup),"Startup uses operational DB recovery path rather than immutable audit inspection");
+pass(/assertCloudMutationRuntimeSupported/.test(startup),"Relay startup uses the same canonical mutation runtime guard as operator mutations");
+pass(startup.indexOf("acquireCloudRuntimeLock(config.runtimeDataDir)")<startup.indexOf("const opened=openOperationalCloudControlDatabase"),"Startup lock is acquired before operational SQLite open/recovery");
+pass(!/migrateCloudControlSchema|initializeCloudControlSchema/.test(startup),"Startup contains no schema initialization or migration");
+const guardedCommands=["init","migrate","backup","restore","create-enrollment","create-recovery","revoke","reassign-host"];
+pass(/assertCloudMutationRuntimeSupported/.test(cli)&&/mutatingCommands/.test(cli)&&guardedCommands.every(name=>cli.includes(`"${name}"`)),"All mutating CLI commands share the canonical runtime guard");
+pass(/assertCloudMutationRuntimeSupported/.test(api),"Public Control Plane mutations are guarded by the same runtime policy");
+pass(!/assertCloudMutationRuntimeSupported/.test(readiness),"Read-only readiness diagnostics are not blocked by the mutation guard");
+pass(/initializeCloudControlSchema/.test(lifecycle)&&/migrateCloudControlSchema/.test(lifecycle),"Schema mutation remains explicit lifecycle-only behavior");
+if(fail.length){for(const f of fail)console.error(`[v156-audit] FAIL: ${f}`);process.exit(1);}console.log("[v156-audit] Pilot hardening source audit completed successfully.");

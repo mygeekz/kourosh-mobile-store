@@ -1,0 +1,106 @@
+
+/* v46 — based on v45.
+   Inner padding polish for objects inside each box in Telegram "قوانین ارسال".
+   Fixes labels/inputs/icons/helper rows sticking to their own card borders. */
+
+/* Give every form card in the send-rules area a real internal safe zone. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+  padding: 1rem 1.05rem 1.05rem !important;
+  overflow: visible !important;
+}
+
+/* Label row should not touch the top/right edge. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field-label,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section label.modal-field-label {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  min-height: 1.75rem !important;
+  margin: 0 0 0.7rem !important;
+  padding-inline: 0.15rem 0.1rem !important;
+}
+
+/* Control wrapper needs breathing room around icon + input capsule. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field__control-wrap,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-wrap {
+  position: relative !important;
+  margin-top: 0.18rem !important;
+  padding: 0.14rem !important;
+  border-radius: 18px !important;
+}
+
+/* Inputs/selects inside cards should not visually stick to their wrapper. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section textarea {
+  min-height: 2.9rem !important;
+  padding-block: 0.72rem !important;
+}
+
+/* Leading icon chip should sit inside the safe zone, not on the card edge. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field__leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-input-leading-chip {
+  inset-inline-start: 0.62rem !important;
+}
+
+/* Because the icon moved inward, protect text from overlapping it. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .premium-has-leading-icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon input,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon select,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-form-field--with-leading-icon textarea {
+  padding-inline-start: 3rem !important;
+}
+
+/* Helper/error row should read as part of the field, not touch the border. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field__feedback,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field-feedback {
+  margin-top: 0.62rem !important;
+  padding-inline: 0.18rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-help,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-error {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.35rem !important;
+  line-height: 1.9 !important;
+  margin: 0 !important;
+}
+
+/* Nested note/info cards inside قوانین ارسال also need inner breathing room. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border {
+  padding: 1rem 1.05rem !important;
+}
+
+/* If a rounded note contains text and icon, keep them away from edges. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border > *,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border > * {
+  min-width: 0 !important;
+}
+
+/* Grid cards in the Quiet Hours row should keep consistent internal rhythm. */
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .modal-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > .app-field,
+#telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .grid > [data-ui-field="true"] {
+  min-height: 7.2rem !important;
+}
+
+/* Mobile: keep padding useful but not oversized. */
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .modal-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .app-field,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section [data-ui-field="true"] {
+    padding: 0.88rem 0.88rem 0.95rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-2xl.border,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-detail-mode .premium-form-section .rounded-3xl.border {
+    padding: 0.9rem !important;
+  }
+}

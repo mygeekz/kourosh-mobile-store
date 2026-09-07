@@ -1,0 +1,245 @@
+
+/* v62 — Direct, verified target for "مرکز مدیریت/فرمان قالب‌های تلگرام".
+   This does not rely on guessed generic selectors. It targets:
+   .telegram-template-apple-v62 / [data-telegram-template-center="apple-v62"]
+   added directly to SettingsTelegramPanel.tsx. */
+
+/* Main shell */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62,
+#telegram-settings-form.telegram-redesign-v1 [data-telegram-template-center="apple-v62"] {
+  overflow: hidden !important;
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  border-radius: 28px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 18px 46px -34px rgba(15, 23, 42, 0.20) !important;
+}
+
+/* Header/hero: remove old blue wash and gradient strip */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero {
+  position: relative !important;
+  padding: 1.05rem 1.15rem !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: rgba(248, 250, 252, 0.72) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero > .absolute {
+  display: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero__icon {
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: rgb(71, 85, 105) !important;
+  box-shadow: none !important;
+}
+
+/* Chips: neutral Apple pills; no colorful fills */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-chips > span {
+  border-color: rgba(203, 213, 225, 0.92) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: rgb(71, 85, 105) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-chips i {
+  color: rgb(100, 116, 139) !important;
+}
+
+/* Header statistic boxes */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats > div {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: none !important;
+}
+
+/* Body */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-body {
+  padding: 1.05rem !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+}
+
+/* Command cards: fully neutralize active gradient classes */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-strip {
+  gap: 0.95rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card {
+  padding: 1rem !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 24px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: rgb(15, 23, 42) !important;
+  box-shadow: 0 12px 28px -26px rgba(15, 23, 42, 0.16) !important;
+  transform: none !important;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease !important;
+  --tw-ring-color: transparent !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-shadow: 0 0 #0000 !important;
+}
+
+/* Kill gradient backgrounds from Tailwind active strings */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="bg-gradient"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="from-"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="to-"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="via-"] {
+  background-image: none !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card:hover {
+  background: rgba(248, 250, 252, 0.88) !important;
+  border-color: rgba(203, 213, 225, 0.98) !important;
+  box-shadow: 0 16px 34px -28px rgba(15, 23, 42, 0.22) !important;
+}
+
+/* Active state: blue border/left accent only, no colored fill */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="ring-2"],
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(96, 165, 250, 0.72) !important;
+  box-shadow: inset 3px 0 0 rgba(59, 130, 246, 0.42), 0 14px 32px -28px rgba(15, 23, 42, 0.18) !important;
+}
+
+/* Command icons/badges: neutral base, subtle icon accent via border only */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__icon,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__icon {
+  border: 1px solid rgba(203, 213, 225, 0.92) !important;
+  background: rgba(248, 250, 252, 0.92) !important;
+  color: rgb(71, 85, 105) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__badge,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__badge {
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  background: rgba(255, 255, 255, 0.86) !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__title,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__title {
+  color: rgb(15, 23, 42) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__desc,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__desc {
+  color: rgb(71, 85, 105) !important;
+}
+
+/* Progress bar should be a subtle system accent, not a strong gradient */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__progress {
+  background: rgba(226, 232, 240, 0.95) !important;
+  border-radius: 999px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__progress > span {
+  background: rgba(59, 130, 246, 0.70) !important;
+  border-radius: inherit !important;
+}
+
+/* Mission/progress panel */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel {
+  padding: 1rem !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 24px !important;
+  background: rgba(248, 250, 252, 0.72) !important;
+  box-shadow: none !important;
+}
+
+/* Progress tone badge: neutralize helper dynamic badge colors */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel .inline-flex[class*="border"] {
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: rgb(71, 85, 105) !important;
+}
+
+/* Summary cards: neutralize success/warning/danger card surfaces */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card {
+  padding: 1rem !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 22px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: rgb(15, 23, 42) !important;
+  box-shadow: none !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--success,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--warning,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--danger {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+}
+
+/* Keep semantic state as tiny icon color only */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--success .telegram-template-summary-card__icon i {
+  color: rgb(22, 163, 74) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--warning .telegram-template-summary-card__icon i {
+  color: rgb(217, 119, 6) !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card--danger .telegram-template-summary-card__icon i {
+  color: rgb(220, 38, 38) !important;
+}
+
+/* Any old color utility directly inside the v62 center should not paint large surfaces */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-sky-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-cyan-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-amber-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-orange-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-violet-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-fuchsia-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-emerald-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-rose-50,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .bg-red-50 {
+  background-color: rgba(248, 250, 252, 0.88) !important;
+}
+
+/* Dark mode */
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 {
+  background: rgba(15, 23, 42, 0.82) !important;
+  border-color: rgba(51, 65, 85, 0.92) !important;
+  box-shadow: 0 18px 46px -32px rgba(2, 6, 23, 0.62) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel {
+  background: rgba(2, 6, 23, 0.26) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-body,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats > div {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-color: rgba(51, 65, 85, 0.86) !important;
+  color: rgb(248, 250, 252) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__title,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__title {
+  color: rgb(248, 250, 252) !important;
+}
+
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__desc,
+html.dark #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__desc {
+  color: rgb(148, 163, 184) !important;
+}
+
+@media (max-width: 760px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-body {
+    padding: 0.9rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel {
+    padding: 0.85rem !important;
+    border-radius: 20px !important;
+  }
+}

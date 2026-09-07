@@ -1,0 +1,40 @@
+{
+  "status": "PHASE2_PASS_BUILD_NOT_VERIFIED",
+  "workstream": "UI Foundation Hardening",
+  "phase": "Phase 2 / v270 Overlay + Portal Foundation",
+  "sourceRelease": "v267",
+  "workstreamVersion": "v270",
+  "verifiedOn": "2026-08-30",
+  "checks": {
+    "prepareProductionStyles": "PASS",
+    "phase2Audit": "PASS",
+    "floatingOverlayPositionCases": "5/5 PASS",
+    "uiSystemAudit": "PASS",
+    "phase1RegressionAudit": "PASS",
+    "phase0RegressionAudit": "PASS",
+    "tooltipContractAudit": "PASS",
+    "selectFoundationAudit": "PASS",
+    "dialogFoundationAudit": "PASS",
+    "headerQuickActionsAudit": "PASS",
+    "headerContractAudit": "PASS",
+    "miniappSourceGate": "65/65 PASS",
+    "typescriptSyntaxParser": "656 files / 0 parse errors",
+    "viteProductionBuild": "NOT VERIFIED: vite executable unavailable because node_modules is absent"
+  },
+  "overlayMetrics": {
+    "scannedRuntimeTsFiles": 595,
+    "directCreatePortalOutsideApprovedOwners": 0,
+    "directDocumentBodyMenuPortalTargets": 0,
+    "approvedDirectCreatePortalOwners": [
+      "components/ui/PortalLayer.tsx",
+      "components/ui/DialogShell.tsx"
+    ],
+    "anchoredOverlayConsumers": 5,
+    "phase2PortalLayerConsumers": 7
+  },
+  "notes": [
+    "An older v231 audit was not used as release evidence because it hard-codes KOUROSH_SOURCE_VERSION=v231 and is stale for the v267 source release.",
+    "The v263 form-control audit was updated only to replace its obsolete document.body portal assertion with the semantic popover-host contract introduced by Phase 2.",
+    "Business logic, API contracts, DB contracts, and MiniApp release identity were not changed."
+  ]
+}

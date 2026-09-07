@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const read=(f)=>fs.readFileSync(f,'utf8');
+const version=read('KOUROSH_SOURCE_VERSION').trim();
+assert.ok(Number(version.replace(/^v/,''))>=324, `expected v324+, found ${version}`);
+const products=read('pages/Products.tsx');
+assert.ok(products.includes('data-ui-product-action-edge-fix="v324"'), 'product table must expose v324 edge contract');
+const actionStart=products.indexOf('ariaLabel={`عملیات کالای ${row.original.name}`}');
+assert.ok(actionStart>=0, 'product action group not found');
+const actionWindow=products.slice(actionStart, actionStart+650);
+assert.ok(actionWindow.includes('density="compact"'), 'product actions must use installment-style compact density');
+const css=read('styles/system/products-services-repairs/products-ui-foundation.css');
+assert.ok(css.includes('v324 — product inventory action-cell edge guard.'), 'v324 CSS guard missing');
+assert.ok(css.includes('inline-size: 9rem !important;'), 'action column safety width missing');
+assert.ok(css.includes('padding-inline: .25rem !important;'), 'action column compact padding missing');
+assert.ok(css.includes('overflow: visible !important;'), 'action edge must not clip controls');
+console.log('v324 product inventory action icon edge audit passed.');

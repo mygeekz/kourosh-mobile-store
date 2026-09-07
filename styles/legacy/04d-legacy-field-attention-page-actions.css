@@ -1,0 +1,77 @@
+
+@layer components {
+  .ux-field-attention {
+    animation: uxFieldAttention 1.2s ease;
+  }
+
+  [data-ergonomic-form='true'] :where(input, select, textarea):focus-visible,
+  [data-ergonomic-form='true'] :where(button, [tabindex]):focus-visible {
+    scroll-margin-block: 8rem;
+  }
+}
+
+@keyframes uxFieldAttention {
+  0% { transform: translateY(0); box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+  18% { transform: translateY(-1px); box-shadow: 0 0 0 0.32rem rgba(59,130,246,0.18); }
+  100% { transform: translateY(0); box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+}
+
+@media (min-width: 1280px) {
+  .page-shell-actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .page-shell-actions .ux-toolbar-search,
+  .page-shell-actions .ux-toolbar-surface,
+  .page-shell-actions .ux-report-tools,
+  .page-shell-actions .ux-reports-categories {
+    width: auto;
+  }
+}
+
+@media (max-width: 1279px) {
+  .page-shell-modern {
+    overflow: hidden;
+  }
+
+  .page-shell-actions > * {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .page-shell-kicker {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .page-shell-status-chip {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-shell-actions {
+    gap: 0.75rem;
+  }
+
+  .page-shell-actions .w-52,
+  .page-shell-actions .w-56,
+  .page-shell-actions .w-60,
+  .page-shell-actions .min-w-\[176px\],
+  .page-shell-actions .min-w-\[180px\],
+  .page-shell-actions .min-w-\[220px\],
+  .page-shell-actions .min-w-\[260px\],
+  .page-shell-actions .sm\:w-\[320px\] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .page-shell-actions .flex.items-center.gap-2,
+  .page-shell-actions .flex.items-center.gap-3 {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
+

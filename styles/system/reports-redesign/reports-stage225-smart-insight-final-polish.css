@@ -1,0 +1,270 @@
+/* Stage 225 — targeted final polish from screenshot review.
+   Scope only: Smart Insights side KPI modal, smart readiness summary and KPI reference cards. */
+
+/* Sales performance KPI: make confidence icon visible even if older icon class missed. */
+.sale202-kpi .sale202-tone-orange {
+  background: rgba(255, 247, 237, 0.96) !important;
+  border-color: rgba(251, 146, 60, 0.34) !important;
+  color: #ea580c !important;
+}
+
+.sale202-kpi .sale202-tone-orange i::before {
+  color: currentColor !important;
+}
+
+/* Side KPI modal: remove the tall bordered empty area under alert rows. */
+.side-kpi-modal-v217 .side-kpi-modal-v217__content {
+  align-items: start !important;
+  grid-auto-rows: auto !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__panel--alerts {
+  align-self: start !important;
+  min-height: 0 !important;
+  height: auto !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__panel--alerts .side-kpi-modal-v217__panel-head {
+  margin-bottom: 8px !important;
+  border: 1px solid rgba(226, 232, 240, 0.92) !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,0.88) !important;
+  padding: 9px 12px !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__alert-list {
+  padding: 0 !important;
+  gap: 8px !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__panel--trend {
+  align-self: start !important;
+  height: auto !important;
+}
+
+.side-kpi-modal-v217 .side-kpi-modal-v217__trend-grid {
+  align-items: start !important;
+}
+
+/* Manager readiness summary: compact colored cards instead of oversized horizontal rows. */
+.smart-readiness-v214 {
+  padding: 12px !important;
+  border-radius: 22px !important;
+}
+
+.smart-readiness-v214__header {
+  grid-template-columns: minmax(0, 1fr) 92px !important;
+  gap: 12px !important;
+}
+
+.smart-readiness-v214__header h3 {
+  margin-top: 3px !important;
+  font-size: clamp(0.98rem, 1.25vw, 1.18rem) !important;
+  line-height: 1.55 !important;
+}
+
+.smart-readiness-v214__header p {
+  margin-top: 3px !important;
+  font-size: 0.74rem !important;
+  line-height: 1.7 !important;
+}
+
+.smart-readiness-v214__score {
+  min-height: 78px !important;
+  border-radius: 18px !important;
+}
+
+.smart-readiness-v214__score strong {
+  font-size: 1.42rem !important;
+}
+
+.smart-readiness-v214__score span {
+  margin-top: 5px !important;
+  font-size: 0.68rem !important;
+}
+
+.smart-readiness-v214__summary {
+  margin-top: 10px !important;
+  padding-top: 10px !important;
+  gap: 6px !important;
+}
+
+.smart-readiness-v214__summary span {
+  min-height: 26px !important;
+  padding: 0 10px !important;
+  font-size: 0.66rem !important;
+}
+
+.smart-readiness-v214__list {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 12px !important;
+}
+
+.smart-readiness-v214__row {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) !important;
+  grid-template-rows: auto auto !important;
+  min-height: 118px !important;
+  gap: 8px 9px !important;
+  padding: 12px !important;
+  border-radius: 18px !important;
+  background: rgba(255,255,255,0.92) !important;
+}
+
+.smart-readiness-v214__row-icon {
+  width: 34px;
+  height: 34px;
+  grid-row: 1 / span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(203,213,225,0.74);
+  font-size: 0.88rem;
+}
+
+.smart-readiness-v214__row--blue .smart-readiness-v214__row-icon { background: rgba(239,246,255,0.95); color: #2563eb; border-color: rgba(147,197,253,0.55); }
+.smart-readiness-v214__row--violet .smart-readiness-v214__row-icon { background: rgba(245,243,255,0.95); color: #7c3aed; border-color: rgba(196,181,253,0.55); }
+.smart-readiness-v214__row--emerald .smart-readiness-v214__row-icon { background: rgba(236,253,245,0.95); color: #059669; border-color: rgba(110,231,183,0.55); }
+.smart-readiness-v214__row--amber .smart-readiness-v214__row-icon { background: rgba(255,251,235,0.95); color: #d97706; border-color: rgba(252,211,77,0.55); }
+.smart-readiness-v214__row--slate .smart-readiness-v214__row-icon { background: rgba(248,250,252,0.95); color: #475569; border-color: rgba(203,213,225,0.75); }
+
+.smart-readiness-v214__row-main {
+  min-width: 0 !important;
+}
+
+.smart-readiness-v214__row-title {
+  display: block !important;
+}
+
+.smart-readiness-v214__row-title strong {
+  display: block !important;
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+
+.smart-readiness-v214__row-title span {
+  display: inline-flex !important;
+  margin-top: 5px !important;
+  min-height: 22px !important;
+  align-items: center !important;
+  border-radius: 999px !important;
+  background: rgba(248,250,252,0.9) !important;
+  padding: 0 8px !important;
+  font-size: 0.62rem !important;
+}
+
+.smart-readiness-v214__row-main p {
+  margin-top: 6px !important;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+  overflow: hidden !important;
+  font-size: 0.68rem !important;
+  line-height: 1.65 !important;
+}
+
+.smart-readiness-v214__row-score {
+  grid-column: 2 !important;
+  align-self: end !important;
+}
+
+.smart-readiness-v214__row-score b {
+  display: block !important;
+  margin-bottom: 6px !important;
+  color: #0f172a !important;
+  font-size: 0.88rem !important;
+  font-weight: 950 !important;
+  text-align: right !important;
+}
+
+.smart-readiness-v214__row > b {
+  display: none !important;
+}
+
+.smart-readiness-v214__meter {
+  height: 7px !important;
+}
+
+.smart-readiness-v214__row--blue .smart-readiness-v214__meter span { background: #2563eb !important; }
+.smart-readiness-v214__row--violet .smart-readiness-v214__meter span { background: #7c3aed !important; }
+.smart-readiness-v214__row--emerald .smart-readiness-v214__meter span { background: #059669 !important; }
+.smart-readiness-v214__row--amber .smart-readiness-v214__meter span { background: #d97706 !important; }
+.smart-readiness-v214__row--slate .smart-readiness-v214__meter span { background: #475569 !important; }
+
+/* Main page KPI reference cards: reduce oversized chart boxes. */
+.smart-kpi-reference-grid-v166 {
+  gap: 12px !important;
+  align-items: stretch !important;
+}
+
+.smart-kpi-reference-card-v166 {
+  min-height: 172px !important;
+  padding: 14px 16px !important;
+  border-radius: 22px !important;
+}
+
+.smart-kpi-reference-card-v166__icon {
+  width: 46px !important;
+  height: 46px !important;
+  border-radius: 16px !important;
+  font-size: 1rem !important;
+}
+
+.smart-kpi-reference-card-v166__content h3 {
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+
+.smart-kpi-reference-card-v166__content strong {
+  margin-top: 4px !important;
+  font-size: 1.5rem !important;
+  line-height: 1.05 !important;
+}
+
+.smart-kpi-reference-card-v166__delta {
+  margin-top: 8px !important;
+  font-size: 0.72rem !important;
+}
+
+.smart-kpi-reference-card-v166__sparkline {
+  height: 44px !important;
+  bottom: 13px !important;
+  left: 16px !important;
+  right: 16px !important;
+}
+
+@media (max-width: 1380px) {
+  .smart-readiness-v214__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .smart-kpi-reference-card-v166 {
+    min-height: 154px !important;
+  }
+}
+
+@media (max-width: 980px) {
+  .smart-readiness-v214__header,
+  .smart-readiness-v214__list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-readiness-v214__row {
+    min-height: 104px !important;
+  }
+}
+
+.dark .side-kpi-modal-v217 .side-kpi-modal-v217__panel--alerts .side-kpi-modal-v217__panel-head,
+.dark .smart-readiness-v214__row-title span {
+  border-color: rgba(51,65,85,0.9) !important;
+  background: rgba(15,23,42,0.88) !important;
+}

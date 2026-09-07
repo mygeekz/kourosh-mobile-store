@@ -1,0 +1,417 @@
+
+/* Stage 190 — Rebuild Smart Insight modal into a clean horizontal executive layout
+   Fixes stage189 issues:
+   - no overlap between decision memory and suggested actions
+   - KPI rail fixed on the right side
+   - analysis content uses horizontal two-column board
+   - action section becomes a stable bottom row inside content board
+*/
+
+:root {
+  --smart-insight-sidebar-offset: 292px;
+  --smart-insight-modal-shift: -122px;
+}
+
+/* Overlay */
+.smart-insight-modal-v185 {
+  z-index: 1800 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-block: 18px !important;
+  padding-left: 22px !important;
+  padding-right: calc(var(--smart-insight-sidebar-offset) + 22px) !important;
+}
+
+/* Wider but controlled horizontal sheet */
+.smart-insight-modal-v185__surface {
+  width: min(1120px, calc(100vw - var(--smart-insight-sidebar-offset) - 64px)) !important;
+  height: min(82vh, 700px) !important;
+  max-height: min(82vh, 700px) !important;
+  transform: translateX(var(--smart-insight-modal-shift)) !important;
+  display: grid !important;
+  grid-template-rows: auto minmax(0, 1fr) !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+
+/* Compact header */
+.smart-insight-modal-v185__header {
+  position: relative !important;
+  display: block !important;
+  min-height: 116px !important;
+  padding: 20px 82px 16px 24px !important;
+  direction: rtl !important;
+  background:
+    radial-gradient(circle at 96% 8%, rgba(59,130,246,.08), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.96)) !important;
+}
+
+.smart-insight-modal-v186__title {
+  width: 100% !important;
+  text-align: right !important;
+}
+
+.smart-insight-modal-v186__title h2 {
+  margin-top: 9px !important;
+  font-size: clamp(1.35rem, 1.7vw, 1.82rem) !important;
+  line-height: 1.34 !important;
+}
+
+.smart-insight-modal-v186__title p {
+  margin-top: 6px !important;
+  max-width: 92% !important;
+  font-size: .82rem !important;
+  line-height: 1.85 !important;
+}
+
+.smart-insight-modal-v185__close {
+  position: absolute !important;
+  left: 18px !important;
+  top: 18px !important;
+  width: 40px !important;
+  height: 40px !important;
+  border: 1px solid rgba(203,213,225,.92) !important;
+  border-radius: 15px !important;
+}
+
+/* True horizontal body: content left, KPI rail right */
+.smart-insight-modal-v185__body {
+  direction: ltr !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 218px !important;
+  grid-template-areas: "content kpis" !important;
+  gap: 14px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 16px 20px 20px !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.95)) !important;
+}
+
+/* KPI rail fixed on right */
+.smart-insight-modal-v186__hero-grid {
+  direction: rtl !important;
+  grid-area: kpis !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.smart-insight-modal-v186__hero-grid > div {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 14px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(203,213,225,.86) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.90)) !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.04) !important;
+}
+
+/* Main board */
+.smart-insight-modal-v186__content-grid {
+  direction: rtl !important;
+  grid-area: content !important;
+  margin-top: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr) !important;
+  grid-template-rows: minmax(220px, 1fr) auto auto !important;
+  grid-template-areas:
+    "metrics reasons"
+    "memory memory"
+    "actions actions" !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+.smart-insight-modal-v186__panel {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 16px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(203,213,225,.86) !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.88)) !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.038) !important;
+}
+
+.smart-insight-modal-v186__panel h3 {
+  margin: 0 !important;
+  font-size: .88rem !important;
+  font-weight: 950 !important;
+}
+
+/* Top horizontal panels */
+.smart-insight-modal-v186__panel--reasons {
+  grid-area: reasons !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+}
+
+.smart-insight-modal-v186__panel--metrics {
+  grid-area: metrics !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+}
+
+.smart-insight-modal-v186__panel--reasons ul {
+  margin-top: 10px !important;
+  display: grid !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--reasons li {
+  padding: 9px 10px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  background: rgba(255,255,255,.72) !important;
+  line-height: 1.75 !important;
+}
+
+.smart-insight-modal-v186__panel--metrics .mt-3.grid {
+  margin-top: 10px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.smart-insight-modal-v186__panel--metrics .rounded-2xl {
+  min-height: 68px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* Decision memory is a stable horizontal band */
+.smart-insight-modal-v186__panel--memory {
+  grid-area: memory !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr) !important;
+  grid-template-areas:
+    "head stats"
+    "decisions stats" !important;
+  gap: 10px !important;
+  min-height: 136px !important;
+  max-height: 168px !important;
+  overflow: hidden !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .flex:first-child {
+  grid-area: head !important;
+  margin: 0 !important;
+  align-items: flex-start !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .flex:first-child p {
+  max-width: 620px !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.flex {
+  grid-area: decisions !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 7px !important;
+  align-self: end !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.flex button {
+  min-height: 34px !important;
+  padding-inline: 8px !important;
+  border-radius: 12px !important;
+  font-size: .66rem !important;
+  white-space: nowrap !important;
+  justify-content: center !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.grid {
+  grid-area: stats !important;
+  margin: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 7px !important;
+}
+
+.smart-insight-modal-v186__panel--memory > .mt-4.grid > div {
+  min-height: 40px !important;
+  padding: 8px 10px !important;
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 13px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+/* Suggested action is a separate, non-overlapping footer row */
+.smart-insight-modal-v186__panel--actions {
+  grid-area: actions !important;
+  min-height: 76px !important;
+  max-height: 92px !important;
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+}
+
+.smart-insight-modal-v186__panel--actions h3 {
+  white-space: nowrap !important;
+}
+
+.smart-insight-modal-v186__panel--actions .mt-3.flex {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  padding-bottom: 2px !important;
+}
+
+.smart-insight-modal-v186__panel--actions a,
+.smart-insight-modal-v186__panel--actions span {
+  min-height: 36px !important;
+  padding-inline: 12px !important;
+  border-radius: 12px !important;
+  font-size: .76rem !important;
+  flex: 0 0 auto !important;
+}
+
+/* Dark mode */
+.dark .smart-insight-modal-v185__surface,
+.dark .smart-insight-modal-v185__header,
+.dark .smart-insight-modal-v185__body {
+  background: linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.92)) !important;
+}
+
+.dark .smart-insight-modal-v186__hero-grid > div,
+.dark .smart-insight-modal-v186__panel,
+.dark .smart-insight-modal-v186__panel--metrics .rounded-2xl,
+.dark .smart-insight-modal-v186__panel--memory > .mt-4.grid > div,
+.dark .smart-insight-modal-v186__panel--reasons li {
+  border-color: rgba(51,65,85,.88) !important;
+  background: rgba(15,23,42,.70) !important;
+  box-shadow: none !important;
+}
+
+/* Responsive */
+@media (max-width: 1500px) {
+  :root {
+    --smart-insight-sidebar-offset: 278px;
+    --smart-insight-modal-shift: -94px;
+  }
+
+  .smart-insight-modal-v185__surface {
+    width: min(1060px, calc(100vw - var(--smart-insight-sidebar-offset) - 54px)) !important;
+    height: min(82vh, 680px) !important;
+  }
+
+  .smart-insight-modal-v185__body {
+    grid-template-columns: minmax(0, 1fr) 200px !important;
+  }
+
+  .smart-insight-modal-v186__content-grid {
+    grid-template-rows: minmax(200px, 1fr) auto auto !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  :root {
+    --smart-insight-sidebar-offset: 0px;
+    --smart-insight-modal-shift: 0px;
+  }
+
+  .smart-insight-modal-v185 {
+    padding: 16px !important;
+  }
+
+  .smart-insight-modal-v185__surface {
+    width: min(1040px, calc(100vw - 32px)) !important;
+    height: min(86vh, 760px) !important;
+    max-height: min(86vh, 760px) !important;
+    transform: none !important;
+  }
+
+  .smart-insight-modal-v185__body {
+    grid-template-columns: minmax(0, 1fr) 190px !important;
+  }
+
+  .smart-insight-modal-v186__content-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto auto !important;
+    grid-template-areas:
+      "reasons"
+      "metrics"
+      "memory"
+      "actions" !important;
+    overflow-y: auto !important;
+  }
+
+  .smart-insight-modal-v186__panel--memory {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "head"
+      "decisions"
+      "stats" !important;
+    max-height: none !important;
+  }
+
+  .smart-insight-modal-v186__panel--memory > .mt-4.grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 820px) {
+  .smart-insight-modal-v185 {
+    padding: 10px !important;
+  }
+
+  .smart-insight-modal-v185__surface {
+    width: calc(100vw - 20px) !important;
+    height: calc(100vh - 20px) !important;
+    max-height: calc(100vh - 20px) !important;
+    border-radius: 22px !important;
+  }
+
+  .smart-insight-modal-v185__header {
+    min-height: auto !important;
+    padding: 16px 68px 14px 16px !important;
+  }
+
+  .smart-insight-modal-v185__body {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "kpis"
+      "content" !important;
+    overflow-y: auto !important;
+    padding: 12px !important;
+  }
+
+  .smart-insight-modal-v186__hero-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto !important;
+  }
+
+  .smart-insight-modal-v186__content-grid {
+    overflow: visible !important;
+  }
+
+  .smart-insight-modal-v186__panel--memory > .mt-4.flex,
+  .smart-insight-modal-v186__panel--memory > .mt-4.grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-insight-modal-v186__panel--actions {
+    grid-template-columns: 1fr !important;
+  }
+}

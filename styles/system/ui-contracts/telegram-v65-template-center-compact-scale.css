@@ -1,0 +1,256 @@
+
+/* v65 — Compact scale for "مرکز مدیریت قالب‌های تلگرام".
+   Based on v64 and scoped to the direct v62 class:
+   .telegram-template-apple-v62
+   Goal: match the smaller Apple-base standard used across Telegram settings. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 {
+  border-radius: 24px !important;
+}
+
+/* Header / hero compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero {
+  padding: 0.82rem 0.95rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero__row {
+  gap: 0.75rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero__icon {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  border-radius: 14px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero__icon i {
+  font-size: 0.98rem !important;
+}
+
+/* Title and subtitle scale */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero .text-lg {
+  font-size: 0.94rem !important;
+  line-height: 1.65 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero .text-xs {
+  font-size: 0.68rem !important;
+  line-height: 1.7 !important;
+}
+
+/* Chips compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-chips {
+  margin-top: 0.55rem !important;
+  gap: 0.38rem !important;
+  font-size: 0.68rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-chips > span {
+  padding: 0.28rem 0.55rem !important;
+  gap: 0.35rem !important;
+  border-radius: 999px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-chips i {
+  font-size: 0.68rem !important;
+}
+
+/* Header stats compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats {
+  min-width: 170px !important;
+  gap: 0.45rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats > div {
+  padding: 0.55rem 0.68rem !important;
+  border-radius: 16px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats .text-xs {
+  font-size: 0.66rem !important;
+  line-height: 1.4 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats .text-2xl {
+  margin-top: 0.2rem !important;
+  font-size: 1.28rem !important;
+  line-height: 1.25 !important;
+}
+
+/* Body compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-body {
+  padding: 0.9rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-strip {
+  gap: 0.72rem !important;
+}
+
+/* Command cards compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card {
+  padding: 0.78rem !important;
+  border-radius: 20px !important;
+  min-height: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__top {
+  margin-bottom: 0.62rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 13px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__icon i {
+  font-size: 0.82rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__badge {
+  padding: 0.24rem 0.55rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.35 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__content {
+  gap: 0.2rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__title {
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__desc {
+  font-size: 0.68rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Metrics compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics {
+  margin-top: 0.7rem !important;
+  gap: 0.42rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics span {
+  min-height: 2.1rem !important;
+  padding: 0.4rem 0.48rem !important;
+  border-radius: 12px !important;
+  font-size: 0.62rem !important;
+  line-height: 1.35 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics b {
+  font-size: 0.82rem !important;
+}
+
+/* Progress line compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__progress {
+  height: 0.32rem !important;
+  margin-top: 0.72rem !important;
+}
+
+/* Progress panel compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel {
+  margin-top: 0.85rem !important;
+  padding: 0.82rem !important;
+  border-radius: 20px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel .text-sm {
+  font-size: 0.82rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel .text-xs,
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel .text-\[11px\] {
+  font-size: 0.66rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-actions {
+  margin-top: 0.72rem !important;
+  gap: 0.68rem !important;
+}
+
+/* Summary status cards compact */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card {
+  padding: 0.78rem !important;
+  border-radius: 18px !important;
+  min-height: 0 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  border-radius: 13px !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__icon i {
+  font-size: 0.78rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__badge {
+  padding: 0.22rem 0.5rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.35 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__title {
+  margin-top: 0.55rem !important;
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__desc {
+  margin-top: 0.22rem !important;
+  font-size: 0.68rem !important;
+  line-height: 1.65 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card__value {
+  margin-top: 0.48rem !important;
+  font-size: 1.55rem !important;
+  line-height: 1.15 !important;
+}
+
+/* Reduce accidental large gaps from utility classes inside this module */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.85rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .mt-4 {
+  margin-top: 0.85rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .mt-3 {
+  margin-top: 0.65rem !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-stats {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-strip,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-actions {
+    gap: 0.62rem !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-hero,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-compact-body {
+    padding: 0.75rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-summary-card,
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-progress-panel {
+    padding: 0.7rem !important;
+    border-radius: 18px !important;
+  }
+}

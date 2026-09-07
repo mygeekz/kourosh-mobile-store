@@ -1,0 +1,119 @@
+
+/* v67 — Compact only the 3 command cards inside "مرکز مدیریت قالب‌های تلگرام":
+   - مرکز فرمان قالب‌های تلگرام
+   - مهم‌ترین‌ها
+   - موارد ناقص
+   Scoped to .telegram-template-apple-v62 so it does not affect other Telegram boxes. */
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-strip {
+  gap: 0.6rem !important;
+}
+
+/* Main card shell */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card {
+  min-height: 0 !important;
+  padding: 0.62rem 0.66rem !important;
+  border-radius: 17px !important;
+  box-shadow: none !important;
+}
+
+/* Top row: icon + badge */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__top {
+  margin-bottom: 0.42rem !important;
+  min-height: 1.8rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__icon {
+  width: 1.72rem !important;
+  height: 1.72rem !important;
+  border-radius: 11px !important;
+  flex: 0 0 1.72rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__icon i {
+  font-size: 0.72rem !important;
+  line-height: 1 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__badge {
+  min-height: 1.45rem !important;
+  padding: 0.18rem 0.44rem !important;
+  border-radius: 999px !important;
+  font-size: 0.58rem !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+
+/* Content text */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__content {
+  gap: 0.12rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__title {
+  font-size: 0.74rem !important;
+  line-height: 1.45 !important;
+  font-weight: 900 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__desc {
+  margin-top: 0.08rem !important;
+  font-size: 0.62rem !important;
+  line-height: 1.5 !important;
+}
+
+/* Metrics inside command cards */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics {
+  margin-top: 0.48rem !important;
+  gap: 0.34rem !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics span {
+  min-height: 1.72rem !important;
+  padding: 0.28rem 0.38rem !important;
+  border-radius: 10px !important;
+  font-size: 0.56rem !important;
+  line-height: 1.25 !important;
+}
+
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics b {
+  font-size: 0.7rem !important;
+  line-height: 1.1 !important;
+}
+
+/* Progress line in "مهم‌ترین‌ها" card */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__progress {
+  height: 0.26rem !important;
+  margin-top: 0.5rem !important;
+}
+
+/* Prevent old hover animation from making cards feel oversized */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card:hover {
+  transform: none !important;
+}
+
+/* Keep the cards compact even with active ring classes */
+#telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card[class*="ring-2"] {
+  box-shadow: inset 2px 0 0 rgba(59, 130, 246, 0.38) !important;
+}
+
+/* Narrow screens */
+@media (max-width: 1024px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-strip {
+    gap: 0.55rem !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card {
+    padding: 0.58rem 0.62rem !important;
+  }
+}
+
+@media (max-width: 720px) {
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card {
+    padding: 0.55rem !important;
+    border-radius: 16px !important;
+  }
+
+  #telegram-settings-form.telegram-redesign-v1 .telegram-template-apple-v62 .telegram-template-command-card__metrics {
+    grid-template-columns: 1fr !important;
+  }
+}

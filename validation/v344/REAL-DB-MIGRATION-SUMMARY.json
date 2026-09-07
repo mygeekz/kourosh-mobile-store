@@ -1,0 +1,74 @@
+{
+  "behzadBalance": 284100000.0,
+  "profitSnapshots": 205,
+  "capitalAllocations": 440,
+  "legacyMissingReferences": {
+    "customer": 1,
+    "partner": 6
+  },
+  "migrations": [
+    {
+      "id": "2024-cart-sales.sql",
+      "sha256": "b559914d9ec062cedae217a2958f9a5d2774ceac6b182cb016669bf1a97902ec",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": null,
+      "backupSha256": null,
+      "appliedAt": "2026-05-03T04:01:22Z"
+    },
+    {
+      "id": "2026-02-09-backup-indexes.sql",
+      "sha256": "2521e969ff256b72eaff2dadaf447770bbfb610802340de2b3d1a4734cd898a2",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": null,
+      "backupSha256": null,
+      "appliedAt": "2026-05-03T04:01:22Z"
+    },
+    {
+      "id": "2026-06-12-customer-manager-notes.sql",
+      "sha256": "72282903ff7db516f26dbba04b0ae3d3fdf594327b9c10911004806cb53c6a13",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": null,
+      "backupSha256": null,
+      "appliedAt": "2026-06-21T03:48:47Z"
+    },
+    {
+      "id": "2026-09-04-sale-profit-historical-freeze.sql",
+      "sha256": "16d2bbbe861f26a80fc7900a488b2cfd7ef60fa9ad7643c847addd74d1da70f6",
+      "affectedRows": 780,
+      "result": "applied",
+      "backupFileName": "v344-pre-migration-safety.db",
+      "backupSha256": "4587c77fc5643819c1c08ffe3356032e20e4961b8369fcbced0ce0654ff25bbe",
+      "appliedAt": "2026-09-04T17:15:37Z"
+    },
+    {
+      "id": "2026-09-04-z-accounting-reference-invariants.sql",
+      "sha256": "71554cce96cdd4290b227d2a9771a221279d57c06c220404dae25dcdc256483b",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": "v344-pre-migration-safety.db",
+      "backupSha256": "4587c77fc5643819c1c08ffe3356032e20e4961b8369fcbced0ce0654ff25bbe",
+      "appliedAt": "2026-09-04T17:15:37Z"
+    },
+    {
+      "id": "2026-09-04-zz-accounting-sensitive-immutability.sql",
+      "sha256": "8db74fc6968b2eb0cea15c776dd7a524a3dc598c1b45572b99022721f9be426b",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": "v344-pre-migration-safety.db",
+      "backupSha256": "4587c77fc5643819c1c08ffe3356032e20e4961b8369fcbced0ce0654ff25bbe",
+      "appliedAt": "2026-09-04T17:15:37Z"
+    },
+    {
+      "id": "2026-09-04-zzz-accounting-period-state-events.sql",
+      "sha256": "8b99881799cb6ab3ea4ee6730bad03d32c0d76611acc7d31618af5f82e8e5180",
+      "affectedRows": 0,
+      "result": "applied",
+      "backupFileName": "v344-pre-migration-safety.db",
+      "backupSha256": "4587c77fc5643819c1c08ffe3356032e20e4961b8369fcbced0ce0654ff25bbe",
+      "appliedAt": "2026-09-04T17:15:37Z"
+    }
+  ]
+}

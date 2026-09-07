@@ -1,0 +1,316 @@
+/* Stage 154 — Smart Insights command center polish
+   Correct base: stage153.
+   Targets the visible section after the hero:
+   - large "اقدام بعدی پیشنهادی" command center
+   - small summary/stat cards below it
+   Fixes washed-out opacity, weak contrast, and simple card styling. */
+
+/* Large command center: make it a real premium management panel, not a faded block. */
+.smart-brain-page .smart-insights-command-center {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(340px, .78fr) !important;
+  gap: 16px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(203, 213, 225, .88) !important;
+  border-radius: 30px !important;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.99), rgba(248,250,252,.96)),
+    radial-gradient(circle at 10% 0%, rgba(79,70,229,.08), transparent 34%),
+    radial-gradient(circle at 100% 18%, rgba(20,184,166,.08), transparent 32%) !important;
+  box-shadow:
+    0 22px 58px -42px rgba(15, 23, 42, .34),
+    inset 0 1px 0 rgba(255,255,255,.86) !important;
+  color: #0f172a !important;
+  opacity: 1 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-insights-command-center::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 18px !important;
+  inset-inline-start: 0 !important;
+  width: 4px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(180deg, #4f46e5, #14b8a6) !important;
+}
+
+.smart-brain-page .smart-insights-command-center__main,
+.smart-brain-page .smart-insights-command-center__action {
+  border: 1px solid rgba(226,232,240,.86) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.82)) !important;
+  box-shadow: 0 14px 34px rgba(15,23,42,.045), inset 0 1px 0 rgba(255,255,255,.70) !important;
+  color: #0f172a !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__main {
+  padding: 20px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action {
+  padding: 18px !important;
+}
+
+/* Typography: remove the washed-out text feel. */
+.smart-brain-page .smart-insights-command-center__eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  height: 31px !important;
+  padding-inline: 11px !important;
+  border: 1px solid rgba(79,70,229,.18) !important;
+  border-radius: 999px !important;
+  background: rgba(238,242,255,.72) !important;
+  color: #4338ca !important;
+  font-size: .70rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-brain-page .smart-insights-command-center h2 {
+  margin-top: 14px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.18rem, 2.15vw, 1.82rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.7 !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-command-center p {
+  margin-top: 8px !important;
+  color: #475569 !important;
+  font-size: .82rem !important;
+  font-weight: 780 !important;
+  line-height: 2 !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  gap: 10px !important;
+  margin-top: 18px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics div {
+  min-height: 78px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(226,232,240,.82) !important;
+  border-radius: 18px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.78)) !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,.035) !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics span,
+.smart-brain-page .smart-insights-command-center__action-footer small {
+  color: #64748b !important;
+  font-size: .70rem !important;
+  font-weight: 900 !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__metrics strong {
+  display: block !important;
+  margin-top: 5px !important;
+  color: #0f172a !important;
+  font-size: 1.18rem !important;
+  font-weight: 950 !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-head {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 950 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-head span {
+  display: grid !important;
+  place-items: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 14px !important;
+  background: #fffbeb !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(245,158,11,.22) !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action h3 {
+  margin-top: 14px !important;
+  color: #0f172a !important;
+  font-size: 1.04rem !important;
+  font-weight: 950 !important;
+  line-height: 1.85 !important;
+}
+
+.smart-brain-page .smart-insights-command-center__action-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin-top: 16px !important;
+}
+
+.smart-brain-page .smart-insights-command-center__button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #111827 !important;
+  color: #fff !important;
+  font-size: .78rem !important;
+  font-weight: 950 !important;
+  box-shadow: 0 12px 26px rgba(15,23,42,.16) !important;
+  text-decoration: none !important;
+}
+
+/* Summary cards below command center */
+.smart-brain-page .smart-insights-signal-grid-v154 {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div {
+  position: relative !important;
+  min-height: 118px !important;
+  padding: 17px !important;
+  border: 1px solid rgba(203,213,225,.82) !important;
+  border-radius: 24px !important;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.90)) !important;
+  box-shadow:
+    0 16px 42px rgba(15,23,42,.055),
+    inset 0 1px 0 rgba(255,255,255,.72) !important;
+  opacity: 1 !important;
+  overflow: hidden !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div::before {
+  content: '' !important;
+  position: absolute !important;
+  inset-block: 17px !important;
+  inset-inline-start: 0 !important;
+  width: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(79,70,229,.55) !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div:nth-child(2)::before {
+  background: rgba(5,150,105,.58) !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div:nth-child(3)::before {
+  background: rgba(217,119,6,.58) !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 > div:nth-child(4)::before {
+  background: rgba(225,29,72,.48) !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 .text-\[11px\],
+.smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-[11px]"] {
+  color: #64748b !important;
+  font-size: .72rem !important;
+  font-weight: 900 !important;
+  opacity: 1 !important;
+}
+
+.smart-brain-page .smart-insights-signal-grid-v154 .text-xl,
+.smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-xl"] {
+  margin-top: 8px !important;
+  color: #0f172a !important;
+  font-size: clamp(1.28rem, 2vw, 1.72rem) !important;
+  font-weight: 950 !important;
+  line-height: 1.35 !important;
+  opacity: 1 !important;
+}
+
+/* Dark mode */
+.dark .smart-brain-page .smart-insights-command-center {
+  border-color: rgba(51,65,85,.78) !important;
+  background:
+    linear-gradient(145deg, rgba(15,23,42,.96), rgba(2,6,23,.94)),
+    radial-gradient(circle at 10% 0%, rgba(99,102,241,.16), transparent 34%),
+    radial-gradient(circle at 100% 18%, rgba(20,184,166,.12), transparent 32%) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-brain-page .smart-insights-command-center__main,
+.dark .smart-brain-page .smart-insights-command-center__action,
+.dark .smart-brain-page .smart-insights-command-center__metrics div,
+.dark .smart-brain-page .smart-insights-signal-grid-v154 > div {
+  border-color: rgba(51,65,85,.72) !important;
+  background: linear-gradient(180deg, rgba(15,23,42,.88), rgba(2,6,23,.72)) !important;
+  box-shadow: none !important;
+}
+
+.dark .smart-brain-page .smart-insights-command-center h2,
+.dark .smart-brain-page .smart-insights-command-center__metrics strong,
+.dark .smart-brain-page .smart-insights-command-center__action h3,
+.dark .smart-brain-page .smart-insights-signal-grid-v154 .text-xl,
+.dark .smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-xl"] {
+  color: #f8fafc !important;
+}
+
+.dark .smart-brain-page .smart-insights-command-center p,
+.dark .smart-brain-page .smart-insights-command-center__metrics span,
+.dark .smart-brain-page .smart-insights-command-center__action-footer small,
+.dark .smart-brain-page .smart-insights-signal-grid-v154 .text-\[11px\],
+.dark .smart-brain-page .smart-insights-signal-grid-v154 div[class*="text-[11px]"] {
+  color: #94a3b8 !important;
+}
+
+.dark .smart-brain-page .smart-insights-command-center__eyebrow {
+  border-color: rgba(129,140,248,.20) !important;
+  background: rgba(79,70,229,.16) !important;
+  color: #c7d2fe !important;
+}
+
+.dark .smart-brain-page .smart-insights-command-center__button {
+  background: #f8fafc !important;
+  color: #020617 !important;
+}
+
+@media (max-width: 1180px) {
+  .smart-brain-page .smart-insights-command-center {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .smart-brain-page .smart-insights-command-center {
+    padding: 12px !important;
+    border-radius: 24px !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__main,
+  .smart-brain-page .smart-insights-command-center__action {
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__metrics {
+    grid-template-columns: 1fr !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__action-footer {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .smart-brain-page .smart-insights-command-center__button {
+    width: 100% !important;
+  }
+}

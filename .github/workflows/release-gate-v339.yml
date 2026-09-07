@@ -1,0 +1,134 @@
+name: Release Gate v339
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/release-gate-v339.yml'
+      - '.nvmrc'
+      - '.node-version'
+      - '.npm-version'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'KOUROSH_SOURCE_VERSION'
+      - 'app/**'
+      - 'components/**'
+      - 'config/**'
+      - 'contexts/**'
+      - 'hooks/**'
+      - 'miniapp/**'
+      - 'pages/**'
+      - 'server/**'
+      - 'services/**'
+      - 'shared/**'
+      - 'styles/**'
+      - 'types/**'
+      - 'utils/**'
+      - 'scripts/**'
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-v339-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_ENV: test
+  KOUROSH_NPM_CACHE: .cache/npm
+
+jobs:
+  seed-and-full-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Restore lock-keyed npm cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/npm
+          key: kourosh-${{ runner.os }}-runtime-${{ hashFiles('.nvmrc', '.npm-version') }}-npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            kourosh-${{ runner.os }}-runtime-${{ hashFiles('.nvmrc', '.npm-version') }}-npm-
+
+      - name: Install exact locked dependencies and seed cache when needed
+        run: npm run ci:deps:v339
+
+      - name: Verify cache can already replay offline
+        run: npm run ci:deps:v339:offline
+
+      - name: Verify pinned release toolchain
+        env:
+          KOUROSH_REQUIRE_CACHE_MANIFEST: '1'
+        run: npm run verify:release:toolchain-v339
+
+      - name: Accounting and UI release audit
+        run: npm run audit:release
+
+      - name: Production application build
+        run: npm run build
+
+      - name: Full MiniApp gate
+        run: npm run verify:miniapp
+
+      - name: Pack portable npm cache
+        if: always()
+        run: tar -czf kourosh-npm-cache-v339.tgz .cache/npm
+
+      - name: Upload portable npm cache
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kourosh-npm-cache-v339-${{ hashFiles('package-lock.json') }}
+          path: kourosh-npm-cache-v339.tgz
+          if-no-files-found: error
+          retention-days: 30
+
+  offline-replay:
+    needs: seed-and-full-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout repository fresh
+        uses: actions/checkout@v4
+
+      - name: Set up the same pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Download cache produced by the first job
+        uses: actions/download-artifact@v4
+        with:
+          name: kourosh-npm-cache-v339-${{ hashFiles('package-lock.json') }}
+
+      - name: Restore portable npm cache
+        run: tar -xzf kourosh-npm-cache-v339.tgz
+
+      - name: Install dependencies with registry access disabled by npm
+        env:
+          NPM_CONFIG_REGISTRY: http://127.0.0.1:9
+        run: npm run ci:deps:v339:offline
+
+      - name: Verify cache identity and pinned runtime
+        env:
+          KOUROSH_REQUIRE_CACHE_MANIFEST: '1'
+        run: npm run verify:release:toolchain-v339
+
+      - name: Re-run release audit offline
+        run: npm run audit:release
+
+      - name: Rebuild production application offline
+        run: npm run build
+
+      - name: Re-run Full MiniApp gate offline
+        run: npm run verify:miniapp
