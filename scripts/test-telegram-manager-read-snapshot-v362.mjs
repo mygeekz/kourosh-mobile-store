@@ -146,6 +146,16 @@ await withFetch(async () => { throw Object.assign(new Error("offline"), { code: 
   assert.notEqual(response.headers.get("x-kourosh-data-source"), "snapshot");
 });
 
+// An existing Manager session cannot keep reading an expired authorization lease.
+const activeManager = db.manager.get(db.key(ids.tenantId, subjectKey));
+db.manager.set(db.key(ids.tenantId, subjectKey), { ...activeManager, authorization_valid_until: new Date(now - 60_000).toISOString() });
+await withFetch(live(503), async () => {
+  const { response, body } = await json(await edge.fetch(request("/api/miniapp/manager/dashboard"), env));
+  assert.equal(response.status, 503);
+  assert.equal(body.code, "MINIAPP_OFFLINE_SNAPSHOT_EXPIRED");
+});
+db.manager.set(db.key(ids.tenantId, subjectKey), activeManager);
+
 // Revoked snapshot is fail-closed.
 const current = db.manager.get(db.key(ids.tenantId, subjectKey));
 db.manager.set(db.key(ids.tenantId, subjectKey), { ...current, state: "revoked", payload_json: null, snapshot_version: 362002 });
@@ -155,4 +165,4 @@ await withFetch(live(503), async () => {
   assert.equal(body.code, "MINIAPP_ACCOUNT_UNLINKED");
 });
 
-console.log(JSON.stringify({ status: "PASS", release: "v362", tests: 6, managerOfflineRead: true, live4xxAuthoritative: true, mutationLiveOnly: true, revokeFailClosed: true }, null, 2));
+console.log(JSON.stringify({ status: "PASS", release: "v362", tests: 7, managerOfflineRead: true, live4xxAuthoritative: true, mutationLiveOnly: true, expiredLeaseFailClosed: true, revokeFailClosed: true }, null, 2));

@@ -10,6 +10,7 @@ import {
   callTelegramBotApi,
 } from "../telegramService";
 import { syncTelegramMenuButton } from "../services/telegramMenuSync.service";
+import { reportTelegramBotFailure } from "./telegramBotDiagnostics";
 
 export const buildContactKeyboard = () => ({
   keyboard: [
@@ -46,15 +47,14 @@ export const sendBotMessage = async (chatId: string, text: string, extra?: any) 
     const parseMode = hasParseMode
       ? extra?.parse_mode ?? extra?.parseMode
       : "HTML";
-    await sendTelegramMessage(botToken, chatId, text, {
+    const result = await sendTelegramMessage(botToken, chatId, text, {
       parseMode,
       replyMarkup,
       disableWebPreview: true,
     });
+    if (!result?.success) reportTelegramBotFailure("send_message_failed", result);
   } catch (e: any) {
-    try {
-      console.error("Telegram sendMessage failed:", e?.message || e);
-    } catch {}
+    reportTelegramBotFailure("send_message_failed", e);
   }
 };
 

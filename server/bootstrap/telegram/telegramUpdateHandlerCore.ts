@@ -15,6 +15,8 @@ import { ensureTelegramInboxTable } from "../../utils/notificationSchemaHelpers"
 import { formatReportMoneyText } from "../../utils/productSalesReportHelpers";
 import { serializeMiniAppStartParam } from "../../../miniapp/startParam";
 import { buildTelegramMiniAppLaunchButton } from "../../utils/telegramMiniApp";
+import { resolveMiniAppIdentity } from "../../services/miniAppIdentity.service";
+import { reportTelegramBotFailure } from "../../utils/telegramBotDiagnostics";
 import {
   getPartnerByIdFromDb,
   getLedgerForPartnerFromDb,
@@ -121,7 +123,8 @@ export const createTelegramUpdateHandler = ({
           await sendSecurityMessage(chatId, isPartner
             ? (result.code === "RELINKED" ? "اتصال مجدد امن حساب همکار با موفقیت انجام شد." : "اتصال امن حساب همکار با موفقیت انجام شد.")
             : "هویت سازمانی تلگرام شما با موفقیت تأیید شد.");
-        } catch {
+        } catch (error) {
+          reportTelegramBotFailure("security_link_failed", error, { command: "/start" });
           await sendSecurityMessage(chatId, "اتصال امن در حال حاضر انجام نشد. لطفاً بعداً دوباره تلاش کنید.");
         }
         return;
@@ -470,6 +473,28 @@ export const createTelegramUpdateHandler = ({
           reply_markup: buildPartnerReplyKeyboard(),
           parse_mode: "HTML",
         });
+      };
+      // Resolve through the same binding/permission policy as Mini App auth.
+      // Cache only within this update; subsequent commands re-check access.
+      let resolvedIdentity: ReturnType<typeof resolveMiniAppIdentity> | undefined;
+      const showManagerMenuIfAuthorized = async (): Promise<boolean> => {
+        const identity = await (resolvedIdentity ??= resolveMiniAppIdentity(fromId));
+        if (identity?.kind !== "staff") return false;
+        const button = buildTelegramMiniAppLaunchButton(
+          botSettings,
+          serializeMiniAppStartParam({ version: "v1", role: "staff", page: "home" }),
+          "ورود به مدیریت فروشگاه",
+        );
+        await sendBotMessage(chatId, telegramCard(
+          "مدیریت فروشگاه کوروش",
+          "🏪",
+          [`سلام ${esc(identity.displayName)}؛ دسترسی مدیریتی شما فعال است.`],
+          button ? "برای مشاهده پنل مدیریت، دکمه زیر را انتخاب کنید." : "آدرس پنل مدیریت هنوز آماده نیست؛ تنظیمات Mini App را بررسی کنید.",
+        ), {
+          parse_mode: "HTML",
+          reply_markup: button ? { inline_keyboard: [[button]] } : { remove_keyboard: true },
+        });
+        return true;
       };
       const buildSmartSummaryText = (
         title: string,
@@ -1510,6 +1535,7 @@ export const createTelegramUpdateHandler = ({
       // Handle callback buttons
       if (cb?.data) {
         const data = String(cb.data || "").trim();
+        if (["MENU_HOME", "MENU_HELP", "MANAGER_HOME"].includes(data) && await showManagerMenuIfAuthorized()) return;
         const customer = await getLinkedCustomer();
         const partner = await getLinkedPartner();
 
@@ -1598,6 +1624,7 @@ export const createTelegramUpdateHandler = ({
         }
 
         if (!customer?.id) {
+          if (await showManagerMenuIfAuthorized()) return;
           if (partner?.id) {
             await showPartnerMenu(partner);
             return;
@@ -1685,6 +1712,7 @@ export const createTelegramUpdateHandler = ({
           return;
         }
         // Unknown callback
+        if (await showManagerMenuIfAuthorized()) return;
         if (partner?.id) {
           await showPartnerMenu(partner);
           return;
@@ -1695,6 +1723,7 @@ export const createTelegramUpdateHandler = ({
       // /start -> ask for contact
       const msgText = String(msg.text || "").trim();
       const restartBotForChat = async () => {
+        if (await showManagerMenuIfAuthorized()) return;
         await ensureTelegramPersistentMenu(chatId).catch(() => {});
         const customer = await getLinkedCustomer();
         if (customer?.id) {
@@ -1738,11 +1767,16 @@ export const createTelegramUpdateHandler = ({
         return;
       }
       if (msgText && !msgText.startsWith("/")) {
+        // Generic navigation selects Manager first. Explicit account actions
+        // retain the existing Customer/Partner ownership checks below.
+        const genericNavigation = /منوی اصلی|صفحه اصلی|راهنمای|مدیریت فروشگاه/.test(msgText) || msgText.trim() === "منو";
+        if (genericNavigation && await showManagerMenuIfAuthorized()) return;
         const customer = await getLinkedCustomer();
         const partner = await getLinkedPartner();
         const normalized = msgText.replace(/\s+/g, " ").trim();
 
         if (!customer?.id && !partner?.id) {
+          if (!/^\d{4,8}$/.test(normalized) && await showManagerMenuIfAuthorized()) return;
           if (
             normalized.includes("راهنمای ورود") ||
             normalized.includes("راهنمای سریع") ||
@@ -1867,6 +1901,7 @@ export const createTelegramUpdateHandler = ({
             await showPartnerMenu(partner);
             return;
           }
+          if (await showManagerMenuIfAuthorized()) return;
           await showPartnerMenu(partner);
           return;
         }
@@ -1997,6 +2032,7 @@ export const createTelegramUpdateHandler = ({
             await showMainMenu(customer);
             return;
           }
+          if (await showManagerMenuIfAuthorized()) return;
           await showMainMenu(customer);
           return;
         }
@@ -2099,6 +2135,7 @@ export const createTelegramUpdateHandler = ({
           return;
         }
         // Normal /start flow
+        if (await showManagerMenuIfAuthorized()) return;
         const customer = await getLinkedCustomer();
         if (customer?.id) {
           await showMainMenu(customer);
@@ -2141,6 +2178,7 @@ export const createTelegramUpdateHandler = ({
         return;
       }
       if (msgText.startsWith("/help") || msgText.startsWith("/menu")) {
+        if (await showManagerMenuIfAuthorized()) return;
         const customer = await getLinkedCustomer();
         if (customer?.id) {
           await showMainMenu(customer);
@@ -2594,9 +2632,14 @@ export const createTelegramUpdateHandler = ({
         return;
       }
     } catch (e: any) {
-      try {
-        console.error("[TelegramBot] handler failed:", e?.message || e);
-      } catch {}
+      const callback = update?.callback_query;
+      const text = String(callback?.data || update?.message?.text || update?.edited_message?.text || "");
+      reportTelegramBotFailure("command_failed", e, {
+        updateId: Number.isSafeInteger(update?.update_id) ? update.update_id : undefined,
+        kind: callback ? "callback" : "message",
+        // Never log link tokens, contact details or the raw update payload.
+        command: /^\/[a-z_]+/i.exec(text)?.[0] || (callback ? "callback" : "text"),
+      });
       // never crash bot handler
     }
   };
