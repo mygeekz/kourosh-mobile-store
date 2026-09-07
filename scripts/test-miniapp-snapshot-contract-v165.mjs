@@ -11,6 +11,7 @@ import {
   computeStoredMiniAppSnapshotContentHash,
   validateMiniAppSnapshotCandidate,
   validateStoredMiniAppSnapshot,
+  sanitizeMiniAppSnapshotValidationIssues,
 } from "../server/cloud/snapshots/miniAppSnapshotValidation.ts";
 import { MINIAPP_SNAPSHOT_MAX_BYTES } from "../server/cloud/snapshots/miniAppSnapshotContracts.ts";
 
@@ -175,6 +176,28 @@ const oldVersionCandidate = structuredClone(customerCandidate);
 const oldVersionStored = materializeStoredMiniAppSnapshot(oldVersionCandidate, { subjectKey: customerSubjectKey, receivedAt: new Date("2026-08-14T13:01:00.000Z") });
 assert.equal(store.upsert(oldVersionStored).status, "stale_rejected");
 
+// Manager tombstones must use the same one-hour ceiling as active Manager data.
+const revocationContext = { tenantId, installationId, telegramUserId, snapshotVersion: 10, now };
+for (const kind of ["manager", "customer", "partner"]) {
+  const candidate = buildMiniAppSnapshotRevocationCandidate(kind, 1, revocationContext);
+  assert.equal(candidate.state, "revoked");
+  assert.equal(candidate.data, null);
+  assert.equal(candidate.telegramUserId, telegramUserId);
+  assert.equal(Date.parse(candidate.authorizationValidUntil) - Date.parse(candidate.generatedAt), (kind === "manager" ? 1 : 72) * 60 * 60 * 1000);
+  assert.equal(validateMiniAppSnapshotCandidate(candidate).ok, true);
+}
+const managerRevocation = buildMiniAppSnapshotRevocationCandidate("manager", 1, {
+  ...revocationContext, authorizationLeaseMs: 72 * 60 * 60 * 1000,
+});
+assert.equal(Date.parse(managerRevocation.authorizationValidUntil) - Date.parse(managerRevocation.generatedAt), 60 * 60 * 1000);
+const invalidManager = { ...managerRevocation, authorizationValidUntil: new Date(now.getTime() + 72 * 60 * 60 * 1000).toISOString() };
+assert.ok(validateMiniAppSnapshotCandidate(invalidManager).issues.includes("manager_authorization_lease_exceeds_maximum"), "validation must still reject excessive Manager leases");
+assert.deepEqual(sanitizeMiniAppSnapshotValidationIssues([
+  "manager_authorization_lease_exceeds_maximum", "forbidden_data_key:data.customers.930001.phoneNumber",
+  "forbidden_data_key:data.secret", "manager_authorization_lease_exceeds_maximum", "123:private-token", null, {},
+]), ["manager_authorization_lease_exceeds_maximum", "forbidden_data_key"]);
+assert.deepEqual(sanitizeMiniAppSnapshotValidationIssues("private-token"), []);
+
 console.log(JSON.stringify({
   status: "PASS",
   schemaVersion: customerStored.schemaVersion,
@@ -192,6 +215,8 @@ console.log(JSON.stringify({
   monotonicVersioning: true,
   tombstoneContract: true,
   authorizationLeaseCappedAt72h: true,
+  managerRevocationLeaseCappedAt1h: true,
+  validationDiagnosticsSanitized: true,
   installationConflictRejected: true,
   networkWrites: false,
   d1Writes: false,

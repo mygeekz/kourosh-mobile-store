@@ -14,6 +14,26 @@ export type MiniAppSnapshotValidationResult = {
   encodedBytes: number;
 };
 
+// Log only known issue codes. Forbidden-key paths can contain record identifiers
+// or arbitrary property names, so omit paths and all candidate values.
+const LOGGABLE_CANDIDATE_ISSUES = new Set([
+  "snapshot_candidate_object_required", "schema_version_invalid", "tenant_id_invalid",
+  "installation_id_invalid", "subject_kind_invalid", "snapshot_version_invalid",
+  "generated_at_invalid", "authorization_valid_until_invalid", "authorization_lease_invalid",
+  "authorization_lease_exceeds_maximum", "manager_authorization_lease_exceeds_maximum",
+  "state_invalid", "active_snapshot_data_required", "revoked_snapshot_data_must_be_null",
+  "forbidden_data_key", "manager_read_permissions_invalid", "manager_profit_permission_required",
+  "local_subject_id_invalid", "telegram_user_id_invalid", "candidate_contains_storage_fields",
+  "snapshot_size_limit_exceeded",
+]);
+
+export const sanitizeMiniAppSnapshotValidationIssues = (issues: unknown): string[] => {
+  if (!Array.isArray(issues)) return [];
+  return [...new Set(issues.filter((issue): issue is string => typeof issue === "string")
+    .map((issue) => issue.startsWith("forbidden_data_key:") ? "forbidden_data_key" : issue)
+    .filter((issue) => LOGGABLE_CANDIDATE_ISSUES.has(issue)))];
+};
+
 const FORBIDDEN_DATA_KEYS = new Set([
   "password",
   "passwordHash",

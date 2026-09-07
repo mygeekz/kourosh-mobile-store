@@ -502,7 +502,9 @@ export const buildMiniAppSnapshotRevocationCandidate = (
   localSubjectId: number,
   context: SnapshotBuildContext,
 ): MiniAppSnapshotCandidateV1 => assertValidMiniAppSnapshotCandidate({
-  ...candidateEnvelope(context, subjectKind, localSubjectId),
+  ...candidateEnvelope(subjectKind === "manager"
+    ? { ...context, authorizationLeaseMs: MINIAPP_MANAGER_SNAPSHOT_AUTHORIZATION_LEASE_MS }
+    : context, subjectKind, localSubjectId),
   state: "revoked",
   data: null,
 });

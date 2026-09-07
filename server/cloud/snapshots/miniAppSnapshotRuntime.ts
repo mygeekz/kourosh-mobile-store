@@ -16,6 +16,7 @@ import {
   buildPartnerMiniAppSnapshotCandidate,
 } from "./miniAppSnapshotBuilder";
 import { createMiniAppSnapshotSyncClient } from "./miniAppSnapshotSyncClient";
+import { sanitizeMiniAppSnapshotValidationIssues } from "./miniAppSnapshotValidation";
 import {
   createMiniAppIdentitySyncCoordinator,
   type MiniAppIdentitySyncKind,
@@ -263,7 +264,13 @@ export const runMiniAppSnapshotReconciliation = async (): Promise<RuntimeStatus>
         // Retain any previous identity locally when either refresh or revocation fails,
         // so the next reconciliation retries instead of silently forgetting the tombstone.
         if (prior) nextPersisted.push(prior);
-        safeLog("miniapp_snapshot_runtime_subject_failed", { kind: subject.kind, code: status.lastErrorCode });
+        safeLog("miniapp_snapshot_runtime_subject_failed", {
+          kind: subject.kind,
+          code: status.lastErrorCode,
+          ...(status.lastErrorCode === "MINIAPP_SNAPSHOT_CANDIDATE_INVALID"
+            ? { issues: sanitizeMiniAppSnapshotValidationIssues(error?.issues) }
+            : {}),
+        });
         return false;
       }
     };
