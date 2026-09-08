@@ -62,33 +62,39 @@ const sent = [];
 const handler = load('server/bootstrap/telegram/telegramUpdateHandlerCore.ts').createTelegramUpdateHandler({
   trySendSmsNow: async () => {}, sendBotMessage: async (...args) => sent.push(args),
 });
+const ingress = load('server/telegram/telegramUpdateSource.ts').createTelegramUpdateIngress(handler);
 const resolve = load('server/services/miniAppIdentity.service.ts').resolveMiniAppIdentity;
-async function update(text, callback = false) {
+async function update(text, callback = false, source = 'fromPolling') {
   sent.length = 0;
   const message = { chat: { id: 990002, type: 'private' }, from: { id: Number(telegramId) }, text };
-  await handler(callback ? { callback_query: { data: text, from: message.from, message: { ...message, from: { id: 123 } } } } : { message });
+  await ingress[source](callback ? { callback_query: { data: text, from: message.from, message: { ...message, from: { id: 123 } } } } : { message });
   assert.ok(sent.length, `response for ${text}`);
   return sent.at(-1);
 }
 const admin = { id: 1, roleName: 'Admin', displayName: 'Admin' };
 const partner = { id: 2, displayName: 'Partner', partnerName: 'Partner' };
-for (const [name, managers, linkedPartners, expected] of [
-  ['Admin only', [admin], [], 'staff'],
-  ['Admin + Partner', [admin], [partner], 'staff'],
-  ['Partner only', [], [partner], 'partner'],
+const customer = { id: 3, fullName: 'Customer', displayName: 'Customer' };
+for (const [name, managers, linkedPartners, linkedCustomers, expected] of [
+  ['Admin only', [admin], [], [], 'staff'],
+  ['Admin + Partner', [admin], [partner], [], 'staff'],
+  ['Partner only', [], [partner], [], 'partner'],
+  ['Customer only', [], [], [customer], 'customer'],
+  ['Customer + Partner', [], [partner], [customer], 'customer'],
+  ['Manager + Customer + Partner', [admin], [partner], [customer], 'staff'],
 ]) {
-  staff = managers; partners = linkedPartners;
+  staff = managers; partners = linkedPartners; customers = linkedCustomers;
   assert.equal((await resolve(telegramId)).kind, expected);
-  for (const [text, callback] of [['/start'], ['/help'], ['/menu'], ['/restart'], ['منوی اصلی'], ['راهنمای سریع'], ['MENU_HOME', true]]) {
-    const reply = await update(text, callback);
+  for (const source of ['fromPolling', 'fromWebhook']) for (const [text, callback] of [['/start'], ['/help'], ['/menu'], ['/restart'], ['منوی اصلی'], ['راهنمای سریع'], ['MENU_HOME', true], ['UNKNOWN', true]]) {
+    const reply = await update(text, callback, source);
     if (expected === 'staff') {
       assert.match(reply[1], /مدیریت فروشگاه/);
       assert.match(JSON.stringify(reply[2]), /v1_s_home/);
-    } else assert.match(reply[1], /همکار/);
+    } else if (expected === 'partner') assert.match(reply[1], /همکار/);
+    else assert.doesNotMatch(reply[1], /پنل هوشمند همکاران|مدیریت فروشگاه/);
   }
   console.log(`PASS: ${name}`);
 }
-staff = [admin]; partners = [partner];
+staff = [admin]; partners = [partner]; customers = [];
 permissions = [];
 assert.match((await update('/menu'))[1], /همکاران/, 'revoked managerial permissions must be rechecked on the next update');
 permissions = ['dashboard.read'];
@@ -125,3 +131,19 @@ try {
   assert.match(JSON.stringify(errors), /MINIAPP_IDENTITY_AMBIGUOUS/);
 } finally { console.error = originalError; }
 console.log('PASS: customer priority, partner callback protection, send diagnostics and fail-closed command errors');
+
+// Exercise the actual active Manager builder without importing a live database.
+mocks.set(key('server/db/query.ts'), { getAsync: async () => ({ id: 1, firstName: 'Admin', roleName: 'Admin' }) });
+mocks.set(key('server/db/domains/accessControl.db.ts'), { resolveUserTenantAuthorization: async () => ({ status: 'active', permissions: ['dashboard.read'] }) });
+mocks.set(key('server/services/miniAppManager.service.ts'), { miniAppManagerService: { getDashboard: async () => ({ total: 1, phoneNumber: 'private-fixture' }) } });
+mocks.set(key('server/db/domains/managerNotifications.db.ts'), { listManagerInAppNotifications: async () => ({ items: [] }) });
+const candidate = await load('server/cloud/snapshots/miniAppSnapshotBuilder.ts').buildManagerMiniAppSnapshotCandidate(1, {
+  tenantId: 'tenant_test', installationId: 'inst_abcdefghijklmnopqrstuvwx', telegramUserId: telegramId, snapshotVersion: 1,
+});
+assert.equal(candidate.subjectKind, 'manager');
+assert.equal(candidate.telegramUserId, telegramId);
+assert.equal(Date.parse(candidate.authorizationValidUntil) - Date.parse(candidate.generatedAt), 3600000);
+assert.deepEqual(candidate.data.permissions, ['dashboard.read']);
+assert.equal(candidate.data.dashboard.total, 1);
+assert.ok(!JSON.stringify(candidate).includes('private-fixture'));
+console.log('PASS: active Manager snapshot generation, identity preservation, one-hour lease and data sanitization');

@@ -1713,6 +1713,10 @@ export const createTelegramUpdateHandler = ({
         }
         // Unknown callback
         if (await showManagerMenuIfAuthorized()) return;
+        if (customer?.id) {
+          await showMainMenu(customer);
+          return;
+        }
         if (partner?.id) {
           await showPartnerMenu(partner);
           return;
@@ -1815,7 +1819,7 @@ export const createTelegramUpdateHandler = ({
           }
         }
 
-        if (partner?.id) {
+        if (partner?.id && !customer?.id) {
           const pid = Number(partner.id);
           if (
             normalized.includes("موجودی گوشی‌های من") ||

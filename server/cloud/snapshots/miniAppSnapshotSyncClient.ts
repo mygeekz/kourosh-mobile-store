@@ -137,13 +137,16 @@ export const createMiniAppSnapshotSyncClient = (options: {
           const text = await readResponseBounded(response);
           let payload: any = {};
           try { payload = text ? JSON.parse(text) : {}; } catch {}
-          lastCode = String(payload?.code || (response.ok ? "MINIAPP_SNAPSHOT_SYNC_ACCEPTED" : "MINIAPP_SNAPSHOT_SYNC_REJECTED"));
-          if (response.ok && payload?.success !== false) {
+          const validEnvelope = payload && typeof payload === "object" && payload.success === true;
+          lastCode = String(payload?.code || (response.ok
+            ? (validEnvelope ? "MINIAPP_SNAPSHOT_SYNC_ACCEPTED" : "MINIAPP_SNAPSHOT_SYNC_RESPONSE_INVALID")
+            : "MINIAPP_SNAPSHOT_SYNC_REJECTED"));
+          if (response.ok && validEnvelope) {
             log("miniapp_snapshot_sync_succeeded", { installationId: candidate.installationId, tenantId: candidate.tenantId, subjectKind: candidate.subjectKind, snapshotVersion: candidate.snapshotVersion, attempts: attempt });
             return { ok: true, status: response.status, code: lastCode, attempts: attempt, data: payload?.data };
           }
           if (!RETRYABLE_STATUS.has(response.status) || attempt >= maxAttempts) {
-            log("miniapp_snapshot_sync_rejected", { installationId: candidate.installationId, tenantId: candidate.tenantId, subjectKind: candidate.subjectKind, snapshotVersion: candidate.snapshotVersion, status: response.status, code: lastCode, attempts: attempt });
+            log("miniapp_snapshot_sync_rejected", { installationId: candidate.installationId, tenantId: candidate.tenantId, subjectKind: candidate.subjectKind, snapshotVersion: candidate.snapshotVersion, status: response.status, code: lastCode, attempts: attempt, endpoint: `${endpoint.origin}${endpoint.pathname}`, method: signed.method, contentType: String(response.headers.get("content-type") || "").slice(0, 100) });
             return { ok: false, status: response.status, code: lastCode, attempts: attempt, data: payload?.data };
           }
           const headerDelay = retryAfterMs(response.headers.get("retry-after"));

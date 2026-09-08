@@ -253,6 +253,26 @@ assert(receivedRequestIds.every(Boolean));
 await new Promise((resolve) => server.close(resolve));
 
 let failedFetchCalls = 0;
+// Static Pages responses must never count as a successful snapshot upload.
+for (const [status, body] of [[200, "<html>static page</html>"], [200, ""], [405, ""]]) {
+  const diagnostics = [];
+  const invalidResponseClient = createMiniAppSnapshotSyncClient({
+    endpoint: "https://example.com/miniapp.html", installationId, credentialVersion,
+    signCanonical: credential.signChallenge, now: () => baseTime,
+    fetchImpl: async (url, options) => {
+      assert.equal(String(url), "https://example.com/cloud/v1/miniapp/snapshots");
+      assert.equal(options.method, "POST");
+      return new Response(body, { status });
+    },
+    logger: (event, meta) => diagnostics.push({ event, meta }),
+  });
+  const result = await invalidResponseClient.syncCandidate(candidate, { botId });
+  assert.equal(result.ok, false);
+  assert.equal(result.code, status === 200 ? "MINIAPP_SNAPSHOT_SYNC_RESPONSE_INVALID" : "MINIAPP_SNAPSHOT_SYNC_REJECTED");
+  assert.equal(diagnostics[0].meta.endpoint, "https://example.com/cloud/v1/miniapp/snapshots");
+  assert.equal(diagnostics[0].meta.method, "POST");
+  assert.ok(!JSON.stringify(diagnostics).includes(telegramUserId));
+}
 const boundedClient = createMiniAppSnapshotSyncClient({
   endpoint: "http://127.0.0.1:9999",
   installationId,

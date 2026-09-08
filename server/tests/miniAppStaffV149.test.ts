@@ -30,13 +30,18 @@ const db = new sqlite3.Database(":memory:");
 setActiveDb(db);
 await execAsync(`
   PRAGMA foreign_keys=ON;
+  CREATE TABLE settings(key TEXT PRIMARY KEY,value TEXT);
   CREATE TABLE roles(id INTEGER PRIMARY KEY,name TEXT UNIQUE NOT NULL);
   CREATE TABLE users(id INTEGER PRIMARY KEY,username TEXT,passwordHash TEXT,roleId INTEGER,firstName TEXT,lastName TEXT);
   CREATE TABLE user_telegram_links(user_id INTEGER PRIMARY KEY,telegram_user_id TEXT UNIQUE,chat_id TEXT,linked_at TEXT DEFAULT CURRENT_TIMESTAMP,updated_at TEXT DEFAULT CURRENT_TIMESTAMP);
-  CREATE TABLE telegram_staff_link_tokens(id INTEGER PRIMARY KEY,user_id INTEGER,status TEXT);
-  CREATE TABLE audit_logs(id INTEGER PRIMARY KEY,userId INTEGER,username TEXT,role TEXT,action TEXT,entityType TEXT,entityId INTEGER,description TEXT,createdAt TEXT DEFAULT CURRENT_TIMESTAMP);
+  CREATE TABLE telegram_staff_link_tokens(id INTEGER PRIMARY KEY,user_id INTEGER,status TEXT,expires_at TEXT,last_error TEXT);
+  CREATE TABLE audit_logs(id INTEGER PRIMARY KEY,userId INTEGER,username TEXT,role TEXT,action TEXT,entityType TEXT,entityId INTEGER,description TEXT,createdAt TEXT DEFAULT CURRENT_TIMESTAMP,tenantId TEXT,source TEXT,requestId TEXT,beforeJson TEXT,afterJson TEXT,metadataJson TEXT);
   CREATE TABLE customers(id INTEGER PRIMARY KEY,fullName TEXT,phoneNumber TEXT);
   CREATE TABLE customer_ledger(id INTEGER PRIMARY KEY,customerId INTEGER,transactionDate TEXT,createdAt TEXT,updatedAt TEXT,description TEXT,debit REAL,credit REAL,balance REAL);
+  -- This fixture has no historical unposted checks, so effective balance equals ledger balance.
+  CREATE VIEW v_customer_effective_balance AS SELECT c.id AS customerId,
+    COALESCE(SUM(COALESCE(l.debit,0)-COALESCE(l.credit,0)),0) AS currentBalance
+    FROM customers c LEFT JOIN customer_ledger l ON l.customerId=c.id GROUP BY c.id;
   CREATE TABLE phones(id INTEGER PRIMARY KEY,model TEXT,imei TEXT,color TEXT,storage TEXT,ram TEXT,status TEXT,salePrice REAL,registerDate TEXT);
   CREATE TABLE sales_orders(id INTEGER PRIMARY KEY,customerId INTEGER,paymentMethod TEXT,transactionDate TEXT,grandTotal REAL,status TEXT);
   CREATE TABLE sales_order_items(id INTEGER PRIMARY KEY,orderId INTEGER,itemType TEXT,itemId INTEGER,description TEXT);
@@ -212,7 +217,8 @@ assert.doesNotMatch(serviceSource, /getDebtorsList|getAgingReceivablesReport|rec
 const routeSource = fs.readFileSync(path.join(process.cwd(), "server/routes/miniapp.routes.ts"), "utf8");
 assert.doesNotMatch(routeSource, /activeSessions/);
 const css = fs.readFileSync(path.join(process.cwd(), "miniapp/tailwind.css"), "utf8");
-assert.doesNotMatch(css, /@apply|[{}]/);
+// Platform safe-area and accessibility rules now live here; @apply remains prohibited.
+assert.doesNotMatch(css, /@apply/);
 
 await new Promise<void>((resolve, reject) => db.close((error) => error ? reject(error) : resolve()));
 setActiveDb(null);

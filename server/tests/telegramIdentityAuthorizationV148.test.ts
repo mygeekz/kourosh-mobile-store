@@ -14,6 +14,7 @@ import { registerTelegramAdminRoutes } from "../routes/telegramAdmin.routes";
 import { registerTelegramInboxRoutes } from "../routes/telegramInbox.routes";
 import {
   issuePartnerTelegramLink,
+  issuePartnerTelegramRelink,
   issueStaffTelegramLink,
   linkCustomerTelegramIdentityById,
   linkCustomerTelegramIdentityByPhone,
@@ -45,7 +46,8 @@ await execAsync(`
   );
   CREATE TABLE audit_logs(
     id INTEGER PRIMARY KEY,userId INTEGER,username TEXT,role TEXT,action TEXT,
-    entityType TEXT,entityId INTEGER,description TEXT,createdAt TEXT DEFAULT CURRENT_TIMESTAMP
+    entityType TEXT,entityId INTEGER,description TEXT,createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+    tenantId TEXT,source TEXT,requestId TEXT,beforeJson TEXT,afterJson TEXT,metadataJson TEXT
   );
 `);
 await createTelegramIdentitySecuritySchema();
@@ -186,7 +188,7 @@ result = await request("/api/miniapp/partner/home", { headers: { authorization: 
 assert.equal(result.response.status, 401);
 await runAsync("UPDATE partners SET telegram_user_id='tg-p10',telegram_chat_id='chat-p10',telegramChatId='chat-p10' WHERE id=10");
 const partnerUnlinkSession = createMiniAppSession({ kind: "partner", subjectId: 10, displayName: "P10", telegramUserId: "tg-p10", capabilities: [] });
-await issuePartnerTelegramLink(10, actor);
+await issuePartnerTelegramRelink(10, actor);
 await unlinkPartnerTelegramIdentity(10, actor);
 assert.equal((await getAsync("SELECT COUNT(*) AS n FROM telegram_partner_link_tokens WHERE partner_id=10 AND status='issued'"))?.n, 0);
 result = await request("/api/miniapp/partner/home", { headers: { authorization: `Bearer ${partnerUnlinkSession.token}` } });
