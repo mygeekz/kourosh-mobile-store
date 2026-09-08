@@ -6,7 +6,7 @@ import {
   resetSystemTelegramTransportDiscovery,
 } from "../server/telegram/SystemTelegramTransport.ts";
 
-const proxyKeys = ["HTTPS_PROXY", "https_proxy", "ALL_PROXY", "all_proxy", "HTTP_PROXY", "http_proxy"];
+const proxyKeys = ["KOUROSH_TELEGRAM_PROXY_URL", "HTTPS_PROXY", "https_proxy", "ALL_PROXY", "all_proxy", "HTTP_PROXY", "http_proxy"];
 const saved = Object.fromEntries(proxyKeys.map((key) => [key, process.env[key]]));
 for (const key of proxyKeys) delete process.env[key];
 
@@ -33,6 +33,24 @@ try {
   assert.equal(result.success, true);
   assert.equal(result.details?.transportRoute, "system_network");
   assert.equal(getSystemTelegramTransportStatus().preferred?.source, "system_network");
+  // Verify precedence and credential redaction without sending fixture credentials.
+  process.env.KOUROSH_TELEGRAM_PROXY_URL = 'http://fixture-user:fixture-password@127.0.0.1:12345';
+  resetSystemTelegramTransportDiscovery();
+  const routes = [];
+  const configured = new SystemTelegramTransport();
+  configured.requestWithNetwork = async (_request, options) => {
+    routes.push(options.proxyUrl);
+    return { success: true, status: 200, data: { ok: true } };
+  };
+  assert.equal((await configured.request({ botToken: 'fixture', method: 'getMe' })).success, true);
+  assert.equal(routes[0], process.env.KOUROSH_TELEGRAM_PROXY_URL);
+  assert.doesNotMatch(JSON.stringify(getSystemTelegramTransportStatus()), /fixture-user|fixture-password/);
+  process.env.KOUROSH_TELEGRAM_PROXY_URL = 'invalid-proxy';
+  const invalid = await configured.request({ botToken: 'fixture', method: 'getMe' });
+  assert.equal(invalid.success, false);
+  assert.equal(invalid.errorCode, 'TELEGRAM_PROXY_NOT_CONFIGURED');
+  assert.equal(routes.length, 1, 'invalid explicit proxy must fail before network access');
+  delete process.env.KOUROSH_TELEGRAM_PROXY_URL;
   console.log(JSON.stringify({
     ok: true,
     release: "v359",

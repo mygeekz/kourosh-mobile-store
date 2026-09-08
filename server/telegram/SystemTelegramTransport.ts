@@ -133,6 +133,8 @@ const readWinHttpProxyCandidates = async (): Promise<SystemRouteCandidate[]> => 
 
 const readEnvironmentProxyCandidates = (): SystemRouteCandidate[] => {
   const values = [
+    // Optional Telegram-only override; does not configure the Cloudflare tunnel.
+    process.env.KOUROSH_TELEGRAM_PROXY_URL,
     process.env.HTTPS_PROXY,
     process.env.https_proxy,
     process.env.ALL_PROXY,
@@ -199,6 +201,15 @@ export class SystemTelegramTransport extends DirectTelegramTransport {
   }
 
   async request(request: TelegramTransportRequest): Promise<TelegramTransportResult> {
+    const telegramProxy = String(process.env.KOUROSH_TELEGRAM_PROXY_URL || "").trim();
+    if (telegramProxy) {
+      try {
+        const parsed = new URL(normalizeProxyUrl(telegramProxy) || "");
+        if (!/^(https?|socks5?):$/.test(parsed.protocol) || !parsed.hostname) throw new Error();
+      } catch {
+        return { success: false, errorCode: "TELEGRAM_PROXY_NOT_CONFIGURED", message: "KOUROSH_TELEGRAM_PROXY_URL must be a valid HTTP, HTTPS or SOCKS proxy URL." };
+      }
+    }
     const discovered = await resolveSystemRouteCandidates();
     let candidates = preferredCandidate
       ? uniqueCandidates([preferredCandidate, ...discovered])
