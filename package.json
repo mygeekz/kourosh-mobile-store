@@ -828,7 +828,7 @@
     "test:local-pwa-https-runtime": "node scripts/test-local-pwa-https-runtime.mjs",
     "pwa:build:ensure": "node scripts/ensure-local-pwa-build.mjs",
     "pwa:preview": "vite preview --host 0.0.0.0 --port 5173 --strictPort",
-    "serve:https": "concurrently --kill-others-on-fail \"npm run server:runtime\" \"node scripts/serve-local-pwa.mjs\" \"npm run local-domain:redirect\"",
+    "serve:https": "concurrently --kill-others-on-fail \"npm run server:runtime:ensure\" \"node scripts/serve-local-pwa.mjs\" \"npm run local-domain:redirect\"",
     "audit:palette-token-coverage": "node scripts/audit-palette-token-coverage.mjs",
     "test:palette-visual-matrix": "node scripts/run-palette-visual-matrix.mjs",
     "test:palette-visual-matrix:ci": "node scripts/run-palette-visual-matrix.mjs --skip-screenshots",
@@ -1371,7 +1371,8 @@
     "miniapp:cloudflare:migrate-v362": "npm run miniapp:cloudflare:migrate-v363 --",
     "miniapp:cloudflare:migrate-v363": "node scripts/apply-miniapp-manager-snapshot-d1-v363.mjs",
     "audit:edge-schema-hotfix-v363": "node scripts/audit-edge-schema-hotfix-v363.mjs",
-    "build:miniapp:cloudflare": "npm run build:miniapp"
+    "build:miniapp:cloudflare": "npm run build:miniapp",
+    "server:runtime:ensure": "node scripts/ensure-server-runtime.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

@@ -3,6 +3,9 @@ import { spawnSync } from 'node:child_process';
 // Local release checks. Fixtures use memory databases and mocked/loopback
 // transports; this runner does not deploy or send real Telegram messages.
 const tests = [
+  ['scripts/test-ensure-server-runtime.mjs', []],
+  ['scripts/test-miniapp-store-connectivity-v250.mjs', ['--experimental-strip-types']],
+  ['scripts/test-miniapp-availability-state-v253.mjs', ['--experimental-strip-types']],
   ['server/tests/telegramIdentityAuthorizationV148.test.ts', ['--import', 'tsx']],
   ['server/tests/miniAppStaffV149.test.ts', ['--import', 'tsx']],
   ['scripts/test-telegram-manager-identity.mjs', []],
