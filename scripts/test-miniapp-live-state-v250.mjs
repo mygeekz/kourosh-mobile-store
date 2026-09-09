@@ -47,6 +47,7 @@ writeMiniAppEdgeLiveLog("live_read_timeout", {
   requestId: "safe_request_id_123456",
   route: "/api/miniapp/partner/home?financial=secret",
   durationMs: 1501,
+  reason: "timeout",
   telegramUserId: "672412513",
   token: "must-not-appear",
   amount: 514_300_000,
@@ -55,6 +56,11 @@ assert.equal(liveLogs.length, 1);
 assert.match(liveLogs[0], /"event":"live_read_timeout"/);
 assert.match(liveLogs[0], /"route":"\/api\/miniapp\/partner\/home"/);
 assert.doesNotMatch(liveLogs[0], /financial|672412513|must-not-appear|514300000/);
+assert.equal(JSON.parse(liveLogs[0]).reason, "timeout");
+writeMiniAppEdgeLiveLog("live_auth_unavailable", {
+  reason: "untrusted error containing credentials",
+}, (line) => liveLogs.push(line));
+assert.equal(Object.hasOwn(JSON.parse(liveLogs[1]), "reason"), false);
 
 assert.equal(EXPECTED_MINIAPP_GATEWAY_RUNTIME_VERSION, KOUROSH_RELEASE);
 assert.match(gateway, /X-Kourosh-Gateway-Version/);

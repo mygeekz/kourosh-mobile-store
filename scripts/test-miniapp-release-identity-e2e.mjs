@@ -77,6 +77,51 @@ try {
     }
     console.log(`PASS: signed sync -> D1 -> signed initData -> ${kinds.join('+')} authentication`);
   }
+  // Workers rejects redirect:"error" before network I/O. Model that runtime
+  // contract here so Node's more permissive fetch cannot hide this regression.
+  const offlineAuth = await (await auth('manager')).json();
+  let mode = 'live';
+  let liveCalls = [];
+  globalThis.fetch = async (url, options) => {
+    if (options.redirect === 'error') throw new TypeError('Workers does not support redirect:error');
+    assert.equal(options.redirect, 'manual');
+    const route = new URL(url).pathname;
+    liveCalls.push(route);
+    if (mode === 'redirect' || (mode === 'read-redirect' && route !== '/api/miniapp/auth')) return new Response(null, { status: 302, headers: { location: 'https://untrusted.example/' } });
+    if (mode === 'offline') throw new Error('fixture backend unavailable');
+    if (route === '/api/miniapp/auth') return Response.json({ success: true, data: {
+      identity: { kind: 'staff', subjectId: 1, telegramUserId, displayName: 'Fixture manager', roleName: 'Admin', capabilities: [], permissions: ['dashboard.read'] },
+      sessionToken: 'fixture-local-session', expiresAt: new Date(Date.now() + 1800000).toISOString(),
+    } });
+    assert.equal(options.headers.get('authorization'), 'Bearer fixture-local-session');
+    if (mode === 'read-5xx') return Response.json({ success: false }, { status: 502 });
+    if (mode === 'read-timeout') throw new DOMException('fixture timeout', 'TimeoutError');
+    return Response.json({ success: true, data: { liveFixture: true } });
+  };
+  const liveAuthResponse = await auth('manager');
+  assert.equal(liveAuthResponse.headers.get('x-kourosh-data-source'), 'live');
+  const liveAuthBody = await liveAuthResponse.json();
+  assert.equal(Boolean((await openEdgeSession(env, liveAuthBody.data.sessionToken)).localSessionToken), true);
+  const readDashboard = token => edge.fetch(new Request(origin + '/api/miniapp/manager/dashboard', { headers: { authorization: `Bearer ${token}` } }), env);
+  const liveRead = await readDashboard(liveAuthBody.data.sessionToken);
+  assert.equal(liveRead.headers.get('x-kourosh-data-source'), 'live');
+  assert.equal((await liveRead.json()).data.liveFixture, true);
+  liveCalls = [];
+  assert.equal((await readDashboard(offlineAuth.data.sessionToken)).headers.get('x-kourosh-data-source'), 'live');
+  assert.deepEqual(liveCalls, ['/api/miniapp/auth', '/api/miniapp/manager/dashboard'], 'snapshot session must reauthenticate before live read');
+  for (mode of ['read-5xx', 'read-timeout', 'read-redirect', 'offline']) {
+    liveCalls = [];
+    const fallback = await readDashboard(liveAuthBody.data.sessionToken);
+    assert.equal(fallback.status, 200);
+    assert.equal(fallback.headers.get('x-kourosh-data-source'), 'snapshot');
+    assert.equal(liveCalls.length, 1, 'redirect must never be followed');
+  }
+  mode = 'redirect'; liveCalls = [];
+  const redirectedAuth = await auth('manager');
+  assert.equal(redirectedAuth.headers.get('x-kourosh-data-source'), 'snapshot');
+  assert.equal(liveCalls.length, 1);
+  mode = 'offline';
+  console.log('PASS: live auth/read, local session establishment, reauth, redirect rejection and unavailable read fallback');
   db.prepare('UPDATE manager_snapshots SET authorization_valid_until=?').run(new Date(now.getTime() - 1000).toISOString());
   assert.equal((await (await auth()).json()).data.identity.kind, 'customer');
   assert.equal((await auth('manager')).status, 503);

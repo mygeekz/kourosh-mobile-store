@@ -63,6 +63,7 @@ const LIVE_OBSERVABILITY_EVENTS = new Set([
   "live_read_unavailable",
   "live_read_rejected",
 ]);
+const LIVE_UNAVAILABLE_REASONS = new Set(["origin_missing", "origin_invalid", "timeout", "network_error", "redirect_rejected"]);
 
 export const writeMiniAppEdgeLiveLog = (event, fields = {}, sink = console.info) => {
   if (!LIVE_OBSERVABILITY_EVENTS.has(event)) return;
@@ -74,6 +75,7 @@ export const writeMiniAppEdgeLiveLog = (event, fields = {}, sink = console.info)
     route: String(fields.route || "").split("?")[0].slice(0, 160) || undefined,
     status: Number.isInteger(fields.status) ? fields.status : undefined,
     durationMs: Number.isFinite(fields.durationMs) ? Math.max(0, Math.round(fields.durationMs)) : undefined,
+    reason: LIVE_UNAVAILABLE_REASONS.has(fields.reason) ? fields.reason : undefined,
   };
   sink(JSON.stringify(Object.fromEntries(Object.entries(record).filter(([, value]) => value !== undefined))));
 };
@@ -82,7 +84,7 @@ const observeLiveResult = (operation, result, fields) => {
   if (result.kind === "unavailable") {
     writeMiniAppEdgeLiveLog(
       result.reason === "timeout" ? `live_${operation}_timeout` : `live_${operation}_unavailable`,
-      { ...fields, durationMs: result.durationMs },
+      { ...fields, status: result.status, durationMs: result.durationMs, reason: result.reason },
     );
     return;
   }
@@ -418,7 +420,13 @@ const proxyLive = async ({ session, request, path, method = "GET", body = undefi
   if (session.localSessionToken) headers.set("Authorization", `Bearer ${session.localSessionToken}`);
   if (contentType) headers.set("Content-Type", contentType);
   try {
-    const response = await fetch(target, { method, headers, body, redirect: "error", signal: AbortSignal.timeout(timeoutMs) });
+    // Workers fetch supports manual/follow, not redirect:"error". Never follow
+    // redirects with Telegram initData or the local session Authorization header.
+    const response = await fetch(target, { method, headers, body, redirect: "manual", signal: AbortSignal.timeout(timeoutMs) });
+    if (response.status >= 300 && response.status < 400) {
+      await response.body?.cancel();
+      return { kind: "unavailable", reason: "redirect_rejected", status: response.status, durationMs: Date.now() - startedAt };
+    }
     const parsed = await readResponseBounded(response);
     return { kind: "response", status: response.status, json: parsed.json, durationMs: Date.now() - startedAt };
   } catch (error) {
