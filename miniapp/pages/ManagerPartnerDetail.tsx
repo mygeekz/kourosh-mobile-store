@@ -2,44 +2,55 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { MiniAppBidiText } from "../components/MiniAppBidiText";
 import { MiniAppDataState } from "../components/MiniAppDataState";
-import { formatCustomerDate, formatToman } from "../format";
+import { ManagerAmount, ManagerGrid, ManagerLedgerRows, ManagerList, ManagerMetric, ManagerPage, ManagerPager, ManagerQueryState, ManagerRecord, ManagerSection, useManagerListLocation } from "../components/manager/ManagerUI";
+import { formatCustomerDate, formatPartnerType } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
 import { useMiniAppPermissions } from "../permission/MiniAppPermissionContext";
-import type {
-  ManagerPartnerAccountingBreakdownData,
-  ManagerPartnerDetailData,
-  PartnerLedgerData,
-  PartnerPhoneData,
-  PartnerPurchasesData,
-} from "../types";
-
+import type { ManagerPartnerAccountingBreakdownData, ManagerPartnerDetailData, PartnerLedgerData, PartnerPhoneData, PartnerPurchasesData } from "../types";
+const Purchases: React.FC<{ id: string }> = ({ id }) => {
+  const { page, setPage } = useManagerListLocation("purchasesPage");
+  const query = useMiniAppQuery<PartnerPurchasesData>(`/api/miniapp/manager/partners/${id}/purchases?page=${page}&pageSize=10`, { availability: "secondary" });
+  const d = query.data;
+  return <ManagerSection title="تأمین‌های ثبت‌شده"><ManagerQueryState query={query} empty={!d?.items.length} emptyText="تأمینی در این صفحه ثبت نشده است."><ManagerList>{d?.items.map(item => <ManagerRecord key={item.ref} title={item.name} detail={`${formatCustomerDate(item.purchaseDate)} · ${item.quantity.toLocaleString("fa-IR")} ${item.unit}`}><ManagerAmount label="مبلغ تأمین" value={item.supplyAmount} field={`supply-${item.ref}`} /></ManagerRecord>)}</ManagerList></ManagerQueryState>{d && !query.loading && !query.error && <ManagerPager {...d} onPage={setPage} meta={query.meta} />}</ManagerSection>;
+};
+const Settlements: React.FC<{ id: string }> = ({ id }) => {
+  const { page, setPage } = useManagerListLocation("settlementsPage");
+  const query = useMiniAppQuery<PartnerPhoneData>(`/api/miniapp/manager/partners/${id}/settlements?page=${page}&pageSize=10`, { availability: "secondary" });
+  const d = query.data;
+  return <ManagerSection title="سوابق تسویه گوشی‌ها"><ManagerQueryState query={query} empty={!d?.items.length} emptyText="رکورد تسویه‌ای در این صفحه وجود ندارد."><ManagerList>{d?.items.map(item => <ManagerRecord key={item.ref} title={item.name} detail={item.settlement.label}><ManagerAmount label="مبلغ تسویه" value={item.settlement.amount} /><ManagerAmount label="پرداخت‌شده" value={item.settlement.paidAmount} /><ManagerAmount label="مانده تسویه" value={item.settlement.remainingAmount} field={`settlement-${item.ref}`} /></ManagerRecord>)}</ManagerList></ManagerQueryState>{d && !query.loading && !query.error && <ManagerPager {...d} onPage={setPage} meta={query.meta} />}</ManagerSection>;
+};
+const Accounting: React.FC<{ id: string }> = ({ id }) => {
+  const query = useMiniAppQuery<ManagerPartnerAccountingBreakdownData>(`/api/miniapp/manager/partners/${id}/accounting-breakdown`, { availability: "secondary" });
+  const d = query.data;
+  return <ManagerSection title="سهم سود ثبت‌شده" description="مقادیر تخصیص‌یافته در گزارش حسابداری؛ بدون محاسبه مجدد"><ManagerQueryState query={query}>{d && <>
+    <ManagerGrid><ManagerMetric label="سهم سود تجمیعی" value={d.summary.profitShareAccrued} field="profitShareAccrued" /><ManagerMetric label="تعداد تخصیص سود" value={d.summary.profitAllocationCount} money={false} /></ManagerGrid>
+    <p className="manager-muted">تخصیص‌های موجود در این گزارش: {d.profitAllocations.length.toLocaleString("fa-IR")}</p>
+    <ManagerQueryState query={query} empty={!d.profitAllocations.length} emptyText="تخصیصی در این گزارش وجود ندارد."><ManagerList>{d.profitAllocations.map(item => <ManagerRecord key={item.id} title={item.itemDescription || "تخصیص سود"} detail={`${item.sharePercent.toLocaleString("fa-IR")}٪ · ${formatCustomerDate(item.saleDate)}`}><ManagerAmount label="مبلغ سهم ثبت‌شده" value={item.amount} field={`allocation-${item.id}`} /></ManagerRecord>)}</ManagerList></ManagerQueryState>
+  </>}</ManagerQueryState></ManagerSection>;
+};
+const Ledger: React.FC<{ id: string }> = ({ id }) => {
+  const { page, setPage } = useManagerListLocation("ledgerPage");
+  const query = useMiniAppQuery<PartnerLedgerData>(`/api/miniapp/manager/partners/${id}/ledger?page=${page}&pageSize=20`, { availability: "secondary" });
+  const d = query.data;
+  return <ManagerSection title="دفتر حساب" description="بدهکار و بستانکار هر ردیف مستقل نمایش داده می‌شوند"><ManagerQueryState query={query} empty={!d?.items.length} emptyText="گردش حسابی در این صفحه ثبت نشده است.">{d && <ManagerLedgerRows items={d.items} />}</ManagerQueryState>{d && !query.loading && !query.error && <ManagerPager {...d} onPage={setPage} meta={query.meta} />}</ManagerSection>;
+};
 export const ManagerPartnerDetail: React.FC = () => {
-  const { id } = useParams();
-  const { canPermission } = useMiniAppPermissions();
-  const canLedger = canPermission("partners.ledger.read");
-  const canProfit = canPermission("profits.read");
-  const detail = useMiniAppQuery<ManagerPartnerDetailData>(`/api/miniapp/manager/partners/${id}`);
-  const purchases = useMiniAppQuery<PartnerPurchasesData>(`/api/miniapp/manager/partners/${id}/purchases?page=1&pageSize=10`, { availability: "secondary" });
-  const ledger = useMiniAppQuery<PartnerLedgerData>(canLedger ? `/api/miniapp/manager/partners/${id}/ledger?page=1&pageSize=20` : "/api/miniapp/manager/me", { availability: "secondary" });
-  const settlements = useMiniAppQuery<PartnerPhoneData>(canLedger ? `/api/miniapp/manager/partners/${id}/settlements?page=1&pageSize=10` : "/api/miniapp/manager/me", { availability: "secondary" });
-  const accounting = useMiniAppQuery<ManagerPartnerAccountingBreakdownData>(canLedger && canProfit ? `/api/miniapp/manager/partners/${id}/accounting-breakdown` : "/api/miniapp/manager/me", { availability: "secondary" });
-
-  if (!detail.data) return <MiniAppDataState loading={detail.loading} error={detail.error} retry={detail.retry} />;
-  const d = detail.data;
-  const account = d.account?.account;
-  return (
-    <div className="space-y-6">
-      <header className="border-b border-border pb-4"><p className="m-0 text-xs font-bold text-primary">همکار #{d.partner.id.toLocaleString("fa-IR")}</p><h1 className="mb-0 mt-1 text-xl font-black">{d.partner.name}</h1><p className="mb-0 mt-2 text-xs text-mutedText">{d.partner.phoneNumber ? <MiniAppBidiText>{d.partner.phoneNumber}</MiniAppBidiText> : d.partner.type || "همکار فروشگاه"}</p></header>
-
-      <section><h2 className="m-0 text-sm font-black">خلاصه همکاری</h2><div className="mt-3 grid grid-cols-2 gap-3"><div className="rounded-[var(--radius-lg)] border border-border bg-card p-3"><span className="text-[11px] text-mutedText">تأمین ثبت‌شده</span><strong className="mt-1 block text-lg font-black">{d.supplied.total.toLocaleString("fa-IR")}</strong><small className="text-mutedText">{formatToman(d.supplied.totalSupplyAmount)}</small></div>{account ? <div className="rounded-[var(--radius-lg)] border border-border bg-card p-3"><span className="text-[11px] text-mutedText">مانده حساب</span><strong className={`mt-1 block text-lg font-black ${account.code === "creditor" ? "text-success" : account.code === "debtor" ? "text-danger" : "text-foreground"}`}>{formatToman(account.amount)}</strong><small className="text-mutedText">{account.label}</small></div> : null}</div></section>
-
-      <section><h2 className="m-0 border-b border-border pb-2 text-sm font-black">خریدها و تأمین‌های اخیر</h2>{purchases.loading ? <MiniAppDataState loading /> : purchases.error ? <MiniAppDataState error={purchases.error} retry={purchases.retry} /> : purchases.data?.items.length ? <ul className="m-0 list-none divide-y divide-border p-0">{purchases.data.items.slice(0, 8).map((item) => <li key={item.ref} className="py-3"><div className="flex items-start justify-between gap-3"><span className="min-w-0"><strong className="block text-sm leading-6">{item.name}</strong><small className="mt-1 block text-mutedText">{item.purchaseDate ? formatCustomerDate(item.purchaseDate) : "بدون تاریخ"} · {item.quantity.toLocaleString("fa-IR")} {item.unit}</small></span><strong className="shrink-0 text-xs">{formatToman(item.supplyAmount)}</strong></div></li>)}</ul> : <MiniAppDataState empty emptyText="تأمینی ثبت نشده است." />}</section>
-
-      {canLedger && d.phoneSettlement ? <section><h2 className="m-0 border-b border-border pb-2 text-sm font-black">تسویه‌ها</h2><dl className="m-0 grid grid-cols-2 gap-x-4 text-xs"><div className="border-b border-border py-3"><dt className="text-mutedText">باز</dt><dd className="m-0 mt-1 font-black">{d.phoneSettlement.open.toLocaleString("fa-IR")}</dd></div><div className="border-b border-border py-3"><dt className="text-mutedText">مانده تسویه</dt><dd className="m-0 mt-1 font-black">{formatToman(d.phoneSettlement.remainingAmount)}</dd></div></dl>{settlements.data?.items.length ? <ul className="m-0 list-none divide-y divide-border p-0">{settlements.data.items.slice(0, 5).map((item) => <li key={item.ref} className="py-3"><div className="flex items-start justify-between gap-3"><span className="min-w-0"><strong className="block text-sm">{item.name}</strong><small className="mt-1 block text-mutedText">{item.settlement.label}</small></span><strong className="shrink-0 text-xs">{formatToman(item.settlement.remainingAmount)}</strong></div></li>)}</ul> : null}</section> : null}
-
-      {canLedger && canProfit ? <section><h2 className="m-0 border-b border-border pb-2 text-sm font-black">سهم و سود همکار</h2>{accounting.loading ? <MiniAppDataState loading /> : accounting.error ? <MiniAppDataState error={accounting.error} retry={accounting.retry} /> : accounting.data ? <><div className="grid grid-cols-2 gap-3 py-3 text-xs"><div><span className="text-mutedText">سهم سود ثبت‌شده</span><strong className="mt-1 block text-success">{formatToman(accounting.data.summary.profitShareAccrued)}</strong></div><div><span className="text-mutedText">تعداد تخصیص سود</span><strong className="mt-1 block">{accounting.data.summary.profitAllocationCount.toLocaleString("fa-IR")}</strong></div></div>{accounting.data.profitAllocations.length ? <ul className="m-0 list-none divide-y divide-border p-0">{accounting.data.profitAllocations.slice(0, 6).map((item) => <li key={item.id} className="flex items-start justify-between gap-3 py-3"><span className="min-w-0"><strong className="block text-sm">{item.itemDescription || item.allocationType}</strong><small className="mt-1 block text-mutedText">{item.sharePercent.toLocaleString("fa-IR")}٪{item.saleDate ? ` · ${formatCustomerDate(item.saleDate)}` : ""}</small></span><strong className="shrink-0 text-xs text-success">{formatToman(item.amount)}</strong></li>)}</ul> : null}</> : null}</section> : null}
-
-      {canLedger ? <section><h2 className="m-0 border-b border-border pb-2 text-sm font-black">دفتر حساب و تراکنش‌ها</h2>{ledger.loading ? <MiniAppDataState loading /> : ledger.error ? <MiniAppDataState error={ledger.error} retry={ledger.retry} /> : ledger.data ? <ul className="m-0 list-none divide-y divide-border p-0">{ledger.data.items.map((item) => <li key={item.id} className="py-3"><div className="flex items-start justify-between gap-3"><span className="min-w-0"><strong className="block text-sm leading-6">{item.description}</strong><small className="mt-1 block text-mutedText">{formatCustomerDate(item.transactionDate)}</small></span><span className="shrink-0 text-end text-xs font-bold">{formatToman(item.debit || item.credit)}<small className="mt-1 block font-medium text-mutedText">مانده {formatToman(Math.abs(item.balance))}</small></span></div></li>)}</ul> : null}</section> : null}
-    </div>
-  );
+  const { id = "" } = useParams();
+  const { canPermission: can } = useMiniAppPermissions();
+  const query = useMiniAppQuery<ManagerPartnerDetailData>(`/api/miniapp/manager/partners/${id}`);
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  const d = query.data;
+  return <ManagerPage title={d.partner.name} context={`پرونده همکار · ${d.partner.id.toLocaleString("fa-IR")}`} description={<>{formatPartnerType(d.partner.type)}{d.partner.phoneNumber && <> · <MiniAppBidiText>{d.partner.phoneNumber}</MiniAppBidiText></>}</>}>
+    <ManagerSection title="خلاصه همکاری" description="مجموع سوابق در زمان گزارش؛ محدود به امروز نیست"><ManagerGrid>
+      <ManagerMetric label="تأمین ثبت‌شده" value={d.supplied.total} money={false} /><ManagerMetric label="جمع مبلغ تأمین" value={d.supplied.totalSupplyAmount} field="totalSupplyAmount" />
+      {can("partners.ledger.read") && d.account && <ManagerMetric label="مانده حساب" value={d.account.account.amount} detail={d.account.account.label} field="partnerAccountAmount" />}
+    </ManagerGrid></ManagerSection>
+    <Purchases key={`p-${id}`} id={id} />
+    {can("partners.ledger.read") && <>
+      {d.phoneSettlement && <ManagerSection title="خلاصه تسویه گوشی‌ها"><ManagerGrid><ManagerMetric label="تسویه باز" value={d.phoneSettlement.open} money={false} /><ManagerMetric label="مانده تسویه" value={d.phoneSettlement.remainingAmount} field="settlementRemaining" /></ManagerGrid></ManagerSection>}
+      <Settlements key={`s-${id}`} id={id} />
+      {can("profits.read") && <Accounting key={`a-${id}`} id={id} />}
+      <Ledger key={`l-${id}`} id={id} />
+    </>}
+  </ManagerPage>;
 };

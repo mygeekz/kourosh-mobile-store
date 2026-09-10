@@ -1,15 +1,26 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
-import { MiniAppDataState } from "../components/MiniAppDataState";
-import { formatCustomerDate, formatToman } from "../format";
+import { MiniAppFilterChip } from "../components/MiniAppVisualPrimitives";
+import { ManagerAmount, ManagerGrid, ManagerList, ManagerMetric, ManagerPage, ManagerQueryState, ManagerRecord, ManagerSection, useManagerListLocation } from "../components/manager/ManagerUI";
+import { formatCustomerDate } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
 import type { StaffSalesSummary } from "../types";
-
-type ManagerSalesSummary = Partial<StaffSalesSummary> & { period: "today" | "week" | "month"; from: string; to: string };
-const periods = [{ key: "today", label: "امروز" }, { key: "week", label: "۷ روز" }, { key: "month", label: "ماه جاری" }] as const;
+type Summary = Partial<StaffSalesSummary> & Pick<StaffSalesSummary, "period" | "from" | "to">;
+const periods = [{ key: "today", label: "امروز" }, { key: "week", label: "۷ روز اخیر" }, { key: "month", label: "ماه جاری" }] as const;
 export const ManagerSales: React.FC = () => {
-  const [params, setParams] = useSearchParams();
-  const period = periods.some((item) => item.key === params.get("period")) ? params.get("period")! : "today";
-  const query = useMiniAppQuery<ManagerSalesSummary>(`/api/miniapp/manager/sales-summary?period=${period}`);
-  return <div><header className="mb-4"><h1 className="m-0 text-xl font-black">خلاصه فروش</h1><p className="mb-0 mt-1 text-xs text-mutedText">هر شاخص فقط در صورت داشتن Permission مربوط نمایش داده می‌شود.</p></header><div className="grid grid-cols-3 gap-1 border-b border-border pb-3">{periods.map((item) => <button key={item.key} type="button" onClick={() => setParams({ period: item.key })} className={`min-h-10 rounded-[var(--radius-md)] px-2 text-xs font-bold ${period === item.key ? "bg-primary text-primary-foreground" : "bg-muted text-mutedText"}`}>{item.label}</button>)}</div>{!query.data ? <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} /> : <div><p className="my-4 text-xs text-mutedText">از {formatCustomerDate(query.data.from)} تا {formatCustomerDate(query.data.to)}</p><dl className="m-0 grid grid-cols-2 gap-x-4 text-xs">{typeof query.data.totalRevenue === "number" ? <div className="border-b border-border py-3"><dt className="text-mutedText">فروش</dt><dd className="m-0 mt-1 text-lg font-black">{formatToman(query.data.totalRevenue)}</dd></div> : null}{typeof query.data.grossProfit === "number" ? <div className="border-b border-border py-3"><dt className="text-mutedText">سود ناخالص</dt><dd className={`m-0 mt-1 text-lg font-black ${query.data.grossProfit < 0 ? "text-danger" : "text-success"}`}>{formatToman(query.data.grossProfit)}</dd></div> : null}{typeof query.data.totalTransactions === "number" ? <div className="border-b border-border py-3"><dt className="text-mutedText">تعداد فروش</dt><dd className="m-0 mt-1 text-lg font-black">{query.data.totalTransactions.toLocaleString("fa-IR")}</dd></div> : null}{typeof query.data.averageSaleValue === "number" ? <div className="border-b border-border py-3"><dt className="text-mutedText">میانگین فروش</dt><dd className="m-0 mt-1 text-base font-black">{formatToman(query.data.averageSaleValue)}</dd></div> : null}</dl>{query.data.topSellingItems?.length ? <section className="mt-6"><h2 className="m-0 border-b border-border pb-2 text-sm font-black">پرفروش‌ها</h2><ol className="m-0 divide-y divide-border pr-5">{query.data.topSellingItems.map((item) => <li key={`${item.itemType}-${item.id}`} className="py-3 pr-1"><div className="flex items-start justify-between gap-3"><span className="min-w-0 truncate text-sm font-bold">{item.itemName}</span><span className="shrink-0 text-xs">{formatToman(item.totalRevenue)}</span></div></li>)}</ol></section> : null}</div>}</div>;
+  const { params, update } = useManagerListLocation();
+  const period = periods.find(item => item.key === params.get("period"))?.key || "today";
+  const query = useMiniAppQuery<Summary>(`/api/miniapp/manager/sales-summary?period=${period}`);
+  const d = query.data;
+  return <ManagerPage title="گزارش فروش" description="عملکرد فروش در بازه انتخاب‌شده؛ شاخص‌های در دسترس شما">
+    <div className="manager-actions" aria-label="بازه گزارش">{periods.map(item => <MiniAppFilterChip key={item.key} active={period === item.key} onClick={() => update("period", item.key)}>{item.label}</MiniAppFilterChip>)}</div>
+    <ManagerQueryState query={query}>{d && <>
+      <ManagerSection title="خلاصه دوره" description={`از ${formatCustomerDate(d.from)} تا ${formatCustomerDate(d.to)}`}><ManagerGrid>
+        <ManagerMetric label="مبلغ فروش" value={d.totalRevenue} field="totalRevenue" />
+        <ManagerMetric label="سود ناخالص" value={d.grossProfit} field="grossProfit" detail={typeof d.grossProfit === "number" && d.grossProfit < 0 ? "مقدار منفی: زیان ناخالص؛ پیش از هزینه‌های عملیاتی" : "پیش از هزینه‌های عملیاتی؛ سود خالص نیست"} />
+        <ManagerMetric label="تعداد فروش" value={d.totalTransactions} money={false} />
+        <ManagerMetric label="میانگین مبلغ هر فروش" value={d.averageSaleValue} field="averageSaleValue" />
+      </ManagerGrid></ManagerSection>
+      {d.topSellingItems && <ManagerSection title="پرفروش‌های این دوره" description="رتبه‌بندی گزارش فروش؛ فهرست کامل تراکنش‌ها نیست"><ManagerQueryState query={query} empty={!d.topSellingItems.length} emptyText="فروشی در این بازه برای رتبه‌بندی ثبت نشده است."><ManagerList>{d.topSellingItems.map((item, index) => <ManagerRecord key={`${item.itemType}-${item.id}`} title={`${(index + 1).toLocaleString("fa-IR")}. ${item.itemName}`} detail={`${item.quantitySold.toLocaleString("fa-IR")} عدد فروخته‌شده`}><ManagerAmount label="مبلغ فروش این کالا" value={item.totalRevenue} field={`sales-item-${item.id}`} /></ManagerRecord>)}</ManagerList></ManagerQueryState></ManagerSection>}
+    </>}</ManagerQueryState>
+  </ManagerPage>;
 };

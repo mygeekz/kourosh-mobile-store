@@ -1,8 +1,31 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { MiniAppDataState } from "../components/MiniAppDataState";
-import { formatCustomerDate, formatToman } from "../format";
+import { MiniAppPill } from "../components/MiniAppVisualPrimitives";
+import { ManagerAmount, ManagerGrid, ManagerList, ManagerMetric, ManagerPage, ManagerRecord, ManagerSection } from "../components/manager/ManagerUI";
+import { formatCustomerDate } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
+import { useMiniAppPermissions } from "../permission/MiniAppPermissionContext";
 import type { StaffInstallmentDetail } from "../types";
 const statusLabel = { paid: "پرداخت‌شده", overdue: "معوق", today: "سررسید امروز", upcoming: "آینده" } as const;
-export const ManagerInstallmentDetail: React.FC = () => { const { id } = useParams(); const q = useMiniAppQuery<StaffInstallmentDetail>(`/api/miniapp/manager/installments/${id}`); if(!q.data) return <MiniAppDataState loading={q.loading} error={q.error} retry={q.retry}/>; const s=q.data; return <div><header className="border-b border-border pb-4"><p className="m-0 text-xs text-mutedText">قرارداد #{s.saleId.toLocaleString("fa-IR")} · {s.status}</p><h1 className="mb-0 mt-1 text-xl font-black">{s.itemSummary}</h1><Link to={`/customers/${s.customer.id}`} className="mt-2 block text-sm font-bold text-primary no-underline">{s.customer.fullName}</Link></header><dl className="m-0 grid grid-cols-2 gap-x-4 text-xs"><div className="border-b border-border py-3"><dt className="text-mutedText">مبلغ فروش</dt><dd className="m-0 mt-1 font-black">{formatToman(s.actualSalePrice)}</dd></div><div className="border-b border-border py-3"><dt className="text-mutedText">مانده</dt><dd className="m-0 mt-1 font-black">{formatToman(s.remainingAmount)}</dd></div></dl><section className="mt-6"><h2 className="m-0 border-b border-border pb-2 text-sm font-black">برنامه پرداخت</h2><ul className="m-0 list-none divide-y divide-border p-0">{s.paymentTimeline.map(i=><li key={i.paymentId} className="flex items-start justify-between gap-3 py-4"><span><strong className="block text-sm">قسط {i.installmentNumber.toLocaleString("fa-IR")}</strong><small className="mt-1 block text-mutedText">{formatCustomerDate(i.dueDate)} · <b className={i.status==="overdue"?"text-danger":i.status==="paid"?"text-success":""}>{statusLabel[i.status]}</b></small></span><strong className="text-xs">{formatToman(i.remainingAmount || i.amount)}</strong></li>)}</ul></section>{s.checks.length?<section className="mt-6"><h2 className="m-0 border-b border-border pb-2 text-sm font-black">چک‌ها</h2><ul className="m-0 list-none divide-y divide-border p-0">{s.checks.map(c=><li key={c.checkId} className="flex items-start justify-between gap-3 py-3"><span><strong className="block text-sm">{c.bankName||"چک قرارداد"}</strong><small className="mt-1 block text-mutedText">{formatCustomerDate(c.dueDate)} · {c.status}</small></span><strong className="text-xs">{formatToman(c.amount)}</strong></li>)}</ul></section>:null}</div>; };
+export const ManagerInstallmentDetail: React.FC = () => {
+  const { id } = useParams();
+  const { canPermission } = useMiniAppPermissions();
+  const query = useMiniAppQuery<StaffInstallmentDetail>(`/api/miniapp/manager/installments/${id}`);
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  const d = query.data;
+  return <ManagerPage title={d.itemSummary} context={`قرارداد اقساط · ${d.saleId.toLocaleString("fa-IR")}`} description={`${formatCustomerDate(d.saleDate)} · ${d.status}`}>
+    {canPermission("customers.read") ? <Link to={`/customers/${d.customer.id}`} className="manager-link">پرونده مشتری: {d.customer.fullName} ←</Link> : <p className="manager-muted">مشتری: {d.customer.fullName}</p>}
+    <ManagerSection title="مبالغ قرارداد" description="مقادیر ثبت‌شده در گزارش قرارداد"><ManagerGrid>
+      <ManagerMetric label="مبلغ فروش" value={d.actualSalePrice} field="actualSalePrice" /><ManagerMetric label="پیش‌پرداخت" value={d.downPayment} field="downPayment" /><ManagerMetric label="پرداخت‌شده" value={d.paidAmount} field="paidAmount" /><ManagerMetric label="مانده قرارداد" value={d.remainingAmount} field="remainingAmount" />
+    </ManagerGrid></ManagerSection>
+    <ManagerSection title="برنامه پرداخت" description={`${d.totalInstallmentCount.toLocaleString("fa-IR")} قسط در قرارداد`}>
+      {!d.paymentTimeline.length ? <MiniAppDataState empty emptyText="برنامه پرداخت در این گزارش وجود ندارد." /> : <ManagerList>{d.paymentTimeline.map(item => <ManagerRecord key={item.paymentId} title={`قسط ${item.installmentNumber.toLocaleString("fa-IR")}`} detail={`سررسید ${formatCustomerDate(item.dueDate)}`}>
+        <span><MiniAppPill tone={item.status === "overdue" ? "danger" : item.status === "paid" ? "success" : "muted"}>{statusLabel[item.status]}</MiniAppPill></span>
+        <ManagerAmount label="مبلغ قسط" value={item.amount} field={`payment-${item.paymentId}-amount`} /><ManagerAmount label="پرداخت‌شده" value={item.paidAmount} field={`payment-${item.paymentId}-paid`} /><ManagerAmount label="مانده قسط" value={item.remainingAmount} field={`payment-${item.paymentId}-remaining`} />
+        {item.paymentDate && <p className="manager-muted">تاریخ پرداخت {formatCustomerDate(item.paymentDate)}</p>}
+      </ManagerRecord>)}</ManagerList>}
+    </ManagerSection>
+    <ManagerSection title="چک‌های قرارداد">{!d.checks.length ? <p className="manager-muted">چکی در این گزارش ثبت نشده است.</p> : <ManagerList>{d.checks.map(item => <ManagerRecord key={item.checkId} title={item.bankName || "چک قرارداد"} detail={`${formatCustomerDate(item.dueDate)} · ${item.status}`}><ManagerAmount label="مبلغ چک" value={item.amount} field={`check-${item.checkId}`} /></ManagerRecord>)}</ManagerList>}</ManagerSection>
+  </ManagerPage>;
+};

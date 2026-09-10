@@ -1,0 +1,30 @@
+#miniapp-root .manager-page { display: grid; gap: 24px; min-width: 0; overflow-wrap: anywhere; }
+#miniapp-root .manager-page h1, #miniapp-root .manager-page h2, #miniapp-root .manager-page p { margin: 0; }
+#miniapp-root .manager-header { display: grid; gap: 8px; padding-block: 4px 16px; border-bottom: 1px solid rgb(var(--ma-line)); }
+#miniapp-root .manager-header h1 { font-size: 22px; line-height: 1.65; font-weight: 800; }
+#miniapp-root .manager-context { color: rgb(var(--ma-brand)); font-size: 12px; font-weight: 700; }
+#miniapp-root .manager-muted { color: rgb(var(--ma-muted-ink)); font-size: 13px; line-height: 1.9; }
+#miniapp-root .manager-section { display: grid; gap: 12px; min-width: 0; }
+#miniapp-root .manager-section-heading { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+#miniapp-root .manager-section h2 { font-size: 16px; line-height: 1.8; font-weight: 800; }
+#miniapp-root .manager-link { display: inline-flex; align-items: center; min-height: 48px; color: rgb(var(--ma-brand)); text-decoration: none; font-size: 14px; font-weight: 700; }
+#miniapp-root .manager-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+#miniapp-root .manager-page .manager-metric { display: grid; align-content: start; gap: 8px; padding: 16px; box-shadow: none; min-width: 0; }
+#miniapp-root .manager-page .miniapp-money { display: block; width: 100%; font-size: 15px; line-height: 1.9; font-weight: 750; }
+#miniapp-root .manager-page .miniapp-money-part { direction: ltr; unicode-bidi: isolate; }
+#miniapp-root .manager-page button[aria-pressed="true"] { background: rgb(var(--ma-action)); border-color: rgb(var(--ma-action)); color: rgb(var(--ma-on-action)); box-shadow: none; }
+#miniapp-root .manager-number { font-size: 22px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+#miniapp-root .manager-list { margin: 0; padding: 0; list-style: none; border: 1px solid rgb(var(--ma-line)); border-radius: 16px; background: rgb(var(--ma-surface)); min-width: 0; }
+#miniapp-root .manager-record + .manager-record { border-top: 1px solid rgb(var(--ma-line)); }
+#miniapp-root .manager-record-body, #miniapp-root .manager-record-link { display: grid; gap: 8px; padding: 16px; min-width: 0; color: inherit; text-decoration: none; }
+#miniapp-root .manager-record-link { min-height: 64px; border-radius: 12px; }
+#miniapp-root .manager-record-link:hover { background: rgb(var(--ma-brand-soft)); }
+#miniapp-root .manager-record-title { font-size: 15px; line-height: 1.9; font-weight: 750; }
+#miniapp-root .manager-amount { display: grid; gap: 2px; padding-top: 4px; }
+#miniapp-root .manager-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#miniapp-root .manager-pagination { display: grid; gap: 8px; }
+#miniapp-root .manager-notice { border-inline-start: 3px solid rgb(var(--ma-orange)); padding: 12px; background: rgb(var(--ma-surface)); color: rgb(var(--ma-muted-ink)); font-size: 13px; line-height: 1.9; border-radius: 8px; }
+#miniapp-root .manager-search { display: grid; gap: 8px; color: rgb(var(--ma-muted-ink)); font-size: 13px; }
+#miniapp-root .manager-search input { width: 100%; min-width: 0; min-height: 48px; padding: 12px; border: 1px solid rgb(var(--ma-line)); border-radius: 12px; background: rgb(var(--ma-surface)); color: rgb(var(--ma-ink)); font-size: 16px; }
+#miniapp-root .manager-page a:focus-visible, #miniapp-root .manager-page input:focus-visible { outline: 3px solid rgb(var(--ma-brand)); outline-offset: 3px; }
+@media (max-width: 430px) { #miniapp-root .manager-grid { grid-template-columns: minmax(0, 1fr); } }
