@@ -15,6 +15,7 @@ const status = fs.readFileSync("miniapp/components/MiniAppDataAvailabilityStatus
 const home = fs.readFileSync("miniapp/pages/PartnerHome.tsx", "utf8");
 const account = fs.readFileSync("miniapp/pages/PartnerAccount.tsx", "utf8");
 const compactHeader = fs.readFileSync("miniapp/components/premium/PartnerCompactHeader.tsx", "utf8");
+const partnerPage = fs.readFileSync("miniapp/components/partner/PartnerUI.tsx", "utf8");
 const availabilityViewModel = fs.readFileSync("miniapp/dataAvailability/useMiniAppAvailabilityViewModel.ts", "utf8");
 const app = fs.readFileSync("miniapp/App.tsx", "utf8");
 const worker = fs.readFileSync("deployment/cloudflare-pages/_worker.js", "utf8");
@@ -34,14 +35,17 @@ assert.doesNotMatch(availability, /tone:\s*"synced"/);
 assert.doesNotMatch(availability, /title:\s*"فروشگاه آنلاین است"/);
 
 assert.match(availabilityViewModel, /isMiniAppAvailabilityLiveTone/);
-for (const source of [status, home, account, compactHeader, availabilityViewModel]) {
+for (const source of [status, home, account, compactHeader, partnerPage, availabilityViewModel]) {
   assert.doesNotMatch(source, /isMiniAppAvailabilityOnlineTone/);
 }
 assert.match(status, /useMiniAppAvailabilityViewModel/);
 assert.match(compactHeader, /useMiniAppAvailabilityViewModel/);
 assert.match(compactHeader, /availabilityView \? availabilityView\.title : "وضعیت اتصال"/);
-assert.match(home, /<PartnerCompactHeader/);
-assert.match(account, /<PartnerCompactHeader/);
+assert.match(home, /<PartnerPage/);
+assert.match(account, /<PartnerPage/);
+assert.match(partnerPage, /<MiniAppDataAvailabilityStatus\s*\/>/);
+assert.match(status, /const view = availability\.presentation!/);
+assert.match(status, /\{view\.title\}/);
 assert.match(worker, /MINIAPP_STAFF_OFFLINE_UNAVAILABLE/);
 assert.match(worker, /دسترسی مدیریتی فقط هنگام اتصال زنده فعال است/);
 assert.match(app, /MINIAPP_STAFF_OFFLINE_UNAVAILABLE/);

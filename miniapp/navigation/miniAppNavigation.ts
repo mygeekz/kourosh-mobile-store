@@ -29,12 +29,12 @@ const destinations: Record<MiniAppIdentityKind, Destination[]> = {
     { id: "notifications", route: "/notifications", label: "اعلان‌های مدیریت", icon: Bell, parentSection: "more", placement: "more", matches: ["/notifications"], backTo: "/more", description: "پیام‌ها و اعلان‌های حساب مدیریتی شما" },
   ],
   partner: [
-    { id: "home", route: "/", label: "خانه", icon: Home, parentSection: "home", placement: "dock", matches: ["/"] },
+    { id: "home", route: "/", label: "نمای کلی", icon: Home, parentSection: "home", placement: "dock", matches: ["/"] },
+    { id: "purchases", route: "/purchases", label: "کالاها", icon: Package, parentSection: "purchases", placement: "dock", matches: ["/purchases"] },
+    { id: "phones", route: "/phones", label: "تسویه‌ها", icon: Smartphone, parentSection: "phones", placement: "dock", matches: ["/phones"] },
     { id: "account", route: "/account", label: "حساب", icon: WalletCards, parentSection: "account", placement: "dock", matches: ["/account"] },
     { id: "ledger", route: "/ledger", label: "گردش حساب", icon: ListChecks, parentSection: "account", matches: ["/ledger"], backTo: "/account" },
-    { id: "purchases", route: "/purchases", label: "کالاها", icon: Package, parentSection: "purchases", placement: "dock", matches: ["/purchases"] },
-    { id: "more", route: "/more", label: "بیشتر", icon: MoreHorizontal, parentSection: "more", placement: "dock", matches: ["/more"] },
-    { id: "phones", route: "/phones", label: "تسویه گوشی‌ها", icon: Smartphone, parentSection: "more", matches: ["/phones"], backTo: "/more" },
+    { id: "more", route: "/more", label: "حساب", icon: WalletCards, parentSection: "account", matches: ["/more"], backTo: "/account" },
   ],
   customer: [
     { id: "home", route: "/", label: "خانه", icon: Home, parentSection: "home", placement: "dock", matches: ["/"] },

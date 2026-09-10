@@ -185,9 +185,10 @@ try {
       await page.waitForFunction(() => document.querySelector('.miniapp-workspace-trigger')?.textContent === 'مدیریت فروشگاه');
     }
     if (scenario.id === 'partner') {
+      assert.deepEqual(await page.$$eval('nav a', links => links.map(link => link.getAttribute('href'))), ['#/', '#/purchases', '#/phones', '#/account']);
       assert.equal(await page.$('.miniapp-workspace-trigger'), null);
       assert.equal(await page.$('.miniapp-shell-header a[href="#/more"]'), null);
-      for (const [route, parent] of [['/ledger', '#/account'], ['/phones', '#/more']]) { await navigate(page, route); await page.waitForFunction(parent => document.querySelector('nav [aria-current]')?.getAttribute('href') === parent, {}, parent); }
+      for (const [route, parent] of [['/ledger', '#/account'], ['/phones', '#/phones']]) { await navigate(page, route); await page.waitForFunction(parent => document.querySelector('nav [aria-current]')?.getAttribute('href') === parent, {}, parent); }
       await navigate(page, '/sales', '/'); await page.waitForFunction(() => location.hash === '#/');
       assert.ok(!requests.some(route => route.startsWith('/api/miniapp/manager/')));
     }

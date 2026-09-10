@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { fetchMiniAppData, MiniAppApiError } from "../apiClient";
 import { useMiniAppDataAvailability } from "../dataAvailability/MiniAppDataAvailabilityContext";
+import type { MiniAppResponseMeta } from "../reference/miniAppDataAvailability";
 
 type PageData<TItem> = {
   items: TItem[];
@@ -16,6 +17,7 @@ export const useMiniAppPagination = <TItem, TData extends PageData<TItem>>(
   pageSize = 20,
 ) => {
   const [pages, setPages] = useState<TData[]>([]);
+  const [pageMeta, setPageMeta] = useState<Array<{ page: number; meta: MiniAppResponseMeta }>>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +44,7 @@ export const useMiniAppPagination = <TItem, TData extends PageData<TItem>>(
       }
       if (!append) reportMeta(requestPath, result.meta);
       setPages((current) => append ? [...current.filter((existing) => existing.page !== data.page), data] : [data]);
+      setPageMeta(current => append ? [...current.filter(item => item.page !== data.page), { page: data.page, meta: result.meta }] : [{ page: data.page, meta: result.meta }]);
     } catch (caught: unknown) {
       const apiError = caught instanceof MiniAppApiError ? caught : null;
       if (!append && apiError?.responseMeta) reportMeta(requestPath, apiError.responseMeta);
@@ -57,6 +60,7 @@ export const useMiniAppPagination = <TItem, TData extends PageData<TItem>>(
 
   useEffect(() => {
     setPages([]);
+    setPageMeta([]);
     void loadPage(1, false);
   }, [attempt, loadPage]);
 
@@ -72,6 +76,7 @@ export const useMiniAppPagination = <TItem, TData extends PageData<TItem>>(
   }, [itemKey, pages]);
 
   return {
+    pageMeta,
     data: lastPage ? { ...lastPage, items } as TData : null,
     loading,
     loadingMore,
