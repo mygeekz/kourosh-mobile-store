@@ -1,0 +1,23 @@
+#miniapp-root .customer-page { display: grid; gap: var(--ma-space-6); min-width: 0; overflow-wrap: anywhere; }
+#miniapp-root .customer-page h1, #miniapp-root .customer-page h2, #miniapp-root .customer-page p { margin: 0; }
+#miniapp-root .customer-header { display: grid; gap: var(--ma-space-2); padding-block: 4px 16px; border-bottom: 1px solid rgb(var(--ma-line)); }
+#miniapp-root .customer-header h1 { font-size: var(--ma-text-title); line-height: 1.65; font-weight: 800; }
+#miniapp-root .customer-muted { color: rgb(var(--ma-muted-ink)); font-size: .875rem; line-height: 1.9; }
+#miniapp-root .customer-section { display: grid; gap: var(--ma-space-3); min-width: 0; }
+#miniapp-root .customer-section-heading { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: var(--ma-space-2); }
+#miniapp-root .customer-section h2 { font-size: var(--ma-text-heading); line-height: 1.8; font-weight: 750; }
+#miniapp-root .customer-link { display: inline-flex; align-items: center; min-height: var(--ma-control-height); color: rgb(var(--ma-brand)); text-decoration: none; font-size: var(--ma-text-label); font-weight: 700; }
+#miniapp-root .customer-page .customer-card { display: grid; gap: var(--ma-space-3); padding: var(--ma-space-4); box-shadow: none; min-width: 0; }
+#miniapp-root .customer-page .miniapp-money { display: block; width: 100%; font-size: var(--ma-text-body); line-height: 1.9; font-weight: 750; }
+#miniapp-root .customer-page .miniapp-money-part { direction: ltr; unicode-bidi: isolate; }
+#miniapp-root .customer-list { margin: 0; padding: 0; list-style: none; border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-card); background: rgb(var(--ma-surface)); min-width: 0; }
+#miniapp-root .customer-record { display: grid; gap: var(--ma-space-2); padding: var(--ma-space-4); min-width: 0; }
+#miniapp-root .customer-record + .customer-record { border-top: 1px solid rgb(var(--ma-line)); }
+#miniapp-root .customer-record-title { font-size: var(--ma-text-body); line-height: 1.9; font-weight: 700; }
+#miniapp-root .customer-amount { display: grid; gap: 2px; min-width: 0; }
+#miniapp-root .customer-notice { padding: var(--ma-space-3); background: rgb(var(--ma-muted-surface)); color: rgb(var(--ma-muted-ink)); font-size: var(--ma-text-label); line-height: 1.9; border-radius: var(--ma-radius-control); }
+#miniapp-root .customer-page a:focus-visible { outline: 3px solid rgb(var(--ma-brand)); outline-offset: 3px; }
+#miniapp-root .customer-record[data-highlighted="true"] { background: rgb(var(--ma-brand-soft)); border-radius: var(--ma-radius-control); outline: 2px solid rgb(var(--ma-brand)); outline-offset: -2px; scroll-margin-block: 7rem; }
+#miniapp-root .customer-selection { color: rgb(var(--ma-brand)); font-size: var(--ma-text-label); font-weight: 700; }
+#miniapp-root .customer-invoice-identity { display: grid; gap: var(--ma-space-2); }
+#miniapp-root .customer-invoice-total { border-top: 2px solid rgb(var(--ma-line)); padding-top: var(--ma-space-4); }

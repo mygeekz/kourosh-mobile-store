@@ -1,20 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { MiniAppDataState } from "../components/MiniAppDataState";
-import { formatCustomerDate, formatToman } from "../format";
+import { MiniAppPill } from "../components/MiniAppVisualPrimitives";
+import { CustomerAmount, CustomerCard, CustomerList, CustomerPage, CustomerQueryState, CustomerRecord, CustomerSection } from "../components/customer/CustomerUI";
+import { formatCustomerDate } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
 import type { CustomerInstallmentDetail } from "../types";
 
 const timelineLabel: Record<CustomerInstallmentDetail["timeline"][number]["state"], string> = {
-  paid: "پرداخت‌شده",
-  due: "سررسید امروز",
-  upcoming: "آینده",
-  overdue: "عقب‌افتاده",
+  paid: "پرداخت‌شده", due: "سررسید امروز", upcoming: "آینده", overdue: "عقب‌افتاده",
 };
-
-const timelineTone = (state: CustomerInstallmentDetail["timeline"][number]["state"]) =>
-  state === "paid" ? "text-success" : state === "overdue" ? "text-danger" : state === "due" ? "text-warning" : "text-mutedText";
-
 export const CustomerInstallmentDetailPage: React.FC = () => {
   const { saleId = "" } = useParams();
   const [searchParams] = useSearchParams();
@@ -28,42 +23,28 @@ export const CustomerInstallmentDetailPage: React.FC = () => {
   useEffect(() => {
     if (hasMatchingPayment) highlightedPaymentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, [hasMatchingPayment]);
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
   const sale = query.data;
-  return (
-    <section aria-labelledby="installment-detail-title">
-      <p className="m-0 text-xs font-extrabold text-primary">قرارداد شماره {sale.id.toLocaleString("fa-IR")}</p>
-      <h1 id="installment-detail-title" className="mb-1 mt-1 text-xl font-black leading-9">{sale.itemsSummary}</h1>
-      <p className="m-0 text-sm text-mutedText">تاریخ فروش {formatCustomerDate(sale.saleDate)}</p>
-
-      <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4 rounded-[var(--radius-lg)] border border-border bg-card p-4 text-xs">
-        <div><dt className="text-mutedText">مبلغ کل</dt><dd className="m-0 mt-1 text-sm font-black tabular-nums">{formatToman(sale.totalAmount)}</dd></div>
-        <div><dt className="text-mutedText">پیش‌پرداخت</dt><dd className="m-0 mt-1 text-sm font-black tabular-nums">{formatToman(sale.downPayment)}</dd></div>
-        <div><dt className="text-mutedText">پرداخت‌شده</dt><dd className="m-0 mt-1 text-sm font-black tabular-nums text-success">{formatToman(sale.collectedAmount)}</dd></div>
-        <div><dt className="text-mutedText">مانده</dt><dd className="m-0 mt-1 text-sm font-black tabular-nums">{formatToman(sale.remainingAmount)}</dd></div>
-      </dl>
-
-      {sale.items.length ? <section className="mt-6"><h2 className="m-0 border-b border-border pb-3 text-base font-black">اقلام قرارداد</h2><ul className="m-0 list-none divide-y divide-border p-0">{sale.items.map((item, index) => <li key={`${item.description}-${index}`} className="flex items-start justify-between gap-4 py-3 text-sm"><span>{item.description}<small className="block text-xs text-mutedText">تعداد {item.quantity.toLocaleString("fa-IR")}</small></span><strong className="shrink-0 tabular-nums">{formatToman(item.totalPrice)}</strong></li>)}</ul></section> : null}
-
-      <section className="mt-6" aria-labelledby="timeline-title">
-        <h2 id="timeline-title" className="m-0 border-b border-border pb-3 text-base font-black">زمان‌بندی پرداخت</h2>
-        <MiniAppDataState empty={!sale.timeline.length && !sale.checks.length} emptyText="زمان‌بندی پرداختی ثبت نشده است." />
-        <ol className="m-0 list-none divide-y divide-border p-0">
-          {sale.timeline.map((payment) => (
-            <li
-              key={payment.id}
-              ref={hasMatchingPayment && payment.id === requestedPaymentId ? highlightedPaymentRef : undefined}
-              className={`flex items-start justify-between gap-4 py-4 ${hasMatchingPayment && payment.id === requestedPaymentId ? "rounded-[var(--radius-md)] bg-primary/10 px-3 ring-1 ring-primary/30" : ""}`}
-            >
-              <div><strong className="block text-sm">قسط {payment.installmentNumber.toLocaleString("fa-IR")}</strong><span className="mt-1 block text-xs text-mutedText">سررسید {formatCustomerDate(payment.dueDate)}</span><span className={`mt-1 block text-xs font-bold ${timelineTone(payment.state)}`}>{timelineLabel[payment.state]}</span></div>
-              <div className="text-end"><strong className="block text-sm tabular-nums">{formatToman(payment.amount)}</strong>{payment.remainingAmount > 0 && payment.paidAmount > 0 ? <span className="mt-1 block text-xs text-mutedText">مانده {formatToman(payment.remainingAmount)}</span> : null}</div>
-            </li>
-          ))}
-          {sale.checks.map((check) => (
-            <li key={`check-${check.id}`} className="flex items-start justify-between gap-4 py-4"><div><strong className="block text-sm">چک {check.bankName || "قرارداد"}</strong><span className="mt-1 block text-xs text-mutedText">سررسید {formatCustomerDate(check.dueDate)}</span><span className="mt-1 block text-xs font-bold text-secondaryText">{check.status}</span></div><strong className="text-sm tabular-nums">{formatToman(check.amount)}</strong></li>
-          ))}
-        </ol>
-      </section>
-    </section>
-  );
+  return <CustomerPage id="installment-detail-title" title={sale?.itemsSummary || "جزئیات قرارداد"} description={sale ? `قرارداد ${sale.id.toLocaleString("fa-IR")} · تاریخ فروش ${formatCustomerDate(sale.saleDate)}` : undefined}>
+    <CustomerQueryState query={query}>{sale && <>
+      <div><MiniAppPill>{sale.status}</MiniAppPill></div>
+      <CustomerSection title="خلاصه قرارداد"><CustomerCard>
+        <CustomerAmount label="مبلغ کل" value={sale.totalAmount} field="totalAmount" /><CustomerAmount label="پیش‌پرداخت" value={sale.downPayment} field="downPayment" /><CustomerAmount label="پرداخت‌شده ثبت‌شده" value={sale.collectedAmount} field="collectedAmount" /><CustomerAmount label="مانده قرارداد" value={sale.remainingAmount} field="remainingAmount" />
+      </CustomerCard></CustomerSection>
+      {sale.items.length > 0 && <CustomerSection title="اقلام قرارداد"><CustomerList>{sale.items.map((item, index) => <CustomerRecord key={`${item.description}-${index}`} title={item.description} detail={`تعداد ${item.quantity.toLocaleString("fa-IR")}`}><CustomerAmount label="قیمت هر واحد" value={item.unitPrice} /><CustomerAmount label="مبلغ ردیف" value={item.totalPrice} /></CustomerRecord>)}</CustomerList></CustomerSection>}
+      <CustomerSection title="زمان‌بندی پرداخت" description="وضعیت و مبالغ هر قسط مطابق گزارش فروشگاه">
+        {!sale.timeline.length && !sale.checks.length && <MiniAppDataState empty emptyText="زمان‌بندی پرداخت در این گزارش ثبت نشده است." />}
+        {sale.timeline.length > 0 && <ol className="customer-list">{sale.timeline.map(payment => {
+          const selected = hasMatchingPayment && payment.id === requestedPaymentId;
+          return <li key={payment.id} ref={selected ? highlightedPaymentRef : undefined} className="customer-record" data-payment-id={payment.id} data-highlighted={selected || undefined} aria-current={selected ? "true" : undefined}>
+            {selected && <p className="customer-selection">قسط انتخاب‌شده از پیوند شما</p>}
+            <strong className="customer-record-title">قسط {payment.installmentNumber.toLocaleString("fa-IR")}</strong><p className="customer-muted">سررسید {formatCustomerDate(payment.dueDate)}</p>
+            <div><MiniAppPill tone={payment.state === "paid" ? "success" : payment.state === "overdue" || payment.state === "due" ? "warning" : "muted"}>{timelineLabel[payment.state]}</MiniAppPill></div>
+            <CustomerAmount label="مبلغ قسط" value={payment.amount} field={`payment-${payment.id}-amount`} /><CustomerAmount label="پرداخت‌شده" value={payment.paidAmount} field={`payment-${payment.id}-paid`} /><CustomerAmount label="مانده قسط" value={payment.remainingAmount} field={`payment-${payment.id}-remaining`} />
+            {payment.paymentDate && <p className="customer-muted">تاریخ پرداخت: {formatCustomerDate(payment.paymentDate)}</p>}
+          </li>;
+        })}</ol>}
+      </CustomerSection>
+      {sale.checks.length > 0 && <CustomerSection title="چک‌های قرارداد"><CustomerList>{sale.checks.map(check => <CustomerRecord key={check.id} record={`check-${check.id}`} title={`چک ${check.bankName || "قرارداد"}`} detail={`سررسید ${formatCustomerDate(check.dueDate)} · ${check.status}`}><CustomerAmount label="مبلغ چک" value={check.amount} field={`check-${check.id}`} /></CustomerRecord>)}</CustomerList></CustomerSection>}
+    </>}</CustomerQueryState>
+  </CustomerPage>;
 };

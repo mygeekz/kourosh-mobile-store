@@ -38,11 +38,11 @@ const destinations: Record<MiniAppIdentityKind, Destination[]> = {
   ],
   customer: [
     { id: "home", route: "/", label: "خانه", icon: Home, parentSection: "home", placement: "dock", matches: ["/"] },
-    { id: "account", route: "/account", label: "حساب", icon: WalletCards, parentSection: "account", placement: "dock", matches: ["/account"] },
+    { id: "purchases", route: "/purchases", label: "خریدها", icon: ShoppingCart, parentSection: "purchases", placement: "dock", matches: ["/purchases"] },
     { id: "installments", route: "/installments", label: "اقساط", icon: ListChecks, parentSection: "installments", placement: "dock", matches: ["/installments"] },
     { id: "installment-detail", route: "/installments/:id", label: "جزئیات اقساط", icon: ListChecks, parentSection: "installments", matches: ["/installments/*"], backTo: "/installments" },
-    { id: "purchases", route: "/purchases", label: "خریدها", icon: ShoppingCart, parentSection: "purchases", placement: "dock", matches: ["/purchases"] },
     { id: "invoice", route: "/invoices/:invoiceRef", label: "جزئیات خرید", icon: ShoppingCart, parentSection: "purchases", matches: ["/invoices/*"], backTo: "/purchases" },
+    { id: "account", route: "/account", label: "حساب", icon: WalletCards, parentSection: "account", placement: "dock", matches: ["/account"] },
   ],
 };
 

@@ -1,23 +1,35 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { MiniAppDataState } from "../components/MiniAppDataState";
 import { MiniAppBidiText } from "../components/MiniAppBidiText";
-import { formatCustomerDate, formatToman } from "../format";
+import { MiniAppDataState } from "../components/MiniAppDataState";
+import { CustomerAmount, CustomerCard, CustomerList, CustomerPage, CustomerQueryState, CustomerRecord, CustomerSection } from "../components/customer/CustomerUI";
+import { formatCustomerDate } from "../format";
 import { useMiniAppQuery } from "../hooks/useMiniAppQuery";
 import type { CustomerInvoiceDetail } from "../types";
 
 export const CustomerInvoice: React.FC = () => {
   const { invoiceRef = "" } = useParams();
   const query = useMiniAppQuery<CustomerInvoiceDetail>(`/api/miniapp/customer/invoices/${encodeURIComponent(invoiceRef)}`);
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
-  const invoice = query.data;
-  return (
-    <section aria-labelledby="invoice-title">
-      <div className="flex items-center gap-3 border-b border-border pb-4"><img className="size-11 object-contain" src={invoice.business.logoUrl} alt="" aria-hidden="true" /><div><p className="m-0 text-xs text-mutedText">{invoice.business.name}</p><h1 id="invoice-title" className="m-0 text-xl font-black">فاکتور <MiniAppBidiText>{invoice.invoiceNumber}</MiniAppBidiText></h1></div></div>
-      <dl className="my-0 grid grid-cols-2 gap-4 border-b border-border py-4 text-xs"><div><dt className="text-mutedText">تاریخ</dt><dd className="m-0 mt-1 font-extrabold">{formatCustomerDate(invoice.transactionDate)}</dd></div><div><dt className="text-mutedText">نوع فروش</dt><dd className="m-0 mt-1 font-extrabold">{invoice.paymentMethodLabel || "فروش"}</dd></div></dl>
-      <h2 className="m-0 border-b border-border py-3 text-base font-black">اقلام</h2>
-      <ul className="m-0 list-none divide-y divide-border p-0">{invoice.items.map((item) => <li key={item.id} className="flex items-start justify-between gap-4 py-4"><div><strong className="block text-sm">{item.description}</strong><span className="mt-1 block text-xs text-mutedText">{item.quantity.toLocaleString("fa-IR")} × {formatToman(item.unitPrice)}</span></div><strong className="shrink-0 text-sm tabular-nums">{formatToman(item.totalPrice)}</strong></li>)}</ul>
-      <dl className="m-0 border-t border-border pt-3 text-sm"><div className="flex min-h-10 items-center justify-between"><dt className="text-mutedText">جمع</dt><dd className="m-0 font-extrabold tabular-nums">{formatToman(invoice.totals.subtotal)}</dd></div>{invoice.totals.itemsDiscount + invoice.totals.globalDiscount > 0 ? <div className="flex min-h-10 items-center justify-between"><dt className="text-mutedText">تخفیف</dt><dd className="m-0 font-extrabold tabular-nums">{formatToman(invoice.totals.itemsDiscount + invoice.totals.globalDiscount)}</dd></div> : null}<div className="flex min-h-12 items-center justify-between border-t border-border"><dt className="font-black">مبلغ نهایی</dt><dd className="m-0 text-lg font-black tabular-nums">{formatToman(invoice.totals.grandTotal)}</dd></div></dl>
-    </section>
-  );
+  const d = query.data;
+  return <CustomerPage id="invoice-title" title="فاکتور خرید" description={d?.business.name}>
+    <CustomerQueryState query={query}>{d && <>
+      <CustomerCard><div className="customer-invoice-identity">
+        {d.business.logoUrl && <img className="size-11 object-contain" src={d.business.logoUrl} alt="" aria-hidden="true" />}
+        <strong>شماره فاکتور: <MiniAppBidiText>{d.invoiceNumber || "—"}</MiniAppBidiText></strong>
+        <p className="customer-muted">مرجع: <MiniAppBidiText>{invoiceRef}</MiniAppBidiText></p>
+        <p className="customer-muted">تاریخ: {formatCustomerDate(d.transactionDate)}</p>
+        <p className="customer-muted">روش پرداخت: {d.paymentMethodLabel || "ثبت نشده"}</p>
+        <p className="customer-muted">وضعیت فاکتور: {d.status === "active" ? "فعال" : d.status || "ثبت نشده"}</p>
+      </div></CustomerCard>
+      <CustomerSection title="اقلام خرید">
+        {d.items.length ? <CustomerList>{d.items.map(item => <CustomerRecord key={item.id} record={item.id} title={item.description} detail={`تعداد: ${item.quantity.toLocaleString("fa-IR")}`}>
+          <CustomerAmount label="قیمت هر واحد" value={item.unitPrice} field={`item-${item.id}-unit`} /><CustomerAmount label="تخفیف هر واحد" value={item.discountAmount} field={`item-${item.id}-discount`} /><CustomerAmount label="مبلغ ردیف" value={item.totalPrice} field={`item-${item.id}-total`} />
+        </CustomerRecord>)}</CustomerList> : <MiniAppDataState empty emptyText="اقلام این فاکتور در گزارش فعلی موجود نیست." />}
+      </CustomerSection>
+      <CustomerSection title="مبالغ فاکتور" description="مقادیر ثبت‌شده در فاکتور فروشگاه"><CustomerCard>
+        <CustomerAmount label="جمع اولیه" value={d.totals.subtotal} field="subtotal" /><CustomerAmount label="تخفیف اقلام" value={d.totals.itemsDiscount} field="itemsDiscount" /><CustomerAmount label="تخفیف کل فاکتور" value={d.totals.globalDiscount} field="globalDiscount" /><CustomerAmount label="مالیات" value={d.totals.taxAmount} field="taxAmount" />
+        <div className="customer-invoice-total"><CustomerAmount label="مبلغ نهایی فاکتور" value={d.totals.grandTotal} field="grandTotal" /></div>
+      </CustomerCard></CustomerSection>
+    </>}</CustomerQueryState>
+  </CustomerPage>;
 };

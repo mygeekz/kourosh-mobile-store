@@ -193,6 +193,7 @@ try {
       assert.ok(!requests.some(route => route.startsWith('/api/miniapp/manager/')));
     }
     if (scenario.id === 'customer') {
+      assert.deepEqual(await page.$$eval('nav a', links => links.map(link => link.getAttribute('href'))), ['#/', '#/purchases', '#/installments', '#/account']);
       await navigate(page, '/purchases'); await page.waitForSelector('main a[href="#/invoices/sale:1"]'); await page.click('main a[href="#/invoices/sale:1"]');
       await page.waitForSelector('main [role="alert"]'); assert.equal(await active(page), '#/purchases');
       await page.click('button[aria-label="بازگشت"]'); await page.waitForSelector('#purchases-title');
