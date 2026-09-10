@@ -1,3 +1,4 @@
+@import "./design-system/tokens.css";
 @config "../tailwind.miniapp.config.cjs";
 
 @font-face {
@@ -28,6 +29,170 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Shared visual foundation. All selectors stay inside the Mini App. */
+#miniapp-root .miniapp-card {
+  min-inline-size: 0;
+  border: 1px solid rgb(var(--ma-line));
+  border-radius: var(--ma-radius-card);
+  background: rgb(var(--ma-surface));
+  box-shadow: var(--ma-shadow-card);
+}
+#miniapp-root .miniapp-interactive {
+  transition: background-color var(--ma-duration), box-shadow var(--ma-duration);
+}
+#miniapp-root .miniapp-interactive:active { box-shadow: none; }
+#miniapp-root .miniapp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ma-space-2);
+  min-block-size: var(--ma-control-height);
+  padding: var(--ma-space-2) var(--ma-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--ma-radius-control);
+  font-size: var(--ma-text-label);
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: opacity var(--ma-duration), background-color var(--ma-duration);
+}
+#miniapp-root .miniapp-button-primary {
+  color: rgb(var(--ma-on-action));
+  background: rgb(var(--ma-action));
+}
+#miniapp-root .miniapp-button-secondary {
+  color: rgb(var(--ma-brand));
+  border-color: rgb(var(--ma-line));
+  background: rgb(var(--ma-surface));
+}
+#miniapp-root .miniapp-button:active { opacity: .85; }
+#miniapp-root .miniapp-button:disabled { opacity: .55; cursor: not-allowed; }
+#miniapp-root .miniapp-money {
+  display: block;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.65;
+  unicode-bidi: plaintext;
+}
+#miniapp-root .miniapp-money-part { display: inline-block; white-space: nowrap; }
+#miniapp-root .miniapp-metric-card .miniapp-money { font-size: .875rem; }
+@media (max-width: 360px) {
+  #miniapp-root .miniapp-metric-card { grid-column: 1 / -1; }
+}
+#miniapp-root .miniapp-heading { overflow-wrap: anywhere; line-height: 1.65; }
+#miniapp-root .miniapp-badge {
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: var(--ma-text-caption);
+  line-height: 1.65;
+  font-weight: 600;
+}
+#miniapp-root .miniapp-badge svg { flex-shrink: 0; }
+#miniapp-root .miniapp-section-heading { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; justify-content: space-between; }
+#miniapp-root .miniapp-section-action { display: inline-flex; align-items: center; min-block-size: 3rem; font-size: .875rem; }
+#miniapp-root .miniapp-hero { --primary-foreground: 0 0% 100%; background: rgb(var(--ma-hero)); color: rgb(var(--ma-on-hero)); border-radius: var(--ma-radius-hero); }
+#miniapp-root .miniapp-caption { font-size: var(--ma-text-caption); line-height: 1.75; overflow-wrap: anywhere; }
+#miniapp-root .miniapp-state { padding: var(--ma-space-6); text-align: center; overflow-wrap: anywhere; }
+
+
+/* Navigation shell consumes the existing Telegram inset variables. */
+#miniapp-root .miniapp-shell {
+  --ma-shell-width: 36rem;
+  padding-block-start: var(--miniapp-safe-area-top);
+  padding-block-end: calc(6.5rem + var(--miniapp-safe-area-bottom));
+  color: rgb(var(--ma-ink));
+  background: rgb(var(--ma-canvas));
+}
+#miniapp-root .miniapp-shell-header { border-block-end: 1px solid rgb(var(--ma-line)); background: rgb(var(--ma-surface)); }
+#miniapp-root .miniapp-shell-header-inner {
+  display: grid;
+  grid-template-columns: var(--ma-control-height) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--ma-space-3);
+  max-inline-size: var(--ma-shell-width);
+  min-block-size: 5.5rem;
+  padding-block: var(--ma-space-2);
+  margin-inline: auto;
+}
+#miniapp-root .miniapp-shell-heading { min-inline-size: 0; }
+#miniapp-root .miniapp-shell-title { display: block; font-size: var(--ma-text-heading); line-height: 1.6; overflow-wrap: anywhere; }
+#miniapp-root .miniapp-shell-icon, #miniapp-root .miniapp-shell-brand {
+  display: inline-flex; align-items: center; justify-content: center;
+  inline-size: var(--ma-control-height); block-size: var(--ma-control-height);
+  border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-control);
+  color: rgb(var(--ma-ink)); background: rgb(var(--ma-surface));
+}
+#miniapp-root .miniapp-shell-icon { cursor: pointer; }
+#miniapp-root .miniapp-shell-brand img { inline-size: 2rem; block-size: 2rem; object-fit: contain; }
+#miniapp-root .miniapp-workspace-label, #miniapp-root .miniapp-workspace-trigger {
+  display: flex; align-items: center; gap: .375rem;
+  color: rgb(var(--ma-muted-ink)); font-size: var(--ma-text-caption); line-height: 1.65;
+}
+#miniapp-root .miniapp-workspace-label { min-block-size: 1.75rem; }
+#miniapp-root .miniapp-workspace-trigger {
+  min-block-size: var(--ma-control-height); max-inline-size: 100%;
+  border: 0; border-radius: var(--ma-radius-control); background: transparent;
+  padding: .25rem .5rem; margin-inline-start: -.5rem; color: rgb(var(--ma-brand));
+  text-align: start; font-weight: 700; cursor: pointer;
+}
+#miniapp-root .miniapp-workspace-trigger span { overflow-wrap: anywhere; }
+#miniapp-root .miniapp-workspace-trigger svg, #miniapp-root .miniapp-workspace-label svg { flex-shrink: 0; }
+#miniapp-root .miniapp-shell-content { max-inline-size: var(--ma-shell-width); margin-inline: auto; padding-block: var(--ma-space-5, 1.25rem); }
+#miniapp-root .miniapp-shell-dock {
+  position: fixed; z-index: 30; inset-inline: 0; inset-block-end: 0;
+  border-block-start: 1px solid rgb(var(--ma-line)); background: rgb(var(--ma-surface));
+  padding-block-start: var(--ma-space-2); padding-block-end: max(var(--ma-space-2), var(--miniapp-safe-area-bottom));
+}
+#miniapp-root .miniapp-shell-nav { display: grid; gap: .25rem; max-inline-size: var(--ma-shell-width); margin-inline: auto; }
+#miniapp-root .miniapp-shell-nav-item {
+  min-inline-size: 0; min-block-size: 3.75rem; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: .25rem; padding: .375rem .125rem;
+  border-radius: var(--ma-radius-control); color: rgb(var(--ma-muted-ink)); text-decoration: none;
+  font-size: var(--ma-text-caption); line-height: 1.5; text-align: center;
+  transition: background-color var(--ma-duration), color var(--ma-duration);
+}
+#miniapp-root .miniapp-shell-nav-item[aria-current="page"] { color: rgb(var(--ma-brand)); background: rgb(var(--ma-brand-soft)); font-weight: 700; }
+#miniapp-root .miniapp-shell-nav-item:active, #miniapp-root .miniapp-shell-icon:active, #miniapp-root .miniapp-workspace-trigger:active { background: rgb(var(--ma-muted-surface)); }
+#miniapp-root .miniapp-workspace-dialog {
+  color: rgb(var(--ma-ink)); background: rgb(var(--ma-surface));
+  border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-hero);
+  padding: var(--ma-space-4); margin: auto;
+  inline-size: min(28rem, calc(100% - 2rem - var(--miniapp-safe-area-left) - var(--miniapp-safe-area-right)));
+  max-block-size: calc(100dvh - var(--miniapp-safe-area-top) - var(--miniapp-safe-area-bottom) - 2rem);
+  box-shadow: var(--ma-shadow-overlay); overflow-y: auto;
+}
+#miniapp-root .miniapp-workspace-dialog::backdrop { background: rgb(0 0 0 / .6); }
+#miniapp-root .miniapp-workspace-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+#miniapp-root .miniapp-workspace-dialog-heading h2 { margin: 0; font-size: var(--ma-text-heading); }
+#miniapp-root .miniapp-workspace-dialog-heading button { flex-shrink: 0; }
+#miniapp-root .miniapp-workspace-options { display: grid; gap: var(--ma-space-2); }
+#miniapp-root .miniapp-workspace-option {
+  display: flex; align-items: center; gap: .5rem; min-block-size: 4.5rem; inline-size: 100%;
+  text-align: start; padding: .75rem; border: 1px solid rgb(var(--ma-line));
+  border-radius: var(--ma-radius-control); color: rgb(var(--ma-ink)); background: rgb(var(--ma-surface)); cursor: pointer;
+}
+#miniapp-root .miniapp-workspace-option > span:first-child { min-inline-size: 0; flex: 1; }
+#miniapp-root .miniapp-workspace-option strong, #miniapp-root .miniapp-workspace-option small { display: block; overflow-wrap: anywhere; }
+#miniapp-root .miniapp-workspace-option strong { font-size: var(--ma-text-label); }
+#miniapp-root .miniapp-workspace-option small { font-size: var(--ma-text-caption); color: rgb(var(--ma-muted-ink)); }
+#miniapp-root .miniapp-workspace-option[aria-pressed="true"] { background: rgb(var(--ma-brand-soft)); border-color: rgb(var(--ma-brand)); }
+#miniapp-root .miniapp-more-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ma-space-3); }
+#miniapp-root .miniapp-more-link {
+  display: flex; align-items: center; gap: var(--ma-space-3); min-block-size: 5.5rem;
+  padding: var(--ma-space-4); border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-card);
+  background: rgb(var(--ma-surface)); color: rgb(var(--ma-ink)); text-decoration: none;
+}
+#miniapp-root .miniapp-more-icon { display: flex; align-items: center; justify-content: center; inline-size: 2.75rem; block-size: 2.75rem; flex-shrink: 0; border-radius: var(--ma-radius-control); background: rgb(var(--ma-brand-soft)); color: rgb(var(--ma-brand)); }
+#miniapp-root .miniapp-more-copy { flex: 1; min-inline-size: 0; overflow-wrap: anywhere; }
+#miniapp-root .miniapp-more-copy strong { display: block; font-size: var(--ma-text-label); }
+#miniapp-root .miniapp-more-copy small { display: block; font-size: var(--ma-text-caption); color: rgb(var(--ma-muted-ink)); margin-block-start: .25rem; }
+#miniapp-root .miniapp-more-link > svg { flex-shrink: 0; }
+#miniapp-root .miniapp-skip-link { position: fixed; inset-block-start: var(--miniapp-safe-area-top); inset-inline-start: 1rem; z-index: 50; transform: translateY(-200%); padding: .75rem; background: rgb(var(--ma-surface)); color: rgb(var(--ma-brand)); }
+#miniapp-root .miniapp-skip-link:focus { transform: none; }
 
 /* v254 platform primitives: one source for Telegram viewport/safe-area behavior. */
 .miniapp-screen {

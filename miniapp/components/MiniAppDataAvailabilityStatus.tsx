@@ -45,13 +45,13 @@ export const MiniAppDataAvailabilityStatus: React.FC = () => {
       );
     }
     return (
-      <section className="mb-5 rounded-[1.45rem] border border-white/95 bg-white/[0.92] p-3.5 shadow-premium-card" aria-label="وضعیت تازگی اطلاعات" role="status" aria-busy={availability.refreshing || undefined}>
+      <section className="miniapp-card mb-5 p-4" aria-label="وضعیت تازگی اطلاعات" role="status" aria-busy={availability.refreshing || undefined}>
         <div className="flex flex-wrap items-center gap-2">
           <PremiumPill tone={availability.premiumTone} icon={StateIcon}>{view.badge}</PremiumPill>
           <PremiumPill tone={availability.premiumTone} icon={Store}>{view.title}</PremiumPill>
           {refreshingPill}
         </div>
-        <span className="mt-2.5 block text-[10px] leading-5 text-premium-muted">{view.detail}</span>
+        <span className="mt-2.5 block text-xs leading-6 text-premium-muted">{view.detail}</span>
       </section>
     );
   }

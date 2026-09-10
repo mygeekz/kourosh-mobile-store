@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { useMiniAppAuth } from "./auth/MiniAppAuthContext";
 import { MiniAppShell } from "./components/MiniAppShell";
+import { getMiniAppHomeRoute } from "./navigation/miniAppNavigation";
 import { CustomerAccount } from "./pages/CustomerAccount";
 import { CustomerHome } from "./pages/CustomerHome";
 import { CustomerInstallmentDetailPage } from "./pages/CustomerInstallmentDetail";
@@ -15,6 +16,7 @@ import { PartnerMore } from "./pages/PartnerMore";
 import { PartnerPhones } from "./pages/PartnerPhones";
 import { PartnerPurchases } from "./pages/PartnerPurchases";
 import { ManagerHome } from "./pages/ManagerHome";
+import { ManagerMore } from "./pages/ManagerMore";
 import { ManagerDirectory } from "./pages/ManagerDirectory";
 import { ManagerCustomerDetail } from "./pages/ManagerCustomerDetail";
 import { ManagerPartnerDetail } from "./pages/ManagerPartnerDetail";
@@ -56,8 +58,8 @@ const MiniAppRoutes: React.FC = () => {
   useEffect(() => {
     if (status !== "authenticated" || consumedLaunch.current || !launch) return;
     consumedLaunch.current = true;
-    navigate(launch.route, { replace: true });
-  }, [launch, navigate, status]);
+    navigate(launch.route === "/" && identity ? getMiniAppHomeRoute(identity) : launch.route, { replace: true });
+  }, [identity, launch, navigate, status]);
   if (status === "loading" || status === "syncing") return <FullPageState loading title={status === "syncing" ? "همگام‌سازی حساب" : "اتصال امن به کوروش"} message={message} />;
   if (status !== "authenticated") {
     return <FullPageState title={resolveBootstrapTitle(status, code)} message={message} retry={status === "outside_telegram" ? undefined : retry} />;
@@ -65,10 +67,12 @@ const MiniAppRoutes: React.FC = () => {
   if (identity?.kind === "staff") {
     const permissions = new Set(identity.permissions || []);
     const can = (permission: string) => permissions.has(permission);
+    const homeRoute = getMiniAppHomeRoute(identity);
     return (
       <Routes>
         <Route element={<MiniAppShell />}>
-          <Route index element={<ManagerHome />} />
+          <Route index element={homeRoute === "/" ? <ManagerHome /> : <Navigate to={homeRoute} replace />} />
+          <Route path="more" element={<ManagerMore />} />
           <Route path="notifications" element={<ManagerNotifications />} />
           {(can("customers.read") || can("partners.read")) ? <Route path="directory" element={<ManagerDirectory />} /> : null}
           {can("customers.read") ? <Route path="customers/:id" element={<ManagerCustomerDetail />} /> : null}

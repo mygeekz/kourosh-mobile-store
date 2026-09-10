@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MiniAppCard, MiniAppFinancialValue } from "../ui/MiniAppFoundation";
 import type { LucideIcon } from "../../../components/lucide-react";
-import { Clock3, Store, WalletCards } from "../../../components/lucide-react";
+import { Clock3, Store } from "../../../components/lucide-react";
 import {
   MINIAPP_PREMIUM,
   MINIAPP_PREMIUM_TONE,
@@ -31,7 +32,7 @@ export const PremiumPill: React.FC<React.PropsWithChildren<{
   className?: string;
   compact?: boolean;
 }>> = ({ tone = "slate", icon: Icon, className = "", compact = false, children }) => (
-  <span className={`inline-flex items-center rounded-full border font-black shadow-premium-soft ${compact ? "min-h-7 gap-1 px-2 text-[9px]" : "min-h-9 gap-1.5 px-3.5 text-[11px]"} ${MINIAPP_PREMIUM_TONE[tone].pill} ${className}`}>
+  <span className={`miniapp-badge inline-flex items-center rounded-full border py-1 ${compact ? "min-h-7 gap-1.5 px-2.5" : "min-h-8 gap-1.5 px-3"} ${MINIAPP_PREMIUM_TONE[tone].pill} ${className}`}>
     {Icon ? <Icon size={compact ? 11 : 14} strokeWidth={2.2} aria-hidden="true" /> : null}
     {children}
   </span>
@@ -49,13 +50,13 @@ export const PremiumSectionHeading: React.FC<{
   actionLabel?: string;
   actionTo?: string;
 }> = ({ title, subtitle, actionLabel, actionTo }) => (
-  <div className="flex items-end justify-between gap-3">
+  <div className="miniapp-section-heading">
     <div className="min-w-0">
       <h2 className={MINIAPP_PREMIUM.sectionTitle}>{title}</h2>
       {subtitle ? <p className={MINIAPP_PREMIUM.sectionSubtitle}>{subtitle}</p> : null}
     </div>
     {actionLabel && actionTo ? (
-      <Link to={actionTo} className="shrink-0 text-[11px] font-black text-premium-blue no-underline">
+      <Link to={actionTo} className="miniapp-section-action shrink-0 font-bold text-premium-blue no-underline">
         {actionLabel}
       </Link>
     ) : null}
@@ -71,84 +72,19 @@ export const PremiumHeroBalance: React.FC<{
   artwork?: boolean;
   backgroundImageSrc?: string;
 }> = ({ title = "مانده حساب", amount, status, statusTone = "mint", updatedLabel, artwork = true, backgroundImageSrc }) => {
-  const heroPillClass = statusTone === "mint"
-    ? "border-white/25 bg-premium-green/95 text-white shadow-[0_10px_24px_-16px_rgba(19,140,99,.95)] backdrop-blur-md"
-    : statusTone === "red"
-      ? "border-white/25 bg-premium-red/95 text-white shadow-[0_10px_24px_-16px_rgba(239,68,68,.95)] backdrop-blur-md"
-      : "border-white/20 bg-white/[0.14] text-white shadow-none backdrop-blur-md";
-  const usingReferenceImage = Boolean(backgroundImageSrc);
-  const statusDotClass = statusTone === "mint"
-    ? "bg-premium-green shadow-[0_0_0_6px_rgba(19,140,99,.16)]"
-    : statusTone === "red"
-      ? "bg-premium-red shadow-[0_0_0_6px_rgba(239,68,68,.16)]"
-      : "bg-white shadow-[0_0_0_6px_rgba(255,255,255,.14)]";
-  const statusTextClass = statusTone === "mint" ? "text-premium-green-bright" : statusTone === "red" ? "text-[#ffb1b1]" : "text-white/92";
-
-  if (usingReferenceImage) {
-    return (
-      <section className={`${MINIAPP_PREMIUM.hero} h-[clamp(10.5rem,43vw,12rem)] min-h-0`} aria-label={title}>
-        <img
-          src={backgroundImageSrc}
-          alt=""
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-left"
-          aria-hidden="true"
-        />
-        <span className="pointer-events-none absolute inset-y-0 right-0 w-[62%] bg-[linear-gradient(270deg,rgba(7,36,201,.74)_0%,rgba(7,36,201,.58)_45%,rgba(7,36,201,.18)_78%,rgba(7,36,201,0)_100%)]" aria-hidden="true" />
-        <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-5">
-          <div className="ml-auto w-[58%] max-w-[13rem] text-start sm:w-[56%] sm:max-w-none">
-            <div className="flex items-center justify-end gap-2 text-white/92 drop-shadow-[0_3px_10px_rgba(0,0,0,.2)]">
-              <span className="text-[0.86rem] font-bold sm:text-[0.9rem]">{title}</span>
-            </div>
-            <div className="mt-2.5 text-[1.9rem] font-black leading-[1.02] tracking-tight tabular-nums text-white drop-shadow-[0_8px_20px_rgba(0,0,0,.24)] sm:mt-3 sm:text-[2.15rem]">
-              {amount}
-            </div>
-          </div>
-          <div className="flex items-end justify-between gap-3">
-            <div className="inline-flex items-center gap-2.5 text-start">
-              <span className={`inline-block size-2.5 rounded-full animate-pulse ${statusDotClass}`} aria-hidden="true" />
-              <span className={`text-[0.88rem] font-bold ${statusTextClass} drop-shadow-[0_2px_6px_rgba(0,0,0,.18)] sm:text-[0.92rem]`}>{status}</span>
-            </div>
-            {updatedLabel ? (
-              <span className="flex items-center gap-1.5 text-[0.78rem] font-bold text-white/86 drop-shadow-[0_2px_6px_rgba(0,0,0,.2)] sm:text-[0.82rem]">
-                <Clock3 size={14} aria-hidden="true" />
-                {updatedLabel}
-              </span>
-            ) : <span />}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className={MINIAPP_PREMIUM.hero} aria-label={title}>
-      {artwork ? (
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex w-[42%] items-center justify-start pl-2" aria-hidden="true">
-          <img
-            src="/miniapp/premium/wallet-hero.webp"
-            alt=""
-            className="h-[7.7rem] w-auto max-w-full object-contain object-left opacity-100 drop-shadow-[0_18px_22px_rgba(0,20,92,.32)]"
-          />
-        </div>
+      {backgroundImageSrc ? (
+        <img src={backgroundImageSrc} alt="" aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10" />
+      ) : artwork ? (
+        <img src="/miniapp/premium/wallet-hero.webp" alt="" aria-hidden="true" className="pointer-events-none absolute bottom-2 left-2 h-28 w-28 object-contain opacity-10" />
       ) : null}
-      <span className="pointer-events-none absolute -bottom-16 right-[-8%] h-40 w-[75%] rotate-[-7deg] rounded-[50%] border-t border-white/[0.35] bg-white/5 blur-[1px]" aria-hidden="true" />
-      <span className="pointer-events-none absolute right-5 top-5 size-28 rounded-full bg-premium-violet/20 blur-3xl" aria-hidden="true" />
-      <div className={MINIAPP_PREMIUM.heroInner}>
-        <div className="ml-auto w-[60%] text-start sm:w-[58%]">
-          <div className="flex items-center justify-end gap-2 text-white/80">
-            <span className="text-[12px] font-bold">{title}</span>
-            <WalletCards size={20} strokeWidth={2} aria-hidden="true" />
-          </div>
-          <div className="mt-4 text-[2rem] font-black leading-[1.18] tracking-tight tabular-nums text-white sm:text-[2.2rem]">{amount}</div>
-        </div>
-        <div className="flex flex-wrap items-end justify-between gap-3 border-t border-white/20 pt-3.5">
-          {updatedLabel ? (
-            <span className="flex items-center gap-1.5 text-[10px] font-bold text-white/70">
-              <Clock3 size={14} aria-hidden="true" />
-              {updatedLabel}
-            </span>
-          ) : null}
-          <PremiumPill tone={statusTone} className={heroPillClass}>{status}</PremiumPill>
+      <div className="relative z-10 flex min-h-[10.75rem] flex-col gap-4 p-5">
+        <span className="text-sm font-medium text-white">{title}</span>
+        <MiniAppFinancialValue className="text-[clamp(1.5rem,6vw,2rem)] font-bold text-white">{amount}</MiniAppFinancialValue>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/20 pt-3">
+          <PremiumPill tone={statusTone}>{status}</PremiumPill>
+          {updatedLabel ? <span className="flex flex-wrap items-center gap-1.5 text-xs text-white"><Clock3 size={14} aria-hidden="true" />{updatedLabel}</span> : null}
         </div>
       </div>
     </section>
@@ -163,11 +99,11 @@ export const PremiumQuickAction: React.FC<{
   tone?: MiniAppPremiumTone;
   compact?: boolean;
 }> = ({ to, title, subtitle, icon, tone = "blue", compact = false }) => (
-  <Link to={to} className={`${MINIAPP_PREMIUM.cardInteractive} flex ${compact ? "min-h-[4.55rem] gap-2.5 p-3" : "min-h-[5.75rem] gap-3 p-4"} text-premium-ink no-underline`}>
+  <Link to={to} className={`${MINIAPP_PREMIUM.cardInteractive} flex flex-wrap ${compact ? "min-h-[4.55rem] gap-2.5 p-3" : "min-h-[5.75rem] gap-3 p-4"} text-premium-ink no-underline`}>
     <PremiumIconTile icon={icon} tone={tone} size={compact ? "md" : "lg"} />
     <span className="min-w-0 flex-1 self-center">
       <strong className={`block font-black text-premium-navy ${compact ? "text-[13px] leading-5" : "text-[15px] leading-7"}`}>{title}</strong>
-      <span className={`mt-0.5 block text-premium-muted ${compact ? "text-[10px] leading-4" : "text-[11px] leading-5"}`}>{subtitle}</span>
+      <span className="miniapp-caption mt-1 block text-premium-muted">{subtitle}</span>
     </span>
   </Link>
 );
@@ -179,16 +115,16 @@ export const PremiumMetricCard: React.FC<{
   icon: LucideIcon;
   tone?: MiniAppPremiumTone;
 }> = ({ label, value, detail, icon, tone = "blue" }) => (
-  <div className={`${MINIAPP_PREMIUM.card} min-w-0 p-3.5`}>
+  <MiniAppCard className="miniapp-metric-card p-4">
     <div className="flex items-start justify-between gap-2">
       <div className="min-w-0 flex-1">
-        <span className="block text-[10px] font-bold leading-5 text-premium-muted">{label}</span>
-        <strong className="mt-1.5 block truncate text-[16px] font-black tabular-nums text-premium-navy">{value}</strong>
-        {detail ? <span className="mt-1 block text-[10px] leading-5 text-premium-muted">{detail}</span> : null}
+        <span className="block text-xs font-medium leading-6 text-premium-muted">{label}</span>
       </div>
       <PremiumIconTile icon={icon} tone={tone} size="sm" solid={false} />
     </div>
-  </div>
+    <MiniAppFinancialValue className="mt-2 text-base font-bold text-premium-navy">{value}</MiniAppFinancialValue>
+    {detail ? <span className="miniapp-caption mt-1 block text-premium-muted">{detail}</span> : null}
+  </MiniAppCard>
 );
 
 export const PremiumFilterChip: React.FC<React.PropsWithChildren<{
@@ -199,8 +135,9 @@ export const PremiumFilterChip: React.FC<React.PropsWithChildren<{
 }>> = ({ active = false, tone = "blue", onClick, icon: Icon, children }) => (
   <button
     type="button"
+    aria-pressed={active}
     onClick={onClick}
-    className={`${MINIAPP_PREMIUM.filterChip} ${active ? `${MINIAPP_PREMIUM_TONE[tone].pill} border-transparent shadow-premium-active` : "border-white/95 bg-white/90 text-premium-muted"}`}
+    className={`${MINIAPP_PREMIUM.filterChip} ${active ? `${MINIAPP_PREMIUM_TONE[tone].pill} border-transparent shadow-premium-active` : "border-premium-line bg-card text-premium-muted"}`}
   >
     {Icon ? <Icon size={15} aria-hidden="true" /> : null}
     {children}
@@ -221,6 +158,7 @@ export const PremiumSearchField: React.FC<{
       value={value}
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
+      aria-label={placeholder}
       className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm font-bold text-premium-navy outline-none placeholder:font-normal placeholder:text-premium-muted"
     />
     {TrailingIcon ? <TrailingIcon size={18} className="shrink-0 text-premium-muted" aria-hidden="true" /> : null}
@@ -241,7 +179,7 @@ export const PremiumProfileCard: React.FC<{
           <p className={MINIAPP_PREMIUM.eyebrow}>{eyebrow}</p>
           <PremiumPill tone="mint" className="min-h-7 px-2.5">{status}</PremiumPill>
         </div>
-        <h1 className="mb-0 mt-2 truncate text-[1.7rem] font-black tracking-tight text-premium-navy">{name}</h1>
+        <h1 className="mb-0 miniapp-heading mt-2 text-2xl font-bold text-premium-navy">{name}</h1>
         <p className="mb-0 mt-1 text-xs text-premium-muted">{subtitle}</p>
       </div>
     </div>
@@ -260,7 +198,7 @@ export const PremiumInfoRow: React.FC<{
       <PremiumIconTile icon={icon} tone={tone} size="md" />
       <div className="min-w-0 flex-1">
         <strong className="block text-sm font-black text-premium-navy">{title}</strong>
-        <span className="mt-1 block text-[11px] leading-5 text-premium-muted">{subtitle}</span>
+        <span className="mt-1 block text-xs leading-6 text-premium-muted">{subtitle}</span>
       </div>
       <span className="text-lg font-light text-premium-muted" aria-hidden="true">‹</span>
     </>

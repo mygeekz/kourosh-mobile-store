@@ -13,13 +13,13 @@ export const PartnerCompactHeader: React.FC<{
   const availabilityView = availability.presentation;
 
   return (
-    <header className={`${MINIAPP_PREMIUM.card} px-3.5 py-2`}>
-      <div className="flex min-w-0 items-center justify-between gap-2.5">
-        <div className="min-w-0 flex-1 text-start">
-          {eyebrow ? <p className="m-0 text-[9px] font-black leading-4 text-premium-blue">{eyebrow}</p> : null}
-          <h1 id={id} className="m-0 truncate text-start text-[1.05rem] font-black leading-6 tracking-tight text-premium-navy">{title}</h1>
+    <header className={`${MINIAPP_PREMIUM.card} p-4`}>
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0 basis-full text-start">
+          {eyebrow ? <p className="m-0 text-xs font-black leading-6 text-premium-blue">{eyebrow}</p> : null}
+          <h1 id={id} className="miniapp-heading m-0 text-start text-lg font-bold text-premium-navy">{title}</h1>
         </div>
-        <div className="flex shrink-0 items-center gap-1">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           {availabilityView ? (
             <PremiumPill
               tone={availability.premiumTone}
@@ -41,9 +41,9 @@ export const PartnerCompactHeader: React.FC<{
         </div>
       </div>
       {availabilityView && availability.source === "snapshot" ? (
-        <p className="mb-0 mt-1.5 text-start text-[9px] font-bold leading-4 text-premium-orange-deep">{availabilityView.detail}</p>
+        <p className="mb-0 mt-1.5 text-start text-xs font-bold leading-6 text-premium-orange-deep">{availabilityView.detail}</p>
       ) : null}
-      {availability.refreshing ? <p className="mb-0 mt-1 text-start text-[9px] font-bold leading-4 text-premium-blue">در حال به‌روزرسانی…</p> : null}
+      {availability.refreshing ? <p className="mb-0 mt-1 text-start text-xs font-bold leading-6 text-premium-blue">در حال به‌روزرسانی…</p> : null}
     </header>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MiniAppCard, MiniAppFinancialValue } from "./ui/MiniAppFoundation";
 import type { LucideIcon } from "../../components/lucide-react";
 import {
   MINIAPP_VISUAL_REFERENCE,
@@ -26,7 +27,7 @@ export const MiniAppPill: React.FC<React.PropsWithChildren<{
   icon?: LucideIcon;
   className?: string;
 }>> = ({ tone = "muted", icon: Icon, className = "", children }) => (
-  <span className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border px-3 text-[11px] font-extrabold ${MINIAPP_VISUAL_TONE[tone].pill} ${className}`}>
+  <span className={`miniapp-badge inline-flex min-h-8 items-center gap-1.5 rounded-full border px-3 py-1 ${MINIAPP_VISUAL_TONE[tone].pill} ${className}`}>
     {Icon ? <Icon size={14} aria-hidden="true" /> : null}
     {children}
   </span>
@@ -38,12 +39,12 @@ export const MiniAppSectionHeading: React.FC<{
   actionLabel?: string;
   actionTo?: string;
 }> = ({ title, subtitle, actionLabel, actionTo }) => (
-  <div className="flex items-end justify-between gap-3">
+  <div className="miniapp-section-heading">
     <div className="min-w-0">
       <h2 className={MINIAPP_VISUAL_REFERENCE.sectionTitle}>{title}</h2>
       {subtitle ? <p className={MINIAPP_VISUAL_REFERENCE.sectionSubtitle}>{subtitle}</p> : null}
     </div>
-    {actionLabel && actionTo ? <Link to={actionTo} className="shrink-0 text-xs font-extrabold text-primary no-underline">{actionLabel}</Link> : null}
+    {actionLabel && actionTo ? <Link to={actionTo} className="miniapp-section-action shrink-0 font-bold text-primary no-underline">{actionLabel}</Link> : null}
   </div>
 );
 
@@ -54,16 +55,16 @@ export const MiniAppMetricCard: React.FC<{
   icon: LucideIcon;
   tone?: MiniAppVisualTone;
 }> = ({ label, value, detail, icon, tone = "primary" }) => (
-  <div className={`${MINIAPP_VISUAL_REFERENCE.card} min-w-0 p-3`}>
+  <MiniAppCard className="miniapp-metric-card p-4">
     <div className="flex items-start justify-between gap-2">
       <div className="min-w-0">
         <span className={MINIAPP_VISUAL_REFERENCE.label}>{label}</span>
-        <strong className="mt-1 block truncate text-base font-black tabular-nums text-foreground">{value}</strong>
-        {detail ? <span className="mt-1 block text-[10px] leading-5 text-mutedText">{detail}</span> : null}
       </div>
       <MiniAppIconTile icon={icon} tone={tone} size="sm" />
     </div>
-  </div>
+    <MiniAppFinancialValue className="mt-2 text-base font-bold text-foreground">{value}</MiniAppFinancialValue>
+    {detail ? <span className="miniapp-caption mt-1 block text-mutedText">{detail}</span> : null}
+  </MiniAppCard>
 );
 
 export const MiniAppQuickAction: React.FC<{
@@ -73,11 +74,11 @@ export const MiniAppQuickAction: React.FC<{
   icon: LucideIcon;
   tone?: MiniAppVisualTone;
 }> = ({ to, title, subtitle, icon, tone = "primary" }) => (
-  <Link to={to} className={`${MINIAPP_VISUAL_REFERENCE.cardInteractive} flex min-h-24 items-center gap-3 p-3 text-foreground no-underline`}>
-    <MiniAppIconTile icon={icon} tone={tone} size="lg" />
+  <Link to={to} className={`${MINIAPP_VISUAL_REFERENCE.cardInteractive} flex min-h-24 flex-wrap items-center gap-3 p-4 text-foreground no-underline`}>
+    <MiniAppIconTile icon={icon} tone={tone} size="md" />
     <span className="min-w-0">
       <strong className="block text-sm font-black leading-6">{title}</strong>
-      <span className="mt-0.5 block text-[11px] leading-5 text-mutedText">{subtitle}</span>
+      <span className="miniapp-caption mt-1 block text-mutedText">{subtitle}</span>
     </span>
   </Link>
 );
@@ -89,6 +90,7 @@ export const MiniAppFilterChip: React.FC<React.PropsWithChildren<{
 }>> = ({ active = false, tone = "primary", onClick, children }) => (
   <button
     type="button"
+    aria-pressed={active}
     onClick={onClick}
     className={`${MINIAPP_VISUAL_REFERENCE.filterChip} ${active ? `${MINIAPP_VISUAL_TONE[tone].pill} shadow-sm` : "border-border/70 bg-card text-mutedText"}`}
   >

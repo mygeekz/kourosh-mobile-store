@@ -16,20 +16,14 @@ export const ManagerDirectory: React.FC = () => {
   const canPartners = canPermission("partners.read");
   const [params, setParams] = useSearchParams();
   const requested = params.get("type");
-  const initial = requested === "partner" && canPartners ? "partner" : canCustomers ? "customer" : "partner";
-  const [kind, setKind] = useState<"customer" | "partner">(initial);
-  const [input, setInput] = useState("");
-  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const kind = requested === "partner" && canPartners ? "partner" : canCustomers ? "customer" : "partner";
+  const input = (params.get("q") || "").slice(0, 80);
+  const [debouncedQuery, setDebouncedQuery] = useState(input.trim());
 
   useEffect(() => {
     const timer = window.setTimeout(() => setDebouncedQuery(input.trim()), input.trim() ? 250 : 0);
     return () => window.clearTimeout(timer);
   }, [input]);
-
-  useEffect(() => {
-    if (kind === "customer" && !canCustomers && canPartners) setKind("partner");
-    if (kind === "partner" && !canPartners && canCustomers) setKind("customer");
-  }, [canCustomers, canPartners, kind]);
 
   const allowedKind = (kind === "customer" && canCustomers) || (kind === "partner" && canPartners);
   const path = allowedKind
@@ -39,7 +33,8 @@ export const ManagerDirectory: React.FC = () => {
   const items = useMemo(() => allowedKind ? query.data?.items || [] : [], [allowedKind, query.data]);
 
   if (!canCustomers && !canPartners) return <MiniAppDataState empty emptyText="دسترسی مشاهده مشتری یا همکار برای شما فعال نیست." />;
-  const switchKind = (next: "customer" | "partner") => { setKind(next); setParams({ type: next }); };
+  const switchKind = (next: "customer" | "partner") => { setParams(previous => { const updated = new URLSearchParams(previous); updated.set("type", next); return updated; }); };
+  const setInput = (value: string) => setParams(previous => { const updated = new URLSearchParams(previous); if (value) updated.set("q", value); else updated.delete("q"); return updated; }, { replace: true });
   return (
     <div className={MINIAPP_VISUAL_REFERENCE.page}>
       <header><h1 className={MINIAPP_VISUAL_REFERENCE.pageTitle}>مشتری و همکار</h1><p className={MINIAPP_VISUAL_REFERENCE.pageSubtitle}>جستجوی مستقیم در اطلاعات اصلی فروشگاه</p></header>
