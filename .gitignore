@@ -53,3 +53,25 @@ config/quality/miniapp-rc-evidence-v267.json
 
 # v337 deterministic release dependency cache
 .cache/npm/
+
+# Generated Cloudflare MiniApp build
+dist-miniapp/
+
+# Local Cloudflare/Wrangler state
+.wrangler/
+deployment/cloudflare-pages/.wrangler/
+
+# Local AI development tooling
+.agents/
+
+# Runtime store data
+server/backups/
+uploads/
+private_uploads/
+
+# Local/manual artifacts
+*.zip
+manager-test.png
+
+# Optional: only needed for shared Codex skill setup
+skills-lock.json
