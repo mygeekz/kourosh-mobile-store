@@ -16,6 +16,11 @@ const emitMiniAppPublicFiles = (): Plugin => ({
       ["fonts/Vazir-FD-WOL.woff2", path.resolve(rootDir, "public/fonts/Vazir-FD-WOL.woff2")],
       ["miniapp/premium/store-avatar.webp", path.resolve(rootDir, "public/miniapp/premium/store-avatar.webp")],
       ["miniapp/premium/wallet-hero.webp", path.resolve(rootDir, "public/miniapp/premium/wallet-hero.webp")],
+      ["miniapp/premium/home.webp", path.resolve(rootDir, "public/miniapp/premium/home.webp")],
+      ["miniapp/premium/product.webp", path.resolve(rootDir, "public/miniapp/premium/product.webp")],
+      ["miniapp/premium/more.webp", path.resolve(rootDir, "public/miniapp/premium/more.webp")],
+      ...["chart", "collaboration", "shopping", "goods", "calendar", "receipt", "accounts", "money"].map(name => [`miniapp/premium/illustrations/${name}.webp`, path.resolve(rootDir, `public/miniapp/premium/illustrations/${name}.webp`)]),
+      ["miniapp/premium/illustrations/LICENSE.txt", path.resolve(rootDir, "public/miniapp/premium/illustrations/LICENSE.txt")],
     ] as const) {
       if (!fs.existsSync(sourcePath)) throw new Error(`Mini App public dependency is missing: ${fileName}`);
       this.emitFile({ type: "asset", fileName, source: fs.readFileSync(sourcePath) });

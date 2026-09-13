@@ -65,15 +65,33 @@ const active = page => page.$eval('nav a[aria-current="page"]', el => el.getAttr
 const screenshot = async (page, file) => {
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
   await page.evaluate(async () => { window.scrollTo(0, 0); await document.fonts.ready; await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))); });
+  // Let the compositor present the settled route before capturing its viewport.
+  await new Promise(resolve => setTimeout(resolve, 200));
   await page.screenshot({ path: path.join(output, file) });
 };
 try {
   const executable = await resolvePuppeteerBrowserExecutable({ root: process.cwd() });
   browser = await puppeteer.launch({ executablePath: executable.executablePath, args: browserLaunchArgs(), headless: true });
+  const assetPage = await browser.newPage();
+  await assetPage.goto(origin + '/kourosh-logo.svg');
+  for (const file of ['home.webp', 'wallet-hero.webp', 'product.webp', 'more.webp']) {
+    const asset = `miniapp/premium/${file}`;
+    const source = await fs.readFile(path.resolve('public', asset));
+    assert.deepEqual(await fs.readFile(path.join(dist, asset)), source, `${file} must be emitted unchanged`);
+    assert.equal(source.toString('ascii', 0, 4), 'RIFF'); assert.equal(source.toString('ascii', 8, 12), 'WEBP');
+    const decoded = await assetPage.evaluate(src => new Promise(resolve => {
+      const image = new Image(); image.onload = () => resolve(image.naturalWidth > 0 && image.naturalHeight > 0);
+      image.onerror = () => resolve(false); image.src = src;
+    }), `${origin}/${asset}`);
+    assert.equal(decoded, true, `${file} must load and decode from the built output`);
+  }
+  assert.ok((await fs.readdir(path.join(dist, 'miniapp/premium'), { withFileTypes: true })).filter(file => file.isFile()).every(file => file.name.endsWith('.webp')));
+  await assetPage.close();
+  console.log('PASS supplied WebP packaging and browser decoding');
   for (const scenario of scenarios.filter(item => !process.env.MINIAPP_NAV_SCENARIO || item.id === process.env.MINIAPP_NAV_SCENARIO)) for (const theme of ['light', 'dark']) {
     const page = await browser.newPage();
     activePage = page; activeScenario = `${scenario.id}/${theme}`;
-    const errors = [], requests = [];
+    const errors = [], requests = [], authRequests = [];
     let currentRole = scenario.role, failSwitch = false, launch = '/', source = 'live';
     page.on('pageerror', error => errors.push(error.message));
     await page.evaluateOnNewDocument(theme => {
@@ -94,15 +112,20 @@ try {
       requests.push(url.pathname + url.search);
       const respond = (data, status = 200) => request.respond({ status, contentType: 'application/json', headers: { 'x-kourosh-data-source': source, 'x-kourosh-snapshot-generated-at': now }, body: JSON.stringify(data) });
       if (url.pathname === '/api/miniapp/auth') {
-        const requested = JSON.parse(request.postData() || '{}').workspaceKind;
+        const payload = JSON.parse(request.postData() || '{}');
+        assert.equal(request.method(), 'POST');
+        assert.equal(payload.initData, 'synthetic-navigation-fixture');
+        const requested = payload.workspaceKind;
+        authRequests.push(requested || 'default');
         if (requested && failSwitch) { await respond({ success: false, code: 'TEST_SWITCH_FAILED', message: 'تغییر فضای کاری آزمایشی انجام نشد.' }, 503); return; }
         if (requested) currentRole = requested === 'manager' ? 'staff' : requested;
         const kinds = scenario.multi ? ['manager', 'partner'] : [currentRole === 'staff' ? 'manager' : currentRole];
-        await respond({ success: true, data: { sessionToken: 'synthetic-session', expiresAt: new Date(Date.now() + 600000).toISOString(), identity: {
+        await respond({ success: true, data: { sessionToken: `synthetic-session-${currentRole}`, expiresAt: new Date(Date.now() + 600000).toISOString(), identity: {
           kind: currentRole, subjectId: 1, telegramUserId: '1', displayName: name, roleName: 'Admin', capabilities: [], permissions: currentRole === 'staff' ? scenario.permissions : [],
           workspaces: kinds.map(kind => ({ kind, subjectId: 1, displayName: name, capabilities: [], permissions: kind === 'manager' ? scenario.permissions : [] })),
         }, launch: { startParam: null, route: requested ? '/' : launch } } }); return;
       }
+      assert.equal(request.headers().authorization, `Bearer synthetic-session-${currentRole}`);
       if (Object.hasOwn(fixtures, url.pathname)) { await respond({ success: true, data: fixtures[url.pathname] }); return; }
       // Detail failures intentionally exercise shell navigation independently of data availability.
       await respond({ success: false, code: 'FIXTURE_DETAIL_ERROR', message: 'خطای آزمایشی جزئیات' }, 503);
@@ -123,6 +146,29 @@ try {
       for (const control of layout.controls) { assert.ok(control.width >= 44 && control.height >= 48, JSON.stringify(control)); assert.ok(control.x >= 0 && control.right <= width); }
     }
     await screenshot(page, `${scenario.id}-${theme}.png`);
+    if (scenario.role !== 'customer') {
+      for (const width of [320, 360, 390, 430]) for (const fontSize of [16, 32]) {
+        await page.setViewport({ width, height: 844, deviceScaleFactor: 1 });
+        await page.evaluate(size => { document.documentElement.style.fontSize = `${size}px`; }, fontSize);
+        await page.click('.miniapp-workspace-trigger'); await page.waitForSelector('dialog[open]');
+        const drawer = await page.$eval('dialog', el => {
+          const r = el.getBoundingClientRect();
+          return { left: r.left, right: r.right, bottom: r.bottom, direction: getComputedStyle(el).direction, transformOrigin: getComputedStyle(el).transformOrigin,
+            overflow: el.scrollWidth > el.clientWidth, options: [...el.querySelectorAll('.miniapp-workspace-option strong')].map(node => node.textContent),
+            textClipped: [...el.querySelectorAll('strong, small')].some(node => { const box = node.getBoundingClientRect(); return node.scrollWidth > node.clientWidth || box.left < r.left || box.right > r.right; }) };
+        });
+        assert.equal(drawer.left, 0, JSON.stringify(drawer));
+        assert.ok(drawer.transformOrigin.startsWith('0px '), JSON.stringify(drawer));
+        assert.ok(drawer.right < width && drawer.bottom <= 844, JSON.stringify(drawer));
+        assert.equal(drawer.direction, 'rtl'); assert.equal(drawer.overflow, false); assert.equal(drawer.textClipped, false);
+        assert.deepEqual(drawer.options, scenario.multi ? ['مدیریت فروشگاه', 'حساب همکار'] : [scenario.role === 'staff' ? 'مدیریت فروشگاه' : 'حساب همکار']);
+        if (['manager-partner', 'partner'].includes(scenario.id)) await page.screenshot({ path: path.join(output, `drawer-${scenario.id}-${theme}-${width}-${fontSize}.png`) });
+        await page.keyboard.press('Escape');
+        assert.ok(await page.$eval('.miniapp-workspace-trigger', el => el === document.activeElement));
+      }
+      await page.evaluate(() => { document.documentElement.style.fontSize = ''; });
+      await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 1 });
+    }
     if (scenario.id === 'manager') {
       await page.click('nav a[href="#/more"]'); await page.waitForSelector('#manager-more-title');
       assert.deepEqual(await page.$$eval('.miniapp-more-link', links => links.map(link => link.getAttribute('href'))), ['#/dues', '#/notifications']);
@@ -177,17 +223,34 @@ try {
       await page.keyboard.press('Escape'); assert.ok(await page.$eval('.miniapp-workspace-trigger', el => el === document.activeElement));
       await page.click('.miniapp-workspace-trigger'); failSwitch = true;
       await page.click('.miniapp-workspace-option[aria-pressed="false"]'); await page.waitForSelector('main [role="alert"]');
-      assert.equal(await page.$eval('.miniapp-workspace-trigger', el => el.textContent.trim()), 'مدیریت فروشگاه');
+      assert.equal(await page.$eval('.miniapp-workspace-label', el => el.textContent.trim()), 'مدیریت فروشگاه');
       failSwitch = false; await page.click('.miniapp-workspace-trigger'); await page.click('.miniapp-workspace-option[aria-pressed="false"]');
-      await page.waitForFunction(() => document.querySelector('.miniapp-workspace-trigger')?.textContent === 'حساب همکار');
+      await page.waitForFunction(() => document.querySelector('.miniapp-workspace-label')?.textContent === 'حساب همکار');
       assert.equal(await page.$$eval('nav a', links => links.length), 4);
+      await page.waitForSelector('#partner-home-title');
+      assert.equal(await page.evaluate(() => sessionStorage.getItem('kourosh-miniapp-session')), 'synthetic-session-partner');
+      assert.ok((await page.url()).endsWith('#/'));
+      await navigate(page, '/sales', '/');
       await page.click('.miniapp-workspace-trigger'); await page.click('.miniapp-workspace-option[aria-pressed="false"]');
-      await page.waitForFunction(() => document.querySelector('.miniapp-workspace-trigger')?.textContent === 'مدیریت فروشگاه');
+      await page.waitForFunction(() => document.querySelector('.miniapp-workspace-label')?.textContent === 'مدیریت فروشگاه');
+      await page.waitForSelector('.manager-page [data-field="todayAmount"]');
+      assert.equal(await page.evaluate(() => sessionStorage.getItem('kourosh-miniapp-session')), 'synthetic-session-staff');
+      assert.equal(await page.$$eval('nav a', links => links.length), 5);
+      assert.deepEqual(authRequests, ['default', 'partner', 'partner', 'manager']);
+      await navigate(page, '/sales'); await page.waitForFunction(() => location.hash === '#/sales');
     }
     if (scenario.id === 'partner') {
       assert.deepEqual(await page.$$eval('nav a', links => links.map(link => link.getAttribute('href'))), ['#/', '#/purchases', '#/phones', '#/account']);
-      assert.equal(await page.$('.miniapp-workspace-trigger'), null);
+      await page.click('.miniapp-workspace-trigger');
+      await page.click('.miniapp-workspace-option[aria-pressed="true"]');
+      assert.deepEqual(authRequests, ['default'], 'Selecting the current workspace must not reauthenticate');
       assert.equal(await page.$('.miniapp-shell-header a[href="#/more"]'), null);
+      for (const [route, name] of [['/account', 'account'], ['/purchases', 'products']]) {
+        await navigate(page, route);
+        await page.waitForSelector(route === '/account' ? '#partner-account-title' : '#partner-purchases-title');
+        await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]'));
+        await screenshot(page, `partner-${name}-${theme}.png`);
+      }
       for (const [route, parent] of [['/ledger', '#/account'], ['/phones', '#/phones']]) { await navigate(page, route); await page.waitForFunction(parent => document.querySelector('nav [aria-current]')?.getAttribute('href') === parent, {}, parent); }
       await navigate(page, '/sales', '/'); await page.waitForFunction(() => location.hash === '#/');
       assert.ok(!requests.some(route => route.startsWith('/api/miniapp/manager/')));

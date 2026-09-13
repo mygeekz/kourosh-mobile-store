@@ -1,3 +1,5 @@
+import { FinancialGrid, RecordMeta } from "../components/ui/MiniAppRecord";
+import { Smartphone, Package, Tag } from "lucide-react";
 import React, { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MiniAppBidiText } from "../components/MiniAppBidiText";
@@ -21,17 +23,18 @@ export const PartnerPurchases: React.FC = () => {
     if (filter === "open" && item.settlement?.code !== "open") return false;
     return `${item.name} ${item.identifier || ""}`.toLocaleLowerCase("fa-IR").includes(search.trim().toLocaleLowerCase("fa-IR"));
   });
-  return <PartnerPage id="partner-purchases-title" title="کالاهای تأمین‌شده" description="سوابق کالا و گوشی ثبت‌شده برای همکاری شما" paginated>
+  return <PartnerPage id="partner-purchases-title" title="کالاهای تأمین‌شده" description="سوابق کالا و گوشی ثبت‌شده برای همکاری شما" paginated artwork="goods">
     <PartnerQueryState query={query}>{d && <>
       <PartnerSearch value={search} onChange={value => update("q", value)} label="جستجوی نام یا شناسه در کالاهای دریافت‌شده" />
       <div className="partner-actions" aria-label="فیلتر کالاهای دریافت‌شده">{filters.map(item => <MiniAppFilterChip key={item.key} active={filter === item.key} onClick={() => update("filter", item.key)}>{item.label}</MiniAppFilterChip>)}</div>
       <PartnerLoadedScope loaded={d.items.length} visible={visible.length} total={d.total} pageMeta={query.pageMeta} />
-      {visible.length ? <PartnerList>{visible.map(item => <PartnerRecord key={item.ref} record={item.ref} title={item.name} detail={`${formatCustomerDate(item.purchaseDate)} · ${item.quantity.toLocaleString("fa-IR")} ${item.unit}`}>
-        {item.identifier && <p className="partner-muted">شناسه: <MiniAppBidiText>{item.identifier}</MiniAppBidiText></p>}
-        <p className="partner-muted">مرجع کالا: <MiniAppBidiText>{item.ref}</MiniAppBidiText></p>
-        <div><MiniAppPill>{item.type === "phone" ? "گوشی" : "کالا"}</MiniAppPill>{item.status && <span className="partner-muted"> · {item.status}</span>}</div>
-        <PartnerAmount label="مبلغ تأمین ثبت‌شده" value={item.supplyAmount} field={`${item.ref}-supply`} />
-        {item.settlement ? <><div><MiniAppPill tone={item.settlement.code === "open" ? "warning" : "success"}>{item.settlement.label}</MiniAppPill></div><PartnerAmount label="پرداخت‌شده بابت این گوشی" value={item.settlement.paidAmount} field={`${item.ref}-paid`} /><PartnerAmount label="مانده تسویه این گوشی" value={item.settlement.remainingAmount} field={`${item.ref}-remaining`} /></> : <p className="partner-muted">اطلاعات تسویه جداگانه برای این کالا در پاسخ سرویس وجود ندارد.</p>}
+      {visible.length ? <PartnerList>{visible.map(item => <PartnerRecord key={item.ref} record={item.ref} title={item.name} icon={item.type === "phone" ? Smartphone : Package} status={<MiniAppPill>{item.type === "phone" ? "گوشی" : "کالا"}</MiniAppPill>} detail={<>
+        <RecordMeta>{formatCustomerDate(item.purchaseDate)} · {item.quantity.toLocaleString("fa-IR")} {item.unit}{item.status && ` · ${item.status}`}</RecordMeta>
+        <RecordMeta icon={Tag}>{item.identifier && <>شناسه: <MiniAppBidiText>{item.identifier}</MiniAppBidiText> · </>}مرجع کالا: <MiniAppBidiText>{item.ref}</MiniAppBidiText></RecordMeta>
+      </>}>
+        <FinancialGrid><PartnerAmount label="مبلغ تأمین ثبت‌شده" value={item.supplyAmount} field={`${item.ref}-supply`} />
+        {item.settlement && <><PartnerAmount label="پرداخت‌شده بابت این گوشی" value={item.settlement.paidAmount} field={`${item.ref}-paid`} /><PartnerAmount label="مانده تسویه این گوشی" value={item.settlement.remainingAmount} field={`${item.ref}-remaining`} /></>}</FinancialGrid>
+        {item.settlement ? <div className="miniapp-record-status"><MiniAppPill tone={item.settlement.code === "open" ? "warning" : "success"}>{item.settlement.label}</MiniAppPill></div> : <p className="partner-muted">اطلاعات تسویه جداگانه برای این کالا در پاسخ سرویس وجود ندارد.</p>}
       </PartnerRecord>)}</PartnerList> : !query.error && <MiniAppDataState empty emptyText="کالایی در اطلاعات دریافت‌شده با این فیلتر پیدا نشد." />}
       <PartnerLoadMore query={query} />
     </>}</PartnerQueryState>

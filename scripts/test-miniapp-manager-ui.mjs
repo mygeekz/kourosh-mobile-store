@@ -27,7 +27,7 @@ try {
   for (const theme of ['light', 'dark']) {
     const page = await browser.newPage();
     page.setDefaultTimeout(15000);
-    let launch = '/', mode = 'live', allowed = [...permissions], read = false, actionFails = false;
+    let launch = '/', mode = 'live', allowed = [...permissions], read = false, actionFails = false, numericAmount = null;
     const errors = [], unexpected = [], requests = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.evaluateOnNewDocument(theme => {
@@ -52,6 +52,7 @@ try {
       if (mode === 'loading') await new Promise(resolve => setTimeout(resolve, 1000));
       if (mode === 'error') return respond({ success: false, message: 'دریافت اطلاعات آزمایشی انجام نشد.' }, 503);
       let data = structuredClone(fixtures[key]);
+      if (key === '/dashboard' && numericAmount !== null) data.widgets.sales.todayAmount = numericAmount;
       if (mode === 'empty') {
         if (Array.isArray(data)) data = [];
         else { if (data.items) { data.items = []; data.total = 0; data.totalPages = 1; } if (data.widgets) data.widgets = {}; }
@@ -64,7 +65,7 @@ try {
       if (key === '/customers/1' && !allowed.includes('sales.read')) { delete data.purchases; delete data.account; delete data.installments; }
       return respond({ success: true, data });
     });
-    const open = async route => { launch = route; await page.goto(origin + '/miniapp.html'); await page.waitForSelector('main h1'); await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]')); await page.evaluate(() => document.fonts.ready); };
+    const open = async route => { launch = route; await page.goto(origin + '/miniapp.html'); await page.waitForFunction(route => decodeURI(location.hash) === '#' + decodeURI(route), {}, route); await page.waitForSelector('main h1'); await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]')); await page.evaluate(() => document.fonts.ready); };
     const clickText = async text => {
       await page.waitForFunction(text => [...document.querySelectorAll('main button')].some(el => el.textContent === text && !el.disabled), {}, text);
       await page.evaluate(text => [...document.querySelectorAll('main button')].find(el => el.textContent === text && !el.disabled).click(), text);
@@ -92,9 +93,44 @@ try {
         assert.equal(layout.rtl, 'rtl'); assert.equal(layout.top, '24px'); assert.equal(layout.truncated, false);
         assert.equal(layout.numberDirection, true, 'Financial signs must stay beside their isolated number');
         if (width === 390 || screen.name === 'home') await page.screenshot({ path: path.join(output, `${screen.name}-${theme}-${width}.png`), fullPage: true });
+        if (width === 390) await page.screenshot({ path: path.join(output, `${screen.name}-${theme}-viewport.png`), fullPage: false });
       }
-      results.push(`${theme}/${screen.name}: exact money + 4 widths PASS`);
+      await page.setViewport({ width: 320, height: 844 });
+      const before = await page.$$eval('main .miniapp-money', els => els.map(el => parseFloat(getComputedStyle(el).fontSize)));
+      await page.evaluate(() => { document.documentElement.style.fontSize = '20px'; });
+      const enlarged = await page.$$eval('main .miniapp-money', els => els.map(el => ({ size: parseFloat(getComputedStyle(el).fontSize), fits: [...el.querySelectorAll('.miniapp-money-part')].every(part => part.getBoundingClientRect().width <= el.clientWidth + 1) })));
+      assert.ok(enlarged.every((el, i) => el.size >= before[i] * 1.24 && el.fits), `${screen.name}: enlarged money must grow and fit`);
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      await page.screenshot({ path: path.join(output, `${screen.name}-${theme}-enlarged.png`), fullPage: false });
+      await page.evaluate(() => { document.documentElement.style.fontSize = ''; });
+      if (screen.name === 'home') {
+        assert.equal(await page.$eval('main section h2', el => el.textContent), 'فروش امروز');
+        assert.ok(await page.evaluate(() => [...document.querySelectorAll('.manager-section h2')].some(el => el.textContent === 'پیگیری امروز')));
+        assert.ok(await page.$('.manager-header'));
+        assert.ok(await page.$('.manager-list'));
+        assert.equal(await page.$('.manager-page.partner-page, .manager-page .partner-metric, .manager-hero'), null);
+      }
+      results.push(`${theme}/${screen.name}: exact money + 4 widths + enlarged text PASS`);
     }
+    // Full signed Persian amounts must fit independently of currency, including at 200% text size.
+    for (const [amount, expected] of [[999999999.25, '۹۹۹٬۹۹۹٬۹۹۹٫۲۵ تومان'], [-9007199254740991, '-۹٬۰۰۷٬۱۹۹٬۲۵۴٬۷۴۰٬۹۹۱ تومان'], [0, '۰ تومان']]) {
+      numericAmount = amount; await open('/');
+      assert.equal(await page.$eval('[data-field="todayAmount"]', el => el.textContent), expected);
+      for (const width of [320, 430]) {
+        await page.setViewport({ width, height: 844 });
+        for (const size of [16, 20, 32]) {
+          await page.evaluate(size => { document.documentElement.style.fontSize = size + 'px'; }, size);
+          const fit = await page.$eval('[data-field="todayAmount"]', el => {
+            const number = el.querySelector('bdi').getBoundingClientRect(), currency = el.querySelector('.miniapp-family-currency').getBoundingClientRect();
+            return { fits: number.width <= el.clientWidth + 1, unitBelow: currency.top >= number.bottom - 1, overflow: document.documentElement.scrollWidth > innerWidth, negative: el.querySelector('bdi').textContent.startsWith('-') };
+          });
+          assert.deepEqual(fit, { fits: true, unitBelow: true, overflow: false, negative: amount < 0 }, `${theme}/${amount}/${width}/${size}: numeric layout`);
+        }
+      }
+      await page.evaluate(() => { document.documentElement.style.fontSize = ''; });
+    }
+    numericAmount = null;
+    results.push(`${theme}: signed, fractional and zero amounts at 320/430px and 100/125/200% text PASS`);
     // Pagination and browser return preserve filters and page context.
     await open('/directory?type=customer&q=نام'); await clickText('صفحه بعد');
     await page.waitForSelector('main a[href="#/customers/31"]');
@@ -103,7 +139,7 @@ try {
     await page.waitForSelector('main [role="alert"]'); assert.equal(unexpected.pop(), '/customers/31');
     await page.click('button[aria-label="بازگشت"]'); await page.waitForSelector('main a[href="#/customers/31"]');
     assert.ok(page.url().includes('page=2') && page.url().includes('q='));
-    await open('/dues?scope=today'); await clickText('صفحه بعد'); await page.waitForFunction(() => location.hash.includes('page=2'));
+    await open('/dues?scope=today'); await Promise.all([page.waitForResponse(response => response.url().includes('/installments/due?scope=today&page=2')), clickText('صفحه بعد')]); await page.waitForFunction(() => location.hash.includes('page=2'));
     assert.ok(requests.some(r => r.path.endsWith('/installments/due') && r.query.includes('page=2') && r.query.includes('scope=today')));
     // Mutation feedback must reflect actual response success/failure.
     await open('/notifications'); actionFails = true; await clickText('خوانده شد'); await page.waitForSelector('main [role="alert"]');
@@ -140,4 +176,4 @@ try {
     await page.close();
   }
   console.log(JSON.stringify({ status: 'PASS', results, screenshots: output, productionTraffic: false }, null, 2));
-} finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
+} finally { await browser?.close(); server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }

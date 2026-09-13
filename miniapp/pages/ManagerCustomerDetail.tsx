@@ -31,7 +31,7 @@ export const ManagerCustomerDetail: React.FC = () => {
   const { id = "" } = useParams();
   const { canPermission: can } = useMiniAppPermissions();
   const query = useMiniAppQuery<ManagerCustomerDetailData>(`/api/miniapp/manager/customers/${id}`);
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} empty={!query.loading && !query.error} emptyText="اطلاعات این بخش در دسترس نیست." />;
   const d = query.data;
   return <ManagerPage title={d.customer.fullName} context={`پرونده مشتری · ${d.customer.id.toLocaleString("fa-IR")}`} description={d.customer.phoneNumber ? <MiniAppBidiText>{d.customer.phoneNumber}</MiniAppBidiText> : "شماره تماس ثبت نشده"}>
     {d.customer.address && <p className="manager-muted">نشانی: {d.customer.address}</p>}

@@ -71,6 +71,16 @@ try {
       await page.waitForFunction(() => !document.querySelector('main [aria-busy="true"]'));
       await page.evaluate(() => document.fonts.ready);
     };
+    const clickContentLink = async selector => {
+      // Compact rows can leave a link geometrically inside the viewport but behind
+      // the fixed dock. Scroll as a user would, then verify the actual hit target.
+      await page.$eval(selector, el => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await page.waitForFunction(selector => {
+        const el = document.querySelector(selector), r = el?.getBoundingClientRect();
+        return r && el.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2));
+      }, {}, selector);
+      await page.click(selector);
+    };
     const money = async (field, expected) => {
       await page.waitForSelector(`[data-field="${field}"]`);
       assert.equal(await page.$eval(`[data-field="${field}"]`, el => el.textContent), expected, `${theme}/${launch}/${field}`);
@@ -117,11 +127,11 @@ try {
     for (const [id, label] of [[6, 'پرداخت‌شده'], [7, 'عقب‌افتاده'], [8, 'سررسید امروز'], [9, 'آینده']]) assert.ok((await page.$eval(`[data-payment-id="${id}"]`, el => el.innerText)).includes(label));
     await page.screenshot({ path: path.join(output, `highlight-visible-${theme}.png`) });
     await open('/installments/1?paymentId=999'); assert.equal(await page.$('[data-highlighted]'), null);
-    await open('/installments'); await page.click('main a[href="#/installments/1"]'); await page.waitForSelector('[data-payment-id="6"]');
+    await open('/installments'); await clickContentLink('main a[href="#/installments/1"]'); await page.waitForSelector('[data-payment-id="6"]');
     await page.click('button[aria-label="بازگشت"]'); await page.waitForSelector('#installments-title');
     await open('/purchases');
     assert.ok(await page.$('main a[href="#/installments/3"]')); assert.equal(await page.$('main a[href="#/installments/4"]'), null);
-    await page.click('main a[href="#/invoices/order-1"]'); await money('grandTotal', '۹٬۸۷۶٬۵۴۳٬۲۱۰٫۲۵ تومان');
+    await clickContentLink('main a[href="#/invoices/order-1"]'); await money('grandTotal', '۹٬۸۷۶٬۵۴۳٬۲۱۰٫۲۵ تومان');
     assert.equal(await page.$eval('nav a[aria-current]', el => el.getAttribute('href')), '#/purchases');
     assert.ok((await page.$eval('main', el => el.innerText)).includes('INV-1405/ABC-001'));
     await page.click('button[aria-label="بازگشت"]'); await page.waitForSelector('#purchases-title');

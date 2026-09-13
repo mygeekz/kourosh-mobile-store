@@ -1,3 +1,4 @@
+import { ArrowUpRight, ReceiptText } from "lucide-react";
 import React from "react";
 import { MiniAppFilterChip } from "../components/MiniAppVisualPrimitives";
 import { ManagerAmount, ManagerGrid, ManagerList, ManagerMetric, ManagerPage, ManagerQueryState, ManagerRecord, ManagerSection, useManagerListLocation } from "../components/manager/ManagerUI";
@@ -15,9 +16,9 @@ export const ManagerSales: React.FC = () => {
     <div className="manager-actions" aria-label="بازه گزارش">{periods.map(item => <MiniAppFilterChip key={item.key} active={period === item.key} onClick={() => update("period", item.key)}>{item.label}</MiniAppFilterChip>)}</div>
     <ManagerQueryState query={query}>{d && <>
       <ManagerSection title="خلاصه دوره" description={`از ${formatCustomerDate(d.from)} تا ${formatCustomerDate(d.to)}`}><ManagerGrid>
-        <ManagerMetric label="مبلغ فروش" value={d.totalRevenue} field="totalRevenue" />
-        <ManagerMetric label="سود ناخالص" value={d.grossProfit} field="grossProfit" detail={typeof d.grossProfit === "number" && d.grossProfit < 0 ? "مقدار منفی: زیان ناخالص؛ پیش از هزینه‌های عملیاتی" : "پیش از هزینه‌های عملیاتی؛ سود خالص نیست"} />
-        <ManagerMetric label="تعداد فروش" value={d.totalTransactions} money={false} />
+        <ManagerMetric icon={ReceiptText} label="مبلغ فروش" value={d.totalRevenue} field="totalRevenue" />
+        <ManagerMetric icon={ArrowUpRight} label="سود ناخالص" value={d.grossProfit} field="grossProfit" detail={typeof d.grossProfit === "number" && d.grossProfit < 0 ? "مقدار منفی: زیان ناخالص؛ پیش از هزینه‌های عملیاتی" : "پیش از هزینه‌های عملیاتی؛ سود خالص نیست"} />
+        <ManagerMetric icon={ReceiptText} label="تعداد فروش" value={d.totalTransactions} money={false} />
         <ManagerMetric label="میانگین مبلغ هر فروش" value={d.averageSaleValue} field="averageSaleValue" />
       </ManagerGrid></ManagerSection>
       {d.topSellingItems && <ManagerSection title="پرفروش‌های این دوره" description="رتبه‌بندی گزارش فروش؛ فهرست کامل تراکنش‌ها نیست"><ManagerQueryState query={query} empty={!d.topSellingItems.length} emptyText="فروشی در این بازه برای رتبه‌بندی ثبت نشده است."><ManagerList>{d.topSellingItems.map((item, index) => <ManagerRecord key={`${item.itemType}-${item.id}`} title={`${(index + 1).toLocaleString("fa-IR")}. ${item.itemName}`} detail={`${item.quantitySold.toLocaleString("fa-IR")} عدد فروخته‌شده`}><ManagerAmount label="مبلغ فروش این کالا" value={item.totalRevenue} field={`sales-item-${item.id}`} /></ManagerRecord>)}</ManagerList></ManagerQueryState></ManagerSection>}

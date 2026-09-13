@@ -12,7 +12,7 @@ export const ManagerInstallmentDetail: React.FC = () => {
   const { id } = useParams();
   const { canPermission } = useMiniAppPermissions();
   const query = useMiniAppQuery<StaffInstallmentDetail>(`/api/miniapp/manager/installments/${id}`);
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} empty={!query.loading && !query.error} emptyText="اطلاعات این بخش در دسترس نیست." />;
   const d = query.data;
   return <ManagerPage title={d.itemSummary} context={`قرارداد اقساط · ${d.saleId.toLocaleString("fa-IR")}`} description={`${formatCustomerDate(d.saleDate)} · ${d.status}`}>
     {canPermission("customers.read") ? <Link to={`/customers/${d.customer.id}`} className="manager-link">پرونده مشتری: {d.customer.fullName} ←</Link> : <p className="manager-muted">مشتری: {d.customer.fullName}</p>}

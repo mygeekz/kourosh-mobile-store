@@ -77,7 +77,8 @@ for (const entry of manifest.localStyles) {
       if (!fs.existsSync(bundleEntryPath)) fail(`${entry.path}: Mini App bundleEntry does not exist: ${entry.bundleEntry}`);
       else {
         const bundleEntryText = fs.readFileSync(bundleEntryPath, 'utf8');
-        const relativeCssImport = `./${path.basename(entry.path)}`;
+        const relativeCssPath = toPosix(path.relative(path.dirname(bundleEntryPath), path.join(projectRoot, entry.path)));
+        const relativeCssImport = relativeCssPath.startsWith('.') ? relativeCssPath : `./${relativeCssPath}`;
         if (!bundleEntryText.includes(relativeCssImport)) fail(`${entry.path}: Mini App bundleEntry does not import ${relativeCssImport}`);
       }
     }

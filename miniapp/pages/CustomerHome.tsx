@@ -8,7 +8,7 @@ import type { CustomerHomeData } from "../types";
 export const CustomerHome: React.FC = () => {
   const query = useMiniAppQuery<CustomerHomeData>("/api/miniapp/customer/home");
   const d = query.data;
-  return <CustomerPage id="customer-home-title" title={d ? `سلام ${d.customer.fullName}` : "حساب من"} description="خریدها، اقساط و سوابق حساب شما در کوروش">
+  return <CustomerPage id="customer-home-title" title={d ? `سلام ${d.customer.fullName}` : "حساب من"} description="خریدها، اقساط و سوابق حساب شما در کوروش" headerSummary={!query.loading && !query.error && d ? <CustomerPosition account={d.account} /> : undefined}>
     <CustomerQueryState query={query}>{d && <>
       {(d.installments.activeCount > 0 || d.installments.overdueCount > 0 || d.installments.next) && <CustomerSection title={d.installments.overdueCount > 0 ? "قسطی برای پیگیری دارید" : "سررسید بعدی شما"}>
         <CustomerCard>
@@ -17,10 +17,10 @@ export const CustomerHome: React.FC = () => {
           {!d.installments.next && !d.installments.overdueCount && <Link className="customer-link" to="/installments">قراردادهای من ←</Link>}
         </CustomerCard>
       </CustomerSection>}
-      <CustomerSection title={d.lastPurchase ? "آخرین خرید شما" : "خریدهای شما"} to="/purchases" action="سوابق خرید">
+      <CustomerSection artwork="shopping" title={d.lastPurchase ? "آخرین خرید شما" : "خریدهای شما"} to="/purchases" action="سوابق خرید">
         {d.lastPurchase ? <CustomerList><CustomerPurchaseRow purchase={d.lastPurchase} /></CustomerList> : <CustomerCard><p className="customer-muted">هنوز خریدی در این گزارش ثبت نشده است. خریدهای ثبت‌شده فروشگاه را از این بخش خواهید دید.</p></CustomerCard>}
       </CustomerSection>
-      <CustomerSection title="خلاصه حساب" to="/account" action="حساب و گردش‌ها"><CustomerPosition account={d.account} /></CustomerSection>
+      <Link className="customer-link" to="/account">حساب و گردش‌ها ←</Link>
     </>}</CustomerQueryState>
   </CustomerPage>;
 };

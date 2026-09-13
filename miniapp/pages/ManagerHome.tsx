@@ -1,3 +1,4 @@
+import { ArrowUpRight, ReceiptText, Boxes, UserCheck, WalletCards } from "lucide-react";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useMiniAppAuth } from "../auth/MiniAppAuthContext";
@@ -12,11 +13,16 @@ const ManagerDashboard: React.FC = () => {
   const { identity } = useMiniAppAuth();
   const { canPermission: can } = useMiniAppPermissions();
   const query = useMiniAppQuery<ManagerDashboardData>("/api/miniapp/manager/dashboard");
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} empty={!query.loading && !query.error} emptyText="اطلاعات این بخش در دسترس نیست." />;
   const w = query.data.widgets;
   // Provenance remains owned by the existing shell. Dates describe this response, not the device clock.
-  return <ManagerPage title="نمای روزانه فروشگاه" context="فضای کاری مدیریت" description={<>{identity?.displayName} · تاریخ گزارش {formatCustomerDate(query.data.generatedAt)}</>}>
-    {(w.installments || w.repairs) && <ManagerSection title="پیگیری امروز" description="سررسیدها و کارهای در انتظار رسیدگی">
+  return <ManagerPage title="نمای روزانه فروشگاه" context="فضای کاری مدیریت" description={<>{identity?.displayName} · تاریخ گزارش {formatCustomerDate(query.data.generatedAt)}</>} artwork="chart" headerSummary={typeof w.sales?.todayAmount === "number" ? <ManagerAmount label="مبلغ فروش امروز" value={w.sales.todayAmount} field="todayAmount" /> : undefined}>
+    {(w.sales || w.profit) && <ManagerSection artwork="chart" title="فروش امروز" description="عملکرد روز گزارش؛ سود ناخالص پیش از هزینه‌های عملیاتی" to={can("sales.read") || can("profits.read") ? "/sales?period=today" : undefined} action="گزارش فروش"><ManagerGrid>
+      <ManagerMetric icon={ArrowUpRight} label="سود ناخالص امروز" value={w.profit?.todayGrossProfit} field="todayGrossProfit" detail={w.profit && w.profit.todayGrossProfit < 0 ? "مقدار منفی: زیان ناخالص" : undefined} />
+      <ManagerMetric icon={ReceiptText} label="تعداد فروش امروز" value={w.sales?.todayTransactions} money={false} />
+      <ManagerMetric label="میانگین مبلغ هر فروش امروز" value={w.sales?.averageSaleValue} field="averageSaleValue" />
+    </ManagerGrid></ManagerSection>}
+    {(w.installments || w.repairs) && <ManagerSection artwork="calendar" title="پیگیری امروز" description="سررسیدها و کارهای در انتظار رسیدگی">
       <ManagerList>
         {w.installments && <>
           <ManagerRecord title={`اقساط معوق · ${w.installments.overdueCount.toLocaleString("fa-IR")} مورد`} detail="سررسید گذشته؛ مانده پرداخت‌نشده" to={can("installments.read") ? "/dues?scope=overdue" : undefined}><ManagerAmount label="مبلغ معوق" value={w.installments.overdueAmount} field="overdueAmount" /></ManagerRecord>
@@ -26,21 +32,15 @@ const ManagerDashboard: React.FC = () => {
         {w.repairs && <ManagerRecord title={`تعمیرات باز · ${w.repairs.openCount.toLocaleString("fa-IR")} مورد`} detail={`${w.repairs.readyForPickupCount.toLocaleString("fa-IR")} آماده تحویل · ${w.repairs.waitingPartCount.toLocaleString("fa-IR")} منتظر قطعه`} to={can("repairs.read") ? "/operations?tab=repairs" : undefined}>{w.repairs.oldestOpen && <p className="manager-muted">قدیمی‌ترین کار باز: {w.repairs.oldestOpen.customerName} · {w.repairs.oldestOpen.deviceModel} · {w.repairs.oldestOpen.status} · {w.repairs.oldestOpen.ageDays.toLocaleString("fa-IR")} روز</p>}</ManagerRecord>}
       </ManagerList>
     </ManagerSection>}
-    {(w.sales || w.profit) && <ManagerSection title="فروش امروز" description="عملکرد روز گزارش؛ سود ناخالص پیش از هزینه‌های عملیاتی" to={can("sales.read") || can("profits.read") ? "/sales?period=today" : undefined} action="گزارش فروش"><ManagerGrid>
-      <ManagerMetric label="مبلغ فروش امروز" value={w.sales?.todayAmount} field="todayAmount" />
-      <ManagerMetric label="سود ناخالص امروز" value={w.profit?.todayGrossProfit} field="todayGrossProfit" detail={w.profit && w.profit.todayGrossProfit < 0 ? "مقدار منفی: زیان ناخالص" : undefined} />
-      <ManagerMetric label="تعداد فروش امروز" value={w.sales?.todayTransactions} money={false} />
-      <ManagerMetric label="میانگین مبلغ هر فروش امروز" value={w.sales?.averageSaleValue} field="averageSaleValue" />
-    </ManagerGrid></ManagerSection>}
     {w.customerReceivables && <ManagerSection title="حساب مشتریان" description="مانده تجمیعی در زمان گزارش؛ محدود به فروش امروز نیست" to={can("customers.read") ? "/directory?type=customer" : undefined} action="فهرست مشتریان"><ManagerGrid>
-      <ManagerMetric label="مطالبات از مشتریان" value={w.customerReceivables.totalReceivables} field="totalReceivables" detail={`${w.customerReceivables.debtorsCount.toLocaleString("fa-IR")} مشتری بدهکار`} />
-      <ManagerMetric label="بستانکاری مشتریان" value={w.customerReceivables.totalCustomerCredit} field="totalCustomerCredit" detail={`${w.customerReceivables.creditorsCount.toLocaleString("fa-IR")} مشتری بستانکار`} />
+      <ManagerMetric icon={UserCheck} label="مطالبات از مشتریان" value={w.customerReceivables.totalReceivables} field="totalReceivables" detail={`${w.customerReceivables.debtorsCount.toLocaleString("fa-IR")} مشتری بدهکار`} />
+      <ManagerMetric icon={UserCheck} label="بستانکاری مشتریان" value={w.customerReceivables.totalCustomerCredit} field="totalCustomerCredit" detail={`${w.customerReceivables.creditorsCount.toLocaleString("fa-IR")} مشتری بستانکار`} />
     </ManagerGrid></ManagerSection>}
     {w.partnerAccounts && <ManagerSection title="مانده همکاران" description="تجمیع علامت‌های دفتر حساب در زمان گزارش؛ وضعیت بدهکار یا بستانکار در پرونده هر همکار مشخص است" to={can("partners.read") ? "/directory?type=partner" : undefined} action="فهرست همکاران"><ManagerGrid>
-      <ManagerMetric label="جمع مانده‌های مثبت" value={w.partnerAccounts.positiveBalanceAmount} field="positiveBalanceAmount" detail={`${w.partnerAccounts.positiveBalanceCount.toLocaleString("fa-IR")} همکار با مانده مثبت`} />
-      <ManagerMetric label="مقدار مانده‌های منفی" value={w.partnerAccounts.negativeBalanceAmount} field="negativeBalanceAmount" detail={`${w.partnerAccounts.negativeBalanceCount.toLocaleString("fa-IR")} همکار با مانده منفی`} />
+      <ManagerMetric icon={WalletCards} label="جمع مانده‌های مثبت" value={w.partnerAccounts.positiveBalanceAmount} field="positiveBalanceAmount" detail={`${w.partnerAccounts.positiveBalanceCount.toLocaleString("fa-IR")} همکار با مانده مثبت`} />
+      <ManagerMetric icon={WalletCards} label="مقدار مانده‌های منفی" value={w.partnerAccounts.negativeBalanceAmount} field="negativeBalanceAmount" detail={`${w.partnerAccounts.negativeBalanceCount.toLocaleString("fa-IR")} همکار با مانده منفی`} />
     </ManagerGrid></ManagerSection>}
-    {w.inventory && <ManagerSection title="موجودی" description="تعداد اقلام فعال در زمان گزارش"><ManagerMetric label="اقلام فعال" value={w.inventory.activeItemsCount} money={false} detail="فهرست عملیات فعلاً فقط گوشی‌ها را نمایش می‌دهد." /></ManagerSection>}
+    {w.inventory && <ManagerSection artwork="goods" title="موجودی" description="تعداد اقلام فعال در زمان گزارش"><ManagerMetric icon={Boxes} label="اقلام فعال" value={w.inventory.activeItemsCount} money={false} detail="فهرست عملیات فعلاً فقط گوشی‌ها را نمایش می‌دهد." /></ManagerSection>}
     {!Object.keys(w).length && <MiniAppDataState empty emptyText="شاخصی در این گزارش در دسترس نیست. از بخش‌های مجاز زیر استفاده کنید." />}
     <ManagerSection title="ادامه کار"><ManagerList>
       {can("customers.read") && <ManagerRecord title="پرونده مشتریان" detail="اطلاعات و سوابق مجاز هر مشتری" to="/directory?type=customer" />}

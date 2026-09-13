@@ -8,7 +8,7 @@ import type { PartnerAccountData } from "../types";
 export const PartnerAccount: React.FC = () => {
   const query = useMiniAppQuery<PartnerAccountData>("/api/miniapp/partner/account");
   const d = query.data;
-  return <PartnerPage id="partner-account-title" title="حساب همکاری" description={d?.partner.name}>
+  return <PartnerPage id="partner-account-title" title="حساب همکاری" description={d?.partner.name} artwork="money">
     <PartnerQueryState query={query}>{d && <>
       <PartnerPosition account={d.account} />
       <PartnerSection title="دفتر حساب" description="مقادیر گزارش‌شده؛ بدهکار و بستانکار مستقل از یکدیگر" to="/ledger" action="مشاهده گردش حساب"><div className="partner-grid">

@@ -1,3 +1,4 @@
+import "../design-system/visual-family.css";
 import React, { useEffect } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { ArrowRight } from "../../components/lucide-react";
@@ -23,12 +24,12 @@ export const MiniAppShell: React.FC = () => {
 
   if (!identity) return null;
   const navigation = getMiniAppDestinations(identity).filter(item => item.placement === "dock");
-  return <div className="miniapp-screen miniapp-shell">
+  return <div className="miniapp-screen miniapp-shell" data-workspace={identity.kind}>
     <a className="miniapp-skip-link" href="#miniapp-content" onClick={event => { event.preventDefault(); document.getElementById("miniapp-content")?.focus(); }}>رفتن به محتوای صفحه</a>
     <header className="miniapp-shell-header">
       <div className="miniapp-shell-header-inner miniapp-safe-inline">
         {isHome ? <span className="miniapp-shell-brand" aria-hidden="true"><img src="/kourosh-logo.svg" alt="" /></span> : <button type="button" className="miniapp-shell-icon" onClick={goBack} aria-label="بازگشت"><ArrowRight size={22} aria-hidden="true" /></button>}
-        <div className="miniapp-shell-heading"><MiniAppWorkspacePicker /><strong className="miniapp-shell-title">{destination?.label || "کوروش"}</strong></div>
+        <MiniAppWorkspacePicker><strong className="miniapp-shell-title">{destination?.label || "کوروش"}</strong></MiniAppWorkspacePicker>
       </div>
     </header>
     <main id="miniapp-content" tabIndex={-1} className="miniapp-shell-content miniapp-safe-inline">

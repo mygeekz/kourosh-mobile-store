@@ -3,26 +3,26 @@
 #miniapp-root .partner-header { display: grid; gap: 8px; padding-block: 4px 16px; border-bottom: 1px solid rgb(var(--ma-line)); }
 #miniapp-root .partner-header h1 { font-size: var(--ma-text-title); line-height: 1.65; font-weight: 800; }
 #miniapp-root .partner-eyebrow { color: rgb(var(--ma-brand)); font-size: var(--ma-text-caption); font-weight: 700; }
-#miniapp-root .partner-muted { color: rgb(var(--ma-muted-ink)); font-size: 13px; line-height: 1.9; }
+#miniapp-root .partner-muted { color: rgb(var(--ma-muted-ink)); font-size: 0.8125rem; line-height: 1.9; }
 #miniapp-root .partner-section { display: grid; gap: 12px; min-width: 0; }
 #miniapp-root .partner-section-heading { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 #miniapp-root .partner-section h2 { font-size: var(--ma-text-body); line-height: 1.8; font-weight: 800; }
-#miniapp-root .partner-link { display: inline-flex; align-items: center; min-height: var(--ma-control-height); color: rgb(var(--ma-brand)); text-decoration: none; font-size: 14px; font-weight: 700; }
+#miniapp-root .partner-link { display: inline-flex; align-items: center; min-height: var(--ma-control-height); color: rgb(var(--ma-brand)); text-decoration: none; font-size: 0.875rem; font-weight: 700; }
 #miniapp-root .partner-page .partner-metric, #miniapp-root .partner-page .partner-position { display: grid; gap: 8px; padding: var(--ma-space-4); box-shadow: none; min-width: 0; }
 #miniapp-root .partner-page .partner-position { border-inline-start: 3px solid rgb(var(--ma-brand)); }
 #miniapp-root .partner-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
-#miniapp-root .partner-page .miniapp-money { display: block; width: 100%; font-size: 16px; line-height: 1.9; font-weight: 750; }
+#miniapp-root .partner-page .miniapp-money { display: block; width: 100%; font-size: 1rem; line-height: 1.9; font-weight: 750; }
 #miniapp-root .partner-page .miniapp-money-part { direction: ltr; unicode-bidi: isolate; }
-#miniapp-root .partner-number { font-size: 22px; line-height: 1.6; font-variant-numeric: tabular-nums; }
+#miniapp-root .partner-number { font-size: 1.375rem; line-height: 1.6; font-variant-numeric: tabular-nums; }
 #miniapp-root .partner-list { margin: 0; padding: 0; list-style: none; border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-card); background: rgb(var(--ma-surface)); min-width: 0; }
 #miniapp-root .partner-record { display: grid; gap: 8px; padding: var(--ma-space-4); min-width: 0; }
 #miniapp-root .partner-record + .partner-record { border-top: 1px solid rgb(var(--ma-line)); }
-#miniapp-root .partner-record-title { font-size: 15px; line-height: 1.9; font-weight: 750; }
+#miniapp-root .partner-record-title { font-size: 0.9375rem; line-height: 1.9; font-weight: 750; }
 #miniapp-root .partner-amount { display: grid; gap: 2px; padding-top: 4px; }
 #miniapp-root .partner-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-#miniapp-root .partner-notice { display: grid; gap: 4px; padding: 12px; background: rgb(var(--ma-muted-surface)); color: rgb(var(--ma-muted-ink)); font-size: 13px; line-height: 1.9; border-radius: var(--ma-radius-control); }
-#miniapp-root .partner-search { display: grid; gap: 8px; color: rgb(var(--ma-muted-ink)); font-size: 13px; }
-#miniapp-root .partner-search input { width: 100%; min-width: 0; min-height: var(--ma-control-height); padding: 12px; border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-control); background: rgb(var(--ma-surface)); color: rgb(var(--ma-ink)); font-size: 16px; }
+#miniapp-root .partner-notice { display: grid; gap: 4px; padding: 12px; background: rgb(var(--ma-muted-surface)); color: rgb(var(--ma-muted-ink)); font-size: 0.8125rem; line-height: 1.9; border-radius: var(--ma-radius-control); }
+#miniapp-root .partner-search { display: grid; gap: 8px; color: rgb(var(--ma-muted-ink)); font-size: 0.8125rem; }
+#miniapp-root .partner-search input { width: 100%; min-width: 0; min-height: var(--ma-control-height); padding: 12px; border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-control); background: rgb(var(--ma-surface)); color: rgb(var(--ma-ink)); font-size: 1rem; }
 #miniapp-root .partner-page button[aria-pressed="true"] { background: rgb(var(--ma-action)); border-color: rgb(var(--ma-action)); color: rgb(var(--ma-on-action)); box-shadow: none; }
 #miniapp-root .partner-page a:focus-visible, #miniapp-root .partner-page input:focus-visible { outline: 3px solid rgb(var(--ma-brand)); outline-offset: 3px; }
 @media (min-width: 560px) { #miniapp-root .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

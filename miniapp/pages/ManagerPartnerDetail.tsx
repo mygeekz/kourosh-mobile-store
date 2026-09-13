@@ -38,7 +38,7 @@ export const ManagerPartnerDetail: React.FC = () => {
   const { id = "" } = useParams();
   const { canPermission: can } = useMiniAppPermissions();
   const query = useMiniAppQuery<ManagerPartnerDetailData>(`/api/miniapp/manager/partners/${id}`);
-  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} />;
+  if (!query.data) return <MiniAppDataState loading={query.loading} error={query.error} retry={query.retry} empty={!query.loading && !query.error} emptyText="اطلاعات این بخش در دسترس نیست." />;
   const d = query.data;
   return <ManagerPage title={d.partner.name} context={`پرونده همکار · ${d.partner.id.toLocaleString("fa-IR")}`} description={<>{formatPartnerType(d.partner.type)}{d.partner.phoneNumber && <> · <MiniAppBidiText>{d.partner.phoneNumber}</MiniAppBidiText></>}</>}>
     <ManagerSection title="خلاصه همکاری" description="مجموع سوابق در زمان گزارش؛ محدود به امروز نیست"><ManagerGrid>

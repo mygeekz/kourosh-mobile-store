@@ -1,3 +1,4 @@
+import { UserCheck, Store } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { MiniAppBidiText } from "../components/MiniAppBidiText";
 import { MiniAppDataState } from "../components/MiniAppDataState";
@@ -12,12 +13,12 @@ const DirectoryList: React.FC<{ kind: "customer" | "partner"; q: string; page: n
   useEffect(() => { const timer = window.setTimeout(() => setSearch(q.trim()), q.trim() ? 250 : 0); return () => window.clearTimeout(timer); }, [q]);
   const query = useMiniAppQuery<ManagerCustomerDirectoryData | ManagerPartnerDirectoryData>(`/api/miniapp/manager/${kind === "customer" ? "customers" : "partners"}?q=${encodeURIComponent(search)}&page=${page}&pageSize=30`);
   const d = query.data;
-  return <><ManagerSnapshotNote meta={query.meta} search /><ManagerQueryState query={query} empty={!d?.items.length} emptyText="رکوردی در این صفحه پیدا نشد. جستجو یا صفحه انتخاب‌شده را بررسی کنید."><ManagerList>{d?.items.map(item => {
+  return <><ManagerSnapshotNote meta={query.meta} search /><ManagerQueryState query={query} empty={Boolean(d && !d.items.length)} emptyText="رکوردی در این صفحه پیدا نشد. جستجو یا صفحه انتخاب‌شده را بررسی کنید."><ManagerList>{d?.items.map(item => {
     const name = "fullName" in item ? item.fullName : item.name;
     const account = "account" in item ? item.account : undefined;
     const balance = item.currentBalance;
     const balanceLabel = account ? account.label : kind === "customer" && typeof balance === "number" ? balance > 0 ? "بدهکار به فروشگاه؛ مانده با علامت" : balance < 0 ? "بستانکار از فروشگاه؛ مانده با علامت" : "تسویه" : "مانده با علامت دفتر حساب";
-    return <ManagerRecord key={item.id} title={name} to={`/${kind === "customer" ? "customers" : "partners"}/${item.id}`} detail={item.phoneNumber ? <MiniAppBidiText>{item.phoneNumber}</MiniAppBidiText> : `شناسه ${item.id.toLocaleString("fa-IR")} · بدون شماره تماس`}>
+    return <ManagerRecord key={item.id} title={name} icon={kind === "customer" ? UserCheck : Store} to={`/${kind === "customer" ? "customers" : "partners"}/${item.id}`} detail={item.phoneNumber ? <MiniAppBidiText>{item.phoneNumber}</MiniAppBidiText> : `شناسه ${item.id.toLocaleString("fa-IR")} · بدون شماره تماس`}>
       {typeof balance === "number" && <ManagerAmount label={balanceLabel} value={account ? account.amount : balance} field={`directory-${item.id}`} />}
       <span className="manager-context">مشاهده پرونده ←</span>
     </ManagerRecord>;

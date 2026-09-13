@@ -1,5 +1,13 @@
 export type MiniAppPremiumTone = "blue" | "violet" | "mint" | "orange" | "red" | "slate";
 
+// Background only: preserve the existing header's geometry, content and text colors.
+export const miniAppPremiumHeaderBackground = (image: "home" | "product" | "more") => ({
+  backgroundImage: `linear-gradient(to left, rgb(var(--ma-canvas) / .97), rgb(var(--ma-canvas) / .8)), url("/miniapp/premium/${image}.webp")`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+});
+
 /**
  * Kourosh Mini App premium visual reference.
  *

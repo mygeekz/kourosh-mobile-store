@@ -2,7 +2,9 @@ import React, { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MiniAppBidiText } from "../components/MiniAppBidiText";
 import { MiniAppDataState } from "../components/MiniAppDataState";
-import { MiniAppFilterChip } from "../components/MiniAppVisualPrimitives";
+import { RecordMeta } from "../components/ui/MiniAppRecord";
+import { Smartphone, Tag } from "lucide-react";
+import { MiniAppFilterChip, MiniAppPill } from "../components/MiniAppVisualPrimitives";
 import { PartnerList, PartnerLoadedScope, PartnerLoadMore, PartnerMetric, PartnerPage, PartnerQueryState, PartnerRecord, PartnerSearch, PartnerSection, PartnerSettlement } from "../components/partner/PartnerUI";
 import { formatCustomerDate } from "../format";
 import { useMiniAppPagination } from "../hooks/useMiniAppPagination";
@@ -25,10 +27,11 @@ export const PartnerPhones: React.FC = () => {
       <PartnerSearch value={search} onChange={value => update("q", value)} label="جستجوی نام یا شناسه در گوشی‌های دریافت‌شده" />
       <div className="partner-actions" aria-label="فیلتر تسویه‌های دریافت‌شده">{filters.map(item => <MiniAppFilterChip key={item.key} active={filter === item.key} onClick={() => update("filter", item.key)}>{item.label}</MiniAppFilterChip>)}</div>
       <PartnerLoadedScope loaded={d.items.length} visible={visible.length} total={d.total} pageMeta={query.pageMeta} />
-      {visible.length ? <PartnerList>{visible.map(item => <PartnerRecord key={item.ref} record={item.ref} title={item.name} detail={`${formatCustomerDate(item.purchaseDate)} · ${item.status || "وضعیت ثبت نشده"}`}>
-        <p className="partner-muted">شناسه: {item.identifier ? <MiniAppBidiText>{item.identifier}</MiniAppBidiText> : "ثبت نشده"}</p>
-        <p className="partner-muted">مرجع کالا: <MiniAppBidiText>{item.ref}</MiniAppBidiText></p>
-        <PartnerSettlement settlement={item.settlement} record={item.ref} />
+      {visible.length ? <PartnerList>{visible.map(item => <PartnerRecord key={item.ref} record={item.ref} title={item.name} icon={Smartphone} status={<MiniAppPill tone={item.settlement.code === "open" ? "warning" : "success"}>{item.settlement.label}</MiniAppPill>} detail={<>
+        <RecordMeta>{formatCustomerDate(item.purchaseDate)} · {item.status || "وضعیت ثبت نشده"}</RecordMeta>
+        <RecordMeta icon={Tag}>شناسه: {item.identifier ? <MiniAppBidiText>{item.identifier}</MiniAppBidiText> : "ثبت نشده"} · مرجع کالا: <MiniAppBidiText>{item.ref}</MiniAppBidiText></RecordMeta>
+      </>}>
+        <PartnerSettlement settlement={item.settlement} record={item.ref} showStatus={false} />
       </PartnerRecord>)}</PartnerList> : !query.error && <MiniAppDataState empty emptyText="گوشی‌ای در اطلاعات دریافت‌شده با این فیلتر پیدا نشد." />}
       <PartnerLoadMore query={query} />
     </>}</PartnerQueryState>

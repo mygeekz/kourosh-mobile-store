@@ -4,7 +4,7 @@
 @font-face {
   font-family: "Vazir";
   src: url("/fonts/Vazir-FD-WOL.woff2") format("woff2");
-  font-weight: 100 900;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -119,6 +119,7 @@
   margin-inline: auto;
 }
 #miniapp-root .miniapp-shell-heading { min-inline-size: 0; }
+#miniapp-root .miniapp-shell-header-inner:has(.miniapp-workspace-trigger) { grid-template-columns: var(--ma-control-height) minmax(0, 1fr) auto; }
 #miniapp-root .miniapp-shell-title { display: block; font-size: var(--ma-text-heading); line-height: 1.6; overflow-wrap: anywhere; }
 #miniapp-root .miniapp-shell-icon, #miniapp-root .miniapp-shell-brand {
   display: inline-flex; align-items: center; justify-content: center;
@@ -128,18 +129,15 @@
 }
 #miniapp-root .miniapp-shell-icon { cursor: pointer; }
 #miniapp-root .miniapp-shell-brand img { inline-size: 2rem; block-size: 2rem; object-fit: contain; }
-#miniapp-root .miniapp-workspace-label, #miniapp-root .miniapp-workspace-trigger {
+#miniapp-root .miniapp-workspace-label {
   display: flex; align-items: center; gap: .375rem;
   color: rgb(var(--ma-muted-ink)); font-size: var(--ma-text-caption); line-height: 1.65;
 }
 #miniapp-root .miniapp-workspace-label { min-block-size: 1.75rem; }
 #miniapp-root .miniapp-workspace-trigger {
-  min-block-size: var(--ma-control-height); max-inline-size: 100%;
-  border: 0; border-radius: var(--ma-radius-control); background: transparent;
-  padding: .25rem .5rem; margin-inline-start: -.5rem; color: rgb(var(--ma-brand));
-  text-align: start; font-weight: 700; cursor: pointer;
+  min-block-size: var(--ma-control-height); padding: 0;
 }
-#miniapp-root .miniapp-workspace-trigger span { overflow-wrap: anywhere; }
+#miniapp-root .miniapp-workspace-label span { overflow-wrap: anywhere; }
 #miniapp-root .miniapp-workspace-trigger svg, #miniapp-root .miniapp-workspace-label svg { flex-shrink: 0; }
 #miniapp-root .miniapp-shell-content { max-inline-size: var(--ma-shell-width); margin-inline: auto; padding-block: var(--ma-space-5, 1.25rem); }
 #miniapp-root .miniapp-shell-dock {
@@ -159,10 +157,12 @@
 #miniapp-root .miniapp-shell-nav-item:active, #miniapp-root .miniapp-shell-icon:active, #miniapp-root .miniapp-workspace-trigger:active { background: rgb(var(--ma-muted-surface)); }
 #miniapp-root .miniapp-workspace-dialog {
   color: rgb(var(--ma-ink)); background: rgb(var(--ma-surface));
-  border: 1px solid rgb(var(--ma-line)); border-radius: var(--ma-radius-hero);
-  padding: var(--ma-space-4); margin: auto;
-  inline-size: min(28rem, calc(100% - 2rem - var(--miniapp-safe-area-left) - var(--miniapp-safe-area-right)));
-  max-block-size: calc(100dvh - var(--miniapp-safe-area-top) - var(--miniapp-safe-area-bottom) - 2rem);
+  border: 1px solid rgb(var(--ma-line)); border-radius: 0 var(--ma-radius-hero) var(--ma-radius-hero) 0;
+  /* Physical positioning is intentional: the drawer stays LEFT in Persian RTL. */
+  position: fixed; left: 0; right: auto; top: 0; bottom: 0; margin: 0;
+  padding: max(var(--ma-space-4), var(--miniapp-safe-area-top)) var(--ma-space-4) max(var(--ma-space-4), var(--miniapp-safe-area-bottom)) max(var(--ma-space-4), var(--miniapp-safe-area-left));
+  inline-size: min(22rem, calc(100vw - 1rem - var(--miniapp-safe-area-right)));
+  block-size: 100dvh; max-block-size: 100dvh; max-inline-size: 100vw;
   box-shadow: var(--ma-shadow-overlay); overflow-y: auto;
 }
 #miniapp-root .miniapp-workspace-dialog::backdrop { background: rgb(0 0 0 / .6); }
@@ -171,11 +171,11 @@
 #miniapp-root .miniapp-workspace-dialog-heading button { flex-shrink: 0; }
 #miniapp-root .miniapp-workspace-options { display: grid; gap: var(--ma-space-2); }
 #miniapp-root .miniapp-workspace-option {
-  display: flex; align-items: center; gap: .5rem; min-block-size: 4.5rem; inline-size: 100%;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; min-block-size: 4.5rem; inline-size: 100%;
   text-align: start; padding: .75rem; border: 1px solid rgb(var(--ma-line));
   border-radius: var(--ma-radius-control); color: rgb(var(--ma-ink)); background: rgb(var(--ma-surface)); cursor: pointer;
 }
-#miniapp-root .miniapp-workspace-option > span:first-child { min-inline-size: 0; flex: 1; }
+#miniapp-root .miniapp-workspace-option > span:first-child { min-inline-size: min(100%, 10rem); flex: 1 1 10rem; }
 #miniapp-root .miniapp-workspace-option strong, #miniapp-root .miniapp-workspace-option small { display: block; overflow-wrap: anywhere; }
 #miniapp-root .miniapp-workspace-option strong { font-size: var(--ma-text-label); }
 #miniapp-root .miniapp-workspace-option small { font-size: var(--ma-text-caption); color: rgb(var(--ma-muted-ink)); }
