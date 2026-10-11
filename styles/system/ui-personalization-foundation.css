@@ -1498,3 +1498,206 @@ html.dark .style-workspace { color: var(--ds-text, #f8fafc); }
   .style-color-editor__meta { flex-wrap: wrap; }
   .style-color-editor__meta small { width: 100%; margin-inline-start: 0; }
 }
+
+/* =========================================================
+   Style control center responsive layout v2
+   Container-aware so Settings remains stable inside narrow
+   workspaces even when the browser viewport itself is wide.
+   ========================================================= */
+
+.style-workspace {
+  container-type: inline-size;
+}
+
+.style-settings-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  gap: 14px;
+}
+
+.style-settings-card--wide {
+  grid-column: 1 / -1;
+}
+
+.style-card-control-grid--two {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+}
+
+.style-card-control-grid--three {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+}
+
+.style-control-segments {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 92px), 1fr));
+  align-items: stretch;
+}
+
+.style-control-segment.ux-btn {
+  width: 100%;
+  min-width: 0;
+  flex: none;
+}
+
+.style-live-preview__content {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 155px), 1fr));
+}
+
+.style-live-preview__actions {
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.style-live-preview__actions .ux-btn {
+  min-width: 0;
+  flex: 1 1 92px;
+}
+
+.style-live-preview__card {
+  display: flex;
+}
+
+.style-color-editor {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  grid-template-areas: none;
+}
+
+.style-color-editor__head,
+.style-color-editor__visual-row,
+.style-color-editor__hex-field,
+.style-color-editor__meta {
+  grid-area: auto;
+}
+
+.style-color-editor__meta {
+  grid-column: 1 / -1;
+  padding-inline-start: 0;
+}
+
+.style-color-editor__copy strong,
+.style-color-editor__copy small {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.style-color-editor__hex-field,
+.style-color-editor__visual-row,
+.style-color-editor__picker-action,
+.style-color-editor__hex-input.ux-input {
+  max-width: 100%;
+}
+
+.style-accessibility-list {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+@container (max-width: 760px) {
+  .style-workspace__header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .style-workspace__actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .style-workspace__actions .ux-btn {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .style-live-preview__header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .style-settings-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .style-settings-card--wide {
+    grid-column: auto;
+  }
+
+  .style-palette-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  }
+}
+
+@container (max-width: 560px) {
+  .style-workspace__title {
+    align-items: flex-start;
+  }
+
+  .style-workspace__title strong {
+    font-size: 17px;
+  }
+
+  .style-workspace__title small {
+    font-size: 10px;
+  }
+
+  .style-live-preview__content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .style-live-preview__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .style-control-segments {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .style-color-palette {
+    padding: 9px;
+  }
+
+  .style-color-palette__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .style-color-palette__badge {
+    width: fit-content;
+  }
+
+  .style-color-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .style-color-editor__visual-row {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .style-color-editor__swatch {
+    width: 42px;
+    height: 42px;
+  }
+
+  .style-color-editor__meta {
+    flex-wrap: wrap;
+  }
+
+  .style-color-editor__meta small {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+}
+
+@container (max-width: 390px) {
+  .style-workspace__actions,
+  .style-live-preview__actions,
+  .style-control-segments {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .style-palette-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

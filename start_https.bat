@@ -68,6 +68,21 @@ set "VITE_HTTPS_PFX_FILE="
 set "VITE_HTTPS_CERT_FILE="
 set "VITE_HTTPS_KEY_FILE="
 
+:: Prevent a mixed runtime where an older backend keeps port 3001 while the
+:: freshly extracted frontend starts on 5173. Only Node listeners are stopped.
+echo Checking for stale Kourosh Node listeners...
+for %%Q in (3001 5173) do (
+  for /f "tokens=5" %%P in ('netstat -ano ^| findstr /R /C:":%%Q .*LISTENING" 2^>nul') do (
+    for /f "tokens=1" %%I in ('tasklist /FI "PID eq %%P" /NH 2^>nul') do (
+      if /I "%%I"=="node.exe" (
+        echo Stopping stale Node listener on port %%Q ^(PID %%P^) ...
+        taskkill /PID %%P /F >nul 2>&1
+      )
+    )
+  )
+)
+timeout /t 1 /nobreak >nul
+
 set "S=                                        "
 
 <nul set /p="!ESC![32m%S%=============================================!ESC![0m"&echo.

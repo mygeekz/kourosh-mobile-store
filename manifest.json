@@ -1,0 +1,131 @@
+{
+  "phase": "3.4-safe-code-sync",
+  "sourceBaseline": "Astra(2).zip uploaded 2026-09-18",
+  "payloadSource": "Astra-phase33-legacy-sms-backlog-quarantine.zip",
+  "databaseFilesIncluded": false,
+  "changed": [
+    {
+      "path": "scripts/test-messaging-templates-v257.mjs",
+      "baselineSha256": "4df4c63667f25ee5d7ca1dd3f3299286d588f5a41de3ab58962c11d3be32f7d3",
+      "newSha256": "956c4408c02976e33ce2176cad55e4b3f50db2e5bfad35e8bd51567da6674665"
+    },
+    {
+      "path": "scripts/test-messaging-templates-v258.mjs",
+      "baselineSha256": "5819a47f34e51cb30844a89a521bf24b4e8b69c02a5f55178b304a3f415d63d0",
+      "newSha256": "9aed151d631b719ed735bee41410236c08ca020807b0c94d98cd028d4b330535"
+    },
+    {
+      "path": "scripts/test-messaging-templates-v259.mjs",
+      "baselineSha256": "0e00909c105caeb7f8e800553e8a45c081065af12c2399f22c8a4ce82f9cea5a",
+      "newSha256": "739941d9ffc6a36a6e73f7db77e3eba45d2ae5907aec8f9a9d94c16741734a46"
+    },
+    {
+      "path": "server/bootstrap/messagingRuntime.ts",
+      "baselineSha256": "bbc890781c77e578a854cf472e4fa583376bb500e183ac6e3a547686e6c08a2c",
+      "newSha256": "0144450756c30194a0d91b8ff9ffe87bb6d8af4f02dd98a3098463286a920e97"
+    },
+    {
+      "path": "server/notifications/rules/notificationTemplateRegistry.ts",
+      "baselineSha256": "f113f82e9e1d9f1d0a5e7ec429553d9d338b764e3d04b8c8ab948fed4ecf7ddc",
+      "newSha256": "5f7a401893094de3201800549a6c84a1fa0891fe3297d4c988a6cfb8922e94d1"
+    },
+    {
+      "path": "server/notifications/rules/smsReminderRuleReadiness.ts",
+      "baselineSha256": "e81819efddedb2acc104b0198005bc72e6f29ec72255e703686eb18f9ee42640",
+      "newSha256": "d319b9ff57ab5c03ac220abce28615759a051224b737fbf4f7fbaf3ea545c7f9"
+    },
+    {
+      "path": "server/utils/notificationOutboxRuntime.ts",
+      "baselineSha256": "39522f392b30d27060ede20a34ff84048db185362e0f5d7b2388ac253c123d39",
+      "newSha256": "5927f46c196554dc6e39c8360b6121d360c978151ab8a645eced2a075a92e84d"
+    },
+    {
+      "path": "server/utils/telegramEventNotificationRuntime.ts",
+      "baselineSha256": "ef4d9df43a616970e754af687848cd254f04539c676c037e6748e2bdb52978eb",
+      "newSha256": "6205adebb3daf6cfe5abbc25fc1a3f7a6bafef919060d74fa48ffe13782f4b1f"
+    },
+    {
+      "path": "shared/messages.ts",
+      "baselineSha256": "2c6f9a144a70b92510f8805161b4123dc8d891fce111b73c197b6231ebe4e243",
+      "newSha256": "9834603bd463dda85f12a9b821101e5d01c9c979da0c2cb6b71a4de0880bf26a"
+    }
+  ],
+  "added": [
+    {
+      "path": "docs/sms-legacy-backlog-quarantine-phase33.md",
+      "newSha256": "59b783b8573e341987376609e57af4f981b0c0fa9cff699fec8962332fa88c67"
+    },
+    {
+      "path": "docs/sms-rule-controlled-cutover-phase29.md",
+      "newSha256": "431d5ffa85bd5253f52a0f8362a17a7feeb99ea5cad7519481711d298ad7fe34"
+    },
+    {
+      "path": "docs/sms-rule-controlled-cutover-phase30.md",
+      "newSha256": "62f82288f065b6f0a97b008976bb797253e542c8f16d19e79b1fe45ea42ae4be"
+    },
+    {
+      "path": "docs/sms-rule-production-cutover-phase31.md",
+      "newSha256": "94e6a898babfe5a79de06352de96098db08011a70e0b9dcc6a446ae52c34908e"
+    },
+    {
+      "path": "docs/sms-rule-production-preflight-phase32.md",
+      "newSha256": "9ea46c9a04fb8813ae744d32800e3e01f051c061e6b271a6b6cf404a9bcecfec"
+    },
+    {
+      "path": "scripts/audit-sms-outbox-backlog.mjs",
+      "newSha256": "ed8bbeb2737e93a8c67ecc6355336410ba6db207255d878a3f1b3c46646709df"
+    },
+    {
+      "path": "scripts/backup-sms-rule-cutover-db.mjs",
+      "newSha256": "a3bd88c738c7aea7daaf71b77b06628ac5f915fc0f10562f9c271b4369d44c61"
+    },
+    {
+      "path": "scripts/configure-sms-rule-cutover.mjs",
+      "newSha256": "3cfa25a7c95600d572b9647eabec209c8cff4c8fabd5b1e65b8e8fe652ec1c87"
+    },
+    {
+      "path": "scripts/monitor-sms-rule-cutover.mjs",
+      "newSha256": "f127f6bb4edb22e242ad94d176bcb9d7b8660c10791da0e8b6dca854c699f399"
+    },
+    {
+      "path": "scripts/preflight-sms-rule-production-cutover.mjs",
+      "newSha256": "ed00f96eef8546ed54f661647748b7e8d3fe70fd5e418985642cb824b9354da4"
+    },
+    {
+      "path": "scripts/quarantine-legacy-sms-outbox.mjs",
+      "newSha256": "a965ddc118394be94519d8a1d03418b4e7d4dace1438d1c837af64debde5d162"
+    },
+    {
+      "path": "scripts/run-installment-sms-candidate-dry-run.mjs",
+      "newSha256": "ad462eaf17500473c8275fff5bc0bf8720941ffc23ac31a3d6532869227c6655"
+    },
+    {
+      "path": "scripts/run-installment-sms-dry-run.mjs",
+      "newSha256": "45626f77c90ddd1e6d9c20974b6f0ab353739add334a8ef625369955e7f5e0a1"
+    },
+    {
+      "path": "scripts/test-sms-outbox-backlog-quarantine.mjs",
+      "newSha256": "9c99e726c84e867286f607dcd36ca10e28fd515858fe2e96fe90290a96a4ffdb"
+    },
+    {
+      "path": "scripts/test-sms-provider-contract.mjs",
+      "newSha256": "614052f087d753b4355f5b0e74d72d4339931ef57a305de277a5de574f4a8f61"
+    },
+    {
+      "path": "scripts/test-sms-rule-controlled-cutover.mjs",
+      "newSha256": "45ddb5373c3a5e76358bc79705f338df564d677fc0698c69669439d9b87b4f0e"
+    },
+    {
+      "path": "scripts/test-sms-rule-cutover-outbox-e2e.mjs",
+      "newSha256": "4db2d5d4b410cdc550cab60b745c2ef18fcb233078ebd4cf11e5dbcff88cba9a"
+    },
+    {
+      "path": "server/notifications/rules/providerTemplateBindings.ts",
+      "newSha256": "a8122cb79842faf6aa3e1ff70467447fca1404780c2e8e7de3474f49446bc367"
+    },
+    {
+      "path": "server/notifications/rules/smsRuleControlledCutover.ts",
+      "newSha256": "75c0afa6cb60ce63c931dffb0038e31660c1981fce630e52f5d43a8f48edad6a"
+    }
+  ]
+}

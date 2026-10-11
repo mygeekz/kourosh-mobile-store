@@ -14,9 +14,9 @@ const SettingsRemindersPanel: React.FC<SettingsRemindersPanelProps> = ({ tab }) 
             <span className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-200 border border-amber-200/60 dark:border-amber-900/30">
               <i className="fa-solid fa-bell" />
             </span>
-            قوانین اعلان (Rule Builder)
+            قوانین یادآوری
           </div>
-          <div className="app-subtle mt-1">قوانین یادآوری اقساط مثل CRM: قبل از سررسید، روز سررسید، و معوق.</div>
+          <div className="app-subtle mt-1">یادآوری قسط و چک، قبل از سررسید، روز سررسید و پس از آن. قوانین پیامک فعلاً فقط برای مقایسه هستند و زمان‌بندی ارسال فعلی را تغییر نمی‌دهند.</div>
         </div>
       </div>
 

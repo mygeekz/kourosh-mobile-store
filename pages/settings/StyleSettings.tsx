@@ -395,7 +395,7 @@ const StyleSettings: React.FC = () => {
           <ToggleField title="نشانگر صفحه فعال" description="صفحه جاری را در سایدبار مشخص می‌کند." checked={style.showInkBar} onChange={(value) => setStyle('showInkBar', value)} icon="fa-solid fa-location-dot" />
         </PanelCard>
 
-        <PanelCard className="style-settings-card" title="فرم‌ها و اجزای رابط" subtitle="هندسه کنترل‌ها، کارت‌ها و دکمه‌های استاندارد را مدیریت کن." icon={<i className="fa-solid fa-cube" />}>
+        <PanelCard className="style-settings-card style-settings-card--wide" title="فرم‌ها و اجزای رابط" subtitle="هندسه کنترل‌ها، کارت‌ها و دکمه‌های استاندارد را مدیریت کن." icon={<i className="fa-solid fa-cube" />}>
           <div className="style-card-control-grid style-card-control-grid--three">
             <SliderField label="گردی کنترل‌ها" value={style.controlRadiusPx} min={12} max={20} suffix="px" onChange={(value) => setStyle('controlRadiusPx', clamp(value, 12, 20))} />
             <SliderField label="گردی کارت‌ها" value={style.cardRadiusPx} min={16} max={28} suffix="px" onChange={(value) => setStyle('cardRadiusPx', clamp(value, 16, 28))} />
@@ -483,7 +483,7 @@ const StyleSettings: React.FC = () => {
           </div>
         </PanelCard>
 
-        <PanelCard className="style-settings-card" title="دسترس‌پذیری" subtitle="خوانایی و حرکت رابط را برای شرایط مختلف بهینه کن." icon={<i className="fa-solid fa-universal-access" />}>
+        <PanelCard className="style-settings-card style-settings-card--wide" title="دسترس‌پذیری" subtitle="خوانایی و حرکت رابط را برای شرایط مختلف بهینه کن." icon={<i className="fa-solid fa-universal-access" />}>
           <div className="style-accessibility-list">
             <ToggleField title="کنتراست بیشتر" description="مرزها و متن‌های کم‌رنگ را واضح‌تر می‌کند." checked={style.highContrast} onChange={(value) => setStyle('highContrast', value)} icon="fa-solid fa-circle-half-stroke" />
             <ToggleField title="کاهش حرکت" description="انیمیشن‌های غیرضروری رابط را محدود می‌کند." checked={style.reducedMotion} onChange={(value) => setStyle('reducedMotion', value)} icon="fa-solid fa-person-walking-arrow-loop-left" />

@@ -55,6 +55,72 @@ const safeJsonParse = (s?: string): any => {
   try { return JSON.parse(s); } catch { return s; }
 };
 
+const asObject = (value: any): Record<string, any> | null =>
+  value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+
+const getRequestObject = (row: SmsLog) => asObject(safeJsonParse(row.requestJson));
+const getResponseObject = (row: SmsLog) => asObject(safeJsonParse(row.responseJson));
+const getResponseDetails = (row: SmsLog) => {
+  const response = getResponseObject(row);
+  return asObject(response?.details) || response;
+};
+
+const resolveLogPatternId = (row: SmsLog): string => {
+  if (String(row.patternId || '').trim()) return String(row.patternId).trim();
+  const request = getRequestObject(row);
+  const providerRequest = asObject(request?.providerRequest);
+  const financialSms = asObject(request?.financialSms);
+  const payload = asObject(financialSms?.payload);
+  const candidate =
+    providerRequest?.patternId ??
+    payload?.meliBodyId ??
+    payload?.kavenegarTemplate ??
+    payload?.smsIrTemplateId ??
+    payload?.ippanelPatternCode ??
+    request?.patternId ??
+    request?.bodyId;
+  return candidate !== undefined && candidate !== null && String(candidate).trim()
+    ? String(candidate)
+    : '—';
+};
+
+const resolveLogTokens = (row: SmsLog): any => {
+  const direct = safeJsonParse(row.tokensJson);
+  if (Array.isArray(direct)) return direct;
+  const request = getRequestObject(row);
+  const providerRequest = asObject(request?.providerRequest);
+  if (Array.isArray(providerRequest?.tokens)) return providerRequest.tokens;
+  const financialSms = asObject(request?.financialSms);
+  const payload = asObject(financialSms?.payload);
+  if (Array.isArray(payload?.tokens)) return payload.tokens;
+  return null;
+};
+
+const resolveLogHttpStatus = (row: SmsLog): number | null => {
+  if (typeof row.httpStatus === 'number') return row.httpStatus;
+  const details = getResponseDetails(row);
+  return typeof details?.httpStatus === 'number' ? details.httpStatus : null;
+};
+
+const resolveLogDurationMs = (row: SmsLog): number | null => {
+  if (typeof row.durationMs === 'number') return row.durationMs;
+  const details = getResponseDetails(row);
+  return typeof details?.durationMs === 'number' ? details.durationMs : null;
+};
+
+const resolveLogRawResponse = (row: SmsLog): string => {
+  if (String(row.rawResponseText || '').trim()) return String(row.rawResponseText);
+  const details = getResponseDetails(row);
+  return typeof details?.rawResponseText === 'string' && details.rawResponseText.trim()
+    ? details.rawResponseText
+    : '—';
+};
+
+const prettyLogValue = (value: any) => {
+  if (value === null || value === undefined || value === '') return '—';
+  return typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+};
+
 const cleanText = (value?: string) => String(value || '')
   .replace(/عملیات ناموفق بود/g, 'انجام نشد')
   .replace(/عملیات ناموفق بود/g, 'انجام نشد')
@@ -113,13 +179,13 @@ const eventOptions = [
 const resolveEventTitle = (value?: string) => eventTitleMap[String(value || '')] || cleanText(value) || '—';
 
 const getDurationText = (row: SmsLog) => {
-  if (typeof row.durationMs === 'number') return `${row.durationMs.toLocaleString('fa-IR')} ms`;
-  return 'ثبت نشده';
+  const duration = resolveLogDurationMs(row);
+  return typeof duration === 'number' ? `${duration.toLocaleString('fa-IR')} ms` : 'ثبت نشده';
 };
 
 const getHttpText = (row: SmsLog) => {
-  if (typeof row.httpStatus === 'number') return row.httpStatus.toLocaleString('fa-IR');
-  return '—';
+  const status = resolveLogHttpStatus(row);
+  return typeof status === 'number' ? status.toLocaleString('fa-IR') : '—';
 };
 
 const SMS_LOGS_PAGE_SIZE_OPTIONS = [5, 10, 20] as const;
@@ -415,7 +481,7 @@ const SmsLogsPanel: React.FC = () => {
                     </div>
                     <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/50">
                       <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">پترن</div>
-                      <div className="mt-1 truncate text-xs font-black text-slate-800 dark:text-slate-100" dir="ltr">{r.patternId || '—'}</div>
+                      <div className="mt-1 truncate text-xs font-black text-slate-800 dark:text-slate-100" dir="ltr">{resolveLogPatternId(r)}</div>
                     </div>
                     <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-3 py-2.5 dark:border-slate-800 dark:bg-slate-900/50">
                       <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400">کد پاسخ / مدت زمان</div>
@@ -544,7 +610,7 @@ const SmsLogsPanel: React.FC = () => {
               <div className="text-sm font-black text-slate-900 dark:text-slate-50">رویداد / پترن</div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">{resolveEventTitle(selected.eventType)}</span>
-                <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200" dir="ltr">{selected.patternId || '—'}</span>
+                <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200" dir="ltr">{resolveLogPatternId(selected)}</span>
                 <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">{getProviderLabel(selected.provider)}</span>
               </div>
             </div>
@@ -577,15 +643,15 @@ const SmsLogsPanel: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
                 <div className="mb-2 text-sm font-black text-slate-900 dark:text-slate-50">متغیرها</div>
-                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{JSON.stringify(safeJsonParse(selected.tokensJson), null, 2)}</pre>
+                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{prettyLogValue(resolveLogTokens(selected))}</pre>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
                 <div className="mb-2 text-sm font-black text-slate-900 dark:text-slate-50">درخواست</div>
-                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{JSON.stringify(safeJsonParse(selected.requestJson), null, 2)}</pre>
+                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{prettyLogValue(safeJsonParse(selected.requestJson))}</pre>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
                 <div className="mb-2 text-sm font-black text-slate-900 dark:text-slate-50">جزئیات پاسخ</div>
-                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{selected.rawResponseText || '—'}</pre>
+                <pre className="max-h-72 overflow-auto rounded-xl bg-white p-3 text-xs dark:bg-slate-900" dir="ltr">{prettyLogValue({ endpoint: getResponseDetails(selected)?.endpoint ?? null, httpStatus: resolveLogHttpStatus(selected), durationMs: resolveLogDurationMs(selected), rawResponseText: resolveLogRawResponse(selected) === '—' ? null : resolveLogRawResponse(selected) })}</pre>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 dark:border-slate-800 dark:bg-slate-950/50">
                 <div className="mb-2 text-sm font-black text-slate-900 dark:text-slate-50">پاسخ سرویس</div>

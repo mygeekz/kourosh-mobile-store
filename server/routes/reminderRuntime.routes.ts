@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import { financialSmsEntityType, financialSmsFromLog, sendValidatedFinancialSms } from "../utils/notificationAmountIntegrity";
 import { buildMeliPayamakPatternTokens, buildTelegramRuntimeDefault } from "../../shared/messages";
 import {
   allAsync,
@@ -162,11 +163,27 @@ app.post(
       const provider: string = String(
         log.provider || settings.sms_provider || "meli_payamak",
       ).toLowerCase();
+      const financialSms = financialSmsFromLog(log);
+      // Preserve original observational context; retry actor remains in createdByUserId.
+      let originalNotificationContext: any;
+      try { originalNotificationContext = JSON.parse(log.requestJson || "{}").notificationContext; } catch {}
       const recipientNumber = String(log.recipient || "").trim();
-      const tokens: string[] = log.tokensJson
-        ? JSON.parse(String(log.tokensJson) || "[]")
-        : [];
-      const patternId = String(log.patternId || "").trim();
+      let tokens: string[] = [];
+      try {
+        const parsed = log.tokensJson ? JSON.parse(String(log.tokensJson) || "[]") : [];
+        if (Array.isArray(parsed)) tokens = parsed.map((value: any) => String(value));
+      } catch {}
+      if (!tokens.length && Array.isArray(financialSms?.payload?.tokens)) {
+        tokens = financialSms.payload.tokens.map((value: any) => String(value));
+      }
+      const financialPattern = provider === "meli_payamak"
+        ? financialSms?.payload?.meliBodyId
+        : provider === "kavenegar"
+          ? financialSms?.payload?.kavenegarTemplate
+          : provider === "sms_ir"
+            ? financialSms?.payload?.smsIrTemplateId
+            : financialSms?.payload?.ippanelPatternCode;
+      const patternId = String(log.patternId || financialPattern || "").trim();
       if (!recipientNumber)
         return res
           .status(400)
@@ -189,13 +206,13 @@ app.post(
           return res
             .status(400)
             .json({ success: false, message: "BodyId نامعتبر است." });
-        result = await sendMeliPayamakPatternSms(
+        result = await sendValidatedFinancialSms(financialSms.context, financialSms.payload, { getAsync, settings }, () => sendMeliPayamakPatternSms(
           recipientNumber,
           bid,
           tokens,
           username,
           password,
-        );
+        ));
       } else {
         return res.status(400).json({
           success: false,
@@ -214,8 +231,12 @@ app.post(
         tokens,
         success: !!result?.success,
         response: result,
+        httpStatus: typeof result?.details?.httpStatus === "number" ? result.details.httpStatus : undefined,
+        rawResponseText: typeof result?.details?.rawResponseText === "string" ? result.details.rawResponseText : undefined,
+        durationMs: typeof result?.details?.durationMs === "number" ? result.details.durationMs : undefined,
         error: result?.success ? undefined : result?.message,
         relatedLogId: id,
+        request: { financialSms, notificationContext: originalNotificationContext },
       });
       if (result?.success)
         return res.json({
@@ -484,8 +505,13 @@ app.post(
         throw new Error("نوع رویداد نامعتبر است.");
       }
       if (!recipientNumber) throw new Error("شماره تماس گیرنده یافت نشد.");
+      const financialSms = {
+        context: { eventType, entityType: financialSmsEntityType(eventType) || inferEntityTypeFromEvent(eventType), entityId: Number(targetId), createdAt: new Date().toISOString() },
+        payload: { provider, recipient: recipientNumber, tokens, meliBodyId, kavenegarTemplate, smsIrTemplateId, ippanelPatternCode },
+      };
       let smsResult;
       try {
+        const deliver = async () => {
         switch (provider) {
           case "meli_payamak": {
             const username = settings.meli_payamak_username;
@@ -576,6 +602,10 @@ app.post(
           default:
             throw new Error("سرویس دهنده پیامک ناشناخته است.");
         }
+        return smsResult;
+        };
+        smsResult = provider === "telegram" ? await deliver()
+          : await sendValidatedFinancialSms(financialSms.context, financialSms.payload, { getAsync, settings }, deliver);
       } catch (err) {
         // If provider-specific error thrown, wrap to unify error handling
         return next(err);
@@ -604,6 +634,7 @@ app.post(
         success: !!smsResult?.success,
         response: smsResult,
         request: {
+          financialSms,
           eventType,
           targetId: Number(targetId),
           provider,

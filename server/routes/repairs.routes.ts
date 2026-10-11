@@ -324,6 +324,10 @@ export const registerRepairsRoutes = (
     '/api/repairs/:id/finalize',
     authorizeRole(REPAIR_ROLES),
     async (req, res, next) => {
+      // Keep a lightweight runtime fingerprint on both success and error responses.
+      // If the browser does not receive this header, an older backend process is
+      // still serving port 3001 even when the Vite UI has already been updated.
+      res.setHeader('X-Kourosh-Repair-Finalize-Version', 'v3');
       try {
         const data = await finalizeRepairInDb(
           +req.params.id,

@@ -56,6 +56,7 @@ export default function RepairDetail(): React.ReactElement | null {
   const [finalCost, setFinalCost] = useState<string>('');
   const [laborFee, setLaborFee] = useState<string>('');
   const [isFinalizing, setIsFinalizing] = useState(false);
+  const [isSavingFinancials, setIsSavingFinancials] = useState(false);
 
   // SMS State
   const [sendingSmsType, setSendingSmsType] = useState<string | null>(null);
@@ -69,6 +70,8 @@ export default function RepairDetail(): React.ReactElement | null {
       setDetails(result.data);
       setTechnicianNotes(result.data.repair.technicianNotes || '');
       setAssignedTechnicianId(result.data.repair.technicianId?.toString() || '');
+      setFinalCost(result.data.repair.finalCost != null ? String(result.data.repair.finalCost) : '');
+      setLaborFee(result.data.repair.laborFee != null ? String(result.data.repair.laborFee) : '');
     } catch (error: any) {
       setNotification({ type: 'error', text: error.message });
     } finally {
@@ -172,6 +175,8 @@ export default function RepairDetail(): React.ReactElement | null {
       if (!response.ok || !result.success) throw new Error(result.message);
       setDetails(result.data);
       setAssignedTechnicianId(result.data.repair.technicianId?.toString() || '');
+      if (result.data.repair.finalCost != null) setFinalCost(String(result.data.repair.finalCost));
+      if (result.data.repair.laborFee != null) setLaborFee(String(result.data.repair.laborFee));
       setNotification({ type: 'success', text: 'تغییرات با موفقیت ذخیره شد.' });
     } catch (error: any) {
       setNotification({ type: 'error', text: error.message });
@@ -180,28 +185,59 @@ export default function RepairDetail(): React.ReactElement | null {
     }
   };
 
-  const handleFinalize = async () => {
+  const validateFinancialInputs = () => {
     if (!assignedTechnicianId) {
       setNotification({ type: 'error', text: 'لطفا ابتدا یک تعمیرکار اختصاص دهید.' });
-      return;
+      return null;
     }
     const numFinalCost = Number(finalCost);
-    const numLaborFee = Number(laborFee);
-    if (isNaN(numFinalCost) || numFinalCost <= 0 || isNaN(numLaborFee) || numLaborFee < 0) {
+    const numLaborFee = Number(laborFee || 0);
+    if (!Number.isFinite(numFinalCost) || numFinalCost <= 0 || !Number.isFinite(numLaborFee) || numLaborFee < 0) {
       setNotification({ type: 'error', text: 'هزینه نهایی و اجرت باید اعداد معتبر باشند.' });
-      return;
+      return null;
     }
     if (numLaborFee > numFinalCost) {
       setNotification({ type: 'error', text: 'اجرت تعمیرکار نمی‌تواند بیشتر از هزینه نهایی کل باشد.' });
-      return;
+      return null;
     }
-
-    setIsFinalizing(true);
-    const payload: FinalizeRepairPayload = {
+    return {
       finalCost: numFinalCost,
       laborFee: numLaborFee,
       technicianId: Number(assignedTechnicianId),
     };
+  };
+
+  const handleSaveFinancials = async () => {
+    const payload = validateFinancialInputs();
+    if (!payload) return;
+    setIsSavingFinancials(true);
+    setNotification(null);
+    try {
+      const response = await apiFetch(`/api/repairs/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error(result.message || 'خطا در ذخیره اطلاعات مالی');
+      setDetails(result.data);
+      setAssignedTechnicianId(result.data.repair.technicianId?.toString() || '');
+      setFinalCost(result.data.repair.finalCost != null ? String(result.data.repair.finalCost) : finalCost);
+      setLaborFee(result.data.repair.laborFee != null ? String(result.data.repair.laborFee) : laborFee);
+      setNotification({ type: 'success', text: 'اطلاعات مالی تعمیر ذخیره شد.' });
+    } catch (error: any) {
+      setNotification({ type: 'error', text: error.message });
+    } finally {
+      setIsSavingFinancials(false);
+    }
+  };
+
+  const handleFinalize = async () => {
+    const validated = validateFinancialInputs();
+    if (!validated) return;
+
+    setIsFinalizing(true);
+    setNotification(null);
+    const payload: FinalizeRepairPayload = validated;
 
     try {
       const response = await apiFetch(`/api/repairs/${id}/finalize`, {
@@ -212,8 +248,9 @@ export default function RepairDetail(): React.ReactElement | null {
       if (!response.ok || !result.success) throw new Error(result.message);
       setNotification({ type: 'success', text: 'تعمیر با موفقیت نهایی و در حساب‌ها ثبت شد.' });
       setDetails(result.data);
-      setFinalCost('');
-      setLaborFee('');
+      setAssignedTechnicianId(result.data.repair.technicianId?.toString() || assignedTechnicianId);
+      setFinalCost(result.data.repair.finalCost != null ? String(result.data.repair.finalCost) : finalCost);
+      setLaborFee(result.data.repair.laborFee != null ? String(result.data.repair.laborFee) : laborFee);
     } catch (error: any) {
       setNotification({ type: 'error', text: error.message });
     } finally {
@@ -582,13 +619,20 @@ export default function RepairDetail(): React.ReactElement | null {
               bodyClassName="space-y-4"
             >
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <ModalField label="اختصاص به تعمیرکار" iconClass="fa-solid fa-user-gear">
+                <div className="min-w-0 md:col-span-2">
                   <SearchableSelectField
+                    inputId="repairTechnicianId"
+                    label={
+                      <span className="inline-flex items-center gap-2">
+                        <i className="fa-solid fa-user-gear text-[var(--ds-text-muted)]" aria-hidden="true" />
+                        اختصاص به تعمیرکار
+                      </span>
+                    }
+                    hint="تعمیرکار مسئول این تعمیر را انتخاب کنید."
                     value={assignedTechnicianId || null}
                     onValueChange={(value) => {
                       const nextValue = value ? String(value) : '';
                       setAssignedTechnicianId(nextValue);
-                      if (nextValue) void handleUpdate({ technicianId: Number(nextValue) });
                     }}
                     options={technicians.map((technician) => ({
                       value: String(technician.id),
@@ -598,9 +642,11 @@ export default function RepairDetail(): React.ReactElement | null {
                     placeholder="نام، شماره تماس یا کد تعمیرکار را جستجو کنید…"
                     noOptionsMessage="تعمیرکاری مطابق جستجو پیدا نشد"
                     ariaLabel="جستجو و انتخاب تعمیرکار"
+                    wrapperClassName="w-full"
+                    controlClassName="w-full"
                     clearable
                   />
-                </ModalField>
+                </div>
 
                 <ModalField label="اجرت تعمیرکار" iconClass="fa-solid fa-hand-holding-dollar">
                   <PriceInput
@@ -635,17 +681,30 @@ export default function RepairDetail(): React.ReactElement | null {
                   <div className="mt-2 flex items-center justify-between gap-3 border-t border-slate-200 pt-2 dark:border-slate-700"><span className="font-bold">مبلغ کل فاکتور</span><strong className="tabular-nums">{formatPrice(finalCostNum)}</strong></div>
                 </div>
               </div>
-              <Button
-                onClick={handleFinalize}
-                disabled={isFinalizing}
-                loading={isFinalizing}
-                loadingText="در حال نهایی‌سازی..."
-                className="w-full"
-                variant="primary"
-                leftIcon={<i className="fa-solid fa-circle-check" />}
-              >
-                نهایی‌سازی و ثبت در حساب‌ها
-              </Button>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <Button
+                  onClick={handleSaveFinancials}
+                  disabled={isSavingFinancials || isFinalizing}
+                  loading={isSavingFinancials}
+                  loadingText="در حال ذخیره..."
+                  className="w-full"
+                  variant="secondary"
+                  leftIcon={<i className="fa-solid fa-floppy-disk" />}
+                >
+                  ذخیره اطلاعات مالی
+                </Button>
+                <Button
+                  onClick={handleFinalize}
+                  disabled={isFinalizing || isSavingFinancials}
+                  loading={isFinalizing}
+                  loadingText="در حال نهایی‌سازی..."
+                  className="w-full"
+                  variant="primary"
+                  leftIcon={<i className="fa-solid fa-circle-check" />}
+                >
+                  نهایی‌سازی و ثبت در حساب‌ها
+                </Button>
+              </div>
             </PanelCard>
           ) : (
             <PanelCard

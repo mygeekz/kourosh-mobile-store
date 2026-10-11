@@ -56,6 +56,15 @@ export const inferCustomerLedgerReference = (
     return { referenceType: "sales_transaction_charge", referenceId: legacySaleId };
   }
 
+  // Repair charges are system-generated and always include their source repair id
+  // in the canonical description. Keep this narrow fallback so a legacy/domain
+  // adapter cannot accidentally create an orphan customer-ledger movement.
+  const repairMatch = desc.match(/شناسه\s*تعمیر\s*:\s*(\d+)/i);
+  const repairId = repairMatch ? Number(repairMatch[1]) || null : null;
+  if (repairId && Number(debit || 0) > 0 && Number(credit || 0) <= 0) {
+    return { referenceType: "repair_charge", referenceId: repairId };
+  }
+
   return { referenceType: null, referenceId: null };
 };
 
@@ -78,9 +87,15 @@ export const addCustomerLedgerEntryInternal = async (
   const currentCredit = movement.credit;
   const newBalance = prevBalance + currentDebit - currentCredit;
 
+  const resolvedReference = inferCustomerLedgerReference(
+    description,
+    currentDebit,
+    currentCredit,
+    meta,
+  );
   const sourceRef = normalizeAccountingReference({
-    referenceType: meta?.referenceType,
-    referenceId: meta?.referenceId,
+    referenceType: resolvedReference.referenceType,
+    referenceId: resolvedReference.referenceId,
     manualFallbackType: "",
   });
   if (!String(sourceRef.referenceType || "").trim() || !Number(sourceRef.referenceId || 0)) {

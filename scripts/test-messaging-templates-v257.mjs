@@ -43,7 +43,7 @@ for (const d of TELEGRAM_TEMPLATE_DEFINITIONS) {
 }
 
 const cases = [
-  ['meli_payamak_installment_due_notice_pattern_id',{name:'ن',dueDate:'1405/06/01',amount:'100'},['ن','1405/06/01','100']],
+  ['meli_payamak_installment_due_notice_pattern_id',{name:'ن',dueDate:'1405/06/01',amount:'100'},['ن','100','1405/06/01']],
   ['meli_payamak_repair_cost_notice_pattern_id',{name:'ن',deviceModel:'A',estimatedCost:'200'},['ن','A','200']],
   ['meli_payamak_repair_status_pattern_id',{deviceModel:'A',status:'آماده'},['A','آماده']],
   ['meli_payamak_account_balance_pattern_id',{status:'بدهی شما',amount:'300'},['بدهی شما','300']],

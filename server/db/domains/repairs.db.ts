@@ -99,9 +99,30 @@ export const finalizeRepairInDb = async (
   repairId: number,
   data: FinalizeRepairPayload,
 ): Promise<any> => {
+  await getDbInstance();
   return await finalizeRepairInRepo(repairId, data, {
-    addCustomerLedgerEntry: addCustomerLedgerEntryInternal,
-    addPartnerLedgerEntry: addPartnerLedgerEntryInternal,
+    // Keep repair references inside the domain adapter instead of relying on a
+    // generic positional ledger callback. This guarantees every repair charge
+    // reaches the accounting layer with its required source reference.
+    addCustomerRepairCharge: (customerId, sourceRepairId, description, amount, transactionDateISO) =>
+      addCustomerLedgerEntryInternal(
+        customerId,
+        description,
+        amount,
+        0,
+        transactionDateISO,
+        { referenceType: "repair_charge", referenceId: sourceRepairId },
+      ),
+    addPartnerRepairFee: (partnerId, sourceRepairId, description, amount, transactionDateISO) =>
+      addPartnerLedgerEntryInternal(
+        partnerId,
+        description,
+        0,
+        amount,
+        transactionDateISO,
+        "repair_fee",
+        sourceRepairId,
+      ),
     getRepairById: getRepairByIdFromDb,
   });
 };

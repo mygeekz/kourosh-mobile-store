@@ -134,7 +134,6 @@ export interface MessagingRuntimeDeps {
   buildContactKeyboard: AnySyncOrAsyncFn;
   addAuditLog: AnyAsyncFn;
 }
-
 export interface MessagingRuntime {
   autoConfigureTelegramUpdateMode: () => Promise<unknown>;
   enqueueEventNotifications: AnyAsyncFn;
@@ -148,6 +147,8 @@ export interface MessagingRuntime {
   startTelegramPolling: AnyAsyncFn;
   publishManagerNotificationEvent: AnyAsyncFn;
   publishManagerScheduledReport: AnyAsyncFn;
+  runAutoSendRulesOnce: () => Promise<any>;
+
 }
 
 export function registerMessagingRuntime(
@@ -215,6 +216,7 @@ export function registerMessagingRuntime(
       runAsync: deps.runAsync,
     });
   const notificationOutboxRuntime = createNotificationOutboxRuntime({
+    insertSmsLog: deps.insertSmsLog,
     ensureNotificationOutboxTables: deps.ensureNotificationOutboxTables,
     ensureReminderRulesTables: deps.ensureReminderRulesTables,
     getAllSettingsAsObject: deps.getAllSettingsAsObject,
@@ -319,6 +321,8 @@ export function registerMessagingRuntime(
     normalizeAutoSendMode: deps.normalizeAutoSendMode,
     ensureReminderRulesTables: deps.ensureReminderRulesTables,
     getEnabledReminderRules: deps.getEnabledReminderRules,
+    hasCustomerDailyCap: deps.hasCustomerDailyCap,
+    hasPendingCustomerCapInOutbox: deps.hasPendingCustomerCapInOutbox,
     runCustomerTelegramNotificationsTick,
     processOneOutboxRow,
     publishManagerEvent: managerNotificationEngine.publish,
@@ -381,5 +385,6 @@ export function registerMessagingRuntime(
     startTelegramPolling,
     publishManagerNotificationEvent: managerNotificationEngine.publish,
     publishManagerScheduledReport: managerNotificationEngine.publishTargeted,
+	runAutoSendRulesOnce,
   };
 }

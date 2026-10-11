@@ -75,9 +75,9 @@ export const MELI_PAYAMAK_PATTERN_DEFINITIONS: SmsPatternTemplateDefinition[] = 
     category: 'اقساط',
     accent: 'emerald',
     iconClass: 'fa-solid fa-calendar-day',
-    tokenKeys: ['name', 'dueDate', 'amount'],
-    tokens: ['نام مشتری', 'تاریخ سررسید', 'مبلغ'],
-    previewTemplate: `مشتری گرامی {1}، سررسید قسط شما {2} است. مبلغ قابل پرداخت: {3} تومان. ${MESSAGE_BRAND_NAME}`,
+    tokenKeys: ['name', 'amount', 'dueDate'],
+    tokens: ['نام مشتری', 'مبلغ', 'تاریخ سررسید'],
+    previewTemplate: `مشتری گرامی {1}، مبلغ قابل پرداخت قسط شما {2} تومان است. سررسید: {3}. ${MESSAGE_BRAND_NAME}`,
   },
   {
     key: 'meli_payamak_payment_confirmation_pattern_id',

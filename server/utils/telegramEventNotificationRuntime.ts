@@ -1,5 +1,18 @@
 import moment from "jalali-moment";
 import cron from "node-cron";
+// shadow-only:start
+import { prepareSchedulerRuleShadow, observeSchedulerRuleCandidate, safelyObserveSchedulerCandidate, type SchedulerShadowState } from "../notifications/rules/schedulerRuleShadow";
+// shadow-only:end
+import { getSmsReminderReadiness } from "../notifications/rules/smsReminderRuleReadiness";
+import {
+  evaluateSmsRuleCutoverSchedulerGate,
+  SMS_RULE_CUTOVER_APPROVED_BODY_ID,
+  SMS_RULE_CUTOVER_ORIGIN,
+  SMS_RULE_CUTOVER_PHASE_RULE6,
+  SMS_RULE_CUTOVER_RULE_ID,
+} from "../notifications/rules/smsRuleControlledCutover";
+import { notificationAmountMeaning, notificationTemplateAmount } from "./notificationContext";
+import { normalizeIranPhone } from "./iranPhone";
 import { buildMeliPayamakPatternTokens, buildTelegramRuntimeDefault, buildTelegramTemplatePreset } from "../../shared/messages";
 
 type TelegramTopic = "reports" | "installments" | "sales" | "notifications";
@@ -33,6 +46,8 @@ type TelegramEventNotificationRuntimeDeps = {
   normalizeAutoSendMode: (value: any) => AutoSendMode;
   ensureReminderRulesTables: () => Promise<void>;
   getEnabledReminderRules: (channel?: any) => Promise<any[]>;
+  hasCustomerDailyCap: (channel: string, customerId: number) => Promise<boolean>;
+  hasPendingCustomerCapInOutbox: (channel: string, customerId: number) => Promise<boolean>;
   runCustomerTelegramNotificationsTick: () => Promise<any>;
   processOneOutboxRow: () => Promise<boolean>;
   publishManagerEvent: (input: { topic: TelegramTopic; sourceEventType: string; text: string; meta?: { entityType?: string; entityId?: number; data?: Record<string, unknown> } }) => Promise<any>;
@@ -60,6 +75,8 @@ export const createTelegramEventNotificationRuntime = ({
   normalizeAutoSendMode,
   ensureReminderRulesTables,
   getEnabledReminderRules,
+  hasCustomerDailyCap,
+  hasPendingCustomerCapInOutbox,
   runCustomerTelegramNotificationsTick,
   processOneOutboxRow,
   publishManagerEvent,
@@ -344,12 +361,28 @@ export const createTelegramEventNotificationRuntime = ({
         values,
       );
       if (mode === "sms" || mode === "both") {
+        if (provider === "meli_payamak" && ["INSTALLMENT_DUE_TODAY", "INSTALLMENT_REMINDER"].includes(eventType)
+          && settings.meli_payamak_installment_due_notice_pattern_id) {
+          smsPayload.tokens = buildMeliPayamakPatternTokens("meli_payamak_installment_due_notice_pattern_id", installmentVars);
+        }
+        const templateKey = provider !== "meli_payamak" ? null
+          : ["INSTALLMENT_DUE_TODAY", "INSTALLMENT_REMINDER"].includes(eventType) && settings.meli_payamak_installment_due_notice_pattern_id
+            ? "meli_payamak_installment_due_notice_pattern_id"
+            : eventType === "INSTALLMENT_COMPLETED" && settings.meli_payamak_installment_settlement_pattern_id
+              ? "meli_payamak_installment_settlement_pattern_id"
+              : `meli_payamak_${eventType.toLowerCase()}_pattern_id`;
+        smsPayload.notificationContext = {
+          customerId: p.customerId, contractId: p.saleId, installmentId: targetId, templateKey,
+          amount: eventType === "INSTALLMENT_COMPLETED"
+            ? (templateKey ? notificationTemplateAmount(eventType, templateKey, smsPayload.tokens) : { value: null, meaning: null, currency: null })
+            : { value: installmentVars.amount, meaning: notificationAmountMeaning(eventType), currency: "toman" },
+        };
         await enqueueOutbox({
           channel: "sms",
           provider,
           eventType,
-          entityType: "installment_payment",
-          entityId: targetId,
+          entityType: eventType === "INSTALLMENT_COMPLETED" ? "installment_sale" : "installment_payment",
+          entityId: eventType === "INSTALLMENT_COMPLETED" ? Number((p as any).saleId) : targetId,
           recipient: recipientNumber,
           payload: smsPayload,
           dedupeToday: true,
@@ -469,6 +502,11 @@ export const createTelegramEventNotificationRuntime = ({
         values,
       );
       if (mode === "sms" || mode === "both") {
+        smsPayload.notificationContext = {
+          customerId: c.customerId, contractId: c.saleId, checkId: targetId,
+          templateKey: provider === "meli_payamak" ? `meli_payamak_${eventType.toLowerCase()}_pattern_id` : null,
+          amount: { value: tokens[3], meaning: "check_amount", currency: "toman" },
+        };
         await enqueueOutbox({
           channel: "sms",
           provider,
@@ -594,6 +632,7 @@ export const createTelegramEventNotificationRuntime = ({
     const baseUrl = String((settings as any).app_base_url || "").trim();
     let recipientNumber = "";
     let capCustomerId: number | undefined;
+    let notificationContractId: number | undefined;
     let entityType = "customer";
     let vars: Record<string, any> = {};
     let smsKey = "";
@@ -609,6 +648,7 @@ export const createTelegramEventNotificationRuntime = ({
         [targetId],
       )) as any;
       if (!s) return;
+      notificationContractId = s.saleId;
       recipientNumber = String(s.customerPhoneNumber || "").trim();
       capCustomerId = Number(s.customerId || 0) || undefined;
       entityType = "installment_sale";
@@ -643,6 +683,7 @@ export const createTelegramEventNotificationRuntime = ({
         [targetId],
       )) as any;
       if (!p) return;
+      notificationContractId = p.saleId;
       recipientNumber = String(p.customerPhoneNumber || "").trim();
       capCustomerId = Number(p.customerId || 0) || undefined;
       entityType = "installment_payment";
@@ -737,6 +778,7 @@ export const createTelegramEventNotificationRuntime = ({
       )) as any;
       if (!c) return;
       recipientNumber = String(c.customerPhoneNumber || "").trim();
+      notificationContractId = c.saleId;
       capCustomerId = Number(c.customerId || 0) || undefined;
       entityType = "installment_check";
       vars = {
@@ -815,6 +857,12 @@ export const createTelegramEventNotificationRuntime = ({
           recipient: recipientNumber,
           tokens,
           meliBodyId: maybeBodyId,
+          sourceTransactionId: extra?.sourceTransactionId,
+          notificationContext: {
+            customerId: capCustomerId, contractId: notificationContractId,
+            templateKey: smsKey,
+            amount: notificationTemplateAmount(eventType, smsKey, tokens),
+          },
         },
         dedupeToday: false,
       });
@@ -856,6 +904,102 @@ export const createTelegramEventNotificationRuntime = ({
       });
     }
   };
+  const withoutSms = (mode: AutoSendMode): AutoSendMode =>
+    mode === "both" ? "telegram" : mode === "sms" ? "off" : mode;
+
+  const localCivilDate = (iso: string, timezone: string) => {
+    const parts = new Intl.DateTimeFormat("en-CA-u-ca-gregory-nu-latn", {
+      timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit",
+    }).formatToParts(new Date(iso));
+    return ["year", "month", "day"].map(type => parts.find(part => part.type === type)?.value).join("-");
+  };
+
+  const runControlledSmsRule6Cutover = async (
+    settings: Record<string, any>, rows: any[], evaluatedAt: string, autoSendSmsEnabled: boolean,
+    shadowState: SchedulerShadowState | undefined,
+  ) => {
+    await ensureReminderRulesTables();
+    const smsRules = await getEnabledReminderRules("sms");
+    const rule = (smsRules || []).find((item: any) => Number(item?.id) === SMS_RULE_CUTOVER_RULE_ID) || null;
+    const readiness = rule ? getSmsReminderReadiness(rule, settings) : { ready: false };
+    const gate = evaluateSmsRuleCutoverSchedulerGate(settings, rule, {
+      readinessReady: Boolean(readiness.ready) && Boolean(shadowState), autoSendSmsEnabled,
+    });
+    const summary: any = {
+      armed: gate.armed, reasonCode: gate.reasonCode, ruleId: SMS_RULE_CUTOVER_RULE_ID,
+      candidates: 0, queued: 0, blockedNoPhone: 0, blockedEvaluator: 0, blockedDailyCap: 0, blockedPendingCap: 0, deduped: 0,
+    };
+    if (!gate.armed || !shadowState) return summary;
+
+    const today = localCivilDate(evaluatedAt, shadowState.timezone);
+    for (const row of rows || []) {
+      const evaluation = observeSchedulerRuleCandidate(shadowState, {
+        kind: "installment", row: { ...row }, mode: "sms", originalEventType: null,
+        legacyDate: today, evaluatedAt,
+      }, () => {})[0]?.evaluation;
+      const decision = evaluation?.decisions?.find((item: any) => Number(item?.ruleId) === SMS_RULE_CUTOVER_RULE_ID);
+      if (!decision || decision.scheduledFor !== today) continue;
+      summary.candidates += 1;
+
+      const paymentId = Number(row?.paymentId || 0);
+      const saleId = Number(row?.saleId || 0);
+      const customerId = Number(row?.customerId || 0);
+      if (!Number.isSafeInteger(paymentId) || paymentId <= 0 || !Number.isSafeInteger(customerId) || customerId <= 0) {
+        summary.blockedEvaluator += 1;
+        continue;
+      }
+      const recipient = normalizeIranPhone(String(row?.customerPhone || row?.customerPhoneNumber || ""));
+      if (!/^09\d{9}$/.test(recipient)) {
+        summary.blockedNoPhone += 1;
+        continue;
+      }
+      if (!decision.matched) {
+        summary.blockedEvaluator += 1;
+        continue;
+      }
+      if (await hasCustomerDailyCap("sms", customerId)) {
+        summary.blockedDailyCap += 1;
+        continue;
+      }
+      if (await hasPendingCustomerCapInOutbox("sms", customerId)) {
+        summary.blockedPendingCap += 1;
+        continue;
+      }
+      const vars = {
+        name: String(row?.customerFullName || "").trim(),
+        amount: formatPriceForSms(row?.originalAmountDue),
+        dueDate: String(row?.dueDate || "").trim(),
+      };
+      if (!vars.name || !vars.dueDate || !vars.amount) {
+        summary.blockedEvaluator += 1;
+        continue;
+      }
+      const tokens = buildMeliPayamakPatternTokens("meli_payamak_installment_due_notice_pattern_id", vars);
+      const amountContext = notificationTemplateAmount(
+        "INSTALLMENT_DUE_NOTICE", "meli_payamak_installment_due_notice_pattern_id", tokens,
+      );
+      const queued = await enqueueOutbox({
+        channel: "sms", provider: "meli_payamak", eventType: "INSTALLMENT_DUE_NOTICE",
+        entityType: "installment_payment", entityId: paymentId, recipient,
+        payload: {
+          provider: "meli_payamak", recipient, tokens, meliBodyId: SMS_RULE_CUTOVER_APPROVED_BODY_ID,
+          capCustomerId: customerId,
+          cutover: { origin: SMS_RULE_CUTOVER_ORIGIN, phase: SMS_RULE_CUTOVER_PHASE_RULE6, ruleId: SMS_RULE_CUTOVER_RULE_ID },
+          notificationContext: {
+            ruleId: SMS_RULE_CUTOVER_RULE_ID, customerId, contractId: saleId || null, installmentId: paymentId,
+            amount: amountContext, templateKey: "installment_due_notice", templateVersion: "provider-423847-v1",
+            createdAt: evaluatedAt,
+          },
+        },
+        dedupeToday: true, dedupeEventWindowHours: 36, maxAttempts: 3,
+      });
+      if (queued?.queued) summary.queued += 1;
+      else if (["deduped", "deduped_event", "rate_limited"].includes(String(queued?.reason || ""))) summary.deduped += 1;
+    }
+    console.info("SMS_RULE_CONTROLLED_CUTOVER", summary);
+    return summary;
+  };
+
   const runAutoSendRulesOnce = async () => {
     const settings = await getAllSettingsAsObject();
     const modeInstallment = normalizeAutoSendMode(
@@ -872,6 +1016,14 @@ export const createTelegramEventNotificationRuntime = ({
     const d0 = nowJ.clone().format("jYYYY/jMM/jDD");
     const d3 = nowJ.clone().add(3, "day").format("jYYYY/jMM/jDD");
     const d7 = nowJ.clone().add(7, "day").format("jYYYY/jMM/jDD");
+    // shadow-only:start
+    let shadowState: SchedulerShadowState | undefined;
+    try {
+      shadowState = await prepareSchedulerRuleShadow(settings, { getEnabledReminderRules, getAsync });
+    } catch {
+      safelyObserveSchedulerCandidate(() => console.warn("NOTIFICATION_RULE_SHADOW_ERROR", { reasonCode: "SHADOW_INPUT_UNAVAILABLE" }));
+    }
+    // shadow-only:end
     // If Rule Builder has active Telegram rules, use it as the source of truth for Telegram installment reminders.
     // Legacy auto-send will continue only for SMS (or when no rule exists) so Telegram does not ignore Rule Builder.
     let hasTelegramReminderRules = false;
@@ -897,8 +1049,11 @@ export const createTelegramEventNotificationRuntime = ({
             : modeInstallment
         : modeInstallment;
     // installments
-    if (legacyInstallmentMode !== "off") {
+    if (legacyInstallmentMode !== "off" || modeInstallment === "sms" || modeInstallment === "both") {
       const rows = await getPendingInstallmentPaymentsWithCustomer();
+      const cutover = await runControlledSmsRule6Cutover(
+        settings, rows || [], nowJ.toISOString(), modeInstallment === "sms" || modeInstallment === "both", shadowState,
+      );
       const mapDue: Record<string, string> = {
         [d7]: "INSTALLMENT_DUE_7",
         [d3]: "INSTALLMENT_DUE_3",
@@ -906,14 +1061,23 @@ export const createTelegramEventNotificationRuntime = ({
       };
       for (const r of (rows || []) as any[]) {
         const et = mapDue[String(r.dueDate)];
+        // shadow-only:start
+        safelyObserveSchedulerCandidate(() => {
+          if (shadowState) observeSchedulerRuleCandidate(shadowState, {
+            kind: "installment", row: { ...r }, mode: legacyInstallmentMode as "sms" | "telegram" | "both",
+            originalEventType: et || null, legacyDate: nowJ.clone().locale("en").format("YYYY-MM-DD"), evaluatedAt: nowJ.toISOString(),
+          }, entry => console.info("NOTIFICATION_RULE_SHADOW_DIFFERENCE", entry));
+        });
+        // shadow-only:end
         if (!et) continue;
+        const effectiveLegacyMode = cutover.armed && et === "INSTALLMENT_DUE_TODAY"
+          ? withoutSms(legacyInstallmentMode) : legacyInstallmentMode;
+        if (effectiveLegacyMode === "off") continue;
         // eslint-disable-next-line no-await-in-loop
         await enqueueEventNotifications(
           et,
           Number(r.paymentId),
-          legacyInstallmentMode === "both"
-            ? "both"
-            : (legacyInstallmentMode as any),
+          effectiveLegacyMode === "both" ? "both" : (effectiveLegacyMode as any),
         );
       }
     }
@@ -927,6 +1091,14 @@ export const createTelegramEventNotificationRuntime = ({
       };
       for (const r of (rows || []) as any[]) {
         const et = mapDue[String(r.dueDate)];
+        // shadow-only:start
+        safelyObserveSchedulerCandidate(() => {
+          if (shadowState) observeSchedulerRuleCandidate(shadowState, {
+            kind: "check", row: { ...r }, mode: modeCheck as "sms" | "telegram" | "both",
+            originalEventType: et || null, legacyDate: nowJ.clone().locale("en").format("YYYY-MM-DD"), evaluatedAt: nowJ.toISOString(),
+          }, entry => console.info("NOTIFICATION_RULE_SHADOW_DIFFERENCE", entry));
+        });
+        // shadow-only:end
         if (!et) continue;
         // eslint-disable-next-line no-await-in-loop
         await enqueueEventNotifications(

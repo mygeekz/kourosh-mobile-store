@@ -4,6 +4,8 @@ import { Dialog as Modal } from '@/components/ui';
 import ToggleSwitch from './ToggleSwitch';
 import Button from './Button';
 import { apiFetch } from '../utils/apiFetch';
+import { SmsReminderRuleFields, SmsReminderReadiness } from './SmsReminderRuleFields';
+import { describeSmsReminder, type SmsReminderContract, type SmsRuleReadiness } from '../shared/notifications/smsReminderRule';
 
 type ReminderMatchType = 'days_until' | 'overdue_days';
 type ReminderChannel = 'telegram' | 'sms';
@@ -16,7 +18,7 @@ type ReminderConfig = {
   timezone?: string;
 };
 
-type ReminderRule = {
+type ReminderRule = Partial<Omit<SmsReminderContract, 'targetType'>> & {
   id: number;
   name: string;
   enabled: number;
@@ -29,7 +31,8 @@ type ReminderRule = {
   targetType?: ReminderTargetType;
   createdAt?: string;
   updatedAt?: string;
-  matchedCount?: number;
+  matchedCount?: number | null;
+  readiness?: SmsRuleReadiness;
 };
 
 type RulePreviewResponse = {
@@ -101,9 +104,6 @@ const defaultCheckTemplate = (matchType: ReminderMatchType, value: number) => {
   return '🔔 <b>یادآوری چک</b>\n{name} عزیز، چک شماره <b>{checkNumber}</b> بانک <b>{bank}</b> به مبلغ <b>{amount} تومان</b> در تاریخ <b>{dueDate}</b> سررسید می‌شود.';
 };
 
-const defaultTemplate = defaultInstallmentTemplate;
-
-
 const normalizeTargetType = (value?: string): ReminderTargetType => {
   const v = String(value || '').trim();
   if (v === 'installment' || v === 'check' || v === 'both') return v;
@@ -159,6 +159,9 @@ const ReminderRulesBuilder: React.FC = () => {
   const [ruleMatchCounts, setRuleMatchCounts] = useState<Record<number, { total: number; installments: number; checks: number; loading?: boolean }>>({});
   const [errorText, setErrorText] = useState('');
   const [successText, setSuccessText] = useState('');
+  const [smsSchemaReady, setSmsSchemaReady] = useState(false);
+  const [smsValidation, setSmsValidation] = useState<{ valid: boolean; readiness: SmsRuleReadiness; schemaReady: boolean } | null>(null);
+  const [smsChecking, setSmsChecking] = useState(false);
   const editorTargetType = normalizeTargetType(editRule?.targetType);
   const editorInstallmentTemplateActive = editorTargetType === 'both' || editorTargetType === 'installment';
   const editorCheckTemplateActive = editorTargetType === 'both' || editorTargetType === 'check';
@@ -193,6 +196,7 @@ const ReminderRulesBuilder: React.FC = () => {
       ]);
       setCfg(cfgRes.data || { sendStartHour: 10, sendEndHour: 21, maxPerDayPerCustomer: 1, timezone: 'Asia/Tehran' });
       setRules(rulesRes.data || []);
+      setSmsSchemaReady(rulesRes.smsSchemaReady === true);
     } catch (error: any) {
       setErrorText(error?.message || 'بارگذاری قوانین با خطا انجام شد.');
     } finally {
@@ -214,7 +218,7 @@ const ReminderRulesBuilder: React.FC = () => {
     const run = async () => {
       const next: Record<number, { total: number; installments: number; checks: number; loading?: boolean }> = {};
       for (const rule of rules) {
-        if (!rule?.id || !rule.enabled) {
+        if (!rule?.id || !rule.enabled || rule.channel === 'sms') {
           next[rule.id] = { total: 0, installments: 0, checks: 0 };
           continue;
         }
@@ -295,6 +299,12 @@ const ReminderRulesBuilder: React.FC = () => {
       installmentTemplate: r.installmentTemplate || r.template || defaultInstallmentTemplate(r.matchType, r.value),
       checkTemplate: r.checkTemplate || r.template || defaultCheckTemplate(r.matchType, r.value),
       targetType: normalizeTargetType(r.targetType),
+      ...(r.channel === 'sms' && !r.eventType ? {
+        targetType: r.targetType === 'check' ? 'check' as const : 'installment' as const,
+        eventType: r.targetType === 'check' ? 'CHECK_DUE' as const : r.matchType === 'overdue_days' || r.value < 0 ? 'INSTALLMENT_OVERDUE' as const : 'INSTALLMENT_DUE' as const,
+        timingType: r.value === 0 ? 'DUE_DATE' as const : r.matchType === 'overdue_days' || r.value < 0 ? 'AFTER_DUE_DATE' as const : 'BEFORE_DUE_DATE' as const,
+        daysOffset: Math.abs(r.value), templateKey: null, enabled: 0,
+      } : {}),
     });
     setEditorOpen(true);
   };
@@ -306,6 +316,7 @@ const ReminderRulesBuilder: React.FC = () => {
     setSuccessText('');
     try {
       const payload = {
+        ...(editRule.channel === 'sms' ? { eventType: editRule.eventType, timingType: editRule.timingType, daysOffset: editRule.daysOffset, templateKey: editRule.templateKey } : {}),
         name: editRule.name,
         enabled: !!editRule.enabled,
         channel: editRule.channel,
@@ -391,7 +402,7 @@ const ReminderRulesBuilder: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!editorOpen || !editRule || !String((editRule.installmentTemplate || editRule.checkTemplate || editRule.template || '')).trim()) {
+    if (!editorOpen || !editRule || editRule.channel === 'sms' || !String((editRule.installmentTemplate || editRule.checkTemplate || editRule.template || '')).trim()) {
       setPreviewData(null);
       return;
     }
@@ -418,6 +429,21 @@ const ReminderRulesBuilder: React.FC = () => {
       }
     }, 350);
     return () => window.clearTimeout(timer);
+  }, [editorOpen, editRule]);
+
+  useEffect(() => {
+    setSmsValidation(null);
+    if (!editorOpen || editRule?.channel !== 'sms') { setSmsChecking(false); return; }
+    let cancelled = false;
+    setSmsChecking(true);
+    const timer = window.setTimeout(async () => {
+      try {
+        const result = await apiJson('/api/reminders/rules/validate-sms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editRule) });
+        if (!cancelled) setSmsValidation(result.data);
+      } catch { if (!cancelled) setSmsValidation(null); }
+      finally { if (!cancelled) setSmsChecking(false); }
+    }, 200);
+    return () => { cancelled = true; window.clearTimeout(timer); };
   }, [editorOpen, editRule]);
 
   if (loading) {
@@ -478,7 +504,7 @@ const ReminderRulesBuilder: React.FC = () => {
               leftIcon={<i className="fa-solid fa-bolt text-amber-500" />}
               data-ui-reminder-action="run-now"
             >
-              {runningNow ? 'در حال اجرا…' : 'اجرای الان'}
+              {runningNow ? 'در حال اجرا…' : 'اجرای زمان‌بندی فعلی'}
             </Button>
             <Button
               type="button"
@@ -605,8 +631,10 @@ const ReminderRulesBuilder: React.FC = () => {
                       {coverage.label}
                     </span>
                     <span className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-black text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
-                      {whenLabel(r)}
+                      {r.channel === 'sms' ? describeSmsReminder(r as Partial<SmsReminderContract>) : whenLabel(r)}
                     </span>
+                    <span className="text-xs font-bold">{r.channel === 'sms' ? 'پیامک — فقط مقایسه' : 'تلگرام'}</span>
+                    {r.channel !== 'sms' && <>
                     <span className="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-black text-amber-700 dark:border-amber-900/40 dark:bg-amber-900/20 dark:text-amber-200">
                       <i className="fa-solid fa-users text-[10px]" />
                       {Number(liveCounts.total || 0).toLocaleString('fa-IR')} گیرنده
@@ -623,8 +651,9 @@ const ReminderRulesBuilder: React.FC = () => {
                         {Number(liveCounts.checks || 0).toLocaleString('fa-IR')} چک
                       </span>
                     ) : null}
+                    </>}
                   </div>
-                  <div className="mt-3 grid gap-2 md:grid-cols-2" data-ui-settings-grid="cards">
+                  {r.channel === 'sms' ? <SmsReminderReadiness readiness={r.readiness} /> : <div className="mt-3 grid gap-2 md:grid-cols-2" data-ui-settings-grid="cards">
                     <div className={`rounded-[20px] border p-3 text-xs leading-6 transition ${installmentTemplateActive ? 'border-sky-300 bg-sky-50 text-slate-800 shadow-sm ring-1 ring-sky-100 dark:border-sky-800 dark:bg-sky-950/30 dark:text-slate-100 dark:ring-sky-900/35' : 'border-slate-200 bg-slate-50/55 text-slate-400 opacity-55 grayscale dark:border-slate-800 dark:bg-slate-900/35 dark:text-slate-500'}`}>
                       <div className={`mb-2 inline-flex items-center gap-2 text-[11px] font-black ${installmentTemplateActive ? 'text-sky-700 dark:text-sky-200' : 'text-slate-400 dark:text-slate-500'}`}><i className="fa-solid fa-calendar-days" />قالب قسط</div>
                       <span className={`mb-2 mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-black ${installmentTemplateActive ? 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-200' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'}`}>{installmentTemplateActive ? 'فعال' : 'غیرفعال'}</span>
@@ -635,7 +664,7 @@ const ReminderRulesBuilder: React.FC = () => {
                       <span className={`mb-2 mr-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-black ${checkTemplateActive ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-200' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'}`}>{checkTemplateActive ? 'فعال' : 'غیرفعال'}</span>
                       <div className={`line-clamp-3 whitespace-pre-wrap break-words ${checkTemplateActive ? 'font-bold' : 'font-medium'}`}>{r.checkTemplate || '—'}</div>
                     </div>
-                  </div>
+                  </div>}
                 </div>
 
                 <div className="flex shrink-0 flex-wrap items-center gap-2 xl:justify-end">
@@ -643,6 +672,7 @@ const ReminderRulesBuilder: React.FC = () => {
                     <span className={`text-[11px] font-black ${r.enabled ? 'text-emerald-600 dark:text-emerald-300' : 'text-slate-500 dark:text-slate-400'}`}>{r.enabled ? 'فعال' : 'خاموش'}</span>
                     <ToggleSwitch
                       checked={Boolean(r.enabled)}
+                      disabled={r.channel === 'sms' && !r.enabled && (!smsSchemaReady || !r.readiness?.ready)}
                       onCheckedChange={() => toggleEnabled(r)}
                       ariaLabel={r.enabled ? 'خاموش‌سازی قانون' : 'روشن‌سازی قانون'}
                       size="sm"
@@ -665,7 +695,15 @@ const ReminderRulesBuilder: React.FC = () => {
       </div>
       <Modal isOpen={editorOpen} onClose={() => { setEditorOpen(false); setEditRule(null); }} title={editRule?.id ? 'ویرایش قانون اعلان' : 'افزودن قانون اعلان'} widthClass="max-w-[96vw]" variant="expansive">
         <div className="flex max-h-[78vh] flex-col overflow-hidden" dir="rtl" data-ui-reminders-editor="true">
-          <div className="grid min-h-0 gap-4 xl:grid-cols-[minmax(260px,0.78fr)_minmax(360px,1.08fr)_minmax(420px,1.22fr)]">
+          <SelectField label="کانال اعلان" value={editRule?.channel || 'telegram'} disabled={Boolean(editRule?.id)} onChange={event => setEditRule(r => !r ? r : ({ ...r,
+            channel: event.target.value as ReminderChannel, enabled: 0,
+            ...(event.target.value === 'sms' ? { targetType: 'installment', eventType: 'INSTALLMENT_DUE', timingType: 'BEFORE_DUE_DATE', daysOffset: 3, templateKey: 'installment_due_notice' } : {}),
+          }))}>
+            <option value="telegram">تلگرام</option><option value="sms">پیامک</option>
+          </SelectField>
+          {editRule?.channel === 'sms' ? <SmsReminderRuleFields value={{ ...editRule, targetType: editRule.targetType === 'check' ? 'check' : 'installment' }}
+            onChange={patch => setEditRule(r => r ? { ...r, ...patch } : r)} readiness={smsValidation?.readiness}
+            schemaReady={smsValidation?.schemaReady ?? smsSchemaReady} checking={smsChecking} /> : <div className="grid min-h-0 gap-4 xl:grid-cols-[minmax(260px,0.78fr)_minmax(360px,1.08fr)_minmax(420px,1.22fr)]">
             <section className="min-h-0 rounded-[26px] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-950">
               <div className="mb-4 flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
@@ -972,11 +1010,12 @@ const ReminderRulesBuilder: React.FC = () => {
             </section>
           </div>
 
+          }
           <div className="mt-4 flex shrink-0 items-center justify-end gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
             <button type="button" onClick={() => { setEditorOpen(false); setEditRule(null); }} className="rounded-xl border border-primary/15 px-4 py-2 text-sm font-bold hover:bg-primary/5">
               انصراف
             </button>
-            <button type="button" onClick={upsertRule} disabled={savingRule} className="rounded-xl bg-primary px-5 py-2 text-sm font-black text-white hover:brightness-110 disabled:opacity-60">
+            <button type="button" onClick={upsertRule} disabled={savingRule || (editRule?.channel === 'sms' && (smsChecking || !smsValidation?.valid || !smsValidation.schemaReady))} className="rounded-xl bg-primary px-5 py-2 text-sm font-black text-white hover:brightness-110 disabled:opacity-60">
               {savingRule ? 'ذخیره تغییرات…' : 'ذخیره تغییرات'}
             </button>
           </div>

@@ -75,3 +75,26 @@ manager-test.png
 
 # Optional: only needed for shared Codex skill setup
 skills-lock.json
+
+# Local Codex and agent tooling
+.agents/
+.codex/
+
+# Cloudflare local state
+.wrangler/
+**/.wrangler/
+
+# Local runtime and temporary artifacts
+outbox-worker-search.txt
+**/.DS_Store
+Thumbs.db
+
+# Local release packages
+/payload/
+
+# Runtime and test reports
+/reports/
+
+# Temporary files
+outbox-worker-search.txt
+scripts/New Text Document.txt

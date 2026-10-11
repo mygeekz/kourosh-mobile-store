@@ -2,9 +2,11 @@ import moment from 'jalali-moment';
 import { formatExactNumberText } from '../../utils/exactNumber';
 import { buildMeliPayamakPatternTokens } from '../../shared/messages';
 import { installmentsRepo } from '../repositories/installments.repo';
+import { sendValidatedFinancialSms } from '../utils/notificationAmountIntegrity';
 import {
   addAuditLog,
   getAllSettingsAsObject,
+  getAsync,
   getInstallmentSaleDetailsForSms,
 } from '../database';
 import { validateInstallmentSalePayload } from '../validators';
@@ -396,6 +398,7 @@ export const installmentsService = {
       if (notifyCustomer) {
         await notifyCustomer('INSTALLMENT_PAYMENT_RECEIVED', paymentId, 'both', {
           amount: normalizedAmount,
+          sourceTransactionId: Number(x.id),
         });
       }
     } catch (notifyErr) {
@@ -403,6 +406,7 @@ export const installmentsService = {
     }
 
     let sms: any = undefined;
+    let financialSmsForLog: any;
     let finalizedNow = false;
     let smsAttempted = false;
     let smsSuccess = false;
@@ -446,6 +450,11 @@ export const installmentsService = {
             const ippanelPatternCode = settings.ippanel_installment_completed_pattern_code;
             const telegramTemplate = (settings as any).telegram_installment_settlement_message || settings.telegram_installment_completed_message;
 
+            financialSmsForLog = {
+              context: { eventType: 'INSTALLMENT_COMPLETED', entityType: 'installment_sale', entityId: Number(saleIdForFinal), createdAt: new Date().toISOString() },
+              payload: { provider, recipient: recipientNumber, tokens, meliBodyId, kavenegarTemplate, smsIrTemplateId, ippanelPatternCode },
+            };
+            const deliver = async () => {
             switch (provider) {
               case 'meli_payamak': {
                 const username = settings.meli_payamak_username;
@@ -532,6 +541,11 @@ export const installmentsService = {
               default:
                 break;
             }
+            return sms;
+            };
+            sms = provider === 'telegram' ? await deliver()
+              : await sendValidatedFinancialSms(financialSmsForLog.context, financialSmsForLog.payload, { getAsync, settings }, deliver);
+            if (sms?.validation) smsError = sms.message;
           }
         }
       }
@@ -540,7 +554,10 @@ export const installmentsService = {
       console.error('Failed to auto-send INSTALLMENT_COMPLETED SMS:', err);
     }
 
-    if (smsAttempted && saleIdForFinal && insertSmsLog) {
+    if ((smsAttempted || sms?.validation) && saleIdForFinal && insertSmsLog) {
+      const smsDetails = sms && typeof (sms as any).details === 'object'
+        ? (sms as any).details
+        : {};
       await insertSmsLog({
         reqUser,
         provider: String((await getAllSettingsAsObject()).sms_provider || 'meli_payamak').toLowerCase(),
@@ -551,10 +568,14 @@ export const installmentsService = {
           sms && (sms as any).to
             ? String((sms as any).to)
             : (await getInstallmentSaleDetailsForSms(saleIdForFinal))?.customerPhoneNumber || '',
-        patternId: undefined,
-        tokens: undefined,
+        patternId: financialSmsForLog ? String(financialSmsForLog.payload.meliBodyId || financialSmsForLog.payload.kavenegarTemplate || financialSmsForLog.payload.smsIrTemplateId || financialSmsForLog.payload.ippanelPatternCode || '') : undefined,
+        tokens: financialSmsForLog?.payload.tokens,
+        request: financialSmsForLog ? { financialSms: financialSmsForLog } : undefined,
         success: !!(sms && (sms as any).success),
         response: sms,
+        httpStatus: typeof smsDetails.httpStatus === 'number' ? smsDetails.httpStatus : undefined,
+        rawResponseText: typeof smsDetails.rawResponseText === 'string' ? smsDetails.rawResponseText : undefined,
+        durationMs: typeof smsDetails.durationMs === 'number' ? smsDetails.durationMs : undefined,
         error: smsError,
       });
     }

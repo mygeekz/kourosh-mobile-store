@@ -34,6 +34,8 @@ const themes = [
 const viewports = [
   { key: 'mobile', label: 'موبایل', width: 390, height: 844 },
   { key: 'tablet', label: 'تبلت', width: 768, height: 1024 },
+  { key: 'laptop', label: 'لپ‌تاپ فشرده', width: 1024, height: 768 },
+  { key: 'compact-desktop', label: 'دسکتاپ فشرده', width: 1180, height: 820 },
   { key: 'desktop', label: 'دسکتاپ', width: 1440, height: 1000 },
 ];
 

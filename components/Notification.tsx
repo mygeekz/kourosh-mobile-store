@@ -45,7 +45,7 @@ type NormalizedNotificationMessage = {
 const toneMap: Record<ToneKey, { title: string; wrap: string; iconWrap: string; icon: string; progress: string; kicker: string; actionHint: string }> = {
   success: {
     title: APP_MESSAGES.notification.successTitle,
-    wrap: 'border-emerald-200/90 bg-white/95 text-slate-900 dark:border-emerald-900/40 dark:bg-slate-950/95 dark:text-slate-100',
+    wrap: 'border-emerald-200/90 bg-white text-slate-900 dark:border-emerald-900/40 dark:bg-slate-950 dark:text-slate-100',
     iconWrap: 'bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 dark:bg-emerald-950/30 dark:text-emerald-300 dark:ring-emerald-900/40',
     icon: 'fa-circle-check',
     progress: 'from-emerald-400 via-cyan-400 to-sky-500 dark:from-emerald-300 dark:via-cyan-300 dark:to-sky-300',
@@ -54,7 +54,7 @@ const toneMap: Record<ToneKey, { title: string; wrap: string; iconWrap: string; 
   },
   error: {
     title: APP_MESSAGES.notification.errorTitle,
-    wrap: 'border-rose-200/90 bg-white/95 text-slate-900 dark:border-rose-900/40 dark:bg-slate-950/95 dark:text-slate-100',
+    wrap: 'border-rose-200/90 bg-white text-slate-900 dark:border-rose-900/40 dark:bg-slate-950 dark:text-slate-100',
     iconWrap: 'bg-rose-50 text-rose-600 ring-1 ring-rose-100 dark:bg-rose-950/30 dark:text-rose-300 dark:ring-rose-900/40',
     icon: 'fa-circle-exclamation',
     progress: 'from-rose-400 via-orange-400 to-amber-400 dark:from-rose-300 dark:via-orange-300 dark:to-amber-300',
@@ -63,7 +63,7 @@ const toneMap: Record<ToneKey, { title: string; wrap: string; iconWrap: string; 
   },
   warning: {
     title: APP_MESSAGES.notification.warningTitle,
-    wrap: 'border-amber-200/90 bg-white/95 text-slate-900 dark:border-amber-900/40 dark:bg-slate-950/95 dark:text-slate-100',
+    wrap: 'border-amber-200/90 bg-white text-slate-900 dark:border-amber-900/40 dark:bg-slate-950 dark:text-slate-100',
     iconWrap: 'bg-amber-50 text-amber-600 ring-1 ring-amber-100 dark:bg-amber-950/30 dark:text-amber-300 dark:ring-amber-900/40',
     icon: 'fa-triangle-exclamation',
     progress: 'from-amber-400 via-orange-400 to-yellow-400 dark:from-amber-300 dark:via-orange-300 dark:to-yellow-300',
@@ -72,7 +72,7 @@ const toneMap: Record<ToneKey, { title: string; wrap: string; iconWrap: string; 
   },
   info: {
     title: APP_MESSAGES.notification.infoTitle,
-    wrap: 'border-slate-200/90 bg-white/95 text-slate-900 dark:border-slate-800/60 dark:bg-slate-950/95 dark:text-slate-100',
+    wrap: 'border-slate-200/90 bg-white text-slate-900 dark:border-slate-800/60 dark:bg-slate-950 dark:text-slate-100',
     iconWrap: 'bg-slate-100 text-slate-600 ring-1 ring-slate-200 dark:bg-slate-900 dark:text-slate-300 dark:ring-slate-800',
     icon: 'fa-bell',
     progress: 'from-slate-400 via-sky-400 to-cyan-400 dark:from-slate-300 dark:via-sky-300 dark:to-cyan-300',
@@ -270,7 +270,7 @@ const Notification: React.FC<NotificationProps> = ({ message, onClose, position 
   const notificationNode = (
     <div
       className={[
-        'app-notification-toast app-toast-surface pointer-events-auto w-[min(calc(100vw-24px),400px)] overflow-hidden rounded-[24px] border shadow-[0_25px_70px_-35px_rgba(15,23,42,0.42)] transition-opacity duration-200 sm:w-[min(92vw,400px)]',
+        'app-notification-toast app-toast-surface pointer-events-auto w-[min(calc(100vw-24px),400px)] overflow-hidden rounded-[20px] border shadow-[0_18px_50px_-28px_rgba(15,23,42,0.34)] transition-opacity duration-200 sm:w-[min(92vw,400px)]',
         tone.wrap,
         visible ? 'opacity-100' : 'opacity-0',
         className ?? '',
@@ -294,7 +294,7 @@ const Notification: React.FC<NotificationProps> = ({ message, onClose, position 
             <button
               type="button"
               onClick={close}
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl border border-slate-200/80 bg-white/80 text-slate-500 transition-all hover:border-slate-300 hover:text-slate-700 dark:border-slate-700/80 dark:bg-slate-900/70 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:border-slate-600 dark:hover:text-slate-200"
               aria-label="بستن اعلان"
             >
               <i className="fa-solid fa-xmark" />

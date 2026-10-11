@@ -21,6 +21,22 @@ set "KOUROSH_API_HOST=127.0.0.1"
 set "VITE_PUBLIC_PORT=80"
 set "VITE_PUBLIC_PROTOCOL=http"
 
+:: A stale Node process on API port 3001 can leave the old backend running while
+:: the newly extracted Vite frontend starts successfully. That creates a mixed
+:: runtime (new UI + old API). Stop only Node listeners on Kourosh dev ports.
+echo Checking for stale Kourosh Node listeners...
+for %%Q in (3001 5173 80) do (
+  for /f "tokens=5" %%P in ('netstat -ano ^| findstr /R /C:":%%Q .*LISTENING" 2^>nul') do (
+    for /f "tokens=1" %%I in ('tasklist /FI "PID eq %%P" /NH 2^>nul') do (
+      if /I "%%I"=="node.exe" (
+        echo Stopping stale Node listener on port %%Q ^(PID %%P^) ...
+        taskkill /PID %%P /F >nul 2>&1
+      )
+    )
+  )
+)
+timeout /t 1 /nobreak >nul
+
 for /f "delims=" %%I in ('powershell -NoProfile -Command "try { (Get-NetIPAddress -AddressFamily IPv4 ^| Where-Object { $_.IPAddress -notmatch '^127\\.' -and $_.IPAddress -notmatch '^169\\.254\\.' -and $_.InterfaceAlias -notmatch 'Loopback|Virtual' } ^| Select-Object -First 1 -ExpandProperty IPAddress) } catch { '' }"') do set "LAN_IP=%%I"
 if not defined LAN_IP set "LAN_IP=127.0.0.1"
 

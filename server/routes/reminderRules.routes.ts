@@ -1,5 +1,7 @@
 import type { Express, RequestHandler } from "express";
 import moment from "jalali-moment";
+import { getSmsReminderReadiness } from "../notifications/rules/smsReminderRuleReadiness";
+import { readSmsReminderSettings, smsReminderSchemaReady, saveSmsReminderDraft, validateSmsReminderDraft } from "../notifications/rules/smsReminderRuleAuthoring";
 import {
   getAsync,
   runAsync,
@@ -197,6 +199,12 @@ export const registerReminderRulesRoutes = (
   app: Express,
   { authorizeRole }: ReminderRulesRouteDeps,
 ): void => {
+  app.post('/api/reminders/rules/validate-sms', authorizeRole(['Admin','Manager']), async (req, res, next) => {
+    try {
+      const result = await validateSmsReminderDraft(req.body || {}, { allAsync, getAsync });
+      res.json({ success: true, data: result });
+    } catch (error) { next(error); }
+  });
 
   // Reminder Rules API (Installments CRM-style)
   // =====================================================
@@ -251,13 +259,16 @@ export const registerReminderRulesRoutes = (
       try {
         await ensureReminderRulesTables();
         const rules = await getReminderRules();
+        const smsSettings = await readSmsReminderSettings({ allAsync, getAsync });
+        const smsSchemaReady = await smsReminderSchemaReady({ allAsync, getAsync });
         const rulesWithCounts = await Promise.all(
           (rules || []).map(async (rule) => ({
             ...rule,
-            matchedCount: await countRuleMatches(rule),
+            matchedCount: rule.channel === 'sms' ? null : await countRuleMatches(rule),
+            ...(rule.channel === 'sms' ? { readiness: getSmsReminderReadiness(rule as any, smsSettings) } : {}),
           })),
         );
-        res.json({ success: true, data: rulesWithCounts });
+        res.json({ success: true, data: rulesWithCounts, smsSchemaReady, smsDeliveryMode: 'shadow_only' });
       } catch (e) {
         next(e);
       }
@@ -272,6 +283,11 @@ export const registerReminderRulesRoutes = (
         const name = String(req.body?.name || "").trim() || "قانون جدید";
         const enabled = Number(req.body?.enabled ? 1 : 0);
         const channel = String(req.body?.channel || "telegram");
+        if (!['sms','telegram'].includes(channel)) return res.status(400).json({ success: false, message: 'کانال اعلان معتبر نیست.' });
+        if (channel === 'sms') {
+          const result = await saveSmsReminderDraft({ ...req.body, channel, enabled: req.body?.enabled ?? false }, null, { allAsync, getAsync, runAsync });
+          return res.status(result.status).json(result.body);
+        }
         const matchType = String(req.body?.matchType || "days_until");
         const value = Number(req.body?.value ?? 0);
         const installmentTemplate = String(
@@ -324,6 +340,18 @@ export const registerReminderRulesRoutes = (
           return res
             .status(400)
             .json({ success: false, message: "id نامعتبر است." });
+        const existing = await getAsync('SELECT * FROM reminder_rules WHERE id=?', [id]);
+        if (!existing) return res.status(404).json({ success: false, message: 'قانون یافت نشد.' });
+        if (req.body?.channel != null && req.body.channel !== existing.channel) return res.status(400).json({ success: false, code: 'CHANNEL_CHANGE_REQUIRES_NEW_RULE', message: 'برای کانال دیگر یک قانون مستقل بسازید.' });
+        if (existing.channel === 'sms') {
+          // A legacy, unbound SMS row can always be disabled without rewriting its payload/model.
+          if ((req.body?.enabled === false || req.body?.enabled === 0) && !existing.eventType && !req.body?.eventType) {
+            await runAsync("UPDATE reminder_rules SET enabled=0 WHERE id=? AND channel='sms'", [id]);
+            return res.json({ success: true });
+          }
+          const result = await saveSmsReminderDraft({ ...existing, ...req.body, channel: 'sms' }, id, { allAsync, getAsync, runAsync });
+          return res.status(result.status).json(result.body);
+        }
         const name = String(req.body?.name || "").trim() || "قانون";
         const enabled = Number(req.body?.enabled ? 1 : 0);
         const channel = String(req.body?.channel || "telegram");

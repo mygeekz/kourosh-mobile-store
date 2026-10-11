@@ -372,6 +372,7 @@ export const customersService = {
             customerId: input.customerId,
             invoiceNo: m?.[1] || "—",
             amount: credit || debit,
+            sourceTransactionId: Number(data.id),
           },
         );
       }

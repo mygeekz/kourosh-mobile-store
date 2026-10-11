@@ -1,0 +1,28 @@
+{
+  "phase": "3.1-production-cutover-preflight",
+  "status": "READY_WITH_WARNINGS_ON_UPLOADED_DB_COPY",
+  "sourceDatabaseSha256": "4947a4cb0269f0158a860e8073b369e1b3f867ecae5c0a06d62140cef224b81a",
+  "validated": {
+    "productionPreflightReadOnly": true,
+    "databaseIntegrity": "ok",
+    "foreignKeyErrors": 0,
+    "rule6ShapeReady": true,
+    "provider": "meli_payamak",
+    "approvedBodyId": 423847,
+    "candidateDryRunProviderCalls": 0,
+    "candidateDryRunOutboxWrites": 0,
+    "verifiedBackupScript": true,
+    "monitorScriptReadOnly": true,
+    "disableClearsPhase": true,
+    "enableDisableTestedOnlyOnDatabaseCopy": true
+  },
+  "uploadedDatabaseWarnings": [
+    "EXISTING_SMS_OUTBOX_BACKLOG",
+    "SMS_PROVIDER_USING_RUNTIME_FALLBACK"
+  ],
+  "notes": [
+    "Warnings must be re-evaluated against the actual current production database immediately before arming.",
+    "No production cutover was enabled while preparing this artifact.",
+    "No provider request was made while preparing this artifact."
+  ]
+}

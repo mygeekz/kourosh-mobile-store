@@ -20,7 +20,7 @@ interface MeliPayamakResponse {
 interface SmsResult {
   success: boolean;
   message: string;
-  details?: MeliPayamakResponse | { error: string; endpoint?: string; rawResponseText?: string; httpStatus?: number };
+  details?: MeliPayamakResponse | { error?: string; endpoint?: string; rawResponseText?: string; httpStatus?: number; durationMs?: number; [key: string]: any };
 }
 
 type FetchLikeInit = RequestInit & { agent?: any };
@@ -60,6 +60,15 @@ export const sendMeliPayamakPatternSms = async (
   username: string,
   password: string
 ): Promise<SmsResult> => {
+  const startedAt = Date.now();
+  const withDuration = (result: SmsResult): SmsResult => ({
+    ...result,
+    details: {
+      ...((result as any)?.details || {}),
+      durationMs: Date.now() - startedAt,
+    },
+  });
+
   // ملی‌پیامک: برای «خط خدماتی اشتراکی» در پیش‌نمایش‌کدهای رسمی، REST با BaseServiceNumber و SOAP با SendByBaseNumber2 آمده است.
   // مسیر ارسال این نسخه مستقیم است و در صورت خطا در عملیاتی شبکه، خطا در عملیات به‌صورت شفاف برمی‌گردد.
 
@@ -191,17 +200,18 @@ export const sendMeliPayamakPatternSms = async (
   };
 
   const restResult = await tryRest();
-  if (restResult.success) return restResult;
+  if (restResult.success) return withDuration(restResult);
 
   const restErrorMsg = String(restResult.message || '');
   const shouldFallbackToSoap = /-108|پاسخ نامعتبر|Timeout|ارتباط با ملی پیامک|خطا در ارتباط|EAI_AGAIN|ENOTFOUND|ECONNRESET|ETIMEDOUT|EHOSTUNREACH|fetch failed|network/i.test(restErrorMsg);
-  if (!shouldFallbackToSoap) return restResult;
+  if (!shouldFallbackToSoap) return withDuration(restResult);
 
   const soapResult = await trySoap2();
-  if (soapResult.success) return soapResult;
+  if (soapResult.success) return withDuration(soapResult);
 
   // اگر SOAP هم خطا در عملیاتی مشخص‌تری داد، همان را برگردانیم.
-  return soapResult.message.includes('خطا در عملیات از ملی پیامک') ? soapResult : restResult;
+  const finalResult = soapResult.message.includes('خطا در عملیات از ملی پیامک') ? soapResult : restResult;
+  return withDuration(finalResult);
 };
 
 /**

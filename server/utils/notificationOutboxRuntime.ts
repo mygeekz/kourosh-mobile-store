@@ -1,4 +1,6 @@
 import moment from "jalali-moment";
+import { legacyPaymentSourceRejection, sendValidatedFinancialSms, validateFinancialSms } from "./notificationAmountIntegrity";
+import { buildNotificationContext, notificationValidationSummary } from "./notificationContext";
 import {
   sendMeliPayamakPatternSms,
   sendKavenegarPatternSms,
@@ -11,6 +13,7 @@ import {
   sendTelegramDocument,
   setTelegramProxy,
 } from "../telegramService";
+import { evaluateSmsRuleCutoverWorkerGate, isSmsRuleCutoverPayload } from "../notifications/rules/smsRuleControlledCutover";
 
 export type OutboxStatus = "pending" | "processing" | "done" | "failed";
 export type OutboxChannel = "sms" | "telegram";
@@ -38,6 +41,7 @@ type RunAsync = (sql: string, params?: any[]) => Promise<any>;
 type GetAsync = (sql: string, params?: any[]) => Promise<any>;
 
 type NotificationOutboxRuntimeDeps = {
+  insertSmsLog?: (entry: any) => Promise<any>;
   ensureNotificationOutboxTables: () => Promise<any>;
   ensureReminderRulesTables: () => Promise<any>;
   getAllSettingsAsObject: () => Promise<Record<string, any>>;
@@ -73,6 +77,7 @@ export type EnqueueOutboxOptions = {
 const getDayKeyUtc = () => moment().utc().format("YYYY-MM-DD");
 
 export function createNotificationOutboxRuntime({
+  insertSmsLog,
   ensureNotificationOutboxTables,
   ensureReminderRulesTables,
   getAllSettingsAsObject,
@@ -89,6 +94,55 @@ export function createNotificationOutboxRuntime({
   lookupCustomerTelegramChatId,
   lookupPartnerTelegramChatId,
 }: NotificationOutboxRuntimeDeps) {
+  // Observability must not change retry decisions or turn a successful send into a failure.
+  const recordSmsObservation = async (row: any, payload: any, outcome: string, result?: any, durationMs?: number) => {
+    if (row.channel !== "sms" || !insertSmsLog) return;
+    try {
+      const provider = String(payload?.provider || row.provider || "unknown");
+      const safePayload: any = {};
+      for (const key of ["provider", "recipient", "sourceTransactionId", "meliBodyId", "kavenegarTemplate", "smsIrTemplateId", "ippanelPatternCode"]) {
+        if (["string", "number"].includes(typeof payload?.[key])) safePayload[key] = payload[key];
+      }
+      if (Array.isArray(payload?.tokens)) safePayload.tokens = payload.tokens.filter((value: any) => typeof value === "string");
+      const context = buildNotificationContext(row, payload, payload?.notificationContext);
+      const validation = notificationValidationSummary(result?.validation);
+      const details = result?.details;
+      await insertSmsLog({
+        provider, eventType: row.eventType, entityType: row.entityType, entityId: row.entityId,
+        recipient: row.recipient, tokens: safePayload.tokens,
+        patternId: String(provider === "meli_payamak" ? payload?.meliBodyId ?? "" : provider === "kavenegar" ? payload?.kavenegarTemplate ?? "" : provider === "sms_ir" ? payload?.smsIrTemplateId ?? "" : payload?.ippanelPatternCode ?? ""),
+        success: outcome === "provider_accepted",
+        durationMs: typeof durationMs === "number"
+          ? durationMs
+          : typeof details?.durationMs === "number"
+            ? details.durationMs
+            : undefined,
+        correlationId: `notification_${row.id ?? "unqueued"}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`,
+        httpStatus: typeof details?.httpStatus === "number" ? details.httpStatus : undefined,
+        rawResponseText: typeof details?.rawResponseText === "string" ? details.rawResponseText : undefined,
+        error: validation?.reason ?? (outcome === "provider_accepted" ? undefined : outcome),
+        request: {
+          notificationContext: context,
+          observation: {
+            outboxId: row.id ?? null, attemptsBefore: row.attempts ?? null,
+            attempt: outcome.startsWith("provider_") ? Number(row.attempts || 0) + 1 : null,
+            providerCalled: outcome.startsWith("provider_") ? true : outcome === "processing_exception" ? null : false,
+            validationOutcome: validation ? "rejected" : outcome.startsWith("provider_") ? "no_rejection_returned" : "unknown",
+            outcome, observedAt: new Date().toISOString(), validation,
+          },
+          financialSms: {
+            context: { id: row.id, eventType: row.eventType, entityType: row.entityType, entityId: row.entityId, createdAt: row.createdAt },
+            payload: safePayload,
+          },
+        },
+        response: result && typeof result === "object"
+          ? { ...result, validation }
+          : { success: false, validation },
+      });
+    } catch {
+      console.warn("NOTIFICATION_OBSERVATION_WRITE_FAILED", { notificationId: row.id ?? null, eventType: row.eventType });
+    }
+  };
   const didSendToday = async (row: {
     channel: OutboxChannel;
     eventType?: string | null;
@@ -142,7 +196,22 @@ export function createNotificationOutboxRuntime({
 
   const enqueueOutbox = async (opts: EnqueueOutboxOptions) => {
     await ensureNotificationOutboxTables();
-    const payloadObj: any = opts.payload ?? {};
+    const originalPayload: any = opts.payload ?? {};
+    const payloadObj: any = opts.channel === "sms" ? {
+      ...originalPayload,
+      notificationContext: buildNotificationContext({ ...opts, createdAt: moment().toISOString() }, originalPayload, originalPayload.notificationContext),
+    } : originalPayload;
+    if (opts.channel === "sms" && opts.eventType === "INSTALLMENT_PAYMENT_RECEIVED") {
+      const createdAt = moment().toISOString();
+      const validation = await validateFinancialSms(
+        { ...opts, createdAt }, payloadObj, getAsync, await getAllSettingsAsObject(), createdAt,
+      );
+      if (validation) {
+        console.warn("FINANCIAL_SMS_ENQUEUE_REJECTED", validation);
+        await recordSmsObservation({ ...opts, createdAt }, payloadObj, "enqueue_rejected", { success: false, validation });
+        return { queued: false, reason: validation.reason, validation };
+      }
+    }
     const capCustomerId =
       Number(payloadObj?.capCustomerId ?? payloadObj?.meta?.capCustomerId ?? 0) ||
       null;
@@ -306,6 +375,10 @@ export function createNotificationOutboxRuntime({
     const tokens: string[] = Array.isArray(payload?.tokens)
       ? payload.tokens.map((x: any) => String(x ?? ""))
       : [];
+    const cutoverGuard = evaluateSmsRuleCutoverWorkerGate(settings, payload);
+    if (cutoverGuard.applicable && !cutoverGuard.armed) {
+      return { success: false, message: `CUTOVER_GUARD_BLOCKED:${cutoverGuard.reasonCode}` };
+    }
     if (!recipientNumber)
       return { success: false, message: "شماره گیرنده نامعتبر است." };
     if (provider === "meli_payamak") {
@@ -476,16 +549,59 @@ export function createNotificationOutboxRuntime({
     const row = (await getAsync(
       `SELECT * FROM notification_outbox
         WHERE status IN ('pending','failed')
+          AND attempts < maxAttempts
+          AND COALESCE(lastError, '') NOT IN ('NOTIFICATION_EXPIRED', 'NOTIFICATION_CREATED_AT_INVALID')
+          AND COALESCE(lastError, '') NOT LIKE 'AMOUNT_MISMATCH:%'
+          AND COALESCE(lastError, '') NOT LIKE 'VALIDATION_SOURCE_MISSING:%'
+          AND COALESCE(lastError, '') NOT LIKE 'VALIDATION_TEMPLATE_MISMATCH:%'
+          AND COALESCE(lastError, '') NOT LIKE 'NOTIFICATION_EXPIRED:%'
+          AND COALESCE(lastError, '') NOT LIKE 'LEGACY_SOURCE_UNAVAILABLE:%'
           AND (nextAttemptAt IS NULL OR nextAttemptAt <= ?)
         ORDER BY id ASC
         LIMIT 1`,
       [moment().toISOString()],
     )) as any as OutboxRow | undefined;
     if (!row) return false;
+    let parsedPayloadForGuard: any = null;
+    if (row.channel === "sms") {
+      try { parsedPayloadForGuard = JSON.parse(row.payloadJson || "{}"); } catch {}
+      if (isSmsRuleCutoverPayload(parsedPayloadForGuard)) {
+        const settings = await getAllSettingsAsObject();
+        const cutoverGuard = evaluateSmsRuleCutoverWorkerGate(settings, parsedPayloadForGuard);
+        if (!cutoverGuard.armed) {
+          await runAsync(
+            `UPDATE notification_outbox SET status='failed', attempts=maxAttempts, nextAttemptAt=NULL, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+            [`CUTOVER_GUARD_BLOCKED:${cutoverGuard.reasonCode}`, row.id],
+          );
+          await recordSmsObservation(row, parsedPayloadForGuard, "cutover_guard_blocked", {
+            success: false, validation: { reason: "CUTOVER_GUARD_BLOCKED", issue: cutoverGuard.reasonCode },
+          });
+          return true;
+        }
+      }
+    }
+    let legacy: ReturnType<typeof legacyPaymentSourceRejection> = null;
+    if (row.channel === "sms") {
+      try {
+        legacy = legacyPaymentSourceRejection(row, parsedPayloadForGuard ?? JSON.parse(row.payloadJson || "{}"), moment().toISOString());
+      } catch { /* Existing retry path handles malformed JSON. */ }
+    }
+    if (legacy) {
+      // Quarantine only. Preserve original timestamps, attempts and payload;
+      // do not enter processing, infer a transaction or contact any provider.
+      await runAsync(
+        `UPDATE notification_outbox SET status='failed', nextAttemptAt=NULL, lastError=? WHERE id=?`,
+        [`LEGACY_SOURCE_UNAVAILABLE: ${JSON.stringify(legacy)}`, row.id],
+      );
+      console.warn("FINANCIAL_SMS_LEGACY_SKIPPED", legacy);
+      await recordSmsObservation(row, JSON.parse(row.payloadJson || "{}"), "legacy_blocked", { success: false, validation: legacy });
+      return true;
+    }
     await runAsync(
       `UPDATE notification_outbox SET status='processing', updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
       [row.id],
     );
+    const observationStartedAt = Date.now();
     try {
       const payload = JSON.parse(String(row.payloadJson || "{}"));
       let result: any;
@@ -582,7 +698,17 @@ export function createNotificationOutboxRuntime({
           });
         }
       } else {
-        result = await trySendSmsNow(payload);
+        result = await sendValidatedFinancialSms(row, payload, {
+          getAsync, settings: await getAllSettingsAsObject(), checkedAt: moment().toISOString(),
+        }, () => trySendSmsNow(payload));
+        await recordSmsObservation(row, payload, result?.validation ? "validation_blocked" : result?.success ? "provider_accepted" : "provider_failed", result, Date.now() - observationStartedAt);
+        if (result?.validation) {
+          await runAsync(
+            `UPDATE notification_outbox SET status='failed', nextAttemptAt=NULL, lastError=?, updatedAt=strftime('%Y-%m-%dT%H:%M:%SZ','now','utc') WHERE id=?`,
+            [`${result.validation.reason}: ${JSON.stringify(result.validation)}`, row.id],
+          );
+          return true;
+        }
       }
       if (result?.success) {
         const telegramMessageId =
@@ -668,6 +794,9 @@ export function createNotificationOutboxRuntime({
       );
       return true;
     } catch (e: any) {
+      let observedPayload: any = {};
+      try { observedPayload = JSON.parse(row.payloadJson || "{}"); } catch {}
+      await recordSmsObservation(row, observedPayload, "processing_exception", undefined, Date.now() - observationStartedAt);
       const attempts = Number(row.attempts || 0) + 1;
       const maxAttempts = Number(row.maxAttempts || 6);
       const nextAttemptAt =
